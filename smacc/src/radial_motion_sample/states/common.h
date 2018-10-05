@@ -36,13 +36,17 @@ struct EvActionClientSuccess : sc::event< EvActionClientSuccess >
     std::string target;
 };
 
+struct EvStateFinished : sc::event< EvStateFinished > 
+{
+};
+
 // ------------------------------------------------------------------------
 namespace NavigateToRadialStart
 {
     struct State;
 };
 
-struct NavigateToRadialStart;
+struct RotateDegress;
 
 /// State Machine
 struct SmaccStateMachine : sc::asynchronous_state_machine<SmaccStateMachine, NavigateToRadialStart::State, SmaccScheduler, SmaccAllocator >

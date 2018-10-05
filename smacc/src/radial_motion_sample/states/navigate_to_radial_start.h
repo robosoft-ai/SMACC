@@ -21,10 +21,10 @@ namespace NavigateToRadialStart
             ROS_INFO("Entering in NavigateToRadialStart State");
         }
 
-
-        sc::result Focused::react( const EvShutterFull & )
+        sc::result react( const EvStateFinished & )
         {
-            return transit< NavigateToRadialStart >();
+            ROS_INFO("Event state finished, transition to next state");
+            return transit< RotateDegress >();
         }
 
         ~State()
@@ -105,7 +105,8 @@ namespace NavigateToRadialStart
         sc::result react( const EvActionClientSuccess & )
         {
             ROS_INFO("Received event to reel client");
-            return terminate();
+            //return terminate();
+            return transit< RotateDegress >();
         }
 
         ~Reel_ActionClient()
