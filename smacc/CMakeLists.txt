@@ -168,6 +168,27 @@ target_link_libraries(tutorial4_ConcurrentStates
 #   ${PROJECT_NAME}
 #   )
 
+#------------------------------------------------------------
+
+include_directories(src/ping_pong_sample)
+add_executable(PingPongSample 
+src/ping_pong_sample/ping_pong_sample.cpp
+src/ping_pong_sample/player.cpp)
+
+target_link_libraries(PingPongSample
+   ${catkin_LIBRARIES})
+
+#------------------------------------------------------------
+include_directories(src/radial_motion_sample)
+add_executable(RadialMotionSample 
+src/radial_motion_sample/radial_motion.cpp)
+
+
+target_link_libraries(RadialMotionSample
+   ${catkin_LIBRARIES}
+   ${boost_LIBRARIES})
+
+#------------------------------------------------------------
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
