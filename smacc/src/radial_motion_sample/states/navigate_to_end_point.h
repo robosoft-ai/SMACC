@@ -1,19 +1,18 @@
 #pragma once
-#include "states/common.h"
+#include "radial_motion.h"
 #include <ros/ros.h>
-
 
 struct NavigateToEndPoint_NavSubstates;
 struct NavigateToEndPoint_ReelSubstates;
 
 //--------------------------------------------
 /// State NavigateToEndPoint
-struct NavigateToEndPoint : SmaccState< NavigateToEndPoint, SmaccStateMachine,
+struct NavigateToEndPoint : SmaccState< NavigateToEndPoint, RadialMotionStateMachine,
                                mpl::list< NavigateToEndPoint_NavSubstates, NavigateToEndPoint_ReelSubstates > >
 {
     public:
     NavigateToEndPoint(my_context ctx)
-    :SmaccState<NavigateToEndPoint, SmaccStateMachine,
+    :SmaccState<NavigateToEndPoint, RadialMotionStateMachine,
                                mpl::list< NavigateToEndPoint_NavSubstates, NavigateToEndPoint_ReelSubstates > >(ctx)
     {
           ROS_INFO("Initializating Navigate to endpoint state");

@@ -1,21 +1,21 @@
 #pragma once
 
-#include "states/common.h"
+#include "radial_motion.h"
 
 struct RotateDegrees_NavSubstates;
 struct RotateDegress_ReelSubstates;
 
 //--------------------------------------------
 /// State NavigateToRadialStart
-struct RotateDegress : SmaccState< RotateDegress, SmaccStateMachine,
+struct RotateDegress : SmaccState< RotateDegress, RadialMotionStateMachine,
                                mpl::list< RotateDegrees_NavSubstates, RotateDegress_ReelSubstates > >
 {
     public:
     RotateDegress(my_context ctx)
-    :SmaccState<RotateDegress, SmaccStateMachine,
+    :SmaccState<RotateDegress, RadialMotionStateMachine,
                                mpl::list< RotateDegrees_NavSubstates, RotateDegress_ReelSubstates > >(ctx)
     {
-
+        ROS_INFO("ROTATE TEN DEGREES STATE");
     }
     
     ~RotateDegress()

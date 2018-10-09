@@ -1,18 +1,18 @@
 #pragma once
 
-#include "states/common.h"
+#include "radial_motion.h"
 
 struct ReturnToRadialStart_NavSubstates;
 struct ReturnToRadialStart_ReelSubstates;
 
 //--------------------------------------------
 /// State ReturnToRadialStart
-struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, SmaccStateMachine,
+struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, RadialMotionStateMachine,
                                mpl::list< ReturnToRadialStart_NavSubstates, ReturnToRadialStart_ReelSubstates > >
 {
     public:
     ReturnToRadialStart(my_context ctx)
-    :SmaccState<ReturnToRadialStart, SmaccStateMachine,
+    :SmaccState<ReturnToRadialStart, RadialMotionStateMachine,
                                mpl::list< ReturnToRadialStart_NavSubstates, ReturnToRadialStart_ReelSubstates > >(ctx)
     {
 
