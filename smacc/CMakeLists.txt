@@ -183,6 +183,7 @@ target_link_libraries(PingPongSample
 include_directories(src/radial_motion_sample)
 add_executable(RadialMotionSample 
 src/radial_motion_sample/radial_motion.cpp
+src/radial_motion_sample/smacc/common.cpp
 src/radial_motion_sample/smacc/signal_detector.cpp
 src/radial_motion_sample/plugins/move_base_to_goal.cpp
 src/radial_motion_sample/plugins/reel.cpp)

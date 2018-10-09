@@ -117,7 +117,7 @@ namespace smacc
   {
       smacc::ISmaccActionClient* client;
 
-      actionlib::SimpleClientGoalState getResult();
+      actionlib::SimpleClientGoalState getResult() const;
   };
 }
 

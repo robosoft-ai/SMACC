@@ -72,7 +72,7 @@ namespace NavigateToRadialStart
 
         sc::result react( const EvActionClientSuccess & ev )
         {
-            if (ev.client == moveBaseClient_)
+            if (ev.client == moveBaseClient_ && ev.getResult()==actionlib::SimpleClientGoalState::PENDING)
             {
                 ROS_INFO("Received event to move base client");
                 this->post_event(EvStateFinished());
