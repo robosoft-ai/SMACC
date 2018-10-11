@@ -4,6 +4,6 @@ namespace smacc
 {
     actionlib::SimpleClientGoalState EvActionClientSuccess::getResult() const
     {
-    return client->getState();
+        return client->getState();
     }
 }

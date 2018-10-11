@@ -15,7 +15,7 @@ struct RotateDegress : SmaccState< RotateDegress, RadialMotionStateMachine,
     :SmaccState<RotateDegress, RadialMotionStateMachine,
                                mpl::list< RotateDegrees_NavSubstates, RotateDegress_ReelSubstates > >(ctx)
     {
-        ROS_INFO("ROTATE TEN DEGREES STATE");
+        ROS_INFO("Entering in ROTATE TEN DEGREES STATE");
     }
     
     ~RotateDegress()

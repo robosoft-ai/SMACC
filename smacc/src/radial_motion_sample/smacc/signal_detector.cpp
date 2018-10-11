@@ -8,22 +8,22 @@ namespace smacc
 * SignalDetector()
 ******************************************************************************************************************
 */
-    SignalDetector::SignalDetector(SmaccScheduler* scheduler)
-    {
-        scheduler_ = scheduler;
-    }
+SignalDetector::SignalDetector(SmaccScheduler* scheduler)
+{
+    scheduler_ = scheduler;
+}
 
 /**
 ******************************************************************************************************************
 * registerActionClientRequest()
 ******************************************************************************************************************
 */
-    void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo)
-    {
-        ROS_INFO("Signal detector is aware of the '%s action client request'", typeid(actionClientRequestInfo).name());
-        openRequests_.push_back(actionClientRequestInfo);
-        ROS_INFO("Added to the opened requests list");
-    }
+void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo)
+{
+    ROS_INFO("Signal detector is aware of the '-- %s -- action client request'", actionClientRequestInfo->getName().c_str());
+    openRequests_.push_back(actionClientRequestInfo);
+    ROS_INFO("Added to the opened requests list");
+}
 
 /**
 ******************************************************************************************************************
@@ -81,22 +81,27 @@ namespace smacc
             ros::spinOnce();
             r.sleep();
             ROS_INFO(".");
-            this->poll();
+            std::stringstream ss;   
+            this->toString(ss);
+            ROS_INFO_STREAM(ss.str());            
         }
 
         ROS_INFO("Simulated action server success response, sending event to State Machine");
-        this->finalizeRequest(openRequests_.back());
+        //finalizeRequest(openRequests_.back());
+        openRequests_.back()->cancelGoal();
 
         for (int i =0; i< 5 && ros::ok();i++)
         {
             ros::spinOnce();
             r.sleep();
             ROS_INFO(".");
-            this->poll();
+            std::stringstream ss;   
+            this->toString(ss);
+            ROS_INFO_STREAM(ss.str());            
         }
 
         ROS_INFO("Simulated action server success response, sending event to State Machine");
-        this->finalizeRequest(openRequests_.front());
+        finalizeRequest(openRequests_.front());
         
     }
 
@@ -107,7 +112,7 @@ namespace smacc
 */
     void SignalDetector::finalizeRequest(ISmaccActionClient* client)
     {
-        ROS_INFO("Finalizing actionlib request: %s", client->getName().c_str());
+        ROS_INFO("Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
         auto it = find(openRequests_.begin(),openRequests_.end(),client);
 
         if (it != openRequests_.end())
@@ -121,15 +126,14 @@ namespace smacc
         scheduler_->queue_event(processorHandle_, actionClientSuccessEvent);
     }
 
+
 /**
 ******************************************************************************************************************
-* poll()
+* toString()
 ******************************************************************************************************************
 */
-    void SignalDetector::poll()
+    void SignalDetector::toString(std::stringstream& ss)
     {
-        std::stringstream ss;
-        
         ss << "--------" << std::endl;
         ss << "Open requests" << std::endl;
         for(ISmaccActionClient* smaccActionClient: this->openRequests_)
@@ -138,8 +142,22 @@ namespace smacc
             ss << smaccActionClient->getName() << ": " << state << std::endl;
         }
         ss << "--------";
-
-        ROS_INFO_STREAM(ss.str());            
+    }
+/**
+******************************************************************************************************************
+* poll()
+******************************************************************************************************************
+*/
+    void SignalDetector::poll()
+    {
+        for(ISmaccActionClient* smaccActionClient: this->openRequests_)
+        {
+            auto state = smaccActionClient->getState();
+            if(state.isDone())
+            {
+                this->finalizeRequest(smaccActionClient);
+            }
+        }            
     }
 
 /**
@@ -155,15 +173,6 @@ namespace smacc
             this->poll();
             ros::spinOnce();
             r.sleep();
-
-            for(ISmaccActionClient* smaccActionClient: this->openRequests_)
-            {
-                auto state = smaccActionClient->getState();
-                if(state.isDone())
-                {
-                    this->finalizeRequest(smaccActionClient);
-                }
-            }            
         }
     }   
 }

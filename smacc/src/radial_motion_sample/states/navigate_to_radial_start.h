@@ -36,12 +36,12 @@ namespace NavigateToRadialStart
 
     //--------------------------------------------------
     // orthogonal line 0
-    class MoveBase_MoveGoal_ActionClient;
+    class MoveBaseSubState;
 
-    struct NavigationOrthogonalLine: public SmaccState<NavigationOrthogonalLine, State::orthogonal< 0 > , MoveBase_MoveGoal_ActionClient>
+    struct NavigationOrthogonalLine: public SmaccState<NavigationOrthogonalLine, State::orthogonal< 0 > , MoveBaseSubState>
     {
         NavigationOrthogonalLine(my_context ctx)
-            :SmaccState<NavigationOrthogonalLine, State::orthogonal< 0 > , MoveBase_MoveGoal_ActionClient>(ctx)
+            :SmaccState<NavigationOrthogonalLine, State::orthogonal< 0 > , MoveBaseSubState>(ctx)
         {
             ROS_INFO("Entering in move_base orthogonal line");
         }
@@ -52,21 +52,29 @@ namespace NavigateToRadialStart
         }
     };
 
-    struct MoveBase_MoveGoal_ActionClient: SmaccState<MoveBase_MoveGoal_ActionClient, NavigationOrthogonalLine >
+    //--------------------------------------------------
+
+    struct MoveBaseSubState: SmaccState<MoveBaseSubState, NavigationOrthogonalLine >
     {
         typedef sc::custom_reaction< EvActionClientSuccess > reactions;
 
         public:
 
-        MoveBase_MoveGoal_ActionClient(my_context ctx)
-            : SmaccState<MoveBase_MoveGoal_ActionClient, NavigationOrthogonalLine >(ctx)
+        MoveBaseSubState(my_context ctx)
+            : SmaccState<MoveBaseSubState, NavigationOrthogonalLine >(ctx)
         {
-            ROS_INFO("Entering MoveBase_MoveGoal_ActionClient");
+            ROS_INFO("Entering MoveBaseSubState");
             moveBaseClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+            
+            moveBaseClient_->waitForActionServer();
 
             smacc::SmaccMoveBaseActionClient::Goal goal;
-            goal.target_pose.pose.position.x=10;
-            goal.target_pose.pose.position.y=10;
+            goal.target_pose.header.frame_id="/odom";
+            goal.target_pose.header.stamp=ros::Time::now();
+            
+            goal.target_pose.pose.position.x=3;
+            goal.target_pose.pose.position.y=0;
+            goal.target_pose.pose.orientation.w=1;
             moveBaseClient_->sendGoal(goal);
         }
 
@@ -80,7 +88,7 @@ namespace NavigateToRadialStart
             }
         }
 
-        ~MoveBase_MoveGoal_ActionClient()
+        ~MoveBaseSubState()
         {
             ROS_INFO("Exiting move goal Action Client");
         }
@@ -92,13 +100,13 @@ namespace NavigateToRadialStart
     //--------------------------------------------------
     // orthogonal line 1
 
-    struct Reel_ActionClient;
+    struct ReelSubState;
 
-    struct ReelOrthogonalLine: SmaccState<ReelOrthogonalLine, State::orthogonal< 1 > , Reel_ActionClient>
+    struct ReelOrthogonalLine: SmaccState<ReelOrthogonalLine, State::orthogonal< 1 > , ReelSubState>
     {
         public:
             ReelOrthogonalLine(my_context ctx)
-                :SmaccState<ReelOrthogonalLine, State::orthogonal< 1 > , Reel_ActionClient>(ctx)
+                :SmaccState<ReelOrthogonalLine, State::orthogonal< 1 > , ReelSubState>(ctx)
             {
                 ROS_INFO("Entering in reel orthogonal line");
             }
@@ -109,15 +117,16 @@ namespace NavigateToRadialStart
             }
     };
 
-    struct Reel_ActionClient: SmaccState<Reel_ActionClient, ReelOrthogonalLine >
+    //--------------------------------------------------
+    struct ReelSubState: SmaccState<ReelSubState, ReelOrthogonalLine >
     {
         typedef sc::custom_reaction< EvActionClientSuccess > reactions;
 
         public:
-            Reel_ActionClient(my_context ctx)
-                : SmaccState<Reel_ActionClient, ReelOrthogonalLine >(ctx)
+            ReelSubState(my_context ctx)
+                : SmaccState<ReelSubState, ReelOrthogonalLine >(ctx)
             {
-                ROS_INFO("Entering Reel_ActionClient");
+                ROS_INFO("Entering ReelSubState");
                 reelActionClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccReelActionClient>("non_rt_helper");
                 
                 //dispense
@@ -135,7 +144,7 @@ namespace NavigateToRadialStart
                 }
             }
 
-            ~Reel_ActionClient()
+            ~ReelSubState()
             {
                 ROS_INFO("Exiting Reel_Action Client");
             }

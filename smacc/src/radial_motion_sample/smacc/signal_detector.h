@@ -25,6 +25,8 @@ class SignalDetector
         
         void poll();
 
+        void toString(std::stringstream& ss);
+
         void pollingLoop();
 
         void finalizeRequest(ISmaccActionClient*);

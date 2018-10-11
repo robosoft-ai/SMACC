@@ -1,75 +1,40 @@
 #pragma once
 
-#include <actionlib/client/simple_action_client.h>
-#include "smacc/common.h"
-#include "smacc/state_machine.h"
+#include "plugins/smacc_action_client.h"
 
 namespace smacc
 {
-    using namespace actionlib;
-
-
-    class ISmaccActionClient
-    {
-        public:
-        
-        ISmaccActionClient()
-        {
-
-        }
-        
-        virtual ~ISmaccActionClient()
-        {
-        }
-
-        void setStateMachine(ISmaccStateMachine* stateMachine)
-        {
-            stateMachine_ = stateMachine;
-        }
-
-        virtual SimpleClientGoalState getState()=0;
-
-        virtual std::string getName() const=0;
-
-        protected:
-            std::string name_;
-            ISmaccStateMachine* stateMachine_;
-
-            ISmaccActionClient(std::string action_client_namespace) 
-            {
-                name_ = action_client_namespace;
-                ROS_DEBUG("Creating Action Client %s", action_client_namespace.c_str());
-            }            
-    };
-
-    //-----------------------------------------------------------------------------------------
     template <typename ActionType>
     class SmaccActionClientBase: public ISmaccActionClient
     {
         public:
 
         ACTION_DEFINITION(ActionType);
-        typedef actionlib::SimpleActionClient<ActionType> Client ;
+        typedef actionlib::SimpleActionClient<ActionType> ActionClient ;
 
         SmaccActionClientBase(std::string action_client_namespace)
             :ISmaccActionClient(action_client_namespace),
             client_(action_client_namespace,true) 
         {
+            ROS_INFO("SmaccActionClient base created");
         }
 
         virtual ~SmaccActionClientBase()
         {
         }
 
-        virtual std::string getName() const
+        void waitForActionServer()
         {
-            return "";
+            //ROS_INFO("waiting for action server: %s", this->getName().c_str());
+            //client_.waitForServer();
         }
 
-        void initialize()
+        virtual std::string getName() const =0;
+
+        virtual void cancelGoal() override
         {
-            client_.waitForServer();
-            ROS_INFO("Initializing action client %s", name_.c_str());
+            ROS_INFO("Cancelling goal of %s", this->getName().c_str());
+            client_.cancelGoal();
         }
 
         virtual SimpleClientGoalState getState() override
@@ -79,12 +44,20 @@ namespace smacc
 
         void sendGoal(Goal& goal)
         {
-            ROS_INFO("Sending goal to actionclient");
+            ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ <<"\"");
+            ROS_INFO("Is actionclient connected: %d", client_.isServerConnected());
+            client_.waitForServer();
+            ROS_INFO("Is actionclient connected: %d", client_.isServerConnected());
+            
+            ROS_INFO_STREAM("Goal Value: " << std::endl << goal);
             client_.sendGoal(goal);
+
+            ROS_INFO("spinning");
+            ros::spin();
             this->stateMachine_->registerActionClientRequest(this);
         }
 
         protected:
-            Client  client_;
+            ActionClient  client_;
     };
 }
