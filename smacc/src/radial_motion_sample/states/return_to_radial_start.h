@@ -86,7 +86,7 @@ struct State : SmaccState< State, RadialMotionStateMachine,
           if (i > 8)
           {
               ROS_WARN("STATE MACHINE END");
-              exit(0);
+              //exit(0);
           } 
 
           if (ev.client == moveBaseClient_ && ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
