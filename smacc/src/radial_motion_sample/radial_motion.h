@@ -9,14 +9,28 @@ struct EvStateFinished : sc::event< EvStateFinished >
 {
 };
 
-// ------------------------------------------------------------------------
+// --------------------- STATES ---------------------------------------------------
 namespace NavigateToRadialStart
 {
     struct State;
 };
 
-struct RotateDegress;
+namespace RotateDegress
+{
+    struct State;
+}
 
+namespace NavigateToEndPoint
+{
+    struct State;
+}
+
+namespace ReturnToRadialStart
+{
+    struct State;
+}
+
+// --------------------- Radial motion State Machine ---------------------------------------------------
 struct RadialMotionStateMachine: public SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::State>
 {
     RadialMotionStateMachine( my_context ctx, SignalDetector* signalDetector)

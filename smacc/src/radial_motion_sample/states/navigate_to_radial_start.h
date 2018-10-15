@@ -2,8 +2,8 @@
 #include "radial_motion.h"
 #include "plugins/move_base_to_goal.h"
 #include "plugins/reel.h"
+
 #include <non_rt_helper/DispenseModeGoal.h>
-#include <boost/statechart/transition.hpp>
 
 namespace NavigateToRadialStart
 {
@@ -12,26 +12,30 @@ namespace NavigateToRadialStart
     struct NavigationOrthogonalLine;
     struct ReelOrthogonalLine;
 
+    struct EvReelInitialized : sc::event< EvReelInitialized >
+    {
+
+    };
+
+
     //--------------------------------------------
     /// State NavigateToRadialStart
     struct State : SmaccState< State, RadialMotionStateMachine,
                                 mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine > >
     {
-        typedef sc::transition< EvStateFinished, RotateDegress> reactions;
-
+        typedef sc::transition< EvStateFinished, RotateDegress::State> reactions;
 
         public:
-        State(my_context ctx)
-        :SmaccState<State, RadialMotionStateMachine,
-                                mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine > >(ctx)
-        {
-            ROS_INFO("Entering in NavigateToRadialStart State");
-        }
+            State(my_context ctx)
+                :SmaccState<State, RadialMotionStateMachine,mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine > >(ctx)
+            {
+                ROS_INFO("Entering in NavigateToRadialStart State");
+            }
 
-        ~State()
-        {
-            ROS_INFO("Finishing NavigateToRadialStart state");
-        }
+            ~State()
+            {
+                ROS_INFO("Finishing NavigateToRadialStart state");
+            }
     };
 
     //--------------------------------------------------
@@ -56,45 +60,56 @@ namespace NavigateToRadialStart
 
     struct MoveBaseSubState: SmaccState<MoveBaseSubState, NavigationOrthogonalLine >
     {
-        typedef sc::custom_reaction< EvActionClientSuccess > reactions;
+        typedef mpl::list<
+            sc::custom_reaction< EvActionClientSuccess >,
+            sc::custom_reaction< EvReelInitialized >> reactions;
 
         public:
 
-        MoveBaseSubState(my_context ctx)
-            : SmaccState<MoveBaseSubState, NavigationOrthogonalLine >(ctx)
-        {
-            ROS_INFO("Entering MoveBaseSubState");
-            moveBaseClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
-            
-            moveBaseClient_->waitForActionServer();
-
-            smacc::SmaccMoveBaseActionClient::Goal goal;
-            goal.target_pose.header.frame_id="/odom";
-            goal.target_pose.header.stamp=ros::Time::now();
-            
-            goal.target_pose.pose.position.x=3;
-            goal.target_pose.pose.position.y=0;
-            goal.target_pose.pose.orientation.w=1;
-            moveBaseClient_->sendGoal(goal);
-        }
-
-        sc::result react( const EvActionClientSuccess & ev )
-        {
-            if (ev.client == moveBaseClient_ && ev.getResult()==actionlib::SimpleClientGoalState::PENDING)
+            MoveBaseSubState(my_context ctx)
+                : SmaccState<MoveBaseSubState, NavigationOrthogonalLine >(ctx)
             {
-                ROS_INFO("Received event to move base client");
-                this->post_event(EvStateFinished());
-                return this->terminate();
+                ROS_INFO("Entering MoveBaseSubState");
+                moveBaseClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");   
             }
-        }
 
-        ~MoveBaseSubState()
-        {
-            ROS_INFO("Exiting move goal Action Client");
-        }
+            sc::result react( const EvReelInitialized & ev )
+            {
+                smacc::SmaccMoveBaseActionClient::Goal goal;
+                goal.target_pose.header.frame_id="/odom";
+                goal.target_pose.header.stamp=ros::Time::now();
+                
+                goal.target_pose.pose.position.x=3;
+                goal.target_pose.pose.position.y=0;
+                goal.target_pose.pose.orientation.w=1;
+                context<RadialMotionStateMachine >().setData("radial_start_pose",goal.target_pose);
+
+                moveBaseClient_->sendGoal(goal);
+            }
+
+            sc::result react( const EvActionClientSuccess & ev )
+            {
+                ROS_INFO("Received event to movebase");
+
+                if (ev.client == moveBaseClient_ && ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
+                {
+                    ROS_INFO("move base, goal position reached");
+                    this->post_event(EvStateFinished());
+                    return forward_event();//this->terminate();
+                }
+                else
+                {
+                    return forward_event();
+                }
+            }
+
+            ~MoveBaseSubState()
+            {
+                ROS_INFO("Exiting move goal Action Client");
+            }
 
         private:
-        smacc::SmaccMoveBaseActionClient* moveBaseClient_;
+            smacc::SmaccMoveBaseActionClient* moveBaseClient_;
     };
 
     //--------------------------------------------------
@@ -137,10 +152,17 @@ namespace NavigateToRadialStart
 
             sc::result react( const EvActionClientSuccess &  ev)
             {
+                ROS_INFO("Reel substate: Received event for reel client");
+
                 if (ev.client == reelActionClient_)
                 {
                     ROS_INFO("Received event for reel client");
+                    this->post_event(EvReelInitialized());
                     return this->terminate();
+                }
+                else
+                {
+                    return forward_event();
                 }
             }
 

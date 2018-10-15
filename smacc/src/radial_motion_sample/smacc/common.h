@@ -16,8 +16,10 @@
 #include <boost/signals2.hpp>
 
 #include <boost/mpl/list.hpp>
-#include <boost/statechart/termination.hpp>
 #include <actionlib/client/simple_action_client.h>
+
+#include <boost/statechart/termination.hpp>
+#include <boost/statechart/transition.hpp>
 
 namespace sc = boost::statechart;
 

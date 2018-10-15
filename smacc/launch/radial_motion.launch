@@ -1,5 +1,5 @@
 <launch>
     <include file="$(find reelrbtx_demos)/launch/simulated_robot_simulated_reel.launch"/>
-
-
+    <node pkg="smacc" type="RadialMotionSample" name="RadialMotionSample" launch-prefix="xterm -hold -e "/>
+    <node pkg="non_rt_helper" type="non_rt_helper_node" name="non_rt_helper" launch-prefix="xterm -hold -e "/>
 </launch>

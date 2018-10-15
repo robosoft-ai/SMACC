@@ -32,6 +32,11 @@ namespace smacc
 
         virtual void cancelGoal() = 0;
 
+        inline std::string getNamespace() const
+        {
+            return name_;
+        }
+        
         protected:
             std::string name_;
             ISmaccStateMachine* stateMachine_;

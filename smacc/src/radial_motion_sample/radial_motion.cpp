@@ -27,7 +27,8 @@ int main(int argc, char** argv)
     boost::thread otherThread( boost::bind(
     &sc::fifo_scheduler<>::operator(), &scheduler1, 0 ) );
 
-    signalDetector.simulateResponses();
+    //signalDetector.simulateResponses();
+    signalDetector.pollingLoop();
 
     ros::Duration(10).sleep();
 }

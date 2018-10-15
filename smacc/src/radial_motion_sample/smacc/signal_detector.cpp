@@ -72,6 +72,7 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
 */
     void SignalDetector::simulateResponses()
     {
+        /*
         //simualte processing
         ROS_INFO("Simulating action server execution ... 5 secs");
         
@@ -102,7 +103,7 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
 
         ROS_INFO("Simulated action server success response, sending event to State Machine");
         finalizeRequest(openRequests_.front());
-        
+        */
     }
 
 /**
@@ -112,7 +113,7 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
 */
     void SignalDetector::finalizeRequest(ISmaccActionClient* client)
     {
-        ROS_INFO("Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
+        ROS_INFO("SignalDetector: Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
         auto it = find(openRequests_.begin(),openRequests_.end(),client);
 
         if (it != openRequests_.end())
@@ -123,6 +124,7 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
         boost::intrusive_ptr< EvActionClientSuccess > actionClientSuccessEvent = new EvActionClientSuccess();
         actionClientSuccessEvent->client = client;
 
+        ROS_INFO("SignalDetector: Sending successEvent");
         scheduler_->queue_event(processorHandle_, actionClientSuccessEvent);
     }
 
