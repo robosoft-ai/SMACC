@@ -39,11 +39,8 @@ struct ReturnToRadialStart;
 // create the RadialMotion State Machine example class that inherits from the 
 // SmaccStateMachineBase. You only have to declare it, the most of the funcionality is inhterited.
 struct RadialMotionStateMachine
-    : public SmaccStateMachineBase<
-          RadialMotionStateMachine,
-          NavigateToRadialStart::NavigateToRadialStart> {
+    : public SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::NavigateToRadialStart> 
+{
   RadialMotionStateMachine(my_context ctx, SignalDetector *signalDetector)
-      : SmaccStateMachineBase<RadialMotionStateMachine,
-                              NavigateToRadialStart::NavigateToRadialStart>(
-            ctx, signalDetector) {}
+      : SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::NavigateToRadialStart>(ctx, signalDetector) {}
 };

@@ -33,7 +33,9 @@ public:
 
   // This is the state destructor. This code will be executed when the
   // workflow exits from this state (that is according to statechart the moment when this object is destroyed)
-  ~NavigateToEndPoint() {}
+  ~NavigateToEndPoint() 
+  {
+  }
 };
 
 //------------------------------------------------------------------------------
@@ -51,7 +53,8 @@ public:
 };
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+{
   typedef mpl::list<sc::custom_reaction<EvActionClientSuccess>> reactions;
 
 public:
@@ -73,6 +76,8 @@ public:
     // read from the state machine i "global variable" to know the current orientation
     int i;
     context<RadialMotionStateMachine>().getData("angle_index", i);
+    
+    // get the angle according to the angle index
     yaw = i * angles::from_degrees(10);
     dist = 3.5;
 
@@ -101,8 +106,8 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionClientSuccess &ev) {
-
+  sc::result react(const EvActionClientSuccess &ev) 
+  {
     if (ev.client == moveBaseClient_) {
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
       {
@@ -134,7 +139,10 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~Navigate() { ROS_INFO("Exiting move goal Action Client"); }
+  ~Navigate() 
+  { 
+    ROS_INFO("Exiting move goal Action Client"); 
+  }
 
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
@@ -151,8 +159,8 @@ public:
   // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
   ReelOrthogonalLine(my_context ctx)
       : SmaccState<ReelOrthogonalLine, NavigateToEndPoint::orthogonal<1>>(ctx) // call the SmaccState base constructor 
-      {
+  {
 
-      }
+  }
 };
 }

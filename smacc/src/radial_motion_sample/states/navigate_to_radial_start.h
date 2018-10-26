@@ -144,7 +144,10 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~Navigate() { ROS_INFO("Exiting move goal Action Client"); }
+  ~Navigate() 
+  { 
+    ROS_INFO("Exiting move goal Action Client"); 
+  }
 
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
@@ -168,7 +171,10 @@ public:
     ROS_INFO("Entering in reel orthogonal line");
   }
 
-  ~ReelOrthogonalLine() { ROS_INFO("Finishing reel orthogonal line"); }
+  ~ReelOrthogonalLine() 
+  { 
+    ROS_INFO("Finishing reel orthogonal line"); 
+  }
 };
 
 //--------------------------------------------------
@@ -191,6 +197,7 @@ public:
                             .requiresActionClient<smacc::SmaccReelActionClient>(
                                 "non_rt_helper");
 
+    // make the motion
     dispense();
   }
 
@@ -236,7 +243,10 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~ReelStartAndDispense() { ROS_INFO("Exiting Reel_Action Client"); }
+  ~ReelStartAndDispense() 
+  { 
+    ROS_INFO("Exiting Reel_Action Client"); 
+  }
 
 private:
   // keeps the reference to the reel resorce or plugin (to connect to the non_rt_helper)

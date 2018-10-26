@@ -15,8 +15,7 @@ struct ReelOrthogonalLine;
 
 /// State NavigateToRadialStart
 struct RotateDegress
-    : SmaccState<RotateDegress, RadialMotionStateMachine,
-                 mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>> // <- these are the orthogonal lines of this State 
+    : SmaccState<RotateDegress, RadialMotionStateMachine, mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>> // <- these are the orthogonal lines of this State 
 {
   // when this state is finished then move to the NavigateToEndPoint state
   typedef sc::transition<EvStateFinished, NavigateToEndPoint::NavigateToEndPoint> reactions;
@@ -78,15 +77,17 @@ public:
   sc::result react(const EvReelInitialized &ev) {
     int i;
     if (!context<RadialMotionStateMachine>().getData("angle_index", i)) {
+      // this is the first radial motion, initialize the index at -2 (-20 degrees)
       i = -2;
     } else {
-      i += 1;
+      i += 1; // this is not the first time, increment the degress with 10 degreess
     }
 
     // read from the state machine i "global variable" to know the current orientation
     context<RadialMotionStateMachine>().setData("angle_index", i);
     ROS_INFO("Radial angle index: %d", i);
 
+    // get the angle according to the angle index
     yaw = i * angles::from_degrees(10);
 
     rotateTenDegrees();
@@ -140,7 +141,10 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~Navigate() { ROS_INFO("Exiting move goal Action Client"); }
+  ~Navigate() 
+  { 
+    ROS_INFO("Exiting move goal Action Client"); 
+  }
 
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
@@ -211,7 +215,10 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~ReelDispense() { ROS_INFO("Exiting Reel_Action Client"); }
+  ~ReelDispense() 
+  { 
+    ROS_INFO("Exiting Reel_Action Client"); 
+  }
 
 private:
     // keeps the reference to the reel resorce or plugin (to connect to the non_rt_helper)
