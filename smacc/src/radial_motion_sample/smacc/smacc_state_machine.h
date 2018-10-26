@@ -52,7 +52,6 @@ struct ISmaccStateMachine
             return ret;
         }
 
-
         template <typename T>
         bool getData(std::string name, T& ret)
         {

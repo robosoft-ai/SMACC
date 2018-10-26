@@ -30,151 +30,151 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
 * initialize()
 ******************************************************************************************************************
 */
-    void SignalDetector::initialize(ISmaccStateMachine* stateMachine)
-    {
-        smaccStateMachine_ = stateMachine;
-    }
+void SignalDetector::initialize(ISmaccStateMachine* stateMachine)
+{
+    smaccStateMachine_ = stateMachine;
+}
 
 /**
 ******************************************************************************************************************
 * setProcessorHandle()
 ******************************************************************************************************************
 */
-    void SignalDetector::setProcessorHandle(SmaccScheduler::processor_handle processorHandle)
-    {
-        processorHandle_ = processorHandle;
-    }
+void SignalDetector::setProcessorHandle(SmaccScheduler::processor_handle processorHandle)
+{
+    processorHandle_ = processorHandle;
+}
 
 /**
 ******************************************************************************************************************
 * runThread()
 ******************************************************************************************************************
 */
-    void SignalDetector::runThread()
-    {
-        signalDetectorThread_ = boost::thread( boost::bind(&SignalDetector::pollingLoop, this ));
-    }
+void SignalDetector::runThread()
+{
+    signalDetectorThread_ = boost::thread( boost::bind(&SignalDetector::pollingLoop, this ));
+}
 
 /**
 ******************************************************************************************************************
 * join()
 ******************************************************************************************************************
 */
-    void SignalDetector::join()
-    {
-        signalDetectorThread_.join();
-    }
+void SignalDetector::join()
+{
+    signalDetectorThread_.join();
+}
 
 /**
 ******************************************************************************************************************
 * simulateResponses()
 ******************************************************************************************************************
 */
-    void SignalDetector::simulateResponses()
+void SignalDetector::simulateResponses()
+{
+    /*
+    //simualte processing
+    ROS_INFO("Simulating action server execution ... 5 secs");
+    
+    ros::Rate r(1);
+    for (int i =0; i< 5 && ros::ok();i++)
     {
-        /*
-        //simualte processing
-        ROS_INFO("Simulating action server execution ... 5 secs");
-        
-        ros::Rate r(1);
-        for (int i =0; i< 5 && ros::ok();i++)
-        {
-            ros::spinOnce();
-            r.sleep();
-            ROS_INFO(".");
-            std::stringstream ss;   
-            this->toString(ss);
-            ROS_INFO_STREAM(ss.str());            
-        }
-
-        ROS_INFO("Simulated action server success response, sending event to State Machine");
-        //finalizeRequest(openRequests_.back());
-        openRequests_.back()->cancelGoal();
-
-        for (int i =0; i< 5 && ros::ok();i++)
-        {
-            ros::spinOnce();
-            r.sleep();
-            ROS_INFO(".");
-            std::stringstream ss;   
-            this->toString(ss);
-            ROS_INFO_STREAM(ss.str());            
-        }
-
-        ROS_INFO("Simulated action server success response, sending event to State Machine");
-        finalizeRequest(openRequests_.front());
-        */
+        ros::spinOnce();
+        r.sleep();
+        ROS_INFO(".");
+        std::stringstream ss;   
+        this->toString(ss);
+        ROS_INFO_STREAM(ss.str());            
     }
+
+    ROS_INFO("Simulated action server success response, sending event to State Machine");
+    //finalizeRequest(openRequests_.back());
+    openRequests_.back()->cancelGoal();
+
+    for (int i =0; i< 5 && ros::ok();i++)
+    {
+        ros::spinOnce();
+        r.sleep();
+        ROS_INFO(".");
+        std::stringstream ss;   
+        this->toString(ss);
+        ROS_INFO_STREAM(ss.str());            
+    }
+
+    ROS_INFO("Simulated action server success response, sending event to State Machine");
+    finalizeRequest(openRequests_.front());
+    */
+}
 
 /**
 ******************************************************************************************************************
 * finalizeRequest()
 ******************************************************************************************************************
 */
-    void SignalDetector::finalizeRequest(ISmaccActionClient* client)
+void SignalDetector::finalizeRequest(ISmaccActionClient* client)
+{
+    ROS_INFO("SignalDetector: Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
+    auto it = find(openRequests_.begin(),openRequests_.end(),client);
+
+    if (it != openRequests_.end())
     {
-        ROS_INFO("SignalDetector: Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
-        auto it = find(openRequests_.begin(),openRequests_.end(),client);
-
-        if (it != openRequests_.end())
-        {
-            openRequests_.erase(it);
-        }
-
-        boost::intrusive_ptr< EvActionClientSuccess > actionClientSuccessEvent = new EvActionClientSuccess();
-        actionClientSuccessEvent->client = client;
-
-        ROS_INFO("SignalDetector: Sending successEvent");
-        scheduler_->queue_event(processorHandle_, actionClientSuccessEvent);
+        openRequests_.erase(it);
     }
 
+    boost::intrusive_ptr< EvActionClientSuccess > actionClientSuccessEvent = new EvActionClientSuccess();
+    actionClientSuccessEvent->client = client;
+
+    ROS_INFO("SignalDetector: Sending successEvent");
+    scheduler_->queue_event(processorHandle_, actionClientSuccessEvent);
+}
 
 /**
 ******************************************************************************************************************
 * toString()
 ******************************************************************************************************************
 */
-    void SignalDetector::toString(std::stringstream& ss)
+void SignalDetector::toString(std::stringstream& ss)
+{
+    ss << "--------" << std::endl;
+    ss << "Open requests" << std::endl;
+    for(ISmaccActionClient* smaccActionClient: this->openRequests_)
     {
-        ss << "--------" << std::endl;
-        ss << "Open requests" << std::endl;
-        for(ISmaccActionClient* smaccActionClient: this->openRequests_)
-        {
-            auto state = smaccActionClient->getState().toString();
-            ss << smaccActionClient->getName() << ": " << state << std::endl;
-        }
-        ss << "--------";
+        auto state = smaccActionClient->getState().toString();
+        ss << smaccActionClient->getName() << ": " << state << std::endl;
     }
+    ss << "--------";
+}
+
 /**
 ******************************************************************************************************************
 * poll()
 ******************************************************************************************************************
 */
-    void SignalDetector::poll()
+void SignalDetector::poll()
+{
+    for(ISmaccActionClient* smaccActionClient: this->openRequests_)
     {
-        for(ISmaccActionClient* smaccActionClient: this->openRequests_)
+        auto state = smaccActionClient->getState();
+        if(state.isDone())
         {
-            auto state = smaccActionClient->getState();
-            if(state.isDone())
-            {
-                this->finalizeRequest(smaccActionClient);
-            }
-        }            
-    }
+            this->finalizeRequest(smaccActionClient);
+        }
+    }            
+}
 
 /**
 ******************************************************************************************************************
 * pollingLoop()
 ******************************************************************************************************************
 */
-    void SignalDetector::pollingLoop()
+void SignalDetector::pollingLoop()
+{
+    ros::Rate r(1);
+    while (ros::ok())
     {
-        ros::Rate r(1);
-        while (ros::ok())
-        {
-            this->poll();
-            ros::spinOnce();
-            r.sleep();
-        }
-    }   
+        this->poll();
+        ros::spinOnce();
+        r.sleep();
+    }
+}   
 }

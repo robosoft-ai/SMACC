@@ -11,8 +11,8 @@ struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchrono
 {
 public:
     SmaccStateMachineBase( my_context ctx, SignalDetector* signalDetector)
-    :ISmaccStateMachine(signalDetector),
-    sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >(ctx)
+        :ISmaccStateMachine(signalDetector),
+        sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >(ctx)
     {
     }
     
