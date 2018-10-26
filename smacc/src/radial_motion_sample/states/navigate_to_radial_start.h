@@ -118,9 +118,11 @@ public:
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
         ROS_INFO("move base, goal position reached");
 
-        // we have finished the motion, notify this is the end of the state
+        // notify the parent State to finish via event (the current parent state reacts to this event)
         post_event(EvStateFinished());
-        return forward_event(); // this->terminate();
+        
+        // declare this substate as finished
+        return terminate();
       } 
       else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
       {
@@ -219,9 +221,9 @@ public:
         // try again
         ROS_INFO("Retry reel dispense");
         dispense();
-        
-        // consume
-        return discard_event();
+
+        // finish this substate
+        return terminate();
       }
     } 
     else 

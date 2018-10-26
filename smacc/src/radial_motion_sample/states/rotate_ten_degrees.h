@@ -83,6 +83,7 @@ public:
       i += 1;
     }
 
+    // read from the state machine i "global variable" to know the current orientation
     context<RadialMotionStateMachine>().setData("angle_index", i);
     ROS_INFO("Radial angle index: %d", i);
 
@@ -112,8 +113,12 @@ public:
     if (ev.client == moveBaseClient_) {
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
         ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
+        
+        // notify the parent State to finish via event (the current parent state reacts to this event)
         post_event(EvStateFinished());
-        return this->terminate();
+        
+        // declare this substate as finished
+        return terminate();
       }
       else 
       {

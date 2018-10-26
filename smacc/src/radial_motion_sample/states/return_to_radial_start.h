@@ -78,6 +78,8 @@ public:
       sc::result react( const EvReelInitialized & ev )
       {
           int i;
+          
+          // read from the state machine i "global variable" to know the current orientation
           context<RadialMotionStateMachine >().getData("angle_index", i);
           
           yaw = i * angles::from_degrees(10);
@@ -120,8 +122,12 @@ public:
               if(ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
               {
                 ROS_INFO("move base, goal position reached");
+     
+                // notify the parent State to finish via event (the current parent state reacts to this event)
                 post_event(EvStateFinished());
-                return forward_event();
+                
+                // declare this substate as finished
+                return terminate();
               }
               else if (ev.getResult()==actionlib::SimpleClientGoalState::ABORTED)
               {

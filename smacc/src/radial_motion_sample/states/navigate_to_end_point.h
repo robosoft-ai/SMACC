@@ -70,6 +70,7 @@ public:
     moveBaseClient_ =
         context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
 
+    // read from the state machine i "global variable" to know the current orientation
     int i;
     context<RadialMotionStateMachine>().getData("angle_index", i);
     yaw = i * angles::from_degrees(10);
@@ -106,7 +107,11 @@ public:
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
       {
         ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
+
+        // notify the parent State to finish via event (the current parent state reacts to this event)
         post_event(EvStateFinished());
+        
+        // declare this substate as finished
         return terminate();
       } 
       else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
