@@ -1,41 +1,49 @@
 #pragma once
 
 #include "smacc/smacc_state_machine_base.h"
-
-
+#include "plugins/move_base_to_goal.h"
 using namespace smacc;
 
-struct EvStateFinished : sc::event< EvStateFinished > 
-{
+// this event is launched by any substate to make the "parent state" know that 
+// it must finish and move to the next state. This kind of event may exist in any application:
+// "some of the substates must throw this event so that the parent event is not alive forever"
+struct EvStateFinished : sc::event<EvStateFinished> {};
+
+// this event is launched by any substate to make the "parent state" know that 
+// it must finish and move to the next state. This event is typically launched for
+// this radial motion example by Reel substates. It is used to declare the "order dependency"
+// between the reel and the navigation substates. In this example, the navigation substates happen
+// always after the reel substates. Navigation substates notice that they have to start when they
+// detect this event (that was launched by the reel substate at its end)
+struct EvReelInitialized : sc::event<EvReelInitialized> {};
+
+// ----- STATES FORWARD DECLARATIONS ---
+namespace NavigateToRadialStart {
+struct NavigateToRadialStart;
 };
 
-// --------------------- STATES ---------------------------------------------------
-namespace NavigateToRadialStart
-{
-    struct State;
-};
-
-namespace RotateDegress
-{
-    struct State;
+namespace RotateDegress {
+struct RotateDegress;
 }
 
-namespace NavigateToEndPoint
-{
-    struct State;
+namespace NavigateToEndPoint {
+struct NavigateToEndPoint;
 }
 
-namespace ReturnToRadialStart
-{
-    struct State;
+namespace ReturnToRadialStart {
+struct ReturnToRadialStart;
 }
 
-// --------------------- Radial motion State Machine ---------------------------------------------------
-struct RadialMotionStateMachine: public SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::State>
-{
-    RadialMotionStateMachine( my_context ctx, SignalDetector* signalDetector)
-        :SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::State>(ctx,signalDetector)
-    {
+// ----- Radial Motion State Machine --------------
 
-    }
+// create the RadialMotion State Machine example class that inherits from the 
+// SmaccStateMachineBase. You only have to declare it, the most of the funcionality is inhterited.
+struct RadialMotionStateMachine
+    : public SmaccStateMachineBase<
+          RadialMotionStateMachine,
+          NavigateToRadialStart::NavigateToRadialStart> {
+  RadialMotionStateMachine(my_context ctx, SignalDetector *signalDetector)
+      : SmaccStateMachineBase<RadialMotionStateMachine,
+                              NavigateToRadialStart::NavigateToRadialStart>(
+            ctx, signalDetector) {}
 };

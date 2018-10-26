@@ -8,6 +8,8 @@ namespace smacc
 {
     using namespace actionlib;
 
+    // This class interface shows the basic set of methods that
+    // a SMACC "resource" or "plugin" Action Client has
     class ISmaccActionClient
     {
         public:

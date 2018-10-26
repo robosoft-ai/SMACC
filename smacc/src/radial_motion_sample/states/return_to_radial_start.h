@@ -1,63 +1,92 @@
 #pragma once
 
 #include "radial_motion.h"
+#include <angles/angles.h>
+#include <tf/tf.h>
 
 namespace ReturnToRadialStart
 {
-struct NavSubstates;
-struct ReelSubstates;
-
- struct EvReelInitialized : sc::event< EvReelInitialized >
-    {
-
-    };
+//forward declarations of subcomponents of this state
+struct NavigationOrthogonalLine;
+struct ReelOrthogonalLine;
+struct Navigate;
+struct ReelStartAndDispense;
 
 //--------------------------------------------
-/// State State
-struct State : SmaccState< State, RadialMotionStateMachine,
-                               mpl::list< NavSubstates, ReelSubstates > >
+/// ReturnToRadialStart State
+struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, RadialMotionStateMachine,
+                               mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine > > // <- these are the orthogonal lines of this State
 {
-    typedef sc::transition< EvStateFinished, RotateDegress::State> reactions;
+    // when this state is finished then move to the RotateDegress state
+    typedef sc::transition< EvStateFinished, RotateDegress::RotateDegress> reactions;
 
-
-    public:
-    State(my_context ctx)
-      :SmaccState<State, RadialMotionStateMachine, mpl::list< NavSubstates, ReelSubstates > >(ctx)
+public:
+    // This is the state constructor. This code will be executed when the
+    // workflow enters in this substate (that is according to statechart the moment when this object is created)
+    // after this, its orthogonal lines are created (see orthogonal line classes).
+    ReturnToRadialStart(my_context ctx)
+      :SmaccState<ReturnToRadialStart, RadialMotionStateMachine, mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine > >(ctx) // call the SmaccState base constructor
     {
         ROS_INFO("Entering State: ReturnToRadialStart");
     }
     
-    ~State()
+    // This is the state destructor. This code will be executed when the
+    // workflow exits from this state (that is according to statechart the moment when this object is destroyed)
+    ~ReturnToRadialStart()
     {
         ROS_INFO("Exiting State: ReturnToRadialStart");
     }
 };
 
-  struct MoveBaseSubState;
-  struct NavSubstates: SmaccState<NavSubstates, State::orthogonal< 0 > , MoveBaseSubState>
+//--------------------------------------------
+  struct NavigationOrthogonalLine: SmaccState<NavigationOrthogonalLine, ReturnToRadialStart::orthogonal< 0 > , Navigate>
   {
     public:
-      NavSubstates(my_context ctx)
-          :SmaccState<NavSubstates, State::orthogonal< 0 > , MoveBaseSubState>(ctx)
+    // This is the orthogonal line constructor. This code will be executed when the
+    // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
+    NavigationOrthogonalLine(my_context ctx)
+          :SmaccState<NavigationOrthogonalLine, ReturnToRadialStart::orthogonal< 0 > , Navigate>(ctx) // call the SmaccState base constructor
       {
 
       }
   };
 
-  struct MoveBaseSubState: SmaccState<MoveBaseSubState, NavSubstates >
+  //--------------------------------------------
+  // this is the navigate substate inside the navigation orthogonal line of the ReturnToRadialStart State
+  struct Navigate: SmaccState<Navigate, NavigationOrthogonalLine >
   {
       typedef mpl::list<sc::custom_reaction< EvActionClientSuccess >, 
                         sc::custom_reaction< EvReelInitialized >> reactions;
 
       public:
 
-      MoveBaseSubState(my_context ctx) : SmaccState<MoveBaseSubState, NavSubstates >(ctx)
+      double yaw;
+      
+      // This is the substate constructor. This code will be executed when the
+      // workflow enters in this substate (that is according to statechart the moment when this object is created)
+      Navigate(my_context ctx) 
+        : SmaccState<Navigate, NavigationOrthogonalLine >(ctx) // call the SmaccState base constructor
       {
-          ROS_INFO("Entering MoveBaseSubState");
+          ROS_INFO("Entering Navigation");
+
+          // this substate will need access to the "MoveBase" resource or plugin. In this line
+          // you get the reference to this resource.
           moveBaseClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");   
       }
 
+      // when the reel substate is finished we will react starting the motion
       sc::result react( const EvReelInitialized & ev )
+      {
+          int i;
+          context<RadialMotionStateMachine >().getData("angle_index", i);
+          
+          yaw = i * angles::from_degrees(10);
+
+          returnToRadialStart();
+      }
+
+      // auxiliar function that defines the motion that is requested to the move_base action server
+      void returnToRadialStart()
       {
           smacc::SmaccMoveBaseActionClient::Goal goal;
           geometry_msgs::PoseStamped radialStartPose;
@@ -67,15 +96,12 @@ struct State : SmaccState< State, RadialMotionStateMachine,
           goal.target_pose=radialStartPose;
           goal.target_pose.header.stamp=ros::Time::now();
 
-          int i;
-          context<RadialMotionStateMachine >().getData("angle_index", i);
-          
-          double yaw = i * 10* 180.0/M_PI;
           goal.target_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0,0, yaw);
-
           moveBaseClient_->sendGoal(goal);
       }
 
+      // this is the callback when the navigate action of this state is finished
+      // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
       sc::result react( const EvActionClientSuccess & ev )
       {
           ROS_INFO("Received event to movebase: %s", ev.getResult().toString().c_str());
@@ -89,52 +115,82 @@ struct State : SmaccState< State, RadialMotionStateMachine,
               //exit(0);
           } 
 
-          if (ev.client == moveBaseClient_ && ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
+          if (ev.client == moveBaseClient_)
           {
-              ROS_INFO("move base, goal position reached");
-              this->post_event(EvStateFinished());
-              return this->terminate();
+              if(ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
+              {
+                ROS_INFO("move base, goal position reached");
+                post_event(EvStateFinished());
+                return forward_event();
+              }
+              else if (ev.getResult()==actionlib::SimpleClientGoalState::ABORTED)
+              {
+                // repeat the navigate action request to the move base node if we get ABORT as response
+                // It may work if try again. Move base sometime rejects the request because it is busy.
+                returnToRadialStart();
+
+                // this event was for us. We have used it without moving to any other state. Do not let others consume it.
+                return discard_event();
+              }
           }
           else
           {
+              // the action client event success is not for this substate. Let others process this event.
               return forward_event();
           }
       }
 
-      ~MoveBaseSubState()
+      // This is the substate destructor. This code will be executed when the
+      // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
+      ~Navigate()
       {
           ROS_INFO("Exiting move goal Action Client");
       }
 
       private:
-          smacc::SmaccMoveBaseActionClient* moveBaseClient_;
+        // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
+        // this resource can be used from any method in this state
+        smacc::SmaccMoveBaseActionClient* moveBaseClient_;
   };
 
 //------------------------------------------------------------------
 // orthogonal line 1
-struct ReelSubState;
 
-struct ReelSubstates: SmaccState<ReelSubstates, State::orthogonal< 1 >, ReelSubState >
+
+struct ReelOrthogonalLine: SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 >, ReelStartAndDispense >
 {
   public:
-    ReelSubstates(my_context ctx)
-      :SmaccState<ReelSubstates, State::orthogonal< 1 > , ReelSubState>(ctx)
+    // This is the orthogonal line constructor. This code will be executed when the
+    // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
+    ReelOrthogonalLine(my_context ctx)
+      :SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 > , ReelStartAndDispense>(ctx) // call the SmaccState base constructor
     {
     }
 };
 
- struct ReelSubState: SmaccState<ReelSubState, ReelSubstates >
+//--------------------------------------------
+// this is the reel substate inside the reel orthogonal line of the ReturnToRadialStart State
+ struct ReelStartAndDispense: SmaccState<ReelStartAndDispense, ReelOrthogonalLine >
     {
         typedef sc::custom_reaction< EvActionClientSuccess > reactions;
 
         public:
-            ReelSubState(my_context ctx)
-                : SmaccState<ReelSubState, ReelSubstates >(ctx)
+            // This is the substate constructor. This code will be executed when the
+            // workflow enters in this substate (that is according to statechart the moment when this object is created)
+            ReelStartAndDispense(my_context ctx)
+                : SmaccState<ReelStartAndDispense, ReelOrthogonalLine >(ctx) // call the SmaccState base constructor
             {
-                ROS_INFO("Entering ReelSubState");
+                ROS_INFO("Entering ReelStartAndDispense");
+                // this substate will need access to the "Reel" resource or plugin. In this line
+                // you get the reference to this resource.
                 reelActionClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccReelActionClient>("non_rt_helper");
                 
-                //dispense
+                retract();
+            }
+
+            void retract()
+            {
+                // use the reel resource to request retract (request to the non_rt_helper)
                 smacc::SmaccReelActionClient::Goal goal;
                 goal.dispense_mode= smacc::SmaccReelActionClient::Goal::RETRACT;
                 reelActionClient_->sendGoal(goal);
@@ -142,26 +198,42 @@ struct ReelSubstates: SmaccState<ReelSubstates, State::orthogonal< 1 >, ReelSubS
 
             sc::result react( const EvActionClientSuccess &  ev)
             {
-                ROS_INFO("Reel substate: Received event for reel client");
-
-                if (ev.client == reelActionClient_)
+                // if the reel request is finished and success, then notify the event to the move base substate
+                // and finish this substate
+                if (ev.client == reelActionClient_ && ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED)
                 {
                     ROS_INFO("Received event for reel client");
-                    this->post_event(EvReelInitialized());
-                    return this->terminate();
+                    // notify the navigate substate that we finished
+                    post_event(EvReelInitialized());
+
+                    // declare the reel substate as finished
+                    return terminate();
+                }
+                else if (ev.client == reelActionClient_ && ev.getResult() == actionlib::SimpleClientGoalState::ABORTED)
+                {
+                    // try again
+                    ROS_INFO("Retry reel retract");
+                    retract();
+
+                    return discard_event();
                 }
                 else
                 {
+                    // the action client event success is not for this substate. Let others process this event.
+                    ROS_INFO("navigate substate lets other process the EvActionClientSuccessEv");
                     return forward_event();
                 }
             }
 
-            ~ReelSubState()
+            // This is the substate destructor. This code will be executed when the
+            // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
+            ~ReelStartAndDispense()
             {
                 ROS_INFO("Exiting Reel_Action Client");
             }
 
         private:
+            // keeps the reference to the reel resorce or plugin (to connect to the non_rt_helper)
             smacc::SmaccReelActionClient* reelActionClient_;
     };
 }
