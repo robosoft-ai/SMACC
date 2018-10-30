@@ -121,6 +121,11 @@ namespace smacc
 
       actionlib::SimpleClientGoalState getResult() const;
   };
+
+  struct EvActionFeedback : sc::event< EvActionFeedback > 
+  {
+      smacc::ISmaccActionClient* client;
+  };
 }
 
 

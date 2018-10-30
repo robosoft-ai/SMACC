@@ -14,28 +14,37 @@ class SignalDetector
         void initialize(ISmaccStateMachine* stateMachine);
 
         void setProcessorHandle(SmaccScheduler::processor_handle processorHandle);
-
-        void registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo);
             
+        // runs the polling loop into a thread
         void runThread();
 
+        // waits the polling thread to end
         void join();
-
-        void simulateResponses();
         
-        void poll();
+        void pollOnce();
 
+        // prints the current state of the signal detector into a string
         void toString(std::stringstream& ss);
 
         void pollingLoop();
 
-        void finalizeRequest(ISmaccActionClient*);
-    
     private:
+
+        void finalizeRequest(ISmaccActionClient* resource);
+    
+        void notifyFeedback(ISmaccActionClient* resource);
+
+        void registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo);
+
         SmaccScheduler* scheduler_;
         SmaccScheduler::processor_handle processorHandle_;
-        std::vector<ISmaccActionClient*> openRequests_;
+
         boost::thread signalDetectorThread_ ;
         ISmaccStateMachine* smaccStateMachine_;
+
+        // TODO: this should be thread safe since it may be updated from others threads
+        std::vector<ISmaccActionClient*> openRequests_;
+
+        friend class ISmaccStateMachine;
 };
 }

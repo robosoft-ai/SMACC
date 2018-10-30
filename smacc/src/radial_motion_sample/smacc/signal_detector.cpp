@@ -65,45 +65,12 @@ void SignalDetector::join()
     signalDetectorThread_.join();
 }
 
-/**
-******************************************************************************************************************
-* simulateResponses()
-******************************************************************************************************************
-*/
-void SignalDetector::simulateResponses()
+void SignalDetector::notifyFeedback(ISmaccActionClient* client)
 {
-    /*
-    //simualte processing
-    ROS_INFO("Simulating action server execution ... 5 secs");
-    
-    ros::Rate r(1);
-    for (int i =0; i< 5 && ros::ok();i++)
-    {
-        ros::spinOnce();
-        r.sleep();
-        ROS_INFO(".");
-        std::stringstream ss;   
-        this->toString(ss);
-        ROS_INFO_STREAM(ss.str());            
-    }
+    boost::intrusive_ptr< EvActionFeedback > actionFeedbackEvent = new EvActionFeedback();
+    actionFeedbackEvent->client = client;
 
-    ROS_INFO("Simulated action server success response, sending event to State Machine");
-    //finalizeRequest(openRequests_.back());
-    openRequests_.back()->cancelGoal();
-
-    for (int i =0; i< 5 && ros::ok();i++)
-    {
-        ros::spinOnce();
-        r.sleep();
-        ROS_INFO(".");
-        std::stringstream ss;   
-        this->toString(ss);
-        ROS_INFO_STREAM(ss.str());            
-    }
-
-    ROS_INFO("Simulated action server success response, sending event to State Machine");
-    finalizeRequest(openRequests_.front());
-    */
+    scheduler_->queue_event(processorHandle_, actionFeedbackEvent);
 }
 
 /**
@@ -121,11 +88,11 @@ void SignalDetector::finalizeRequest(ISmaccActionClient* client)
         openRequests_.erase(it);
     }
 
-    boost::intrusive_ptr< EvActionResult > actionClientSuccessEvent = new EvActionResult();
-    actionClientSuccessEvent->client = client;
+    boost::intrusive_ptr< EvActionResult > actionClientResultEvent = new EvActionResult();
+    actionClientResultEvent->client = client;
 
     ROS_INFO("SignalDetector: Sending successEvent");
-    scheduler_->queue_event(processorHandle_, actionClientSuccessEvent);
+    scheduler_->queue_event(processorHandle_, actionClientResultEvent);
 }
 
 /**
@@ -150,11 +117,17 @@ void SignalDetector::toString(std::stringstream& ss)
 * poll()
 ******************************************************************************************************************
 */
-void SignalDetector::poll()
+void SignalDetector::pollOnce()
 {
     for(ISmaccActionClient* smaccActionClient: this->openRequests_)
     {
-        smaccActionClient->get
+        // check feedback messages
+        while (smaccActionClient->hasFeedback())
+        {
+            this->notifyFeedback(smaccActionClient);
+        }
+
+        // check result
         auto state = smaccActionClient->getState();
         if(state.isDone())
         {
@@ -173,7 +146,7 @@ void SignalDetector::pollingLoop()
     ros::Rate r(1);
     while (ros::ok())
     {
-        this->poll();
+        this->pollOnce();
         ros::spinOnce();
         r.sleep();
     }
