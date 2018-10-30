@@ -181,15 +181,23 @@ target_link_libraries(PingPongSample
 
 #------------------------------------------------------------
 include_directories(src/radial_motion_sample)
-add_executable(RadialMotionSample 
-src/radial_motion_sample/radial_motion.cpp
+
+# generic smacc library
+add_library(${PROJECT_NAME}2 SHARED 
 src/radial_motion_sample/smacc/common.cpp
 src/radial_motion_sample/smacc/signal_detector.cpp
+src/radial_motion_sample/smacc/smacc_action_client.cpp
+src/radial_motion_sample/smacc/smacc_state_machine.cpp
+)
+
+add_executable(RadialMotionSample 
+src/radial_motion_sample/radial_motion.cpp
 src/radial_motion_sample/plugins/move_base_to_goal.cpp
 src/radial_motion_sample/plugins/reel.cpp)
 
 
 target_link_libraries(RadialMotionSample
+   ${PROJECT_NAME}2
    ${catkin_LIBRARIES}
    ${boost_LIBRARIES})
 

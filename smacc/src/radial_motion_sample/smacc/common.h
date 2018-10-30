@@ -115,7 +115,7 @@ namespace smacc
   class ISmaccActionClient;
   class SignalDetector;
 
-  struct EvActionClientSuccess : sc::event< EvActionClientSuccess > 
+  struct EvActionResult : sc::event< EvActionResult > 
   {
       smacc::ISmaccActionClient* client;
 

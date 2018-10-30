@@ -1,5 +1,5 @@
 #include "smacc/signal_detector.h"
-#include "plugins/smacc_action_client_base.h"
+#include "smacc/smacc_action_client_base.h"
 
 namespace smacc
 {
@@ -121,7 +121,7 @@ void SignalDetector::finalizeRequest(ISmaccActionClient* client)
         openRequests_.erase(it);
     }
 
-    boost::intrusive_ptr< EvActionClientSuccess > actionClientSuccessEvent = new EvActionClientSuccess();
+    boost::intrusive_ptr< EvActionResult > actionClientSuccessEvent = new EvActionResult();
     actionClientSuccessEvent->client = client;
 
     ROS_INFO("SignalDetector: Sending successEvent");
@@ -154,6 +154,7 @@ void SignalDetector::poll()
 {
     for(ISmaccActionClient* smaccActionClient: this->openRequests_)
     {
+        smaccActionClient->get
         auto state = smaccActionClient->getState();
         if(state.isDone())
         {

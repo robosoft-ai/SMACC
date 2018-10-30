@@ -1,6 +1,6 @@
 #pragma once
 
-#include "plugins/smacc_action_client_base.h"
+#include "smacc/smacc_action_client_base.h"
 #include <non_rt_helper/DispenseModeAction.h>
 
 namespace smacc

@@ -70,7 +70,7 @@ struct NavigationOrthogonalLine
 //--------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the NavigateToRadialStart State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
-  typedef mpl::list<sc::custom_reaction<EvActionClientSuccess>,
+  typedef mpl::list<sc::custom_reaction<EvActionResult>,
                     sc::custom_reaction<EvReelInitialized>> reactions;
 
 public:
@@ -112,17 +112,18 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionClientSuccess &ev) {
+  sc::result react(const EvActionResult &ev) {
 
     if (ev.client == moveBaseClient_) {
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
-        ROS_INFO("move base, goal position reached");
+        ROS_INFO("move base, goal position reached.");
 
         // notify the parent State to finish via event (the current parent state reacts to this event)
         post_event(EvStateFinished());
         
         // declare this substate as finished
-        return terminate();
+        //return terminate();
+        return discard_event();
       } 
       else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
       {
@@ -137,7 +138,7 @@ public:
     else 
     {
       // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionClientSuccessEv");
+      ROS_INFO("navigate substate lets other process the EvActionResultEv");
       return forward_event();
     }
   }
@@ -180,7 +181,7 @@ public:
 //--------------------------------------------------
 struct ReelStartAndDispense
     : SmaccState<ReelStartAndDispense, ReelOrthogonalLine> {
-  typedef sc::custom_reaction<EvActionClientSuccess> reactions;
+  typedef sc::custom_reaction<EvActionResult> reactions;
 
 public:
 
@@ -209,7 +210,7 @@ public:
     reelActionClient_->sendGoal(goal);
   }
 
-  sc::result react(const EvActionClientSuccess &ev) {
+  sc::result react(const EvActionResult &ev) {
 
     // if the reel request is finished and success, then notify the event to the move base substate
     // and finish this substate
@@ -236,7 +237,7 @@ public:
     else 
     {
       // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("reel substate lets other process the EvActionClientSuccessEv");
+      ROS_INFO("reel substate lets other process the EvActionResultEv");
       return forward_event();
     }
   }

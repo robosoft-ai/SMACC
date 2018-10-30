@@ -54,10 +54,11 @@ public:
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
-  typedef mpl::list<sc::custom_reaction<EvActionClientSuccess>,
+  typedef mpl::list<sc::custom_reaction<EvActionResult>,
                     sc::custom_reaction<EvReelInitialized>> reactions;
 
 public:
+  // the angle of the current radial motion
   double yaw;
 
   // This is the substate constructor. This code will be executed when the
@@ -110,7 +111,7 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionClientSuccess &ev) {
+  sc::result react(const EvActionResult &ev) {
     if (ev.client == moveBaseClient_) {
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
         ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
@@ -119,7 +120,8 @@ public:
         post_event(EvStateFinished());
         
         // declare this substate as finished
-        return terminate();
+        return discard_event();
+        //return terminate();
       }
       else 
       {
@@ -134,7 +136,7 @@ public:
     else 
     {
       // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionClientSuccessEv");
+      ROS_INFO("navigate substate lets other process the EvActionResultEv");
       return forward_event();
     }
   }
@@ -169,7 +171,7 @@ public:
 //------------------------------------------------------------------
 // this is the reel substate inside the reel orthogonal line of the RotateDegreess State
 struct ReelDispense : SmaccState<ReelDispense, ReelOrthogonalLine> {
-  typedef sc::custom_reaction<EvActionClientSuccess> reactions;
+  typedef sc::custom_reaction<EvActionResult> reactions;
 
 public:
   // This is the substate constructor. This code will be executed when the
@@ -191,7 +193,7 @@ public:
     reelActionClient_->sendGoal(goal);
   }
 
-  sc::result react(const EvActionClientSuccess &ev) {
+  sc::result react(const EvActionResult &ev) {
     ROS_INFO("Reel substate: Received event for reel client");
 
     // if the reel request is finished and success, then notify the event to the move base substate

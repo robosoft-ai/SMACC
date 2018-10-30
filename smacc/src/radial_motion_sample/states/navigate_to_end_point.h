@@ -55,10 +55,13 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
-  typedef mpl::list<sc::custom_reaction<EvActionClientSuccess>> reactions;
+  typedef mpl::list<sc::custom_reaction<EvActionResult>> reactions;
 
 public:
+  // the angle of the current radial motion
   double yaw;
+
+  // distance parameter of the motion
   double dist;
 
   // This is the substate constructor. This code will be executed when the
@@ -79,6 +82,8 @@ public:
     
     // get the angle according to the angle index
     yaw = i * angles::from_degrees(10);
+
+    // set the radial distance parameter statically, we also could have used some ros parameter
     dist = 3.5;
 
     goToEndPoint();
@@ -106,7 +111,7 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionClientSuccess &ev) 
+  sc::result react(const EvActionResult &ev) 
   {
     if (ev.client == moveBaseClient_) {
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
@@ -117,7 +122,8 @@ public:
         post_event(EvStateFinished());
         
         // declare this substate as finished
-        return terminate();
+        //return terminate();
+        return discard_event();
       } 
       else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
       {
@@ -132,7 +138,7 @@ public:
     else 
     {
       // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionClientSuccessEv");
+      ROS_INFO("navigate substate lets other process the EvActionResultEv");
       return forward_event();
     }
   }

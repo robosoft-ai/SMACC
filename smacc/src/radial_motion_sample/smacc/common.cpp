@@ -1,8 +1,9 @@
 #include "smacc/common.h"
-#include "plugins/smacc_action_client_base.h"
+#include "smacc/smacc_action_client_base.h"
+
 namespace smacc
 {
-    actionlib::SimpleClientGoalState EvActionClientSuccess::getResult() const
+    actionlib::SimpleClientGoalState EvActionResult::getResult() const
     {
         return client->getState();
     }

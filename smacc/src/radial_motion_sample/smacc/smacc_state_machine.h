@@ -2,7 +2,7 @@
 
 #include "smacc/common.h"
 #include "smacc/signal_detector.h"
-#include "plugins/smacc_action_client_base.h"
+#include "smacc/smacc_action_client.h"
 
 #include <boost/core/demangle.hpp>
 #include <boost/any.hpp>
@@ -10,89 +10,80 @@
 
 namespace smacc
 {
-struct ISmaccStateMachine
+// this class describes the concept of Smacc State Machine in an abastract way.
+// The SmaccStateMachineBase inherits from this state machine and from 
+// statechart::StateMachine<> (via multiple inheritance)
+class ISmaccStateMachine
 {
-    public:
-        ISmaccStateMachine( SignalDetector* signalDetector)
-        {
-            signalDetector_ = signalDetector;
-            ROS_INFO("Creating State Machine Base");
-            signalDetector_->initialize(this);
-        } 
+public:
+    ISmaccStateMachine( SignalDetector* signalDetector);
 
-        virtual ~ISmaccStateMachine( )
+    virtual ~ISmaccStateMachine();
+
+    /// used by the actionclients when a new send goal is launched
+    void registerActionClientRequest(ISmaccActionClient* client);
+
+    template <typename ActionLibPlugin>
+    ActionLibPlugin* requiresActionClient(std::string action_namespace)
+    {
+        std::string pluginkey = boost::core::demangle(typeid(ActionLibPlugin).name());
+        ActionLibPlugin* ret;
+
+        auto it = plugins_.find(pluginkey);
+
+        if( it == plugins_.end())
         {
-            ROS_INFO("Finishing State Machine");
+            ROS_INFO("%s resource is required. Creating a new instance.", pluginkey.c_str());
+
+            ret = new ActionLibPlugin(action_namespace);
+            ret->setStateMachine(this);
+            plugins_ [pluginkey] = static_cast<smacc::ISmaccActionClient*>(ret);
+            ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
+
         }
-
-        template <typename ActionLibPlugin>
-        ActionLibPlugin* requiresActionClient(std::string action_namespace)
+        else
         {
-            std::string pluginkey = boost::core::demangle(typeid(ActionLibPlugin).name());
-            ActionLibPlugin* ret;
-
-            auto it = plugins_.find(pluginkey);
-
-            if( it == plugins_.end())
-            {
-                ROS_INFO("%s resource is required. Creating a new instance.", pluginkey.c_str());
-
-                ret = new ActionLibPlugin(action_namespace);
-                ret->setStateMachine(this);
-                plugins_ [pluginkey] = static_cast<smacc::ISmaccActionClient*>(ret);
-                ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
-
-            }
-            else
-            {
-                ROS_INFO("%s resource is required. Found resource in cache.", pluginkey.c_str());
-                ret = dynamic_cast<ActionLibPlugin*>(it->second);
-            }
-        
-            return ret;
+            ROS_INFO("%s resource is required. Found resource in cache.", pluginkey.c_str());
+            ret = dynamic_cast<ActionLibPlugin*>(it->second);
         }
+    
+        return ret;
+    }
 
-        template <typename T>
-        bool getData(std::string name, T& ret)
+    template <typename T>
+    bool getData(std::string name, T& ret)
+    {
+        if(!globalData_.count(name))
         {
-            if(!globalData_.count(name))
+            return false;
+        }
+        else
+        {
+            try
+            {
+                boost::any v = globalData_[name];
+                ret = boost::any_cast<T>(v);
+                return true;    
+            }
+            catch(boost::bad_any_cast& ex)
             {
                 return false;
             }
-            else
-            {
-                try
-                {
-                    boost::any v = globalData_[name];
-                    ret = boost::any_cast<T>(v);
-                    return true;    
-                }
-                catch(boost::bad_any_cast& ex)
-                {
-                    return false;
-                }
-            }
         }
-  
-        template <typename T>
-        void setData(std::string name, T value)
-        {
-            globalData_[name] = value;
-        }
+    }
 
-        /// used by the actionclients when a new send goal is launched
-        void registerActionClientRequest(ISmaccActionClient* client)
-        {
-            ROS_INFO("Registering action client request: %s", client->getName().c_str());  
-            signalDetector_->registerActionClientRequest(client); 
-        }
+    template <typename T>
+    void setData(std::string name, T value)
+    {
+        globalData_[name] = value;
+    }
 
-    private:
-        std::map<std::string, smacc::ISmaccActionClient*> plugins_;
+private:
+    std::map<std::string, smacc::ISmaccActionClient*> plugins_;
 
-        std::map<std::string, boost::any> globalData_;
+    std::map<std::string, boost::any> globalData_;
 
-        //event to notify to the signaldetection thread that a request has been created
-        SignalDetector* signalDetector_;
+    //event to notify to the signaldetection thread that a request has been created
+    SignalDetector* signalDetector_;
 };
 }
