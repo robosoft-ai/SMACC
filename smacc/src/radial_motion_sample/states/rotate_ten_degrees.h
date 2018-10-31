@@ -189,7 +189,7 @@ public:
 
     // use the reel resource to request dispense (request to the non_rt_helper)
     smacc::SmaccReelActionClient::Goal goal;
-    goal.dispense_mode = smacc::SmaccReelActionClient::Goal::DISPENSE;
+    goal.command = smacc::SmaccReelActionClient::Goal::DISPENSE;
     reelActionClient_->sendGoal(goal);
   }
 

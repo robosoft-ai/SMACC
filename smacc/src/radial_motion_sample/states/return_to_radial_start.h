@@ -196,7 +196,7 @@ public:
     {
         // use the reel resource to request retract (request to the non_rt_helper)
         smacc::SmaccReelActionClient::Goal goal;
-        goal.dispense_mode= smacc::SmaccReelActionClient::Goal::RETRACT;
+        goal.command= smacc::SmaccReelActionClient::Goal::RETRACT;
         reelActionClient_->sendGoal(goal);
     }
 
