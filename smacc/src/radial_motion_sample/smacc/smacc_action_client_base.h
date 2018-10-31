@@ -5,7 +5,9 @@
 
 namespace smacc
 {
-// Smacc Action Clients (AKA resources or plugins) can inherit from this object (that works as a template .h library)
+// Smacc Action Clients (AKA resources or plugins) can inherit from this object 
+// inhteriting from this class works as a template .h library. That is why the code
+// implementation is located here.
 template <typename ActionType>
 class SmaccActionClientBase: public ISmaccActionClient
 {
@@ -15,6 +17,9 @@ class SmaccActionClientBase: public ISmaccActionClient
     ACTION_DEFINITION(ActionType);
     typedef actionlib::SimpleActionClient<ActionType> ActionClient ;
     typedef actionlib::SimpleActionClient<ActionType> GoalHandle;
+    typedef typename ActionClient::SimpleDoneCallback SimpleDoneCallback ;
+    typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
+    typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
 
     SmaccActionClientBase(std::string action_client_namespace, int feedback_queue_size=10)
         :ISmaccActionClient(action_client_namespace),
@@ -25,12 +30,6 @@ class SmaccActionClientBase: public ISmaccActionClient
 
     virtual ~SmaccActionClientBase()
     {
-    }
-
-    void waitForActionServer()
-    {
-        //ROS_INFO("waiting for action server: %s", this->getName().c_str());
-        //client_.waitForServer();
     }
 
     virtual std::string getName() const =0;
@@ -46,37 +45,14 @@ class SmaccActionClientBase: public ISmaccActionClient
         return client_.getState();
     }
 
-
-    void onTransition(GoalHandle goalRequest)
-    {
-    }
-
     virtual bool hasFeedback() override
     {
         return !feedback_queue_.empty();
     }
 
-    bool popFeedback(Feedback& feedback_msg)
+    Feedback getFeedbackMessage(const EvActionFeedback& ev)
     {
-        if(feedback_queue_.empty())
-        {
-            feedback_msg = feedback_queue_.front();
-            feedback_queue_.pop_front();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    void onFeedback(GoalHandle goalRequest, const FeedbackConstPtr & feedback)
-    {
-        feedback_queue_.push_back(*feedback);
-        if(feedback_queue_.size()>this->feedback_queue_size_)
-        {
-            feedback_queue_.pop_front();
-        }
+        return boost::any_cast<Feedback>(ev.feedbackMessage);
     }
 
     void sendGoal(Goal& goal)
@@ -85,19 +61,56 @@ class SmaccActionClientBase: public ISmaccActionClient
         
         if(!client_.isServerConnected())
         {
-            ROS_INFO("%s [at %s]: not connected with actionserver, waiting ..." , this->getName().c_str(), this->getNamespace().c_str());
+            ROS_INFO("%s [at %s]: not connected with actionserver, waiting ..." , getName().c_str(), getNamespace().c_str());
             client_.waitForServer();
         }
 
-        ROS_INFO_STREAM(this->getName()<< ": Goal Value: " << std::endl << goal);
-        client_.sendGoal(goal);
+        ROS_INFO_STREAM(getName()<< ": Goal Value: " << std::endl << goal);
+
+        SimpleDoneCallback done_cb ;
+        SimpleActiveCallback active_cb;
+        SimpleFeedbackCallback feedback_cb = boost::bind(&SmaccActionClientBase<ActionType>::onFeedback,this,_1);
+
+        client_.sendGoal(goal,done_cb,active_cb,feedback_cb);
 
         stateMachine_->registerActionClientRequest(this);
     }
 
-    protected:
-        ActionClient client_;
-        int feedback_queue_size_;
-        std::queue<Feedback> feedback_queue_;
+protected:
+    ActionClient client_;
+    int feedback_queue_size_;
+    std::list<Feedback> feedback_queue_;
+
+    void onFeedback(const FeedbackConstPtr & feedback)
+    {
+        Feedback copy = *feedback;
+        feedback_queue_.push_back(copy);
+        ROS_DEBUG("FEEDBACK MESSAGE RECEIVED, Queue Size: %ld", feedback_queue_.size());
+        if(feedback_queue_.size()> feedback_queue_size_)
+        {
+            feedback_queue_.pop_front();
+        }
+    }
+
+    // here it is assigned one feedback message to one smacc event
+    virtual bool popFeedback(EvActionFeedback& ev) override
+    {
+        if(!feedback_queue_.empty())
+        {
+            ROS_DEBUG("[%s]Popping FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
+            Feedback feedback_msg = feedback_queue_.front();
+            feedback_queue_.pop_front();
+            ROS_DEBUG("[%s]popped FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
+            ev.feedbackMessage = feedback_msg;
+        
+            return true;
+        }
+        else
+        {
+            return false;
+        };
+    }
+
+    friend class SignalDetector;
 };
 }

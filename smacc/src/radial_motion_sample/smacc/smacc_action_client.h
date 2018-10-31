@@ -14,6 +14,8 @@ using namespace actionlib;
 class ISmaccActionClient
 {
 public:
+    // the destructor. This is called when the object is not 
+    // referenced anymore by its owner
     virtual ~ISmaccActionClient();
 
     // assings the owner of this resource to the given state machine parameter object 
@@ -22,22 +24,22 @@ public:
     // returns a custom identifier defined by the specific plugin implementation
     virtual std::string getName() const=0;
 
-    // gets the ros path of the action
-    inline std::string getNamespace() const
-    {
-        return name_;
-    }
-
     // return the current state of the actionclient
     virtual SimpleClientGoalState getState()=0;
 
     // cancels the latest goal request
     virtual void cancelGoal() = 0;
 
-    // checks if there is any feedback message on the action client feedback queue    
-    virtual bool hasFeedback() = 0 ;
+    // gets the ros path of the action
+    inline std::string getNamespace() const
+    {
+        return name_;
+    }
 
 protected:
+    // used internally by the Signal detector
+    virtual bool popFeedback(EvActionFeedback& actionFeedbackEvent)=0;
+
     // the ros path where the action is located
     std::string name_;
 

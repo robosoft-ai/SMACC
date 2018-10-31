@@ -171,8 +171,8 @@ public:
 //------------------------------------------------------------------
 // this is the reel substate inside the reel orthogonal line of the RotateDegreess State
 struct ReelDispense : SmaccState<ReelDispense, ReelOrthogonalLine> {
-  typedef sc::custom_reaction<EvActionResult> reactions;
-
+  typedef boost::mpl::list< sc::custom_reaction< EvActionFeedback>,
+                            sc::custom_reaction< EvActionResult >> reactions;
 public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -188,31 +188,76 @@ public:
                                 "non_rt_helper");
 
     // use the reel resource to request dispense (request to the non_rt_helper)
+    dispenseMotion();
+  }
+
+  // this is the "main method of this state" that calls to the action server
+  // is is called form the constructor (at the entrance to this substate) and
+  // also from the retry attempt (when we get some abort response)
+  void dispenseMotion()
+  {
     smacc::SmaccReelActionClient::Goal goal;
     goal.command = smacc::SmaccReelActionClient::Goal::DISPENSE;
     reelActionClient_->sendGoal(goal);
   }
 
+  // subscribe to resource feedback event
+  sc::result react( const EvActionFeedback &  ev)
+  {
+      // if the reel request is finished and success, then notify the event to the move base substate
+      // and finish this substate
+      if (ev.client == reelActionClient_) 
+      {
+        ROS_INFO("Received event for reel client");
+        smacc::SmaccReelActionClient::Feedback feedback = reelActionClient_->getFeedbackMessage(ev);
+        if(feedback.dispensing_state == smacc::SmaccReelActionClient::Goal::DISPENSE)
+        {          
+          ROS_INFO("Correct dispense mode. Let's notify others we are ready");
+          // notify the navigate substate that we finished
+          post_event(EvReelInitialized());
+
+          // declare the reel substate as finished
+          //return terminate();
+          return forward_event();
+        }
+        else
+        {
+          ROS_INFO("Received feedback message from reel but, the dispensing state is not the expected. skipping");
+          return forward_event();
+        }
+      }
+      else
+      {
+          // the action client event success is not for this substate. Let others process this event.
+          ROS_INFO("this feedback event is not for this resource");
+          return forward_event();
+      }
+  }
+
+  // subscribe to resource action result event
   sc::result react(const EvActionResult &ev) {
-    ROS_INFO("Reel substate: Received event for reel client");
-
-    // if the reel request is finished and success, then notify the event to the move base substate
-    // and finish this substate
-    if (ev.client == reelActionClient_ && ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
-    {
-      ROS_INFO("Received event for reel client");
-
-      // notify the navigate substate that we finished
-      post_event(EvReelInitialized());
-
-      // consume event
-      return discard_event();
-    } 
-    else 
-    {
-      // the action client event success is not for this substate. Let others process this event.
-      return forward_event();
-    }
+        ROS_INFO("Reel substate: Received event for reel client");
+        if (ev.client == reelActionClient_)
+        {
+            if(ev.getResult() == actionlib::SimpleClientGoalState::ABORTED)
+            {
+                // retry again
+                ROS_INFO("Retry reel retract");
+                dispenseMotion();
+                return discard_event();
+            }
+            else
+            {
+                ROS_INFO("Not handled result");
+                return forward_event();
+            }
+        }
+        else
+        {
+            // the action client event success is not for this substate. Let others process this event.
+            ROS_INFO("navigate substate lets other process the EvActionResultEv");
+            return forward_event();
+        }
   }
 
   // This is the substate destructor. This code will be executed when the

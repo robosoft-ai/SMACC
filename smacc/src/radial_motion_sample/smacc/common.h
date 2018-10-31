@@ -20,6 +20,7 @@
 
 #include <boost/statechart/termination.hpp>
 #include <boost/statechart/transition.hpp>
+#include <boost/any.hpp>
 
 namespace sc = boost::statechart;
 
@@ -125,6 +126,7 @@ namespace smacc
   struct EvActionFeedback : sc::event< EvActionFeedback > 
   {
       smacc::ISmaccActionClient* client;
+      boost::any feedbackMessage;
   };
 }
 
