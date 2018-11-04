@@ -30,6 +30,9 @@ public:
     // cancels the latest goal request
     virtual void cancelGoal() = 0;
 
+    // checks if there is some feedback message waiting
+    virtual bool hasFeedback() = 0;
+
     // gets the ros path of the action
     inline std::string getNamespace() const
     {
@@ -48,5 +51,7 @@ protected:
     
     // simple factory pattern
     ISmaccActionClient(std::string action_client_namespace);
+
+    friend class SignalDetector;
 };
 }

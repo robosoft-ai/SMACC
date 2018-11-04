@@ -9,13 +9,15 @@ namespace RotateDegress
 {
 //forward declarations of subcomponents of this state
 struct NavigationOrthogonalLine;
+struct ToolOrthogonalLine;
 struct Navigate;
 struct ReelDispense;
 struct ReelOrthogonalLine;
+struct ToolSubstate;
 
 /// State NavigateToRadialStart
 struct RotateDegress
-    : SmaccState<RotateDegress, RadialMotionStateMachine, mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>> // <- these are the orthogonal lines of this State 
+    : SmaccState<RotateDegress, RadialMotionStateMachine, mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State 
 {
   // when this state is finished then move to the NavigateToEndPoint state
   typedef sc::transition<EvStateFinished, NavigateToEndPoint::NavigateToEndPoint> reactions;
@@ -26,7 +28,7 @@ public:
   // after this, its orthogonal lines are created (see orthogonal line classes).
   RotateDegress(my_context ctx)
       : SmaccState<RotateDegress, RadialMotionStateMachine,
-                   mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>>(ctx) // call the SmaccState base constructor
+                   mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering in ROTATE TEN DEGREES STATE");
   }
@@ -270,5 +272,36 @@ public:
 private:
     // keeps the reference to the reel resorce or plugin (to connect to the non_rt_helper)
     smacc::SmaccReelActionClient *reelActionClient_;
+};
+
+//---------------------------------------------------------------------------------------------------------
+// orthogonal line 2
+struct ToolOrthogonalLine
+    : SmaccState<ToolOrthogonalLine, RotateDegress::orthogonal<2>, ToolSubstate> {
+public:
+  ToolOrthogonalLine(my_context ctx)
+      : SmaccState<ToolOrthogonalLine, RotateDegress::orthogonal<2>, ToolSubstate>(ctx) // call the SmaccState base constructor                 
+  {
+    ROS_INFO("Entering in the tool orthogonal line");
+  }
+
+  ~ToolOrthogonalLine() 
+  { 
+    ROS_INFO("Finishing the tool orthogonal line"); 
+  }
+};
+//---------------------------------------------------------------------------------------------------------
+struct ToolSubstate
+    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
+  
+public:
+
+  // This is the substate constructor. This code will be executed when the
+  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  ToolSubstate(my_context ctx) 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  {
+    ROS_INFO("Entering ToolSubstate");
+  }
 };
 }

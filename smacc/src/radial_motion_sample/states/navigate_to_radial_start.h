@@ -12,14 +12,17 @@ using namespace smacc;
 //forward declarations of subcomponents of this state
 struct NavigationOrthogonalLine;
 struct ReelOrthogonalLine;
+struct ToolOrthogonalLine;
+
 struct Navigate;
 struct ReelStartAndDispense;
+struct ToolSubstate;
 
 //--------------------------------------------
 /// State NavigateToRadialStart
 struct NavigateToRadialStart
     : SmaccState<NavigateToRadialStart, RadialMotionStateMachine,
-                 mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>> // <- these are the orthogonal lines of this State
+                 mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State
 {
   // when this state is finished then move to the RotateDegress state
   typedef sc::transition<EvStateFinished, RotateDegress::RotateDegress>
@@ -31,7 +34,7 @@ public:
   // after this, its orthogonal lines are created (see orthogonal line classes).
   NavigateToRadialStart(my_context ctx)
       : SmaccState<NavigateToRadialStart, RadialMotionStateMachine,
-                   mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine>>(ctx) 
+                   mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>>(ctx) 
     {
        ROS_INFO("Entering in NavigateToRadialStart State");
     }
@@ -158,7 +161,6 @@ private:
 
 //--------------------------------------------------
 // orthogonal line 1
-// this is the reel substate inside the reel orthogonal line of the NavigateToRadialStart State
 struct ReelOrthogonalLine
     : SmaccState<ReelOrthogonalLine, NavigateToRadialStart::orthogonal<1>,
                  ReelStartAndDispense> {
@@ -179,6 +181,7 @@ public:
 };
 
 //--------------------------------------------------
+// this is the reel substate inside the reel orthogonal line of the NavigateToRadialStart State
 struct ReelStartAndDispense
     : SmaccState<ReelStartAndDispense, ReelOrthogonalLine> {
   
@@ -287,5 +290,38 @@ public:
 private:
   // keeps the reference to the reel resorce or plugin (to connect to the non_rt_helper)
   smacc::SmaccReelActionClient *reelActionClient_;
+};
+
+//---------------------------------------------------------------------------------------------------------
+// orthogonal line 2
+struct ToolOrthogonalLine
+    : SmaccState<ToolOrthogonalLine, NavigateToRadialStart::orthogonal<2>,
+                 ToolSubstate> {
+public:
+  ToolOrthogonalLine(my_context ctx)
+      : SmaccState<ToolOrthogonalLine, NavigateToRadialStart::orthogonal<2>,
+                   ToolSubstate>(ctx) // call the SmaccState base constructor                 
+  {
+    ROS_INFO("Entering in the tool orthogonal line");
+  }
+
+  ~ToolOrthogonalLine() 
+  { 
+    ROS_INFO("Finishing the tool orthogonal line"); 
+  }
+};
+//---------------------------------------------------------------------------------------------------------
+struct ToolSubstate
+    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
+  
+public:
+
+  // This is the substate constructor. This code will be executed when the
+  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  ToolSubstate(my_context ctx) 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  {
+    ROS_INFO("Entering ToolSubstate");
+  }
 };
 }
