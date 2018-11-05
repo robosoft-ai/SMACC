@@ -1,9 +1,9 @@
-#include "radial_motion.h"
-#include "smacc/signal_detector.h"
-#include "states/navigate_to_end_point.h"
-#include "states/navigate_to_radial_start.h"
-#include "states/return_to_radial_start.h"
-#include "states/rotate_ten_degrees.h"
+#include <radial_motion.h>
+#include <smacc/signal_detector.h>
+#include <states/navigate_to_end_point.h>
+#include <states/navigate_to_radial_start.h>
+#include <states/return_to_radial_start.h>
+#include <states/rotate_ten_degrees.h>
 #include <boost/thread.hpp>
 
 //------------------------------------------------------------------------------

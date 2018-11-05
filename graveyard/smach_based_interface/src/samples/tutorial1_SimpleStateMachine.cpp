@@ -27,8 +27,7 @@ public:
 
 class Bar : public State {
 public:
-    Bar()
-        : State({.outcomes = { "outcome1" } })
+    Bar(): State({.outcomes = { "outcome1" } })
     {
     }
 

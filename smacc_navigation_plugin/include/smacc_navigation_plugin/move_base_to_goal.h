@@ -1,6 +1,6 @@
 #pragma once
 
-#include "smacc/smacc_action_client_base.h"
+#include <smacc/smacc_action_client_base.h>
 #include <move_base_msgs/MoveBaseAction.h>
 
 namespace smacc

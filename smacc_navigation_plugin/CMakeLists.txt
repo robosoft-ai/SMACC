@@ -1,17 +1,16 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(smacc)
+project(smacc_navigation_plugin)
 
-## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+find_package(catkin REQUIRED smacc pluginlib)
 
-## Find catkin macros and libraries
-## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
-## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  roscpp
-  pluginlib
-)
+## System dependencies are found with CMake's conventions
+# find_package(Boost REQUIRED COMPONENTS system)
+
+
+## Uncomment this if the package has a setup.py. This macro ensures
+## modules and global scripts declared therein get installed
+## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
+# catkin_python_setup()
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -21,6 +20,7 @@ find_package(catkin REQUIRED COMPONENTS
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
+
 
 ###################################
 ## catkin specific configuration ##
@@ -32,10 +32,10 @@ find_package(catkin REQUIRED COMPONENTS
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-  LIBRARIES smacc
-  CATKIN_DEPENDS actionlib roscpp
-#  DEPENDS system_lib
+   INCLUDE_DIRS include
+   LIBRARIES smacc_navigation_plugin
+   CATKIN_DEPENDS smacc
+   #DEPENDS smacc
 )
 
 ###########
@@ -47,26 +47,20 @@ set(CMAKE_CXX_STANDARD 14)
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
+ include
+ ${catkin_INCLUDE_DIRS}
 )
 
-file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
-add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})
+## Declare a C++ library
+ add_library(${PROJECT_NAME}
+   src/smacc_navigation_plugin.cpp
+ )
 
-# sources
-file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp") # opcionalmente GLOB
-
-add_library(${PROJECT_NAME} ${SRC_FILES})
-
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
- )
+)
+
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #############
 ## Install ##
@@ -83,11 +77,11 @@ target_link_libraries(${PROJECT_NAME}
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+ install(TARGETS ${PROJECT_NAME}
+   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+ )
 
 ## Mark cpp header files for installation
 install(DIRECTORY include/${PROJECT_NAME}/
@@ -108,7 +102,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_smacc.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_smacc_navigation_plugin.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

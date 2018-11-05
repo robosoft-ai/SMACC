@@ -1,5 +1,5 @@
-#include "smacc/signal_detector.h"
-#include "smacc/smacc_action_client_base.h"
+#include <smacc/signal_detector.h>
+#include <smacc/smacc_action_client_base.h>
 
 namespace smacc
 {

@@ -1,9 +1,8 @@
 #pragma once
 
 #include <actionlib/client/simple_action_client.h>
-#include "smacc/common.h"
-#include "smacc/state_machine.h"
-#include "smacc/smacc_state_machine.h"
+#include <smacc/common.h>
+#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {

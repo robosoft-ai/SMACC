@@ -1,7 +1,9 @@
 #pragma once
 
-#include "smacc/smacc_state_machine_base.h"
-#include "plugins/move_base_to_goal.h"
+#include <smacc/smacc_state_machine_base.h>
+#include <smacc_reelrbtx_plugin/reel.h>
+#include <smacc_navigation_plugin/move_base_to_goal.h>
+
 using namespace smacc;
 
 // this event is launched by any substate to make the "parent state" know that 

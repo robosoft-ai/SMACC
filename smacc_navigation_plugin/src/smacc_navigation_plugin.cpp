@@ -1,4 +1,4 @@
-#include "plugins/move_base_to_goal.h"
+#include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <pluginlib/class_list_macros.h>
 
 namespace smacc
