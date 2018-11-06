@@ -30,6 +30,65 @@ This repository contains several ROS packages:
 
  * **radial_motion_example**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
 
+## Executing the Radial Motion Example
+Requires: reelrbtx_control and reelrbtx_navigation packages and ridgeback packages
+
+```
+export RIDGEBACK_URDF_EXTRAS=$(rospack find reelrbtx_description)/urdf/reelrbtx.urdf.xacro
+
+roslaunch radial_motion_example radial_motion.launch
+```
 ## Tutorial
 
-### Adding parameters to states
+### Creating a simple state StateMachine with a single state
+
+The state machine code:
+```cpp
+//-------------------- SIMPLE SMACC STATE MACHINE ----------
+
+struct SimpleStateMachine
+    : public SmaccStateMachineBase<SimpleStateMachine,ToolSimpleState> 
+{
+  SimpleStateMachine(my_context ctx, SignalDetector *signalDetector)
+      : SmaccStateMachineBase<SimpleStateMachine,ToolSimpleState>(ctx, signalDetector) 
+      {
+      }
+};
+```
+The state cpp code:
+
+```cpp
+// ------------------ SIMPLE STATE --------------
+struct ToolSimpleState
+    : SmaccState<ToolSimpleState,SimpleStateMachine> {
+public:
+
+  ToolSimpleState()
+  {
+    ROS_INFO("Entering into tool state");
+  }
+
+  ~ToolSimpleState()
+  {
+    ROS_INFO("Exiting from tool state");
+  }
+};
+```
+
+### Accessing to action client resources (AKA Action Client Plugins)
+Describe sample here
+
+### Simple transitions between two states on action client callbacks
+Describe sample here
+
+### Transition between two states with custom code on action client callbacks
+Describe sample here
+
+### Creating global variables shared between states
+Describe here
+
+### Adding ros parameters to states
+Describe sample here
+
+### Creating orthogonal lines according to the SMACC methodology
+Describe here

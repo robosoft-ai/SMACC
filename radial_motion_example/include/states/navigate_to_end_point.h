@@ -57,7 +57,7 @@ public:
 };
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+struct Navigate : statechart::simple_state<Navigate, NavigationOrthogonalLine> 
 {
   typedef mpl::list<sc::custom_reaction<EvActionResult>> reactions;
 
@@ -70,8 +70,7 @@ public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  Navigate(my_context ctx)
-      : SmaccState<Navigate, NavigationOrthogonalLine>(ctx) // call the SmaccState base constructor
+  Navigate()
   {
     ROS_INFO("Entering Navigate");
 
@@ -192,17 +191,25 @@ public:
 
 //---------------------------------------------------------------------------------------------------------
 struct ToolSubstate
-    : SmaccState<ToolSubstate, ToolOrthogonalLine> 
+    : statechart::simple_state<ToolSubstate, ToolOrthogonalLine> 
 {  
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate(my_context ctx) 
-    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  ToolSubstate() 
   {
     ROS_INFO("Entering ToolSubstate");
+
+    toolActionClient_ =
+        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
+
+    smacc::SmaccToolActionClient::Goal goal;
+    goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;
+    toolActionClient_->sendGoal(goal);
   }
+
+  smacc::SmaccToolActionClient* toolActionClient_;
 };
 /*
 */

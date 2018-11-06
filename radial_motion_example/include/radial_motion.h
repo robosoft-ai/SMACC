@@ -3,6 +3,7 @@
 #include <smacc/smacc_state_machine_base.h>
 #include <smacc_reelrbtx_plugin/reel.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
+#include <smacc_tool_plugin_template/smacc_tool_plugin.h>
 
 using namespace smacc;
 

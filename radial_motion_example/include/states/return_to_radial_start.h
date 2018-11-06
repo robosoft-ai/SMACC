@@ -309,6 +309,15 @@ public:
     : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
+
+    toolActionClient_ =
+        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
+
+    smacc::SmaccToolActionClient::Goal goal;
+    goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
+    toolActionClient_->sendGoal(goal);
   }
+
+  smacc::SmaccToolActionClient* toolActionClient_;
 };
 }

@@ -46,6 +46,8 @@ class SmaccState : public sc::simple_state<
     base_type;
 
   protected:
+    ros::NodeHandle nh;
+    
     //////////////////////////////////////////////////////////////////////////
     struct my_context
     {

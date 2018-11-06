@@ -309,16 +309,24 @@ public:
 };
 //---------------------------------------------------------------------------------------------------------
 struct ToolSubstate
-    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
+    : statechart::simple_state<ToolSubstate, ToolOrthogonalLine> {
   
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate(my_context ctx) 
-    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  ToolSubstate() 
   {
     ROS_INFO("Entering ToolSubstate");
+
+    toolActionClient_ =
+        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
+
+    smacc::SmaccToolActionClient::Goal goal;
+    goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
+    toolActionClient_->sendGoal(goal);
   }
+
+  smacc::SmaccToolActionClient* toolActionClient_;
 };
 }
