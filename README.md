@@ -76,7 +76,31 @@ public:
 ```
 
 ### Accessing to action client resources (AKA Action Client Plugins)
-Describe sample here
+
+```cpp
+struct ToolSubstate
+    : statechart::simple_state<SimpleStateMachine> 
+{
+public:
+
+  // This is the substate constructor. This code will be executed when the
+  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  ToolSubstate() 
+  {
+    ROS_INFO("Entering ToolSubstate");
+
+    toolActionClient_ =
+        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
+
+    smacc::SmaccToolActionClient::Goal goal;
+    goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;
+    toolActionClient_->sendGoal(goal);
+  }
+
+  smacc::SmaccToolActionClient* toolActionClient_;
+};
+```
+
 
 ### Simple transitions between two states on action client callbacks
 Describe sample here
