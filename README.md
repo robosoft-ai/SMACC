@@ -1,24 +1,30 @@
 # SMACC
 SMACC is a ROS/C++ library to implement in easy and systematic way [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired in the [SMACH ROS package](http://wiki.ros.org/smach) and it built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
-## Cannonical SMACC applications
-SMACC applications are canonically mobile robots (optionally with manipulators) with with tools that have to move around and interact with the environment.
-
 ## Features
- *  Designed for ROS
- *  Static state machine consistence checking (inherited from Boost Statechart)
- *  Plugin based to control remote nodes based on ROS Action Client
+ *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
+ *   ***C++ language:*** ROS lacked the existence of a library to develop task-level state machine in c++. Many libraries in robotics are developed in c++ so that this may help during the integration of different libraries. In industrial development context are sometimes prefered the usage of c++ over python, so that this tool may be a good choice.
+ *  ***Static State Machine Checking:*** SMACC inherits this from the statechart library. This helps the developer to check the consistence of the state machine in compile time (instead of runtime). In other words, it helps you to check if your state machine is well written.
+ * ***Dynamically extensible funcionality:*** SMACC uses rosplugins to provide rich action clients that can be dinamically imported at runtime and stored in the local machine. This enables the SMACC application extend or improve the runtime behavior of the system.  You can just replace some plugin components and keeping the original SMACC application without needing to recompile.
+
+## Cannonical SMACC applications
+The cannonical SMACC applications are mobile robots (that may optionally have manipulators) that have to navigate around the environment and use some of the onboard tools. One example could be the PR2 Robot working in a factory navigating to some selfs with parcels and fetching them to some delivery point.
 
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
 
 SMACC applications have low level coupling with other software components of the robot system. SMACC code is recomended to interact with the rest of components the robot system via ROS Action Servers and **Smacc Action Plugins**.
 
-[Diagram]
+The proposed methdology split the states into 2 or more statechart orthogonal lines that comunicate to each other via events. The orthogonal line 0 is tipically for the mobile robot navigation. The second orthogonal line and ahead are used for tools (manipulators, grippers or other custom tools).
+
+![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg)
 
 ## Architecture
 
-[Diagram]
+![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg)
+
+
+## Integration with ROS the Navigation Stack
 
 ## Repository Packages
 
@@ -43,6 +49,7 @@ export RIDGEBACK_URDF_EXTRAS=$(rospack find reelrbtx_description)/urdf/reelrbtx.
 roslaunch radial_motion_example radial_motion.launch
 ```
 ## Tutorial
+SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
 ### Creating a simple state StateMachine with a single state
 
@@ -89,7 +96,7 @@ public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate() 
+  ToolSubstate()
   {
     ROS_INFO("Entering ToolSubstate");
 
@@ -115,8 +122,44 @@ Describe sample here
 ### Creating global variables shared between states
 Describe here
 
-### Adding ros parameters to states
-Describe sample here
+### Adding ROS Parameters to Smacc States
+The SMACC states can be configured from the ros parameter server based on their hierarchy
+and their class name. It is responsability of the user not to have two different state names at the same level (even if the namespace is distinct since the namespace is trimmed for parameters)
 
-### Creating orthogonal lines according to the SMACC methodology
-Describe here
+For example, imagine a StateMachine to move the mobile robot initially to some initial position, and then moving it to some other position relative to the initial position. You could put the navigation parameters in a ros configuration yaml file like this (and avoid hardcoding):
+
+```yaml
+MyStateMachine:
+    State1: #Go to some initial position
+        NavigationOrthogonalLine:
+            Navigate:
+                start_position_x: 3
+                start_position_y: 0
+    State2: #Go to some initial position
+        NavigationOrthogonalLine:
+            Navigate:
+                initial_orientation_index: 0 # the initial index of the linear motion (factor of angle_increment_degrees)
+                angle_increment_degree: 90    # the increment of angle between to linear motions
+                linear_trajectories_count: 2  # the number of linear trajectories of the radial 
+```
+
+Then, the c++ code for the State MyStateMachine/State1/NavigationOrthogonalLine/Navigate could contain the following parameter reading funcionality:
+
+```cpp
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+{
+public:
+  // This is the substate constructor. This code will be executed when the
+  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  Navigate(my_context ctx)
+    : SmaccState<Navigate, NavigationOrthogonalLine>(ctx) // call the SmaccState base constructor 
+  {
+      geometry_msgs::Point p;
+      param("start_position_x", p.x, 0);
+      param("start_position_y", p.y, 0);
+  }
+}
+
+The param template method reads from the parameters server delegating to the method defined ros::NodeHandle handle does but already located at the exact point in the parameter name hierarchy associated to this state. SMACC is also able have methods getParam and setParam that are delegated to ros::NodeHandle in the same way.
+
+```
