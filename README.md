@@ -5,7 +5,7 @@ Probably the best streght of SMACC is that the statechart you can develop with i
 
 The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
 
-![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif =250x)
+![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif | width=250)
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
