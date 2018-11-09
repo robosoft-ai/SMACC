@@ -23,6 +23,20 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 * ***Powerful access to ROS Parameters***. Each SMACC state creates automatically a ros::NodeHandle automatically named according to the SMACC state hierarchy (see more in section Usage Examples - Ros parameters)
 * ***ROS Navigation built-in funcionality***. SMACC provides some navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and stright motions. These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
 
+## Repository Packages
+
+This repository contains several ROS packages:
+
+ * **smacc**: The core smacc library. It works as a template-based c++  header library.
+
+ * **smacc_navigation_plugin**: it implements a smacc-actionclient-plugin to handle the move_base node remotely.
+
+ * **smacc_reelrbtx_plugin**: it implements a smacc-actionclien-plugin to handle the reel robotics reel device.
+
+ * **radial_motion_example**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
+
+ * **smacc_tool_plugin_template**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
+
 ## Shared Resources and Shared variables
 
 * ***Shared Action Client Resources*** Action servers in SMACC play an important role because all low-level funcionality must be located on them. In order to interact with these Action Servers SMACC provide an easy way to create shared ActionClients that can be accessed from any State. SMACC is in charge of eficently handle all the requests and send the resulting events from action servers (result messages, feedback messages, etc) to the "subscribed states" in form of statechart events. (See more about his in section internal architecture)
@@ -31,6 +45,7 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 <p align="center">
 <img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true"  width="450" align="center"/>
 </p>
+
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
 
@@ -52,20 +67,6 @@ SMACC State Machines are boost::statechart AsynchronousStateMachines that can wo
 <img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg"  width="450" align="center"/>
 </p>
 
-## Repository Packages
-
-This repository contains several ROS packages:
-
- * **smacc**: The core smacc library. It works as a template-based c++  header library.
-
- * **smacc_navigation_plugin**: it implements a smacc-actionclient-plugin to handle the move_base node remotely.
-
- * **smacc_reelrbtx_plugin**: it implements a smacc-actionclien-plugin to handle the reel robotics reel device.
-
- * **radial_motion_example**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
-
- * **smacc_tool_plugin_template**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
-
 ## Executing the Radial Motion Example
 Requires: reelrbtx_control and reelrbtx_navigation packages and ridgeback packages
 
@@ -78,10 +79,11 @@ roslaunch radial_motion_example radial_motion.launch
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
 ### Creating a simple state StateMachine with a single state
+SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
 
-The state machine code:
+The following chunk of code shows the minimal SMACC State machine you can create:
 ```cpp
-//-------------------- SIMPLE SMACC STATE MACHINE ----------
+#include <smacc/smacc_state_machine_base.h>
 
 struct SimpleStateMachine
     : public SmaccStateMachineBase<SimpleStateMachine,ToolSimpleState> 
@@ -91,6 +93,9 @@ struct SimpleStateMachine
       {
       }
 };
+
+Every SMACC State Machine must inherit from SmaccStateMachineBase. The first template parameter is the derived class type (SimpleStateMachine itself) according to the curiosuly recurring template pattern, and the second template parameter (ToolSimpleState) would be the class name of the initial Smacc State
+
 ```
 The state cpp code:
 
