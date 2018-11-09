@@ -97,9 +97,9 @@ struct SimpleStateMachine
 
 Every SMACC State Machine must inherit from SmaccStateMachineBase. The first template parameter is the derived class type (SimpleStateMachine itself) according to the curiosuly recurring template pattern, and the second template parameter (ToolSimpleState) would be the class name of the initial Smacc State
 
-## Code a simple SMACC State
+### Code a simple SMACC State
 
-For the previous state machine, this would be the initial SMACC State
+For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
 ```cpp
 // ------------------ SIMPLE STATE --------------
@@ -117,6 +117,7 @@ public:
   }
 };
 ```
+According to the UML statchart standard, things happens essencially when the system enters in the state, when the system exits the state and when some event is triggered. The two first ones are shown in this example. The c++ Constructor code is the place you have to write your "entry code", the destructor is the place you have to write your "exit code". The constructor parameter (my_context) is a reference to the context object (in this case the state machine). This kind of constructor may be verebosy, but is required to implement the rest of SMACC tasks and always follows the same pattern.
 
 ### Accessing to action client resources (AKA Action Client Plugins)
 
