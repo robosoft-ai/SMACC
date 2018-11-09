@@ -5,7 +5,7 @@ Probably the best streght of SMACC is that the statechart you can develop with i
 
 The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
 
-<img src="http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif" style="width:250px"/>
+<img src="http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif" width="250"/>
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
@@ -28,7 +28,7 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
 
-<img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true" style="width:250px"/>
+<img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true" width="250"/>
 
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
@@ -37,13 +37,13 @@ SMACC applications have low level coupling with other software components of the
 
 The proposed methdology split the states into 2 or more statechart orthogonal lines that comunicate to each other via events. The orthogonal line 0 is tipically for the mobile robot navigation. The second orthogonal line and ahead are used for tools (manipulators, grippers or other custom tools).
 
-<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg" style="width:250px"/>
+<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg" width="250"/>
 
 ## Internal Architecture
 
 * ***Signal Detector***
 * ***State Machine***
-<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg" style="width:250px"/>
+<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg" width="250"/>
 
 ## Repository Packages
 
