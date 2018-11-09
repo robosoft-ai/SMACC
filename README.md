@@ -28,7 +28,7 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
 
-![Diagram](https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true =250x)
+<img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true" style="width:250px"/>
 
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
@@ -37,12 +37,13 @@ SMACC applications have low level coupling with other software components of the
 
 The proposed methdology split the states into 2 or more statechart orthogonal lines that comunicate to each other via events. The orthogonal line 0 is tipically for the mobile robot navigation. The second orthogonal line and ahead are used for tools (manipulators, grippers or other custom tools).
 
-![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg =250x)
+<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg" style="width:250px"/>
 
 ## Internal Architecture
 
-![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg =250x)
-
+* ***Signal Detector***
+* ***State Machine***
+<img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg" style="width:250px"/>
 
 ## Repository Packages
 
