@@ -79,6 +79,12 @@ roslaunch radial_motion_example radial_motion.launch
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
 ### Code a minimal SMACC StateMachine
+In this initial example we will implement a simple state machine with a single state state that executes something at state entry and at state exit. That state machine is described in the following image:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/simpleStateMachine.png" width="450"/>
+</p>
+
 SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
 
 The following chunk of code shows the minimal SMACC State machine you can create:
