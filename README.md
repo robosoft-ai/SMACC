@@ -131,7 +131,7 @@ Accessing to Action Client Shared resources is one of the most important capabil
 For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client and navigate to some position in the environment.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/sharedResource.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/shared_Resource.png" width="450"/>
 </p>
 
 The code would be the following:
