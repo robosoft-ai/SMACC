@@ -78,7 +78,7 @@ roslaunch radial_motion_example radial_motion.launch
 ## Usage examples
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
-### Creating a simple state StateMachine with a single state
+### Code a minimal SMACC StateMachine
 SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
 
 The following chunk of code shows the minimal SMACC State machine you can create:
@@ -93,26 +93,27 @@ struct SimpleStateMachine
       {
       }
 };
+```
 
 Every SMACC State Machine must inherit from SmaccStateMachineBase. The first template parameter is the derived class type (SimpleStateMachine itself) according to the curiosuly recurring template pattern, and the second template parameter (ToolSimpleState) would be the class name of the initial Smacc State
 
-```
-The state cpp code:
+## Code a simple SMACC State
+
+For the previous state machine, this would be the initial SMACC State
 
 ```cpp
 // ------------------ SIMPLE STATE --------------
-struct ToolSimpleState
-    : SmaccState<ToolSimpleState,SimpleStateMachine> {
+struct ToolSubstate
+    : SmaccState<ToolSubstate, SimpleStateMachine> {
+  
 public:
 
-  ToolSimpleState()
+  // This is the substate constructor. This code will be executed when the
+  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  ToolSubstate(my_context ctx) 
+    : SmaccState<ToolSubstate, SimpleStateMachine>(ctx) // call the SmaccState base constructor
   {
-    ROS_INFO("Entering into tool state");
-  }
-
-  ~ToolSimpleState()
-  {
-    ROS_INFO("Exiting from tool state");
+    ROS_INFO("Entering ToolSubstate");
   }
 };
 ```
