@@ -1,15 +1,17 @@
 #pragma once
-#include "smacc/smacc_state_machine.h"
+#include <smacc/common.h>
 #include <smacc/smacc_state.h>
 //-------------------------------------------------------------------------------------------------
 
 namespace smacc
 {
+
 /// State Machine
 template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >
 {
 public:
+    // the node handle for this state
     ros::NodeHandle nh;
     
     SmaccStateMachineBase( my_context ctx, SignalDetector* signalDetector)

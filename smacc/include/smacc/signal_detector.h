@@ -1,8 +1,7 @@
 #pragma once
 
-#include <ros/ros.h>
 #include <boost/thread.hpp>
-#include "smacc/common.h"
+#include <smacc/common.h>
 
 namespace smacc
 {

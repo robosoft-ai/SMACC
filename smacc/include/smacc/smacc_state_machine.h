@@ -1,8 +1,7 @@
 #pragma once
 
-#include "smacc/common.h"
-#include "smacc/signal_detector.h"
-#include "smacc/smacc_action_client.h"
+#include <smacc/common.h>
+#include <smacc/smacc_action_client.h>
 
 #include <boost/core/demangle.hpp>
 #include <boost/any.hpp>

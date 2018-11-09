@@ -1,4 +1,5 @@
-#include "smacc/smacc_state_machine.h"
+#include <smacc/smacc_state_machine.h>
+#include <smacc/signal_detector.h>
 
 
 namespace smacc
