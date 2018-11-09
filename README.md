@@ -3,7 +3,9 @@ SMACC is a ROS/C++ library to implement in easy and systematic way [UML State Ch
 
 Probably the best streght of SMACC is that the statechart you can develop with it are strictly based on the UML Standard. This means that you can access to a clear and thoroughly studied and known approach to describe State Machines. This may be specially important on industrial environments.
 
-![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm)
+The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
+
+![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif)
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
