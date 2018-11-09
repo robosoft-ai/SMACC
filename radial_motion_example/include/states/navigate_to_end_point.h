@@ -32,6 +32,7 @@ public:
       : SmaccState<NavigateToEndPoint, RadialMotionStateMachine, 
                     mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>>(ctx) // call the SmaccState base constructor
   {
+    ROS_INFO("-------");
     ROS_INFO("Initializating Navigate to endpoint state");
   }
 
@@ -57,7 +58,7 @@ public:
 };
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
-struct Navigate : statechart::simple_state<Navigate, NavigationOrthogonalLine> 
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
   typedef mpl::list<sc::custom_reaction<EvActionResult>> reactions;
 
@@ -70,7 +71,8 @@ public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  Navigate()
+  Navigate(my_context ctx):
+    SmaccState<Navigate, NavigationOrthogonalLine> (ctx)
   {
     ROS_INFO("Entering Navigate");
 
@@ -79,15 +81,13 @@ public:
     moveBaseClient_ =
         context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
 
-    // read from the state machine i "global variable" to know the current orientation
-    int i;
-    context<RadialMotionStateMachine>().getData("angle_index", i);
-    
-    // get the angle according to the angle index
-    yaw = i * angles::from_degrees(10);
+    // read from the state machine yaw "global variable"
+    context<RadialMotionStateMachine>().getData("current_yaw", yaw);
+    ROS_INFO_STREAM("[NavigateToEndPoint/Navigate] current yaw: " << yaw);
 
-    // set the radial distance parameter statically, we also could have used some ros parameter
-    dist = 3.5;
+    // straight motion distance
+    this->param("straight_motion_distance", dist, 3.5);
+    ROS_INFO_STREAM("Straight motion distance: " << dist);
 
     goToEndPoint();
   }
@@ -95,8 +95,7 @@ public:
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    context<RadialMotionStateMachine>().getData("radial_start_pose",
-                                                radialStartPose);
+    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
@@ -161,6 +160,7 @@ private:
 
 //------------------------------------------------------------------------------
 // orthogonal line 1
+// thiere is no substate in this orthogonal line
 struct ReelOrthogonalLine
     : SmaccState<ReelOrthogonalLine, NavigateToEndPoint::orthogonal<1>> {
 public:
@@ -169,7 +169,6 @@ public:
   ReelOrthogonalLine(my_context ctx)
       : SmaccState<ReelOrthogonalLine, NavigateToEndPoint::orthogonal<1>>(ctx) // call the SmaccState base constructor 
   {
-
   }
 };
 //---------------------------------------------------------------------------------------------------------
@@ -191,13 +190,14 @@ public:
 
 //---------------------------------------------------------------------------------------------------------
 struct ToolSubstate
-    : statechart::simple_state<ToolSubstate, ToolOrthogonalLine> 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {  
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate() 
+   ToolSubstate(my_context ctx) 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
 

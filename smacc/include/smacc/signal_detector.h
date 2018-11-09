@@ -37,13 +37,18 @@ class SignalDetector
         void registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo);
 
         SmaccScheduler* scheduler_;
+
         SmaccScheduler::processor_handle processorHandle_;
 
         boost::thread signalDetectorThread_ ;
+        
         ISmaccStateMachine* smaccStateMachine_;
 
         // TODO: this should be thread safe since it may be updated from others threads
         std::vector<ISmaccActionClient*> openRequests_;
+
+        // loop frequency of the signal detector (to check answers from actionservers)
+        double loop_rate_hz;
 
         friend class ISmaccStateMachine;
 };

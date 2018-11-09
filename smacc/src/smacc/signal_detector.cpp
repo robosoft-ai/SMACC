@@ -11,6 +11,7 @@ namespace smacc
 SignalDetector::SignalDetector(SmaccScheduler* scheduler)
 {
     scheduler_ = scheduler;
+    loop_rate_hz = 10.0;
 }
 
 /**
@@ -65,6 +66,11 @@ void SignalDetector::join()
     signalDetectorThread_.join();
 }
 
+/**
+******************************************************************************************************************
+* notifyFeedback()
+******************************************************************************************************************
+*/
 void SignalDetector::notifyFeedback(ISmaccActionClient* client)
 {
     ROS_INFO("Notify feedback");
@@ -146,10 +152,18 @@ void SignalDetector::pollOnce()
 */
 void SignalDetector::pollingLoop()
 {
-    ros::Rate r(1);
+    ros::NodeHandle nh("~");
+    if(!nh.param("signal_detector_loop_freq",this->loop_rate_hz))
+    {
+    }
+    nh.setParam("signal_detector_loop_freq",this->loop_rate_hz);
+
+    ros::Rate r(loop_rate_hz);
+
+    ROS_INFO_STREAM("[SignalDetector] loop rate hz:" << loop_rate_hz);
     while (ros::ok())
     {
-        this->pollOnce();
+        pollOnce();
         ros::spinOnce();
         r.sleep();
     }

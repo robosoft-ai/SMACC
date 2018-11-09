@@ -12,7 +12,7 @@ struct ReelOrthogonalLine;
 struct ToolOrthogonalLine;
 
 struct Navigate;
-struct ReelStartAndDispense;
+struct ReelRetract;
 struct ToolSubstate;
 
 //--------------------------------------------
@@ -30,6 +30,7 @@ public:
     ReturnToRadialStart(my_context ctx)
       :SmaccState<ReturnToRadialStart, RadialMotionStateMachine, mpl::list< NavigationOrthogonalLine, ReelOrthogonalLine , ToolOrthogonalLine> >(ctx) // call the SmaccState base constructor
     {
+        ROS_INFO("-------");
         ROS_INFO("Entering State: ReturnToRadialStart");
     }
     
@@ -57,7 +58,10 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the ReturnToRadialStart State
 struct Navigate: SmaccState<Navigate, NavigationOrthogonalLine >
 {
-typedef mpl::list<sc::custom_reaction< EvActionResult >, sc::custom_reaction< EvReelInitialized >> reactions;
+// this state reacts to the following list of events:
+typedef mpl::list<
+                sc::custom_reaction< EvActionResult >, 
+                sc::custom_reaction< EvReelInitialized >> reactions;
 
 public:
     // the angle of the current radial motion
@@ -73,19 +77,15 @@ public:
         // this substate will need access to the "MoveBase" resource or plugin. In this line
         // you get the reference to this resource.
         moveBaseClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");   
+    
+        // read from the state machine yaw "global variable" to know the current line orientation
+        context<RadialMotionStateMachine >().getData("current_yaw", yaw);
+        ROS_INFO_STREAM("[ReturnToRadialStart/Navigate] current yaw:" << yaw );
     }
 
     // when the reel substate is finished we will react starting the motion
     sc::result react( const EvReelInitialized & ev )
-    {
-        int i;
-
-        // read from the state machine i "global variable" to know the current orientation
-        context<RadialMotionStateMachine >().getData("angle_index", i);
-        
-        // get the angle according to the angle index
-        yaw = i * angles::from_degrees(10);
-
+    {   
         returnToRadialStart();
     }
 
@@ -109,15 +109,6 @@ public:
     sc::result react( const EvActionResult & ev )
     {
         ROS_INFO("Received event to movebase: %s", ev.getResult().toString().c_str());
-
-        int i;
-        context<RadialMotionStateMachine >().getData("angle_index", i);
-
-        if (i > 8)
-        {
-            ROS_WARN("STATE MACHINE END");
-            //exit(0);
-        } 
 
         if (ev.client == moveBaseClient_)
         {
@@ -164,20 +155,20 @@ public:
 
 //------------------------------------------------------------------
 // orthogonal line 1
-struct ReelOrthogonalLine: SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 >, ReelStartAndDispense >
+struct ReelOrthogonalLine: SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 >, ReelRetract >
 {
 public:
     // This is the orthogonal line constructor. This code will be executed when the
     // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
     ReelOrthogonalLine(my_context ctx)
-      :SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 > , ReelStartAndDispense>(ctx) // call the SmaccState base constructor
+      :SmaccState<ReelOrthogonalLine, ReturnToRadialStart::orthogonal< 1 > , ReelRetract>(ctx) // call the SmaccState base constructor
     {
     }
 };
 
 //--------------------------------------------
 // this is the reel substate inside the reel orthogonal line of the ReturnToRadialStart State
-struct ReelStartAndDispense: SmaccState<ReelStartAndDispense, ReelOrthogonalLine >
+struct ReelRetract: SmaccState<ReelRetract, ReelOrthogonalLine >
 {
 typedef boost::mpl::list<
                     sc::custom_reaction< EvActionFeedback>,
@@ -186,10 +177,10 @@ typedef boost::mpl::list<
 public:
     // This is the substate constructor. This code will be executed when the
     // workflow enters in this substate (that is according to statechart the moment when this object is created)
-    ReelStartAndDispense(my_context ctx)
-        : SmaccState<ReelStartAndDispense, ReelOrthogonalLine >(ctx) // call the SmaccState base constructor
+    ReelRetract(my_context ctx)
+        : SmaccState<ReelRetract, ReelOrthogonalLine >(ctx) // call the SmaccState base constructor
     {
-        ROS_INFO("Entering ReelStartAndDispense");
+        ROS_INFO("Entering ReelRetract");
         // this substate will need access to the "Reel" resource or plugin. In this line
         // you get the reference to this resource.
         reelActionClient_ = context<RadialMotionStateMachine >().requiresActionClient<smacc::SmaccReelActionClient>("non_rt_helper");
@@ -271,7 +262,7 @@ public:
 
     // This is the substate destructor. This code will be executed when the
     // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-    ~ReelStartAndDispense()
+    ~ReelRetract()
     {
         ROS_INFO("Exiting Reel_Action Client");
     }

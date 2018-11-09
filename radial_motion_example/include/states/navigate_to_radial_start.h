@@ -33,6 +33,7 @@ public:
       : SmaccState<NavigateToRadialStart, RadialMotionStateMachine,
                    mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>>(ctx) 
     {
+       ROS_INFO("-------");
        ROS_INFO("Entering in NavigateToRadialStart State");
     }
 
@@ -90,18 +91,28 @@ public:
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToRadialStart() {
+  void goToRadialStart() 
+  {
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
+    readStartPoseFromParameterServer(goal);
 
-    goal.target_pose.pose.position.x = 3;
-    goal.target_pose.pose.position.y = 0;
-    goal.target_pose.pose.orientation.w = 1;
+    // store the start pose on the state machine storage so that it can
+    // be referenced from other states (for example return to radial start)
     context<RadialMotionStateMachine>().setData("radial_start_pose",
                                                 goal.target_pose);
 
     moveBaseClient_->sendGoal(goal);
+  }
+
+  void readStartPoseFromParameterServer(smacc::SmaccMoveBaseActionClient::Goal& goal)
+  {
+    getParam("start_position_x", goal.target_pose.pose.position.x);
+    getParam("start_position_y", goal.target_pose.pose.position.y);
+    goal.target_pose.pose.orientation.w = 1;
+
+    ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);
   }
 
   // when the reel substate is finished we will react starting the motion
@@ -112,10 +123,12 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult &ev) {
-
-    if (ev.client == moveBaseClient_) {
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+  sc::result react(const EvActionResult &ev) 
+  {
+    if (ev.client == moveBaseClient_) 
+    {
+      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
+      {
         ROS_INFO("move base, goal position reached.");
 
         // notify the parent State to finish via event (the current parent state reacts to this event)
@@ -160,7 +173,8 @@ private:
 // orthogonal line 1
 struct ReelOrthogonalLine
     : SmaccState<ReelOrthogonalLine, NavigateToRadialStart::orthogonal<1>,
-                 ReelStartAndDispense> {
+                 ReelStartAndDispense> 
+{
 public:
   // This is the orthogonal line constructor. This code will be executed when the
   // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
@@ -309,13 +323,14 @@ public:
 };
 //---------------------------------------------------------------------------------------------------------
 struct ToolSubstate
-    : statechart::simple_state<ToolSubstate, ToolOrthogonalLine> {
+    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
   
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate() 
+  ToolSubstate(my_context ctx) 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
 

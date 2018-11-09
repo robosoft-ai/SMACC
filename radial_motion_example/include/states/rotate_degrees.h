@@ -30,6 +30,7 @@ public:
       : SmaccState<RotateDegress, RadialMotionStateMachine,
                    mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>>(ctx) // call the SmaccState base constructor
   {
+    ROS_INFO("-------");
     ROS_INFO("Entering in ROTATE TEN DEGREES STATE");
   }
 
@@ -55,13 +56,13 @@ public:
 };
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+{
+  // this state reacts to the following list of events:
   typedef mpl::list<sc::custom_reaction<EvActionResult>,
                     sc::custom_reaction<EvReelInitialized>> reactions;
 
 public:
-  // the angle of the current radial motion
-  double yaw;
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -74,33 +75,62 @@ public:
         context<RadialMotionStateMachine>()
             .requiresActionClient<smacc::SmaccMoveBaseActionClient>(
                 "move_base");
-  }
 
-  // when the reel substate is finished we will react starting the motion
-  sc::result react(const EvReelInitialized &ev) {
+    // read parameters from ros parameter server
+    readParameters();
+
     int i;
-    if (!context<RadialMotionStateMachine>().getData("angle_index", i)) {
-      // this is the first radial motion, initialize the index at -2 (-20 degrees)
-      i = -2;
-    } else {
+    if (!context<RadialMotionStateMachine>().getData("angle_index", i)) 
+    {
+      // this is the first radial motion (influences to the initial angle)
+      i = initial_orientation_index_;
+    } 
+    else 
+    {
       i += 1; // this is not the first time, increment the degress with 10 degreess
     }
 
-    // read from the state machine i "global variable" to know the current orientation
+    // sets from the state machine i "global variable" to know the current orientation
+    ROS_INFO("[RotateDegrees/Navigate] Radial angle index: %d", i);
     context<RadialMotionStateMachine>().setData("angle_index", i);
-    ROS_INFO("Radial angle index: %d", i);
 
     // get the angle according to the angle index
-    yaw = i * angles::from_degrees(10);
+    yaw = i * angles::from_degrees(angle_increment_degree_);
+    context<RadialMotionStateMachine>().setData("current_yaw", yaw);
+    ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
 
-    rotateTenDegrees();
+    // check if the motion is in the latest straight motion
+    if(i == linear_trajectories_count_) 
+    {
+      ROS_WARN("STOP ROTATING. TERMINAL STATE OF THE STATE MACHINE");
+      terminate();
+    }
+  }
+
+  // reads parameters from the ros parameter server
+  void readParameters()
+  {
+    this->param("initial_orientation_index", initial_orientation_index_, 0);
+    this->param("angle_increment_degree", angle_increment_degree_, 90.0);
+    this->param("linear_trajectories_count", linear_trajectories_count_, 4);
+
+    ROS_INFO_STREAM("initial_orientation_index:" << initial_orientation_index_);
+    ROS_INFO_STREAM("angle_increment_degree:" << angle_increment_degree_);
+    ROS_INFO_STREAM("linear_trajectories_count:" << linear_trajectories_count_);
+  }
+
+  // when the reel substate is finished we will react starting the motion
+  sc::result react(const EvReelInitialized &ev) 
+  {
+      ROS_INFO("Reacting to reel initialized state. Rotating...");
+      rotateTenDegrees();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void rotateTenDegrees() {
+  void rotateTenDegrees() 
+  {
     geometry_msgs::PoseStamped radialStart;
-    context<RadialMotionStateMachine>().getData("radial_start_pose",
-                                                radialStart);
+    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStart);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose = radialStart;
@@ -113,9 +143,12 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult &ev) {
-    if (ev.client == moveBaseClient_) {
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) {
+  sc::result react(const EvActionResult &ev) 
+  {
+    if (ev.client == moveBaseClient_) 
+    {
+      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
+      {
         ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
         
         // notify the parent State to finish via event (the current parent state reacts to this event)
@@ -154,6 +187,20 @@ private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
   // this resource can be used from any method in this state
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+
+  // the initial index of the linear motion (factor of angle_increment_degrees)
+  // value specified in parameters server
+  int initial_orientation_index_;
+
+  // the increment of angle between to linear motions
+  // value specified in parameters server
+  double angle_increment_degree_;
+
+  // value specified in parameters server
+  int linear_trajectories_count_;
+
+  // the angle of the current radial motion
+  double yaw;
 };
 
 //------------------------------------------------------------------
@@ -206,60 +253,61 @@ public:
   // subscribe to resource feedback event
   sc::result react( const EvActionFeedback &  ev)
   {
-      // if the reel request is finished and success, then notify the event to the move base substate
-      // and finish this substate
-      if (ev.client == reelActionClient_) 
-      {
-        ROS_INFO("Received event for reel client");
-        smacc::SmaccReelActionClient::Feedback feedback = reelActionClient_->getFeedbackMessage(ev);
-        if(feedback.dispensing_state == smacc::SmaccReelActionClient::Goal::DISPENSE)
-        {          
-          ROS_INFO("Correct dispense mode. Let's notify others we are ready");
-          // notify the navigate substate that we finished
-          post_event(EvReelInitialized());
+    // if the reel request is finished and success, then notify the event to the move base substate
+    // and finish this substate
+    if (ev.client == reelActionClient_) 
+    {
+      ROS_INFO("Received event for reel client");
+      smacc::SmaccReelActionClient::Feedback feedback = reelActionClient_->getFeedbackMessage(ev);
+      if(feedback.dispensing_state == smacc::SmaccReelActionClient::Goal::DISPENSE)
+      {          
+        ROS_INFO("Correct dispense mode. Let's notify others we are ready");
+        // notify the navigate substate that we finished
+        post_event(EvReelInitialized());
 
-          // declare the reel substate as finished
-          //return terminate();
-          return forward_event();
-        }
-        else
-        {
-          ROS_INFO("Received feedback message from reel but, the dispensing state is not the expected. skipping");
-          return forward_event();
-        }
+        // declare the reel substate as finished
+        //return terminate();
+        return forward_event();
       }
       else
       {
-          // the action client event success is not for this substate. Let others process this event.
-          ROS_INFO("this feedback event is not for this resource");
-          return forward_event();
+        ROS_INFO("Received feedback message from reel but, the dispensing state is not the expected. skipping");
+        return forward_event();
       }
+    }
+    else
+    {
+        // the action client event success is not for this substate. Let others process this event.
+        ROS_DEBUG("this feedback event is not for this resource");
+        return forward_event();
+    }
   }
 
   // subscribe to resource action result event
-  sc::result react(const EvActionResult &ev) {
-        ROS_INFO("Reel substate: Received event for reel client");
-        if (ev.client == reelActionClient_)
+  sc::result react(const EvActionResult &ev) 
+  {
+    ROS_INFO("Reel substate: Received event for reel client");
+    if (ev.client == reelActionClient_)
+    {
+        if(ev.getResult() == actionlib::SimpleClientGoalState::ABORTED)
         {
-            if(ev.getResult() == actionlib::SimpleClientGoalState::ABORTED)
-            {
-                // retry again
-                ROS_INFO("Retry reel retract");
-                dispenseMotion();
-                return discard_event();
-            }
-            else
-            {
-                ROS_INFO("Not handled result");
-                return forward_event();
-            }
+            // retry again
+            ROS_INFO("Retry reel retract");
+            dispenseMotion();
+            return discard_event();
         }
         else
         {
-            // the action client event success is not for this substate. Let others process this event.
-            ROS_INFO("navigate substate lets other process the EvActionResultEv");
+            ROS_INFO("Not handled result");
             return forward_event();
         }
+    }
+    else
+    {
+        // the action client event success is not for this substate. Let others process this event.
+        ROS_INFO("navigate substate lets other process the EvActionResultEv");
+        return forward_event();
+    }
   }
 
   // This is the substate destructor. This code will be executed when the

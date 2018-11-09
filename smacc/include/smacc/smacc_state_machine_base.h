@@ -10,6 +10,8 @@ template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >
 {
 public:
+    ros::NodeHandle nh;
+    
     SmaccStateMachineBase( my_context ctx, SignalDetector* signalDetector)
         :ISmaccStateMachine(signalDetector),
         sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >(ctx)
