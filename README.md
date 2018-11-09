@@ -79,6 +79,12 @@ roslaunch radial_motion_example radial_motion.launch
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
 ### Code a minimal SMACC StateMachine
+In this initial example we will implement a simple state machine with a single state state that executes something at state entry and at state exit. That state machine is described in the following image:
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/simpleStateMachine.png" width="450"/>
+</p>
+
 SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
 
 The following chunk of code shows the minimal SMACC State machine you can create:
@@ -102,7 +108,6 @@ Every SMACC State Machine must inherit from SmaccStateMachineBase. The first tem
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
 ```cpp
-// ------------------ SIMPLE STATE --------------
 struct ToolSubstate
     : SmaccState<ToolSubstate, SimpleStateMachine> {
   
@@ -121,27 +126,45 @@ According to the UML statchart standard, things happens essencially when the sys
 
 ### Accessing to action client resources (AKA Action Client Plugins)
 
-```cpp
-struct ToolSubstate
-    : statechart::simple_state<SimpleStateMachine> 
-{
-public:
+Accessing to Action Client Shared resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
 
+For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client. The code would be the following:
+
+```cpp
+struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
+{
+  
+public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate()
+  Navigate(my_context ctx):
+    SmaccState<Navigate, SimpleStateMachine> (ctx)
   {
-    ROS_INFO("Entering ToolSubstate");
+    ROS_INFO("Entering Navigate");
 
-    toolActionClient_ =
-        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
-
-    smacc::SmaccToolActionClient::Goal goal;
-    goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;
-    toolActionClient_->sendGoal(goal);
+    // this substate will need access to the "MoveBase" resource or plugin. In this line
+    // you get the reference to this resource.
+    moveBaseClient_ =
+        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+    goToEndPoint();
   }
 
-  smacc::SmaccToolActionClient* toolActionClient_;
+  // auxiliar function that defines the motion that is requested to the move_base action server
+  void goToEndPoint() {
+    geometry_msgs::PoseStamped radialStartPose;
+    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
+
+    smacc::SmaccMoveBaseActionClient::Goal goal;
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    goal.target_pose = radialStartPose;
+    goal.target_pose.pose.position.x = 10;
+    goal.target_pose.pose.position.y = 10;
+    goal.target_pose.pose.orientation =
+        tf::createQuaternionMsgFromRollPitchYaw(0, 0, M_PI);
+
+    moveBaseClient_->sendGoal(goal);
+  }
 };
 ```
 
