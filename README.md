@@ -128,7 +128,13 @@ According to the UML statchart standard, things happens essencially when the sys
 
 Accessing to Action Client Shared resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
 
-For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client. The code would be the following:
+For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client and navigate to some position in the environment.
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/sharedResource.png" width="450"/>
+</p>
+
+The code would be the following:
 
 ```cpp
 struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
