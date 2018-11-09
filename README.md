@@ -4,9 +4,9 @@ SMACC is a ROS/C++ library to implement in easy and systematic way [UML State Ch
 Probably the best streght of SMACC is that the statechart you can develop with it are strictly based on the UML Standard. This means that you can access to a clear and thoroughly studied and known approach to describe State Machines. This may be specially important on industrial environments.
 
 The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
-
+<p align="center">
 <img src="http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif" width="450" align="center"/>
-
+</p>
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
  *   ***C++ language:*** ROS lacked the existence of a library to develop task-level state machine in c++. Many libraries in robotics are developed in c++ so that this may help during the integration of different libraries. In industrial development context are sometimes prefered the usage of c++ over Python, so that this tool may be a good choice.
@@ -27,9 +27,9 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 * ***Shared Action Client Resources*** Action servers in SMACC play an important role because all low-level funcionality must be located on them. In order to interact with these Action Servers SMACC provide an easy way to create shared ActionClients that can be accessed from any State. SMACC is in charge of eficently handle all the requests and send the resulting events from action servers (result messages, feedback messages, etc) to the "subscribed states" in form of statechart events. (See more about his in section internal architecture)
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
-
+<p align="center">
 <img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true"  width="450" align="center"/>
-
+</p>
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
 
@@ -37,14 +37,19 @@ SMACC applications have low level coupling with other software components of the
 
 The proposed methdology split the states into 2 or more statechart orthogonal lines that comunicate to each other via events. The orthogonal line 0 is tipically for the mobile robot navigation. The second orthogonal line and ahead are used for tools (manipulators, grippers or other custom tools).
 
+<p align="center">
 <img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg"  width="450" align="center"/>
+</p>
 
 ## Internal Architecture
+SMACC State Machines are boost::statechart AsynchronousStateMachines that can work in a multi-threaded application. In SMACC State Machines are two main components that work concurrently in two different threads:
 
-* ***Signal Detector***
-* ***State Machine***
+* ***Signal Detector***. It is able to handle the action client resources communication with action servers and translate them to statechart events
+* ***State Machine***. It is the end-user code of the state machine itself.
+
+<p align="center">
 <img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg"  width="450" align="center"/>
-
+</p>
 ## Repository Packages
 
 This repository contains several ROS packages:
