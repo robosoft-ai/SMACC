@@ -131,14 +131,14 @@ Accessing to Action Client Shared resources is one of the most important capabil
 For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client. The code would be the following:
 
 ```cpp
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
 {
   
 public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
   Navigate(my_context ctx):
-    SmaccState<Navigate, NavigationOrthogonalLine> (ctx)
+    SmaccState<Navigate, SimpleStateMachine> (ctx)
   {
     ROS_INFO("Entering Navigate");
 
