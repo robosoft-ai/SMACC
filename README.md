@@ -126,27 +126,45 @@ According to the UML statchart standard, things happens essencially when the sys
 
 ### Accessing to action client resources (AKA Action Client Plugins)
 
-```cpp
-struct ToolSubstate
-    : statechart::simple_state<SimpleStateMachine> 
-{
-public:
+Accessing to Action Client Shared resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
 
+For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client. The code would be the following:
+
+```cpp
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+{
+  
+public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate()
+  Navigate(my_context ctx):
+    SmaccState<Navigate, NavigationOrthogonalLine> (ctx)
   {
-    ROS_INFO("Entering ToolSubstate");
+    ROS_INFO("Entering Navigate");
 
-    toolActionClient_ =
-        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccToolActionClient>("tool_action_server");
-
-    smacc::SmaccToolActionClient::Goal goal;
-    goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;
-    toolActionClient_->sendGoal(goal);
+    // this substate will need access to the "MoveBase" resource or plugin. In this line
+    // you get the reference to this resource.
+    moveBaseClient_ =
+        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+    goToEndPoint();
   }
 
-  smacc::SmaccToolActionClient* toolActionClient_;
+  // auxiliar function that defines the motion that is requested to the move_base action server
+  void goToEndPoint() {
+    geometry_msgs::PoseStamped radialStartPose;
+    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
+
+    smacc::SmaccMoveBaseActionClient::Goal goal;
+    goal.target_pose.header.stamp = ros::Time::now();
+
+    goal.target_pose = radialStartPose;
+    goal.target_pose.pose.position.x = 10;
+    goal.target_pose.pose.position.y = 10;
+    goal.target_pose.pose.orientation =
+        tf::createQuaternionMsgFromRollPitchYaw(0, 0, M_PI);
+
+    moveBaseClient_->sendGoal(goal);
+  }
 };
 ```
 
