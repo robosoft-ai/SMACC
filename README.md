@@ -5,7 +5,7 @@ Probably the best streght of SMACC is that the statechart you can develop with i
 
 The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
 
-![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif)
+![[StateChart image]](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif =250x)
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
@@ -20,7 +20,7 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 
 * ***Intensive use of ROS Action***. SMACC translate Action server events (Result callbacks, Feedback callbacks, etc.) to statechart events. To know more about this check the sections Shared Resources and section SMACC Architecture.
 * ***Powerful access to ROS Parameters***. Each SMACC state creates automatically a ros::NodeHandle automatically named according to the SMACC state hierarchy (see more in section Usage Examples - Ros parameters)
-* ***ROS Navigation built-in funcionality ***. SMACC provides some navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and stright motions. These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
+* ***ROS Navigation built-in funcionality***. SMACC provides some navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and stright motions. These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
 
 ## Shared Resources and Shared variables
 
@@ -28,7 +28,7 @@ The cannonical SMACC applications are mobile robots (that may optionally have ma
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
 
-![Diagram](https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true)
+![Diagram](https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true =250x)
 
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contains the task-level logic, that is, the high level behavior of the robot system in some specific application.
@@ -37,11 +37,11 @@ SMACC applications have low level coupling with other software components of the
 
 The proposed methdology split the states into 2 or more statechart orthogonal lines that comunicate to each other via events. The orthogonal line 0 is tipically for the mobile robot navigation. The second orthogonal line and ahead are used for tools (manipulators, grippers or other custom tools).
 
-![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg)
+![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Containers-2.jpg =250x)
 
 ## Internal Architecture
 
-![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg)
+![Diagram](http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg =250x)
 
 
 ## Repository Packages
