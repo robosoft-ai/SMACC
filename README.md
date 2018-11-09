@@ -144,16 +144,6 @@ public:
 };
 ```
 
-
-### Simple transitions between two states on action client callbacks
-Describe sample here
-
-### Transition between two states with custom code on action client callbacks
-Describe sample here
-
-### Shared variables betweeen states
-Describe here
-
 ### Adding ROS Parameters to Smacc States
 The SMACC states can be configured from the ros parameter server based on their hierarchy
 and their class name. It is responsability of the user not to have two different state names at the same level (even if the namespace is distinct since the namespace is trimmed for parameters)
