@@ -190,6 +190,8 @@ Naivate State to the ExecuteTool State and at the same time we want to add some 
 <img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/custom_transition.png" width="450"/>
 </p>
 
+The following would be the code for this state machine:
+
 
 ```cpp
 struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
