@@ -51,6 +51,7 @@ SMACC State Machines are boost::statechart AsynchronousStateMachines that can wo
 <p align="center">
 <img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg"  width="450" align="center"/>
 </p>
+
 ## Repository Packages
 
 This repository contains several ROS packages:
