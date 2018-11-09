@@ -108,7 +108,6 @@ Every SMACC State Machine must inherit from SmaccStateMachineBase. The first tem
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
 ```cpp
-// ------------------ SIMPLE STATE --------------
 struct ToolSubstate
     : SmaccState<ToolSubstate, SimpleStateMachine> {
   
