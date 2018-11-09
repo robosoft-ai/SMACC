@@ -180,14 +180,14 @@ public:
 ```
 ### Reacting to Action Client Resource Result and moving to the next state
 
-*** Warning: this syntax is going to be drastically improved***, however, in this initial version of statechart
+***Warning: this syntax is going to be drastically improved to decrease the code***, however, in this initial version of statechart
 this is the syntax you will have to follow.
 
 In this example, when the move_base action server finishes the motion we capture the result and we move from the current
 Naivate State to the ExecuteTool State and at the same time we want to add some code to that transition.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/custom_transition.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/custom_reaction.png" width="450"/>
 </p>
 
 
@@ -212,12 +212,13 @@ public:
    
   sc::result react(const EvActionResult &ev) 
   {
+    // first we check the action server result is produced by our client
     if (ev.client == moveBaseClient_) 
     {
+      // we only will react when the result is succeeded
       if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
       {
         ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
-
         return transit<ExecuteToolState>();
       } 
     }
@@ -225,7 +226,10 @@ public:
 
 struct ExecuteToolState : SmaccState<ExecuteToolState, SimpleStateMachine> 
 {
-
+ExecuteToolState(my_context ctx):
+    SmaccState<ExecuteToolState, SimpleStateMachine> (ctx)
+    {
+    }
 };
 
 
