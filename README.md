@@ -89,7 +89,7 @@ SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring te
 
 The following chunk of code shows the minimal SMACC State machine you can create:
 ```cpp
-#include <smacc/smacc_state_machine_base.h>
+#include <smacc/smacc.h>
 
 struct SimpleStateMachine
     : public SmaccStateMachineBase<SimpleStateMachine,ToolSimpleState> 
