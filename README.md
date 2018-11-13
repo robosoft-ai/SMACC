@@ -349,6 +349,10 @@ ExecuteToolState(my_context ctx):
 SMACC proposes to work in different orthogonal lines: Navigation, Tool1, Tool2, etc. This example shows how you can define orthogonal lines in your SMACC code.
 For example, we want to add two orthogonal lines: the navigation orthogonal line and the tool orthogonal line.
 
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/ortogonal_lines.png" width="450"/>
+</p>
+
 First we will define the NavigationOrthogonal line line with a simple ToolSubState:
 
 ```cpp
@@ -369,7 +373,7 @@ public:
 
 struct NavigateSubstate : SmaccState<NavigateSubstate, NavigationOrthogonalLine> 
 {
-ExecuteToolState(my_context ctx):
+NavigateSubstate(my_context ctx):
     SmaccState<NavigateSubstate, NavigationOrthogonalLine> (ctx)
     {
     }
@@ -394,10 +398,10 @@ public:
   }
 };
 
-struct ExecuteToolState : SmaccState<ExecuteToolState, ToolOrthogonalLine> 
+struct ToolSubstate : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {
 ExecuteToolState(my_context ctx):
-    SmaccState<ExecuteToolState, ToolOrthogonalLine> (ctx)
+    SmaccState<ToolSubstate, ToolOrthogonalLine> (ctx)
     {
     }
 };
