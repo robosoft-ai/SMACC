@@ -22,8 +22,8 @@ struct NavigateToRadialStart
                  mpl::list<NavigationOrthogonalLine, ReelOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State
 {
   // when this state is finished then move to the RotateDegress state
-  typedef sc::transition<EvStateFinished, RotateDegress::RotateDegress>
-      reactions;
+  //typedef sc::transition<EvStateFinished, RotateDegress::RotateDegress> reactions;
+  typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
 
 public:
   // This is the state constructor. This code will be executed when the
@@ -71,7 +71,7 @@ struct NavigationOrthogonalLine
 //--------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the NavigateToRadialStart State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
-  typedef mpl::list<sc::custom_reaction<EvActionResult>,
+  typedef mpl::list</*sc::custom_reaction<EvActionResultBase<smacc::SmaccMoveBaseActionClient::Result>>,*/
                     sc::custom_reaction<EvReelInitialized>> reactions;
 
 public:
@@ -123,7 +123,8 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult &ev) 
+  /*
+  sc::result react(const EvActionResultBase<smacc::SmaccMoveBaseActionClient::Result> &ev) 
   {
     if (ev.client == moveBaseClient_) 
     {
@@ -155,6 +156,7 @@ public:
       return forward_event();
     }
   }
+  */
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
@@ -197,7 +199,7 @@ struct ReelStartAndDispense
     : SmaccState<ReelStartAndDispense, ReelOrthogonalLine> {
   
   typedef boost::mpl::list< sc::custom_reaction< EvActionFeedback>,
-                            sc::custom_reaction< EvActionResult >> reactions;
+                            sc::custom_reaction< EvActionResult<smacc::SmaccReelActionClient::Result> >> reactions;
 
 public:
 
@@ -259,13 +261,13 @@ public:
       else
       {
           // the action client event success is not for this substate. Let others process this event.
-          ROS_INFO("this feedback event is not for this resource");
+          ROS_DEBUG("this feedback event is not for this resource");
           return forward_event();
       }
   }
 
   // subscribe to resource action result event
-  sc::result react(const EvActionResult &ev) {
+  sc::result react(const EvActionResult<smacc::SmaccReelActionClient::Result> &ev) {
       ROS_INFO("Reel substate: Received event for reel client");
       if (ev.client == reelActionClient_)
       {

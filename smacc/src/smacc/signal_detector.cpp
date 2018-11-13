@@ -97,11 +97,14 @@ void SignalDetector::finalizeRequest(ISmaccActionClient* client)
         openRequests_.erase(it);
     }
 
-    boost::intrusive_ptr< EvActionResult > actionClientResultEvent = new EvActionResult();
-    actionClientResultEvent->client = client;
+    //boost::intrusive_ptr< IActionResult> actionClientResultEvent = client->createActionResultEvent();
+    //actionClientResultEvent->client = client;
 
     ROS_INFO("SignalDetector: Sending successEvent");
-    scheduler_->queue_event(processorHandle_, actionClientResultEvent);
+    client->postEvent(scheduler_, processorHandle_);
+    // SmaccScheduler
+    //SmaccScheduler::processor_handle
+    //scheduler_->queue_event(processorHandle_, actionClientResultEvent);
 }
 
 /**

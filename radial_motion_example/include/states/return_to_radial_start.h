@@ -60,7 +60,7 @@ struct Navigate: SmaccState<Navigate, NavigationOrthogonalLine >
 {
 // this state reacts to the following list of events:
 typedef mpl::list<
-                sc::custom_reaction< EvActionResult >, 
+                sc::custom_reaction< EvActionResult<smacc::SmaccMoveBaseActionClient::Result> >, 
                 sc::custom_reaction< EvReelInitialized >> reactions;
 
 public:
@@ -104,9 +104,10 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 
+    
     // this is the callback when the navigate action of this state is finished
     // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-    sc::result react( const EvActionResult & ev )
+    sc::result react( const EvActionResult<smacc::SmaccMoveBaseActionClient::Result> & ev )
     {
         ROS_INFO("Received event to movebase: %s", ev.getResult().toString().c_str());
 
@@ -172,7 +173,7 @@ struct ReelRetract: SmaccState<ReelRetract, ReelOrthogonalLine >
 {
 typedef boost::mpl::list<
                     sc::custom_reaction< EvActionFeedback>,
-                    sc::custom_reaction< EvActionResult >> reactions;
+                    sc::custom_reaction< EvActionResult<smacc::SmaccReelActionClient::Result> >> reactions;
 
 public:
     // This is the substate constructor. This code will be executed when the
@@ -199,7 +200,7 @@ public:
     }
 
     // subscribe to resource feedback event
-    sc::result react(const EvActionResult &ev) {
+    sc::result react(const  EvActionResult<smacc::SmaccReelActionClient::Result> &ev) {
         ROS_INFO("Reel substate: Received event for reel client");
         if (ev.client == reelActionClient_)
         {
@@ -255,7 +256,7 @@ public:
         }
         else
         {
-            ROS_INFO("this feedback event is not for this resource");
+            ROS_DEBUG("this feedback event is not for this resource");
             return forward_event();
         }
     }

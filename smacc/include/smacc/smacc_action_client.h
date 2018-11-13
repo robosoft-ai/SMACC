@@ -39,6 +39,8 @@ public:
     }
 
 protected:
+    virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle)=0;
+
     // used internally by the Signal detector
     virtual bool popFeedback(EvActionFeedback& actionFeedbackEvent)=0;
 

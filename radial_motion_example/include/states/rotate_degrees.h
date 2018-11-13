@@ -59,7 +59,7 @@ public:
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
   // this state reacts to the following list of events:
-  typedef mpl::list<sc::custom_reaction<EvActionResult>,
+  typedef mpl::list<sc::custom_reaction<EvActionResult<smacc::SmaccMoveBaseActionClient::Result> >,
                     sc::custom_reaction<EvReelInitialized>> reactions;
 
 public:
@@ -143,7 +143,7 @@ public:
 
   // this is the callback when the navigate action of this state is finished
   // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult &ev) 
+  sc::result react(const EvActionResult<smacc::SmaccMoveBaseActionClient::Result>  &ev) 
   {
     if (ev.client == moveBaseClient_) 
     {
@@ -221,7 +221,7 @@ public:
 // this is the reel substate inside the reel orthogonal line of the RotateDegreess State
 struct ReelDispense : SmaccState<ReelDispense, ReelOrthogonalLine> {
   typedef boost::mpl::list< sc::custom_reaction< EvActionFeedback>,
-                            sc::custom_reaction< EvActionResult >> reactions;
+                            sc::custom_reaction< EvActionResult<smacc::SmaccReelActionClient::Result>  >> reactions;
 public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -284,7 +284,7 @@ public:
   }
 
   // subscribe to resource action result event
-  sc::result react(const EvActionResult &ev) 
+  sc::result react(const EvActionResult<smacc::SmaccReelActionClient::Result> &ev) 
   {
     ROS_INFO("Reel substate: Received event for reel client");
     if (ev.client == reelActionClient_)

@@ -3,7 +3,7 @@
 
 namespace smacc
 {
-    actionlib::SimpleClientGoalState EvActionResult::getResult() const
+    actionlib::SimpleClientGoalState IActionResult::getResult() const
     {
         return client->getState();
     }

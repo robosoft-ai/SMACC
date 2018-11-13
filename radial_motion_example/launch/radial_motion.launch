@@ -3,7 +3,7 @@
         <arg name="rqt_plot" value="false"/>
     </include>
     
-    <rosparam cmd="load" file="$(find radial_motion_example)/config/radial_motion_sm_config.yaml"/>
+    <rosparam command="load" file="$(find radial_motion_example)/config/radial_motion_sm_config.yaml"/>
     
     <node pkg="radial_motion_example" type="radial_motion_example_node" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
         <!--<param name="signal_detector_loop_freq" value="1"/>-->

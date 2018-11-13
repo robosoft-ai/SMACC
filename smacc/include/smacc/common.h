@@ -60,11 +60,16 @@ namespace smacc
   class ISmaccActionClient;
   class SignalDetector;
 
-  struct EvActionResult : sc::event< EvActionResult > 
+  struct IActionResult
   {
-      smacc::ISmaccActionClient* client;
+    smacc::ISmaccActionClient* client;
+    actionlib::SimpleClientGoalState getResult() const;
+  };
 
-      actionlib::SimpleClientGoalState getResult() const;
+  template <typename ActionResult>
+  struct EvActionResult : sc::event< EvActionResult <ActionResult> >, IActionResult
+  { 
+      ActionResult* result;
   };
 
   struct EvActionFeedback : sc::event< EvActionFeedback > 

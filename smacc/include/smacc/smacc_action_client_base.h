@@ -17,6 +17,7 @@ class SmaccActionClientBase: public ISmaccActionClient
     ACTION_DEFINITION(ActionType);
     typedef actionlib::SimpleActionClient<ActionType> ActionClient ;
     typedef actionlib::SimpleActionClient<ActionType> GoalHandle;
+
     typedef typename ActionClient::SimpleDoneCallback SimpleDoneCallback ;
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
@@ -91,6 +92,17 @@ protected:
             feedback_queue_.pop_front();
         }
     }
+
+    virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
+    {
+        EvActionResult<Result>* ev = new EvActionResult<Result>();
+
+        boost::intrusive_ptr< EvActionResult<Result>> actionClientResultEvent = ev;
+        actionClientResultEvent->client = this;
+
+        scheduler->queue_event(processorHandle, actionClientResultEvent);
+    }
+    
 
     // here it is assigned one feedback message to one smacc event
     virtual bool popFeedback(EvActionFeedback& ev) override
