@@ -267,7 +267,8 @@ public:
   }
 
   // subscribe to resource action result event
-  sc::result react(const EvActionResult<smacc::SmaccReelActionClient::Result> &ev) {
+  sc::result react(const EvActionResult<smacc::SmaccReelActionClient::Result> &ev) 
+  {
       ROS_INFO("Reel substate: Received event for reel client");
       if (ev.client == reelActionClient_)
       {
