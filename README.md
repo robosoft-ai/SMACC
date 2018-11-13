@@ -400,7 +400,7 @@ public:
 
 struct ToolSubstate : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {
-ExecuteToolState(my_context ctx):
+ToolSubstate(my_context ctx):
     SmaccState<ToolSubstate, ToolOrthogonalLine> (ctx)
     {
     }
