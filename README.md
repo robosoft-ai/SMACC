@@ -178,13 +178,19 @@ public:
 };
 ```
 
+
 ### Simple State Transition on Action Result Event
 
-Transitions between states happen on events. Events can be implemented by the user or happen
-when Action Results callbacks and Action Feedback callbacks happen.
-
-In the following example we extend the previous example to transit to another state 'ExecuteToolState' when the move_base
+According to the UML state machines standard, transitions between states happen on events. In SMACC events can be implemented by the user or happen
+when Action Results callbacks and Action Feedback callbacks happen. In the following example we extend the previous example to transit to another state 'ExecuteToolState' when the move_base
 action sever returns a Result.
+
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/action_result_transition.png" width="450"/>
+</p>
+
+The following would be the code to implement the diagram shown above.
 
 ```cpp
 struct Navigate : SmaccState<Navigate, SimpleStateMachine>
