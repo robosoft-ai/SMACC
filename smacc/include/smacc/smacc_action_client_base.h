@@ -51,9 +51,10 @@ class SmaccActionClientBase: public ISmaccActionClient
         return !feedback_queue_.empty();
     }
 
-    Feedback getFeedbackMessage(const EvActionFeedback& ev)
+    Feedback getFeedbackMessage(const EvActionFeedback<Feedback>& ev)
     {
-        return boost::any_cast<Feedback>(ev.feedbackMessage);
+        return ev.feedbackMessage;
+        //return boost::any_cast<Feedback>(ev.feedbackMessage);
     }
 
     void sendGoal(Goal& goal)
@@ -93,6 +94,7 @@ protected:
         }
     }
 
+
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
         EvActionResult<Result>* ev = new EvActionResult<Result>();
@@ -103,25 +105,32 @@ protected:
         scheduler->queue_event(processorHandle, actionClientResultEvent);
     }
     
-
-    // here it is assigned one feedback message to one smacc event
-    virtual bool popFeedback(EvActionFeedback& ev) override
+    virtual void postFeedbackEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
+        boost::intrusive_ptr< EvActionFeedback<Feedback> > actionFeedbackEvent = new EvActionFeedback<Feedback>();
+        actionFeedbackEvent->client = this;
+
+        bool ok = false;
         if(!feedback_queue_.empty())
         {
             ROS_DEBUG("[%s]Popping FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
             Feedback feedback_msg = feedback_queue_.front();
             feedback_queue_.pop_front();
             ROS_DEBUG("[%s]popped FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
-            ev.feedbackMessage = feedback_msg;
-        
-            return true;
+            actionFeedbackEvent->feedbackMessage = feedback_msg;
+            ok = true;
         }
         else
         {
-            return false;
+            ok = false;
         };
-    }
+
+        if(ok)
+        {
+            ROS_INFO("Sending feedback event");
+            scheduler->queue_event(processorHandle, actionFeedbackEvent);
+        }
+    }    
 
     friend class SignalDetector;
 };

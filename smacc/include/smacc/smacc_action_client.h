@@ -42,7 +42,7 @@ protected:
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle)=0;
 
     // used internally by the Signal detector
-    virtual bool popFeedback(EvActionFeedback& actionFeedbackEvent)=0;
+    virtual void postFeedbackEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle)=0;
 
     // the ros path where the action is located
     std::string name_;

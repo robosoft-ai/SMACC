@@ -74,12 +74,13 @@ void SignalDetector::join()
 void SignalDetector::notifyFeedback(ISmaccActionClient* client)
 {
     ROS_INFO("Notify feedback");
-    boost::intrusive_ptr< EvActionFeedback > actionFeedbackEvent = new EvActionFeedback();
-    actionFeedbackEvent->client = client;
-    client->popFeedback(*actionFeedbackEvent);
+    //boost::intrusive_ptr< EvActionFeedback > actionFeedbackEvent = new EvActionFeedback();
+    //actionFeedbackEvent->client = client;
+
+    client->postFeedbackEvent(scheduler_, processorHandle_);
     
-    ROS_INFO("Sending feedback event");
-    scheduler_->queue_event(processorHandle_, actionFeedbackEvent);
+    //ROS_INFO("Sending feedback event");
+    //scheduler_->queue_event(processorHandle_, actionFeedbackEvent);
 }
 
 /**

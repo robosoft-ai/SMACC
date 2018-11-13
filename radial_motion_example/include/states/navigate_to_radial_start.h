@@ -198,7 +198,7 @@ public:
 struct ReelStartAndDispense
     : SmaccState<ReelStartAndDispense, ReelOrthogonalLine> {
   
-  typedef boost::mpl::list< sc::custom_reaction< EvActionFeedback>,
+  typedef boost::mpl::list< sc::custom_reaction< EvActionFeedback<smacc::SmaccReelActionClient::Feedback>>,
                             sc::custom_reaction< EvActionResult<smacc::SmaccReelActionClient::Result> >> reactions;
 
 public:
@@ -232,14 +232,14 @@ public:
   }
   
   // subscribe to resource feedback event
-  sc::result react( const EvActionFeedback &  ev)
+  sc::result react( const EvActionFeedback<smacc::SmaccReelActionClient::Feedback> &  ev)
   {
       // if the reel request is finished and success, then notify the event to the move base substate
       // and finish this substate
       if (ev.client == reelActionClient_) 
       {
         ROS_INFO("Received event for reel client");
-        smacc::SmaccReelActionClient::Feedback feedback = reelActionClient_->getFeedbackMessage(ev);
+        smacc::SmaccReelActionClient::Feedback feedback = ev.feedbackMessage;
         if(feedback.dispensing_state == smacc::SmaccReelActionClient::Goal::DISPENSE)
         {          
           ROS_INFO("Correct dispense mode. Let's notify others we are ready");

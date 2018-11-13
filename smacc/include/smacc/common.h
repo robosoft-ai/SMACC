@@ -69,13 +69,15 @@ namespace smacc
   template <typename ActionResult>
   struct EvActionResult : sc::event< EvActionResult <ActionResult> >, IActionResult
   { 
-      ActionResult* result;
+      ActionResult resultMessage;
   };
 
-  struct EvActionFeedback : sc::event< EvActionFeedback > 
+  template <typename ActionFeedback>
+  struct EvActionFeedback : sc::event< EvActionFeedback <ActionFeedback>> 
   {
       smacc::ISmaccActionClient* client;
-      boost::any feedbackMessage;
+      ActionFeedback feedbackMessage;
+      //boost::any feedbackMessage;
   };
 }
 

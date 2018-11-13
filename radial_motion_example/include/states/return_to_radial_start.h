@@ -172,7 +172,7 @@ public:
 struct ReelRetract: SmaccState<ReelRetract, ReelOrthogonalLine >
 {
 typedef boost::mpl::list<
-                    sc::custom_reaction< EvActionFeedback>,
+                    sc::custom_reaction< EvActionFeedback<smacc::SmaccReelActionClient::Feedback>>,
                     sc::custom_reaction< EvActionResult<smacc::SmaccReelActionClient::Result> >> reactions;
 
 public:
@@ -227,7 +227,7 @@ public:
     }
 
     // subscribe to resource action result event
-    sc::result react( const EvActionFeedback &  ev)
+    sc::result react( const EvActionFeedback<smacc::SmaccReelActionClient::Feedback> &  ev)
     {
         smacc::SmaccReelActionClient::Feedback feedback;
 
@@ -236,7 +236,7 @@ public:
         if (ev.client == reelActionClient_) 
         {
             ROS_INFO("Received event for reel client");
-            smacc::SmaccReelActionClient::Feedback feedback = reelActionClient_->getFeedbackMessage(ev);
+            smacc::SmaccReelActionClient::Feedback feedback = ev.feedbackMessage;
 
             if(feedback.dispensing_state == smacc::SmaccReelActionClient::Goal::RETRACT)
             {
