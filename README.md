@@ -350,7 +350,7 @@ SMACC proposes to work in different orthogonal lines: Navigation, Tool1, Tool2, 
 For example, we want to add two orthogonal lines: the navigation orthogonal line and the tool orthogonal line.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/ortogonal_lines.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/orthogonal_lines.png" width="450"/>
 </p>
 
 First we will define the NavigationOrthogonal line line with a simple ToolSubState:
