@@ -1,0 +1,8 @@
+<library path="lib/librrbtx_retracting_local_planner">
+  <class name="rrbtx_retracting_local_planner/RetractingLocalPlanner" type="rrbtx_retracting_local_planner::RetractingLocalPlanner" base_class_type="nav_core::BaseLocalPlanner">
+    <description>
+    </description>
+  </class>
+</library>
+
+

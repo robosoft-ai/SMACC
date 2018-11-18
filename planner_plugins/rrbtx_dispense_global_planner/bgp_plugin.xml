@@ -1,0 +1,6 @@
+<library path="lib/librrbtx_dispense_global_planner">
+  <class name="rrbtx_dispense_global_planner/DispenseGlobalPlanner" type="rrbtx_dispense_global_planner::DispenseGlobalPlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    <description>
+    </description>
+  </class>
+</library>

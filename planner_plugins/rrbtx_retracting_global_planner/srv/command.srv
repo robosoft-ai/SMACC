@@ -1,0 +1,4 @@
+std_msgs/String cmd
+---
+std_msgs/String result
+std_msgs/Bool success

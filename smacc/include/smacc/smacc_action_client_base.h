@@ -51,12 +51,6 @@ class SmaccActionClientBase: public ISmaccActionClient
         return !feedback_queue_.empty();
     }
 
-    Feedback getFeedbackMessage(const EvActionFeedback<Feedback>& ev)
-    {
-        return ev.feedbackMessage;
-        //return boost::any_cast<Feedback>(ev.feedbackMessage);
-    }
-
     void sendGoal(Goal& goal)
     {
         ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ <<"\"");
@@ -93,7 +87,6 @@ protected:
             feedback_queue_.pop_front();
         }
     }
-
 
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
