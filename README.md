@@ -108,19 +108,27 @@ Every SMACC State Machine must inherit from SmaccStateMachineBase. The first tem
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
 ```cpp
-struct ToolSubstate
-    : SmaccState<ToolSubstate, SimpleStateMachine>
+struct ToolSimpleState
+    : SmaccState<ToolSimpleState, SimpleStateMachine>
 {
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
   ToolSubstate(my_context ctx)
-    : SmaccState<ToolSubstate, SimpleStateMachine>(ctx) // call the SmaccState base constructor
+    : SmaccState<ToolSimpleState, SimpleStateMachine>(ctx) // call the SmaccState base constructor
   {
-    ROS_INFO("Entering ToolSubstate");
+    ROS_INFO("Entering ToolSimpleState");
   }
 };
+
+int main(int argc, char **argv) {
+  // initialize the ros node
+  ros::init(argc, argv, "example1");
+  ros::NodeHandle nh;
+
+  smacc::run<SimpleStateMachine>();
+}
 ```
 According to the UML statchart standard, things happens essencially when the system enters in the state, when the system exits the state and when some event is triggered. The two first ones are shown in this example. The c++ Constructor code is the place you have to write your "entry code", the destructor is the place you have to write your "exit code". The constructor parameter (my_context) is a reference to the context object (in this case the state machine). This kind of constructor may be verebosy, but is required to implement the rest of SMACC tasks and always follows the same pattern.
 
@@ -155,14 +163,14 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     moveBaseClient_ =
-        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
     goToEndPoint();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
+    context<SimpleStateMachine>().getData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
