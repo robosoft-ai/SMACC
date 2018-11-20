@@ -108,17 +108,17 @@ Every SMACC State Machine must inherit from SmaccStateMachineBase. The first tem
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
 ```cpp
-struct ToolSubstate
-    : SmaccState<ToolSubstate, SimpleStateMachine>
+struct ToolSimpleState
+    : SmaccState<ToolSimpleState, SimpleStateMachine>
 {
 public:
 
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
   ToolSubstate(my_context ctx)
-    : SmaccState<ToolSubstate, SimpleStateMachine>(ctx) // call the SmaccState base constructor
+    : SmaccState<ToolSimpleState, SimpleStateMachine>(ctx) // call the SmaccState base constructor
   {
-    ROS_INFO("Entering ToolSubstate");
+    ROS_INFO("Entering ToolSimpleState");
   }
 };
 ```
