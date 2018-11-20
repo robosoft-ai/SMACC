@@ -155,14 +155,14 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     moveBaseClient_ =
-        context<RadialMotionStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
     goToEndPoint();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
+    context<SimpleStateMachine>().getData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
