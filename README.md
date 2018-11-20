@@ -121,6 +121,14 @@ public:
     ROS_INFO("Entering ToolSimpleState");
   }
 };
+
+int main(int argc, char **argv) {
+  // initialize the ros node
+  ros::init(argc, argv, "example1");
+  ros::NodeHandle nh;
+
+  smacc::run<SimpleStateMachine>();
+}
 ```
 According to the UML statchart standard, things happens essencially when the system enters in the state, when the system exits the state and when some event is triggered. The two first ones are shown in this example. The c++ Constructor code is the place you have to write your "entry code", the destructor is the place you have to write your "exit code". The constructor parameter (my_context) is a reference to the context object (in this case the state machine). This kind of constructor may be verebosy, but is required to implement the rest of SMACC tasks and always follows the same pattern.
 
