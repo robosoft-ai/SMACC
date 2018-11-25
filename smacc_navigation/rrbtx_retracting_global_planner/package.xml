@@ -39,8 +39,6 @@
   <exec_depend>costmap_2d</exec_depend>
   <exec_depend>rrbtx_dispense_global_planner</exec_depend>
 
-
-  <!-- The export tag contains other, unspecified, tags -->
   <export>
       <nav_core plugin="${prefix}/bgp_plugin.xml" />
   </export>

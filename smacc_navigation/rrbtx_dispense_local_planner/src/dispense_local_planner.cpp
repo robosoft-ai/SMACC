@@ -7,7 +7,7 @@
 PLUGINLIB_EXPORT_CLASS(rrbtx_dispense_local_planner::DispenseLocalPlanner, nav_core::BaseLocalPlanner)
 
 namespace rrbtx_dispense_local_planner {
-    /**
+/**
 ******************************************************************************************************************
 * DispenseLocalPlanner()
 ******************************************************************************************************************
@@ -106,7 +106,8 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     tf::Quaternion q = tfpose.getRotation();
 
     bool ok = false;
-    while (!ok) {
+    while (!ok) 
+    {
         // iterate the point from the current position and ahead until reaching a new goal point in the path
         for (; !ok && currentPoseIndex_ < plan_.size(); currentPoseIndex_++) {
             auto& pose = plan_[currentPoseIndex_];

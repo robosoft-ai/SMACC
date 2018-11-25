@@ -26,7 +26,7 @@ class SmaccActionClientBase: public ISmaccActionClient
         :ISmaccActionClient(action_client_namespace),
         client_(action_client_namespace,false) 
     {
-        this->feedback_queue_size_= feedback_queue_size;
+        feedback_queue_size_= feedback_queue_size;
     }
 
     virtual ~SmaccActionClientBase()
@@ -35,7 +35,7 @@ class SmaccActionClientBase: public ISmaccActionClient
 
     virtual std::string getName() const =0;
 
-    virtual void cancelGoal() override
+    virtual void cancelGoal()
     {
         ROS_INFO("Cancelling goal of %s", this->getName().c_str());
         client_.cancelGoal();

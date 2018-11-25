@@ -26,9 +26,6 @@ public:
     // return the current state of the actionclient
     virtual SimpleClientGoalState getState()=0;
 
-    // cancels the latest goal request
-    virtual void cancelGoal() = 0;
-
     // checks if there is some feedback message waiting
     virtual bool hasFeedback() = 0;
 

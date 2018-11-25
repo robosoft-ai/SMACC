@@ -132,7 +132,7 @@ void SignalDetector::toString(std::stringstream& ss)
 */
 void SignalDetector::pollOnce()
 {
-    for(ISmaccActionClient* smaccActionClient: this->openRequests_)
+    for(ISmaccActionClient* smaccActionClient: openRequests_)
     {
         // check feedback messages
         if (smaccActionClient->hasFeedback())
@@ -144,7 +144,7 @@ void SignalDetector::pollOnce()
         auto state = smaccActionClient->getState();
         if(state.isDone())
         {
-            this->finalizeRequest(smaccActionClient);
+            finalizeRequest(smaccActionClient);
         }
     }            
 }
@@ -157,9 +157,11 @@ void SignalDetector::pollOnce()
 void SignalDetector::pollingLoop()
 {
     ros::NodeHandle nh("~");
+    
     if(!nh.param("signal_detector_loop_freq",this->loop_rate_hz))
     {
     }
+
     nh.setParam("signal_detector_loop_freq",this->loop_rate_hz);
 
     ros::Rate r(loop_rate_hz);
