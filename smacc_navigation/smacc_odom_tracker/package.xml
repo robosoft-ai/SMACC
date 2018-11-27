@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>smacc_path_tracker</name>
+  <name>smacc_odom_tracker</name>
   <version>0.0.0</version>
-  <description>The smacc_path_tracker package</description>
+  <description>The smacc_odom_tracker package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/smacc_path_tracker</url> -->
+  <!-- <url type="website">http://wiki.ros.org/smacc_odom_tracker</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -49,6 +49,8 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>roscpp</build_depend>
+  <exec_depend>roscpp</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
