@@ -10,10 +10,10 @@ namespace smacc_odom_tracker
     void OdomTracker::init(const tf::Transform& reel_mouth_transform, ros::NodeHandle& nh)
     {
         ROS_INFO("Initializing Odometry Tracker");
-        reelMouthTransform_ = reel_mouth_transform;
-
+  
         robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_base_path", 1);
-        reelMouthPathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_mouth_path", 1);
+
+        reelMouthTransform_ = reel_mouth_transform;
 
         if(!nh.getParam("min_point_distance_dispense_thresh",minPointDistanceDispenseThresh_))
         {
@@ -26,49 +26,6 @@ namespace smacc_odom_tracker
         }
     }
 
-/**
-******************************************************************************************************************
-* p2pDistance()
-******************************************************************************************************************
-*/
-    inline double p2pDistance(const geometry_msgs::Point&p1, const geometry_msgs::Point&p2)
-    {
-        double dx = (p1.x - p2.x);
-        double dy = (p1.y - p2.y);
-        double dz = (p2.z - p2.z);
-        double dist = sqrt(dx*dx + dy*dy+dz*dz);
-        return dist;
-    }
-
-/**
-******************************************************************************************************************
-* computeCordDistance()
-******************************************************************************************************************
-*/
-    double OdomTracker::computeCordDistance()
-    {
-        std::lock_guard<std::mutex> lock(m_mutex_);
-
-        /// Just take the distance on the mouth of the reel path
-        if(reelMouthTrajectory_.poses.size() > 2)
-        {
-            geometry_msgs::Point p_prev = reelMouthTrajectory_.poses.front().pose.position;
-            double distacc =0;
-            for(size_t i=1;i< reelMouthTrajectory_.poses.size();i++)
-            {
-                geometry_msgs::Point p_curr = reelMouthTrajectory_.poses[i].pose.position;
-                double dist = p2pDistance(p_prev,p_curr);
-                p_prev = p_curr;
-                distacc+=dist;
-            }
-
-            return distacc;
-        }
-        else
-        {
-            return 0;
-        }
-    }        
 
 /**
 ******************************************************************************************************************
@@ -77,16 +34,6 @@ namespace smacc_odom_tracker
 */
     void OdomTracker::rtPublishPaths(ros::Time timestamp)
     {
-        if(reelMouthPathPub_->trylock())
-        {
-            nav_msgs::Path& msg = reelMouthPathPub_->msg_;
-            /// Copy trajectory
-
-            msg = reelMouthTrajectory_;
-            msg.header.stamp = timestamp;
-            reelMouthPathPub_->unlockAndPublish();
-        }
-
         if(robotBasePathPub_->trylock())
         {
             nav_msgs::Path& msg = robotBasePathPub_->msg_;
@@ -164,6 +111,20 @@ namespace smacc_odom_tracker
         }
     }
 
+    void OdomTracker::createMouthPoseFromBasePose(const std_msgs::Header& currentHeader, const geometry_msgs::PoseStamped& base_pose, geometry_msgs::PoseStamped& mouth_pose)
+    {
+        /// Math for the mouth of the reel
+        tf::Transform robot_base_transform;
+        tf::poseMsgToTF(base_pose.pose,robot_base_transform);
+
+        tf::Transform absoluteReelMoutTransform;
+        absoluteReelMoutTransform.mult(robot_base_transform, reelMouthTransform_);
+
+        tf::poseTFToMsg(absoluteReelMoutTransform, mouth_pose.pose);
+        
+		/// Copy Timestamp
+        mouth_pose.header = currentHeader;
+    }
 /**
 ******************************************************************************************************************
 * processOdometryMessage()
@@ -183,18 +144,9 @@ namespace smacc_odom_tracker
         base_pose.header = odom.header;
         baseTrajectory_.header = odom.header;
 
-        /// Math for the mouth of the reel
-        tf::Transform robot_base_transform;
-        tf::poseMsgToTF(base_pose.pose,robot_base_transform);
-
-        tf::Transform absoluteReelMoutTransform;
-        absoluteReelMoutTransform.mult(robot_base_transform, reelMouthTransform_);
-
         geometry_msgs::PoseStamped mouth_pose;
-        tf::poseTFToMsg(absoluteReelMoutTransform, mouth_pose.pose);
-        
-		/// Copy Timestamp
-        mouth_pose.header = odom.header;
+        createMouthPoseFromBasePose(odom.header, base_pose, mouth_pose);
+
         reelMouthTrajectory_.header = odom.header;
         
 		if(dispense_mode == WorkingMode::DISPENSING)
