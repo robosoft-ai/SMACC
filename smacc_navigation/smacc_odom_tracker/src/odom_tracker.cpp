@@ -60,13 +60,19 @@ void OdomTracker::setPublishMessages(bool value)
 void OdomTracker::pushPath()
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
-    ROS_WARN("push path not yet implemented");
+    pathStack_.push_back(baseTrajectory_);
+    baseTrajectory_.poses.clear();
 }
         
 void OdomTracker::popPath()
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
-    ROS_WARN("pop path not yet implemented");
+    
+    if(!pathStack_.empty())
+    {
+        baseTrajectory_.poses = pathStack_.back().poses;
+        pathStack_.pop_back();
+    }
 }
 
 /**

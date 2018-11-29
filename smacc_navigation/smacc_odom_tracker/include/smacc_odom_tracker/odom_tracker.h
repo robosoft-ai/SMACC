@@ -31,7 +31,6 @@ class OdomTracker
         // current path
         virtual void init(ros::NodeHandle& h, bool subscribeOdometryTopic= true);
 
-   
         // threadsafe
         /// odom callback: Updates the path - this must be called periodically for each odometry message. 
         // The odom parameters is the main input of this tracker
@@ -43,9 +42,11 @@ class OdomTracker
 
         // threadsafe
         void setPublishMessages(bool value);
-        
+
+        // threadsafe        
         void pushPath();
         
+        // threadsafe
         void popPath();
 
     protected:
@@ -77,13 +78,12 @@ class OdomTracker
         // default true
         bool publishMessages;
 
-        /// Raw input
-        std::vector<nav_msgs::Odometry> robotBaseOdometryHistory_;
-
         /// Processed path for the mouth of the reel
         nav_msgs::Path baseTrajectory_;
 
         WorkingMode workingMode_;
+
+        std::vector<nav_msgs::Path> pathStack_;
 
         std::mutex m_mutex_;
 };
