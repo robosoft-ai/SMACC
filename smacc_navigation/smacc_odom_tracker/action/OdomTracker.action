@@ -1,0 +1,18 @@
+uint8 command
+
+# Possible command values
+uint8 RECORD_FORWARD_PATH = 0
+uint8 CLEAR_PATH_BACKWARDS = 1
+uint8 IDLE = 2 # do nothing
+uint8 START_BROADCAST_PATH = 3
+uint8 STOP_BROADCAST_PATH = 4
+uint8 PUSH_PATH = 5
+uint8 POP_PATH = 6
+---
+---
+uint8 result
+
+# Possible result values
+uint8 RESULT_SUCCESS = 0
+uint8 RESULT_ERROR = 1
+

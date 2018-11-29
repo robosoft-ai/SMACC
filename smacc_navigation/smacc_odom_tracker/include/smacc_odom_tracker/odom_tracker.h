@@ -15,31 +15,67 @@ namespace smacc_odom_tracker
 {
 
 enum class WorkingMode : uint8_t {
-    DISPENSING = 0,
-    RETRACTING = 1,
-    NONE = 2
+    RECORD_PATH_FORWARD = 0,
+    CLEAR_PATH_BACKWARD = 1,
+    IDLE = 2
 };
 
 /// This class track the required distance of the cord based on the external localization system
 class OdomTracker
 {
-    public:       
-        /// Must be called at the begining of the execution
-        virtual void init(const tf::Transform& reel_mouth_transform, ros::NodeHandle& h);
+    public:      
+        OdomTracker();
 
-        /// Updates the path - this must be called periodically for each odometry message. The odom parameters is the main input of this tracker
-        virtual void processOdometryMessage(const nav_msgs::Odometry& odom, WorkingMode dispense_mode);     
+        /// Must be called at the begining of the execution
+        // by default, the component start in record_forward mode and publishing the
+        // current path
+        virtual void init(ros::NodeHandle& h, bool subscribeOdometryTopic= true);
+
+   
+        // threadsafe
+        /// odom callback: Updates the path - this must be called periodically for each odometry message. 
+        // The odom parameters is the main input of this tracker
+        virtual void processOdometryMessage(const nav_msgs::Odometry& odom);     
+
+        // ------ CONTROL COMMANDS ---------------------
+        // threadsafe
+        void setWorkingMode(WorkingMode workingMode);
+
+        // threadsafe
+        void setPublishMessages(bool value);
+        
+        void pushPath();
+        
+        void popPath();
 
     protected:
+
         virtual void rtPublishPaths(ros::Time timestamp); 
 
-        void createMouthPoseFromBasePose(const std_msgs::Header& currentHeader, const geometry_msgs::PoseStamped& base_pose, geometry_msgs::PoseStamped& mouth_pose);
-    
-        /// Fixed and known transform from the base of the robot to the reel mouth
-        tf::Transform reelMouthTransform_;
+        // this is called when a new odom message is received in forward mode
+        virtual bool updateForward(const nav_msgs::Odometry& odom);
+
+        // this is called when a new odom message is received in backwards mode
+        virtual bool updateBackward(const nav_msgs::Odometry& odom);
         
-        /// Processed path for the mouth of the reel
-        nav_msgs::Path reelMouthTrajectory_;
+        // -------------- OUTPUTS ---------------------
+        std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
+
+        // --------------- INPUTS ------------------------
+        // optional, this class can be used directly calling the odomProcessing method
+        // without any subscriber
+        ros::Subscriber odomSub_;
+
+        // -------------- PARAMETERS ----------------------
+        /// How much distance there is between two points of the path
+        double minPointDistanceDispenseThresh_;
+
+        /// Meters
+        double minPointDistanceRetractThresh_;
+
+        // --------------- STATE ---------------
+        // default true
+        bool publishMessages;
 
         /// Raw input
         std::vector<nav_msgs::Odometry> robotBaseOdometryHistory_;
@@ -47,19 +83,7 @@ class OdomTracker
         /// Processed path for the mouth of the reel
         nav_msgs::Path baseTrajectory_;
 
-        void updateDispense(const geometry_msgs::PoseStamped& base_pose, const geometry_msgs::PoseStamped& mouth_pose);
-
-        void updateRetracting(const geometry_msgs::PoseStamped& base_pose, const geometry_msgs::PoseStamped& mouth_pose);
-
-        double computeDistance(geometry_msgs::Pose& a,geometry_msgs::Pose& b );
-        
-        std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
-
-        /// How much distance there is between two points of the path
-        double minPointDistanceDispenseThresh_;
-
-        /// Meters
-        double minPointDistanceRetractThresh_;
+        WorkingMode workingMode_;
 
         std::mutex m_mutex_;
 };

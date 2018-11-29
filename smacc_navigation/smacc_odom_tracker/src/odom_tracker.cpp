@@ -2,162 +2,207 @@
 
 namespace smacc_odom_tracker
 {
+
+OdomTracker::OdomTracker()
+{
+    workingMode_ = WorkingMode::RECORD_PATH_FORWARD;
+    publishMessages = true;
+}
+        
 /**
 ******************************************************************************************************************
 * init()
 ******************************************************************************************************************
 */
-    void OdomTracker::init(const tf::Transform& reel_mouth_transform, ros::NodeHandle& nh)
+void OdomTracker::init(ros::NodeHandle& nh, bool subscribeToOdometryTopic)
+{
+    ROS_INFO("Initializing Odometry Tracker");
+
+    if(!nh.getParam("min_point_distance_dispense_thresh",minPointDistanceDispenseThresh_))
     {
-        ROS_INFO("Initializing Odometry Tracker");
-  
-        robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_base_path", 1);
-
-        reelMouthTransform_ = reel_mouth_transform;
-
-        if(!nh.getParam("min_point_distance_dispense_thresh",minPointDistanceDispenseThresh_))
-        {
-            minPointDistanceDispenseThresh_ = 0.005; // 1 mm
-        }
-
-        if(!nh.getParam("min_point_distance_retract_thresh",minPointDistanceDispenseThresh_))
-        {
-            minPointDistanceRetractThresh_ = 0.1; // 1 mm
-        }
+        minPointDistanceDispenseThresh_ = 0.005; // 1 mm
     }
 
+    if(!nh.getParam("min_point_distance_retract_thresh",minPointDistanceDispenseThresh_))
+    {
+        minPointDistanceRetractThresh_ = 0.1; // 1 mm
+    }
+
+    if(subscribeToOdometryTopic)
+        odomSub_= nh.subscribe("odom", 1, &OdomTracker::processOdometryMessage, this);
+
+    robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_base_path", 1);
+}
+
+
+/**
+******************************************************************************************************************
+* setWorkingMode()
+******************************************************************************************************************
+*/
+void OdomTracker::setWorkingMode(WorkingMode workingMode)
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    workingMode_ = workingMode;
+}
+
+/**
+******************************************************************************************************************
+* setPublishMessages()
+******************************************************************************************************************
+*/
+void OdomTracker::setPublishMessages(bool value)
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    publishMessages = value;
+}
+
+void OdomTracker::pushPath()
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_WARN("push path not yet implemented");
+}
+        
+void OdomTracker::popPath()
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_WARN("pop path not yet implemented");
+}
 
 /**
 ******************************************************************************************************************
 * rtPublishPaths()
 ******************************************************************************************************************
 */
-    void OdomTracker::rtPublishPaths(ros::Time timestamp)
+void OdomTracker::rtPublishPaths(ros::Time timestamp)
+{
+    if(robotBasePathPub_->trylock())
     {
-        if(robotBasePathPub_->trylock())
-        {
-            nav_msgs::Path& msg = robotBasePathPub_->msg_;
-            ///  Copy trajectory
+        nav_msgs::Path& msg = robotBasePathPub_->msg_;
+        ///  Copy trajectory
 
-            msg = baseTrajectory_;
-            msg.header.stamp = timestamp;
-            robotBasePathPub_->unlockAndPublish();
-        }
+        msg = baseTrajectory_;
+        msg.header.stamp = timestamp;
+        robotBasePathPub_->unlockAndPublish();
     }
+}
 
 /**
 ******************************************************************************************************************
-* updateRetracting()
+* updateBackward()
 ******************************************************************************************************************
 */
-    void OdomTracker::updateRetracting(const geometry_msgs::PoseStamped& base_pose, const geometry_msgs::PoseStamped& mouth_pose)
+bool OdomTracker::updateBackward(const nav_msgs::Odometry& odom)
+{
+    // we initially accept any message if the queue is empty   
+    /// Track robot base pose
+    geometry_msgs::PoseStamped base_pose;
+    
+    base_pose.pose = odom.pose.pose;
+    base_pose.header = odom.header;
+    baseTrajectory_.header = odom.header;
+
+    bool acceptRetract = false;
+    bool pullingerror = false;
+    if(baseTrajectory_.poses.empty())
     {
-        const geometry_msgs::Point& prevPoint = reelMouthTrajectory_.poses.back().pose.position;
-        const geometry_msgs::Point& currePoint = mouth_pose.pose.position;
+        acceptRetract=false;
+    }
+    else
+    {
+        const geometry_msgs::Point& prevPoint = baseTrajectory_.poses.back().pose.position;
+        const geometry_msgs::Point& currePoint = base_pose.pose.position;
         double lastpointdist = p2pDistance(prevPoint, currePoint);
         
-        bool acceptRetract = !reelMouthTrajectory_.poses.empty()
-                && lastpointdist < minPointDistanceRetractThresh_;
+        acceptRetract = !baseTrajectory_.poses.empty() 
+                        && lastpointdist < minPointDistanceRetractThresh_;
 
-        //ROS_INFO("RETRACTING, last distance: %lf < %lf accept: %d", dist, minPointDistanceRetractionThresh_, acceptRetract);
-
-        if (acceptRetract) {
-            reelMouthTrajectory_.poses.pop_back();
-            baseTrajectory_.poses.pop_back();
-        } else if (lastpointdist > 2 * minPointDistanceRetractThresh_) {
-            ROS_WARN("Incorrect retracting motion. The robot is pulling the cord.");
-        } else {
-            /// Not removing point because it is enough far from the last cord point
-        }
+        pullingerror = lastpointdist > 2 * minPointDistanceRetractThresh_;
     }
+
+    //ROS_INFO("RETRACTING, last distance: %lf < %lf accept: %d", dist, minPointDistanceRetractionThresh_, acceptRetract);
+    if (acceptRetract) 
+    {
+        baseTrajectory_.poses.pop_back();
+    } 
+    else if (pullingerror) {
+        ROS_WARN("Incorrect retracting motion. The robot is pulling the cord.");
+    } 
+    else 
+    {
+        /// Not removing point because it is enough far from the last cord point
+    }
+
+    return acceptRetract;
+}
 /**
 ******************************************************************************************************************
-* updateDispense()
+* updateForward()
 ******************************************************************************************************************
 */
-    void OdomTracker::updateDispense(const geometry_msgs::PoseStamped& base_pose, const geometry_msgs::PoseStamped& mouth_pose)
-    {
-        bool enqueueOdomMessage = false;
+bool OdomTracker::updateForward(const nav_msgs::Odometry& odom)
+{
+    /// Track robot base pose
+    geometry_msgs::PoseStamped base_pose;
 
-        double dist = -1;
-        if(reelMouthTrajectory_.poses.size() == 0)
+    base_pose.pose = odom.pose.pose;
+    base_pose.header = odom.header;
+    baseTrajectory_.header = odom.header;
+
+    bool enqueueOdomMessage = false;
+
+    double dist = -1;
+    if(baseTrajectory_.poses.empty())
+    {
+        enqueueOdomMessage = true;
+    }
+    else
+    {
+        const geometry_msgs::Point& prevPoint = baseTrajectory_.poses.back().pose.position;
+        const geometry_msgs::Point& currePoint = base_pose.pose.position;
+        dist = p2pDistance(prevPoint, currePoint);
+        //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceDispenseThresh_);
+
+        if(dist > minPointDistanceDispenseThresh_)
         {
             enqueueOdomMessage = true;
         }
         else
         {
-            const geometry_msgs::Point& prevPoint = reelMouthTrajectory_.poses.back().pose.position;
-            const geometry_msgs::Point& currePoint = mouth_pose.pose.position;
-            dist = p2pDistance(prevPoint, currePoint);
-            //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceDispenseThresh_);
-
-            if(dist > minPointDistanceDispenseThresh_)
-            {
-                enqueueOdomMessage = true;
-            }
-            else
-            {
-                //ROS_WARN("skip odom, dist: %lf", dist);
-                enqueueOdomMessage = false;
-            }
-        }
-
-        if(enqueueOdomMessage)
-        {
-            //robotBaseOdometryHistory_.push_back(odom);
-                       
-            baseTrajectory_.poses.push_back(base_pose);
-            reelMouthTrajectory_.poses.push_back(mouth_pose);
+            //ROS_WARN("skip odom, dist: %lf", dist);
+            enqueueOdomMessage = false;
         }
     }
 
-    void OdomTracker::createMouthPoseFromBasePose(const std_msgs::Header& currentHeader, const geometry_msgs::PoseStamped& base_pose, geometry_msgs::PoseStamped& mouth_pose)
+    if(enqueueOdomMessage)
     {
-        /// Math for the mouth of the reel
-        tf::Transform robot_base_transform;
-        tf::poseMsgToTF(base_pose.pose,robot_base_transform);
-
-        tf::Transform absoluteReelMoutTransform;
-        absoluteReelMoutTransform.mult(robot_base_transform, reelMouthTransform_);
-
-        tf::poseTFToMsg(absoluteReelMoutTransform, mouth_pose.pose);
-        
-		/// Copy Timestamp
-        mouth_pose.header = currentHeader;
+        baseTrajectory_.poses.push_back(base_pose);
     }
+
+    return enqueueOdomMessage;
+}
+
 /**
 ******************************************************************************************************************
 * processOdometryMessage()
 ******************************************************************************************************************
 */
-    void OdomTracker::processOdometryMessage(const nav_msgs::Odometry& odom, WorkingMode dispense_mode)      
+void OdomTracker::processOdometryMessage(const nav_msgs::Odometry& odom)      
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+
+    if(workingMode_ == WorkingMode::RECORD_PATH_FORWARD)
     {
-        std::lock_guard<std::mutex> lock(m_mutex_);
+        updateForward(odom);
+    }		
+    else if (workingMode_ == WorkingMode::CLEAR_PATH_BACKWARD)
+    {
+        updateBackward(odom);
+    }
 
-        //ROS_INFO("process odom callback queue");
-
-        // we initially accept any message if the queue is empty
-        
-         /// Track robot base pose
-        geometry_msgs::PoseStamped base_pose;
-        base_pose.pose = odom.pose.pose;
-        base_pose.header = odom.header;
-        baseTrajectory_.header = odom.header;
-
-        geometry_msgs::PoseStamped mouth_pose;
-        createMouthPoseFromBasePose(odom.header, base_pose, mouth_pose);
-
-        reelMouthTrajectory_.header = odom.header;
-        
-		if(dispense_mode == WorkingMode::DISPENSING)
-        {
-            updateDispense(base_pose, mouth_pose);
-        }		
-		else if (dispense_mode == WorkingMode::RETRACTING)
-        {
-            updateRetracting(base_pose, mouth_pose);
-        }
-
+    if(publishMessages)
+    {
         rtPublishPaths(odom.header.stamp);
     }
+}
 }
