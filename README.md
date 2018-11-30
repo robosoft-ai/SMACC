@@ -178,7 +178,7 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_);
     goToEndPoint();
   }
 
