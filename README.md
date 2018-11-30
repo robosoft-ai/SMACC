@@ -79,7 +79,14 @@ roslaunch radial_motion_example radial_motion.launch
 
 (YOUTUBE VIDEO)
 (state machine diagram)
-(rviz image)
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example.png" width="450"/>
+</p>
+
+<p align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example_statechart.png" width="450"/>
+</p>
 
 
 # Tutorial
