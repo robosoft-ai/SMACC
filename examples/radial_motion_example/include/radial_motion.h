@@ -8,20 +8,9 @@
 
 using namespace smacc;
 
-// this event is launched by any substate to make the "parent state" know that 
-// it must finish and move to the next state. This kind of event may exist in any application:
-// "some of the substates must throw this event so that the parent event is not alive forever"
-struct EvStateFinished : sc::event<EvStateFinished> {};
-
-// this event is launched by any substate to make the "parent state" know that 
-// it must finish and move to the next state. This event is typically launched for
-// this radial motion example by Reel substates. It is used to declare the "order dependency"
-// between the reel and the navigation substates. In this example, the navigation substates happen
-// always after the reel substates. Navigation substates notice that they have to start when they
-// detect this event (that was launched by the reel substate at its end)
-struct EvReelInitialized : sc::event<EvReelInitialized> {};
-
 // ----- STATES FORWARD DECLARATIONS ---
+// we organize them in namespace to enable repeating names, ie: ToolSubstate
+
 namespace NavigateToRadialStart {
 struct NavigateToRadialStart;
 };
