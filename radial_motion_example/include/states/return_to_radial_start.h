@@ -19,7 +19,7 @@ struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, RadialMotionStateM
                                mpl::list< NavigationOrthogonalLine, ToolOrthogonalLine > > // <- these are the orthogonal lines of this State
 {
     // when this state is finished then move to the RotateDegress state
-    typedef sc::transition< EvStateFinished, RotateDegress::RotateDegress> reactions;
+    typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
 
 public:
     // This is the state constructor. This code will be executed when the
@@ -56,11 +56,6 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the ReturnToRadialStart State
 struct Navigate: SmaccState<Navigate, NavigationOrthogonalLine >
 {
-// this state reacts to the following list of events:
-typedef mpl::list<
-                sc::custom_reaction< EvActionResult<smacc::SmaccMoveBaseActionClient::Result> >, 
-                sc::custom_reaction< EvReelInitialized >> reactions;
-
 public:
     // the angle of the current radial motion
     double yaw;
@@ -74,16 +69,19 @@ public:
 
         // this substate will need access to the "MoveBase" resource or plugin. In this line
         // you get the reference to this resource.
-        context<RadialMotionStateMachine >().requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ , ros::NodeHandle("move_base"));   
+        this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));   
+
+        this->requiresComponent(odomTracker_);
     
+        this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
+
         // read from the state machine yaw "global variable" to know the current line orientation
         this->getGlobalData("current_yaw", yaw);
         ROS_INFO_STREAM("[ReturnToRadialStart/Navigate] current yaw:" << yaw );
-    }
 
-    // when the reel substate is finished we will react starting the motion
-    sc::result react( const EvReelInitialized & ev )
-    {   
+        this->plannerSwitcher_->setBackwardPlanner();
+        this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
+
         returnToRadialStart();
     }
 
@@ -102,43 +100,6 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 
-    
-    // this is the callback when the navigate action of this state is finished
-    // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-    sc::result react( const EvActionResult<smacc::SmaccMoveBaseActionClient::Result> & ev )
-    {
-        ROS_INFO("Received event to movebase: %s", ev.getResult().toString().c_str());
-
-        if (ev.client == moveBaseClient_)
-        {
-            if(ev.getResult()==actionlib::SimpleClientGoalState::SUCCEEDED)
-            {
-                ROS_INFO("move base, goal position reached");
-        
-                // notify the parent State to finish via event (the current parent state reacts to this event)
-                post_event(EvStateFinished());
-                
-                // declare this substate as finished
-                return discard_event();
-                //return terminate();
-            }
-            else if (ev.getResult()==actionlib::SimpleClientGoalState::ABORTED)
-            {
-                // repeat the navigate action request to the move base node if we get ABORT as response
-                // It may work if try again. Move base sometime rejects the request because it is busy.
-                returnToRadialStart();
-
-                // this event was for us. We have used it without moving to any other state. Do not let others consume it.
-                return discard_event();
-            }
-        }
-        else
-        {
-            // the action client event success is not for this substate. Let others process this event.
-            return forward_event();
-        }
-    }
-
     // This is the substate destructor. This code will be executed when the
     // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
     ~Navigate()
@@ -151,8 +112,9 @@ public:
     // this resource can be used from any method in this state
     smacc::SmaccMoveBaseActionClient* moveBaseClient_;
 
-
     smacc_odom_tracker::OdomTracker* odomTracker_;
+
+    smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;
 };
 
 //---------------------------------------------------------------------------------------------------------

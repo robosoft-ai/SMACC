@@ -21,7 +21,7 @@ struct NavigateToEndPoint
                  mpl::list<NavigationOrthogonalLine,ToolOrthogonalLine>> // <- these are the orthogonal lines of this State
 {
   // when this state is finished move to the ReturnToRadialStart state
-  typedef sc::transition<EvStateFinished, ReturnToRadialStart::ReturnToRadialStart> reactions;
+  typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, ReturnToRadialStart::ReturnToRadialStart> reactions; 
 
 public:
   // This is the state constructor. This code will be executed when the
@@ -59,8 +59,6 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
-  typedef mpl::list<sc::custom_reaction<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>>> reactions;
-
 public:
   // the angle of the current radial motion
   double yaw;
@@ -78,8 +76,8 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresComponent(moveBaseClient_ ,ros::NodeHandle("move_base"));
-
     this->requiresComponent(odomTracker_);
+    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
     // read from the state machine yaw "global variable"
     this->getGlobalData("current_yaw", yaw);
@@ -111,40 +109,6 @@ public:
     moveBaseClient_->sendGoal(goal);
   }
 
-  // this is the callback when the navigate action of this state is finished
-  // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult<smacc::SmaccMoveBaseActionClient::Result> &ev) 
-  {
-    if (ev.client == moveBaseClient_) {
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
-      {
-        ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
-
-        // notify the parent State to finish via event (the current parent state reacts to this event)
-        post_event(EvStateFinished());
-        
-        // declare this substate as finished
-        //return terminate();
-        return discard_event();
-      } 
-      else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
-      {
-        // repeat the navigate action request to the move base node if we get ABORT as response
-        // It may work if try again. Move base sometime rejects the request because it is busy.
-        goToEndPoint();
-
-        // this event was for us. We have used it without moving to any other state. Do not let others consume it.
-        return discard_event();
-      }
-    } 
-    else 
-    {
-      // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionResultEv");
-      return forward_event();
-    }
-  }
-
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
   ~Navigate() 
@@ -158,6 +122,8 @@ private:
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
+
+  smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;  
 };
 
 //---------------------------------------------------------------------------------------------------------

@@ -29,9 +29,7 @@ This repository contains several ROS packages:
 
  * **smacc**: The core smacc library. It works as a template-based c++  header library.
 
- * **smacc_navigation_plugin**: it implements a smacc-actionclient-plugin to handle the move_base node remotely.
-
- * **smacc_reelrbtx_plugin**: it implements a smacc-actionclien-plugin to handle the reel robotics reel device.
+ * **smacc_navigation**: a set of "smacc Components" that ease the remote control of a move_base node and the creation of more complex motion strategies (changing planners, recording and undoing paths, etc.)
 
  * **radial_motion_example**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
 
@@ -60,7 +58,7 @@ The proposed methdology split the states into 2 or more statechart orthogonal li
 ## Internal Architecture
 SMACC State Machines are boost::statechart AsynchronousStateMachines that can work in a multi-threaded application. In SMACC State Machines are two main components that work concurrently in two different threads:
 
-* ***Signal Detector***. It is able to handle the action client resources communication with action servers and translate them to statechart events
+* ***Signal Detector***. It is able to handle the action client components communication with action servers and translate them to statechart events
 * ***State Machine***. It is the end-user code of the state machine itself.
 
 <p align="center">
@@ -68,17 +66,25 @@ SMACC State Machines are boost::statechart AsynchronousStateMachines that can wo
 </p>
 
 ## Executing the Radial Motion Example
-Requires: reelrbtx_control and reelrbtx_navigation packages and ridgeback packages
+This is a complete sample of a state machine that controls the motion of a simulated ridgeback mobile robot in gazebo.
+
+This example shows how smacc::Navigation components can be used to create some systematic motion based on an state machine. The robot performs a motion pattern that plots a "Start" on the plane. The state machine in the motion is combined with the usage of some external tool "for example ground painter" that is only active on forward motions.
 
 ```
-export RIDGEBACK_URDF_EXTRAS=$(rospack find reelrbtx_description)/urdf/reelrbtx.urdf.xacro
+export RIDGEBACK_URDF_EXTRAS=$(rospack find radial_motion_example)/urdf/empty.xacro
 
 roslaunch radial_motion_example radial_motion.launch
 ```
-## Usage examples
+
+(YOUTUBE VIDEO)
+(state machine diagram)
+(rviz image)
+
+
+# Tutorial
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
-### Code a minimal SMACC StateMachine
+## Code a minimal SMACC StateMachine
 In this initial example we will implement a simple state machine with a single state state that executes something at state entry and at state exit. That state machine is described in the following image:
 
 <p align="center">
@@ -103,7 +109,7 @@ struct SimpleStateMachine
 
 Every SMACC State Machine must inherit from SmaccStateMachineBase. The first template parameter is the derived class type (SimpleStateMachine itself) according to the curiosuly recurring template pattern, and the second template parameter (ToolSimpleState) would be the class name of the initial Smacc State
 
-### Code a simple SMACC State
+## Code a simple SMACC State
 
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
@@ -132,9 +138,9 @@ int main(int argc, char **argv) {
 ```
 According to the UML statchart standard, things happens essencially when the system enters in the state, when the system exits the state and when some event is triggered. The two first ones are shown in this example. The c++ Constructor code is the place you have to write your "entry code", the destructor is the place you have to write your "exit code". The constructor parameter (my_context) is a reference to the context object (in this case the state machine). This kind of constructor may be verebosy, but is required to implement the rest of SMACC tasks and always follows the same pattern.
 
-### Accessing to action client resources (AKA Action Client Plugins)
+## Creating/accessing to SmaccComponents
 
-Accessing to Action Client Shared resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
+Accessing to SMACC componets resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
 
 For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client and navigate to some position in the environment.
 
@@ -149,7 +155,7 @@ struct Navigate : SmaccState<Navigate, SimpleStateMachine>
 {
 
 public:
-  // This is the action client resource (it basically is a wrapper of the ROS Action Client for move base), please check the SMACC
+  // This is the smacc component (it basically is a wrapper of the ROS Action Client for move base), please check the SMACC
   // code to see how to implement your own action client
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
@@ -162,15 +168,13 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    moveBaseClient_ =
-        context<SimpleStateMachine>().requiresActionClient<smacc::SmaccMoveBaseActionClient>("move_base");
+    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
     goToEndPoint();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
-    geometry_msgs::PoseStamped radialStartPose;
-    context<SimpleStateMachine>().getData("radial_start_pose", radialStartPose);
+    geometry_msgs::PoseStamped radialStartPose = createInitialPose();
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
@@ -187,7 +191,7 @@ public:
 ```
 
 
-### Simple State Transition on Action Result Event
+## Simple State Transition on Action Result Event
 
 According to the UML state machines standard, transitions between states happen on events. In SMACC events can be implemented by the user or happen
 when Action Results callbacks and Action Feedback callbacks happen. In the following example we extend the previous example to transit to another state 'ExecuteToolState' when the move_base
@@ -225,7 +229,7 @@ ExecuteToolState(my_context ctx):
 };
 ```
 
-### Add custom code on Action Result Events
+## Add custom code on Action Result Events
 
 In the following example, we want to add some code to the transition between the source state "Navigate" and the
 destiny state "ExecuteToolState". This code may be any desired custom code (for example some transition guard).
@@ -283,7 +287,7 @@ ExecuteToolState(my_context ctx):
 
 ```
 
-### Adding ROS Parameters to Smacc States
+## Adding ROS Parameters to Smacc States
 
 The SMACC states can be configured from the ros parameter server based on their hierarchy
 and their class name. It is responsability of the user not to have two different state names at the same level (even if the namespace is distinct since the namespace is trimmed for parameters)
@@ -325,9 +329,9 @@ public:
 
 The param template method reads from the parameters server delegating to the method defined ros::NodeHandle handle does but already located at the exact point in the parameter name hierarchy associated to this state. SMACC is also able have methods getParam and setParam that are delegated to ros::NodeHandle in the same way.
 
-### Shared variables between states
+## Shared variables between states
 
-This following example shows how to share a variable between two states. In the Navigate state the "angle_value" variable is set using the template method "setData". Latter in the ExecuteToolState it gets the value using the template method "getData".
+This following example shows how to share a variable between two states. In the Navigate state the "angle_value" variable is set using the template method "setData". Latter in the ExecuteToolState it gets the value using the template method "getGlobalData".
 
 ```cpp
 struct Navigate : SmaccState<Navigate, SimpleStateMachine>
@@ -338,7 +342,7 @@ public:
     SmaccState<Navigate, SimpleStateMachine> (ctx)
   {
         double angle = M_PI;
-        context<SimpleStateMachine>().setData("angle_value", angle);
+        this->setGlobalData("angle_value", angle);
   }
 };
 
@@ -348,12 +352,12 @@ ExecuteToolState(my_context ctx):
     SmaccState<ExecuteToolState, SimpleStateMachine> (ctx)
     {
          int angle;
-         context<SimpleStateMachine>().getData("angle_value", angle);
+         this->getGlobalData("angle_value", angle);
     }
 };
 ```
 
-### Orthogonal Lines
+## Orthogonal Lines
 SMACC proposes to work in different orthogonal lines: Navigation, Tool1, Tool2, etc. This example shows how you can define orthogonal lines in your SMACC code.
 For example, we want to add two orthogonal lines: the navigation orthogonal line and the tool orthogonal line.
 

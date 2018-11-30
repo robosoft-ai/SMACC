@@ -40,7 +40,7 @@ void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2D
     costmap_ros_ = costmap_ros;
     ROS_WARN_NAMED("Retracting", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
-    dispensedCordPathSub_ = nh_.subscribe("reelrbtx_follow_controller/reel_base_path", 2, &RetractingGlobalPlanner::onDispensedCordTrailMsg, this);
+    dispensedCordPathSub_ = nh_.subscribe("odom_tracker_path", 2, &RetractingGlobalPlanner::onDispensedCordTrailMsg, this);
     
     ros::NodeHandle nh;
     cmd_server_ = nh.advertiseService<rrbtx_retracting_global_planner::command::Request , rrbtx_retracting_global_planner::command::Response  >("cmd", boost::bind(&RetractingGlobalPlanner::commandServiceCall,this,_1,_2));

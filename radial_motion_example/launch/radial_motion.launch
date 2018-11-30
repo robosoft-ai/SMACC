@@ -1,19 +1,46 @@
 <launch>
-    <include file="$(find reelrbtx_demos)/launch/simulated_robot_simulated_reel.launch">
-        <arg name="rqt_plot" value="false"/>
-    </include>
+    <include file="$(find ridgeback_gazebo)/launch/ridgeback_world.launch" />
+
+
+ <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+
+  <rosparam file="$(find radial_motion_example)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+  <rosparam file="$(find radial_motion_example)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+  <rosparam file="$(find ridgeback_navigation)/params/odom_nav_params/global_costmap_params.yaml" command="load" />
+  <rosparam file="$(find ridgeback_navigation)/params/odom_nav_params/local_costmap_params.yaml" command="load" />
+
+  <rosparam file="$(find ridgeback_navigation)/params/base_local_planner_params.yaml" command="load" />
+  <rosparam file="$(find ridgeback_navigation)/params/move_base_params.yaml" command="load" />
+
+  <!-- overriding some parameters for base local planner -->
+  <rosparam file="$(find radial_motion_example)/config/base_local_planer_overlay.yaml" command="load" />
+
+  <!-- retracting local planner -->  
+  <rosparam file="$(find radial_motion_example)/config/retracting_local_planner.yaml" command="load" />
+  <rosparam file="$(find radial_motion_example)/config/dispense_local_planner.yaml" command="load" />
+
+  <!-- overriding some parameters for move base -->
+  <rosparam file="$(find radial_motion_example)/config/move_base_params.yaml" command="load" />
+
+  <param name="base_global_planner" type="string" value="navfn/NavfnROS" />
+  <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS"/>
+
+  <remap from="odom" to="odometry/filtered" />
+ </node>
+
+    <include file="$(find ridgeback_navigation)/launch/include/amcl.launch" />
     
     <rosparam command="load" file="$(find radial_motion_example)/config/radial_motion_sm_config.yaml"/>
     
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find radial_motion_example)/config/navigation.rviz"/>
+
     <node pkg="radial_motion_example" type="radial_motion_example_node" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
+        <!-- for odom tracker-->
+        <remap from="/odom" to="/odometry/filtered"/>
         <!--<param name="signal_detector_loop_freq" value="1"/>-->
     </node>
     
-    <!-- smacc action servers -->
-    <node pkg="non_rt_helper" type="non_rt_helper_node" name="non_rt_helper" launch-prefix="xterm -hold -e ">
-        <param name="loop_rate" value="0.2"/>
-    </node>
-
     <node pkg="smacc_tool_plugin_template" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="xterm -hold -e ">
     </node>
 </launch>

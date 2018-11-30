@@ -3,6 +3,7 @@
 #include <radial_motion.h>
 #include <angles/angles.h>
 #include <tf/tf.h>
+#include <thread>
 
 //--------------------------------------------
 namespace RotateDegress 
@@ -18,7 +19,7 @@ struct RotateDegress
     : SmaccState<RotateDegress, RadialMotionStateMachine, mpl::list<NavigationOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State 
 {
   // when this state is finished then move to the NavigateToEndPoint state
-  typedef sc::transition<EvStateFinished, NavigateToEndPoint::NavigateToEndPoint> reactions;
+  typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>,  NavigateToEndPoint::NavigateToEndPoint> reactions; 
 
 public:
   // This is the state constructor. This code will be executed when the
@@ -56,10 +57,6 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
-  // this state reacts to the following list of events:
-  typedef mpl::list<sc::custom_reaction<EvActionResult<smacc::SmaccMoveBaseActionClient::Result> >,
-                    sc::custom_reaction<EvReelInitialized>> reactions;
-
 public:
 
   // This is the substate constructor. This code will be executed when the
@@ -69,7 +66,11 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource
-        this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+
+    this->requiresComponent(odomTracker_ );   
+
+    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
     // read parameters from ros parameter server
     readParameters();
@@ -94,11 +95,18 @@ public:
     this->setGlobalData("current_yaw", yaw);
     ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
 
+    this->plannerSwitcher_->setForwardPlanner();
+    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+
     // check if the motion is in the latest straight motion
     if(i == linear_trajectories_count_) 
     {
       ROS_WARN("STOP ROTATING. TERMINAL STATE OF THE STATE MACHINE");
       terminate();
+    }
+    else
+    {
+      rotateDegrees();
     }
   }
 
@@ -114,15 +122,8 @@ public:
     ROS_INFO_STREAM("linear_trajectories_count:" << linear_trajectories_count_);
   }
 
-  // when the reel substate is finished we will react starting the motion
-  sc::result react(const EvReelInitialized &ev) 
-  {
-      ROS_INFO("Reacting to reel initialized state. Rotating...");
-      rotateTenDegrees();
-  }
-
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void rotateTenDegrees() 
+  void rotateDegrees() 
   {
     geometry_msgs::PoseStamped radialStart;
     this->getGlobalData("radial_start_pose", radialStart);
@@ -134,41 +135,6 @@ public:
     goal.target_pose.pose.orientation =
         tf::createQuaternionMsgFromRollPitchYaw(0, 0, yaw);
     moveBaseClient_->sendGoal(goal);
-  }
-
-  // this is the callback when the navigate action of this state is finished
-  // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  sc::result react(const EvActionResult<smacc::SmaccMoveBaseActionClient::Result>  &ev) 
-  {
-    if (ev.client == moveBaseClient_) 
-    {
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
-      {
-        ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
-        
-        // notify the parent State to finish via event (the current parent state reacts to this event)
-        post_event(EvStateFinished());
-        
-        // declare this substate as finished
-        return discard_event();
-        //return terminate();
-      }
-      else 
-      {
-        // repeat the navigate action request to the move base node if we get ABORT as response
-        // It may work if try again. Move base sometime rejects the request because it is busy.
-        rotateTenDegrees();
-
-        // this event was for us. We have used it without moving to any other state. Do not let others consume it.
-        return discard_event();
-      } 
-    }
-    else 
-    {
-      // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionResultEv");
-      return forward_event();
-    }
   }
 
   // This is the substate destructor. This code will be executed when the
@@ -184,6 +150,8 @@ private:
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
+
+  smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;
 
   // the initial index of the linear motion (factor of angle_increment_degrees)
   // value specified in parameters server

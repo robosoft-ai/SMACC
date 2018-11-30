@@ -1,6 +1,7 @@
 #pragma once
 
 #include <radial_motion.h>
+#include <thread>
 
 namespace NavigateToRadialStart 
 {
@@ -20,7 +21,6 @@ struct NavigateToRadialStart
                  mpl::list<NavigationOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State
 {
   // when this state is finished then move to the RotateDegress state
-  //typedef sc::transition<EvStateFinished, RotateDegress::RotateDegress> reactions;
   typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
 
 public:
@@ -69,9 +69,6 @@ struct NavigationOrthogonalLine
 //--------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the NavigateToRadialStart State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
-  typedef mpl::list</*sc::custom_reaction<EvActionResultBase<smacc::SmaccMoveBaseActionClient::Result>>,*/
-                    sc::custom_reaction<EvReelInitialized>> reactions;
-
 public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -82,7 +79,14 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-        this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(odomTracker_);
+    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
+
+    this->plannerSwitcher_->setForwardPlanner();
+    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+
+    goToRadialStart(); 
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
@@ -109,49 +113,6 @@ public:
     ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);
   }
 
-  // when the reel substate is finished we will react starting the motion
-  sc::result react(const EvReelInitialized &ev) 
-  { 
-    goToRadialStart(); 
-  }
-
-  // this is the callback when the navigate action of this state is finished
-  // if it succeeded we will notify to the parent State to finish sending a EvStateFinishedEvent
-  /*
-  sc::result react(const EvActionResultBase<smacc::SmaccMoveBaseActionClient::Result> &ev) 
-  {
-    if (ev.client == moveBaseClient_) 
-    {
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED) 
-      {
-        ROS_INFO("move base, goal position reached.");
-
-        // notify the parent State to finish via event (the current parent state reacts to this event)
-        post_event(EvStateFinished());
-        
-        // declare this substate as finished
-        //return terminate();
-        return discard_event();
-      } 
-      else if (ev.getResult() == actionlib::SimpleClientGoalState::ABORTED) 
-      {
-        // repeat the navigate action request to the move base node if we get ABORT as response
-        // It may work if try again. Move base sometime rejects the request because it is busy.
-        goToRadialStart();
-
-        // this event was for us. We have used it without moving to any other state. Do not let others consume it.
-        return discard_event();
-      }
-    } 
-    else 
-    {
-      // the action client event success is not for this substate. Let others process this event.
-      ROS_INFO("navigate substate lets other process the EvActionResultEv");
-      return forward_event();
-    }
-  }
-  */
-
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
   ~Navigate() 
@@ -165,6 +126,8 @@ private:
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
+
+  smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;
 };
 
 //---------------------------------------------------------------------------------------------------------
@@ -185,10 +148,9 @@ public:
 };
 //---------------------------------------------------------------------------------------------------------
 struct ToolSubstate
-    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
-  
+    : SmaccState<ToolSubstate, ToolOrthogonalLine> 
+{  
 public:
-
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
   ToolSubstate(my_context ctx) 

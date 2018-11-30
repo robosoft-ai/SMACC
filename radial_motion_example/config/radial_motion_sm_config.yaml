@@ -9,7 +9,7 @@ RadialMotionStateMachine:
             Navigate:
                 initial_orientation_index: 0 # the initial index of the linear motion (factor of angle_increment_degrees)
                 angle_increment_degree: 15    # the increment of angle between to linear motions
-                linear_trajectories_count: 3  # the number of linear trajectories of the radial motion
+                linear_trajectories_count: 12  # the number of linear trajectories of the radial motion
     NavigateToEndPoint:
         NavigationOrthogonalLine:
             Navigate:

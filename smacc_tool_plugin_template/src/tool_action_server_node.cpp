@@ -74,7 +74,7 @@ void execute(const smacc_tool_plugin_template::ToolControlGoalConstPtr& goal)  /
     if(as_->isPreemptRequested())
     {
        // a new request is being executed, we will stop this one
-       ROS_WARN("NonRtHelper request preempted. Forgetting older request.");
+       ROS_WARN("ToolActionServer request preempted. Forgetting older request.");
        as_->setPreempted(); 
        return;
     }

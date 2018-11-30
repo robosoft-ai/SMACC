@@ -65,7 +65,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES ${PROJECT_NAME}
+   LIBRARIES ${PROJECT_NAME} planner_switcher
    CATKIN_DEPENDS smacc
 #  DEPENDS system_lib
 )
@@ -85,6 +85,10 @@ include_directories(
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
    src/odom_tracker.cpp
+)
+
+add_library(planner_switcher
+   src/planner_switcher.cpp
 )
 
  target_link_libraries(${PROJECT_NAME}

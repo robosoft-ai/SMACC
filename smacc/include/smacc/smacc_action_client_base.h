@@ -123,7 +123,7 @@ protected:
 
         if(ok)
         {
-            ROS_INFO("Sending feedback event");
+            //ROS_INFO("Sending feedback event");
             scheduler->queue_event(processorHandle, actionFeedbackEvent);
         }
     }    

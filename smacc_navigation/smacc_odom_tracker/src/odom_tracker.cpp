@@ -7,7 +7,7 @@ OdomTracker::OdomTracker()
 {
     workingMode_ = WorkingMode::RECORD_PATH_FORWARD;
     publishMessages = true;
-    subscribeToOdometryTopic_ = false;
+    subscribeToOdometryTopic_ = true;
 }
         
 /**
@@ -17,7 +17,7 @@ OdomTracker::OdomTracker()
 */
 void OdomTracker::init(ros::NodeHandle& nh)
 {
-    ROS_INFO("Initializing Odometry Tracker");
+    ROS_WARN("Initializing Odometry Tracker");
 
     if(!nh.getParam("min_point_distance_dispense_thresh",minPointDistanceDispenseThresh_))
     {
@@ -30,9 +30,11 @@ void OdomTracker::init(ros::NodeHandle& nh)
     }
 
     if(this->subscribeToOdometryTopic_)
+    {
         odomSub_= nh.subscribe("odom", 1, &OdomTracker::processOdometryMessage, this);
+    }
 
-    robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_base_path", 1);
+    robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "odom_tracker_path", 1);
 }
 
 
@@ -43,8 +45,10 @@ void OdomTracker::init(ros::NodeHandle& nh)
 */
 void OdomTracker::setWorkingMode(WorkingMode workingMode)
 {
+    //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
     workingMode_ = workingMode;
+    //ROS_INFO("odom_tracker m_mutex release");
 }
 
 /**
@@ -54,19 +58,24 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
 */
 void OdomTracker::setPublishMessages(bool value)
 {
+    //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
     publishMessages = value;
+    //ROS_INFO("odom_tracker m_mutex release");
 }
 
 void OdomTracker::pushPath()
 {
+    ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
     pathStack_.push_back(baseTrajectory_);
     baseTrajectory_.poses.clear();
+    ROS_INFO("odom_tracker m_mutex release");
 }
         
 void OdomTracker::popPath()
 {
+    ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
     
     if(!pathStack_.empty())
@@ -74,6 +83,8 @@ void OdomTracker::popPath()
         baseTrajectory_.poses = pathStack_.back().poses;
         pathStack_.pop_back();
     }
+
+    ROS_INFO("odom_tracker m_mutex release");
 }
 
 /**
@@ -196,6 +207,7 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry& odom)
 */
 void OdomTracker::processOdometryMessage(const nav_msgs::Odometry& odom)      
 {
+    //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
 
     if(workingMode_ == WorkingMode::RECORD_PATH_FORWARD)
@@ -207,9 +219,12 @@ void OdomTracker::processOdometryMessage(const nav_msgs::Odometry& odom)
         updateBackward(odom);
     }
 
+    //ROS_WARN("odomTracker odometry callback");
     if(publishMessages)
     {
         rtPublishPaths(odom.header.stamp);
     }
+
+    //ROS_INFO("odom_tracker m_mutex release");
 }
 }
