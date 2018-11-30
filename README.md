@@ -36,6 +36,11 @@ This repository contains several ROS packages:
 
  * **smacc_tool_plugin_template**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
 
+## Future Work
+ * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
+ * code generation based on uml diagrams
+ * improving backwards planners for non linear paths
+ 
 ## Shared Resources and Shared variables
 
 * ***Shared Action Client Resources*** Action servers in SMACC play an important role because all low-level funcionality must be located on them. In order to interact with these Action Servers SMACC provide an easy way to create shared ActionClients that can be accessed from any State. SMACC is in charge of eficently handle all the requests and send the resulting events from action servers (result messages, feedback messages, etc) to the "subscribed states" in form of statechart events. (See more about his in section internal architecture)
