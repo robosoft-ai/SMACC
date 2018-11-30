@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <smacc_tool_plugin_template/smacc_tool_plugin.h>
 #include <pluginlib/class_list_macros.h>
 

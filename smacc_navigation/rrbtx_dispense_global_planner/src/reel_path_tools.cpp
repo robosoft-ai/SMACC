@@ -1,4 +1,8 @@
-
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>

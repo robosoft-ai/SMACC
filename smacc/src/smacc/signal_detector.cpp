@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <smacc/signal_detector.h>
 #include <smacc/smacc_action_client_base.h>
 

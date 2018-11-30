@@ -76,16 +76,13 @@ export RIDGEBACK_URDF_EXTRAS=$(rospack find radial_motion_example)/urdf/empty.xa
 
 roslaunch radial_motion_example radial_motion.launch
 ```
-
-(YOUTUBE VIDEO)
-(state machine diagram)
-
 <p align="center">
+<div style="float:left">
 <img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example.png" width="450"/>
-</p>
-
-<p align="center">
+</div>
+<div style="float:left">
 <img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example_statechart.png" width="450"/>
+</div>
 </p>
 
 

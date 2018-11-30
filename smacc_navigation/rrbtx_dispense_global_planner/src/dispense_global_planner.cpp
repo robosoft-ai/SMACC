@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/copy.hpp>

@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <actionlib/server/simple_action_server.h>
 #include <std_msgs/UInt8.h>
 #include <functional>

@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_odom_tracker/OdomTrackerAction.h>
 #include <actionlib/server/simple_action_server.h>
