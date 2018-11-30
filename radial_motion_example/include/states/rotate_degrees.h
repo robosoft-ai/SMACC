@@ -68,11 +68,10 @@ public:
     ROS_INFO("Entering Navigate");
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
-    // you get the reference to this resource.
-    moveBaseClient_ =
+    // you get the reference to this resource
         context<RadialMotionStateMachine>()
-            .requiresComponent<smacc::SmaccMoveBaseActionClient>(
-                "move_base");
+            .requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ ,
+                ros::NodeHandle("move_base"));
 
     // read parameters from ros parameter server
     readParameters();
@@ -185,6 +184,8 @@ private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
   // this resource can be used from any method in this state
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+
+  smacc_odom_tracker::OdomTracker* odomTracker_;
 
   // the initial index of the linear motion (factor of angle_increment_degrees)
   // value specified in parameters server

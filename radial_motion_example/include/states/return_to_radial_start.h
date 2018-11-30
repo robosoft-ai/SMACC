@@ -74,7 +74,7 @@ public:
 
         // this substate will need access to the "MoveBase" resource or plugin. In this line
         // you get the reference to this resource.
-        moveBaseClient_ = context<RadialMotionStateMachine >().requiresComponent<smacc::SmaccMoveBaseActionClient>("move_base");   
+        context<RadialMotionStateMachine >().requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ , ros::NodeHandle("move_base"));   
     
         // read from the state machine yaw "global variable" to know the current line orientation
         context<RadialMotionStateMachine >().getData("current_yaw", yaw);
@@ -150,6 +150,9 @@ public:
     // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
     // this resource can be used from any method in this state
     smacc::SmaccMoveBaseActionClient* moveBaseClient_;
+
+
+    smacc_odom_tracker::OdomTracker* odomTracker_;
 };
 
 //---------------------------------------------------------------------------------------------------------
@@ -180,9 +183,7 @@ public:
     : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
-
-    toolActionClient_ =
-        context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccToolActionClient>("tool_action_server");
+    context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccToolActionClient>(toolActionClient_, ros::NodeHandle("tool_action_server"));
 
     smacc::SmaccToolActionClient::Goal goal;
     goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;

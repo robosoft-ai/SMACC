@@ -6,20 +6,34 @@ namespace smacc
 using namespace actionlib;
 
  
-ISmaccActionClient::ISmaccActionClient(std::string action_client_namespace) 
+ISmaccActionClient::ISmaccActionClient() 
 {
-    name_ = action_client_namespace;
-    ROS_DEBUG("Creating Action Client %s", action_client_namespace.c_str());
 }
 
 ISmaccActionClient::~ISmaccActionClient()
 {
 }
 
+void ISmaccActionClient::init(ros::NodeHandle& nh)
+{
+    name_ = nh.getNamespace();
+    ROS_DEBUG("Creating Action Client %s", name_.c_str());
+}
+
 //-----------------------------------------------------------------------
 
 ISmaccComponent::~ISmaccComponent()
 {
+}
+
+
+ISmaccComponent::ISmaccComponent()
+{
+}
+
+void ISmaccComponent::init(ros::NodeHandle& nh)
+{
+
 }
 
 void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)

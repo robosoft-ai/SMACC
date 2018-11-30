@@ -4,14 +4,7 @@
 namespace smacc
 {
 
- SmaccMoveBaseActionClient::SmaccMoveBaseActionClient()
-: Base("")
-{
-
-}
-
-SmaccMoveBaseActionClient::SmaccMoveBaseActionClient(std::string action_server_namespace)
-    : Base(action_server_namespace)
+SmaccMoveBaseActionClient::SmaccMoveBaseActionClient()
 {
     //ROS_INFO("Smacc Move Base Action Client");
 }

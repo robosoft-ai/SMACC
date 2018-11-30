@@ -21,6 +21,7 @@ SignalDetector::SignalDetector(SmaccScheduler* scheduler)
 */
 void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo)
 {
+    std::lock_guard lock(m_mutex);
     ROS_INFO("Signal detector is aware of the '-- %s -- action client request'", actionClientRequestInfo->getName().c_str());
     openRequests_.push_back(actionClientRequestInfo);
     ROS_INFO("Added to the opened requests list");

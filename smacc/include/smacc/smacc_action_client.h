@@ -12,9 +12,14 @@ using namespace actionlib;
 class ISmaccActionClient: public ISmaccComponent
 {
 public:
+
+    ISmaccActionClient();
+
     // the destructor. This is called when the object is not 
     // referenced anymore by its owner
     virtual ~ISmaccActionClient();
+
+    virtual void init(ros::NodeHandle& nh) override;
 
     // return the current state of the actionclient
     virtual SimpleClientGoalState getState()=0;
@@ -36,9 +41,6 @@ protected:
 
     // the ros path where the action is located
     std::string name_;
-
-    // simple factory pattern
-    ISmaccActionClient(std::string action_client_namespace);
 
     friend class SignalDetector;
 };

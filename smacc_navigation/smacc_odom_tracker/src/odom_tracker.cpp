@@ -7,6 +7,7 @@ OdomTracker::OdomTracker()
 {
     workingMode_ = WorkingMode::RECORD_PATH_FORWARD;
     publishMessages = true;
+    subscribeToOdometryTopic_ = false;
 }
         
 /**
@@ -14,7 +15,7 @@ OdomTracker::OdomTracker()
 * init()
 ******************************************************************************************************************
 */
-void OdomTracker::init(ros::NodeHandle& nh, bool subscribeToOdometryTopic)
+void OdomTracker::init(ros::NodeHandle& nh)
 {
     ROS_INFO("Initializing Odometry Tracker");
 
@@ -28,7 +29,7 @@ void OdomTracker::init(ros::NodeHandle& nh, bool subscribeToOdometryTopic)
         minPointDistanceRetractThresh_ = 0.1; // 1 mm
     }
 
-    if(subscribeToOdometryTopic)
+    if(this->subscribeToOdometryTopic_)
         odomSub_= nh.subscribe("odom", 1, &OdomTracker::processOdometryMessage, this);
 
     robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "reel_base_path", 1);

@@ -30,7 +30,7 @@ class OdomTracker: public smacc::ISmaccComponent
         /// Must be called at the begining of the execution
         // by default, the component start in record_forward mode and publishing the
         // current path
-        virtual void init(ros::NodeHandle& h, bool subscribeOdometryTopic= true);
+        virtual void init(ros::NodeHandle& nh) override;
 
         // threadsafe
         /// odom callback: Updates the path - this must be called periodically for each odometry message. 
@@ -85,6 +85,9 @@ class OdomTracker: public smacc::ISmaccComponent
         WorkingMode workingMode_;
 
         std::vector<nav_msgs::Path> pathStack_;
+
+        // subscribes to topic on init if true
+        bool subscribeToOdometryTopic_;
 
         std::mutex m_mutex_;
 };

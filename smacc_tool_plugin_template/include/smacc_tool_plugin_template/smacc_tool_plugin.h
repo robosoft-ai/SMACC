@@ -11,7 +11,6 @@ class SmaccToolActionClient: public SmaccActionClientBase<smacc_tool_plugin_temp
 
     public:
         SmaccToolActionClient();
-        SmaccToolActionClient(std::string action_server_namespace);
         virtual std::string getName() const override;
         virtual ~SmaccToolActionClient();
 };

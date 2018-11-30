@@ -6,14 +6,8 @@ namespace smacc
 {
 
 SmaccToolActionClient::SmaccToolActionClient()
-: Base("")
 {
 
-}
-
-SmaccToolActionClient::SmaccToolActionClient(std::string action_server_namespace)
-    : Base(action_server_namespace)
-{
 }
 
 std::string SmaccToolActionClient::getName() const

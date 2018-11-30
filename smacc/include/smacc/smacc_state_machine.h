@@ -20,8 +20,9 @@ public:
     virtual ~ISmaccStateMachine();
 
     template <typename SmaccComponentType>
-    SmaccComponentType* requiresComponent(std::string action_namespace)
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
     {
+        std::lock_guard lock(m_mutex);
         std::string pluginkey = boost::core::demangle(typeid(SmaccComponentType).name());
         SmaccComponentType* ret;
 
@@ -29,13 +30,13 @@ public:
 
         if( it == plugins_.end())
         {
-            ROS_INFO("%s resource is required. Creating a new instance.", pluginkey.c_str());
+            ROS_INFO("%s smacc component is required. Creating a new instance.", pluginkey.c_str());
 
-            ret = new SmaccComponentType(action_namespace);
+            ret = new SmaccComponentType();
+            ret->init(nh);
             ret->setStateMachine(this);
             plugins_ [pluginkey] = static_cast<smacc::ISmaccComponent*>(ret);
             ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
-
         }
         else
         {
@@ -43,12 +44,13 @@ public:
             ret = dynamic_cast<SmaccComponentType*>(it->second);
         }
     
-        return ret;
+        storage = ret;
     }
 
     template <typename T>
     bool getData(std::string name, T& ret)
     {
+        std::lock_guard lock(m_mutex);
         if(!globalData_.count(name))
         {
             return false;
@@ -71,6 +73,7 @@ public:
     template <typename T>
     void setData(std::string name, T value)
     {
+        std::lock_guard lock(m_mutex);
         globalData_[name] = value;
     }
 
@@ -78,6 +81,8 @@ public:
     void registerActionClientRequest(ISmaccActionClient* component);
 
 private:
+
+    std::mutex m_mutex_;
     
     std::map<std::string, smacc::ISmaccComponent*> plugins_;
 
@@ -85,7 +90,5 @@ private:
 
     //event to notify to the signaldetection thread that a request has been created
     SignalDetector* signalDetector_;
-
-    
 };
 }

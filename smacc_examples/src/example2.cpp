@@ -36,8 +36,7 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    moveBaseClient_ =
-        context<SimpleStateMachine>().requiresComponent<smacc::SmaccMoveBaseActionClient>("move_base");
+    context<SimpleStateMachine>().requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_, ros::NodeHandle("move_base"));
     goToEndPoint();
   }
 

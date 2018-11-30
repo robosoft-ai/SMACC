@@ -3,6 +3,7 @@
 #include <smacc/smacc.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <smacc_tool_plugin_template/smacc_tool_plugin.h>
+#include <smacc_odom_tracker/odom_tracker.h>
 
 
 using namespace smacc;

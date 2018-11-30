@@ -22,11 +22,16 @@ class SmaccActionClientBase: public ISmaccActionClient
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
 
-    SmaccActionClientBase(std::string action_client_namespace, int feedback_queue_size=10)
-        :ISmaccActionClient(action_client_namespace),
-        client_(action_client_namespace,false) 
+    SmaccActionClientBase(int feedback_queue_size=10)
+        :ISmaccActionClient()
     {
         feedback_queue_size_= feedback_queue_size;
+    }
+
+    virtual void init(ros::NodeHandle& nh) override
+    {
+        ISmaccActionClient::init(nh);
+        client_ = std::make_shared<ActionClient>(name_,false) ;
     }
 
     virtual ~SmaccActionClientBase()
@@ -36,12 +41,12 @@ class SmaccActionClientBase: public ISmaccActionClient
     virtual void cancelGoal()
     {
         ROS_INFO("Cancelling goal of %s", this->getName().c_str());
-        client_.cancelGoal();
+        client_->cancelGoal();
     }
 
     virtual SimpleClientGoalState getState() override
     {
-        return client_.getState();
+        return client_->getState();
     }
 
     virtual bool hasFeedback() override
@@ -53,10 +58,10 @@ class SmaccActionClientBase: public ISmaccActionClient
     {
         ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ <<"\"");
         
-        if(!client_.isServerConnected())
+        if(!client_->isServerConnected())
         {
             ROS_INFO("%s [at %s]: not connected with actionserver, waiting ..." , getName().c_str(), getNamespace().c_str());
-            client_.waitForServer();
+            client_->waitForServer();
         }
 
         ROS_INFO_STREAM(getName()<< ": Goal Value: " << std::endl << goal);
@@ -65,13 +70,13 @@ class SmaccActionClientBase: public ISmaccActionClient
         SimpleActiveCallback active_cb;
         SimpleFeedbackCallback feedback_cb = boost::bind(&SmaccActionClientBase<ActionType>::onFeedback,this,_1);
 
-        client_.sendGoal(goal,done_cb,active_cb,feedback_cb);
+        client_->sendGoal(goal,done_cb,active_cb,feedback_cb);
 
         stateMachine_->registerActionClientRequest(this);
     }
 
 protected:
-    ActionClient client_;
+    std::shared_ptr<ActionClient> client_;
     int feedback_queue_size_;
     std::list<Feedback> feedback_queue_;
 

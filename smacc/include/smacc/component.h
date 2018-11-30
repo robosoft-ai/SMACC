@@ -9,7 +9,12 @@ namespace smacc
 class ISmaccComponent
 {
 public:
+    ISmaccComponent();
+
     virtual ~ISmaccComponent();
+
+    // it is called just after the component is created by the State Machine
+    virtual void init(ros::NodeHandle& nh);
 
     // assings the owner of this resource to the given state machine parameter object 
     void setStateMachine(ISmaccStateMachine* stateMachine);
