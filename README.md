@@ -36,6 +36,11 @@ This repository contains several ROS packages:
 
  * **smacc_tool_plugin_template**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
 
+## Future Work
+ * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
+ * code generation based on uml diagrams
+ * improving backwards planners for non linear paths
+ 
 ## Shared Resources and Shared variables
 
 * ***Shared Action Client Resources*** Action servers in SMACC play an important role because all low-level funcionality must be located on them. In order to interact with these Action Servers SMACC provide an easy way to create shared ActionClients that can be accessed from any State. SMACC is in charge of eficently handle all the requests and send the resulting events from action servers (result messages, feedback messages, etc) to the "subscribed states" in form of statechart events. (See more about his in section internal architecture)
@@ -77,11 +82,11 @@ export RIDGEBACK_URDF_EXTRAS=$(rospack find radial_motion_example)/urdf/empty.xa
 roslaunch radial_motion_example radial_motion.launch
 ```
 <p align="center">
-<div style="float:left">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example.png" width="450"/>
+<div style="float:left" align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example.png" width="400"/>
 </div>
-<div style="float:left">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example_statechart.png" width="450"/>
+<div style="float:left" align="center">
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example_statechart.png" width="400"/>
 </div>
 </p>
 
@@ -173,7 +178,7 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_);
     goToEndPoint();
   }
 
