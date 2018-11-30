@@ -114,7 +114,7 @@ public:
 
     smacc_odom_tracker::OdomTracker* odomTracker_;
 
-    smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;
+    smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;
 };
 
 //---------------------------------------------------------------------------------------------------------

@@ -156,7 +156,7 @@ private:
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
 
-  smacc_odom_tracker::PlannerSwitcher* plannerSwitcher_;
+  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;
 
   // the initial index of the linear motion (factor of angle_increment_degrees)
   // value specified in parameters server
