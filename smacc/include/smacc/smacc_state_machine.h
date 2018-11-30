@@ -6,6 +6,7 @@
 #include <boost/core/demangle.hpp>
 #include <boost/any.hpp>
 #include <map>
+#include <mutex>
 
 namespace smacc
 {
@@ -22,7 +23,7 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
     {
-        std::lock_guard lock(m_mutex);
+        std::lock_guard<std::mutex> lock(m_mutex_);
         std::string pluginkey = boost::core::demangle(typeid(SmaccComponentType).name());
         SmaccComponentType* ret;
 
@@ -50,7 +51,8 @@ public:
     template <typename T>
     bool getData(std::string name, T& ret)
     {
-        std::lock_guard lock(m_mutex);
+        std::lock_guard<std::mutex> lock(m_mutex_);
+        
         if(!globalData_.count(name))
         {
             return false;
@@ -73,7 +75,7 @@ public:
     template <typename T>
     void setData(std::string name, T value)
     {
-        std::lock_guard lock(m_mutex);
+        std::lock_guard<std::mutex> lock(m_mutex_);
         globalData_[name] = value;
     }
 

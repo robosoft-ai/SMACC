@@ -43,7 +43,7 @@ public:
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    context<SimpleStateMachine>().getData("radial_start_pose", radialStartPose);
+    this->getGlobalData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();

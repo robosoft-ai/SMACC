@@ -62,6 +62,24 @@ class SmaccState : public sc::simple_state<
       return classname;
     }
 
+    template <typename T>
+    bool getGlobalData(std::string name, T& ret)
+    {
+        return base_type::outermost_context().getData(name,ret);
+    }
+
+    template <typename T>
+    void setGlobalData(std::string name, T value)
+    {
+        base_type::outermost_context().setData(name,value);
+    }
+
+    template <typename SmaccComponentType>
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
+    {
+      base_type::outermost_context().requiresComponent(storage,nh);
+    }
+  
     SmaccState( my_context ctx )
     {
       this->set_context( ctx.pContext_ );

@@ -6,8 +6,8 @@ namespace smacc
 {
 ISmaccStateMachine::ISmaccStateMachine( SignalDetector* signalDetector)
 {
-    signalDetector_ = signalDetector;
     ROS_INFO("Creating State Machine Base");
+    signalDetector_ = signalDetector;
     signalDetector_->initialize(this);
 } 
 
@@ -19,6 +19,8 @@ ISmaccStateMachine::~ISmaccStateMachine( )
 /// used by the actionclients when a new send goal is launched
 void ISmaccStateMachine::registerActionClientRequest(ISmaccActionClient* client)
 {
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    
     ROS_INFO("Registering action client request: %s", client->getName().c_str());  
     signalDetector_->registerActionClientRequest(client); 
 }

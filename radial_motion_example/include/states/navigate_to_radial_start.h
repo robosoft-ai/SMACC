@@ -82,9 +82,7 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-        context<RadialMotionStateMachine>()
-            .requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ , ros::NodeHandle(
-                "move_base"));
+        this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
@@ -97,8 +95,7 @@ public:
 
     // store the start pose on the state machine storage so that it can
     // be referenced from other states (for example return to radial start)
-    context<RadialMotionStateMachine>().setData("radial_start_pose",
-                                                goal.target_pose);
+    this->setGlobalData("radial_start_pose", goal.target_pose);
 
     moveBaseClient_->sendGoal(goal);
   }
@@ -198,7 +195,7 @@ public:
     : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
-    context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccToolActionClient>(toolActionClient_ , ros::NodeHandle("tool_action_server"));
+    this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));
 
     smacc::SmaccToolActionClient::Goal goal;
     goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;

@@ -77,12 +77,12 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ ,ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_ ,ros::NodeHandle("move_base"));
 
-    context<RadialMotionStateMachine>().requiresComponent(odomTracker_);
+    this->requiresComponent(odomTracker_);
 
     // read from the state machine yaw "global variable"
-    context<RadialMotionStateMachine>().getData("current_yaw", yaw);
+    this->getGlobalData("current_yaw", yaw);
     ROS_INFO_STREAM("[NavigateToEndPoint/Navigate] current yaw: " << yaw);
 
     // straight motion distance
@@ -95,7 +95,7 @@ public:
   // auxiliar function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStartPose);
+    this->getGlobalData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
@@ -190,7 +190,7 @@ public:
   {
     ROS_INFO("Entering ToolSubstate");
 
-    context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccToolActionClient>(toolActionClient_ ,ros::NodeHandle("tool_action_server"));
+    this->requiresComponent(toolActionClient_ ,ros::NodeHandle("tool_action_server"));
 
     smacc::SmaccToolActionClient::Goal goal;
     goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;

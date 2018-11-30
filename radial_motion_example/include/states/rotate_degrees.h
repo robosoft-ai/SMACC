@@ -69,15 +69,13 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource
-        context<RadialMotionStateMachine>()
-            .requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ ,
-                ros::NodeHandle("move_base"));
+        this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
 
     // read parameters from ros parameter server
     readParameters();
 
     int i;
-    if (!context<RadialMotionStateMachine>().getData("angle_index", i)) 
+    if (!this->getGlobalData("angle_index", i)) 
     {
       // this is the first radial motion (influences to the initial angle)
       i = initial_orientation_index_;
@@ -89,11 +87,11 @@ public:
 
     // sets from the state machine i "global variable" to know the current orientation
     ROS_INFO("[RotateDegrees/Navigate] Radial angle index: %d", i);
-    context<RadialMotionStateMachine>().setData("angle_index", i);
+    this->setGlobalData("angle_index", i);
 
     // get the angle according to the angle index
     yaw = i * angles::from_degrees(angle_increment_degree_);
-    context<RadialMotionStateMachine>().setData("current_yaw", yaw);
+    this->setGlobalData("current_yaw", yaw);
     ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
 
     // check if the motion is in the latest straight motion
@@ -127,7 +125,7 @@ public:
   void rotateTenDegrees() 
   {
     geometry_msgs::PoseStamped radialStart;
-    context<RadialMotionStateMachine>().getData("radial_start_pose", radialStart);
+    this->getGlobalData("radial_start_pose", radialStart);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose = radialStart;

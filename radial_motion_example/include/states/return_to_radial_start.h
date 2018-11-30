@@ -77,7 +77,7 @@ public:
         context<RadialMotionStateMachine >().requiresComponent<smacc::SmaccMoveBaseActionClient>(moveBaseClient_ , ros::NodeHandle("move_base"));   
     
         // read from the state machine yaw "global variable" to know the current line orientation
-        context<RadialMotionStateMachine >().getData("current_yaw", yaw);
+        this->getGlobalData("current_yaw", yaw);
         ROS_INFO_STREAM("[ReturnToRadialStart/Navigate] current yaw:" << yaw );
     }
 
@@ -93,7 +93,7 @@ public:
         smacc::SmaccMoveBaseActionClient::Goal goal;
         geometry_msgs::PoseStamped radialStartPose;
 
-        context<RadialMotionStateMachine >().getData("radial_start_pose", radialStartPose);
+        this->getGlobalData("radial_start_pose", radialStartPose);
 
         goal.target_pose=radialStartPose;
         goal.target_pose.header.stamp=ros::Time::now();
@@ -183,7 +183,7 @@ public:
     : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
   {
     ROS_INFO("Entering ToolSubstate");
-    context<RadialMotionStateMachine>().requiresComponent<smacc::SmaccToolActionClient>(toolActionClient_, ros::NodeHandle("tool_action_server"));
+    this->requiresComponent(toolActionClient_, ros::NodeHandle("tool_action_server"));
 
     smacc::SmaccToolActionClient::Goal goal;
     goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
