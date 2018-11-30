@@ -122,7 +122,7 @@ bool RetractingLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_v
             if (dist*2 >= carrot_distance_ || angular_error >= 0.01) {
                 // target pose found
                 ok = true;
-                ROS_INFO("Retracting: %lf", 100.0 * currentPoseIndex_ / (double)backwardsPlanPath_.size());
+                //ROS_INFO("Retracting: %lf", 100.0 * currentPoseIndex_ / (double)backwardsPlanPath_.size());
             }
         }
 

@@ -10,6 +10,7 @@
 #include <memory>
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
+#include <smacc/smacc.h>
 
 namespace smacc_odom_tracker
 {
@@ -21,7 +22,7 @@ enum class WorkingMode : uint8_t {
 };
 
 /// This class track the required distance of the cord based on the external localization system
-class OdomTracker
+class OdomTracker: public smacc::ISmaccComponent
 {
     public:      
         OdomTracker();

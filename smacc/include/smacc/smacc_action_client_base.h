@@ -33,8 +33,6 @@ class SmaccActionClientBase: public ISmaccActionClient
     {
     }
 
-    virtual std::string getName() const =0;
-
     virtual void cancelGoal()
     {
         ROS_INFO("Cancelling goal of %s", this->getName().c_str());

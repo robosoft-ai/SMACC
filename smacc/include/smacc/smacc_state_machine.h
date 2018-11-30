@@ -19,14 +19,11 @@ public:
 
     virtual ~ISmaccStateMachine();
 
-    /// used by the actionclients when a new send goal is launched
-    void registerActionClientRequest(ISmaccActionClient* client);
-
-    template <typename ActionLibPlugin>
-    ActionLibPlugin* requiresActionClient(std::string action_namespace)
+    template <typename SmaccComponentType>
+    SmaccComponentType* requiresComponent(std::string action_namespace)
     {
-        std::string pluginkey = boost::core::demangle(typeid(ActionLibPlugin).name());
-        ActionLibPlugin* ret;
+        std::string pluginkey = boost::core::demangle(typeid(SmaccComponentType).name());
+        SmaccComponentType* ret;
 
         auto it = plugins_.find(pluginkey);
 
@@ -34,16 +31,16 @@ public:
         {
             ROS_INFO("%s resource is required. Creating a new instance.", pluginkey.c_str());
 
-            ret = new ActionLibPlugin(action_namespace);
+            ret = new SmaccComponentType(action_namespace);
             ret->setStateMachine(this);
-            plugins_ [pluginkey] = static_cast<smacc::ISmaccActionClient*>(ret);
+            plugins_ [pluginkey] = static_cast<smacc::ISmaccComponent*>(ret);
             ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
 
         }
         else
         {
             ROS_INFO("%s resource is required. Found resource in cache.", pluginkey.c_str());
-            ret = dynamic_cast<ActionLibPlugin*>(it->second);
+            ret = dynamic_cast<SmaccComponentType*>(it->second);
         }
     
         return ret;
@@ -77,12 +74,18 @@ public:
         globalData_[name] = value;
     }
 
+    /// used by the ISMaccActionClients when a new send goal is launched
+    void registerActionClientRequest(ISmaccActionClient* component);
+
 private:
-    std::map<std::string, smacc::ISmaccActionClient*> plugins_;
+    
+    std::map<std::string, smacc::ISmaccComponent*> plugins_;
 
     std::map<std::string, boost::any> globalData_;
 
     //event to notify to the signaldetection thread that a request has been created
     SignalDetector* signalDetector_;
+
+    
 };
 }

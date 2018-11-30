@@ -57,6 +57,7 @@ typedef boost::statechart::processor_container<boost::statechart::fifo_scheduler
 namespace smacc
 {
   class ISmaccStateMachine;
+  class ISmaccComponent;
   class ISmaccActionClient;
   class SignalDetector;
 

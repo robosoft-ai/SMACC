@@ -1,0 +1,19 @@
+<launch>
+    <include file="$(find reelrbtx_demos)/launch/simulated_robot_simulated_reel.launch">
+        <arg name="rqt_plot" value="false"/>
+    </include>
+    
+    <rosparam command="load" file="$(find radial_motion_example)/config/radial_motion_sm_config.yaml"/>
+    
+    <node pkg="radial_motion_example" type="radial_motion_example_node" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
+        <!--<param name="signal_detector_loop_freq" value="1"/>-->
+    </node>
+    
+    <!-- smacc action servers -->
+    <node pkg="non_rt_helper" type="non_rt_helper_node" name="non_rt_helper" launch-prefix="xterm -hold -e ">
+        <param name="loop_rate" value="0.2"/>
+    </node>
+
+    <node pkg="smacc_tool_plugin_template" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="xterm -hold -e ">
+    </node>
+</launch>

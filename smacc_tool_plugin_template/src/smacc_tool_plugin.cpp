@@ -26,4 +26,4 @@ SmaccToolActionClient::~SmaccToolActionClient()
 }
 }
 
-PLUGINLIB_EXPORT_CLASS(smacc::SmaccToolActionClient, smacc::ISmaccActionClient)
+PLUGINLIB_EXPORT_CLASS(smacc::SmaccToolActionClient, smacc::ISmaccComponent)

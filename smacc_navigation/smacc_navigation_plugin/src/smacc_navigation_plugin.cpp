@@ -26,4 +26,4 @@ SmaccMoveBaseActionClient::~SmaccMoveBaseActionClient()
 }
 }
 
-PLUGINLIB_EXPORT_CLASS( smacc::SmaccMoveBaseActionClient, smacc::ISmaccActionClient)
+PLUGINLIB_EXPORT_CLASS( smacc::SmaccMoveBaseActionClient, smacc::ISmaccComponent)
