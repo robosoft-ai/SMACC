@@ -1,0 +1,12 @@
+WayPointsMotionStateMachine:
+    waypoints: [[0.48, -0.40], [0.48, 0.40], [-0.48, 0.40], [-0.48, -0.40]]
+#    NavigateToEvenWaypoint:
+#        NavigationOrthogonalLine:
+#            Navigate:
+#                sample_param: 1            
+#    NavigateToOddWaypoint:
+#        NavigationOrthogonalLine:
+#            Navigate:
+#                sample_param: 1            
+                
+    

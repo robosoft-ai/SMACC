@@ -81,7 +81,7 @@ public:
     readParameters();
 
     int i;
-    if (!this->getGlobalData("angle_index", i)) 
+    if (!this->getGlobalSMData("angle_index", i)) 
     {
       // this is the first radial motion (influences to the initial angle)
       i = initial_orientation_index_;
@@ -93,11 +93,11 @@ public:
 
     // sets from the state machine i "global variable" to know the current orientation
     ROS_INFO("[RotateDegrees/Navigate] Radial angle index: %d", i);
-    this->setGlobalData("angle_index", i);
+    this->setGlobalSMData("angle_index", i);
 
     // get the angle according to the angle index
     yaw = i * angles::from_degrees(angle_increment_degree_);
-    this->setGlobalData("current_yaw", yaw);
+    this->setGlobalSMData("current_yaw", yaw);
     ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
 
     this->plannerSwitcher_->setForwardPlanner();
@@ -131,7 +131,7 @@ public:
   void rotateDegrees() 
   {
     geometry_msgs::PoseStamped radialStart;
-    this->getGlobalData("radial_start_pose", radialStart);
+    this->getGlobalSMData("radial_start_pose", radialStart);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose = radialStart;

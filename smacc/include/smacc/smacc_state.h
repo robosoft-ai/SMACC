@@ -68,13 +68,13 @@ class SmaccState : public sc::simple_state<
     }
 
     template <typename T>
-    bool getGlobalData(std::string name, T& ret)
+    bool getGlobalSMData(std::string name, T& ret)
     {
         return base_type::outermost_context().getData(name,ret);
     }
 
     template <typename T>
-    void setGlobalData(std::string name, T value)
+    void setGlobalSMData(std::string name, T value)
     {
         base_type::outermost_context().setData(name,value);
     }

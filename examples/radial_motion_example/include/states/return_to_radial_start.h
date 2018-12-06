@@ -76,7 +76,7 @@ public:
         this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
         // read from the state machine yaw "global variable" to know the current line orientation
-        this->getGlobalData("current_yaw", yaw);
+        this->getGlobalSMData("current_yaw", yaw);
         ROS_INFO_STREAM("[ReturnToRadialStart/Navigate] current yaw:" << yaw );
 
         this->plannerSwitcher_->setBackwardPlanner();
@@ -91,7 +91,7 @@ public:
         smacc::SmaccMoveBaseActionClient::Goal goal;
         geometry_msgs::PoseStamped radialStartPose;
 
-        this->getGlobalData("radial_start_pose", radialStartPose);
+        this->getGlobalSMData("radial_start_pose", radialStartPose);
 
         goal.target_pose=radialStartPose;
         goal.target_pose.header.stamp=ros::Time::now();

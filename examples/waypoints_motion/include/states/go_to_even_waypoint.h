@@ -55,6 +55,7 @@ public:
   {
   }
 };
+
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
@@ -80,7 +81,7 @@ public:
     this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
     // read from the state machine yaw "global variable"
-    this->getGlobalData("current_yaw", yaw);
+    this->getGlobalSMData("current_yaw", yaw);
     ROS_INFO_STREAM("[NavigateToEvenWaypoint/Navigate] current yaw: " << yaw);
 
     // straight motion distance
@@ -93,7 +94,7 @@ public:
   // auxiliar function that defines the motion that is requested to the move_base action server
   void gotoNextPoint() {
     geometry_msgs::PoseStamped radialStartPose;
-    this->getGlobalData("radial_start_pose", radialStartPose);
+    this->getGlobalSMData("radial_start_pose", radialStartPose);
 
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
@@ -165,6 +166,4 @@ public:
 
   smacc::SmaccToolActionClient* toolActionClient_;
 };
-/*
-*/
 }
