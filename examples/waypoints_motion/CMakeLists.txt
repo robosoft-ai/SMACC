@@ -7,7 +7,7 @@ project(waypoints_motion)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED smacc smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -99,27 +99,28 @@ find_package(catkin REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES waypoints_motion
-#  CATKIN_DEPENDS other_catkin_pkg
+   INCLUDE_DIRS include
+   LIBRARIES ${PROJECT_NAME}_node
+   CATKIN_DEPENDS smacc
 #  DEPENDS system_lib
 )
 
 ###########
 ## Build ##
 ###########
+set(CMAKE_CXX_STANDARD 14)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
-)
+include_directories(include
+                    ${catkin_INCLUDE_DIRS})
 
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/waypoints_motion.cpp
-# )
+add_executable(${PROJECT_NAME}_node
+                src/waypoints_machine.cpp)
+
+target_link_libraries(${PROJECT_NAME}_node
+                      ${catkin_LIBRARIES}
+                      ${boost_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

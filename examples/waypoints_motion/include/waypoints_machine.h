@@ -5,7 +5,6 @@
 #include <smacc_tool_plugin_template/smacc_tool_plugin.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
-
 using namespace smacc;
 
 // ----- STATES FORWARD DECLARATIONS ---
@@ -14,16 +13,16 @@ struct NavigateToOddWaypoint;
 };
 
 namespace NavigateToEvenWaypoint {
-struct NavigateToOddWaypoint;
+struct NavigateToEvenWaypoint;
 }
 
-// ----- WaypointsStateMachine State Machine --------------
+// ----- WayPointsStateMachine State Machine --------------
 
-// create the WaypointsStateMachine State Machine example class that inherits from the 
+// create the WayPointsStateMachine State Machine example class that inherits from the 
 // SmaccStateMachineBase. You only have to declare it, the most of the funcionality is inhterited.
-struct WaypointsStateMachine
-    : public SmaccStateMachineBase<WaypointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint> 
+struct WayPointsStateMachine
+    : public SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint> 
 {
-  WaypointsStateMachine(my_context ctx, SignalDetector *signalDetector)
-      : SmaccStateMachineBase<WaypointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint>(ctx, signalDetector) {}
+  WayPointsStateMachine(my_context ctx, SignalDetector *signalDetector)
+      : SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint>(ctx, signalDetector) {}
 };

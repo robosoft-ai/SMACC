@@ -1,6 +1,6 @@
 #pragma once
 
-#include <radial_motion.h>
+#include <waypoints_machine.h>
 #include <thread>
 
 namespace NavigateToOddWaypoint 
