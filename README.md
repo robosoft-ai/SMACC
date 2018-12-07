@@ -170,7 +170,7 @@ public:
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
   // This is the substate constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
+  // workflow enters this substate (which, according to Boost Statechart, is the moment when this object is created)
   Navigate(my_context ctx):
     SmaccState<Navigate, SimpleStateMachine> (ctx)
   {
@@ -242,7 +242,7 @@ ExecuteToolState(my_context ctx):
 ## Add custom code on Action Result Events
 
 In the following example, we want to add some code to the transition between the source state "Navigate" and the
-destiny state "ExecuteToolState". This code may be any desired custom code (for example some transition guard).
+destination state "ExecuteToolState". This code may be any desired custom code (for example some transition guard).
 This code is located in the react method
 
 <p align="center">
@@ -266,7 +266,7 @@ public:
    [...]
   }
 
-  // auxiliar function that defines the motion that is requested to the move_base action server
+  // auxiliary function that defines the motion that is requested to the move_base action server
   void goToEndPoint() {
    [...]
 
