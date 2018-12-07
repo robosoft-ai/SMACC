@@ -24,12 +24,12 @@ void OdomTracker::init(ros::NodeHandle& nh)
 {
     ROS_WARN("Initializing Odometry Tracker");
 
-    if(!nh.getParam("min_point_distance_dispense_thresh",minPointDistanceDispenseThresh_))
+    if(!nh.getParam("min_point_distance_forward_thresh",minPointDistanceForwardThresh_))
     {
-        minPointDistanceDispenseThresh_ = 0.005; // 1 mm
+        minPointDistanceForwardThresh_ = 0.005; // 1 mm
     }
 
-    if(!nh.getParam("min_point_distance_retract_thresh",minPointDistanceDispenseThresh_))
+    if(!nh.getParam("min_point_distance_backward_thresh",minPointDistanceRetractThresh_))
     {
         minPointDistanceRetractThresh_ = 0.1; // 1 mm
     }
@@ -184,9 +184,9 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry& odom)
         const geometry_msgs::Point& prevPoint = baseTrajectory_.poses.back().pose.position;
         const geometry_msgs::Point& currePoint = base_pose.pose.position;
         dist = p2pDistance(prevPoint, currePoint);
-        //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceDispenseThresh_);
+        //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceForwardThresh_);
 
-        if(dist > minPointDistanceDispenseThresh_)
+        if(dist > minPointDistanceForwardThresh_)
         {
             enqueueOdomMessage = true;
         }

@@ -9,30 +9,30 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/point_cloud.h>
 #include <pluginlib/class_list_macros.h>
-#include <rrbtx_dispense_global_planner/dispense_global_planner.h>
-#include <rrbtx_dispense_global_planner/reel_path_tools.h>
+#include <forward_global_planner/forward_global_planner.h>
+#include <forward_global_planner/reel_path_tools.h>
 #include <fstream>
 #include <streambuf>
 #include <nav_msgs/Path.h>
 #include <angles/angles.h>
 
-namespace rrbtx_dispense_global_planner 
+namespace forward_global_planner 
 {
-DispenseGlobalPlanner::DispenseGlobalPlanner()
-    :nh_("~/DispenseGlobalPlanner")
+ForwardGlobalPlanner::ForwardGlobalPlanner()
+    :nh_("~/ForwardGlobalPlanner")
 {
     skip_straight_motion_distance_ = 0.2; //meters
     puresSpinningRadStep_ = 1000; // rads
 }
 
-void DispenseGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) 
+void ForwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) 
 {
     planPub_ = nh_.advertise<nav_msgs::Path>("global_plan", 1);
     skip_straight_motion_distance_ = 0.2; //meters
     puresSpinningRadStep_ = 1000; // rads
 }
 
-bool DispenseGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
     double& cost) 
 {
@@ -40,10 +40,10 @@ bool DispenseGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     makePlan(start, goal, plan);
 }
 
-bool DispenseGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) 
 {
-    //ROS_WARN_STREAM("Dispense global plan goal: " << goal);
+    //ROS_WARN_STREAM("Forward global plan goal: " << goal);
 
     //three stages: 1 - heading to goal position, 2 - going forward keep orientation, 3 - heading to goal orientation
 
@@ -79,12 +79,12 @@ bool DispenseGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     planMsg.header.stamp = ros::Time::now();
     planMsg.header.frame_id="/odom";
     planPub_.publish(planMsg);
-    //ROS_INFO_STREAM("global dispense plan: " << planMsg);
+    //ROS_INFO_STREAM("global forward plan: " << planMsg);
 
     return true;
 }
 
 //register this planner as a BaseGlobalPlanner plugin
 
-PLUGINLIB_EXPORT_CLASS(rrbtx_dispense_global_planner::DispenseGlobalPlanner, nav_core::BaseGlobalPlanner);
+PLUGINLIB_EXPORT_CLASS(forward_global_planner::ForwardGlobalPlanner, nav_core::BaseGlobalPlanner);
 };

@@ -17,7 +17,7 @@
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
-#include <rrbtx_dispense_global_planner/reel_path_tools.h>
+#include <forward_global_planner/reel_path_tools.h>
 
 //register this planner as a BaseGlobalPlanner plugin
 
@@ -46,7 +46,7 @@ void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2D
     costmap_ros_ = costmap_ros;
     //ROS_WARN_NAMED("Retracting", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
-    dispensedCordPathSub_ = nh_.subscribe("odom_tracker_path", 2, &RetractingGlobalPlanner::onDispensedCordTrailMsg, this);
+    forwardPathSub_ = nh_.subscribe("odom_tracker_path", 2, &RetractingGlobalPlanner::onForwardTrailMsg, this);
     
     ros::NodeHandle nh;
     cmd_server_ = nh.advertiseService<rrbtx_retracting_global_planner::command::Request , rrbtx_retracting_global_planner::command::Response  >("cmd", boost::bind(&RetractingGlobalPlanner::commandServiceCall,this,_1,_2));
@@ -56,12 +56,12 @@ void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2D
 
 /**
 ******************************************************************************************************************
-* onDispensedCordTrailMsg()
+* onForwardTrailMsg()
 ******************************************************************************************************************
 */
-void RetractingGlobalPlanner::onDispensedCordTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage)
+void RetractingGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage)
 {
-    lastDispensedCordPathMsg_ = *trailMessage;
+    lastForwardPathMsg_ = *trailMessage;
 }
 
 /**
@@ -139,14 +139,14 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
     plan.push_back(pose);
 
-    ROS_WARN_NAMED("Retracting", "Iterating in last dispensed cord path");
-    int i=lastDispensedCordPathMsg_.poses.size();
+    ROS_WARN_NAMED("Retracting", "Iterating in last forward cord path");
+    int i=lastForwardPathMsg_.poses.size();
     double mindist =std::numeric_limits<double>::max();
     int mindistindex = -1;
 
     geometry_msgs::Pose goalProjected;
 
-    for (auto& p : lastDispensedCordPathMsg_.poses | boost::adaptors::reversed) 
+    for (auto& p : lastForwardPathMsg_.poses | boost::adaptors::reversed) 
     {
         pose = p;
         pose.header.frame_id = costmap_ros_->getGlobalFrameID();
@@ -168,9 +168,9 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
     if(mindistindex != -1)
     {
-        for (int i = lastDispensedCordPathMsg_.poses.size() -1 ; i>=mindistindex ;i--)
+        for (int i = lastForwardPathMsg_.poses.size() -1 ; i>=mindistindex ;i--)
         {
-            auto& pose = lastDispensedCordPathMsg_.poses[i];
+            auto& pose = lastForwardPathMsg_.poses[i];
             plan.push_back(pose);
         }
     }*/
@@ -272,10 +272,10 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
 
             std::ofstream os;
             os.open(filename);
-            os << lastDispensedCordPathMsg_;
+            os << lastForwardPathMsg_;
             os.close();
 
-            //ROS_INFO_STREAM("serialized path: " << lastDispensedCordPathMsg_);
+            //ROS_INFO_STREAM("serialized path: " << lastForwardPathMsg_);
         }
         else
         {
@@ -300,7 +300,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
             ros::serialization::deserialize(stream, p);
 
             //ROS_INFO_STREAM_NAMED("Retracting", "serialized path: " << p);
-            lastDispensedCordPathMsg_ = p;
+            lastForwardPathMsg_ = p;
         }
         else
         {

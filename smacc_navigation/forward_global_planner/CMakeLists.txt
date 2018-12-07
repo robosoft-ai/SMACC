@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(rrbtx_dispense_global_planner)
+project(forward_global_planner)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -108,7 +108,7 @@ set(CMAKE_CXX_STANDARD 14)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES rrbtx_dispense_global_planner
+  LIBRARIES forward_global_planner
   CATKIN_DEPENDS costmap_2d dynamic_reconfigure geometry_msgs nav_msgs roscpp tf
 #  DEPENDS system_lib
 )
@@ -125,7 +125,7 @@ include_directories(
 )
 
 add_library(${PROJECT_NAME}
-  src/dispense_global_planner.cpp
+  src/forward_global_planner.cpp
   src/reel_path_tools.cpp
 )
 
@@ -141,7 +141,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/rrbtx_dispense_global_planner_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/forward_global_planner_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -198,7 +198,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_rrbtx_dispense_global_planner.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_forward_global_planner.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

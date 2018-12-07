@@ -75,7 +75,7 @@ class OdomTracker: public smacc::ISmaccComponent
 
         // -------------- PARAMETERS ----------------------
         /// How much distance there is between two points of the path
-        double minPointDistanceDispenseThresh_;
+        double minPointDistanceForwardThresh_;
 
         /// Meters
         double minPointDistanceRetractThresh_;

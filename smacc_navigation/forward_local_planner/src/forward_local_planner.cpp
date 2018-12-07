@@ -5,28 +5,28 @@
  ******************************************************************************************************************/
 #include <angles/angles.h>
 #include <pluginlib/class_list_macros.h>
-#include <rrbtx_dispense_local_planner/dispense_local_planner.h>
+#include <forward_local_planner/forward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(rrbtx_dispense_local_planner::DispenseLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace rrbtx_dispense_local_planner {
+namespace forward_local_planner {
 /**
 ******************************************************************************************************************
-* DispenseLocalPlanner()
+* ForwardLocalPlanner()
 ******************************************************************************************************************
 */
-DispenseLocalPlanner::DispenseLocalPlanner()
+ForwardLocalPlanner::ForwardLocalPlanner()
 {
 }
 
 /**
 ******************************************************************************************************************
-* DispenseLocalPlanner()
+* ForwardLocalPlanner()
 ******************************************************************************************************************
 */
-DispenseLocalPlanner::~DispenseLocalPlanner()
+ForwardLocalPlanner::~ForwardLocalPlanner()
 {
 }
 
@@ -35,7 +35,7 @@ DispenseLocalPlanner::~DispenseLocalPlanner()
 * initialize()
 ******************************************************************************************************************
 */
-void DispenseLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
 {
     costmapRos_ = costmap_ros;
     k_rho_ = 1.0;
@@ -51,7 +51,7 @@ void DispenseLocalPlanner::initialize(std::string name, tf::TransformListener* t
 
     currentPoseIndex_ = 0;
 
-    ros::NodeHandle nh("~/DispenseLocalPlanner");
+    ros::NodeHandle nh("~/ForwardLocalPlanner");
 
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
@@ -63,7 +63,7 @@ void DispenseLocalPlanner::initialize(std::string name, tf::TransformListener* t
 * publishGoalMarker()
 ******************************************************************************************************************
 */
-void DispenseLocalPlanner::publishGoalMarker(double x, double y, double phi)
+void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "/odom";
@@ -101,7 +101,7 @@ void DispenseLocalPlanner::publishGoalMarker(double x, double y, double phi)
 * computeVelocityCommands()
 ******************************************************************************************************************
 */
-bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
+bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
     goalReached_=false;
     //ROS_DEBUG("LOCAL PLANNER LOOP");
@@ -133,7 +133,7 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                //ROS_INFO("dispense: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
+                //ROS_INFO("forward: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
             }
         }
 
@@ -231,7 +231,7 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 * isGoalReached()
 ******************************************************************************************************************
 */
-bool DispenseLocalPlanner::isGoalReached()
+bool ForwardLocalPlanner::isGoalReached()
 {
     return goalReached_;
 }
@@ -241,7 +241,7 @@ bool DispenseLocalPlanner::isGoalReached()
 * setPlan()
 ******************************************************************************************************************
 */
-bool DispenseLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
+bool ForwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
 {
     plan_ = plan;
     goalReached_=false;

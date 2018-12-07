@@ -11,11 +11,11 @@
 #include <pcl/point_types.h>
 #include <ros/ros.h>
 
-namespace rrbtx_dispense_global_planner 
+namespace forward_global_planner 
 {
-class DispenseGlobalPlanner : public nav_core::BaseGlobalPlanner {
+class ForwardGlobalPlanner : public nav_core::BaseGlobalPlanner {
 public:
-    DispenseGlobalPlanner();
+    ForwardGlobalPlanner();
 
     virtual bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) override;

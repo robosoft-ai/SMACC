@@ -29,21 +29,18 @@ public:
 private:
     ros::NodeHandle nh_;
 
-    ros::Subscriber dispensedCordPathSub_;
+    ros::Subscriber forwardPathSub_;
 
     ros::Publisher planPub_;
 
     ros::Publisher markersPub_;
 
-    ///
-    /// \brief lastCordTrailMsg_: the last message received with the cord trail points
-    ///
-    nav_msgs::Path lastDispensedCordPathMsg_;
+    nav_msgs::Path lastForwardPathMsg_;
 
     /// stored but almost not used
     costmap_2d::Costmap2DROS* costmap_ros_;
 
-    void onDispensedCordTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage);
+    void onForwardTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage);
 
     void publishGoalMarker(const geometry_msgs::Pose& pose, double r, double g, double b);
 

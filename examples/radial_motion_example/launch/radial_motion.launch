@@ -7,8 +7,8 @@
     <group ns="move_base">
         <!-- retracting local planner -->  
         <rosparam file="$(find radial_motion_example)/config/retracting_local_planner.yaml" command="load" />
-        <!-- dispense local planner -->  
-        <rosparam file="$(find radial_motion_example)/config/dispense_local_planner.yaml" command="load" />
+        <!-- forward local planner -->  
+        <rosparam file="$(find radial_motion_example)/config/forward_local_planner.yaml" command="load" />
     </group>
 
     <!-- load state machine parameters -->

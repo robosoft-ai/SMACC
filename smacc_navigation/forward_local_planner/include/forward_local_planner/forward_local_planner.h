@@ -11,13 +11,13 @@
 typedef double meter;
 typedef double rad;
 
-namespace rrbtx_dispense_local_planner {
-class DispenseLocalPlanner : public nav_core::BaseLocalPlanner {
+namespace forward_local_planner {
+class ForwardLocalPlanner : public nav_core::BaseLocalPlanner {
 
 public:
-    DispenseLocalPlanner();
+    ForwardLocalPlanner();
 
-    virtual ~DispenseLocalPlanner();
+    virtual ~ForwardLocalPlanner();
 
     /**
    * @brief  Given the current position, orientation, and velocity of the robot: compute velocity commands to send to the robot mobile base

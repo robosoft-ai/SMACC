@@ -38,8 +38,8 @@ void setBackwardPlanner()
 
 void setForwardPlanner()
 {
-  desired_global_planner_ = "rrbtx_dispense_global_planner/DispenseGlobalPlanner";
-  desired_local_planner_ = "rrbtx_dispense_local_planner/DispenseLocalPlanner";
+  desired_global_planner_ = "forward_global_planner/ForwardGlobalPlanner";
+  desired_local_planner_ = "forward_local_planner/ForwardLocalPlanner";
   //setPlanners("navfn/NavfnROS", "base_local_planner/TrajectoryPlannerROS");
   updatePlanners();
 }

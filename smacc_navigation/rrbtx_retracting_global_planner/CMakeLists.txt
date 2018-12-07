@@ -17,7 +17,7 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   roscpp
   tf
-  rrbtx_dispense_global_planner
+  forward_global_planner
 )
 
 find_package(PCL REQUIRED)
@@ -117,7 +117,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES rrbtx_retracting_global_planner
-  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs pcl_ros roscpp tf rrbtx_dispense_global_planner
+  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs pcl_ros roscpp tf forward_global_planner
 #  DEPENDS system_lib
 )
 
