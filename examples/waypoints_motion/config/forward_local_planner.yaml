@@ -1,5 +1,5 @@
 # backwards configuration, the robot will move backwards
-DispenseLocalPlanner:
+ForwardLocalPlanner:
     k_rho: -0.3
     k_alpha: -0.8
     k_betta: 0.0

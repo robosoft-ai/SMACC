@@ -78,7 +78,7 @@ class OdomTracker: public smacc::ISmaccComponent
         double minPointDistanceForwardThresh_;
 
         /// Meters
-        double minPointDistanceRetractThresh_;
+        double minPointDistanceBackwardThresh_;
 
         // --------------- STATE ---------------
         // default true

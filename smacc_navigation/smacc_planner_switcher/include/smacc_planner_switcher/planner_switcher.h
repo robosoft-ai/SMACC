@@ -31,8 +31,8 @@ virtual void init(ros::NodeHandle& nh) override
 
 void setBackwardPlanner()
 {
-  desired_global_planner_ = "rrbtx_retracting_global_planner/RetractingGlobalPlanner";
-  desired_local_planner_ = "rrbtx_retracting_local_planner/RetractingLocalPlanner";
+  desired_global_planner_ = "backward_global_planner/BackwardGlobalPlanner";
+  desired_local_planner_ = "backward_local_planner/BackwardLocalPlanner";
   updatePlanners();
 }
 

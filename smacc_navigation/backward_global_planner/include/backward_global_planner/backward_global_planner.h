@@ -10,12 +10,12 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <ros/ros.h>
-#include <rrbtx_retracting_global_planner/command.h>
+#include <backward_global_planner/command.h>
 
-namespace rrbtx_retracting_global_planner {
-class RetractingGlobalPlanner : public nav_core::BaseGlobalPlanner {
+namespace backward_global_planner {
+class BackwardGlobalPlanner : public nav_core::BaseGlobalPlanner {
 public:
-    RetractingGlobalPlanner();
+    BackwardGlobalPlanner();
 
     virtual bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) override;
@@ -46,7 +46,7 @@ private:
 
     ros::ServiceServer cmd_server_;
 
-    bool commandServiceCall(rrbtx_retracting_global_planner::command::Request  &req, rrbtx_retracting_global_planner::command::Response  &res);
+    bool commandServiceCall(backward_global_planner::command::Request  &req, backward_global_planner::command::Response  &res);
     
     double skip_straight_motion_distance_; //meters
     

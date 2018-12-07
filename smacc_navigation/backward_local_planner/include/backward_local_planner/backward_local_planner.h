@@ -7,18 +7,18 @@
 #include <dynamic_reconfigure/server.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_core/base_local_planner.h>
-#include <rrbtx_retracting_local_planner/RetractingLocalPlannerConfig.h>
+#include <backward_local_planner/BackwardLocalPlannerConfig.h>
 
 typedef double meter;
 typedef double rad;
 
-namespace rrbtx_retracting_local_planner {
-class RetractingLocalPlanner : public nav_core::BaseLocalPlanner {
+namespace backward_local_planner {
+class BackwardLocalPlanner : public nav_core::BaseLocalPlanner {
 
 public:
-    RetractingLocalPlanner();
+    BackwardLocalPlanner();
 
-    virtual ~RetractingLocalPlanner();
+    virtual ~BackwardLocalPlanner();
 
     /**
    * @brief  Given the current position, orientation, and velocity of the robot: compute velocity commands to send to the robot mobile base
@@ -49,12 +49,12 @@ public:
     virtual void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) override;
 
 private:
-    void reconfigCB(rrbtx_retracting_local_planner::RetractingLocalPlannerConfig& config, uint32_t level);
+    void reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level);
 
     void publishGoalMarker(double x, double y, double phi);
 
-    dynamic_reconfigure::Server<rrbtx_retracting_local_planner::RetractingLocalPlannerConfig> paramServer_;
-    dynamic_reconfigure::Server<rrbtx_retracting_local_planner::RetractingLocalPlannerConfig>::CallbackType f;
+    dynamic_reconfigure::Server<backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
+    dynamic_reconfigure::Server<backward_local_planner::BackwardLocalPlannerConfig>::CallbackType f;
 
     std::vector<geometry_msgs::PoseStamped> backwardsPlanPath_;
     costmap_2d::Costmap2DROS* costmapRos_;

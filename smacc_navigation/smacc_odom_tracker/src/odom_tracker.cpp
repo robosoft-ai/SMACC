@@ -29,9 +29,9 @@ void OdomTracker::init(ros::NodeHandle& nh)
         minPointDistanceForwardThresh_ = 0.005; // 1 mm
     }
 
-    if(!nh.getParam("min_point_distance_backward_thresh",minPointDistanceRetractThresh_))
+    if(!nh.getParam("min_point_distance_backward_thresh",minPointDistanceBackwardThresh_))
     {
-        minPointDistanceRetractThresh_ = 0.1; // 1 mm
+        minPointDistanceBackwardThresh_ = 0.1; // 1 mm
     }
 
     if(this->subscribeToOdometryTopic_)
@@ -125,11 +125,11 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry& odom)
     base_pose.header = odom.header;
     baseTrajectory_.header = odom.header;
 
-    bool acceptRetract = false;
+    bool acceptBackward = false;
     bool pullingerror = false;
     if(baseTrajectory_.poses.empty())
     {
-        acceptRetract=false;
+        acceptBackward=false;
     }
     else
     {
@@ -137,26 +137,26 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry& odom)
         const geometry_msgs::Point& currePoint = base_pose.pose.position;
         double lastpointdist = p2pDistance(prevPoint, currePoint);
         
-        acceptRetract = !baseTrajectory_.poses.empty() 
-                        && lastpointdist < minPointDistanceRetractThresh_;
+        acceptBackward = !baseTrajectory_.poses.empty() 
+                        && lastpointdist < minPointDistanceBackwardThresh_;
 
-        pullingerror = lastpointdist > 2 * minPointDistanceRetractThresh_;
+        pullingerror = lastpointdist > 2 * minPointDistanceBackwardThresh_;
     }
 
-    //ROS_INFO("RETRACTING, last distance: %lf < %lf accept: %d", dist, minPointDistanceRetractionThresh_, acceptRetract);
-    if (acceptRetract) 
+    //ROS_INFO("Backwards, last distance: %lf < %lf accept: %d", dist, minPointDistanceBackwardThresh_, acceptBackward);
+    if (acceptBackward) 
     {
         baseTrajectory_.poses.pop_back();
     } 
     else if (pullingerror) {
-        ROS_WARN("Incorrect retracting motion. The robot is pulling the cord.");
+        ROS_WARN("Incorrect backwards motion. The robot is pulling the cord.");
     } 
     else 
     {
         /// Not removing point because it is enough far from the last cord point
     }
 
-    return acceptRetract;
+    return acceptBackward;
 }
 /**
 ******************************************************************************************************************

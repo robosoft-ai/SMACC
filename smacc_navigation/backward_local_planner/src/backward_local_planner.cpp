@@ -5,29 +5,29 @@
  ******************************************************************************************************************/
 #include <angles/angles.h>
 #include <pluginlib/class_list_macros.h>
-#include <rrbtx_retracting_local_planner/retracting_local_planner.h>
+#include <backward_local_planner/backward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(rrbtx_retracting_local_planner::RetractingLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace rrbtx_retracting_local_planner {
+namespace backward_local_planner {
     /**
 ******************************************************************************************************************
-* retractingLocalPlanner()
+* backwardPlanner()
 ******************************************************************************************************************
 */
-RetractingLocalPlanner::RetractingLocalPlanner()
-    : paramServer_(ros::NodeHandle("~RetractingLocalPlanner"))
+BackwardLocalPlanner::BackwardLocalPlanner()
+    : paramServer_(ros::NodeHandle("~BackwardLocalPlanner"))
 {
 }
 
 /**
 ******************************************************************************************************************
-* retractingLocalPlanner()
+* backwardLocalPlanner()
 ******************************************************************************************************************
 */
-RetractingLocalPlanner::~RetractingLocalPlanner()
+BackwardLocalPlanner::~BackwardLocalPlanner()
 {
 }
 
@@ -36,7 +36,7 @@ RetractingLocalPlanner::~RetractingLocalPlanner()
 * initialize()
 ******************************************************************************************************************
 */
-void RetractingLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
 {
     costmapRos_ = costmap_ros;
     k_rho_ = 1.0;
@@ -44,11 +44,11 @@ void RetractingLocalPlanner::initialize(std::string name, tf::TransformListener*
     k_betta_ = -1.0; // set to zero means that orientation is not important
     //k_betta_ = 1.0;
 
-    f = boost::bind(&RetractingLocalPlanner::reconfigCB, this, _1, _2);
+    f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
     paramServer_.setCallback(f);
     currentPoseIndex_ = 0;
 
-    ros::NodeHandle nh("~/RetractingLocalPlanner");
+    ros::NodeHandle nh("~/BackwardLocalPlanner");
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
 }
 
@@ -57,7 +57,7 @@ void RetractingLocalPlanner::initialize(std::string name, tf::TransformListener*
 * publishGoalMarker()
 ******************************************************************************************************************
 */
-void RetractingLocalPlanner::publishGoalMarker(double x, double y, double phi)
+void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "/odom";
@@ -98,7 +98,7 @@ void RetractingLocalPlanner::publishGoalMarker(double x, double y, double phi)
 * computeVelocityCommands()
 ******************************************************************************************************************
 */
-bool RetractingLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
+bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
     ROS_DEBUG("LOCAL PLANNER LOOP");
 
@@ -127,7 +127,7 @@ bool RetractingLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_v
             if (dist*2 >= carrot_distance_ || angular_error >= 0.01) {
                 // target pose found
                 ok = true;
-                //ROS_INFO("Retracting: %lf", 100.0 * currentPoseIndex_ / (double)backwardsPlanPath_.size());
+                //ROS_INFO("Backward: %lf", 100.0 * currentPoseIndex_ / (double)backwardsPlanPath_.size());
             }
         }
 
@@ -184,7 +184,7 @@ bool RetractingLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_v
         vetta = 0;
         gamma = 0;
         goalReached_=true;
-        ROS_INFO_STREAM("RETRACTION LOCAL PLANNER END: rhoerror: " << rho_error);
+        ROS_INFO_STREAM("BACKWARD LOCAL PLANNER END: rhoerror: " << rho_error);
     }
 
     cmd_vel.linear.x = vetta;
@@ -218,7 +218,7 @@ bool RetractingLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_v
 * reconfigCB()
 ******************************************************************************************************************
 */
-void RetractingLocalPlanner::reconfigCB(rrbtx_retracting_local_planner::RetractingLocalPlannerConfig& config, uint32_t level)
+void BackwardLocalPlanner::reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level)
 {
     ROS_INFO("Reconfigure Request");
     k_alpha_ = config.k_alpha;
@@ -237,7 +237,7 @@ void RetractingLocalPlanner::reconfigCB(rrbtx_retracting_local_planner::Retracti
 * isGoalReached()
 ******************************************************************************************************************
 */
-bool RetractingLocalPlanner::isGoalReached()
+bool BackwardLocalPlanner::isGoalReached()
 {
     return goalReached_;
 }
@@ -247,7 +247,7 @@ bool RetractingLocalPlanner::isGoalReached()
 * setPlan()
 ******************************************************************************************************************
 */
-bool RetractingLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
+bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
 {
     goalReached_=false;
     backwardsPlanPath_ = plan;

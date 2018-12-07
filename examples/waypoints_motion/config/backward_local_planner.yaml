@@ -1,5 +1,5 @@
 # backwards configuration, the robot will move backwards
-RetractingLocalPlanner:
+BackwardLocalPlanner:
     k_rho: -0.6
     k_alpha: -0.5
     k_betta: -1.0

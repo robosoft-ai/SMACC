@@ -338,7 +338,7 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /move_base/RetractingLocalPlanner/goal_marker
+      Marker Topic: /move_base/BackwardLocalPlanner/goal_marker
       Name: MarkerArray
       Namespaces:
         my_namespace2: true
@@ -354,7 +354,7 @@ Visualization Manager:
       Length: 0.300000012
       Line Style: Lines
       Line Width: 0.0299999993
-      Name: DispenseGlobalPlan
+      Name: ForwardGlobalPlan
       Offset:
         X: 0
         Y: 0
@@ -364,7 +364,7 @@ Visualization Manager:
       Radius: 0.0299999993
       Shaft Diameter: 0.00999999978
       Shaft Length: 0.100000001
-      Topic: /move_base/DispenseGlobalPlanner/global_plan
+      Topic: /move_base/ForwardGlobalPlanner/global_plan
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -377,7 +377,7 @@ Visualization Manager:
       Length: 0.300000012
       Line Style: Lines
       Line Width: 0.0299999993
-      Name: RetractionGlobalPlanner
+      Name: BackwardGlobalPlanner
       Offset:
         X: 0
         Y: 0
@@ -387,12 +387,12 @@ Visualization Manager:
       Radius: 0.0299999993
       Shaft Diameter: 0.00999999978
       Shaft Length: 0.100000001
-      Topic: /retracting_planner/global_plan
+      Topic: /backward_planner/global_plan
       Unreliable: false
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /move_base/DispenseLocalPlanner/goal_marker
+      Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
       Name: MarkerArray
       Namespaces:
         {}
@@ -407,8 +407,8 @@ Visualization Manager:
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
-      Marker Topic: /move_base/retracting_planner/markers
-      Name: RetractionMotionPlanner
+      Marker Topic: /move_base/backward_planner/markers
+      Name: BackwardMotionPlanner
       Namespaces:
         {}
       Queue Size: 100

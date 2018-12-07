@@ -1,6 +1,0 @@
-<library path="lib/librrbtx_retracting_global_planner">
-  <class name="rrbtx_retracting_global_planner/RetractingGlobalPlanner" type="rrbtx_retracting_global_planner::RetractingGlobalPlanner" base_class_type="nav_core::BaseGlobalPlanner">
-    <description>
-    </description>
-  </class>
-</library>

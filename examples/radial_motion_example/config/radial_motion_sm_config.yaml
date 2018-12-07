@@ -14,13 +14,3 @@ RadialMotionStateMachine:
         NavigationOrthogonalLine:
             Navigate:
                 straight_motion_distance: 3.5
-#    ReturnToRadialStart:
-#        NavigationOrthogonalLine:
-#            Navigate:
-#                sample_param: 1
-#        ReelOrthogonalLine:
-#            ReelRetract:
-#                sample_param: 1
-#        ToolOrthogonalLine:
-#            ToolSubstate:
-#                 sample_param: 1

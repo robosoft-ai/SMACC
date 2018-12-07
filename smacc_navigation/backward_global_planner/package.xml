@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>rrbtx_retracting_global_planner</name>
+  <name>backward_global_planner</name>
   <version>0.0.1</version>
-  <description>The rrbtx_retracting_global_planner package.</description>
+  <description>The backward_global_planner package.</description>
 
   <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
   <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>

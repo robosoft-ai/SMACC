@@ -9,7 +9,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/point_cloud.h>
 #include <pluginlib/class_list_macros.h>
-#include <rrbtx_retracting_global_planner/retracting_global_planner.h>
+#include <backward_global_planner/backward_global_planner.h>
 #include <fstream>
 #include <streambuf>
 #include <nav_msgs/Path.h>
@@ -21,16 +21,16 @@
 
 //register this planner as a BaseGlobalPlanner plugin
 
-PLUGINLIB_EXPORT_CLASS(rrbtx_retracting_global_planner::RetractingGlobalPlanner, nav_core::BaseGlobalPlanner);
+PLUGINLIB_EXPORT_CLASS(backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
 
 
-namespace rrbtx_retracting_global_planner {
+namespace backward_global_planner {
 /**
 ******************************************************************************************************************
 * Constructor()
 ******************************************************************************************************************
 */
-RetractingGlobalPlanner::RetractingGlobalPlanner()
+BackwardGlobalPlanner::BackwardGlobalPlanner()
 {
     skip_straight_motion_distance_=0.2;
 }
@@ -40,18 +40,18 @@ RetractingGlobalPlanner::RetractingGlobalPlanner()
 * initialize()
 ******************************************************************************************************************
 */
-void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
+void BackwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
 {
-    //ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner initialize");
+    //ROS_INFO_NAMED("Backwards", "BackwardGlobalPlanner initialize");
     costmap_ros_ = costmap_ros;
-    //ROS_WARN_NAMED("Retracting", "initializating global planner, costmap address: %ld", (long)costmap_ros);
+    //ROS_WARN_NAMED("Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
-    forwardPathSub_ = nh_.subscribe("odom_tracker_path", 2, &RetractingGlobalPlanner::onForwardTrailMsg, this);
+    forwardPathSub_ = nh_.subscribe("odom_tracker_path", 2, &BackwardGlobalPlanner::onForwardTrailMsg, this);
     
     ros::NodeHandle nh;
-    cmd_server_ = nh.advertiseService<rrbtx_retracting_global_planner::command::Request , rrbtx_retracting_global_planner::command::Response  >("cmd", boost::bind(&RetractingGlobalPlanner::commandServiceCall,this,_1,_2));
-    planPub_ = nh.advertise<nav_msgs::Path>("retracting_planner/global_plan", 1);
-    markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("retracting_planner/markers", 1);
+    cmd_server_ = nh.advertiseService<backward_global_planner::command::Request , backward_global_planner::command::Response  >("cmd", boost::bind(&BackwardGlobalPlanner::commandServiceCall,this,_1,_2));
+    planPub_ = nh.advertise<nav_msgs::Path>("backward_planner/global_plan", 1);
+    markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("backward_planner/markers", 1);
 }
 
 /**
@@ -59,7 +59,7 @@ void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2D
 * onForwardTrailMsg()
 ******************************************************************************************************************
 */
-void RetractingGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage)
+void BackwardGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage)
 {
     lastForwardPathMsg_ = *trailMessage;
 }
@@ -69,7 +69,7 @@ void RetractingGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr& 
 * publishGoalMarker()
 ******************************************************************************************************************
 */
-void RetractingGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose, double r, double g, double b)
+void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose, double r, double g, double b)
 {
     double phi = tf::getYaw(pose.orientation);
     visualization_msgs::Marker marker;
@@ -108,21 +108,21 @@ void RetractingGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose,
 * makePlan()
 ******************************************************************************************************************
 */
-bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
 {
-    //ROS_WARN_NAMED("Retracting", "Retracting global planner: Generating global plan ");
-    //ROS_WARN_NAMED("Retracting", "Clearing...");
+    //ROS_WARN_NAMED("Backwards", "Backwards global planner: Generating global plan ");
+    //ROS_WARN_NAMED("Backwards", "Clearing...");
 
     plan.clear();
 
     tf::Stamped<tf::Pose> tfpose;
     geometry_msgs::PoseStamped pose;
-    //ROS_WARN_NAMED("Retracting", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
+    //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
     costmap_ros_->getRobotPose(tfpose);
 
     pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-    //ROS_WARN_NAMED("Retracting", "getting timestamp");
+    //ROS_WARN_NAMED("Backwards", "getting timestamp");
     pose.header.stamp = ros::Time::now();
     tf::Vector3 position = tfpose.getOrigin();
     auto q = tfpose.getRotation();
@@ -139,7 +139,7 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
     plan.push_back(pose);
 
-    ROS_WARN_NAMED("Retracting", "Iterating in last forward cord path");
+    ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
     int i=lastForwardPathMsg_.poses.size();
     double mindist =std::numeric_limits<double>::max();
     int mindistindex = -1;
@@ -230,7 +230,7 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 * makePlan()
 ******************************************************************************************************************
 */
-bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
     double& cost)
 {
@@ -244,15 +244,15 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 * commandServiceCall()
 ******************************************************************************************************************
 */
-bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner::command::Request  &req, rrbtx_retracting_global_planner::command::Response  &res)
+bool BackwardGlobalPlanner::commandServiceCall(backward_global_planner::command::Request  &req, backward_global_planner::command::Response  &res)
 {
-    //ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner SERVICE CALL");
+    //ROS_INFO_NAMED("Backwards", "BackwardGlobalplanner SERVICE CALL");
     std::string msg = req.cmd.data.c_str();
 
     std::vector<std::string> fields;   // Create a vector of strings, called "fields"
     boost::split(fields, msg, boost::algorithm::is_any_of(" "));
 
-    //ROS_INFO_NAMED("Retracting", "retraction planner SERVICE REQUEST");
+    //ROS_INFO_NAMED("Backwards", "backward planner SERVICE REQUEST");
 
     if(fields.size() == 0 )
     {
@@ -264,7 +264,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
     bool error = false;
     if(cmd == "savepath")
     {
-        //ROS_INFO_NAMED("Retracting","SAVE PATH COMMAND");
+        //ROS_INFO_NAMED("Backwards","SAVE PATH COMMAND");
         if(fields.size() >1 )
         {
             std::vector<std::string> tail (fields.begin()+1, fields.end());
@@ -284,7 +284,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
     }
     else if(cmd== "loadpath")
     {
-        //ROS_INFO_NAMED("Retracting", "LOAD PATH COMMAND");
+        //ROS_INFO_NAMED("Backwards", "LOAD PATH COMMAND");
         if(fields.size() >1 )
         {
             std::vector<std::string> tail (fields.begin()+1, fields.end());
@@ -299,7 +299,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
             ros::serialization::IStream stream(buffer.get(),serial_size);
             ros::serialization::deserialize(stream, p);
 
-            //ROS_INFO_STREAM_NAMED("Retracting", "serialized path: " << p);
+            //ROS_INFO_STREAM_NAMED("Backwards", "serialized path: " << p);
             lastForwardPathMsg_ = p;
         }
         else

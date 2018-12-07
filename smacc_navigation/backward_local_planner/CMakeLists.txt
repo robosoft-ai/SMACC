@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(rrbtx_retracting_global_planner)
+project(backward_local_planner)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -8,19 +8,13 @@ project(rrbtx_retracting_global_planner)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
-  costmap_2d
   geometry_msgs
-  std_msgs
-  message_generation
-  nav_core
+  dynamic_reconfigure
   nav_msgs
-  pcl_ros
+  rosconsole
   roscpp
   tf
-  forward_global_planner
 )
-
-find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -62,16 +56,13 @@ find_package(PCL REQUIRED)
 #   Message2.msg
 # )
 
+## Generate services in the 'srv' folder
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
 
-add_service_files(
-  FILES
-  command.srv
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
@@ -80,30 +71,18 @@ generate_messages(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   geometry_msgs#   nav_msgs
-# )
+ #generate_messages(
+ #  DEPENDENCIES
+ #  geometry_msgs#   nav_msgs
+ #)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
 
-## To declare and build dynamic reconfigure parameters within this
-## package, follow these steps:
-## * In the file package.xml:
-##   * add a build_depend and a run_depend tag for "dynamic_reconfigure"
-## * In this file (CMakeLists.txt):
-##   * add "dynamic_reconfigure" to
-##     find_package(catkin REQUIRED COMPONENTS ...)
-##   * uncomment the "generate_dynamic_reconfigure_options" section below
-##     and list every .cfg file to be processed
-
-## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
+generate_dynamic_reconfigure_options(
+  cfg/BackwardLocalPlanner.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -115,9 +94,9 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
-#  LIBRARIES rrbtx_retracting_global_planner
-  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs pcl_ros roscpp tf forward_global_planner
+#  INCLUDE_DIRS include
+#  LIBRARIES backward_local_planner
+#  CATKIN_DEPENDS geometry_msgs nav_msgs rosconsole roscpp tf
 #  DEPENDS system_lib
 )
 
@@ -129,19 +108,24 @@ set(CMAKE_CXX_STANDARD 14)
 file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
 add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})
 
+file(GLOB_RECURSE ${PROJECT_NAME}_CfgFilesPaths "*.cfg")
+add_custom_target(${PROJECT_NAME}_CfgFilesTarget SOURCES ${${PROJECT_NAME}_CfgFilesPaths})
+
+
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
  include
   ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}}
 )
 
+## Declare a C++ library
 add_library(${PROJECT_NAME}
-  src/retracting_global_planner.cpp
-
+   src/backward_local_planner.cpp
 )
+
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
@@ -152,7 +136,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/rrbtx_retracting_global_planner_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/backward_local_planner_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -162,7 +146,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
 
 ## Specify libraries to link a library or executable target against
 # target_link_libraries(${PROJECT_NAME}_node
@@ -209,7 +193,7 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_rrbtx_retracting_global_planner.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/backward_local_planner.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
