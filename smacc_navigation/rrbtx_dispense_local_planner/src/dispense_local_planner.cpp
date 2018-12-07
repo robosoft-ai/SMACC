@@ -104,7 +104,7 @@ void DispenseLocalPlanner::publishGoalMarker(double x, double y, double phi)
 bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
     goalReached_=false;
-    ROS_DEBUG("LOCAL PLANNER LOOP");
+    //ROS_DEBUG("LOCAL PLANNER LOOP");
 
     tf::Stamped<tf::Pose> tfpose;
     costmapRos_->getRobotPose(tfpose);
@@ -133,7 +133,7 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                ROS_INFO("dispense: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
+                //ROS_INFO("dispense: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
             }
         }
 
@@ -141,21 +141,21 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
             // even the latest point is quite similar, then take the last since it is the final goal
             cmd_vel.linear.x = 0;
             cmd_vel.angular.z = 0;
-            ROS_INFO("End Local planner");
+            //ROS_INFO("End Local planner");
             ok = true;
             currentPoseIndex_ = plan_.size() -1;
             //return true;
         }
     }
 
-    ROS_INFO("pose control algorithm");
+    //ROS_INFO("pose control algorithm");
     
     const geometry_msgs::PoseStamped& goalpose = plan_[currentPoseIndex_];
     const geometry_msgs::Point& goalposition = goalpose.pose.position;
 
     tf::Quaternion goalQ;
     tf::quaternionMsgToTF(goalpose.pose.orientation, goalQ);
-    ROS_INFO_STREAM("Plan goal quaternion at "<< goalpose.pose.orientation);
+    //ROS_INFO_STREAM("Plan goal quaternion at "<< goalpose.pose.orientation);
 
     //goal orientation (global frame)
     double betta = tf::getYaw(goalpose.pose.orientation)+ betta_offset_;
@@ -202,7 +202,7 @@ bool DispenseLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     cmd_vel.linear.x = vetta;
     cmd_vel.angular.z = gamma;
 
-    ROS_INFO_STREAM("Local planner: "<< cmd_vel);
+    //ROS_INFO_STREAM("Local planner: "<< cmd_vel);
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);
     

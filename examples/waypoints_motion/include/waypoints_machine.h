@@ -23,6 +23,18 @@ struct NavigateToEvenWaypoint;
 struct WayPointsStateMachine
     : public SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint> 
 {
-  WayPointsStateMachine(my_context ctx, SignalDetector *signalDetector)
-      : SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint>(ctx, signalDetector) {}
+public:
+WayPointsStateMachine(my_context ctx, SignalDetector *signalDetector)
+    : SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint>(ctx, signalDetector) 
+    {
+        XmlRpc::XmlRpcValue waypointsList;
+        this->getParam("waypoints", waypointsList);
+        ROS_ASSERT(waypointsList.getType() == XmlRpc::XmlRpcValue::TypeArray);
+
+        for (int32_t i = 0; i < waypointsList.size(); ++i) 
+        {
+            ROS_ASSERT(waypointsList[i].getType() == XmlRpc::XmlRpcValue::TypeArray);
+            //sum += static_cast<double>(my_list[i]);
+        }
+    }
 };

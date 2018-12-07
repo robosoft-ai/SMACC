@@ -1,3 +1,0 @@
-TrajectoryPlannerROS:
-  yaw_goal_tolerance: 0.157
-  xy_goal_tolerance: 0.1

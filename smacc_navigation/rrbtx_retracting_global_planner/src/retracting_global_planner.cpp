@@ -42,9 +42,9 @@ RetractingGlobalPlanner::RetractingGlobalPlanner()
 */
 void RetractingGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
 {
-    ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner initialize");
+    //ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner initialize");
     costmap_ros_ = costmap_ros;
-    ROS_WARN_NAMED("Retracting", "initializating global planner, costmap address: %ld", (long)costmap_ros);
+    //ROS_WARN_NAMED("Retracting", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
     dispensedCordPathSub_ = nh_.subscribe("odom_tracker_path", 2, &RetractingGlobalPlanner::onDispensedCordTrailMsg, this);
     
@@ -111,18 +111,18 @@ void RetractingGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose,
 bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
 {
-    ROS_WARN_NAMED("Retracting", "Retracting global planner: Generating global plan ");
-    ROS_WARN_NAMED("Retracting", "Clearing...");
+    //ROS_WARN_NAMED("Retracting", "Retracting global planner: Generating global plan ");
+    //ROS_WARN_NAMED("Retracting", "Clearing...");
 
     plan.clear();
 
     tf::Stamped<tf::Pose> tfpose;
     geometry_msgs::PoseStamped pose;
-    ROS_WARN_NAMED("Retracting", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
+    //ROS_WARN_NAMED("Retracting", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
     costmap_ros_->getRobotPose(tfpose);
 
     pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-    ROS_WARN_NAMED("Retracting", "getting timestamp");
+    //ROS_WARN_NAMED("Retracting", "getting timestamp");
     pose.header.stamp = ros::Time::now();
     tf::Vector3 position = tfpose.getOrigin();
     auto q = tfpose.getRotation();
@@ -184,14 +184,14 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     if (lenght > skip_straight_motion_distance_) 
     {   
         // skip initial pure spinning and initial straight motion
-        ROS_INFO("1 - heading to goal position pure spinning");
+        //ROS_INFO("1 - heading to goal position pure spinning");
         double heading_direction = atan2(dy, dx) ;
         double startyaw = tf::getYaw(q);
         double offset = angles::shortest_angular_distance(startyaw, heading_direction);
         heading_direction = startyaw+offset;
         
         prevState = reel_path_tools::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
-        ROS_INFO("2 - going forward keep orientation pure straight");
+        //ROS_INFO("2 - going forward keep orientation pure straight");
         
         prevState = reel_path_tools::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
     }
@@ -200,14 +200,14 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
         prevState = start;
     }
 
-    ROS_INFO_STREAM(" start - " << start);
-    ROS_INFO_STREAM(" end - " << goal.pose.position);
+    //ROS_INFO_STREAM(" start - " << start);
+    //ROS_INFO_STREAM(" end - " << goal.pose.position);
      
-    ROS_INFO("3 - heading to goal orientation");
+    //ROS_INFO("3 - heading to goal orientation");
     //double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
     //reel_path_tools::makePureSpinningSubPlan(prevState,goalOrientation,plan);
 
-    ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
+    //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose,1.0,0,1.0);
 
     nav_msgs::Path planMsg;
@@ -246,13 +246,13 @@ bool RetractingGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 */
 bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner::command::Request  &req, rrbtx_retracting_global_planner::command::Response  &res)
 {
-    ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner SERVICE CALL");
+    //ROS_INFO_NAMED("Retracting", "RetractingGlobalplanner SERVICE CALL");
     std::string msg = req.cmd.data.c_str();
 
     std::vector<std::string> fields;   // Create a vector of strings, called "fields"
     boost::split(fields, msg, boost::algorithm::is_any_of(" "));
 
-    ROS_INFO_NAMED("Retracting", "retraction planner SERVICE REQUEST");
+    //ROS_INFO_NAMED("Retracting", "retraction planner SERVICE REQUEST");
 
     if(fields.size() == 0 )
     {
@@ -264,7 +264,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
     bool error = false;
     if(cmd == "savepath")
     {
-        ROS_INFO_NAMED("Retracting","SAVE PATH COMMAND");
+        //ROS_INFO_NAMED("Retracting","SAVE PATH COMMAND");
         if(fields.size() >1 )
         {
             std::vector<std::string> tail (fields.begin()+1, fields.end());
@@ -275,7 +275,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
             os << lastDispensedCordPathMsg_;
             os.close();
 
-            ROS_INFO_STREAM("serialized path: " << lastDispensedCordPathMsg_);
+            //ROS_INFO_STREAM("serialized path: " << lastDispensedCordPathMsg_);
         }
         else
         {
@@ -284,7 +284,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
     }
     else if(cmd== "loadpath")
     {
-        ROS_INFO_NAMED("Retracting", "LOAD PATH COMMAND");
+        //ROS_INFO_NAMED("Retracting", "LOAD PATH COMMAND");
         if(fields.size() >1 )
         {
             std::vector<std::string> tail (fields.begin()+1, fields.end());
@@ -299,7 +299,7 @@ bool RetractingGlobalPlanner::commandServiceCall(rrbtx_retracting_global_planner
             ros::serialization::IStream stream(buffer.get(),serial_size);
             ros::serialization::deserialize(stream, p);
 
-            ROS_INFO_STREAM_NAMED("Retracting", "serialized path: " << p);
+            //ROS_INFO_STREAM_NAMED("Retracting", "serialized path: " << p);
             lastDispensedCordPathMsg_ = p;
         }
         else

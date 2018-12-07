@@ -54,7 +54,7 @@ public:
     }
 
     template <typename T>
-    bool getData(std::string name, T& ret)
+    bool getGlobalSMData(std::string name, T& ret)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
         
@@ -78,7 +78,7 @@ public:
     }
 
     template <typename T>
-    void setData(std::string name, T value)
+    void setGlobalSMData(std::string name, T value)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
         globalData_[name] = value;

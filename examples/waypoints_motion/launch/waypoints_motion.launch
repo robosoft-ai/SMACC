@@ -1,21 +1,20 @@
 <launch>
-
     <!-- load the navigation environment simulated in gazebo-->
-    <include file ="$(find radial_motion_example)/launch/ridgeback_simulation.launch"/>
+    <include file ="$(find waypoints_motion)/launch/ridgeback_simulation.launch"/>
 
     <!--  setup smacc planners configuration  -->
     <group ns="move_base">
         <!-- retracting local planner -->  
-        <rosparam file="$(find radial_motion_example)/config/retracting_local_planner.yaml" command="load" />
+        <rosparam file="$(find waypoints_motion)/config/retracting_local_planner.yaml" command="load" />
         <!-- dispense local planner -->  
-        <rosparam file="$(find radial_motion_example)/config/dispense_local_planner.yaml" command="load" />
+        <rosparam file="$(find waypoints_motion)/config/dispense_local_planner.yaml" command="load" />
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find radial_motion_example)/config/radial_motion_sm_config.yaml"/>
+    <rosparam command="load" file="$(find waypoints_motion)/config/waypoints_motion_sm_config.yaml"/>
     
     <!-- state machine node -->
-    <node pkg="radial_motion_example" type="radial_motion_example_node" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
+    <node pkg="waypoints_motion" type="waypoints_motion" name="WaypointsMotionExample" launch-prefix="xterm -hold -e ">
         <!-- for odom tracker-->
         <remap from="/odom" to="/odometry/filtered"/>
         <!--<param name="signal_detector_loop_freq" value="1"/>-->

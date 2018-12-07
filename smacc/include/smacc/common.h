@@ -84,6 +84,9 @@ namespace smacc
       ActionFeedback feedbackMessage;
       //boost::any feedbackMessage;
   };
+
+  // demangles the type name to be used as a node handle path
+  std::string cleanTypeName(const std::type_info& tinfo);
 }
 
 

@@ -54,29 +54,17 @@ class SmaccState : public sc::simple_state<
     }
   
     typedef SmaccState my_base;
-    
-    std::string cleanTypeName(const std::type_info& tinfo)
-    {
-      std::string fullclassname = boost::core::demangle(tinfo.name());
-      //ROS_INFO("State full classname: %s", fullclassname.c_str());
-
-      std::vector<std::string> strs;
-      boost::split(strs,fullclassname,boost::is_any_of("::"));
-      std::string classname = strs.back();
-      //ROS_INFO("State classname: %s", classname.c_str());
-      return classname;
-    }
 
     template <typename T>
     bool getGlobalSMData(std::string name, T& ret)
     {
-        return base_type::outermost_context().getData(name,ret);
+        return base_type::outermost_context().getGlobalSMData(name,ret);
     }
 
     template <typename T>
     void setGlobalSMData(std::string name, T value)
     {
-        base_type::outermost_context().setData(name,value);
+        base_type::outermost_context().setGlobalSMData(name,value);
     }
 
     template <typename SmaccComponentType>
@@ -84,7 +72,8 @@ class SmaccState : public sc::simple_state<
     {
       base_type::outermost_context().requiresComponent(storage,nh);
     }
-  
+
+    // constructor that initialize the state ros node handle 
     SmaccState( my_context ctx )
     {
       this->set_context( ctx.pContext_ );
