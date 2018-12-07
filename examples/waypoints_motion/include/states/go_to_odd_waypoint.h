@@ -22,6 +22,7 @@ struct NavigateToOddWaypoint
 {
   typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, NavigateToEvenWaypoint::NavigateToEvenWaypoint> reactions; 
 
+
 public:
   // This is the state constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -67,7 +68,21 @@ struct NavigationOrthogonalLine
 
 //--------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the NavigateToOddWaypoint State
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
+struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
+{
+  private:
+  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
+  // this resource can be used from any method in this state
+  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+
+  smacc_odom_tracker::OdomTracker* odomTracker_;
+
+  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;  
+
+  std::shared_ptr<std::vector<geometry_msgs::Point>> waypoints_;
+
+  int currentWayPointIndex_;
+
 public:
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
@@ -78,23 +93,32 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresComponent(moveBaseClient_ ,ros::NodeHandle("move_base"));
     this->requiresComponent(odomTracker_);
     this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
-    this->plannerSwitcher_->setForwardPlanner();
-    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    this->getGlobalSMData("waypoints", waypoints_);
+    this->getGlobalSMData("waypoint_index", currentWayPointIndex_);
 
-    gotoNextPoint(); 
+    gotoNextPoint();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
   void gotoNextPoint() 
-  {
+  {  
+    // setup new goal pose
     smacc::SmaccMoveBaseActionClient::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
+    goal.target_pose.header.frame_id = "odom";
+
+    goal.target_pose.pose.position = (*waypoints_)[currentWayPointIndex_];
+    goal.target_pose.pose.orientation.w = 1;
+
+    // update waypoint
+    currentWayPointIndex_++;
+    this->setGlobalSMData("waypoint_index", currentWayPointIndex_);
     
+    // send request
     moveBaseClient_->sendGoal(goal);
   }
 
@@ -104,15 +128,6 @@ public:
   { 
     ROS_INFO("Exiting move goal Action Client"); 
   }
-
-private:
-  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
-  // this resource can be used from any method in this state
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
-
-  smacc_odom_tracker::OdomTracker* odomTracker_;
-
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;
 };
 
 //---------------------------------------------------------------------------------------------------------

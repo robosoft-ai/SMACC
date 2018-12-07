@@ -60,13 +60,21 @@ public:
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
 {
+
+private:
+  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
+  // this resource can be used from any method in this state
+  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+
+  smacc_odom_tracker::OdomTracker* odomTracker_;
+
+  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;  
+
+  std::shared_ptr<std::vector<geometry_msgs::Point>> waypoints_;
+
+  int currentWayPointIndex_;
+
 public:
-  // the angle of the current radial motion
-  double yaw;
-
-  // distance parameter of the motion
-  double dist;
-
   // This is the substate constructor. This code will be executed when the
   // workflow enters in this substate (that is according to statechart the moment when this object is created)
   Navigate(my_context ctx):
@@ -80,33 +88,35 @@ public:
     this->requiresComponent(odomTracker_);
     this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
-    // read from the state machine yaw "global variable"
-    this->getGlobalSMData("current_yaw", yaw);
-    ROS_INFO_STREAM("[NavigateToEvenWaypoint/Navigate] current yaw: " << yaw);
+    this->getGlobalSMData("waypoints", waypoints_);
+    this->getGlobalSMData("waypoint_index", currentWayPointIndex_);
 
-    // straight motion distance
-    this->param("straight_motion_distance", dist, 3.5);
-    ROS_INFO_STREAM("Straight motion distance: " << dist);
-
-    gotoNextPoint();
+    if (currentWayPointIndex_ >= waypoints_->size())
+    {
+      this->terminate();
+    }
+    else
+    {
+      gotoNextPoint();
+    }
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void gotoNextPoint() {
-    geometry_msgs::PoseStamped radialStartPose;
-    this->getGlobalSMData("radial_start_pose", radialStartPose);
-
+  void gotoNextPoint() 
+  {  
+    // setup new goal pose
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.stamp = ros::Time::now();
+    goal.target_pose.header.frame_id = "odom";
 
-    // in order to find the goal we create a virtual line from the origin to
-    // some yaw direction and some distance
-    goal.target_pose = radialStartPose;
-    goal.target_pose.pose.position.x += cos(yaw) * dist;
-    goal.target_pose.pose.position.y += sin(yaw) * dist;
-    goal.target_pose.pose.orientation =
-        tf::createQuaternionMsgFromRollPitchYaw(0, 0, yaw);
+    goal.target_pose.pose.position = (*waypoints_)[currentWayPointIndex_];
+    goal.target_pose.pose.orientation.w = 1;
 
+    // update waypoint
+    currentWayPointIndex_++;
+    this->setGlobalSMData("waypoint_index", currentWayPointIndex_);
+    
+    // send request
     moveBaseClient_->sendGoal(goal);
   }
 
@@ -116,15 +126,6 @@ public:
   { 
     ROS_INFO("Exiting move goal Action Client"); 
   }
-
-private:
-  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
-  // this resource can be used from any method in this state
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
-
-  smacc_odom_tracker::OdomTracker* odomTracker_;
-
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;  
 };
 
 //---------------------------------------------------------------------------------------------------------

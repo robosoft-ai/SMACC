@@ -14,7 +14,7 @@
     <rosparam command="load" file="$(find waypoints_motion)/config/waypoints_motion_sm_config.yaml"/>
     
     <!-- state machine node -->
-    <node pkg="waypoints_motion" type="waypoints_motion" name="WaypointsMotionExample" launch-prefix="xterm -hold -e ">
+    <node pkg="waypoints_motion" type="waypoints_motion_node" name="WaypointsMotionExample" launch-prefix="xterm -hold -e ">
         <!-- for odom tracker-->
         <remap from="/odom" to="/odometry/filtered"/>
         <!--<param name="signal_detector_loop_freq" value="1"/>-->

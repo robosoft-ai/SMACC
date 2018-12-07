@@ -26,15 +26,37 @@ struct WayPointsStateMachine
 public:
 WayPointsStateMachine(my_context ctx, SignalDetector *signalDetector)
     : SmaccStateMachineBase<WayPointsStateMachine,NavigateToEvenWaypoint::NavigateToEvenWaypoint>(ctx, signalDetector) 
-    {
-        XmlRpc::XmlRpcValue waypointsList;
-        this->getParam("waypoints", waypointsList);
-        ROS_ASSERT(waypointsList.getType() == XmlRpc::XmlRpcValue::TypeArray);
+{
+    loadWayPointsFromParameterServer();
 
-        for (int32_t i = 0; i < waypointsList.size(); ++i) 
-        {
-            ROS_ASSERT(waypointsList[i].getType() == XmlRpc::XmlRpcValue::TypeArray);
-            //sum += static_cast<double>(my_list[i]);
-        }
+    // we will use this global index variable to iterate on waypoints
+    int currentWayPointIndex=0;
+    this->setGlobalSMData("waypoint_index", currentWayPointIndex);
+}
+
+ void loadWayPointsFromParameterServer()
+ {
+    XmlRpc::XmlRpcValue waypointsList;
+    this->getParam("waypoints", waypointsList);
+    ROS_ASSERT(waypointsList.getType() == XmlRpc::XmlRpcValue::TypeArray);
+    
+    auto waypoints = std::make_shared<std::vector<geometry_msgs::Point>>();
+    for (int32_t i = 0; i < waypointsList.size(); ++i) 
+    {
+        ROS_ASSERT(waypointsList[i].getType() == XmlRpc::XmlRpcValue::TypeArray);
+        ROS_ASSERT(waypointsList[i][0].getType() == XmlRpc::XmlRpcValue::TypeDouble);
+        
+        double x = static_cast<double>(waypointsList[i][0]);
+        double y = static_cast<double>(waypointsList[i][1]);
+        geometry_msgs::Point p;
+        p.x = x;
+        p.y = y;
+
+        //sum += static_cast<double>(my_list[i]);
+        ROS_INFO("waypoint %d, (%lf, %lf)", i, x, y);
+        waypoints->push_back(p);
     }
+
+    this->setGlobalSMData("waypoints", waypoints );
+ }
 };

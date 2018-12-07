@@ -61,6 +61,7 @@ class SmaccState : public sc::simple_state<
         return base_type::outermost_context().getGlobalSMData(name,ret);
     }
 
+    // store globally in this state machine. (By value parameter )
     template <typename T>
     void setGlobalSMData(std::string name, T value)
     {
