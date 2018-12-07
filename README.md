@@ -341,7 +341,7 @@ The param template method reads from the parameters server delegating to the met
 
 ## Shared variables between states
 
-This following example shows how to share a variable between two states. In the Navigate state the "angle_value" variable is set using the template method "setData". Latter in the ExecuteToolState it gets the value using the template method "getGlobalData".
+This following example shows how to share a variable between two states. In the Navigate state the "angle_value" variable is set using the template method "setData". Latter in the ExecuteToolState it gets the value using the template method "getGlobalSMData".
 
 ```cpp
 struct Navigate : SmaccState<Navigate, SimpleStateMachine>
@@ -352,7 +352,7 @@ public:
     SmaccState<Navigate, SimpleStateMachine> (ctx)
   {
         double angle = M_PI;
-        this->setGlobalData("angle_value", angle);
+        this->setGlobalSMData("angle_value", angle);
   }
 };
 
@@ -362,7 +362,7 @@ ExecuteToolState(my_context ctx):
     SmaccState<ExecuteToolState, SimpleStateMachine> (ctx)
     {
          int angle;
-         this->getGlobalData("angle_value", angle);
+         this->getGlobalSMData("angle_value", angle);
     }
 };
 ```
