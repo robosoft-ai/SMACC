@@ -55,6 +55,15 @@ class OdomTracker: public smacc::ISmaccComponent
         // threadsafe
         void popPath();
 
+        // threadsafe
+        void clearPath();
+
+        // threadsafe
+        void setStartPoint(const geometry_msgs::PoseStamped& pose);
+        
+        // threadsafe
+        nav_msgs::Path getPath();
+
     protected:
 
         virtual void rtPublishPaths(ros::Time timestamp); 

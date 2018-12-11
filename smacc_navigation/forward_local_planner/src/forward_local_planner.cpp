@@ -11,7 +11,8 @@
 //register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace forward_local_planner {
+namespace forward_local_planner 
+{
 /**
 ******************************************************************************************************************
 * ForwardLocalPlanner()
@@ -42,8 +43,8 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf
     k_alpha_ = -0.2;
     k_betta_ = -1.0; // set to zero means that orientation is not important
     //k_betta_ = 1.0;
-    betta_offset_=0;
-    alpha_offset_=0;
+    //betta_offset_=0;
+    
     goalReached_=false;
     carrot_distance_= 0.4;
 
@@ -206,8 +207,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);
     
-    /*
-    ROS_DEBUG_STREAM("local planner," << std::endl
+    ROS_DEBUG_STREAM("Forward local planner," << std::endl
                                         << " theta: " << theta << std::endl
                                         << " betta: " << betta << std::endl
                                         << " err_x: " << dx << std::endl
@@ -218,7 +218,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
                                         << " vetta:" << vetta << std::endl
                                         << " gamma:" << gamma << std::endl
                                         << "xy_goal_tolerance:" << xy_goal_tolerance_);
-    */
+    
     //if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
     //{  
     //}

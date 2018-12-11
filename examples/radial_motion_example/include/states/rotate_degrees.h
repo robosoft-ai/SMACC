@@ -27,12 +27,10 @@ struct RotateDegress
   typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>,  NavigateToEndPoint::NavigateToEndPoint> reactions; 
 
 public:
-  // This is the state constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  // after this, its orthogonal lines are created (see orthogonal line classes).
-  RotateDegress(my_context ctx)
-      : SmaccState<RotateDegress, RadialMotionStateMachine,
-                   mpl::list<NavigationOrthogonalLine, ToolOrthogonalLine>>(ctx) // call the SmaccState base constructor
+
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("-------");
     ROS_INFO("Entering in ROTATE TEN DEGREES STATE");
@@ -40,7 +38,10 @@ public:
 
   // This is the state destructor. This code will be executed when the
   // workflow exits from this state (that is according to statechart the moment when this object is destroyed)
-  ~RotateDegress() { ROS_INFO("Exiting in ROTATE TEN DEGREES STATE"); }
+  void onExit()
+  { 
+    ROS_INFO("Exiting in ROTATE TEN DEGREES STATE"); 
+  }
 };
 
 //------------------------------------------------------------------
@@ -50,13 +51,11 @@ struct NavigationOrthogonalLine
                  Navigate> 
 {
 public:
-  // This is the orthogonal line constructor. This code will be executed when the
-  // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
-  NavigationOrthogonalLine(my_context ctx)
-      : SmaccState<NavigationOrthogonalLine, RotateDegress::orthogonal<0>,
-                   Navigate>(ctx) // call the SmaccState base constructor
-    {
-    }
+  using SmaccState::SmaccState;
+
+  void onEntry()
+  {
+  }
 };
 //------------------------------------------------------------------
 // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
@@ -64,9 +63,10 @@ struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine>
 {
 public:
 
-  // This is the substate constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  Navigate(my_context ctx) : SmaccState<Navigate, NavigationOrthogonalLine>(ctx) {
+  using SmaccState::SmaccState;
+
+  void onEntry()
+  {
     ROS_INFO("Entering Navigate");
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
@@ -91,17 +91,7 @@ public:
       i += 1; // this is not the first time, increment the degress with 10 degreess
     }
 
-    // sets from the state machine i "global variable" to know the current orientation
-    ROS_INFO("[RotateDegrees/Navigate] Radial angle index: %d", i);
-    this->setGlobalSMData("angle_index", i);
-
-    // get the angle according to the angle index
-    yaw = i * angles::from_degrees(angle_increment_degree_);
-    this->setGlobalSMData("current_yaw", yaw);
-    ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
-
-    this->plannerSwitcher_->setForwardPlanner();
-    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    ROS_INFO("Trajectory %d/%d", i , linear_trajectories_count_);
 
     // check if the motion is in the latest straight motion
     if(i == linear_trajectories_count_) 
@@ -111,6 +101,21 @@ public:
     }
     else
     {
+      // sets from the state machine i "global variable" to know the current orientation
+      ROS_INFO("[RotateDegrees/Navigate] Radial angle index: %d", i);
+      this->setGlobalSMData("angle_index", i);
+
+      // get the angle according to the angle index
+      yaw = i * angles::from_degrees(angle_increment_degree_);
+      this->setGlobalSMData("current_yaw", yaw);
+      ROS_INFO_STREAM("[RotateDegrees/Navigate] current yaw: " << yaw);
+
+      this->odomTracker_->clearPath();
+      
+      ros::spinOnce();
+      this->plannerSwitcher_->setForwardPlanner();
+      this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+      
       rotateDegrees();
     }
   }
@@ -130,6 +135,7 @@ public:
   // auxiliar function that defines the motion that is requested to the move_base action server
   void rotateDegrees() 
   {
+    ROS_INFO("Rotate degree MoveBase Call");
     geometry_msgs::PoseStamped radialStart;
     this->getGlobalSMData("radial_start_pose", radialStart);
 
@@ -137,14 +143,11 @@ public:
     goal.target_pose = radialStart;
     goal.target_pose.header.stamp = ros::Time::now();
 
-    goal.target_pose.pose.orientation =
-        tf::createQuaternionMsgFromRollPitchYaw(0, 0, yaw);
+    goal.target_pose.pose.orientation = tf::createQuaternionMsgFromRollPitchYaw(0, 0, yaw);
     moveBaseClient_->sendGoal(goal);
   }
 
-  // This is the substate destructor. This code will be executed when the
-  // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~Navigate() 
+  void onExit()
   { 
     ROS_INFO("Exiting move goal Action Client"); 
   }
@@ -178,27 +181,25 @@ private:
 struct ToolOrthogonalLine
     : SmaccState<ToolOrthogonalLine, RotateDegress::orthogonal<1>, ToolSubstate> {
 public:
-  ToolOrthogonalLine(my_context ctx)
-      : SmaccState<ToolOrthogonalLine, RotateDegress::orthogonal<1>, ToolSubstate>(ctx) // call the SmaccState base constructor                 
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("Entering in the tool orthogonal line");
   }
 
-  ~ToolOrthogonalLine() 
+  void onExit()
   { 
     ROS_INFO("Finishing the tool orthogonal line"); 
   }
 };
 //---------------------------------------------------------------------------------------------------------
-struct ToolSubstate
-    : SmaccState<ToolSubstate, ToolOrthogonalLine> {
-  
+struct ToolSubstate: SmaccState<ToolSubstate, ToolOrthogonalLine> 
+{  
 public:
+  using SmaccState::SmaccState;
 
-  // This is the substate constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate(my_context ctx) 
-    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  void onEntry()
   {
     ROS_INFO("Entering ToolSubstate");
   }

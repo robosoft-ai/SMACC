@@ -57,10 +57,12 @@ public:
     bool getGlobalSMData(std::string name, T& ret)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
-        
+        ROS_WARN("get SM Data lock acquire");
+        bool success = false;
+
         if(!globalData_.count(name))
         {
-            return false;
+            success = false;
         }
         else
         {
@@ -68,13 +70,17 @@ public:
             {
                 boost::any v = globalData_[name];
                 ret = boost::any_cast<T>(v);
-                return true;    
+                success = true;    
             }
             catch(boost::bad_any_cast& ex)
             {
-                return false;
+                ROS_ERROR("bad any cast: %s", ex.what());
+                success = false;
             }
         }
+
+        ROS_WARN("get SM Data lock release");
+        return success;
     }
 
     template <typename T>

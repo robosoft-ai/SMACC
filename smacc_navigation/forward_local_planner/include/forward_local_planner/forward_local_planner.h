@@ -60,8 +60,8 @@ private:
     double k_betta_;
     bool goalReached_;
 
-    double alpha_offset_;
-    double betta_offset_;
+    const double alpha_offset_= 0;
+    const double betta_offset_ = 0;
 
     meter carrot_distance_;
     rad carrot_angular_distance_;

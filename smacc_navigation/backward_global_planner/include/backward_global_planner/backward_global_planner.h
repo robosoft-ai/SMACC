@@ -4,6 +4,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
+
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <nav_msgs/Path.h>
@@ -17,12 +18,20 @@ class BackwardGlobalPlanner : public nav_core::BaseGlobalPlanner {
 public:
     BackwardGlobalPlanner();
 
+    virtual ~BackwardGlobalPlanner();
+
     virtual bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) override;
 
     virtual bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
         double& cost) override;
+
+    virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped& start,
+        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
+
+    virtual bool createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped& start,
+        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
 
     virtual void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) override;
 

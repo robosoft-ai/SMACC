@@ -74,6 +74,8 @@ class SmaccState : public sc::simple_state<
       base_type::outermost_context().requiresComponent(storage,nh);
     }
 
+    SmaccState() = delete;
+    
     // constructor that initialize the state ros node handle 
     SmaccState( my_context ctx )
     {
@@ -94,11 +96,27 @@ class SmaccState : public sc::simple_state<
       ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
 
       this->setParam("created", true);
+
+      static_cast<MostDerived*>(this)->onEntry();
     }
 
-    ~SmaccState() {}
+    virtual ~SmaccState() 
+    {
+      static_cast<MostDerived*>(this)->onExit();
+    }
 
   public:
+
+  void onEntry()
+  {
+
+  }
+
+  void onExit()
+  {
+
+  }
+
     //////////////////////////////////////////////////////////////////////////
     // The following declarations should be private.
     // They are only public because many compilers lack template friends.

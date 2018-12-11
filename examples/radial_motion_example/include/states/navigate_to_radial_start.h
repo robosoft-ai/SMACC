@@ -24,20 +24,15 @@ struct NavigateToRadialStart
   typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
 
 public:
-  // This is the state constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  // after this, its orthogonal lines are created (see orthogonal line classes).
-  NavigateToRadialStart(my_context ctx)
-      : SmaccState<NavigateToRadialStart, RadialMotionStateMachine,
-                   mpl::list<NavigationOrthogonalLine, ToolOrthogonalLine>>(ctx) 
-    {
-       ROS_INFO("-------");
-       ROS_INFO("Entering in NavigateToRadialStart State");
-    }
+    using SmaccState::SmaccState;
 
-  // This is the state destructor. This code will be executed when the
-  // workflow exits from this state (that is according to statechart the moment when this object is destroyed)
-  ~NavigateToRadialStart() 
+  void onEntry()
+  {
+    ROS_INFO("-------");
+    ROS_INFO("Entering in NavigateToRadialStart State");
+  }
+
+  void onExit() 
   {
     ROS_INFO("Finishing NavigateToRadialStart state");
   }
@@ -49,18 +44,14 @@ struct NavigationOrthogonalLine
     : public SmaccState<NavigationOrthogonalLine,
                         NavigateToRadialStart::orthogonal<0>, Navigate> 
   {
-  // This is the orthogonal line constructor. This code will be executed when the
-  // workflow enters in this orthogonal line (that is according to statechart the moment when this object is created)
-  NavigationOrthogonalLine(my_context ctx)
-      : SmaccState<NavigationOrthogonalLine,
-                   NavigateToRadialStart::orthogonal<0>, Navigate>(ctx) // call the SmaccState base constructor
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("Entering in move_base orthogonal line");
   }
 
-  // This is the state destructor. This code will be executed when the
-  // workflow exits from this state (that is according to statechart the moment when this object is destroyed)
-  ~NavigationOrthogonalLine() 
+  void onExit()
   {
     ROS_INFO("Finishing move base orthogonal line");
   }
@@ -70,10 +61,9 @@ struct NavigationOrthogonalLine
 // this is the navigate substate inside the navigation orthogonal line of the NavigateToRadialStart State
 struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> {
 public:
-  // This is the substate constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  Navigate(my_context ctx) 
-    : SmaccState<Navigate, NavigationOrthogonalLine>(ctx) // call the SmaccState base constructor 
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("Entering Navigate");
 
@@ -115,7 +105,7 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  ~Navigate() 
+  void onExit() 
   { 
     ROS_INFO("Exiting move goal Action Client"); 
   }
@@ -135,13 +125,14 @@ private:
 struct ToolOrthogonalLine
     : SmaccState<ToolOrthogonalLine, NavigateToRadialStart::orthogonal<1>, ToolSubstate> {
 public:
-  ToolOrthogonalLine(my_context ctx)
-      : SmaccState<ToolOrthogonalLine, NavigateToRadialStart::orthogonal<1>, ToolSubstate>(ctx) // call the SmaccState base constructor                 
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("Entering in the tool orthogonal line");
   }
 
-  ~ToolOrthogonalLine() 
+  void onExit()
   { 
     ROS_INFO("Finishing the tool orthogonal line"); 
   }
@@ -151,10 +142,9 @@ struct ToolSubstate
     : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {  
 public:
-  // This is the substate constructor. This code will be executed when the
-  // workflow enters in this substate (that is according to statechart the moment when this object is created)
-  ToolSubstate(my_context ctx) 
-    : SmaccState<ToolSubstate, ToolOrthogonalLine>(ctx) // call the SmaccState base constructor
+  using SmaccState::SmaccState;
+
+  void onEntry()
   {
     ROS_INFO("Entering ToolSubstate");
     this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));

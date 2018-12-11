@@ -206,7 +206,7 @@ Visualization Manager:
       Buffer Length: 1
       Class: rviz/Path
       Color: 25; 255; 0
-      Enabled: true
+      Enabled: false
       Head Diameter: 0.300000012
       Head Length: 0.200000003
       Length: 0.300000012
@@ -224,7 +224,7 @@ Visualization Manager:
       Shaft Length: 0.100000001
       Topic: /move_base/TrajectoryPlannerROS/local_plan
       Unreliable: false
-      Value: true
+      Value: false
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
@@ -395,7 +395,7 @@ Visualization Manager:
       Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
       Name: MarkerArray
       Namespaces:
-        {}
+        my_namespace2: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -592,11 +592,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 140.605118
+      Scale: 125.581856
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 4.05114794
-      Y: -0.100070745
+      X: 2.9409256
+      Y: 0.230011865
     Saved: ~
 Window Geometry:
   Displays:

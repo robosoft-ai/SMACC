@@ -51,6 +51,12 @@ public:
 private:
     void reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level);
 
+    // returns true for a pure spining motion request
+    bool createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose);
+
+    void pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, double vetta, double gamma,  double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist& cmd_vel);
+    void defaultBackwardCmd(const tf::Stamped<tf::Pose>& tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist& cmd_vel);
+
     void publishGoalMarker(double x, double y, double phi);
 
     dynamic_reconfigure::Server<backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
@@ -66,9 +72,14 @@ private:
     double k_betta_;
 
     bool goalReached_;
+    bool initialPureSpinningStage_;
+    bool pureSpinningMode_= false;
 
-    double alpha_offset_;
-    double betta_offset_;
+    const double alpha_offset_ = M_PI;
+    const double betta_offset_ = 0;
+
+    double yaw_goal_tolerance_; // radians
+    double xy_goal_tolerance_; // meters
 
     meter carrot_distance_;
     rad carrot_angular_distance_;

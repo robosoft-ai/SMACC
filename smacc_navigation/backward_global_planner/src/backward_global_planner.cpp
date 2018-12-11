@@ -35,6 +35,14 @@ BackwardGlobalPlanner::BackwardGlobalPlanner()
     skip_straight_motion_distance_=0.2;
 }
 
+BackwardGlobalPlanner::~BackwardGlobalPlanner()
+{
+    //clear
+    nav_msgs::Path planMsg;
+    planMsg.header.stamp = ros::Time::now();
+    planPub_.publish(planMsg);
+}
+
 /**
 ******************************************************************************************************************
 * initialize()
@@ -105,17 +113,12 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose, d
 
 /**
 ******************************************************************************************************************
-* makePlan()
+* createPureSpiningAndStragihtLineBackwardPath()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
-    const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
+bool BackwardGlobalPlanner::createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped& start,
+const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
 {
-    //ROS_WARN_NAMED("Backwards", "Backwards global planner: Generating global plan ");
-    //ROS_WARN_NAMED("Backwards", "Clearing...");
-
-    plan.clear();
-
     tf::Stamped<tf::Pose> tfpose;
     geometry_msgs::PoseStamped pose;
     //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
@@ -127,7 +130,51 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     tf::Vector3 position = tfpose.getOrigin();
     auto q = tfpose.getRotation();
 
-    /*
+    double dx = start.pose.position.x - goal.pose.position.x ;
+    double dy = start.pose.position.y - goal.pose.position.y ;
+
+    double lenght = sqrt(dx*dx + dy*dy);
+
+    geometry_msgs::PoseStamped prevState;
+    if (lenght > skip_straight_motion_distance_) 
+    {   
+        // skip initial pure spinning and initial straight motion
+        //ROS_INFO("1 - heading to goal position pure spinning");
+        double heading_direction = atan2(dy, dx) ;
+        double startyaw = tf::getYaw(q);
+        double offset = angles::shortest_angular_distance(startyaw, heading_direction);
+        heading_direction = startyaw+offset;
+        
+        prevState = reel_path_tools::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
+        //ROS_INFO("2 - going forward keep orientation pure straight");
+        
+        prevState = reel_path_tools::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
+    }
+    else
+    {
+        prevState = start;
+    }
+}
+
+/**
+******************************************************************************************************************
+* defaultBackwardPath()
+******************************************************************************************************************
+*/
+bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseStamped& start,
+const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
+{
+    tf::Stamped<tf::Pose> tfpose;
+    geometry_msgs::PoseStamped pose;
+    //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
+    costmap_ros_->getRobotPose(tfpose);
+
+    pose.header.frame_id = costmap_ros_->getGlobalFrameID();
+    //ROS_WARN_NAMED("Backwards", "getting timestamp");
+    pose.header.stamp = ros::Time::now();
+    tf::Vector3 position = tfpose.getOrigin();
+    auto q = tfpose.getRotation();
+
     pose.pose.position.x = position.x();
     pose.pose.position.y = position.y();
     pose.pose.position.z = position.z();
@@ -173,32 +220,24 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
             auto& pose = lastForwardPathMsg_.poses[i];
             plan.push_back(pose);
         }
-    }*/
-
-    double dx = start.pose.position.x - goal.pose.position.x ;
-    double dy = start.pose.position.y - goal.pose.position.y ;
-
-    double lenght = sqrt(dx*dx + dy*dy);
-
-    geometry_msgs::PoseStamped prevState;
-    if (lenght > skip_straight_motion_distance_) 
-    {   
-        // skip initial pure spinning and initial straight motion
-        //ROS_INFO("1 - heading to goal position pure spinning");
-        double heading_direction = atan2(dy, dx) ;
-        double startyaw = tf::getYaw(q);
-        double offset = angles::shortest_angular_distance(startyaw, heading_direction);
-        heading_direction = startyaw+offset;
-        
-        prevState = reel_path_tools::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
-        //ROS_INFO("2 - going forward keep orientation pure straight");
-        
-        prevState = reel_path_tools::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
     }
-    else
-    {
-        prevState = start;
-    }
+}
+
+/**
+******************************************************************************************************************
+* makePlan()
+******************************************************************************************************************
+*/
+bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
+    const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
+{
+    //ROS_WARN_NAMED("Backwards", "Backwards global planner: Generating global plan ");
+    //ROS_WARN_NAMED("Backwards", "Clearing...");
+
+    plan.clear();
+
+    this->createDefaultBackwardPath(start, goal, plan);
+    //this->createPureSpiningAndStragihtLineBackwardPath(start, goal, plan);
 
     //ROS_INFO_STREAM(" start - " << start);
     //ROS_INFO_STREAM(" end - " << goal.pose.position);

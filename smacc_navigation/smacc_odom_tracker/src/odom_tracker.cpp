@@ -31,7 +31,7 @@ void OdomTracker::init(ros::NodeHandle& nh)
 
     if(!nh.getParam("min_point_distance_backward_thresh",minPointDistanceBackwardThresh_))
     {
-        minPointDistanceBackwardThresh_ = 0.1; // 1 mm
+        minPointDistanceBackwardThresh_ = 0.05; // 1 mm
     }
 
     if(this->subscribeToOdometryTopic_)
@@ -90,6 +90,33 @@ void OdomTracker::popPath()
     }
 
     ROS_INFO("odom_tracker m_mutex release");
+}
+
+void OdomTracker::clearPath()
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    baseTrajectory_.poses.clear();
+
+    rtPublishPaths(ros::Time::now());
+}
+
+void OdomTracker::setStartPoint(const geometry_msgs::PoseStamped& pose)
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    if(baseTrajectory_.poses.size() >0)
+    {
+        baseTrajectory_.poses[0]=pose;
+    }
+    else
+    {
+        baseTrajectory_.poses.push_back(pose);
+    }
+}
+
+nav_msgs::Path OdomTracker::getPath()
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    return this->baseTrajectory_;
 }
 
 /**
