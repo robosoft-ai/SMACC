@@ -5,16 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /RobotModel1
-        - /Axes1
-        - /OdomTrackerPath1
-        - /Path3
-        - /Odometry1
+        - /BW Plan1/Status1
         - /Odometry1/Shape1
-        - /TF1
         - /TF1/Frames1
-        - /PoseArray1
-        - /MarkerArray3
+        - /MarkerArray1
       Splitter Ratio: 0.526845992
     Tree Height: 770
   - Class: rviz/Selection
@@ -187,7 +181,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 999999
+      Max Intensity: 1.29914166e-34
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: LaserScan
@@ -202,58 +196,12 @@ Visualization Manager:
       Use Fixed Frame: true
       Use rainbow: true
       Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 25; 255; 0
-      Enabled: false
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /move_base/TrajectoryPlannerROS/local_plan
-      Unreliable: false
-      Value: false
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
-      Color: 85; 255; 255
-      Enabled: true
-      Head Diameter: 0.300000012
-      Head Length: 0.200000003
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.100000001
-      Shaft Length: 0.100000001
-      Topic: /move_base/NavfnROS/plan
-      Unreliable: false
-      Value: true
     - Alpha: 0.699999988
       Class: rviz/Map
       Color Scheme: costmap
       Draw Behind: true
       Enabled: false
-      Name: Map
+      Name: Costmaps
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
@@ -262,26 +210,17 @@ Visualization Manager:
       Axes Length: 1
       Axes Radius: 0.100000001
       Class: rviz/Pose
-      Color: 255; 25; 0
+      Color: 255; 0; 255
       Enabled: true
-      Head Length: 0.300000012
+      Head Length: 0.200000003
       Head Radius: 0.100000001
-      Name: Pose
-      Shaft Length: 1
-      Shaft Radius: 0.0500000007
+      Name: MoveBase Goal
+      Shaft Length: 0.5
+      Shaft Radius: 0.00999999978
       Shape: Arrow
-      Topic: /move_base_simple/goal
+      Topic: /move_base/current_goal
       Unreliable: false
       Value: true
-    - Class: rviz/InteractiveMarkers
-      Enable Transparency: true
-      Enabled: false
-      Name: InteractiveMarkers
-      Show Axes: false
-      Show Descriptions: true
-      Show Visual Aids: false
-      Update Topic: /twist_marker_server/update
-      Value: false
     - Alpha: 1
       Class: rviz/Polygon
       Color: 255; 85; 255
@@ -316,37 +255,6 @@ Visualization Manager:
     - Alpha: 1
       Buffer Length: 1
       Class: rviz/Path
-      Color: 0; 0; 255
-      Enabled: true
-      Head Diameter: 0.0299999993
-      Head Length: 0.0199999996
-      Length: 0.300000012
-      Line Style: Lines
-      Line Width: 0.0299999993
-      Name: Path
-      Offset:
-        X: 0
-        Y: 0
-        Z: 0
-      Pose Color: 255; 85; 255
-      Pose Style: None
-      Radius: 0.0299999993
-      Shaft Diameter: 0.00999999978
-      Shaft Length: 0.100000001
-      Topic: /reelrbtx_follow_controller/reel_base_path
-      Unreliable: false
-      Value: true
-    - Class: rviz/MarkerArray
-      Enabled: true
-      Marker Topic: /move_base/BackwardLocalPlanner/goal_marker
-      Name: MarkerArray
-      Namespaces:
-        my_namespace2: true
-      Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Buffer Length: 1
-      Class: rviz/Path
       Color: 255; 255; 0
       Enabled: true
       Head Diameter: 0.0299999993
@@ -354,7 +262,7 @@ Visualization Manager:
       Length: 0.300000012
       Line Style: Lines
       Line Width: 0.0299999993
-      Name: ForwardGlobalPlan
+      Name: FW Plan
       Offset:
         X: 0
         Y: 0
@@ -377,7 +285,7 @@ Visualization Manager:
       Length: 0.300000012
       Line Style: Lines
       Line Width: 0.0299999993
-      Name: BackwardGlobalPlanner
+      Name: BW Plan
       Offset:
         X: 0
         Y: 0
@@ -393,17 +301,18 @@ Visualization Manager:
     - Class: rviz/MarkerArray
       Enabled: true
       Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
-      Name: MarkerArray
+      Name: FW Goal
       Namespaces:
         my_namespace2: true
       Queue Size: 100
       Value: true
-    - Alpha: 1
-      Class: rviz/GridCells
-      Color: 25; 255; 0
+    - Class: rviz/MarkerArray
       Enabled: true
-      Name: GridCells
-      Topic: ""
+      Marker Topic: /move_base/BackwardLocalPlanner/goal_marker
+      Name: BW Goal
+      Namespaces:
+        my_namespace2: true
+      Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
       Enabled: true
@@ -535,6 +444,13 @@ Visualization Manager:
       Update Interval: 0
       Value: true
     - Alpha: 1
+      Class: rviz/GridCells
+      Color: 25; 255; 0
+      Enabled: true
+      Name: GridCells
+      Topic: ""
+      Value: true
+    - Alpha: 1
       Arrow Length: 0.300000012
       Axes Length: 0.300000012
       Axes Radius: 0.00999999978
@@ -543,7 +459,7 @@ Visualization Manager:
       Enabled: true
       Head Length: 0.0700000003
       Head Radius: 0.0299999993
-      Name: PoseArray
+      Name: Pose Estimation
       Shaft Length: 0.230000004
       Shaft Radius: 0.00999999978
       Shape: Arrow (Flat)
@@ -582,7 +498,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: 1.24797225e-07
+      Angle: -0.0149999205
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
@@ -592,11 +508,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 125.581856
+      Scale: 161.757111
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 2.9409256
-      Y: 0.230011865
+      X: 3.63343287
+      Y: 1.68743861
     Saved: ~
 Window Geometry:
   Displays:
