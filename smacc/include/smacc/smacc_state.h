@@ -107,15 +107,19 @@ class SmaccState : public sc::simple_state<
 
   public:
 
-  void onEntry()
-  {
+    // this method is static-polimorphic because of the curiously recurreing pattern. It
+    // calls to the most derived class onEntry method if declared on smacc state construction
+    void onEntry()
+    {
 
-  }
+    }
 
-  void onExit()
-  {
+  // this method is static-polimorphic because of the curiously recurreing pattern. It
+    // calls to the most derived class onExit method if declared on smacc state destruction
+    void onExit()
+    {
 
-  }
+    }
 
     //////////////////////////////////////////////////////////////////////////
     // The following declarations should be private.

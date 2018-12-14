@@ -93,11 +93,14 @@ public:
     this->getGlobalSMData("waypoints", waypoints_);
     this->getGlobalSMData("waypoint_index", currentWayPointIndex_);
 
+    ros::spinOnce();
+
     ROS_WARN("Setting backward planner");
     this->plannerSwitcher_->setBackwardPlanner();
     ROS_WARN("coinfiguring odom tracker");
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
 
+    ros::spinOnce();
     //ros::Duration(2).sleep();
 
     if (currentWayPointIndex_ >= waypoints_->size())
