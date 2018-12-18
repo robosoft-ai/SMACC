@@ -51,6 +51,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
   <exec_depend>roscpp</exec_depend>
+  
+  <build_depend>realtime_tools</build_depend>
+  <exec_depend>realtime_tools</exec_depend>
 
   <build_depend>smacc</build_depend>
   <exec_depend>smacc</exec_depend>
