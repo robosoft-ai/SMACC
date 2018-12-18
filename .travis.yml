@@ -1,12 +1,4 @@
-language: python
-
-python:
-  - "2.7"
-
-script: 
-  - python -c "print 'hello world'"
-  
-#install:
-#  - git clone https://github.com/ros-industrial/industrial_ci.git .industrial_ci
-#script:
-#  - .industrial_ci/travis.sh
+install:
+  - git clone https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+script:
+  - .industrial_ci/travis.sh
