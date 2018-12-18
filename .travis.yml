@@ -1,12 +1,12 @@
-language: python
+language: generic
+services:
+  - docker
 
-python:
-  - "2.7"
+env:
+  matrix:
+    - ROS_DISTRO="kinetic"
 
-script: 
-  - python -c "print 'hello world'"
-  
-#install:
-#  - git clone https://github.com/ros-industrial/industrial_ci.git .industrial_ci
-#script:
-#  - .industrial_ci/travis.sh
+install:
+  - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+script:
+  - .industrial_ci/travis.sh
