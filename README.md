@@ -1,8 +1,9 @@
 # SMACC
 ## Status
-CI: <img src="https://travis-ci.org/pabloinigoblasco/SMACC.svg?branch=master" alt="build:started">
+Travis CI:
+<img src="https://travis-ci.org/pabloinigoblasco/SMACC.svg?branch=master" alt="build:started">
 
-##Introduction
+## Introduction
 SMACC is a ROS/C++ library designed to allow users to implement a broad variety of state machines in easy and systematic way [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 Probably the greatest strength of SMACC is that the state machines you can develop with it are strictly based on the UML Standard. This means that you have access to a clear and thoroughly studied and known approach to describe State Machines. This may be especially important in industrial environments.
