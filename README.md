@@ -1,4 +1,4 @@
-Travis CI: <img src="https://travis-ci.org/brettpac/SMACC.svg?branch=master" alt="build:started">
+Travis CI: [![Build Status](https://travis-ci.com/reelrbtx/SMACC.svg?branch=master)](https://travis-ci.com/reelrbtx/SMACC)
 
 # SMACC
 
