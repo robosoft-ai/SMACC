@@ -50,7 +50,7 @@ This repository contains several ROS packages:
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
 <p align="center">
-<img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true"  width="450" align="center"/>
+<img src="https://github.com//brettpac/SMACC/blob/master/documentation/shared_resources.png?raw=true"  width="450" align="center"/>
 </p>
 
 ## Development methodology
