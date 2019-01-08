@@ -7,7 +7,7 @@ env:
     - ROS_DISTRO="kinetic"
 
 install:
-  - git clone --quiet --depth 1 https://github.com/reelrbtx/SMACC.git smacc
-  - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+  - git clone --depth 1 https://github.com/reelrbtx/SMACC.git /root/catkin_ws/src/smacc
+  - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
