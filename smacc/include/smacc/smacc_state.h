@@ -45,7 +45,7 @@ class SmaccState : public sc::simple_state<
     {
         return nh.setParam(param_name, param_val);
     }
-
+    
     // delegates to ROS param access with the current NodeHandle
     template<typename T>
     bool param(std::string param_name, T& param_val, const T& default_val) const
@@ -54,6 +54,7 @@ class SmaccState : public sc::simple_state<
     }
   
     typedef SmaccState my_base;
+
 
     template <typename T>
     bool getGlobalSMData(std::string name, T& ret)
@@ -94,14 +95,24 @@ class SmaccState : public sc::simple_state<
       this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/")+ classname );
     
       ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
+      this->updateCurrentState<MostDerived>(true);
 
       this->setParam("created", true);
-
       static_cast<MostDerived*>(this)->onEntry();
     }
 
+    template <typename StateType>
+    void updateCurrentState(bool active)
+    {
+      base_type::outermost_context().updateCurrentState<StateType>(active);
+    }
+
+    InnerInitial* smacc_inner_type;
+ 
     virtual ~SmaccState() 
     {
+      ROS_ERROR("exiting state");
+      //this->updateCurrentState<MostDerived>(false);
       static_cast<MostDerived*>(this)->onExit();
     }
 

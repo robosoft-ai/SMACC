@@ -3,16 +3,17 @@
 #include <smacc/smacc.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <smacc_tool_plugin_template/smacc_tool_plugin.h>
+
+#include <ros/ros.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
 using namespace smacc;
 
 // ----- STATES FORWARD DECLARATIONS ---
-// we organize them in namespace to enable repeating names, ie: ToolSubstate
-
 namespace NavigateToRadialStart {
 struct NavigateToRadialStart;
+struct ToolSubstate;
 };
 
 namespace RotateDegress {
@@ -34,6 +35,9 @@ struct ReturnToRadialStart;
 struct RadialMotionStateMachine
     : public SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::NavigateToRadialStart> 
 {
+  
   RadialMotionStateMachine(my_context ctx, SignalDetector *signalDetector)
-      : SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::NavigateToRadialStart>(ctx, signalDetector) {}
+      : SmaccStateMachineBase<RadialMotionStateMachine,NavigateToRadialStart::NavigateToRadialStart>(ctx, signalDetector) 
+      {
+      }      
 };
