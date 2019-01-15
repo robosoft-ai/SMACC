@@ -4,7 +4,9 @@ services:
 
 env:
   matrix:
+    - ROS_DISTRO="jade" 
     - ROS_DISTRO="kinetic"
+    - ROS_DISTRO="melodic"
 
 install:
   - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
