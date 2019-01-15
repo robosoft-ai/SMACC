@@ -1,4 +1,10 @@
-Travis CI: [![Build Status](https://travis-ci.com/reelrbtx/SMACC.svg?branch=master)](https://travis-ci.com/reelrbtx/SMACC)
+
+## Travis CI: 
+
+| ROS Distro  | Build Status |
+| ------------- | ------------- |
+| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  |
+| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
 
 # SMACC
 
