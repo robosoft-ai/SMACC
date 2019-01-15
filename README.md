@@ -1,7 +1,7 @@
 
 ## Travis CI: 
 
-| ROS Distro  | Build Status |
+| ROS Distro  | Travis Build Status |
 | ------------- | ------------- |
 | Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  |
 | Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
