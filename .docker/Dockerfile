@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
 # SYSTEM DEPENDENCIES
 #----------------------------------------------------------
 
-RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git 
+RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools
 
 
 # DOWNLOAD MAIN REPOSITORY
