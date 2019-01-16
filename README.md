@@ -1,9 +1,14 @@
-# SMACC
-## Status
-Travis CI:
-<img src="https://travis-ci.org/pabloinigoblasco/SMACC.svg?branch=master" alt="build:started">
 
-## Introduction
+## Travis CI: 
+
+| ROS Distro  | Travis Build Status |
+| ------------- | ------------- |
+| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  |
+| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
+| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  |
+
+# SMACC
+
 SMACC is a ROS/C++ library designed to allow users to implement a broad variety of state machines in easy and systematic way [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 Probably the greatest strength of SMACC is that the state machines you can develop with it are strictly based on the UML Standard. This means that you have access to a clear and thoroughly studied and known approach to describe State Machines. This may be especially important in industrial environments.
@@ -52,7 +57,7 @@ This repository contains several ROS packages:
 
 * ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
 <p align="center">
-<img src="https://github.com//brettpac/SMACC/blob/master/doc/shared_resources.png?raw=true"  width="450" align="center"/>
+<img src="https://github.com//brettpac/SMACC/blob/master/documentation/shared_resources.png?raw=true"  width="450" align="center"/>
 </p>
 
 ## Development methodology
@@ -88,10 +93,10 @@ roslaunch radial_motion_example radial_motion.launch
 ```
 <p align="center">
 <div style="float:left" align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example.png" width="400"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/radial_motion_example.png" width="400"/>
 </div>
 <div style="float:left" align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/radial_motion_example_statechart.png" width="400"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/radial_motion_example_statechart.png" width="400"/>
 </div>
 </p>
 
@@ -103,7 +108,7 @@ SMACC states inherits from boost::statechart:State so that you can learn the ful
 In this initial example we will implement a simple state machine with a single state state that executes something at state entry and at state exit. That state machine is described in the following image:
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/simpleStateMachine.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/simpleStateMachine.png" width="450"/>
 </p>
 
 SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
@@ -158,7 +163,7 @@ Accessing to SMACC componets resources is one of the most important capabilities
 For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client and navigate to some position in the environment.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/shared_resource.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/shared_resource.png" width="450"/>
 </p>
 
 The code would be the following:
@@ -210,7 +215,7 @@ action sever returns a Result.
 
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/action_result_transition.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/action_result_transition.png" width="450"/>
 </p>
 
 The following would be the code to implement the diagram shown above.
@@ -247,7 +252,7 @@ destination state "ExecuteToolState". This code may be any desired custom code (
 This code is located in the react method
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/custom_reaction.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/custom_reaction.png" width="450"/>
 </p>
 
 The following would be the code for this state machine:
@@ -369,7 +374,7 @@ SMACC proposes to work in different orthogonal lines: Navigation, Tool1, Tool2, 
 For example, we want to add two orthogonal lines: the navigation orthogonal line and the tool orthogonal line.
 
 <p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/doc/orthogonal_lines.png" width="450"/>
+<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/orthogonal_lines.png" width="450"/>
 </p>
 
 First we will define the NavigationOrthogonal line line with a simple ToolSubState:

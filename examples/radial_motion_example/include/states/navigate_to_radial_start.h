@@ -138,8 +138,10 @@ public:
   }
 };
 //---------------------------------------------------------------------------------------------------------
+struct ToolSubstateMiniState;
+
 struct ToolSubstate
-    : SmaccState<ToolSubstate, ToolOrthogonalLine> 
+    : SmaccState<ToolSubstate, ToolOrthogonalLine, ToolSubstateMiniState> 
 {  
 public:
   using SmaccState::SmaccState;
@@ -155,5 +157,17 @@ public:
   }
 
   smacc::SmaccToolActionClient* toolActionClient_;
+};
+
+struct ToolSubstateMiniState
+    : SmaccState<ToolSubstateMiniState, ToolSubstate> 
+{  
+public:
+  using SmaccState::SmaccState;
+
+  void onEntry()
+  {
+  
+  }
 };
 }
