@@ -1,11 +1,15 @@
 
 ## Travis CI: 
 
-| ROS Distro  | Travis Build Status |
-| ------------- | ------------- |
-| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  |
-| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
-| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  |
+| ROS Distro  | Travis Build Status | Docker |
+| ------------- | ------------- | ------------- |
+| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  |  - |
+| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  | <img src="https://img.shields.io/docker/stars/pabloinigoblasco/smacc.svg?maxAge=2592000"/> <img src="https://img.shields.io/docker/pulls/pabloinigoblasco/smacc.svg?maxAge=2592000"/> <img src="https://img.shields.io/docker/automated/pabloinigoblasco/smacc.svg?maxAge=2592000"/> |
+| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  | - |
+
+
+
+
 
 # SMACC
 
@@ -430,4 +434,3 @@ struct ToolSubstate : SmaccState<ToolSubstate, ToolOrthogonalLine>
 };
 
 ```
-
