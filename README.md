@@ -1,4 +1,18 @@
-Travis CI: [![Build Status](https://travis-ci.com/reelrbtx/SMACC.svg?branch=master)](https://travis-ci.com/reelrbtx/SMACC)
+
+## Travis CI: 
+
+| ROS Distro  | Travis Build Status | 
+| ------------- | ------------- |
+| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  | 
+| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
+| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  |
+
+
+## Docker Containers
+
+[![Docker Build](https://img.shields.io/docker/build/pabloinigoblasco/smacc.svg)](https://hub.docker.com/r/pabloinigoblasco/smacc/builds)
+[![Docker Automated build](https://img.shields.io/docker/automated/pabloinigoblasco/smacc.svg?maxAge=2592000)](https://hub.docker.com/r/pabloinigoblasco/smacc/) [![Docker Pulls](https://img.shields.io/docker/pulls/pabloinigoblasco/smacc.svg?maxAge=2592000)](https://hub.docker.com/r/pabloinigoblasco/smacc/) [![Docker Stars](https://img.shields.io/docker/stars/pabloinigoblasco/smacc.svg)](https://registry.hub.docker.com/pabloinigoblasco/smacc/)
+
 
 # SMACC
 
