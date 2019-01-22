@@ -6,6 +6,7 @@
 | Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  | 
 | Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
 | Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  |
+| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/>  |
 
 
 ## Docker Containers
