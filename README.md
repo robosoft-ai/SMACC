@@ -3,10 +3,10 @@
 
 | ROS Distro  | Travis Build Status | 
 | ------------- | ------------- |
-| Indigo  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/>  | 
-| Kinetic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/>  |
-| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/>  |
-| Melodic  | <img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/>  |
+| Indigo  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/> </a>| 
+| Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  |
+| Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  |
+| Master  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> |
 
 
 ## Docker Containers
