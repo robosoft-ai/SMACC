@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.1.3)
 project(radial_motion_example)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
@@ -7,7 +7,7 @@ project(radial_motion_example)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED roscpp smacc smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher)
+find_package(catkin REQUIRED COMPONENTS roscpp smacc smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
