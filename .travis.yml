@@ -10,7 +10,7 @@ install:
   - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
   - git clone --depth 1 https://github.com/ros-perception/slam_gmapping.git gmapping
   - git clone --depth 1 https://github.com/ros-visualization/interactive_marker_twist_server.git
-  - git clone --depth 1 https://github.com/clearpathrobotics/LMS1xx.git --branch melodic-devel
+  - git clone --depth 1 https://github.com/clearpathrobotics/LMS1xx.git --branch melodic_devel
   - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
