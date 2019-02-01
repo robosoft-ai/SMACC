@@ -2,6 +2,8 @@
 #include <pluginlib/class_list_macros.h>
 #include <backward_local_planner/backward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <boost/intrusive_ptr.hpp>
+
 
 //register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
@@ -224,6 +226,25 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
     cmd_vel.angular.z = gamma;
 }
 
+
+
+template<class T>
+auto optionalRobotPose(boost::intrusive_ptr<T>& obj, costmap_2d::Costmap2DROS* costmapRos)
+ -> decltype(  obj->nh  )
+{
+    costmapRos->getRobotPose(*obj);
+}
+
+template<class T>
+auto optionalRobotPose(T* obj, costmap_2d::Costmap2DROS* costmapRos) -> ros::NodeHandle
+{
+  tf::Stamped<tf::Pose> tfpose;
+  costmapRos->getRobotPose(tfpose);
+
+  tf::poseStampedTFToMsg(tfpose,*obj);
+}
+
+
 /**
 ******************************************************************************************************************
 * computeVelocityCommands()
@@ -232,9 +253,12 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
 bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
     ROS_DEBUG("LOCAL PLANNER LOOP");
-
+    
+    geometry_msgs::PoseStamped paux;
+    optionalRobotPose(&paux, costmapRos_);
     tf::Stamped<tf::Pose> tfpose;
-    costmapRos_->getRobotPose(tfpose);
+    tf::poseStampedMsgToTF(paux, tfpose);
+
     tf::Quaternion q = tfpose.getRotation();
 
     bool initialPureSpinningDefaultMovement = createCarrotGoal(tfpose);

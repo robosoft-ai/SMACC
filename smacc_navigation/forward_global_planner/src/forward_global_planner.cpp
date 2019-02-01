@@ -13,6 +13,8 @@
 #include <streambuf>
 #include <nav_msgs/Path.h>
 #include <angles/angles.h>
+#include <tf/tf.h>
+#include <tf/transform_datatypes.h>
 
 namespace forward_global_planner 
 {

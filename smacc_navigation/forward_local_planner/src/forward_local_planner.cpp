@@ -7,6 +7,7 @@
 #include <pluginlib/class_list_macros.h>
 #include <forward_local_planner/forward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
@@ -109,6 +110,25 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     this->goalMarkerPublisher_.publish(ma);
 }
 
+
+
+template<class T>
+auto optionalRobotPose(boost::intrusive_ptr<T>& obj, costmap_2d::Costmap2DROS* costmapRos)
+ -> decltype(  obj->nh  )
+{
+    costmapRos->getRobotPose(*obj);
+}
+
+template<class T>
+auto optionalRobotPose(T* obj, costmap_2d::Costmap2DROS* costmapRos) -> ros::NodeHandle
+{
+  tf::Stamped<tf::Pose> tfpose;
+  costmapRos->getRobotPose(tfpose);
+
+  tf::poseStampedTFToMsg(tfpose,*obj);
+}
+
+
 /**
 ******************************************************************************************************************
 * computeVelocityCommands()
@@ -119,8 +139,11 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
     goalReached_=false;
     //ROS_DEBUG("LOCAL PLANNER LOOP");
 
+    geometry_msgs::PoseStamped paux;
+    optionalRobotPose(&paux, costmapRos_);
     tf::Stamped<tf::Pose> tfpose;
-    costmapRos_->getRobotPose(tfpose);
+    tf::poseStampedMsgToTF(paux, tfpose);
+
     tf::Quaternion q = tfpose.getRotation();
 
     bool ok = false;
