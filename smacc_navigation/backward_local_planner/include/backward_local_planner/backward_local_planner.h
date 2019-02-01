@@ -8,6 +8,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_core/base_local_planner.h>
 #include <backward_local_planner/BackwardLocalPlannerConfig.h>
+#include <tf/tf.h>
 
 typedef double meter;
 typedef double rad;

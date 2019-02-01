@@ -223,7 +223,7 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
     }
     else
     {
-        ROS_WARN("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: %d", lastForwardPathMsg_.poses.size());
+        ROS_WARN_STREAM("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: " << lastForwardPathMsg_.poses.size());
     }
 }
 
