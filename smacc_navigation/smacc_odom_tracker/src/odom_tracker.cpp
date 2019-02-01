@@ -36,12 +36,12 @@ void OdomTracker::init(ros::NodeHandle& nh)
 
     if(!nh.getParam("min_point_angular_distance_forward_thresh",minPointAngularDistanceForwardThresh_))
     {
-        minPointAngularDistanceForwardThresh_ = 0.005; // 1 mm
+        minPointAngularDistanceForwardThresh_ = 0.15 ; // degree
     }
 
     if(!nh.getParam("min_point_angular_distance_backward_thresh",minPointAngularDistanceBackwardThresh_))
     {
-        minPointAngularDistanceBackwardThresh_ = 0.05; // 1 mm
+        minPointAngularDistanceBackwardThresh_ = 0.15 ; // degree
     }
 
     if(this->subscribeToOdometryTopic_)
