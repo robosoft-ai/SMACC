@@ -7,6 +7,7 @@ env:
     - ROS_DISTRO="melodic"
 
 install:
+  - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
   - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
 script:
   - .industrial_ci/travis.sh
