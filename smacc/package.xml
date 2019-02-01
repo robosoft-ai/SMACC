@@ -35,4 +35,8 @@
   <exec_depend>pluginlib</exec_depend>
   <exec_depend>move_base_msgs</exec_depend>
 
+  <export>
+    <rosdoc config="rosdoc.yaml" />
+  </export>
+
 </package>

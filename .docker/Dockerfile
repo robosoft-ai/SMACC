@@ -1,6 +1,3 @@
-# FROM docker/whalesay:latest
-# FROM ubuntu:16.04
-
 FROM ros:kinetic-robot
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}

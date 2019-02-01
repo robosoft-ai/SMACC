@@ -89,6 +89,13 @@ class OdomTracker: public smacc::ISmaccComponent
         /// Meters
         double minPointDistanceBackwardThresh_;
 
+        /// rads
+        double minPointAngularDistanceForwardThresh_;
+
+        /// rads
+        double minPointAngularDistanceBackwardThresh_;
+
+
         // --------------- STATE ---------------
         // default true
         bool publishMessages;

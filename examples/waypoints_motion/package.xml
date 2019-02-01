@@ -64,7 +64,6 @@
   <exec_depend>ridgeback_navigation</exec_depend>
 
   <export>
-    <!-- Other tools can request additional information be placed here -->
-
+    <rosdoc config="rosdoc.yaml" />
   </export>
 </package>

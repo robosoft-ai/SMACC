@@ -186,7 +186,7 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
 
     plan.push_back(pose);
 
-    ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
+    //ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
     int i=lastForwardPathMsg_.poses.size();
     double mindist =std::numeric_limits<double>::max();
     int mindistindex = -1;
@@ -220,6 +220,10 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
             auto& pose = lastForwardPathMsg_.poses[i];
             plan.push_back(pose);
         }
+    }
+    else
+    {
+        ROS_WARN("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: %d", lastForwardPathMsg_.poses.size());
     }
 }
 
@@ -256,6 +260,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
     if (plan.size() <=1)
     {
+        ROS_INFO("cannot create backward plan");
         return false;
     }
     else

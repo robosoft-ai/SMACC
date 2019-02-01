@@ -36,12 +36,11 @@ BackwardLocalPlanner::~BackwardLocalPlanner()
 void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
 {
     this->costmapRos_ = costmap_ros;
-    k_rho_ = 1.0;
+    k_rho_ = -1.0;
     k_alpha_ = 0.5;
     k_betta_ = -1.0; // set to zero means that orientation is not important
+    carrot_angular_distance_ = 0.5;
     
-    carrot_distance_= 0.5;
-
     f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
     paramServer_.setCallback(f);
     this->currentPoseIndex_ = 0;
@@ -51,6 +50,8 @@ void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* t
     nh.param("pure_spinning_straight_line_mode", pureSpinningMode_, true);
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
+    nh.param("k_rho", k_rho_,k_rho_);
+    nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
     
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
 }
@@ -261,18 +262,22 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
     }
     else
     {
+        // this is recomendable to start the initial motion looking to the goal
+
         ROS_WARN("pure spinning: %d", initialPureSpinningDefaultMovement);
         if(initialPureSpinningDefaultMovement)
         {
             vetta = 0;
         }
 
+
         this->defaultBackwardCmd(tfpose, vetta,gamma, alpha_error, cmd_vel);
     }
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);
 
-    ROS_INFO_STREAM("local planner," << std::endl
+    ROS_INFO_STREAM("local planner," << std::endl 
+                                      << " pureSpiningMode: "<< pureSpinningMode_ <<std::endl
                                       << " theta: " << theta << std::endl
                                       << " betta: " << theta << std::endl
                                       << " err_x: " << dx << std::endl
