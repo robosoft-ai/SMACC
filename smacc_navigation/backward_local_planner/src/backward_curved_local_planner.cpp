@@ -28,14 +28,14 @@ BackwardLocalPlanner::~BackwardLocalPlanner()
 {
 }
 
-/**
-******************************************************************************************************************
-* initialize()
-******************************************************************************************************************
-*/
-void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+void  BackwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) 
 {
-    this->costmapRos_ = costmap_ros;
+   this->costmapRos_ = costmap_ros;
+   this->initialize();
+}
+
+void BackwardLocalPlanner::initialize()
+{
     k_rho_ = -1.0;
     k_alpha_ = 0.5;
     k_betta_ = -1.0; // set to zero means that orientation is not important
@@ -54,6 +54,17 @@ void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* t
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
     
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
+}
+
+/**
+******************************************************************************************************************
+* initialize()
+******************************************************************************************************************
+*/
+void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+{
+   this->costmapRos_ = costmap_ros;
+   this->initialize();
 }
 
 /**

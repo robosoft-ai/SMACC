@@ -31,14 +31,9 @@ ForwardLocalPlanner::~ForwardLocalPlanner()
 {
 }
 
-/**
-******************************************************************************************************************
-* initialize()
-******************************************************************************************************************
-*/
-void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+
+void ForwardLocalPlanner::initialize()
 {
-    costmapRos_ = costmap_ros;
     k_rho_ = 1.0;
     k_alpha_ = -0.2;
     k_betta_ = -1.0; // set to zero means that orientation is not important
@@ -56,7 +51,24 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf
 
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
-    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
+    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);     
+}
+
+void ForwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) 
+{
+    costmapRos_ = costmap_ros;
+    this->initialize();
+}
+
+/**
+******************************************************************************************************************
+* initialize()
+******************************************************************************************************************
+*/
+void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+{
+    costmapRos_ = costmap_ros;
+    this->initialize();
 }
 
 /**
