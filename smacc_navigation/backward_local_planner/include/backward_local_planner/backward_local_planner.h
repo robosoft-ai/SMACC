@@ -9,6 +9,7 @@
 #include <nav_core/base_local_planner.h>
 #include <backward_local_planner/BackwardLocalPlannerConfig.h>
 #include <tf/tf.h>
+#include <tf/transform_listener.h>
 
 typedef double meter;
 typedef double rad;

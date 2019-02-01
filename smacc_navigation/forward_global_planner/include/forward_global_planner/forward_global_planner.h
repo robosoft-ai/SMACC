@@ -7,8 +7,6 @@
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <nav_msgs/Path.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
 #include <ros/ros.h>
 
 namespace forward_global_planner 
