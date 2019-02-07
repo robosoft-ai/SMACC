@@ -25,5 +25,6 @@
   
   <export>
       <smacc plugin="${prefix}/smacc_plugin.xml" />
+      <rosdoc config="rosdoc.yaml" />
   </export>
 </package>

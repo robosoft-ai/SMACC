@@ -1,6 +1,6 @@
 # backwards configuration, the robot will move backwards
 BackwardLocalPlanner:
-    k_rho: -0.6
+    k_rho: -1.0
     k_alpha: -0.1
     k_betta: -1.0
     carrot_distance: 0.5 #meters

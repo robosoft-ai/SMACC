@@ -41,6 +41,7 @@
    <exec_depend>message_runtime</exec_depend>
 
    <export>
-   <nav_core plugin="${prefix}/blp_plugin.xml" />
+      <nav_core plugin="${prefix}/blp_plugin.xml" />
+      <rosdoc config="rosdoc.yaml" />
    </export>
 </package>
