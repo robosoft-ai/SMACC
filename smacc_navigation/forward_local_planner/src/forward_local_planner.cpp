@@ -110,23 +110,27 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     this->goalMarkerPublisher_.publish(ma);
 }
 
-
-
-template<class T>
-auto optionalRobotPose(boost::intrusive_ptr<T>& obj, costmap_2d::Costmap2DROS* costmapRos)
- -> decltype(  obj->nh  )
+// MELODIC
+#if ROS_VERSION_MINIMUM(1,13,0) 
+tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)
 {
-    costmapRos->getRobotPose(*obj);
+    geometry_msgs::PoseStamped paux;
+    costmapRos->getRobotPose(paux);
+    tf::Stamped<tf::Pose> tfpose;
+    tf::poseStampedMsgToTF(paux, tfpose);
+    return tfpose;
+}
+#else
+// INDIGO AND PREVIOUS
+tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos) 
+{
+    tf::Stamped<tf::Pose> tfpose;
+    costmapRos->getRobotPose(tfpose);
+    return tfpose;
 }
 
-template<class T>
-auto optionalRobotPose(T* obj, costmap_2d::Costmap2DROS* costmapRos) -> ros::NodeHandle
-{
-  tf::Stamped<tf::Pose> tfpose;
-  costmapRos->getRobotPose(tfpose);
+#endif
 
-  tf::poseStampedTFToMsg(tfpose,*obj);
-}
 
 
 /**
@@ -139,10 +143,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
     goalReached_=false;
     //ROS_DEBUG("LOCAL PLANNER LOOP");
 
-    geometry_msgs::PoseStamped paux;
-    optionalRobotPose(&paux, costmapRos_);
-    tf::Stamped<tf::Pose> tfpose;
-    tf::poseStampedMsgToTF(paux, tfpose);
+    tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
     tf::Quaternion q = tfpose.getRotation();
 
