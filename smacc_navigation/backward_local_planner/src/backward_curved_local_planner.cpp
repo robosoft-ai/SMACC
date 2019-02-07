@@ -2,6 +2,7 @@
 #include <pluginlib/class_list_macros.h>
 #include <backward_local_planner/backward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
@@ -28,14 +29,14 @@ BackwardLocalPlanner::~BackwardLocalPlanner()
 {
 }
 
-/**
-******************************************************************************************************************
-* initialize()
-******************************************************************************************************************
-*/
-void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+void  BackwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) 
 {
-    this->costmapRos_ = costmap_ros;
+   this->costmapRos_ = costmap_ros;
+   this->initialize();
+}
+
+void BackwardLocalPlanner::initialize()
+{
     k_rho_ = -1.0;
     k_alpha_ = 0.5;
     k_betta_ = -1.0; // set to zero means that orientation is not important
@@ -54,6 +55,17 @@ void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* t
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
     
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
+}
+
+/**
+******************************************************************************************************************
+* initialize()
+******************************************************************************************************************
+*/
+void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+{
+   this->costmapRos_ = costmap_ros;
+   this->initialize();
 }
 
 /**
@@ -213,6 +225,27 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
     cmd_vel.angular.z = gamma;
 }
 
+// MELODIC
+#if ROS_VERSION_MINIMUM(1,13,0) 
+tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)
+{
+    geometry_msgs::PoseStamped paux;
+    costmapRos->getRobotPose(paux);
+    tf::Stamped<tf::Pose> tfpose;
+    tf::poseStampedMsgToTF(paux, tfpose);
+    return tfpose;
+}
+#else
+// INDIGO AND PREVIOUS
+tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos) 
+{
+    tf::Stamped<tf::Pose> tfpose;
+    costmapRos->getRobotPose(tfpose);
+    return tfpose;
+}
+
+#endif
+
 /**
 ******************************************************************************************************************
 * computeVelocityCommands()
@@ -221,9 +254,10 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
 bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 {
     ROS_DEBUG("LOCAL PLANNER LOOP");
+    
+    geometry_msgs::PoseStamped paux;
+    tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
-    tf::Stamped<tf::Pose> tfpose;
-    costmapRos_->getRobotPose(tfpose);
     tf::Quaternion q = tfpose.getRotation();
 
     bool initialPureSpinningDefaultMovement = createCarrotGoal(tfpose);
