@@ -47,6 +47,10 @@ public:
    */
     virtual void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) override;
 
+    void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros);
+
+    void initialize();
+
 private:
 
     void publishGoalMarker(double x, double y, double phi);

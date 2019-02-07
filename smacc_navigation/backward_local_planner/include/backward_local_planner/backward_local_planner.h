@@ -46,7 +46,10 @@ public:
    * @param tf A pointer to a transform listener
    * @param costmap_ros The cost map to use for assigning costs to local plans
    */
-    virtual void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) override;
+    void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) ;
+
+    void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros);
+    void initialize();
 
 private:
     void reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level);
