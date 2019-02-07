@@ -128,7 +128,6 @@ tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos)
     costmapRos->getRobotPose(tfpose);
     return tfpose;
 }
-
 #endif
 
 
