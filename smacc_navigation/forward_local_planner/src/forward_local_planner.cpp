@@ -7,6 +7,7 @@
 #include <pluginlib/class_list_macros.h>
 #include <forward_local_planner/forward_local_planner.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
@@ -31,14 +32,9 @@ ForwardLocalPlanner::~ForwardLocalPlanner()
 {
 }
 
-/**
-******************************************************************************************************************
-* initialize()
-******************************************************************************************************************
-*/
-void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+
+void ForwardLocalPlanner::initialize()
 {
-    costmapRos_ = costmap_ros;
     k_rho_ = 1.0;
     k_alpha_ = -0.2;
     k_betta_ = -1.0; // set to zero means that orientation is not important
@@ -56,7 +52,24 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf
 
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
-    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
+    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);     
+}
+
+void ForwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) 
+{
+    costmapRos_ = costmap_ros;
+    this->initialize();
+}
+
+/**
+******************************************************************************************************************
+* initialize()
+******************************************************************************************************************
+*/
+void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+{
+    costmapRos_ = costmap_ros;
+    this->initialize();
 }
 
 /**
@@ -97,6 +110,28 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     this->goalMarkerPublisher_.publish(ma);
 }
 
+// MELODIC
+#if ROS_VERSION_MINIMUM(1,13,0) 
+tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)
+{
+    geometry_msgs::PoseStamped paux;
+    costmapRos->getRobotPose(paux);
+    tf::Stamped<tf::Pose> tfpose;
+    tf::poseStampedMsgToTF(paux, tfpose);
+    return tfpose;
+}
+#else
+// INDIGO AND PREVIOUS
+tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos) 
+{
+    tf::Stamped<tf::Pose> tfpose;
+    costmapRos->getRobotPose(tfpose);
+    return tfpose;
+}
+#endif
+
+
+
 /**
 ******************************************************************************************************************
 * computeVelocityCommands()
@@ -107,8 +142,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
     goalReached_=false;
     //ROS_DEBUG("LOCAL PLANNER LOOP");
 
-    tf::Stamped<tf::Pose> tfpose;
-    costmapRos_->getRobotPose(tfpose);
+    tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
+
     tf::Quaternion q = tfpose.getRotation();
 
     bool ok = false;
