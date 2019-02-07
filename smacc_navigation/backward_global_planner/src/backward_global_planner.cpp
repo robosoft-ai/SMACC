@@ -19,6 +19,7 @@
 #include <angles/angles.h>
 #include <forward_global_planner/reel_path_tools.h>
 
+
 //register this planner as a BaseGlobalPlanner plugin
 
 PLUGINLIB_EXPORT_CLASS(backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
@@ -119,16 +120,10 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose& pose, d
 bool BackwardGlobalPlanner::createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped& start,
 const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
 {
-    tf::Stamped<tf::Pose> tfpose;
-    geometry_msgs::PoseStamped pose;
+    //tf::Stamped<tf::Pose> tfpose;
     //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
-    costmap_ros_->getRobotPose(tfpose);
-
-    pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-    //ROS_WARN_NAMED("Backwards", "getting timestamp");
-    pose.header.stamp = ros::Time::now();
-    tf::Vector3 position = tfpose.getOrigin();
-    auto q = tfpose.getRotation();
+    
+    auto q = start.pose.orientation;
 
     double dx = start.pose.position.x - goal.pose.position.x ;
     double dy = start.pose.position.y - goal.pose.position.y ;
@@ -164,25 +159,10 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
 bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseStamped& start,
 const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan)
 {
-    tf::Stamped<tf::Pose> tfpose;
+    auto q = start.pose.orientation;
+
     geometry_msgs::PoseStamped pose;
-    //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
-    costmap_ros_->getRobotPose(tfpose);
-
-    pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-    //ROS_WARN_NAMED("Backwards", "getting timestamp");
-    pose.header.stamp = ros::Time::now();
-    tf::Vector3 position = tfpose.getOrigin();
-    auto q = tfpose.getRotation();
-
-    pose.pose.position.x = position.x();
-    pose.pose.position.y = position.y();
-    pose.pose.position.z = position.z();
-
-    pose.pose.orientation.x = q.x();
-    pose.pose.orientation.y = q.y();
-    pose.pose.orientation.z = q.z();
-    pose.pose.orientation.w = q.w();
+    pose = start;
 
     plan.push_back(pose);
 
@@ -223,7 +203,7 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
     }
     else
     {
-        ROS_WARN("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: %d", lastForwardPathMsg_.poses.size());
+        ROS_WARN_STREAM("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: " << lastForwardPathMsg_.poses.size());
     }
 }
 
