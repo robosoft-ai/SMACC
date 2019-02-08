@@ -9,7 +9,7 @@ ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
-    ros-indigo-robot=1.1.6-0* \
+    ros-kinetic-robot=1.3.2-0* \
 && rm -rf /var/lib/apt/lists/*
 
 # SYSTEM DEPENDENCIES
@@ -20,7 +20,7 @@ RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
-RUN git clone https://github.com/reelrbtx/SMACC.git /root/src --branch indigo-devel
+RUN git clone https://github.com/reelrbtx/SMACC.git /root/src
 RUN  bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
 RUN  bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
 
