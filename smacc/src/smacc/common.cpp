@@ -15,7 +15,7 @@ actionlib::SimpleClientGoalState IActionResult::getResult() const
 
 std::string cleanTypeName(const std::type_info& tinfo)
 {
-    std::string fullclassname = boost::core::demangle(tinfo.name());
+    std::string fullclassname = demangleSymbol(tinfo.name());
     //ROS_INFO("State full classname: %s", fullclassname.c_str());
 
     std::vector<std::string> strs;
