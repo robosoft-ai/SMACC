@@ -124,6 +124,7 @@ catkin_package(
 ###########
 ## Build ##
 ###########
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_CXX_STANDARD 14)
 
 file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
