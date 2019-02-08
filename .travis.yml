@@ -3,9 +3,8 @@ services:
   - docker
 
 env:
-  - NOT_TEST_BUILD=false
   - matrix:
-    - ROS_DISTRO="melodic"
+    - ROS_DISTRO="melodic" NOT_TEST_BUILD=true
 
 install:
   - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
