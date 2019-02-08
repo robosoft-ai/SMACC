@@ -60,6 +60,7 @@ catkin_package(
 ###########
 
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
