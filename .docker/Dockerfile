@@ -1,4 +1,7 @@
-FROM ros:indigo-robot
+# FROM docker/whalesay:latest
+# FROM ubuntu:16.04
+
+FROM ros:kinetic-robot
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
@@ -6,7 +9,7 @@ ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y \
-    ros-indigo-robot=1.1.6-0* \
+    ros-kinetic-robot=1.3.2-0* \
 && rm -rf /var/lib/apt/lists/*
 
 # SYSTEM DEPENDENCIES
