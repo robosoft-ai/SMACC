@@ -7,8 +7,6 @@
 
 #include <smacc/common.h>
 #include <smacc/smacc_action_client.h>
-
-#include <boost/core/demangle.hpp>
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
@@ -29,7 +27,7 @@ public:
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
-        std::string pluginkey = boost::core::demangle(typeid(SmaccComponentType).name());
+        std::string pluginkey = demangledTypeName<SmaccComponentType>();
         SmaccComponentType* ret;
 
         auto it = plugins_.find(pluginkey);

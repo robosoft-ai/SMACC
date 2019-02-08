@@ -54,7 +54,7 @@ public:
     void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmapRos) ;
 
     void initialize();
-
+    
 private:
 
     void publishGoalMarker(double x, double y, double phi);

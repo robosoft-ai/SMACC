@@ -225,16 +225,6 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
     cmd_vel.angular.z = gamma;
 }
 
-
-template<class T, class T2>
-auto optionalRobotPose(T*& obj, T2* costmapRos)
- -> void
-{
-    tf::Stamped<tf::Pose> tfpose;
-    costmapRos->getRobotPose(tfpose);
-    tf::poseStampedTFToMsg(tfpose,*obj);
-}
-
 // MELODIC
 #if ROS_VERSION_MINIMUM(1,13,0) 
 tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)

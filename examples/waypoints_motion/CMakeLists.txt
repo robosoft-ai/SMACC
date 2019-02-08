@@ -1,8 +1,5 @@
-cmake_minimum_required(VERSION 3.1.3)
+cmake_minimum_required(VERSION 2.8.7)
 project(waypoints_motion)
-
-## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -109,6 +106,7 @@ catkin_package(
 ## Build ##
 ###########
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

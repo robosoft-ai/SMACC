@@ -20,12 +20,12 @@ public:
 
     virtual ~BackwardGlobalPlanner();
 
-    virtual bool makePlan(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) override;
+    bool makePlan(const geometry_msgs::PoseStamped& start,
+        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
 
-    virtual bool makePlan(const geometry_msgs::PoseStamped& start,
+    bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
-        double& cost) override;
+        double& cost);
 
     virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
