@@ -47,14 +47,15 @@ class SmaccState : public sc::simple_state<
     }
     
     // delegates to ROS param access with the current NodeHandle
+    /*
     template<typename T>
     bool param(std::string param_name, T& param_val, const T& default_val) const
     {
         return nh.param(param_name, param_val, default_val);
-    }
+    }*/
 
     template<typename T>
-    bool param(std::string param_name, T& param_val, const T default_val) const
+    bool param(std::string param_name, T& param_val, T default_val) const
     {
         return nh.param(param_name, param_val, default_val);
     }
