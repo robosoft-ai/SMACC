@@ -83,7 +83,8 @@ void execute(const smacc_tool_plugin_template::ToolControlGoalConstPtr& goal)  /
        as_->setPreempted(); 
        return;
     }
-    //publishFeedback();
+    
+    publishFeedback();
     publishStateMarker();
     rate.sleep();
   }

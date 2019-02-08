@@ -52,6 +52,10 @@ void ForwardLocalPlanner::initialize()
 
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
+    nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
+    nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
+
+    ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf", max_linear_x_speed_, max_angular_z_speed_);
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);     
 }
 
@@ -130,6 +134,32 @@ tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos)
 }
 #endif
 
+
+void clamp(geometry_msgs::Twist& cmd_vel, double max_linear_x_speed_, double max_angular_z_speed_)
+{
+    if(max_angular_z_speed_==0 || max_linear_x_speed_ ==0)
+        return;
+
+    if(cmd_vel.angular.z == 0)
+    {
+        cmd_vel.linear.x = max_linear_x_speed_;
+    }
+    else
+    {
+        double kurvature = cmd_vel.linear.x/cmd_vel.angular.z;
+
+        if(cmd_vel.linear.x / max_linear_x_speed_ < cmd_vel.angular.z /max_angular_z_speed_)
+        {
+            cmd_vel.linear.x = max_linear_x_speed_;
+            cmd_vel.angular.z = kurvature/max_linear_x_speed_;
+        }
+        else
+        {
+            cmd_vel.angular.x = max_angular_z_speed_;
+            cmd_vel.linear.x = kurvature*max_angular_z_speed_;
+        }
+    }
+}
 
 
 /**
@@ -237,6 +267,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
 
     cmd_vel.linear.x = vetta;
     cmd_vel.angular.z = gamma;
+
+    clamp(cmd_vel, max_linear_x_speed_, max_angular_z_speed_);
 
     //ROS_INFO_STREAM("Local planner: "<< cmd_vel);
 

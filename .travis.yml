@@ -3,7 +3,8 @@ services:
   - docker
 
 env:
-  matrix:
+  - NOT_TEST_BUILD=false
+  - matrix:
     - ROS_DISTRO="melodic"
 
 install:
