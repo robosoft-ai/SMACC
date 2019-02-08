@@ -52,6 +52,12 @@ class SmaccState : public sc::simple_state<
     {
         return nh.param(param_name, param_val, default_val);
     }
+
+    template<typename T>
+    bool param(std::string param_name, T& param_val, const T default_val) const
+    {
+        return nh.param(param_name, param_val, default_val);
+    }
   
     typedef SmaccState my_base;
 
