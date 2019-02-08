@@ -15,12 +15,12 @@ class ForwardGlobalPlanner : public nav_core::BaseGlobalPlanner {
 public:
     ForwardGlobalPlanner();
 
-    virtual bool makePlan(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan) override;
+    bool makePlan(const geometry_msgs::PoseStamped& start,
+        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
 
-    virtual bool makePlan(const geometry_msgs::PoseStamped& start,
+    bool makePlan(const geometry_msgs::PoseStamped& start,
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
-        double& cost) override;
+        double& cost);
 
     void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) ;
 
