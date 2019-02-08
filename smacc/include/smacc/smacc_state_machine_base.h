@@ -21,30 +21,6 @@ namespace smacc
 class SmaccStateMachineInfo;
 
 
-inline std::string demangleSymbol(const char* name)
-{
-  #if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
-    int         status;
-    char* res = abi::__cxa_demangle(name, 0, 0, &status);
-    if (res)
-    {
-      const std::string demangled_name(res);
-      std::free(res);
-      return demangled_name;
-    }
-    // Demangling failed, fallback to mangled name
-    return std::string(name);
-  #else
-    return std::string(name);
-  #endif
-}
-template <class T>
-inline std::string demangledTypeName()
-{
-  return demangleSymbol(typeid(T).name());
-}
-
-
 //--------------------------------
 class SmaccStateInfo: public std::enable_shared_from_this<SmaccStateInfo>
 {

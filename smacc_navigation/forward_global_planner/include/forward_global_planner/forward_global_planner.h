@@ -7,8 +7,6 @@
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <nav_msgs/Path.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
 #include <ros/ros.h>
 
 namespace forward_global_planner 
@@ -24,7 +22,7 @@ public:
         const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
         double& cost) override;
 
-    virtual void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) override;
+    void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) ;
 
 private:
 

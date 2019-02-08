@@ -4,7 +4,6 @@
  *
  ******************************************************************************************************************/
 #include "smacc/smacc_action_client.h"
-#include <boost/core/demangle.hpp>
 
 namespace smacc
 {
@@ -48,7 +47,7 @@ void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)
 
 std::string ISmaccComponent::getName() const
 {
-    std::string keyname = boost::core::demangle(typeid(this).name());
+    std::string keyname = demangleSymbol(typeid(this).name());
     return keyname;
 }
 

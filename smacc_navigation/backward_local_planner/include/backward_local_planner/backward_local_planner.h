@@ -8,6 +8,9 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_core/base_local_planner.h>
 #include <backward_local_planner/BackwardLocalPlannerConfig.h>
+#include <tf/tf.h>
+#include <tf/transform_listener.h>
+#include <tf2_ros/buffer.h>
 
 typedef double meter;
 typedef double rad;
@@ -46,7 +49,11 @@ public:
    * @param tf A pointer to a transform listener
    * @param costmap_ros The cost map to use for assigning costs to local plans
    */
-    virtual void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) override;
+    void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) ;
+
+    void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmapRos_) ;
+
+    void initialize() ;
 
 private:
     void reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level);

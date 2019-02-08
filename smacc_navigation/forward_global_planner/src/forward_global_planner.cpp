@@ -6,8 +6,6 @@
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/copy.hpp>
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl_ros/point_cloud.h>
 #include <pluginlib/class_list_macros.h>
 #include <forward_global_planner/forward_global_planner.h>
 #include <forward_global_planner/reel_path_tools.h>
@@ -15,6 +13,8 @@
 #include <streambuf>
 #include <nav_msgs/Path.h>
 #include <angles/angles.h>
+#include <tf/tf.h>
+#include <tf/transform_datatypes.h>
 
 namespace forward_global_planner 
 {
