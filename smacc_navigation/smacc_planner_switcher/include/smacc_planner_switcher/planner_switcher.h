@@ -5,12 +5,12 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <smacc/smacc_action_client.h>
 #include <ros/ros.h>
 #include <functional>
 #include <dynamic_reconfigure/DoubleParameter.h>
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
-#include <smacc/smacc.h>
 
 namespace smacc_planner_switcher
 {
