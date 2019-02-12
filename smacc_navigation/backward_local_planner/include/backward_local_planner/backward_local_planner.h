@@ -51,6 +51,7 @@ public:
    */
     void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_) ;
 
+
     void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmapRos_) ;
 
     void initialize() ;
@@ -90,6 +91,10 @@ private:
 
     meter carrot_distance_;
     rad carrot_angular_distance_;
+
+
+    double max_linear_x_speed_; //meters/sec
+    double max_angular_z_speed_; // rads/sec
 
     // references the current point inside the backwardsPlanPath were the robot is located
     int currentPoseIndex_;
