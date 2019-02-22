@@ -108,16 +108,18 @@ class SmaccState : public sc::simple_state<
       this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/")+ classname );
     
       ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
-      this->updateCurrentState<MostDerived>(true);
+      MostDerived* test;
+
+      this->updateCurrentState(true,test); //<MostDerived>
 
       this->setParam("created", true);
       static_cast<MostDerived*>(this)->onEntry();
     }
 
     template <typename StateType>
-    void updateCurrentState(bool active)
+    void updateCurrentState(bool active, StateType* test)
     {
-      base_type::outermost_context().updateCurrentState<StateType>(active);
+      base_type::outermost_context().updateCurrentState(active, test);
     }
 
     InnerInitial* smacc_inner_type;

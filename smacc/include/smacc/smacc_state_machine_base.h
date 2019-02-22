@@ -359,7 +359,7 @@ public:
     //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
 
     template <typename StateType>
-    void updateCurrentState(bool active)
+    void updateCurrentState(bool active, StateType* test)
     {
         auto a =  info_->getState<StateType>();
 
@@ -391,7 +391,9 @@ public:
 
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
-        updateCurrentState<InitialStateType>(true);
+        
+	InitialStateType* test;
+        updateCurrentState<InitialStateType>(true,test);
         
         info_->printAllStates();
 
