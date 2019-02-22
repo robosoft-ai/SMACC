@@ -8,6 +8,7 @@ env:
     AFTER_SCRIPT=./gh-pages.sh
     CATKIN_CONFIG=--no-install
   matrix:
+    - ROS_DISTRO="melodic"
 
 install:
   - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
