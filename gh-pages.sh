@@ -1,11 +1,8 @@
 #!/bin/bash
-<<<<<<< HEAD
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
 
-=======
->>>>>>> 8af098488b3d3b11bd20698a97af086450487767
 echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
     cd "$TRAVIS_BUILD_DIR"
