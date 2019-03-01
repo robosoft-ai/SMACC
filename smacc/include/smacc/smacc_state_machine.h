@@ -55,24 +55,24 @@ public:
     bool getGlobalSMData(std::string name, T& ret)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
-        ROS_WARN("get SM Data lock acquire");
+        //ROS_WARN("get SM Data lock acquire");
         bool success = false;
 
         if(!globalData_.count(name))
         {
-            ROS_WARN("get SM Data - data do not exist");
+            //ROS_WARN("get SM Data - data do not exist");
             success = false;
         }
         else
         {
-            ROS_WARN("get SM DAta -data exist. accessing");
+            //ROS_WARN("get SM DAta -data exist. accessing");
             try
             {
                 boost::any v = globalData_[name];
-                ROS_WARN("get SM DAta -data exist. any cast");
+                //ROS_WARN("get SM DAta -data exist. any cast");
                 ret = boost::any_cast<T>(v);
                 success = true;    
-                ROS_WARN("get SM DAta -data exist. success");
+                //ROS_WARN("get SM DAta -data exist. success");
             }
             catch(boost::bad_any_cast& ex)
             {
@@ -81,7 +81,7 @@ public:
             }
         }
 
-        ROS_WARN("get SM Data lock release");
+        //ROS_WARN("get SM Data lock release");
         return success;
     }
 

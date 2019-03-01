@@ -5,6 +5,9 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include <smacc/smacc_action_client.h>
+#include <move_base_msgs/MoveBaseAction.h>
+
 #include <ros/ros.h>
 #include <vector>
 #include <nav_msgs/Odometry.h>
@@ -15,7 +18,7 @@
 #include <memory>
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
-#include <smacc/smacc.h>
+
 
 namespace smacc_odom_tracker
 {

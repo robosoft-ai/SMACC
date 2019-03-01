@@ -52,7 +52,11 @@ void BackwardLocalPlanner::initialize()
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
     nh.param("k_rho", k_rho_,k_rho_);
+    nh.param("carrot_distance", carrot_distance_, carrot_distance_);
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
+    
+    nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
+    nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
     
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
 }
@@ -306,6 +310,26 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 
 
         this->defaultBackwardCmd(tfpose, vetta,gamma, alpha_error, cmd_vel);
+    }
+
+
+ 
+    if (cmd_vel.linear.x > max_linear_x_speed_)
+    {
+        cmd_vel.linear.x = max_linear_x_speed_;
+    }
+    else if(cmd_vel.linear.x < -max_linear_x_speed_)
+    {
+        cmd_vel.linear.x = -max_linear_x_speed_;
+    }
+
+    if(cmd_vel.angular.z > max_angular_z_speed_)
+    {
+        cmd_vel.angular.z = max_angular_z_speed_;
+    }
+    else if(cmd_vel.angular.z < -max_angular_z_speed_)
+    {
+        cmd_vel.angular.z = - max_angular_z_speed_;
     }
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);

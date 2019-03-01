@@ -77,6 +77,9 @@ private:
     double yaw_goal_tolerance_; // radians
     double xy_goal_tolerance_; // meters
 
+    double max_angular_z_speed_;
+    double max_linear_x_speed_;
+
     // references the current point inside the backwardsPlanPath were the robot is located
     int currentPoseIndex_;
 
