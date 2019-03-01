@@ -1,7 +1,6 @@
 language: generic
 services:
   - docker
-
 env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
@@ -15,3 +14,4 @@ install:
   - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
 script:
   - .industrial_ci/travis.sh
+
