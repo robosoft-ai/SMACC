@@ -26,13 +26,13 @@ if [ -n "$GITHUB_TOKEN" ]; then
     echo "executing doxygen command"
     doxygen Doxyfile
     echo "moving result files to branch directory..."
-    mv /tmp/html /tmp/doc/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
-    mv /tmp/latex /tmp/doc/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
+    mv /tmp/html /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
+    mv /tmp/latex /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
 
     #git init
     #git checkout -b gh-pages
-    "cd /tmp/doc/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG"
-    cd /tmp/doc/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
+    "cd /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG"
+    cd /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
 
     #git init
     #git checkout -b gh-pages
