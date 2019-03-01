@@ -20,6 +20,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     mkdir -p $TRAVIS_BRANCH/$TRAVI_REPO_SLUG
 
     echo "cd /root/catkin_ws/src/smacc"
+    ls /root/catkin_ws/src
     cd /root/catkin_ws/src/smacc
     ls
     echo "executing doxygen command"
