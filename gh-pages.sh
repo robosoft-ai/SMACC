@@ -19,9 +19,9 @@ if [ -n "$GITHUB_TOKEN" ]; then
     git rm -r $TRAVIS_BRANCH/$TRAVI_REPO_SLUG >/dev/null
     mkdir -p $TRAVIS_BRANCH/$TRAVI_REPO_SLUG
 
-    echo "cd /root/catkin_ws/src/smacc"
+    echo "cd /root/catkin_ws/src/SMACC"
     ls /root/catkin_ws/src
-    cd /root/catkin_ws/src/smacc
+    cd /root/catkin_ws/src/SMACC
     ls
     echo "executing doxygen command"
     doxygen Doxyfile
