@@ -36,7 +36,7 @@ ForwardLocalPlanner::~ForwardLocalPlanner()
 void ForwardLocalPlanner::initialize()
 {
     k_rho_ = 1.0;
-    k_alpha_ = -0.2;
+    k_alpha_ = -0.4;
     k_betta_ = -1.0; // set to zero means that orientation is not important
     //k_betta_ = 1.0;
     //betta_offset_=0;
@@ -266,6 +266,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
         goalReached_=true;
     }
     
+    // linear speed clamp
     if (vetta > max_linear_x_speed_)
     {
         vetta = max_linear_x_speed_;
@@ -275,6 +276,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
         vetta = -max_linear_x_speed_;
     }
 
+    // angular speed clamp
     if(gamma > max_angular_z_speed_)
     {
         gamma = max_angular_z_speed_;
