@@ -1,12 +1,12 @@
 
 ## Travis CI: 
 
-| ROS Distro  | Travis Build Status | 
+| ROS Distro  | Travis Build Status | Documentation |
 | ------------- | ------------- |
-| Indigo  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/> </a>| 
-| Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  |
-| Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  |
-| Master  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> |
+| Indigo  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=indigo-devel"/> </a>|  <a href="https://reelrbtx.github.io/smacc/indigo-devel/html/index.html">doxygen</a>|
+| Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  | <a href="https://reelrbtx.github.io/smacc/kinetic-devel/html/index.html">doxygen</a>|
+| Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  | <a href="https://reelrbtx.github.io/smacc/melodic-devel/html/index.html">doxygen</a>|
+| Master  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> | <a href="https://reelrbtx.github.io/smacc/master/html/index.html">doxygen</a>|
 
 
 ## Docker Containers
