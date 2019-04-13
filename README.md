@@ -16,29 +16,29 @@
 
 # SMACC
 
-SMACC is a ROS/C++ library designed to allow users to implement a broad variety of state machines in easy and systematic way [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
+SMACC is a ROS/C++ library designed to allow users to implement a broad variety of state machines in an easy and systematic manner [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 Probably the greatest strength of SMACC is that the state machines you can develop with it are strictly based on the UML Standard. This means that you have access to a clear and thoroughly studied and known approach to describe State Machines. This may be especially important in industrial environments.
 
-The following image shows one example of state machine on the UML standard and shows many of the concepts that can be implemented using SMACC:
+The following image shows one example of a state machine built using the UML standard and shows many of the concepts that can be implemented using SMACC:
 <p align="center">
 <img src="http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif" width="450" align="center"/>
 </p>
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
- *   ***C++ language:*** ROS lacked the existence of a library to develop task-level state machine in c++. Many libraries in robotics are developed in c++ so that this may help during the integration of different libraries. In industrial development context are sometimes prefered the usage of c++ over Python, so that this tool may be a good choice.
- *  ***Static State Machine Checking:*** SMACC inherits this from the statechart library. This helps the developer to check the consistence of the state machine in compile time (instead of runtime). In other words, it helps you to check if your state machine is well written.
- * ***Component based architecture:*** SMACC built-in funcionality is providedinside SMACC Components that can be dinamically imported at runtime and stored in the local machine. The states only access to those components they are concerned. This enables the SMACC application extend or improve the runtime behavior of the system.
+ *   ***C++ language:*** Until now, ROS has lacked a library to develop task-level state machines in C++. Many libraries in robotics are developed in C++ so this may help during the integration of different libraries. In industrial development contexts C++ is often over Python, so this tool may be a good choice.
+ *  ***Static State Machine Checking:*** SMACC inherits this from the Boost Statechart library. This helps the developer to check the consistence of the state machine at compile time (instead of runtime). In other words, it helps you to check if your state machine is well written.
+ * ***Component based architecture:*** SMACC has built-in funcionality provided inside SMACC Components that can be dynamically imported at runtime and stored in the local machine. The states only access those components they are concerned with. This enables the SMACC based application to extend or improve the runtime behavior of the system.
 
-## Cannonical SMACC applications
-The cannonical SMACC applications are mobile robots (that may optionally have manipulators) that have to navigate around the environment and use some of the onboard tools. One example could be the PR2 Robot working in a factory navigating to some shelves with parcels, fetching them, and then navigating to some delivery point. Other example would include vaccum cleaners or mobile robots that must perform a systematic navigation on the ground executing some tool, in order to do that, SMACC provide some navigation planners that can help on this task (see more on section ROS Integration).
+## Canonical SMACC applications
+The canonical SMACC applications are mobile robots (that may optionally have manipulators) that have to navigate around the environment and use one or more onboard tools. One example of this would be the PR2 Robot, working in a factory, navigating to some shelves with parcels, fetching them with a 6-axis arm and manipulator, and then navigating to some delivery point. Other examples would include mobile robots that must perform a systematic navigation on a designated are while operating some tool, such as a vacuum or angle grinder. In order to accomplish this, SMACC provides an array navigation planners that can greatly simplifiy this task (see more on section ROS Integration).
 
 ## ROS Integration
 
-* ***Intensive use of ROS Action***. SMACC translate Action server events (Result callbacks, Feedback callbacks, etc.) to statechart events. To know more about this check the sections Shared Resources and section SMACC Architecture.
-* ***Powerful access to ROS Parameters***. Each SMACC state creates automatically a ros::NodeHandle automatically named according to the SMACC state hierarchy (see more in section Usage Examples - Ros parameters)
-* ***ROS Navigation built-in funcionality***. SMACC extends in some way the navigation stack in a high level way. It provides some navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and stright motions. Implements some mechanism to perform motions recording the path and undoing them later.
+* ***Intensive use of ROS Action***. SMACC translates Action server events (Result callbacks, Feedback callbacks, etc.) into statechart events. To learn more about this, check the sections Shared Resources and SMACC Architecture.
+* ***Powerful access to ROS Parameters***. Each SMACC state automatically creates a ros::NodeHandle automatically named according to the SMACC state hierarchy (see more in section Usage Examples - Ros parameters)
+* ***ROS Navigation built-in funcionality***. SMACC extends the ROS navigation stack in a high level way. It provides specialized navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and straight motions. Implements some mechanism to perform motions recording the path and undoing them later.
 These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
 
 ## Repository Packages
