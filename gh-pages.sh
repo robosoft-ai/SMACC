@@ -11,7 +11,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     #source /root/catkin_ws/install/setup.bash
 
     # This generates a `web` directory containing the website.
-    echo "cloining gh-pages"
+    echo "cloning gh-pages"
     git clone https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc --branch gh-pages /tmp/doc
 
     echo "removing specific branch folder from repo clone.."
