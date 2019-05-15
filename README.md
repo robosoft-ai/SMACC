@@ -45,13 +45,13 @@ These can be very useful in some industrial applications where the knowledge or 
 
 This repository contains several ROS packages:
 
- * **smacc**: The core smacc library. It works as a template-based c++  header library.
+ * **smacc_core**: The core smacc library. It works as a template-based c++  header library.
 
  * **smacc_navigation**: a set of ros packages with some "Smacc Components" that ease the creation of high level navigation applications. The provided components remotelly control the move_base. These components helps in the creation of complex motion strategies (changing planners, recording and undoing paths, etc.)
 
- * **radial_motion_example**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
+ * **smacc_state_machine_templates**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
 
- * **smacc_tool_plugin_template**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
+ * **smacc_interface_components**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
 
 ## Future Work
  * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
