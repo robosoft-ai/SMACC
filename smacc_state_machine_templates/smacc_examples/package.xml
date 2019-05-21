@@ -50,7 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
-  <build_depend>smacc</build_depend>
+  <build_depend>smacc_core</build_depend>
   <build_depend>smacc_navigation_plugin</build_depend>
   <build_depend>smacc_tool_plugin_template</build_depend>
   <build_depend>tf</build_depend>
@@ -60,7 +60,7 @@
   <build_export_depend>smacc_navigation_plugin</build_export_depend>
   <build_export_depend>smacc_tool_plugin_template</build_export_depend>
   <exec_depend>roscpp</exec_depend>
-  <exec_depend>smacc</exec_depend>
+  <exec_depend>smacc_core</exec_depend>
   <exec_depend>smacc_navigation_plugin</exec_depend>
   <exec_depend>smacc_tool_plugin_template</exec_depend>
   <exec_depend>tf</exec_depend>

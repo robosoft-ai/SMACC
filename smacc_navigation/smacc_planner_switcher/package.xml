@@ -13,8 +13,8 @@
   <build_depend>roscpp</build_depend>
   <exec_depend>roscpp</exec_depend>
 
-  <build_depend>smacc</build_depend>
-  <exec_depend>smacc</exec_depend>
+  <build_depend>smacc_core</build_depend>
+  <exec_depend>smacc_core</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

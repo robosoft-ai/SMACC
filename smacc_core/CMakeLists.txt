@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(smacc)
+project(smacc_core)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -33,7 +33,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES smacc
+  LIBRARIES smacc_core
   CATKIN_DEPENDS actionlib roscpp
 #  DEPENDS system_lib
 )

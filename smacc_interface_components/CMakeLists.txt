@@ -7,7 +7,7 @@ project(smacc_tool_plugin_template)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED actionlib actionlib_msgs std_msgs smacc message_generation) 
+find_package(catkin REQUIRED actionlib actionlib_msgs std_msgs smacc_core message_generation) 
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

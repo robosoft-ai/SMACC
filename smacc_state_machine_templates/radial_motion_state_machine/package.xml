@@ -11,7 +11,7 @@
   
   <buildtool_depend>catkin</buildtool_depend>
   
-  <build_depend>smacc</build_depend>
+  <build_depend>smacc_core</build_depend>
   <build_depend>roscpp</build_depend>
   <build_depend>smacc_navigation_plugin</build_depend>
   <build_depend>smacc_odom_tracker</build_depend>
@@ -19,7 +19,7 @@
   <build_depend>smacc_tool_plugin_template</build_depend>
   <build_depend>smach_msgs</build_depend>
 
-  <exec_depend>smacc</exec_depend>
+  <exec_depend>smacc_core</exec_depend>
   <exec_depend>roscpp</exec_depend>
   <exec_depend>smacc_navigation_plugin</exec_depend>
   <exec_depend>smacc_odom_tracker</exec_depend>

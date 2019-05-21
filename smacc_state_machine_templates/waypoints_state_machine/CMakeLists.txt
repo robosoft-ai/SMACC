@@ -4,7 +4,7 @@ project(waypoints_motion)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher)
+find_package(catkin REQUIRED smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -98,7 +98,7 @@ find_package(catkin REQUIRED smacc smacc_navigation_plugin smacc_odom_tracker sm
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES ${PROJECT_NAME}_node
-   CATKIN_DEPENDS smacc
+   CATKIN_DEPENDS smacc_core
 #  DEPENDS system_lib
 )
 

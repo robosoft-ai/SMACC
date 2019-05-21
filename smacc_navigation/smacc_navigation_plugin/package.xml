@@ -13,8 +13,8 @@
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>pluginlib</build_depend>
   <exec_depend>pluginlib</exec_depend>
-  <build_depend>smacc</build_depend>
-  <exec_depend>smacc</exec_depend>
+  <build_depend>smacc_core</build_depend>
+  <exec_depend>smacc_core</exec_depend>
 
   <export>
       <smacc plugin="${prefix}/smacc_plugin.xml" />

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(smacc_navigation_plugin)
 
-find_package(catkin REQUIRED smacc pluginlib)
+find_package(catkin REQUIRED smacc_core pluginlib)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -34,7 +34,7 @@ find_package(catkin REQUIRED smacc pluginlib)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES smacc_navigation_plugin
-   CATKIN_DEPENDS smacc
+   CATKIN_DEPENDS smacc_core
    #DEPENDS smacc
 )
 

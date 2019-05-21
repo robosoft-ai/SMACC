@@ -6,7 +6,7 @@ project(smacc_examples)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  smacc
+  smacc_core
   smacc_navigation_plugin
   smacc_tool_plugin_template
   tf
@@ -104,7 +104,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES smacc_examples
-#  CATKIN_DEPENDS roscpp smacc smacc_navigation_plugin smacc_tool_plugin_template
+#  CATKIN_DEPENDS roscpp smacc_core smacc_navigation_plugin smacc_tool_plugin_template
 #  DEPENDS system_lib
 )
 
