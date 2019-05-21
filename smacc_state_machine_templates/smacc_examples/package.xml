@@ -56,7 +56,7 @@
   <build_depend>tf</build_depend>
 
   <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>smacc</build_export_depend>
+  <build_export_depend>smacc_core</build_export_depend>
   <build_export_depend>smacc_navigation_plugin</build_export_depend>
   <build_export_depend>smacc_tool_plugin_template</build_export_depend>
   <exec_depend>roscpp</exec_depend>
