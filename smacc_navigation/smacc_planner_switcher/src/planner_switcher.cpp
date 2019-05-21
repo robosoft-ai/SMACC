@@ -8,7 +8,7 @@
 
 namespace smacc_planner_switcher
 {
-void PlannerSwitcher::init(ros::NodeHandle& nh)
+void PlannerSwitcher::init(ros::NodeHandle& nh, std::string)
 {
   dynrecofSub_ = nh.subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates" , 1, boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
 }

@@ -70,9 +70,9 @@ class SmaccState : public sc::simple_state<
     }
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), std::string value="")
     {
-      base_type::outermost_context().requiresComponent(storage,nh);
+      base_type::outermost_context().requiresComponent(storage,nh, value);
     }
 
     SmaccState() = delete;

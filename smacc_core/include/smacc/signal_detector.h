@@ -25,12 +25,12 @@ class SignalDetector
         // waits the polling thread to end
         void join();
         
-        void pollOnce();
-
         // prints the current state of the signal detector into a string
         void toString(std::stringstream& ss);
 
         void pollingLoop();
+
+        void pollOnce();
 
     private:
 

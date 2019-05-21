@@ -24,9 +24,9 @@ public:
     virtual ~ISmaccStateMachine();
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value)
     {
-        std::lock_guard<std::mutex> lock(m_mutex_);
+         std::lock_guard<std::mutex> lock(m_mutex_);
         std::string pluginkey = demangledTypeName<SmaccComponentType>();
         SmaccComponentType* ret;
 
@@ -37,7 +37,7 @@ public:
             ROS_INFO("%s smacc component is required. Creating a new instance.", pluginkey.c_str());
 
             ret = new SmaccComponentType();
-            ret->init(nh);
+            ret->init(nh, value);
             ret->setStateMachine(this);
             plugins_ [pluginkey] = static_cast<smacc::ISmaccComponent*>(ret);
             ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
@@ -49,6 +49,12 @@ public:
         }
     
         storage = ret;
+    }
+
+    template <typename SmaccComponentType>
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
+    {
+       requiresComponent(storage, nh, "");
     }
 
     template <typename T>

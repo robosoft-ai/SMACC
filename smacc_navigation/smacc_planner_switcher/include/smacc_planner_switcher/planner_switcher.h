@@ -17,7 +17,7 @@ namespace smacc_planner_switcher
 class PlannerSwitcher: public smacc::ISmaccComponent
 {
 public:
-  virtual void init(ros::NodeHandle& nh) override;
+  virtual void init(ros::NodeHandle& nh,std::string) override;
   void setBackwardPlanner();
   void setForwardPlanner();
 

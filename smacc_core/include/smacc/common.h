@@ -63,6 +63,7 @@ namespace smacc
   class ISmaccStateMachine;
   class ISmaccComponent;
   class ISmaccActionClient;
+  class ISmaccSubscriber;
   class SignalDetector;
 
   struct IActionResult
@@ -76,7 +77,46 @@ namespace smacc
   { 
       ActionResult resultMessage;
   };
+  
+  //--------------------------------
+  template <typename ActionResult>
+  struct EvActionSucceded : sc::event< EvActionResult <ActionResult> >, IActionResult
+  { 
+      ActionResult resultMessage;
+  };
 
+  template <typename ActionResult>
+  struct EvActionAborted : sc::event< EvActionResult <ActionResult> >, IActionResult
+  { 
+      ActionResult resultMessage;
+  };
+
+  template <typename ActionResult>
+  struct EvActionPreempted : sc::event< EvActionResult <ActionResult> >, IActionResult
+  { 
+      ActionResult resultMessage;
+  };
+
+  template <typename ActionResult>
+  struct EvActionRejected : sc::event< EvActionResult <ActionResult> >, IActionResult
+  { 
+      ActionResult resultMessage;
+  };
+
+  //--------------------------------
+  struct ITopicMessage
+  {
+    
+  };
+
+  //--------------------------------
+  template <typename MessageType>
+  struct EvTopicMessage : sc::event< EvTopicMessage <MessageType> >, ITopicMessage
+  { 
+      MessageType message;
+  };
+
+  //--------------------------------
   template <typename ActionFeedback>
   struct EvActionFeedback : sc::event< EvActionFeedback <ActionFeedback>> 
   {
@@ -88,8 +128,6 @@ namespace smacc
   // demangles the type name to be used as a node handle path
   std::string cleanTypeName(const std::type_info& tinfo);
 }
-
-
 
 inline std::string demangleSymbol(const char* name)
 {

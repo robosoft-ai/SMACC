@@ -38,8 +38,9 @@ class OdomTracker: public smacc::ISmaccComponent
         /// Must be called at the begining of the execution
         // by default, the component start in record_forward mode and publishing the
         // current path
-        virtual void init(ros::NodeHandle& nh) override;
+        virtual void init(ros::NodeHandle& nh, std::string) override;
 
+        
         // threadsafe
         /// odom callback: Updates the path - this must be called periodically for each odometry message. 
         // The odom parameters is the main input of this tracker

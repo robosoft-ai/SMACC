@@ -20,7 +20,7 @@ OdomTracker::OdomTracker()
 * init()
 ******************************************************************************************************************
 */
-void OdomTracker::init(ros::NodeHandle& nh)
+void OdomTracker::init(ros::NodeHandle& nh, std::string)
 {
     ROS_WARN("Initializing Odometry Tracker");
 

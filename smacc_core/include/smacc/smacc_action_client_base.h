@@ -35,7 +35,12 @@ class SmaccActionClientBase: public ISmaccActionClient
 
     virtual void init(ros::NodeHandle& nh) override
     {
-        ISmaccActionClient::init(nh);
+        init(nh, "");
+    }
+
+    virtual void init(ros::NodeHandle& nh, std::string value) override
+    {
+        ISmaccActionClient::init(nh, value);
         client_ = std::make_shared<ActionClient>(name_,false) ;
     }
 
@@ -82,8 +87,12 @@ class SmaccActionClientBase: public ISmaccActionClient
 
 protected:
     std::shared_ptr<ActionClient> client_;
+
     int feedback_queue_size_;
     std::list<Feedback> feedback_queue_;
+
+    int result_queue_size_;
+    std::list<Result> result_queue_;
 
     void onFeedback(const FeedbackConstPtr & feedback)
     {
@@ -96,14 +105,65 @@ protected:
         }
     }
 
+    void onResult(const  ResultConstPtr& result)
+    {
+        Result copy = *result;
+        result_queue_.push_back(copy);
+        ROS_DEBUG("RESULT MESSAGE RECEIVED, Queue Size: %ld", result_queue_.size());
+        if(result_queue_.size()> result_queue_size_)
+        {
+            result_queue_.pop_front();
+        }
+    }
+
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
-        EvActionResult<Result>* ev = new EvActionResult<Result>();
+        Result result_msg;
+        boost::intrusive_ptr< EvActionResult<Result>> actionResultEvent = new EvActionResult<Result>();;
+        actionResultEvent->client = this;
 
-        boost::intrusive_ptr< EvActionResult<Result>> actionClientResultEvent = ev;
-        actionClientResultEvent->client = this;
+        if(!result_queue_.empty())
+        {
+            ROS_DEBUG("[%s]Popping RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
+            result_msg = result_queue_.front();
+            result_queue_.pop_front();
+            ROS_DEBUG("[%s]popped RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
+            actionResultEvent->resultMessage = result_msg;
+            
+            scheduler->queue_event(processorHandle, actionResultEvent);
 
-        scheduler->queue_event(processorHandle, actionClientResultEvent);
+            auto resultType = actionResultEvent->getResult();
+            {
+                if(resultType==actionlib::SimpleClientGoalState::SUCCEEDED)
+                {
+                    boost::intrusive_ptr< EvActionSucceded<Result>> successEvent = new EvActionSucceded<Result>();;
+                    successEvent->client = this;
+                    successEvent->resultMessage = result_msg;
+                    scheduler->queue_event(processorHandle, successEvent);
+                }
+                else if(resultType==actionlib::SimpleClientGoalState::ABORTED)
+                {
+                    boost::intrusive_ptr< EvActionAborted<Result>> abortedEvent = new EvActionAborted<Result>();;
+                    abortedEvent->client = this;
+                    abortedEvent->resultMessage = result_msg;
+                    scheduler->queue_event(processorHandle, abortedEvent);
+                }
+                else if(resultType==actionlib::SimpleClientGoalState::REJECTED)
+                {
+                    boost::intrusive_ptr< EvActionRejected<Result>> rejectedEvent = new EvActionRejected<Result>();;
+                    rejectedEvent->client = this;
+                    rejectedEvent->resultMessage = result_msg;
+                    scheduler->queue_event(processorHandle, rejectedEvent);
+                }
+                else if(resultType==actionlib::SimpleClientGoalState::PREEMPTED)
+                {
+                    boost::intrusive_ptr< EvActionPreempted<Result>> preemtedEvent = new EvActionPreempted<Result>();;
+                    preemtedEvent->client = this;
+                    preemtedEvent->resultMessage = result_msg;
+                    scheduler->queue_event(processorHandle, preemtedEvent);
+                }
+            }
+        }
     }
     
     virtual void postFeedbackEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
