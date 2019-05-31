@@ -10,11 +10,19 @@
 namespace smacc
 {
 
-#define SMACC_STATE_BEHAVIOR(BEHAVIOR_CLASS) \
+//#define SMACC_STATE_BEHAVIOR(BEHAVIOR_CLASS) \
+//    SmaccStateBehavior* definesBehavioralSmaccState() \
+//    {                                                 \
+//      BEHAVIOR_CLASS* behavior;                         \
+//      this->requiresComponent(behavior);              \
+//      return behavior;                                \
+//    }                                                 
+
+#define SMACC_STATE_BEHAVIOR(BEHAVIOR_NAME) \
     SmaccStateBehavior* definesBehavioralSmaccState() \
     {                                                 \
-      BEHAVIOR_CLASS* behavior;                         \
-      this->requiresComponent(behavior);              \
+      SmaccStateBehavior* behavior;                         \
+      this->getGlobalSMData(BEHAVIOR_NAME, behavior);              \
       return behavior;                                \
     }                                                 
 

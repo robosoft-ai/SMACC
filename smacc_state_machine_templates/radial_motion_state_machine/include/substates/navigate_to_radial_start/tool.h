@@ -39,21 +39,17 @@ struct ToolSubstate
 public:
     using SmaccState::SmaccState;
   
-    SMACC_STATE_BEHAVIOR(ToolBehavior);
-  
-  /*
-  void onEntry()
-  {
-    ROS_INFO("Entering ToolSubstate");
-    this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));
+    void onEntry()
+    {
+      ROS_INFO("Entering ToolSubstate");
+      this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));
 
-    smacc::SmaccToolActionClient::Goal goal;
-    goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
-    toolActionClient_->sendGoal(goal);
-  }
-  
-  smacc::SmaccToolActionClient* toolActionClient_;
-  */
+      smacc::SmaccToolActionClient::Goal goal;
+      goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
+      toolActionClient_->sendGoal(goal);
+    }
+    
+    smacc::SmaccToolActionClient* toolActionClient_;
 };
 
 }

@@ -102,6 +102,22 @@ public:
     /// used by the ISMaccActionClients when a new send goal is launched
     void registerActionClientRequest(ISmaccActionClient* component);
 
+    template <typename BehaviorType> 
+    void mapBehavior(std::string behaviorName)
+    {
+        SmaccStateBehavior* globalreference;
+        if(!this->getGlobalSMData(behaviorName,globalreference))
+        {
+            // using the requires component approach we force to an unique existence
+            // of this component
+            BehaviorType* behavior;
+            this->requiresComponent(behavior);
+            globalreference =  dynamic_cast<SmaccStateBehavior*>(behavior);
+
+            this->setGlobalSMData(behaviorName, globalreference);
+        }
+    }
+
 private:
 
     std::mutex m_mutex_;
