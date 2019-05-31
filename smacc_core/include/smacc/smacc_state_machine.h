@@ -26,7 +26,7 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value)
     {
-         std::lock_guard<std::mutex> lock(m_mutex_);
+        std::lock_guard<std::mutex> lock(m_mutex_);
         std::string pluginkey = demangledTypeName<SmaccComponentType>();
         SmaccComponentType* ret;
 

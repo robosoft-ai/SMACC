@@ -38,6 +38,5 @@ namespace smacc
 
     // use the  main thread for the signal detector component (waiting actionclient requests)
     signalDetector.pollingLoop();
-
   }
 }

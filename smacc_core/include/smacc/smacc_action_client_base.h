@@ -76,8 +76,8 @@ class SmaccActionClientBase: public ISmaccActionClient
 
         ROS_INFO_STREAM(getName()<< ": Goal Value: " << std::endl << goal);
 
-        SimpleDoneCallback done_cb ;
-        SimpleActiveCallback active_cb;
+        SimpleDoneCallback done_cb =boost::bind(&SmaccActionClientBase<ActionType>::onResult,this,_1,_2);
+        SimpleActiveCallback active_cb;  
         SimpleFeedbackCallback feedback_cb = boost::bind(&SmaccActionClientBase<ActionType>::onFeedback,this,_1);
 
         client_->sendGoal(goal,done_cb,active_cb,feedback_cb);
@@ -98,18 +98,18 @@ protected:
     {
         Feedback copy = *feedback;
         feedback_queue_.push_back(copy);
-        ROS_DEBUG("FEEDBACK MESSAGE RECEIVED, Queue Size: %ld", feedback_queue_.size());
+        ROS_INFO("FEEDBACK MESSAGE RECEIVED, enqueuing Queue Size: %ld", feedback_queue_.size());
         if(feedback_queue_.size()> feedback_queue_size_)
         {
             feedback_queue_.pop_front();
         }
     }
 
-    void onResult(const  ResultConstPtr& result)
+    void onResult(const SimpleClientGoalState &state, const  ResultConstPtr& result)
     {
         Result copy = *result;
         result_queue_.push_back(copy);
-        ROS_DEBUG("RESULT MESSAGE RECEIVED, Queue Size: %ld", result_queue_.size());
+        ROS_INFO("RESULT MESSAGE RECEIVED, enqueuing Queue Size: %ld", result_queue_.size());
         if(result_queue_.size()> result_queue_size_)
         {
             result_queue_.pop_front();
@@ -119,15 +119,17 @@ protected:
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
         Result result_msg;
-        boost::intrusive_ptr< EvActionResult<Result>> actionResultEvent = new EvActionResult<Result>();;
+        boost::intrusive_ptr< EvActionResult<Result>> actionResultEvent = new EvActionResult<Result>();
         actionResultEvent->client = this;
+
+        ROS_INFO("[%s] Action client received a result of the request, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
 
         if(!result_queue_.empty())
         {
-            ROS_DEBUG("[%s]Popping RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
+            ROS_INFO("[%s]Popping RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
             result_msg = result_queue_.front();
             result_queue_.pop_front();
-            ROS_DEBUG("[%s]popped RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
+            ROS_INFO("[%s]popped RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
             actionResultEvent->resultMessage = result_msg;
             
             scheduler->queue_event(processorHandle, actionResultEvent);
@@ -136,6 +138,7 @@ protected:
             {
                 if(resultType==actionlib::SimpleClientGoalState::SUCCEEDED)
                 {
+                    ROS_INFO("[%s] request result: Success", this->getName().c_str());
                     boost::intrusive_ptr< EvActionSucceded<Result>> successEvent = new EvActionSucceded<Result>();;
                     successEvent->client = this;
                     successEvent->resultMessage = result_msg;
@@ -143,6 +146,7 @@ protected:
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::ABORTED)
                 {
+                    ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
                     boost::intrusive_ptr< EvActionAborted<Result>> abortedEvent = new EvActionAborted<Result>();;
                     abortedEvent->client = this;
                     abortedEvent->resultMessage = result_msg;
@@ -150,6 +154,7 @@ protected:
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::REJECTED)
                 {
+                    ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
                     boost::intrusive_ptr< EvActionRejected<Result>> rejectedEvent = new EvActionRejected<Result>();;
                     rejectedEvent->client = this;
                     rejectedEvent->resultMessage = result_msg;
@@ -157,6 +162,7 @@ protected:
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::PREEMPTED)
                 {
+                    ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
                     boost::intrusive_ptr< EvActionPreempted<Result>> preemtedEvent = new EvActionPreempted<Result>();;
                     preemtedEvent->client = this;
                     preemtedEvent->resultMessage = result_msg;
