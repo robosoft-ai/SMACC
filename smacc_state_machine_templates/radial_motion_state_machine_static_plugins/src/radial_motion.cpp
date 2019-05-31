@@ -8,7 +8,6 @@
 #include <boost/thread.hpp>
 
 //------------------------------------------------------------------------------
-
 void RadialMotionStateMachine::mapSmaccStateBehaviors()
 {
     this->mapBehavior<ToolStop>(NavigateToRadialStart::ToolBehaviorKeyName);
@@ -20,8 +19,6 @@ void RadialMotionStateMachine::mapSmaccStateBehaviors()
 int main(int argc, char **argv) 
 {
   ros::init(argc, argv, "radial_test_state_machine");
-  ros::NodeHandle nh;
-
   smacc::run<RadialMotionStateMachine>();
 }
 

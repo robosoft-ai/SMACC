@@ -98,7 +98,7 @@ protected:
     {
         Feedback copy = *feedback;
         feedback_queue_.push_back(copy);
-        ROS_INFO("FEEDBACK MESSAGE RECEIVED, enqueuing Queue Size: %ld", feedback_queue_.size());
+        ROS_DEBUG("FEEDBACK MESSAGE RECEIVED, enqueuing Queue Size: %ld", feedback_queue_.size());
         if(feedback_queue_.size()> feedback_queue_size_)
         {
             feedback_queue_.pop_front();
@@ -109,7 +109,7 @@ protected:
     {
         Result copy = *result;
         result_queue_.push_back(copy);
-        ROS_INFO("RESULT MESSAGE RECEIVED, enqueuing Queue Size: %ld", result_queue_.size());
+        ROS_DEBUG("RESULT MESSAGE RECEIVED, enqueuing Queue Size: %ld", result_queue_.size());
         if(result_queue_.size()> result_queue_size_)
         {
             result_queue_.pop_front();
