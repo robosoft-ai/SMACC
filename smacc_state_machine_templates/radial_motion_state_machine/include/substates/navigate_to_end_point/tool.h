@@ -7,7 +7,7 @@
 
 namespace NavigateToEndPoint 
 {
-    struct ToolSubstate
+struct ToolSubstate
     : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {  
 public:
