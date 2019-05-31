@@ -24,7 +24,7 @@ struct RotateDegress
     : SmaccState<RotateDegress, RadialMotionStateMachine, mpl::list<NavigationOrthogonalLine, ToolOrthogonalLine>> // <- these are the orthogonal lines of this State 
 {
   // when this state is finished then move to the NavigateToEndPoint state
-  typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>,  NavigateToEndPoint::NavigateToEndPoint> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  NavigateToEndPoint::NavigateToEndPoint> reactions; 
 
 public:
 

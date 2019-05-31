@@ -15,6 +15,7 @@ void PlannerSwitcher::init(ros::NodeHandle& nh, std::string)
 
 void PlannerSwitcher::setBackwardPlanner()
 {
+  ROS_INFO("Planner Switcher: Trying to set BackwardPlanner");
   desired_global_planner_ = "backward_global_planner/BackwardGlobalPlanner";
   desired_local_planner_ = "backward_local_planner/BackwardLocalPlanner";
   updatePlanners();
@@ -22,6 +23,7 @@ void PlannerSwitcher::setBackwardPlanner()
 
 void PlannerSwitcher::setForwardPlanner()
 {
+  ROS_INFO("Planner Switcher: Trying to set ForwardPlanner");
   desired_global_planner_ = "forward_global_planner/ForwardGlobalPlanner";
   desired_local_planner_ = "forward_local_planner/ForwardLocalPlanner";
   updatePlanners();

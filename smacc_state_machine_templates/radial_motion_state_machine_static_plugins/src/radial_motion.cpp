@@ -12,7 +12,7 @@ void RadialMotionStateMachine::mapSmaccStateBehaviors()
 {
     this->mapBehavior<ToolStop>(NavigateToRadialStart::ToolBehaviorKeyName);
     this->mapBehavior<ToolStart>(NavigateToEndPoint::ToolBehaviorKeyName);
-    this->mapBehavior<ToolStop>(NavigateToEndPoint::ToolBehaviorKeyName);
+    this->mapBehavior<ToolStop>(ReturnToRadialStart::ToolBehaviorKeyName);
     this->mapBehavior<ToolStop>(RotateDegress::ToolBehaviorKeyName);
 }
 

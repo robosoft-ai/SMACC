@@ -359,7 +359,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 */
 void BackwardLocalPlanner::reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level)
 {
-    ROS_INFO("Reconfigure Request");
+    ROS_INFO("Backward planner reconfigure Request");
     k_alpha_ = config.k_alpha;
     k_betta_ = config.k_betta;
     k_rho_ = config.k_rho;

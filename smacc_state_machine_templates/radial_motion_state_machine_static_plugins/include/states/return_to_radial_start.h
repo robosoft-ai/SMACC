@@ -19,7 +19,7 @@ struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, RadialMotionStateM
                                mpl::list< NavigationOrthogonalLine, ToolOrthogonalLine > > // <- these are the orthogonal lines of this State
 {
     // when this state is finished then move to the RotateDegress state
-    typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
+    typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress::RotateDegress> reactions; 
 
 public:
     using SmaccState::SmaccState;
@@ -76,7 +76,7 @@ public:
 
         this->plannerSwitcher_->setBackwardPlanner();
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
-
+        
         returnToRadialStart();
     }
 

@@ -21,7 +21,7 @@ struct NavigateToEndPoint
                  mpl::list<NavigationOrthogonalLine,ToolOrthogonalLine>> // <- these are the orthogonal lines of this State
 {
   // when this state is finished move to the ReturnToRadialStart state
-  typedef sc::transition<EvActionResult<smacc::SmaccMoveBaseActionClient::Result>, ReturnToRadialStart::ReturnToRadialStart> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, ReturnToRadialStart::ReturnToRadialStart> reactions; 
 
 public:
   using SmaccState::SmaccState;

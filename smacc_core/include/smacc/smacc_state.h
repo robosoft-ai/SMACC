@@ -21,8 +21,10 @@ namespace smacc
 #define SMACC_STATE_BEHAVIOR(BEHAVIOR_NAME) \
     SmaccStateBehavior* definesBehavioralSmaccState() \
     {                                                 \
+      ROS_INFO("trying to get the substate behavior: %s",BEHAVIOR_NAME); \
       SmaccStateBehavior* behavior;                         \
-      this->getGlobalSMData(BEHAVIOR_NAME, behavior);              \
+      bool found = this->getGlobalSMData(BEHAVIOR_NAME, behavior);              \
+      ROS_INFO("substate behavior '%s' exists? %d",BEHAVIOR_NAME, found);        \
       return behavior;                                \
     }                                                 
 
