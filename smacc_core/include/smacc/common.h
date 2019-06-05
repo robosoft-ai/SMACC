@@ -127,7 +127,7 @@ namespace smacc
   };
 
   // demangles the type name to be used as a node handle path
-  std::string cleanTypeName(const std::type_info& tinfo);
+  std::string cleanShortTypeName(const std::type_info& tinfo);
 }
 
 inline std::string demangleSymbol(const char* name)

@@ -18,19 +18,20 @@ namespace smacc
 //      return behavior;                                \
 //    }                                                 
 
-#define SMACC_STATE_BEHAVIOR(BEHAVIOR_NAME) \
+#define SMACC_STATE_BEHAVIOR \
     SmaccStateBehavior* definesBehavioralSmaccState() \
     {                                                 \
-      ROS_INFO("trying to get the substate behavior: %s",BEHAVIOR_NAME); \
-      SmaccStateBehavior* behavior;                         \
-      bool found = this->getGlobalSMData(BEHAVIOR_NAME, behavior);              \
-      ROS_INFO("substate behavior '%s' exists? %d",BEHAVIOR_NAME, found);        \
+      std::string shortname= this->getFullName();        \
+      ROS_INFO("trying to get the substate behavior: %s",shortname.c_str()); \
+      SmaccStateBehavior* behavior;      \
+                 \
+      bool found = this->getGlobalSMData(shortname, behavior);              \
+      ROS_INFO("substate behavior '%s' exists? %d",shortname.c_str(), found);        \
       return behavior;                                \
     }                                                 
 
 class SmaccStateBehavior: public smacc::ISmaccComponent
 { 
-    
     public:
     // hapens when
     // return true to destroy the object and false to keep it alive 
@@ -54,7 +55,7 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
       return true;
     }  
 };
-
+//-------------------------------------------------------------------------------------------------------------------
 
 template< class MostDerived,
           class Context,
@@ -104,9 +105,7 @@ class SmaccState : public sc::simple_state<
         return nh.param(param_name, param_val, default_val);
     }
     
-  
     typedef SmaccState my_base;
-
 
     template <typename T>
     bool getGlobalSMData(std::string name, T& ret)
@@ -144,10 +143,10 @@ class SmaccState : public sc::simple_state<
       ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
       if(contextNh.getNamespace() == "/" )
       {
-        contextNh = ros::NodeHandle(cleanTypeName(typeid(Context)));
+        contextNh = ros::NodeHandle(cleanShortTypeName(typeid(Context)));
       }
 
-      std::string classname = cleanTypeName(typeid(MostDerived));
+      std::string classname = cleanShortTypeName(typeid(MostDerived));
 
       this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/")+ classname );
     
@@ -180,9 +179,26 @@ class SmaccState : public sc::simple_state<
 
     InnerInitial* smacc_inner_type;
  
+    std::string getFullPathName()
+    {
+      auto smInfo = this->getStateMachine().info_;
+      return smInfo->states[typeid(MostDerived).name()]->getFullPath();
+    }
+
+    std::string getFullName()
+    {
+      return demangleSymbol(typeid(MostDerived).name());
+    }
+
+    std::string getShortName()
+    {
+      return cleanShortTypeName(typeid(MostDerived));
+    }
+
     virtual ~SmaccState() 
     {
-      ROS_ERROR("exiting state");
+      auto fullname = this->getFullPathName();
+      ROS_WARN_STREAM("exiting state: " << fullname);
 
       if(this->stateBehavior!=nullptr)
       {

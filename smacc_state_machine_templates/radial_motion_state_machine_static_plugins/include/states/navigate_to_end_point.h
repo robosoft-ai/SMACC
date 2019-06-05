@@ -50,78 +50,6 @@ public:
   }
 };
 
-
-    // this is the navigate substate inside the navigation orthogonal line of the RotateDegreess State
-struct Navigate : SmaccState<Navigate, NavigationOrthogonalLine> 
-{
-public:
-  // the angle of the current radial motion
-  double yaw;
-
-  // distance parameter of the motion
-  double dist;
-
-  using SmaccState::SmaccState;
-
-  void onEntry()
-  {
-    ROS_INFO("Entering Navigate");
-
-    // this substate will need access to the "MoveBase" resource or plugin. In this line
-    // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_ ,ros::NodeHandle("move_base"));
-    this->requiresComponent(odomTracker_);
-    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
-
-    // read from the state machine yaw "global variable"
-    this->getGlobalSMData("current_yaw", yaw);
-    ROS_INFO_STREAM("[NavigateToEndPoint/Navigate] current yaw: " << yaw);
-
-    // straight motion distance
-    this->param("straight_motion_distance", dist, 3.5);
-    ROS_INFO_STREAM("Straight motion distance: " << dist);
-
-    goToEndPoint();
-  }
-
-  // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToEndPoint() {
-    geometry_msgs::PoseStamped radialStartPose;
-    this->getGlobalSMData("radial_start_pose", radialStartPose);
-
-    smacc::SmaccMoveBaseActionClient::Goal goal;
-    goal.target_pose.header.stamp = ros::Time::now();
-
-    // in order to find the goal we create a virtual line from the origin to
-    // some yaw direction and some distance
-    goal.target_pose = radialStartPose;
-    goal.target_pose.pose.position.x += cos(yaw) * dist;
-    goal.target_pose.pose.position.y += sin(yaw) * dist;
-    goal.target_pose.pose.orientation =
-        tf::createQuaternionMsgFromRollPitchYaw(0, 0, yaw);
-
-    moveBaseClient_->sendGoal(goal);
-
-    this->odomTracker_->clearPath();
-    ROS_WARN_STREAM("SETTING STARTING POINT" << radialStartPose);
-    this->odomTracker_->setStartPoint(radialStartPose);
-  }
-
-  void onExit() 
-  { 
-    ROS_INFO("Exiting move goal Action Client"); 
-  }
-
-private:
-  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
-  // this resource can be used from any method in this state
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
-
-  smacc_odom_tracker::OdomTracker* odomTracker_;
-
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;  
-};
-
 //---------------------------------------------------------------------------------------------------------
 // orthogonal line 2
 struct ToolOrthogonalLine
@@ -144,8 +72,10 @@ struct ToolSubstate
     : SmaccState<ToolSubstate, ToolOrthogonalLine> 
 {  
 public:
+    SMACC_STATE_BEHAVIOR
+
     using SmaccState::SmaccState;
-    SMACC_STATE_BEHAVIOR(ToolBehaviorKeyName);
+    
 };
 
 }

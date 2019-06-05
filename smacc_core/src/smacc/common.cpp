@@ -13,7 +13,8 @@ actionlib::SimpleClientGoalState IActionResult::getResult() const
     return client->getState();
 }
 
-std::string cleanTypeName(const std::type_info& tinfo)
+
+std::string cleanShortTypeName(const std::type_info& tinfo)
 {
     std::string fullclassname = demangleSymbol(tinfo.name());
     //ROS_INFO("State full classname: %s", fullclassname.c_str());

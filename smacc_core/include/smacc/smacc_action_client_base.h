@@ -132,7 +132,7 @@ protected:
             ROS_INFO("[%s]popped RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
             actionResultEvent->resultMessage = result_msg;
             
-            scheduler->queue_event(processorHandle, actionResultEvent);
+            //scheduler->queue_event(processorHandle, actionResultEvent);
 
             auto resultType = actionResultEvent->getResult();
             {
