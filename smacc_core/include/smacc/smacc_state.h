@@ -10,6 +10,10 @@
 namespace smacc
 {
 
+  class SmaccStateBehavior;
+  class ISmaccState;
+
+
 //#define SMACC_STATE_BEHAVIOR(BEHAVIOR_CLASS) \
 //    SmaccStateBehavior* definesBehavioralSmaccState() \
 //    {                                                 \
@@ -37,6 +41,7 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
     // return true to destroy the object and false to keep it alive 
 
     ISmaccStateMachine* stateMachine; 
+    ISmaccState* currentState;
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), std::string value="")
@@ -55,35 +60,32 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
       return true;
     }  
 };
-//-------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------
 
-template< class MostDerived,
-          class Context,
-          class InnerInitial = mpl::list<>,
-          sc::history_mode historyMode = sc::has_no_history>
-class SmaccState : public sc::simple_state<
-  MostDerived, Context, InnerInitial, historyMode >
-{
-  typedef sc::simple_state< MostDerived, Context, InnerInitial, historyMode >
-    base_type;
-
+  class ISmaccState
+  {
   public:
     ros::NodeHandle nh;
+
 
     // by default nullptr
     SmaccStateBehavior* stateBehavior;
 
-    //////////////////////////////////////////////////////////////////////////
-    struct my_context
+    void configureStateBehavior(SmaccStateBehavior* stateBehavior)
     {
-      my_context( typename base_type::context_ptr_type pContext ) :
-        pContext_( pContext )
+      if(stateBehavior !=nullptr)
       {
+        ROS_INFO("Behavioral State");
+        stateBehavior->stateMachine = &this->getStateMachine();
+        stateBehavior->currentState = this;
       }
+      else
+      {
+        ROS_INFO("Not behavioral State");
+        
+      }
+    }
 
-      typename base_type::context_ptr_type pContext_;
-    };
-    
     // delegates to ROS param access with the current NodeHandle
     template <typename T>
     bool getParam(std::string param_name, T& param_storage)
@@ -104,6 +106,34 @@ class SmaccState : public sc::simple_state<
     {
         return nh.param(param_name, param_val, default_val);
     }
+
+    virtual ISmaccStateMachine& getStateMachine() =0;
+  };
+//-------------------------------------------------------------------------------------------------------------------
+
+template< class MostDerived,
+          class Context,
+          class InnerInitial = mpl::list<>,
+          sc::history_mode historyMode = sc::has_no_history>
+class SmaccState : public sc::simple_state<
+  MostDerived, Context, InnerInitial, historyMode >, public ISmaccState
+{
+  typedef sc::simple_state< MostDerived, Context, InnerInitial, historyMode >
+    base_type;
+
+  public:
+    
+    //////////////////////////////////////////////////////////////////////////
+    struct my_context
+    {
+      my_context( typename base_type::context_ptr_type pContext ) :
+        pContext_( pContext )
+      {
+      }
+
+      typename base_type::context_ptr_type pContext_;
+    };
+    
     
     typedef SmaccState my_base;
 
@@ -126,7 +156,7 @@ class SmaccState : public sc::simple_state<
       base_type::outermost_context().requiresComponent(storage,nh, value);
     }
 
-    ISmaccStateMachine& getStateMachine()
+    virtual ISmaccStateMachine& getStateMachine()
     {
       return base_type::outermost_context();
     }
@@ -158,10 +188,11 @@ class SmaccState : public sc::simple_state<
       this->setParam("created", true);
       stateBehavior = static_cast<MostDerived*>(this)->definesBehavioralSmaccState();
 
+      this->configureStateBehavior(stateBehavior);
+
       if(stateBehavior !=nullptr)
       {
         ROS_INFO("Behavioral State");
-        stateBehavior->stateMachine = &this->getStateMachine();
         stateBehavior->onEntry();
       }
       else
