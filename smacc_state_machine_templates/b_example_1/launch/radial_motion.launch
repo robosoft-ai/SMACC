@@ -15,7 +15,7 @@
     <rosparam command="load" file="$(find b_example_1)/config/radial_motion_sm_config.yaml"/>
     
     <!-- state machine node -->
-    <node pkg="b_example_1" type="b_example_1_node" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
+    <node pkg="b_example_1" type="b_example_1" name="RadialMotionSample" launch-prefix="xterm -hold -e ">
         <!-- for odom tracker-->
         <remap from="/odom" to="/odometry/filtered"/>
         <!--<param name="signal_detector_loop_freq" value="1"/>-->
