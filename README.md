@@ -14,7 +14,7 @@
 [![Docker Automated build](https://img.shields.io/docker/automated/pabloinigoblasco/smacc.svg?maxAge=2592000)](https://hub.docker.com/r/pabloinigoblasco/smacc/) [![Docker Pulls](https://img.shields.io/docker/pulls/pabloinigoblasco/smacc.svg?maxAge=2592000)](https://hub.docker.com/r/pabloinigoblasco/smacc/) [![Docker Stars](https://img.shields.io/docker/stars/pabloinigoblasco/smacc.svg)](https://registry.hub.docker.com/pabloinigoblasco/smacc/)
 
 
-# <img src="http://smacc.ninja/wp-content/uploads/2019/07/SMACC-Logo-Pixelate-2-copy.png" width="35" align="left"/> SMACC
+# <img src="http://smacc.ninja/wp-content/uploads/2019/07/SMACC-Logo-Pixelate-2-copy.png" width="30" align="left"/> SMACC
 
 SMACC is an event-driven, asynchronous, behavioral state machine library for ROS, written in C++ designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
