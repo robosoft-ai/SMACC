@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>radial_motion_state_machine_static_plugins</name>
+  <name>b_example_2</name>
   <version>0.0.1</version>
   <description>The radial_motion_example package shows an example of using SMACC on a Mobile Robot with an onboard tool. Developed by Reel Robotics.</description>
 
