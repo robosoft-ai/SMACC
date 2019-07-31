@@ -7,6 +7,7 @@
 
 #include <smacc/common.h>
 #include <smacc/smacc_action_client.h>
+
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
@@ -22,6 +23,8 @@ namespace smacc
 
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
+class Orthogonal;
+class ISmaccState;
 
 
 // this class describes the concept of Smacc State Machine in an abastract way.
@@ -36,33 +39,15 @@ class ISmaccStateMachine
 
     virtual ~ISmaccStateMachine();
 
+    void notifyOnStateEntry(ISmaccState* state);
+
+    void notifyOnStateExit(ISmaccState* state);
+
+    template <typename TOrthogonal>
+    void getOrthogonal(TOrthogonal*& storage);
+
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value)
-    {
-        std::lock_guard<std::mutex> lock(m_mutex_);
-        std::string pluginkey = demangledTypeName<SmaccComponentType>();
-        SmaccComponentType* ret;
-
-        auto it = plugins_.find(pluginkey);
-
-        if( it == plugins_.end())
-        {
-            ROS_INFO("%s smacc component is required. Creating a new instance.", pluginkey.c_str());
-
-            ret = new SmaccComponentType();
-            ret->init(nh, value);
-            ret->setStateMachine(this);
-            plugins_ [pluginkey] = static_cast<smacc::ISmaccComponent*>(ret);
-            ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
-        }
-        else
-        {
-            ROS_INFO("%s resource is required. Found resource in cache.", pluginkey.c_str());
-            ret = dynamic_cast<SmaccComponentType*>(it->second);
-        }
-    
-        storage = ret;
-    }
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value);
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
@@ -141,6 +126,8 @@ private:
     std::map<std::string, smacc::ISmaccComponent*> plugins_;
 
     std::map<std::string, boost::any> globalData_;
+
+    std::map<std::string, smacc::Orthogonal*> orthogonals_;
 
     //event to notify to the signaldetection thread that a request has been created
     SignalDetector* signalDetector_;

@@ -5,6 +5,7 @@
  ******************************************************************************************************************/
 #include <smacc/smacc_state_machine.h>
 #include <smacc/signal_detector.h>
+#include <smacc/orthogonal.h>
 
 
 namespace smacc
@@ -28,5 +29,27 @@ void ISmaccStateMachine::registerActionClientRequest(ISmaccActionClient* client)
     
     ROS_INFO("Registering action client request: %s", client->getName().c_str());  
     signalDetector_->registerActionClientRequest(client); 
+}
+
+void ISmaccStateMachine::notifyOnStateEntry(ISmaccState* state)
+{
+    ROS_INFO("Notification State Entry, orthogonals: %d", this->orthogonals_.size());
+    int i =0;
+    for( auto pair: this->orthogonals_)
+    {
+        ROS_INFO("ortho onentry: %d", i++);
+        auto& orthogonal = pair.second;
+        orthogonal->onEntry();
+    }
+}
+
+void ISmaccStateMachine::notifyOnStateExit(ISmaccState* state)
+{
+    ROS_INFO("Notification State Exit");
+    for( auto pair: this->orthogonals_)
+    {
+        auto& orthogonal = pair.second;
+        orthogonal->onExit();
+    }
 }
 }

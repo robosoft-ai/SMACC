@@ -5,7 +5,9 @@
  ******************************************************************************************************************/
 #pragma once
 #include "smacc/smacc_state_machine.h"
+#include "smacc/impl/smacc_state_machine_impl.h"
 #include "smacc/component.h"
+#include "smacc/orthogonal.h"
 
 namespace smacc
 {
@@ -46,7 +48,8 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), std::string value="")
     {
-      stateMachine->requiresComponent(storage,nh, value);
+      ROS_INFO("r");
+      stateMachine->requiresComponent(storage, nh, value);
     }
 
     virtual void onEntry()
@@ -108,6 +111,35 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
     }
 
     virtual ISmaccStateMachine& getStateMachine() =0;
+
+    template <typename TOrthogonal>
+    void configure(SmaccStateBehavior* smaccBehavior)
+    {
+      std::string orthogonalkey = demangledTypeName<TOrthogonal>();
+      ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
+      TOrthogonal* orthogonal;
+      this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal);
+      orthogonal->setStateBehavior(smaccBehavior);
+    }
+
+    template <typename SmaccComponentType>
+    void requiresComponent(SmaccComponentType*& storage)
+    {
+      this->getStateMachine().requiresComponent(storage);
+    }
+
+    template <typename T>
+    bool getGlobalSMData(std::string name, T& ret)
+    {
+        this->getStateMachine().getGlobalSMData(name,ret);
+    }
+
+    // store globally in this state machine. (By value parameter )
+    template <typename T>
+    void setGlobalSMData(std::string name, T value)
+    {
+        this->getStateMachine().setGlobalSMData(name,value);
+    }
   };
 //-------------------------------------------------------------------------------------------------------------------
 
@@ -188,8 +220,12 @@ class SmaccState : public sc::simple_state<
       this->setParam("created", true);
       stateBehavior = static_cast<MostDerived*>(this)->definesBehavioralSmaccState();
 
+      static_cast<MostDerived*>(this)->onInitialize();
+
       this->configureStateBehavior(stateBehavior);
 
+      this->getStateMachine().notifyOnStateEntry(this);
+ 
       if(stateBehavior !=nullptr)
       {
         ROS_INFO("Behavioral State");
@@ -231,6 +267,8 @@ class SmaccState : public sc::simple_state<
       auto fullname = this->getFullPathName();
       ROS_WARN_STREAM("exiting state: " << fullname);
 
+      this->getStateMachine().notifyOnStateExit(this);
+      
       if(this->stateBehavior!=nullptr)
       {
         stateBehavior->onExit();
@@ -252,6 +290,13 @@ class SmaccState : public sc::simple_state<
     // this method is static-polimorphic because of the curiously recurreing pattern. It
     // calls to the most derived class onEntry method if declared on smacc state construction
     void onEntry()
+    {
+
+    }
+
+    // this method is static-polimorphic because of the curiously recurreing pattern. It
+    // calls to the most derived class onEntry method if declared on smacc state construction
+    void onInitialize()
     {
 
     }
