@@ -116,33 +116,33 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/smacc_examples.cpp
-# )
-
-## Add cmake target dependencies of the library
-## as an example, code may need to be generated before libraries
-## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-## Declare a C++ executable
-## With catkin_make all packages are built within a single CMake context
-## The recommended prefix ensures that target names across packages don't collide
 add_executable(timer_substate_example examples/timer_substate_example/src/timer_main.cpp)
 
-## Rename C++ executable without prefix
-## The above recommended prefix causes long target names, the following renames the
-## target back to the shorter version for ease of user use
-## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+target_link_libraries(timer_substate_example
+   ${catkin_LIBRARIES}
+ )
 
-## Add cmake target dependencies of the executable
-## same as for the library above
-# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#--------------------------------------------------------
+ include_directories(
+ examples/keyboard_listener_example/include
+ ${catkin_INCLUDE_DIRS}
+)
 
-## Specify libraries to link a library or executable target against
- target_link_libraries(timer_substate_example
+add_executable(keyboard_listener_example examples/keyboard_listener_example/src/keyboard_main.cpp)
+
+target_link_libraries(keyboard_listener_example
+   ${catkin_LIBRARIES}
+ )
+
+#--------------------------------------------------------
+ include_directories(
+ examples/sensor_substate_example/include
+ ${catkin_INCLUDE_DIRS}
+)
+
+add_executable(sensor_substate_example examples/sensor_substate_example/src/sensor_main.cpp)
+
+target_link_libraries(sensor_substate_example
    ${catkin_LIBRARIES}
  )
 

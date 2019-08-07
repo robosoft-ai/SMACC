@@ -11,6 +11,9 @@ class NavigateForward : public smacc::SmaccStateBehavior
 
   boost::optional<float> forwardDistance;
 
+  // just a stub to show how to use parameterless constructor
+  boost::optional<float> forwardSpeed;
+
   tf::TransformListener listener;
     
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;

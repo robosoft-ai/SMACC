@@ -20,6 +20,14 @@ public:
   void onInitialize()
   {
     this->configure<NavigationOrthogonal>(new NavigateForward(3));
+    
+    // OPTIONAL SYNTAX
+    // auto fw = new NavigateForward();
+    // fw->forwardDistance = 3;
+    // fw->forwardSpeed = 1;
+    // this->configure<NavigationOrthogonal>(fw);
+    
+
     this->configure<ToolOrthogonal>(new ToolStart());
   }
 

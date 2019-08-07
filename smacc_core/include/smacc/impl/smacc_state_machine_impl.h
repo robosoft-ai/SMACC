@@ -66,4 +66,6 @@ namespace smacc
     {
        this->signalDetector_->postEvent( ev);
     }
+
+    
 }
