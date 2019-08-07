@@ -49,26 +49,12 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>smacc_core</build_depend>
-  <build_depend>smacc_navigation_plugin</build_depend>
-  <build_depend>smacc_tool_plugin_template</build_depend>
-  <build_depend>tf</build_depend>
-
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>smacc_core</build_export_depend>
-  <build_export_depend>smacc_navigation_plugin</build_export_depend>
-  <build_export_depend>smacc_tool_plugin_template</build_export_depend>
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>smacc_core</exec_depend>
-  <exec_depend>smacc_navigation_plugin</exec_depend>
-  <exec_depend>smacc_tool_plugin_template</exec_depend>
-  <exec_depend>tf</exec_depend>
+  <depend>smacc_core</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <rosdoc config="rosdoc.yaml" />
+    <!-- Other tools can request additional information be placed here -->
 
   </export>
 </package>

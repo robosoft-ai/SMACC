@@ -55,6 +55,9 @@ class ISmaccStateMachine
        requiresComponent(storage, nh, "");
     }
 
+    template <typename EventType>
+    void postEvent( EventType* ev);
+
     template <typename T>
     bool getGlobalSMData(std::string name, T& ret)
     {

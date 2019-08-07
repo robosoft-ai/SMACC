@@ -32,6 +32,13 @@ class SignalDetector
 
         void pollOnce();
 
+        template <typename EventType>
+        void postEvent(EventType* ev)
+        {
+            boost::intrusive_ptr< EventType> weakPtrEvent = ev;
+            this->scheduler_->queue_event(processorHandle_, weakPtrEvent);
+        }
+
     private:
 
         void finalizeRequest(ISmaccActionClient* resource);

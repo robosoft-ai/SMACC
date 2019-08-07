@@ -16,7 +16,7 @@ class Rotate : public smacc::SmaccStateBehavior
 
   virtual void onEntry() override
   {
-    double  angle_increment_degree;
+    double angle_increment_degree;
     this->currentState->param("angle_increment_degree", angle_increment_degree, 90.0);
 
     this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
@@ -25,14 +25,17 @@ class Rotate : public smacc::SmaccStateBehavior
     ros::Rate rate(10.0);
     while (ros::ok())
     {
+        ROS_INFO("try get robot possition");
         tf::StampedTransform currentPose;
         try{
-        listener.lookupTransform("/base_link", "/odom",  
+              
+              listener.lookupTransform("/base_link", "/odom",  
                                 ros::Time(0), currentPose);
+              break;
         }
         catch (tf::TransformException ex){
         ROS_ERROR("%s",ex.what());
-        ros::Duration(1.0).sleep();
+        //ros::Duration(1.0).sleep();
         }
     }   
 

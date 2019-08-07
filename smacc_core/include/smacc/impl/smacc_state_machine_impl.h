@@ -2,6 +2,7 @@
 
 #include <smacc/smacc_state_machine.h>
 #include <smacc/orthogonal.h>
+#include <smacc/signal_detector.h>
 
 namespace smacc
 {
@@ -58,5 +59,11 @@ namespace smacc
         }
     
         storage = ret;
+    }
+
+    template <typename EventType>
+    void ISmaccStateMachine::postEvent(EventType* ev)
+    {
+       this->signalDetector_->postEvent( ev);
     }
 }

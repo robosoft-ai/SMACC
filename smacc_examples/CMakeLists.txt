@@ -1,16 +1,13 @@
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 2.8.3)
 project(smacc_examples)
+
+## Compile as C++11, supported in ROS Kinetic and newer
+# add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  smacc_core
-  smacc_navigation_plugin
-  smacc_tool_plugin_template
-  tf
-)
+find_package(catkin REQUIRED smacc_core)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -104,7 +101,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES smacc_examples
-#  CATKIN_DEPENDS roscpp smacc_core smacc_navigation_plugin smacc_tool_plugin_template
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -112,14 +109,11 @@ catkin_package(
 ## Build ##
 ###########
 
-set(CMAKE_CXX_STANDARD 14)
-add_compile_options(-std=c++11)
-
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
+ examples/timer_substate_example/include
+ ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -135,20 +129,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/smacc_examples_node.cpp)
-
-include_directories(include ${catkin_INCLUDE_DIRS})
-add_executable(example1 src/example1.cpp)
-target_link_libraries(example1 ${catkin_LIBRARIES})
-
-add_executable(example2 src/example2.cpp)
-target_link_libraries(example2 ${catkin_LIBRARIES})
-
-add_executable(example3 src/example3.cpp)
-target_link_libraries(example3 ${catkin_LIBRARIES})
-
-add_executable(example4 src/example4.cpp)
-target_link_libraries(example4 ${catkin_LIBRARIES})
+add_executable(timer_substate_example examples/timer_substate_example/src/timer_main.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -161,6 +142,9 @@ target_link_libraries(example4 ${catkin_LIBRARIES})
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
+ target_link_libraries(timer_substate_example
+   ${catkin_LIBRARIES}
+ )
 
 #############
 ## Install ##

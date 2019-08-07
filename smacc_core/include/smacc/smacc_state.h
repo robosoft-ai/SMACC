@@ -45,6 +45,12 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
     ISmaccStateMachine* stateMachine; 
     ISmaccState* currentState;
 
+    template <typename EventType>
+    void postEvent(const EventType& ev)
+    {
+      stateMachine->postEvent(ev);
+    }
+
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), std::string value="")
     {

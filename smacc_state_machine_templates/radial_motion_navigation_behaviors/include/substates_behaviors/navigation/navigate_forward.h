@@ -35,6 +35,7 @@ class NavigateForward : public smacc::SmaccStateBehavior
         try{
         listener.lookupTransform("/base_link", "/odom",  
                                 ros::Time(0), currentPose);
+         break;
         }
         catch (tf::TransformException ex){
         ROS_ERROR("%s",ex.what());
