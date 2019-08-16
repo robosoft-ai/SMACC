@@ -1,6 +1,5 @@
 #pragma once
 
-#include <radial_motion.h>
 #include <thread>
 
 class ToolStop: public smacc::SmaccStateBehavior

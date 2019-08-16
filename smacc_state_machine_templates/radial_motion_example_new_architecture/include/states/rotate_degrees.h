@@ -5,8 +5,6 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <radial_motion.h>
-
 #include <orthogonals/navigation_orthogonal.h>
 #include <orthogonals/tool_orthogonal.h>
 #include <substates_behaviors/navigation/rotate.h>
@@ -14,7 +12,7 @@
 
 
 /// State NavigateToRadialStart
-struct RotateDegress: SmaccState<RotateDegress, RadialMotionStateMachine> // <- these are the orthogonal lines of this State 
+struct RotateDegress: SmaccState<RotateDegress, Superstate> // <- these are the orthogonal lines of this State 
 {
   // when this state is finished then move to the NavigateToEndPoint state
   typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  NavigateToEndPoint> reactions; 

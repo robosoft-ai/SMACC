@@ -1,6 +1,5 @@
 #pragma once
 
-#include <radial_motion.h>
 #include <orthogonals/navigation_orthogonal.h>
 #include <orthogonals/tool_orthogonal.h>
 
@@ -9,7 +8,7 @@
 
 //--------------------------------------------
 /// NavigateToEndPoint State
-struct NavigateToEndPoint: SmaccState<NavigateToEndPoint, RadialMotionStateMachine>
+struct NavigateToEndPoint: SmaccState<NavigateToEndPoint,Superstate>
 {
   // when this state is finished move to the ReturnToRadialStart state
   typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, ReturnToRadialStart> reactions; 

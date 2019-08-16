@@ -50,7 +50,14 @@ include_directories(include
 add_executable(${PROJECT_NAME}_node
                 src/radial_motion.cpp)
 
+add_executable(${PROJECT_NAME}_node_replacement
+src/radial_motion_replacement.cpp)
+
 target_link_libraries(${PROJECT_NAME}_node
+                      ${catkin_LIBRARIES}
+                      ${boost_LIBRARIES})
+
+target_link_libraries(${PROJECT_NAME}_node_replacement
                       ${catkin_LIBRARIES}
                       ${boost_LIBRARIES})
 

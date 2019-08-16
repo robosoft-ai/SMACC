@@ -1,6 +1,5 @@
 #pragma once
 
-#include <radial_motion.h>
 #include <thread>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>

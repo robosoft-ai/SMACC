@@ -1,6 +1,5 @@
 #pragma once
 
-#include <radial_motion.h>
 #include <thread>
 #include <smacc_tool_plugin_template/smacc_tool_plugin.h>
 

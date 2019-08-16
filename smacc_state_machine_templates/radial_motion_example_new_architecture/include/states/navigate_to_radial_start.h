@@ -1,7 +1,5 @@
 #pragma once
 
-#include <radial_motion.h>
-
 #include <orthogonals/navigation_orthogonal.h>
 #include <orthogonals/tool_orthogonal.h>
 #include <substates_behaviors/navigation/navigate_global_position.h>
@@ -11,7 +9,7 @@
 using namespace smacc;
 
 /// State NavigateToRadialStart
-struct NavigateToRadialStart: smacc::SmaccState<NavigateToRadialStart, RadialMotionStateMachine> // <- these are the orthogonal lines of this State
+struct NavigateToRadialStart: smacc::SmaccState<NavigateToRadialStart, Superstate> // <- these are the orthogonal lines of this State
 {
   // when this state is finished then move to the RotateDegress state
   typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, RotateDegress> reactions; 
