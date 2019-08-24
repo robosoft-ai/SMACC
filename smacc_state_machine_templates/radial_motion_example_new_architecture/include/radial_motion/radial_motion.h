@@ -1,27 +1,24 @@
 #pragma once
 
+//SMACC
 #include <smacc/smacc.h>
+
+// USED ORTHOGONALS
 #include <radial_motion/orthogonals/navigation_orthogonal.h>
 #include <radial_motion/orthogonals/tool_orthogonal.h>
 
-#include <radial_motion/state_names.h>
+// USED BEHAVIORS
 #include <radial_motion/substate_behaviors.h>
 
+// IMPORTED TEMPLATES-STATE-MACHINES NAMES
+// --
 
-class RadialMotionSuperState;
-// ----- Radial Motion State Machine --------------
+// STATE MACHINE STATE NAMES
+#include <radial_motion/state_names.h>
 
-// create the RadialMotion State Machine example class that inherits from the 
-// SmaccStateMachineBase. You only have to declare it, the most of the funcionality is inhterited.
-struct RadialMotionStateMachine
-    : public smacc::SmaccStateMachineBase<RadialMotionStateMachine,RadialMotionSuperState> 
-{
-    RadialMotionStateMachine(my_context ctx, smacc::SignalDetector *signalDetector)
-      : SmaccStateMachineBase<RadialMotionStateMachine,RadialMotionSuperState>(ctx, signalDetector) 
-      {
-      }      
+// STATE MACHINE CODE
+#include <radial_motion/radial_motion_state_machine.h>
 
-};
-
+// STATES CODE
 #include <radial_motion/states.h>
 

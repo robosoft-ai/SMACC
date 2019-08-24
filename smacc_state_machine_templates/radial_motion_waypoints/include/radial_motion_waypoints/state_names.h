@@ -2,6 +2,10 @@
 
 class RadialMotionWaypointsStateMachine;
 
+class Spinning1;
+class Spinning2;
+class Spinning3;
+
 namespace RadialMotion1
 {
     class RadialMotion1;

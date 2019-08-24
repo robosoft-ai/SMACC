@@ -8,7 +8,7 @@ namespace RadialMotion1
     {
         public:
         using SmaccState::SmaccState;
-        //typedef sc::transition<EvStateFinished<RadialMotion1>, RadialMotion2::RadialMotion2> reactions;
+        typedef sc::transition<EvStateFinished<RadialMotion1>, Spinning1> reactions;
         
         void onInitialize()
         {
