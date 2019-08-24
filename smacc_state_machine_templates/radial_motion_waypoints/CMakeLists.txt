@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(radial_motion_example_new_architecture)
+project(radial_motion_waypoints)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher tf nav_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher tf nav_msgs radial_motion_example_new_architecture)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -48,8 +48,7 @@ include_directories(include
                     ${catkin_INCLUDE_DIRS})
 
 add_executable(${PROJECT_NAME}_node
-                src/radial_motion.cpp)
-
+                src/radial_motion_waypoints.cpp)
 
 target_link_libraries(${PROJECT_NAME}_node
                       ${catkin_LIBRARIES}

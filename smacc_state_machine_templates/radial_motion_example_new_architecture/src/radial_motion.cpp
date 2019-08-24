@@ -1,4 +1,4 @@
-#include <radial_motion.h>
+#include <radial_motion/radial_motion.h>
 
 int main(int argc, char **argv) 
 {

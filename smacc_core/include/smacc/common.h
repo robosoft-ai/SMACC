@@ -104,6 +104,12 @@ namespace smacc
       ActionResult resultMessage;
   };
 
+  template <typename StateType>
+  struct EvStateFinished : sc::event< EvStateFinished<StateType> >
+  { 
+    StateType* state;
+  };
+
   //--------------------------------
   struct ITopicMessage
   {

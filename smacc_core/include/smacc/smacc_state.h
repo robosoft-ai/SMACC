@@ -284,10 +284,28 @@ class SmaccState : public sc::simple_state<
         //this->updateCurrentState<MostDerived>(false);
         static_cast<MostDerived*>(this)->onExit();
       }
+
+      this->throwFinishEvent();
     }
+
+
+    template <typename EventType>
+    void postEvent(const EventType& ev)
+    {
+      getStateMachine().postEvent(ev);
+    }
+
+    void throwFinishEvent()
+    {
+      auto* finishEvent = new EvStateFinished<MostDerived>();
+      finishEvent->state = static_cast<MostDerived*>(this);
+      this->postEvent(finishEvent);
+    }
+
 
   public:
 
+    
     SmaccStateBehavior* definesBehavioralSmaccState()
     {
       return nullptr;
