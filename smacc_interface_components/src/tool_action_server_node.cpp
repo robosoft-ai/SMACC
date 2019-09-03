@@ -9,9 +9,9 @@
 #include <dynamic_reconfigure/DoubleParameter.h>
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
-#include <smacc_tool_plugin_template/ToolControlAction.h>
-#include <smacc_tool_plugin_template/ToolControlActionResult.h>
-#include <smacc_tool_plugin_template/ToolControlResult.h>
+#include <smacc_interface_components//ToolControlAction.h>
+#include <smacc_interface_components//ToolControlActionResult.h>
+#include <smacc_interface_components//ToolControlResult.h>
 #include <memory>
 #include <visualization_msgs/MarkerArray.h>
 

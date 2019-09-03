@@ -2,7 +2,7 @@
 
 #include <smacc/smacc.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
-#include <smacc_tool_plugin_template/smacc_tool_plugin.h>
+#include <smacc_interface_components/smacc_tool_plugin_template/smacc_tool_plugin.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 using namespace smacc;

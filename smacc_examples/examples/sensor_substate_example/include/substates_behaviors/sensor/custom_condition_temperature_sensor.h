@@ -1,4 +1,5 @@
-#include <substates_behaviors/sensor/sensor_substate.h>
+#include <smacc_interface_components/substate_behaviors/sensor_substate.h>
+#include <sensors/sensor_substate.h>
 #include <sensor_msgs/Temperature.h>
 
 struct CustomTemperatureAlertEvent: sc::event<CustomTemperatureAlertEvent>
@@ -29,6 +30,5 @@ class CustomConditionTemperatureSensor: public smacc::SensorTopic<sensor_msgs::T
       this->postEvent(ev);
     }
   } 
-
 };
 

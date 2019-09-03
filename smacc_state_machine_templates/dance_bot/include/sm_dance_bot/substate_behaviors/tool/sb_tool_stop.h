@@ -1,9 +1,8 @@
 #pragma once
 
 #include <thread>
-#include <smacc_interface_components/smacc_tool_plugin_template/smacc_tool_plugin.h>
 
-class ToolStart: public smacc::SmaccStateBehavior
+class sb_tool_stop: public smacc::SmaccStateBehavior
 { 
 public:
     
@@ -14,7 +13,7 @@ public:
       this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));
 
       smacc::SmaccToolActionClient::Goal goal;
-      goal.command = smacc::SmaccToolActionClient::Goal::CMD_START;
+      goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;
       toolActionClient_->sendGoal(goal);
     }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>smacc_tool_plugin_template</name>
+  <name>smacc_interface_components</name>
   <version>0.0.1</version>
-  <description>The smacc_tool_plugin_template package implements a template code to implement an SMACC Action Client Plugin for some tool.  Developed by Reel Robotics.</description>
+  <description>smacc_interface_components</description>
 
   <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
   <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>

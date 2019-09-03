@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(smacc_tool_plugin_template)
+project(smacc_interface_components)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)

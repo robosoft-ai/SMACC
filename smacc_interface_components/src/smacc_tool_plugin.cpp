@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <smacc_tool_plugin_template/smacc_tool_plugin.h>
+#include <smacc_interface_components/smacc_tool_plugin_template/smacc_tool_plugin.h>
 #include <pluginlib/class_list_macros.h>
 
 

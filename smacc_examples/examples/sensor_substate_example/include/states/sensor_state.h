@@ -5,7 +5,6 @@
 #include <orthogonals/obstacle_perception_orthogonal.h>
 
 #include <sensor_msgs/LaserScan.h>
-#include <substates_behaviors/sensor/sensor_substate.h>
 #include <substates_behaviors/sensor/custom_condition_temperature_sensor.h>
 
 

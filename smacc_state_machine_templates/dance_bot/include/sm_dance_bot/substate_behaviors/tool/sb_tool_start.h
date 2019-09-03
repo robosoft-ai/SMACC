@@ -3,7 +3,7 @@
 #include <thread>
 #include <smacc_interface_components/smacc_tool_plugin_template/smacc_tool_plugin.h>
 
-class ToolStart: public smacc::SmaccStateBehavior
+class sb_tool_start: public smacc::SmaccStateBehavior
 { 
 public:
     
