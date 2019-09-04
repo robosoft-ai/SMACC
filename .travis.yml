@@ -6,7 +6,7 @@ env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
     AFTER_SCRIPT=./gh-pages.sh
-    CATKIN_CONFIG=--no-install
+    #CATKIN_CONFIG=--no-install
   matrix:
     - ROS_DISTRO="kinetic"
 
