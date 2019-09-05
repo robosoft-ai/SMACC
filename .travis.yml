@@ -6,7 +6,7 @@ env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
     AFTER_SCRIPT=./gh-pages.sh
-    CATKIN_CONFIG=--no-install
+    #CATKIN_CONFIG=--no-install
   matrix:
     - ROS_DISTRO="kinetic"
 
@@ -15,7 +15,7 @@ before_install:
   - sudo apt-get install -y graphviz
   - sudo apt-get install -y ghostscript
 install:
-  - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+  - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
   - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
 script:
   - .industrial_ci/travis.sh
