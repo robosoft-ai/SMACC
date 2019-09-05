@@ -45,6 +45,7 @@ struct sm_dance_bot
 #include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
 #include <sm_dance_bot/orthogonals/tool_orthogonal.h>
 #include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
+#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
 
 
 //SUBSTATE BEHAVIORS
