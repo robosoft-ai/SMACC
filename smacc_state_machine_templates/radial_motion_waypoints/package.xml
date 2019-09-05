@@ -16,7 +16,7 @@
   <build_depend>smacc_navigation_plugin</build_depend>
   <build_depend>smacc_odom_tracker</build_depend>
   <build_depend>smacc_planner_switcher</build_depend>
-  <build_depend>smacc_tool_plugin_template</build_depend>
+  <build_depend>smacc_interface_components</build_depend>
   <build_depend>smach_msgs</build_depend>
   <build_depend>tf</build_depend>
   <build_depend>radial_motion_example_new_architecture</build_depend>
