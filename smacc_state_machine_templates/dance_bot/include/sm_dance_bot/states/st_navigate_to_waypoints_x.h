@@ -10,7 +10,7 @@ struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x
   void onInitialize()
   {
     int currentIteration = 0;
-    // IDEA: this->declarePersistentVariable()
+    // IDEA: this->declarePersistentVariable(currentIteration)
     this->getGlobalSMData("navigation_x_iteration", currentIteration);
 
     std::vector<std::pair<float, float>> waypoints = {

@@ -105,7 +105,7 @@ namespace smacc
   };
 
   template <typename StateType>
-  struct EvStateFinished : sc::event< EvStateFinished<StateType> >
+  struct EvStateFinish : sc::event< EvStateFinish<StateType> >
   { 
     StateType* state;
   };

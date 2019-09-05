@@ -8,19 +8,23 @@
 #include <substates_behaviors/sensor/custom_condition_temperature_sensor.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 
+using namespace smacc;
+
+typedef smacc::SensorTopic<sensor_msgs::LaserScan> LidarSensor ;
+
 struct SensorState: smacc::SmaccState<SensorState, SensorStateMachine>
 {
   public:
   typedef mpl::list<
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::InitialMessageEvent, SensorState>, 
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::MessageEvent, SensorState>, 
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::MessageTimeoutEvent, SensorState>,
+                sc::transition<EvSensorInitialMessage<LidarSensor>, SensorState>, 
+                sc::transition<EvSensorMessage<LidarSensor>, SensorState>, 
+                sc::transition<EvSensorMessageTimeout<LidarSensor>, SensorState>,
                 
-                sc::transition<CustomConditionTemperatureSensor::InitialMessageEvent, SensorState>, 
-                sc::transition<CustomConditionTemperatureSensor::MessageEvent, SensorState>, 
-                sc::transition<CustomConditionTemperatureSensor::MessageTimeoutEvent, SensorState>,
+                sc::transition<EvSensorInitialMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                sc::transition<EvSensorMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                sc::transition<EvSensorMessageTimeout<CustomConditionTemperatureSensor>, SensorState>,
                 
-                sc::transition<CustomConditionTemperatureSensor::TemperatureAlertEvent, SensorState>> reactions; 
+                sc::transition<EvCustomTemperatureAlert, SensorState>> reactions; 
 
 
   using SmaccState::SmaccState;

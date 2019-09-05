@@ -4,11 +4,11 @@ struct RadialMotionSuperState: smacc::SmaccState<RadialMotionSuperState,RadialMo
 {
   using SmaccState::SmaccState;
 
-  typedef sc::custom_reaction<EvStateFinished<ReturnToRadialStart>> reactions;
+  typedef sc::custom_reaction<EvStateFinish<ReturnToRadialStart>> reactions;
 
   int times;
 
-  sc::result react( const EvStateFinished<ReturnToRadialStart> & )
+  sc::result react( const EvStateFinish<ReturnToRadialStart> & )
   {
     times++;
 

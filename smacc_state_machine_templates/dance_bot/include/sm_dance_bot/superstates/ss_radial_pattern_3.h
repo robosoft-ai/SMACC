@@ -4,14 +4,14 @@ namespace SS3
 class ssr_radial_rotate;
 class ssr_radial_return;
 
-
 struct ss_radial_pattern_3 : smacc::SmaccState<ss_radial_pattern_3, sm_dance_bot, ssr_radial_rotate>
 {
-    public:
+public:
     using SmaccState::SmaccState;
 
-    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinished<ssr_radial_return>>,
-                      sc::transition<EvFinish, st_rotate_degrees_4>> reactions;
+    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<ssr_radial_return>>,
+                      sc::transition<EvStateFinish<ss_radial_pattern_3>, st_rotate_degrees_4>>
+        reactions;
 
     int iteration_count;
 
@@ -20,9 +20,9 @@ struct ss_radial_pattern_3 : smacc::SmaccState<ss_radial_pattern_3, sm_dance_bot
         iteration_count = 0;
     }
 
-    sc::result react(const smacc::EvStateFinished<ssr_radial_return> &ev) 
+    sc::result react(const smacc::EvStateFinish<ssr_radial_return> &ev)
     {
-        if(iteration_count++ == 4)
+        if (iteration_count++ == 4)
         {
             this->throwFinishEvent();
         }

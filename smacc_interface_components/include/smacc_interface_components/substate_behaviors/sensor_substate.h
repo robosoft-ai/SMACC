@@ -11,17 +11,19 @@ namespace smacc
 
 //----------------- TIMER EVENT DEFINITION ----------------------------------------------
 template<typename SensorBehaviorType>
-struct SensorInitialMessage: sc::event<SensorInitialMessage<SensorBehaviorType>>
+struct EvSensorInitialMessage: sc::event<EvSensorInitialMessage<SensorBehaviorType>>
 {
+    //typename EvSensorInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
 template<typename SensorBehaviorType>
-struct SensorMessage: sc::event<SensorMessage<SensorBehaviorType>>
+struct EvSensorMessage: sc::event<EvSensorMessage<SensorBehaviorType>>
 {
+    //typename EvSensorInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
 template<typename SensorBehaviorType>
-struct SensorMessageTimeout: sc::event<SensorMessageTimeout<SensorBehaviorType>>
+struct EvSensorMessageTimeout: sc::event<EvSensorMessageTimeout<SensorBehaviorType>>
 {
 };
 
@@ -30,11 +32,8 @@ struct SensorMessageTimeout: sc::event<SensorMessageTimeout<SensorBehaviorType>>
 template <typename MessageType>
 class SensorTopic : public smacc::SmaccStateBehavior
 {
-  
  public:
-  typedef SensorInitialMessage<SensorTopic<MessageType>> InitialMessageEvent;
-  typedef SensorMessageTimeout<SensorTopic<MessageType>> MessageTimeoutEvent;
-  typedef SensorMessage<SensorTopic<MessageType>> MessageEvent;
+  typedef MessageType TMessageType;
 
   ros::NodeHandle nh_;
   std::string topicName_;
@@ -67,12 +66,13 @@ class SensorTopic : public smacc::SmaccStateBehavior
 
   void timeoutCallback(const ros::TimerEvent& ev)
   {
-    auto event= new MessageTimeoutEvent();
+    auto event= new EvSensorMessageTimeout<SensorTopic<MessageType>>();
     this->postEvent(event);
   }
 
   virtual void onMessageCallback(const MessageType& msg)
   {
+
     // empty to fill by sensor customization based on inheritance
   }
 
@@ -82,9 +82,12 @@ class SensorTopic : public smacc::SmaccStateBehavior
     {
       firstTime_ == false;
 
-      auto event= new InitialMessageEvent();
+      auto event= new EvSensorInitialMessage<SensorTopic<MessageType>>();
       this->postEvent(event);
     }
+    
+    auto event= new EvSensorMessage<SensorTopic<MessageType>>();
+    this->postEvent(event);
     
     this->onMessageCallback(msg);
 

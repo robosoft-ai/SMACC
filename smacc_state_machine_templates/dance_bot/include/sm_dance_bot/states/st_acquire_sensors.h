@@ -7,12 +7,13 @@ struct st_acquire_sensors: smacc::SmaccState<st_acquire_sensors,sm_dance_bot>
 {
    using SmaccState::SmaccState;
 
-   mpl::list<sc::custom_reaction<LidarSensor::MessageEvent>,
-             sc::custom_reaction<CustomConditionTemperatureSensor::MessageEvent>,
+   mpl::list<
+   
+            sc::custom_reaction<EvSensorMessage<LidarSensor>>,
+            sc::custom_reaction<EvSensorMessage<CustomConditionTemperatureSensor>>,
 
-             sc::transition<EvFinish, st_navigate_to_waypoints_x>
+            sc::transition<EvStateFinish<st_acquire_sensors>, st_navigate_to_waypoints_x>
              > reactions; 
-
 
    AllEventAggregator allSensorsReady;
 
@@ -24,15 +25,15 @@ struct st_acquire_sensors: smacc::SmaccState<st_acquire_sensors,sm_dance_bot>
       allSensorsReady.setTriggerEventTypesCount(2);
    }
 
-   sc::result react(const LidarSensor::MessageEvent &ev) 
+   sc::result react(const EvSensorMessage<LidarSensor> &ev) 
    {
-      if(allSensorsReady.notify<LidarSensor::MessageEvent>())
+      if(allSensorsReady.notify<EvSensorMessage<LidarSensor>>())
          this->throwFinishEvent();
    }
 
-   sc::result react(const CustomConditionTemperatureSensor::MessageEvent &ev) 
+   sc::result react(const EvSensorMessage<CustomConditionTemperatureSensor> &ev) 
    {
-      if(allSensorsReady.notify<CustomConditionTemperatureSensor::MessageEvent>())
+      if(allSensorsReady.notify<EvSensorMessage<CustomConditionTemperatureSensor>>())
         this->throwFinishEvent();
    }
 };

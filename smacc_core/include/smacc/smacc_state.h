@@ -160,8 +160,6 @@ class SmaccState : public sc::simple_state<
     base_type;
 
   public:
-
-    typedef EvStateFinished<MostDerived> EvFinish;
     
     //////////////////////////////////////////////////////////////////////////
     struct my_context
@@ -299,7 +297,7 @@ class SmaccState : public sc::simple_state<
 
     void throwFinishEvent()
     {
-      auto* finishEvent = new EvStateFinished<MostDerived>();
+      auto* finishEvent = new EvStateFinish<MostDerived>();
       finishEvent->state = static_cast<MostDerived*>(this);
       this->postEvent(finishEvent);
     }
