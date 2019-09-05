@@ -15,7 +15,7 @@
 #include <memory>
 #include <visualization_msgs/MarkerArray.h>
 
-typedef actionlib::SimpleActionServer<smacc_tool_plugin_template::ToolControlAction> Server;
+typedef actionlib::SimpleActionServer<smacc_interface_components::ToolControlAction> Server;
 
 // This class describes a preemptable-on/off tool action server to be used from smacc
 // shows in rviz a sphere whoose color describe the current state (unknown, running, idle)
@@ -26,7 +26,7 @@ public:
 
   ros::Publisher stateMarkerPublisher_;
 
-  smacc_tool_plugin_template::ToolControlGoal cmd;
+  smacc_interface_components::ToolControlGoal cmd;
 
   uint8_t currentState_;
 
@@ -37,7 +37,7 @@ public:
 */
   ToolActionServer()
   {
-    currentState_ =  smacc_tool_plugin_template::ToolControlResult::STATE_UNKNOWN;
+    currentState_ =  smacc_interface_components::ToolControlResult::STATE_UNKNOWN;
   }
 
 /**
@@ -47,7 +47,7 @@ public:
 */
 void publishFeedback()  // Note: "Action" is not appended to DoDishes here
 {
-    smacc_tool_plugin_template::ToolControlFeedback feedback_msg;
+    smacc_interface_components::ToolControlFeedback feedback_msg;
     
     as_->publishFeedback(feedback_msg);
 }
@@ -57,18 +57,18 @@ void publishFeedback()  // Note: "Action" is not appended to DoDishes here
 * execute()
 ******************************************************************************************************************
 */
-void execute(const smacc_tool_plugin_template::ToolControlGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
+void execute(const smacc_interface_components::ToolControlGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
 {
   ROS_INFO_STREAM("Tool action server request: "<< *goal);
   cmd = *goal;
 
-  if(goal->command == smacc_tool_plugin_template::ToolControlGoal::CMD_START)
+  if(goal->command == smacc_interface_components::ToolControlGoal::CMD_START)
   {
-    currentState_ =  smacc_tool_plugin_template::ToolControlResult::STATE_RUNNING;
+    currentState_ =  smacc_interface_components::ToolControlResult::STATE_RUNNING;
   }
-  else  if (goal->command == smacc_tool_plugin_template::ToolControlGoal::CMD_STOP)
+  else  if (goal->command == smacc_interface_components::ToolControlGoal::CMD_STOP)
   {
-    currentState_ =  smacc_tool_plugin_template::ToolControlResult::STATE_IDLE;
+    currentState_ =  smacc_interface_components::ToolControlResult::STATE_IDLE;
   }
 
   // 10Hz internal loop
@@ -135,14 +135,14 @@ void publishStateMarker()
 
     marker.color.a = 1;
 
-    if(currentState_ == smacc_tool_plugin_template::ToolControlResult::STATE_RUNNING)
+    if(currentState_ == smacc_interface_components::ToolControlResult::STATE_RUNNING)
     {
       // show green ball
       marker.color.r = 0;
       marker.color.g = 1;
       marker.color.b = 0;
     }
-    else if (currentState_ == smacc_tool_plugin_template::ToolControlResult::STATE_IDLE)
+    else if (currentState_ == smacc_interface_components::ToolControlResult::STATE_IDLE)
     {
       // show gray ball
       marker.color.r = 0.7;

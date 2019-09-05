@@ -10,14 +10,16 @@
 
 namespace smacc
 {
-class SmaccMoveBaseActionClient: public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
+class SmaccMoveBaseActionClient : public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
-    public:
-        SmaccMoveBaseActionClient();
-        SmaccMoveBaseActionClient(std::string action_server_namespace);
-        virtual std::string getName() const override;
-        virtual ~SmaccMoveBaseActionClient();
+public:
+    typedef EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result> SuccessEv;
+
+    SmaccMoveBaseActionClient();
+    SmaccMoveBaseActionClient(std::string action_server_namespace);
+    virtual std::string getName() const override;
+    virtual ~SmaccMoveBaseActionClient();
 };
-}
+} // namespace smacc

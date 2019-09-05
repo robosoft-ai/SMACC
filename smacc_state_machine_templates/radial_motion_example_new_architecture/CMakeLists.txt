@@ -4,7 +4,7 @@ project(radial_motion_example_new_architecture)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_tool_plugin_template smacc_planner_switcher tf nav_msgs)
+find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_interface_components smacc_planner_switcher tf nav_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

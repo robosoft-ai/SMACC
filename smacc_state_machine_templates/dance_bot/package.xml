@@ -54,7 +54,7 @@
   <depend>smacc_navigation_plugin</depend>
   <depend>smacc_odom_tracker</depend>
   <depend>smacc_planner_switcher</depend>
-  <depend>smacc_tool_plugin_template</depend>
+  <depend>smacc_interface_components</depend>
   
 
   <!-- The export tag contains other, unspecified, tags -->

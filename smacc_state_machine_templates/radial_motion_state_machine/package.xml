@@ -16,7 +16,7 @@
   <build_depend>smacc_navigation_plugin</build_depend>
   <build_depend>smacc_odom_tracker</build_depend>
   <build_depend>smacc_planner_switcher</build_depend>
-  <build_depend>smacc_tool_plugin_template</build_depend>
+  <build_depend>smacc_interface_components</build_depend>
   <build_depend>smach_msgs</build_depend>
 
   <exec_depend>smacc_core</exec_depend>
@@ -24,7 +24,7 @@
   <exec_depend>smacc_navigation_plugin</exec_depend>
   <exec_depend>smacc_odom_tracker</exec_depend>
   <exec_depend>smacc_planner_switcher</exec_depend>
-  <exec_depend>smacc_tool_plugin_template</exec_depend>
+  <exec_depend>smacc_interface_components</exec_depend>
   <exec_depend>ridgeback_navigation</exec_depend>
   <exec_depend>smach_msgs</exec_depend>
 

@@ -1,6 +1,8 @@
-struct st_rotate_degrees_3: smacc::SmaccState<st_rotate_degrees_3,sm_dance_bot>
+struct st_rotate_degrees_3 : smacc::SmaccState<st_rotate_degrees_3, sm_dance_bot>
 {
   using SmaccState::SmaccState;
+
+  typedef sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, st_navigate_to_waypoints_x> reactions;
 
   void onInitialize()
   {

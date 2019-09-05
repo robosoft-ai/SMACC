@@ -8,7 +8,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   smacc_core
   smacc_navigation_plugin
-  smacc_tool_plugin_template
+  smacc_interface_components
   tf
 )
 

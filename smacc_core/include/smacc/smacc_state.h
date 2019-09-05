@@ -160,6 +160,8 @@ class SmaccState : public sc::simple_state<
     base_type;
 
   public:
+
+    typedef EvStateFinished<MostDerived> EvFinish;
     
     //////////////////////////////////////////////////////////////////////////
     struct my_context

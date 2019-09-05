@@ -6,19 +6,19 @@
 
 #include <sensor_msgs/LaserScan.h>
 #include <substates_behaviors/sensor/custom_condition_temperature_sensor.h>
-
+#include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 
 struct SensorState: smacc::SmaccState<SensorState, SensorStateMachine>
 {
   public:
   typedef mpl::list<
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::InitialMessageEvent, SensorState>
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::MessageEvent, SensorState>,
-                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::TimeoutMessageEvent, SensorState>,
-
+                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::InitialMessageEvent, SensorState>, 
+                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::MessageEvent, SensorState>, 
+                sc::transition<smacc::SensorTopic<sensor_msgs::LaserScan>::MessageTimeoutEvent, SensorState>,
+                
                 sc::transition<CustomConditionTemperatureSensor::InitialMessageEvent, SensorState>, 
                 sc::transition<CustomConditionTemperatureSensor::MessageEvent, SensorState>, 
-                sc::transition<CustomConditionTemperatureSensor::TimeoutMessageEvent, SensorState>,
+                sc::transition<CustomConditionTemperatureSensor::MessageTimeoutEvent, SensorState>,
                 
                 sc::transition<CustomConditionTemperatureSensor::TemperatureAlertEvent, SensorState>> reactions; 
 

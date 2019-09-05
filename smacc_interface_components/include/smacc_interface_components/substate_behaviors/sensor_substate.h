@@ -10,15 +10,18 @@ namespace smacc
 {
 
 //----------------- TIMER EVENT DEFINITION ----------------------------------------------
-struct SensorInitialMessage: sc::event<SensorInitialMessage>
+template<typename SensorBehaviorType>
+struct SensorInitialMessage: sc::event<SensorInitialMessage<SensorBehaviorType>>
 {
 };
 
-struct SensorMessage: sc::event<SensorMessage>
+template<typename SensorBehaviorType>
+struct SensorMessage: sc::event<SensorMessage<SensorBehaviorType>>
 {
 };
 
-struct SensorMessageTimeout: sc::event<SensorMessageTimeout>
+template<typename SensorBehaviorType>
+struct SensorMessageTimeout: sc::event<SensorMessageTimeout<SensorBehaviorType>>
 {
 };
 
@@ -29,9 +32,9 @@ class SensorTopic : public smacc::SmaccStateBehavior
 {
   
  public:
-  typedef SensorInitialMessage InitialMessageEvent;
-  typedef SensorMessageTimeout MessageTimeoutEvent;
-  typedef SensorMessage MessageEvent;
+  typedef SensorInitialMessage<SensorTopic<MessageType>> InitialMessageEvent;
+  typedef SensorMessageTimeout<SensorTopic<MessageType>> MessageTimeoutEvent;
+  typedef SensorMessage<SensorTopic<MessageType>> MessageEvent;
 
   ros::NodeHandle nh_;
   std::string topicName_;
@@ -79,12 +82,7 @@ class SensorTopic : public smacc::SmaccStateBehavior
     {
       firstTime_ == false;
 
-      auto event= new SensorInitialMessage();
-      this->postEvent(event);
-    }
-    else
-    {
-      auto event= new SensorInitialMessage();
+      auto event= new InitialMessageEvent();
       this->postEvent(event);
     }
     
