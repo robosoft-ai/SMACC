@@ -5,8 +5,8 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/common.h>
-#include <smacc/smacc_action_client.h>
+#include <smacc_core/common.h>
+#include <smacc_core/smacc_action_client.h>
 
 #include <boost/any.hpp>
 #include <map>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/smacc_state.h>
+#include <smacc_core/smacc_state.h>
 #include <boost/statechart/event.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>
 

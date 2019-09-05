@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/orthogonal.h>
+#include <smacc_core/orthogonal.h>
 
 class NavigationOrthogonal: public smacc::Orthogonal
 {

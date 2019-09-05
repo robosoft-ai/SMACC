@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/smacc.h>
+#include <smacc_core/smacc.h>
 
 struct KeyboardState;
 

@@ -4,7 +4,7 @@ project(radial_motion_waypoints)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_interface_components smacc_planner_switcher tf nav_msgs radial_motion_example_new_architecture)
+find_package(catkin REQUIRED COMPONENTS roscpp smacc_core smacc_navigation_plugin smacc_odom_tracker smacc_interface_components smacc_planner_switcher tf nav_msgs radial_motion)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -97,7 +97,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-    launch/radial_motion.launch
+  #launch/radial_motion.launch
   # myfile2
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )

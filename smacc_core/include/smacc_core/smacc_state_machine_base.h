@@ -4,8 +4,8 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc/common.h>
-#include <smacc/smacc_state.h>
+#include <smacc_core/common.h>
+#include <smacc_core/smacc_state.h>
 
 #include <smach_msgs/SmachContainerStructure.h>
 #include <smach_msgs/SmachContainerInitialStatusCmd.h>

@@ -19,7 +19,7 @@
   <build_depend>smacc_interface_components</build_depend>
   <build_depend>smach_msgs</build_depend>
   <build_depend>tf</build_depend>
-  <build_depend>radial_motion_example_new_architecture</build_depend>
+  <build_depend>radial_motion</build_depend>
   
 
   <exec_depend>smacc_core</exec_depend>
@@ -30,6 +30,7 @@
   <exec_depend>smacc_interface_components</exec_depend>
   <exec_depend>ridgeback_navigation</exec_depend>
   <exec_depend>smach_msgs</exec_depend>
+  <exec_depend>radial_motion</exec_depend>
   <exec_depend>tf</exec_depend>
 
   <export>

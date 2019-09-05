@@ -4,10 +4,10 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include "smacc/smacc_state_machine.h"
-#include "smacc/impl/smacc_state_machine_impl.h"
-#include "smacc/component.h"
-#include "smacc/orthogonal.h"
+#include "smacc_core/smacc_state_machine.h"
+#include "smacc_core/impl/smacc_state_machine_impl.h"
+#include "smacc_core/component.h"
+#include "smacc_core/orthogonal.h"
 
 namespace smacc
 {

@@ -1,4 +1,4 @@
-#include <smacc/smacc.h>
+#include <smacc_core/smacc.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <tf/tf.h>
 

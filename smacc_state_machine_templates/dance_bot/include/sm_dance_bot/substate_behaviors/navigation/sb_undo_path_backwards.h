@@ -1,5 +1,5 @@
 #pragma once
-#include <smacc/smacc_state.h>
+#include <smacc_core/smacc_state.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <nav_msgs/Path.h>

@@ -1,7 +1,7 @@
 #pragma once
 
 //SMACC
-#include <smacc/smacc.h>
+#include <smacc_core/smacc.h>
 
 // USED ORTHOGONALS
 #include <radial_motion/orthogonals/navigation_orthogonal.h>

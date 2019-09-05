@@ -5,7 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/smacc_action_client.h>
+#include <smacc_core/smacc_action_client.h>
 #include <move_base_msgs/MoveBaseAction.h>
 
 #include <ros/ros.h>

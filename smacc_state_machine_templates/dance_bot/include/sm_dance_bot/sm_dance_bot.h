@@ -1,5 +1,5 @@
 #include <ros/ros.h>
-#include <smacc/smacc.h>
+#include <smacc_core/smacc.h>
 
 
 //STATES
@@ -62,7 +62,7 @@ struct sm_dance_bot
 
 #include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
 
-#include <smacc/all_event_aggregator.h>
+#include <smacc_core/all_event_aggregator.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sensor_msgs/LaserScan.h>
 

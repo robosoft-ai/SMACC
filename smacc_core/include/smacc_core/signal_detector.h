@@ -6,7 +6,7 @@
 #pragma once
 
 #include <boost/thread.hpp>
-#include <smacc/common.h>
+#include <smacc_core/common.h>
 
 namespace smacc
 {

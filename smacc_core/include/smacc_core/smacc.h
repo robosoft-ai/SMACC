@@ -4,9 +4,9 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include <smacc/common.h>
-#include <smacc/smacc_state_machine_base.h>
-#include <smacc/signal_detector.h>
+#include <smacc_core/common.h>
+#include <smacc_core/smacc_state_machine_base.h>
+#include <smacc_core/signal_detector.h>
 
 namespace smacc
 {

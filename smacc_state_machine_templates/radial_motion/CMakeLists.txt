@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.7)
-project(radial_motion_example_new_architecture)
+project(radial_motion)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)

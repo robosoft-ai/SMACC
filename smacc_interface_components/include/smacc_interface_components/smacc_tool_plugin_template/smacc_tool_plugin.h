@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/smacc_action_client_base.h>
+#include <smacc_core/smacc_action_client_base.h>
 #include <smacc_interface_components/ToolControlAction.h>
 
 namespace smacc

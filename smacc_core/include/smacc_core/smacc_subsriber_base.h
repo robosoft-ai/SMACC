@@ -5,7 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/smacc_subscriber.h>
+#include <smacc_core/smacc_subscriber.h>
 #include <queue>
 
 namespace smacc

@@ -1,8 +1,8 @@
 #pragma once
 
-#include <smacc/smacc_state_machine.h>
-#include <smacc/orthogonal.h>
-#include <smacc/signal_detector.h>
+#include <smacc_core/smacc_state_machine.h>
+#include <smacc_core/orthogonal.h>
+#include <smacc_core/signal_detector.h>
 
 namespace smacc
 {
