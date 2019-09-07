@@ -1,0 +1,37 @@
+<package>
+  <name>smacc_viewer</name>
+  <version>2.0.2</version>
+  <description>
+    The cmach viewer is a GUI that shows the state of hierarchical
+    SMACC state machines. It can visualize the possible transitions
+    between states, as well as the currently active state and the
+    values of user data that is passed around between states. The
+    smacc viewer uses the smacc debugging interface based on
+    the <a href="http://www.ros.org/wiki/smacc_msgs">smacc
+    messages</a> to gather information from running state machines.
+  </description>
+  <maintainer email="jbo@jhu.edu">Jonathan Bohren</maintainer>
+  <maintainer email="ros-orphaned-packages@googlegroups.com">ROS Orphaned Package Maintainers</maintainer>
+
+  <license>BSD</license>
+
+  <url type="website">http://ros.org/wiki/smacc_viewer</url>
+  <!-- <url type="bugtracker"></url> -->
+
+  <author email="jbo@jhu.edu">Jonathan Bohren</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rostest</build_depend>
+
+  <!-- Dependencies needed after this package is compiled. -->
+  
+  <run_depend>smacc_msgs</run_depend>
+  <!-- originally depends on xdot : https://github.com/jbohren/xdot/blob/2.0.1/package.xml#L25-L26 -->
+  <run_depend>wxpython</run_depend>
+  <run_depend>graphviz</run_depend>
+
+  <export>
+
+  </export>
+</package>

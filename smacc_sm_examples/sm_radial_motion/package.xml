@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sm_radial_motion</name>
+  <version>0.0.1</version>
+  <description>The radial_motion_example package shows an example of using SMACC on a Mobile Robot with an onboard tool. Developed by Reel Robotics.</description>
+
+  <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
+  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
+
+  <license>MIT</license>
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  
+  <build_depend>smacc</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>smacc_navigation_plugin</build_depend>
+  <build_depend>smacc_odom_tracker</build_depend>
+  <build_depend>smacc_planner_switcher</build_depend>
+  <build_depend>smacc_interface_components</build_depend>
+  <build_depend>smacc_msgs</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>smacc_action_client_generic</build_depend>
+  
+
+  <exec_depend>smacc</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>smacc_navigation_plugin</exec_depend>
+  <exec_depend>smacc_odom_tracker</exec_depend>
+  <exec_depend>smacc_planner_switcher</exec_depend>
+  <exec_depend>smacc_interface_components</exec_depend>
+  <exec_depend>ridgeback_navigation</exec_depend>
+  <exec_depend>smacc_msgs</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>smacc_action_client_generic</exec_depend>
+
+  <export>
+    <rosdoc config="rosdoc.yaml" />
+  </export>
+</package>
