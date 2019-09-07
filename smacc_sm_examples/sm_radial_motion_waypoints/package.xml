@@ -19,7 +19,7 @@
   <build_depend>smacc_interface_components</build_depend>
   <build_depend>smacc_msgs</build_depend>
   <build_depend>tf</build_depend>
-  <build_depend>radial_motion</build_depend>
+  <build_depend>sm_radial_motion</build_depend>
   <build_depend>smacc_action_client_generic</build_depend>
 
 
