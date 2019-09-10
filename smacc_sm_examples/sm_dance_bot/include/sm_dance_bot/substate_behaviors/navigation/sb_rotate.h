@@ -34,7 +34,7 @@ public:
 
         if (!rotateDegree)
         {
-            this->currentState->param("angle_increment_degree", angle_increment_degree, 90.0);
+            this->currentState->param("angle_increment_degree", angle_increment_degree, 45.0);
         }
         else
         {
@@ -42,16 +42,22 @@ public:
         }
 
         this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
+        this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
+    
+        this->plannerSwitcher_->setForwardPlanner();
 
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
+        geometry_msgs::Pose currentPoseMsg;
         while (ros::ok())
         {
             tf::StampedTransform currentPose;
             try
             {
-                listener.lookupTransform("/base_link", "/odom",
+                listener.lookupTransform("/odom", "/base_link", 
                                          ros::Time(0), currentPose);
+
+                tf::poseTFToMsg(currentPose, currentPoseMsg);
                 break;
             }
             catch (tf::TransformException ex)
@@ -65,11 +71,9 @@ public:
         goal.target_pose.header.frame_id = "/odom";
         goal.target_pose.header.stamp = ros::Time::now();
 
-        auto currentAngle = tf::getYaw(goal.target_pose.pose.orientation);
+        auto currentAngle = tf::getYaw(currentPoseMsg.orientation);
         auto targetAngle = currentAngle + angle_increment_degree * M_PI / 180.0;
-
+        goal.target_pose.pose.position = currentPoseMsg.position;
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
-
-        moveBaseClient_->sendGoal(goal);
     }
 };

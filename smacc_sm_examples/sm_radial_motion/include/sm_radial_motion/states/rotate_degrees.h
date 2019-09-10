@@ -16,7 +16,7 @@ public:
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new Rotate(10));
+    this->configure<NavigationOrthogonal>(new Rotate(90));
     this->configure<ToolOrthogonal>(new ToolStop());
   }
 

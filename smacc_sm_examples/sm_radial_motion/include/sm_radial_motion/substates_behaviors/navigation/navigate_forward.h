@@ -61,7 +61,7 @@ class NavigateForward : public smacc::SmaccStateBehavior
     while (ros::ok())
     {
         try{
-        listener.lookupTransform("/base_link", "/odom",  
+        listener.lookupTransform( "/odom",  "/base_link",
                                 ros::Time(0), currentPose);
 
          break;

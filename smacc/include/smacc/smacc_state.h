@@ -54,7 +54,6 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), std::string value="")
     {
-      ROS_INFO("r");
       stateMachine->requiresComponent(storage, nh, value);
     }
 
@@ -234,12 +233,12 @@ class SmaccState : public sc::simple_state<
  
       if(stateBehavior !=nullptr)
       {
-        ROS_INFO("Behavioral State");
+        //ROS_INFO("Behavioral State");
         stateBehavior->onEntry();
       }
       else
       {
-        ROS_INFO("Not behavioral State");
+        //ROS_INFO("Not behavioral State");
         static_cast<MostDerived*>(this)->onEntry();
       }
     }
