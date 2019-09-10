@@ -53,6 +53,7 @@ class SensorTopic : public smacc::SmaccStateBehavior
 
   void onEntry()
   {
+     ROS_INFO_STREAM("Subscribing to sensor topic: " << topicName_);
      sub_ = nh_.subscribe(topicName_, queueSize_, &SensorTopic<MessageType>::messageCallback, this);
      timeoutTimer_ = nh_.createTimer(this->timeoutDuration_,boost::bind(&SensorTopic<MessageType>::timeoutCallback, this, _1));
      timeoutTimer_.start();
@@ -78,6 +79,8 @@ class SensorTopic : public smacc::SmaccStateBehavior
 
   void messageCallback(const MessageType& msg)
   {
+    //ROS_INFO_STREAM("message received from: "<< this->topicName_);
+
     if(firstTime_)
     {
       firstTime_ == false;

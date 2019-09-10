@@ -17,7 +17,6 @@
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_radial_motion)/config/navigation.rviz"/>
 
 
-
     <!-- state machine node -->
     <node pkg="sm_dance_bot" type="sm_dance_bot" name="sm_dance_bot" launch-prefix="xterm -hold -e ">
         <!-- for odom tracker-->
