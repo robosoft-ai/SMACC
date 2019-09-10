@@ -18,6 +18,8 @@ find_package(catkin REQUIRED actionlib actionlib_msgs std_msgs smacc message_gen
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
 
+set(CMAKE_CXX_STANDARD 14)
+
 ################################################
 ## Declare ROS messages, services and actions ##
 ################################################
