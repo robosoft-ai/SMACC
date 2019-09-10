@@ -25,6 +25,6 @@
         <!--<param name="signal_detector_loop_freq" value="1"/>-->
     </node>
 
-    <node pkg="smacc_action_client_generic" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="xterm -hold -e "/>
+    <node pkg="smacc_action_client_generic" type="smacc_action_client_generic_node" name="smacc_action_client_generic_node" launch-prefix="xterm -hold -e "/>
     
 </launch>

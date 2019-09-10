@@ -4,7 +4,7 @@
  *
  ******************************************************************************************************************/
 #include <smacc_action_client_generic/smacc_tool_plugin.h>
-#include <pluginlib/class_list_macros.h>
+//#include <pluginlib/class_list_macros.h>
 
 
 namespace smacc
@@ -25,4 +25,4 @@ SmaccToolActionClient::~SmaccToolActionClient()
 }
 }
 
-PLUGINLIB_EXPORT_CLASS(smacc::SmaccToolActionClient, smacc::ISmaccComponent)
+//PLUGINLIB_EXPORT_CLASS(smacc::SmaccToolActionClient, smacc::ISmaccComponent)
