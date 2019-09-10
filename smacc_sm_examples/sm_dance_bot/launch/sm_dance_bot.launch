@@ -1,20 +1,20 @@
 <launch>
 
     <!-- load the navigation environment simulated in gazebo-->
-    <include file ="$(find sm_radial_motion_state_machine)/launch/ridgeback_simulation.launch"/>
+    <include file ="$(find sm_radial_motion)/launch/ridgeback_simulation.launch"/>
 
     <!--  setup smacc planners configuration  -->
     <group ns="move_base">
         <!-- backward local planner -->  
-        <rosparam file="$(find sm_radial_motion_state_machine)/config/backward_local_planner.yaml" command="load" />
+        <rosparam file="$(find sm_radial_motion)/config/backward_local_planner.yaml" command="load" />
         <!-- forward local planner -->  
-        <rosparam file="$(find sm_radial_motion_state_machine)/config/forward_local_planner.yaml" command="load" />
+        <rosparam file="$(find sm_radial_motion)/config/forward_local_planner.yaml" command="load" />
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_radial_motion_state_machine)/config/radial_motion_sm_config.yaml"/>
+    <rosparam command="load" file="$(find sm_radial_motion)/config/radial_motion_sm_config.yaml"/>
 
-    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_radial_motion_state_machine)/config/navigation.rviz"/>
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_radial_motion)/config/navigation.rviz"/>
 
 
 
