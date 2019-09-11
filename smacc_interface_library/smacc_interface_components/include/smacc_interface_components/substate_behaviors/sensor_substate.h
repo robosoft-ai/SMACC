@@ -27,6 +27,12 @@ struct EvSensorMessageTimeout: sc::event<EvSensorMessageTimeout<SensorBehaviorTy
 {
 };
 
+struct testEvent: sc::event<testEvent>
+{
+
+};
+
+
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
 template <typename MessageType>
@@ -83,14 +89,14 @@ class SensorTopic : public smacc::SmaccStateBehavior
 
     if(firstTime_)
     {
-      firstTime_ == false;
-
+      firstTime_ = false;
       auto event= new EvSensorInitialMessage<SensorTopic<MessageType>>();
       this->postEvent(event);
     }
     
-    auto event= new EvSensorMessage<SensorTopic<MessageType>>();
-    this->postEvent(event);
+
+    EvSensorMessage<SensorTopic<MessageType>>* ev2= new EvSensorMessage<SensorTopic<MessageType>>();
+    this->postEvent(ev2);
     
     this->onMessageCallback(msg);
 

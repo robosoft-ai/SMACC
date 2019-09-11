@@ -9,7 +9,7 @@ class AllEventAggregator
     public:
     void setTriggerEventTypesCount(int event_types_count)
     {
-      event_types_count = event_types_count;
+      this->event_types_count = event_types_count;
     }
 
     std::map<const char*,bool> events;
@@ -21,6 +21,12 @@ class AllEventAggregator
       events[name] = true;
 
       return isTriggered();
+    }
+
+    template<typename T>
+    bool notify(const T& ev)
+    {
+      return this->notify<T>();
     }
 
     bool isTriggered()

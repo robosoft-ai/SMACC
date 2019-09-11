@@ -106,7 +106,7 @@ void SignalDetector::finalizeRequest(ISmaccActionClient* client)
     //boost::intrusive_ptr< IActionResult> actionClientResultEvent = client->createActionResultEvent();
     //actionClientResultEvent->client = client;
 
-    ROS_INFO("SignalDetector: action lib result obtained");
+    ROS_INFO("SignalDetector: action lib result obtained, posting event");
     client->postEvent(scheduler_, processorHandle_);
     // SmaccScheduler
     //SmaccScheduler::processor_handle

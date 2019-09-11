@@ -37,7 +37,7 @@ void ISmaccStateMachine::notifyOnStateEntry(ISmaccState* state)
     int i =0;
     for( auto pair: this->orthogonals_)
     {
-        ROS_INFO("ortho onentry: %d", i++);
+        ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
         auto& orthogonal = pair.second;
         orthogonal->onEntry();
     }

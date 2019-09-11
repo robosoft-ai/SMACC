@@ -4,21 +4,22 @@
 
 namespace smacc
 {
-    
+
 class Orthogonal
 {
+public:
+    ISmaccStateMachine *stateMachine_;
+    smacc::SmaccStateBehavior *currentBehavior;
 
-    public:
-    ISmaccStateMachine* stateMachine_;
-    smacc::SmaccStateBehavior* currentBehavior;
+    void setStateMachine(ISmaccStateMachine *value);
 
-    void setStateMachine(ISmaccStateMachine* value);
-
-    void setStateBehavior(smacc::SmaccStateBehavior* statebehavior);
+    void setStateBehavior(smacc::SmaccStateBehavior *statebehavior);
 
     void onEntry();
 
     void onExit();
+
+    virtual std::string getName() const;
 };
 
-}
+} // namespace smacc

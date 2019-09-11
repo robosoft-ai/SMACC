@@ -4,5 +4,8 @@
 
 class KeyboardOrthogonal: public smacc::Orthogonal
 {
+    virtual ~KeyboardOrthogonal()
+    {
 
+    }
 };

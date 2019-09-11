@@ -2,42 +2,59 @@
 
 namespace smacc
 {
-    void Orthogonal::setStateMachine(ISmaccStateMachine* value)
-    {
-        this->stateMachine_ = value;
-    }
+void Orthogonal::setStateMachine(ISmaccStateMachine *value)
+{
+    this->stateMachine_ = value;
+}
 
-    void Orthogonal::setStateBehavior(smacc::SmaccStateBehavior* statebehavior)
+void Orthogonal::setStateBehavior(smacc::SmaccStateBehavior *statebehavior)
+{
+    if (statebehavior != nullptr)
     {
-       if(statebehavior !=nullptr)
-      {
-        ROS_INFO("Behavioral State by orthogonal");
+        ROS_INFO("Setting Ortho %s State behavior: %s", this->getName().c_str(), statebehavior->getName().c_str());
         statebehavior->stateMachine = this->stateMachine_;
         currentBehavior = statebehavior;
-      }
-      else
-      {
+    }
+    else
+    {
         ROS_INFO("Not behavioral State by orthogonal");
-      }        
-    }
-
-    void Orthogonal::onEntry()
-    {
-        ROS_INFO("Orthogonal OnEntry, current Behavior: %ld", long(currentBehavior));
-        if(currentBehavior!= nullptr)
-        {
-            currentBehavior->onEntry();
-        }
-    }
-
-    void Orthogonal::onExit()
-    {
-        ROS_INFO("Orthogonal OnExit, current Behavior: %ld", long(currentBehavior));
-        if(currentBehavior!=nullptr)
-        {
-            currentBehavior->onExit();
-            #warning improve this moving to shared pointers
-            currentBehavior = nullptr;
-        }
     }
 }
+
+std::string Orthogonal::getName() const
+{
+    return demangleSymbol(typeid(*this).name());
+}
+
+void Orthogonal::onEntry()
+{
+    if (currentBehavior != nullptr)
+    {
+        ROS_INFO("Orthogonal %s OnEntry, current Behavior: %s",
+                 this->getName().c_str(),
+                 currentBehavior->getName().c_str());
+
+        currentBehavior->onEntry();
+    }
+    else
+    {
+        ROS_INFO("Orthogonal %s OnEntry",
+                 this->getName().c_str());
+    }
+}
+
+void Orthogonal::onExit()
+{
+    if (currentBehavior != nullptr)
+    {
+        ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), currentBehavior->getName().c_str());
+        currentBehavior->onExit();
+#warning improve this moving to shared pointers
+        currentBehavior = nullptr;
+    }
+    else
+    {
+        ROS_INFO("Orthogonal %s OnExit", this->getName().c_str());
+    }
+}
+} // namespace smacc

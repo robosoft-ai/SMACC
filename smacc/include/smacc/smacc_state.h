@@ -59,12 +59,12 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
 
     virtual void onEntry()
     {
-      ROS_INFO("SmaccStateBehavior onEntry");
+      ROS_INFO("SmaccStateBehavior %s onEntry", this->getName().c_str());
     }
 
     virtual bool onExit()
     {
-      ROS_INFO("SmaccStateBehavior onExit");
+      ROS_INFO("SmaccStateBehavior %s onExit", this->getName().c_str());
       return true;
     }  
 };

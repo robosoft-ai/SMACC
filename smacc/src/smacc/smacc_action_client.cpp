@@ -58,7 +58,7 @@ void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)
 
 std::string ISmaccComponent::getName() const
 {
-    std::string keyname = demangleSymbol(typeid(this).name());
+    std::string keyname = demangleSymbol(typeid(*this).name());
     return keyname;
 }
 

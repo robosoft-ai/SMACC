@@ -2,7 +2,9 @@
 
 #include <smacc/orthogonal.h>
 
-class NavigationOrthogonal: public smacc::Orthogonal
+class NavigationOrthogonal : public smacc::Orthogonal
 {
-
+    virtual ~NavigationOrthogonal()
+    {
+    }
 };

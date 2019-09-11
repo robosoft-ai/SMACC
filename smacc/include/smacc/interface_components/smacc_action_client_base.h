@@ -135,6 +135,8 @@ protected:
             //scheduler->queue_event(processorHandle, actionResultEvent);
 
             auto resultType = actionResultEvent->getResult();
+            ROS_INFO("[%s] request result: %d", this->getName().c_str(), resultType);
+
             {
                 if(resultType==actionlib::SimpleClientGoalState::SUCCEEDED)
                 {
@@ -142,6 +144,8 @@ protected:
                     boost::intrusive_ptr< EvActionSucceded<Result>> successEvent = new EvActionSucceded<Result>();;
                     successEvent->client = this;
                     successEvent->resultMessage = result_msg;
+                    ROS_INFO("Posting EVENT");
+
                     scheduler->queue_event(processorHandle, successEvent);
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::ABORTED)
@@ -151,6 +155,7 @@ protected:
                     abortedEvent->client = this;
                     abortedEvent->resultMessage = result_msg;
                     scheduler->queue_event(processorHandle, abortedEvent);
+                    ROS_INFO("Posting EVENT");
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::REJECTED)
                 {
@@ -159,6 +164,7 @@ protected:
                     rejectedEvent->client = this;
                     rejectedEvent->resultMessage = result_msg;
                     scheduler->queue_event(processorHandle, rejectedEvent);
+                    ROS_INFO("Posting EVENT");
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::PREEMPTED)
                 {
@@ -167,6 +173,11 @@ protected:
                     preemtedEvent->client = this;
                     preemtedEvent->resultMessage = result_msg;
                     scheduler->queue_event(processorHandle, preemtedEvent);
+                    ROS_INFO("Posting EVENT");
+                }
+                else
+                {
+                    ROS_INFO("[%s] request result: NOT HANDLED TYPE;", resultType);
                 }
             }
         }

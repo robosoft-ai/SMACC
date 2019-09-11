@@ -41,7 +41,7 @@ public:
         }
         else
         {
-            ROS_ERROR_STREAM("updated state not found: " <<typeid(StateType).name());
+            ROS_ERROR_STREAM("updated state not found: " <<demangleSymbol(typeid(StateType).name()).c_str());
         }  
 
         

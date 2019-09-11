@@ -77,7 +77,6 @@ class NavigateForward : public smacc::SmaccStateBehavior
     forwardDeltaTransform.setOrigin(tf::Vector3(dist, 0, 0));
 
     tf::Transform targetPose =  currentPose * forwardDeltaTransform;
-
     
     smacc::SmaccMoveBaseActionClient::Goal goal;
     goal.target_pose.header.frame_id = "/odom";

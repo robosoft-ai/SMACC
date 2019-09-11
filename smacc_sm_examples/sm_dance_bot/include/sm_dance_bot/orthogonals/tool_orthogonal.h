@@ -4,5 +4,7 @@
 
 class ToolOrthogonal: public smacc::Orthogonal
 {
-
+   virtual ~ToolOrthogonal()
+    {
+    }
 };

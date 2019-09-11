@@ -7,7 +7,7 @@ project(sm_dance_bot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tracker smacc_planner_switcher smacc_interface_components smacc_action_client_generic)
+find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tracker smacc_planner_switcher smacc_interface_components smacc_action_client_generic tf)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -149,6 +149,11 @@ target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
  )
 
+ add_executable(temperature_sensor_node simulation_nodes/temperature_sensor_node/src/temperature_sensor_node.cpp)
+ target_link_libraries(temperature_sensor_node
+   ${catkin_LIBRARIES}
+ )
+
 #############
 ## Install ##
 #############
@@ -171,7 +176,7 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
- install(TARGETS ${PROJECT_NAME}
+ install(TARGETS ${PROJECT_NAME} temperature_sensor_node
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

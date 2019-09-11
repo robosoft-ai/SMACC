@@ -44,9 +44,9 @@ public:
         this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
         this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
     
-        this->plannerSwitcher_->setForwardPlanner();
-
         //this should work better with a coroutine and await
+        this->plannerSwitcher_->setForwardPlanner();
+        
         ros::Rate rate(10.0);
         geometry_msgs::Pose currentPoseMsg;
         while (ros::ok())
@@ -75,5 +75,7 @@ public:
         auto targetAngle = currentAngle + angle_increment_degree * M_PI / 180.0;
         goal.target_pose.pose.position = currentPoseMsg.position;
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
+
+        moveBaseClient_->sendGoal(goal);
     }
 };

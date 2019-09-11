@@ -2,7 +2,9 @@
 
 #include <smacc/orthogonal.h>
 
-class SensorOrthogonal: public smacc::Orthogonal
+class SensorOrthogonal : public smacc::Orthogonal
 {
-
+    virtual ~SensorOrthogonal()
+    {
+    }
 };

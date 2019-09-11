@@ -9,9 +9,10 @@ struct ss_radial_pattern_1 : smacc::SmaccState<ss_radial_pattern_1, sm_dance_bot
 public:
     using SmaccState::SmaccState;
 
-    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<ssr_radial_return>>,
+    /*typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<ssr_radial_return>>,
                       sc::transition<EvStateFinish<ss_radial_pattern_1>, st_rotate_degrees_1>>
         reactions;
+    */
 
     int iteration_count;
 

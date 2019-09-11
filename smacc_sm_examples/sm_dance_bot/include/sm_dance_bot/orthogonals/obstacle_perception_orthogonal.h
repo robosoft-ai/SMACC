@@ -2,7 +2,9 @@
 
 #include <smacc/orthogonal.h>
 
-class ObstaclePerceptionOrthogonal: public smacc::Orthogonal
+class ObstaclePerceptionOrthogonal : public smacc::Orthogonal
 {
-
+    virtual ~ObstaclePerceptionOrthogonal()
+    {
+    }
 };

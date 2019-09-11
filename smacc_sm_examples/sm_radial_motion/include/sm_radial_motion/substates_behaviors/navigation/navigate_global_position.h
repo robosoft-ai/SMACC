@@ -29,7 +29,6 @@ public:
   virtual void onEntry()
   {
     ROS_INFO("Entering Navigate Global position");
-    ROS_INFO("b");
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.

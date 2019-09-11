@@ -96,7 +96,7 @@ class ISmaccStateMachine
     void setGlobalSMData(std::string name, T value)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
-        ROS_WARN("set SM Data lock acquire");
+        //ROS_WARN("set SM Data lock acquire");
         globalData_[name] = value;
     }
 

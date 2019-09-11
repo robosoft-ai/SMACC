@@ -2,6 +2,7 @@ struct ssr_radial_end_point: smacc::SmaccState<ssr_radial_end_point,SS>
 {
   using SmaccState::SmaccState;
 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  ssr_radial_return> reactions; 
 
   void onInitialize()
   {
