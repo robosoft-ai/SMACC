@@ -1,12 +1,9 @@
 struct st_navigate_forward_1 : smacc::SmaccState<st_navigate_forward_1, sm_dance_bot>
 {
-  using SmaccState::SmaccState;
-
   typedef mpl::list<sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, st_rotate_degrees_2>,
                     sc::transition<smacc::KeyPressEvent<'n'>, st_rotate_degrees_2>
                     > reactions; 
 
-public:
   using SmaccState::SmaccState;
 
   // Key N -> next state
