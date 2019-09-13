@@ -38,7 +38,7 @@ public:
 
     ROS_INFO("Component requirements completed");
 
-    this->plannerSwitcher_->setForwardPlanner();
+    this->plannerSwitcher_->setDefaultPlanners();
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart(); 

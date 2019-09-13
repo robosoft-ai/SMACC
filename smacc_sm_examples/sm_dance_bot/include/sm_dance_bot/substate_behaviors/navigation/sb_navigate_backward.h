@@ -7,13 +7,13 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-class sb_navigate_forward : public smacc::SmaccStateBehavior
+class sb_navigate_backwards : public smacc::SmaccStateBehavior
 {
 public:
-    boost::optional<float> forwardDistance;
+    boost::optional<float> backwardDistance;
 
     // just a stub to show how to use parameterless constructor
-    boost::optional<float> forwardSpeed;
+    boost::optional<float> backwardSpeed;
 
     tf::TransformListener listener;
 
@@ -23,12 +23,17 @@ public:
 
     smacc_planner_switcher::PlannerSwitcher *plannerSwitcher_;
 
-    sb_navigate_forward(float forwardDistance)
+    sb_navigate_backwards(float backwardDistance)
     {
-        this->forwardDistance = forwardDistance;
+        if(backwardDistance <0 )
+        {
+            ROS_ERROR("sb backward: distance must be greater or equal than 0");
+            this->backwardDistance = 0;
+        }
+        this->backwardDistance = backwardDistance;
     }
 
-    sb_navigate_forward()
+    sb_navigate_backwards()
     {
     }
 
@@ -37,13 +42,13 @@ public:
         // straight motion distance
         double dist;
 
-        if (!forwardDistance)
+        if (!backwardDistance)
         {
             this->currentState->param("straight_motion_distance", dist, 3.5);
         }
         else
         {
-            dist = *forwardDistance;
+            dist = *backwardDistance;
         }
 
         ROS_INFO_STREAM("Straight motion distance: " << dist);
@@ -74,7 +79,7 @@ public:
 
         tf::Transform forwardDeltaTransform;
         forwardDeltaTransform.setIdentity();
-        forwardDeltaTransform.setOrigin(tf::Vector3(dist, 0, 0));
+        forwardDeltaTransform.setOrigin(tf::Vector3(-dist, 0, 0));
 
         tf::Transform targetPose = currentPose * forwardDeltaTransform;
 
@@ -94,7 +99,7 @@ public:
         this->odomTracker_->setStartPoint(currentPoseMsg);
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
-        this->plannerSwitcher_->setForwardPlanner();
+        this->plannerSwitcher_->setBackwardPlanner();
 
         moveBaseClient_->sendGoal(goal);
     }

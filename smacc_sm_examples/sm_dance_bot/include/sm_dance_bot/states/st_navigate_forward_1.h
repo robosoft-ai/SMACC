@@ -9,7 +9,7 @@ struct st_navigate_forward_1 : smacc::SmaccState<st_navigate_forward_1, sm_dance
   // Key N -> next state
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new sb_navigate_forward(10));
+    this->configure<NavigationOrthogonal>(new sb_navigate_forward(1));
     this->configure<ToolOrthogonal>(new sb_tool_stop());
     this->configure<KeyboardOrthogonal>(new sb_keyboard());
   }

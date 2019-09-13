@@ -43,10 +43,11 @@ public:
 
         this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
         this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
-    
+
         //this should work better with a coroutine and await
-        this->plannerSwitcher_->setForwardPlanner();
-        
+        //this->plannerSwitcher_->setForwardPlanner();
+        this->plannerSwitcher_->setDefaultPlanners();
+
         ros::Rate rate(10.0);
         geometry_msgs::Pose currentPoseMsg;
         while (ros::ok())
@@ -54,7 +55,7 @@ public:
             tf::StampedTransform currentPose;
             try
             {
-                listener.lookupTransform("/odom", "/base_link", 
+                listener.lookupTransform("/odom", "/base_link",
                                          ros::Time(0), currentPose);
 
                 tf::poseTFToMsg(currentPose, currentPoseMsg);
@@ -76,6 +77,8 @@ public:
         goal.target_pose.pose.position = currentPoseMsg.position;
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
 
+        ROS_INFO_STREAM("current pose: " << currentPoseMsg);
+        ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);
         moveBaseClient_->sendGoal(goal);
     }
 };

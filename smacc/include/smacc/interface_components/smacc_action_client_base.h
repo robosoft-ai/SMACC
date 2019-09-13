@@ -144,8 +144,8 @@ protected:
                     boost::intrusive_ptr< EvActionSucceded<Result>> successEvent = new EvActionSucceded<Result>();;
                     successEvent->client = this;
                     successEvent->resultMessage = result_msg;
-                    ROS_INFO("Posting EVENT");
-
+                    
+                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
                     scheduler->queue_event(processorHandle, successEvent);
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::ABORTED)
@@ -154,8 +154,9 @@ protected:
                     boost::intrusive_ptr< EvActionAborted<Result>> abortedEvent = new EvActionAborted<Result>();;
                     abortedEvent->client = this;
                     abortedEvent->resultMessage = result_msg;
+                    
+                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(abortedEvent).name()).c_str());
                     scheduler->queue_event(processorHandle, abortedEvent);
-                    ROS_INFO("Posting EVENT");
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::REJECTED)
                 {
@@ -163,8 +164,9 @@ protected:
                     boost::intrusive_ptr< EvActionRejected<Result>> rejectedEvent = new EvActionRejected<Result>();;
                     rejectedEvent->client = this;
                     rejectedEvent->resultMessage = result_msg;
+                    
+                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(rejectedEvent).name()).c_str());
                     scheduler->queue_event(processorHandle, rejectedEvent);
-                    ROS_INFO("Posting EVENT");
                 }
                 else if(resultType==actionlib::SimpleClientGoalState::PREEMPTED)
                 {
@@ -172,8 +174,9 @@ protected:
                     boost::intrusive_ptr< EvActionPreempted<Result>> preemtedEvent = new EvActionPreempted<Result>();;
                     preemtedEvent->client = this;
                     preemtedEvent->resultMessage = result_msg;
+                    
+                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
                     scheduler->queue_event(processorHandle, preemtedEvent);
-                    ROS_INFO("Posting EVENT");
                 }
                 else
                 {

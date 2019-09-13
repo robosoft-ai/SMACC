@@ -29,6 +29,8 @@ struct StopWatch : sc::state_machine< StopWatch, Active > {};
 */
 
 struct Active;
+struct StopWatch;
+
 struct StopWatch
     : public smacc::SmaccStateMachineBase<StopWatch, Active>
 {

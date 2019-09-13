@@ -1,3 +1,4 @@
+
 namespace SS2
 {
 //forward declaration for initial ssr
@@ -22,7 +23,8 @@ public:
 
     sc::result react(const smacc::EvStateFinish<ssr_radial_return> &ev)
     {
-        if (iteration_count++ == 4)
+        ROS_INFO("Superstate count: %d", iteration_count);
+        if (++iteration_count == 2) // 1 == two times
         {
             this->throwFinishEvent();
         }

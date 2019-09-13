@@ -186,7 +186,7 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry& odom)
         baseTrajectory_.poses.pop_back();
     } 
     else if (pullingerror) {
-        ROS_WARN("Incorrect backwards motion. The robot is pulling the cord.");
+        ROS_INFO_THROTTLE(2,"Incorrect backwards motion.");
     } 
     else 
     {

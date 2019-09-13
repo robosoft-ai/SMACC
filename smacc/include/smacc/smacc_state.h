@@ -75,7 +75,6 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
   public:
     ros::NodeHandle nh;
 
-
     // by default nullptr
     SmaccStateBehavior* stateBehavior;
 
@@ -90,7 +89,6 @@ class SmaccStateBehavior: public smacc::ISmaccComponent
       else
       {
         ROS_INFO("Not behavioral State");
-        
       }
     }
 
@@ -203,6 +201,8 @@ class SmaccState : public sc::simple_state<
     // constructor that initialize the state ros node handle 
     SmaccState( my_context ctx )
     {
+      ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
+
       this->set_context( ctx.pContext_ );
 
       ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
@@ -254,7 +254,16 @@ class SmaccState : public sc::simple_state<
     std::string getFullPathName()
     {
       auto smInfo = this->getStateMachine().info_;
-      return smInfo->states[typeid(MostDerived).name()]->getFullPath();
+
+      auto key = typeid(MostDerived).name();
+      if (smInfo->states.count(key))
+      {
+        return smInfo->states[key]->getFullPath();
+      }
+      else
+      {
+        return "UnknownFullPath";
+      }
     }
 
     std::string getFullName()
@@ -269,7 +278,7 @@ class SmaccState : public sc::simple_state<
 
     virtual ~SmaccState() 
     {
-      auto fullname = this->getFullPathName();
+      auto fullname = demangleSymbol(typeid(MostDerived).name());
       ROS_WARN_STREAM("exiting state: " << fullname);
 
       this->getStateMachine().notifyOnStateExit(this);
@@ -284,7 +293,9 @@ class SmaccState : public sc::simple_state<
         static_cast<MostDerived*>(this)->onExit();
       }
 
+      ROS_INFO_STREAM("throwing finish event " << fullname);
       this->throwFinishEvent();
+      ROS_WARN_STREAM("state exit: " << fullname);
     }
 
 

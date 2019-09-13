@@ -22,7 +22,7 @@ struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x
 
     auto &target = waypoints[currentIteration];
 
-    this->configure<NavigationOrthogonal>(new sb_navigate_global_position(target.first,target.second));
+    this->configure<NavigationOrthogonal>(new sb_navigate_global_position(target.first, target.second));
     this->configure<ToolOrthogonal>(new sb_tool_start());
   }
 
@@ -32,20 +32,20 @@ struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x
 
     currentIteration++;
     this->setGlobalSMData("navigation_x_iteration", currentIteration);
-    
+
     switch (currentIteration)
     {
-      case 1:
-        ROS_INFO("transition to ss1");
-        return transit<SS1::ss_radial_pattern_1>();
-      case 2:
+    case 1:
+      ROS_INFO("transition to ss1");
+      return transit<SS1::ss_radial_pattern_1>();
+    case 2:
       ROS_INFO("transition to ss2");
-        return transit<SS2::ss_radial_pattern_2>();
-      case 3:
+      return transit<SS2::ss_radial_pattern_2>();
+    case 3:
       ROS_INFO("transition to ss3");
-        return transit<SS3::ss_radial_pattern_3>();
-      default:
-        ROS_INFO("error in transition");
+      return transit<SS3::ss_radial_pattern_3>();
+    default:
+      ROS_INFO("error in transition");
     }
   }
 };

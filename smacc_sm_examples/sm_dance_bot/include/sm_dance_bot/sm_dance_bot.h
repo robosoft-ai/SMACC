@@ -30,6 +30,7 @@ namespace SS3
     class ss_radial_pattern_3;
 }
 
+
 // STATE MACHINE
 struct sm_dance_bot
     : public smacc::SmaccStateMachineBase<sm_dance_bot, st_acquire_sensors>
@@ -55,6 +56,7 @@ struct sm_dance_bot
 #include <sm_dance_bot/substate_behaviors/navigation/sb_undo_path_backwards.h>
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_global_position.h>
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
+#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
 
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
 
