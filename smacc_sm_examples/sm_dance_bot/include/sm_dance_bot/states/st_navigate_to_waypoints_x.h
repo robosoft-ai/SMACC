@@ -36,6 +36,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
     this->configure<NavigationOrthogonal>(new SbNavigateGlobalPosition(target.first, target.second));
     this->configure<ToolOrthogonal>(new SbToolStart());
+    this->configure<KeyboardOrthogonal>(new SbKeyboard());
   }
 
   sc::result navigateState()

@@ -19,5 +19,6 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, SmDanceBot>
   {
     this->configure<NavigationOrthogonal>(new SbRotate(/*30*/90));
     this->configure<ToolOrthogonal>(new SbToolStop());
+    this->configure<KeyboardOrthogonal>(new SbKeyboard());
   }
 };

@@ -40,7 +40,7 @@ public:
         {
             angle_increment_degree = *rotateDegree;
         }
-
+        
         this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
         this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
 

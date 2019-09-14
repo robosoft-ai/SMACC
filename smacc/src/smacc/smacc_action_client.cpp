@@ -29,37 +29,4 @@ void ISmaccActionClient::init(ros::NodeHandle& nh, std::string value)
     ROS_DEBUG("Creating Action Client %s", name_.c_str());
 }
 
-//-----------------------------------------------------------------------
-
-ISmaccComponent::~ISmaccComponent()
-{
-}
-
-
-ISmaccComponent::ISmaccComponent()
-{
-}
-
-void ISmaccComponent::init(ros::NodeHandle& nh)
-{
-    
-}
-
-void ISmaccComponent::init(ros::NodeHandle& nh, std::string value)
-{
-    
-}
-
-
-void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)
-{
-    stateMachine_ = stateMachine;
-}
-
-std::string ISmaccComponent::getName() const
-{
-    std::string keyname = demangleSymbol(typeid(*this).name());
-    return keyname;
-}
-
 }

@@ -4,97 +4,109 @@
 #include <boost/statechart/event.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>
 
-
 #include <boost/asio.hpp>
 #include <iostream>
+#include <thread>
+#include <memory>
+#include <std_msgs/UInt16.h>
 
 using namespace boost::asio;
-
 
 namespace smacc
 {
 
 //----------------- TIMER EVENT DEFINITION ----------------------------------------------
 template <char keychar>
-struct KeyPressEvent: sc::event< KeyPressEvent<keychar>>
+struct KeyPressEvent : sc::event<KeyPressEvent<keychar>>
 {
- 
 };
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
 class SbKeyboard : public smacc::SmaccStateBehavior
 {
-  
- public:
+public:
+  ros::NodeHandle nh_;
+  ros::Subscriber sub_;
+
+  int queueSize_;
+
   void onEntry()
   {
+    queueSize_ = 10;
+    ROS_INFO_STREAM("Subscribing to keyboard topic: keyboard_unicode");
+    sub_ = nh_.subscribe("/keyboard_unicode", queueSize_, &SbKeyboard::keyboardMessage, this);
   }
 
   bool onExit()
   {
   }
 
-  void keyboardListenerLoop()
+  void keyboardMessage(const std_msgs::UInt16 &unicode_keychar)
   {
-    io_service ioservice;        
-    boost::asio::posix::stream_descriptor stream(ioservice, STDIN_FILENO);
+    char character =  (char)unicode_keychar.data;
+    ROS_WARN("detected keyboard: %c", character);
 
-    char buf[1] = {};
-
-    std::function<void(boost::system::error_code, size_t)> read_handler;
-
-    read_handler = [&](boost::system::error_code ec, size_t len) {   
-            if (ec) {
-                std::cerr << "exit with " << ec.message() << std::endl;
-            } else {
-                
-                if (len == 1 ) {
-
-                  if(buf[0]=='a') postKeyEvent<'a'>();
-                  else if(buf[0]=='a') postKeyEvent<'a'>();
-                  else if(buf[0]=='b') postKeyEvent<'b'>();
-                  else if(buf[0]=='c') postKeyEvent<'c'>();
-                  else if(buf[0]=='d') postKeyEvent<'d'>();
-                  else if(buf[0]=='e') postKeyEvent<'e'>();
-                  else if(buf[0]=='f') postKeyEvent<'f'>();
-                  else if(buf[0]=='g') postKeyEvent<'g'>();
-                  else if(buf[0]=='h') postKeyEvent<'h'>();
-                  else if(buf[0]=='y') postKeyEvent<'y'>();
-                  else if(buf[0]=='j') postKeyEvent<'j'>();
-                  else if(buf[0]=='k') postKeyEvent<'k'>();
-                  else if(buf[0]=='l') postKeyEvent<'l'>();
-                  else if(buf[0]=='m') postKeyEvent<'m'>();
-                  else if(buf[0]=='n') postKeyEvent<'n'>();
-                  else if(buf[0]=='o') postKeyEvent<'o'>();
-                  else if(buf[0]=='p') postKeyEvent<'p'>();
-                  else if(buf[0]=='q') postKeyEvent<'q'>();
-                  else if(buf[0]=='r') postKeyEvent<'r'>();
-                  else if(buf[0]=='s') postKeyEvent<'s'>();
-                  else if(buf[0]=='t') postKeyEvent<'t'>();
-                  else if(buf[0]=='u') postKeyEvent<'u'>();
-                  else if(buf[0]=='v') postKeyEvent<'v'>();
-                  else if(buf[0]=='w') postKeyEvent<'w'>();
-                  else if(buf[0]=='x') postKeyEvent<'x'>();
-                  else if(buf[0]=='y') postKeyEvent<'y'>();
-                  else if(buf[0]=='z') postKeyEvent<'z'>();
-               
-                }
-                async_read(stream, buffer(buf), read_handler);
-            }
-        };
-
-    async_read(stream, buffer(buf), read_handler);
-
-    ioservice.run();    
+    if( character == 'a')
+            postKeyEvent<'a'>();
+    else if( character == 'b')
+            postKeyEvent<'b'>();
+    else if( character == 'c')
+            postKeyEvent<'c'>();
+    else if( character == 'd')
+            postKeyEvent<'d'>();
+    else if( character == 'e')
+            postKeyEvent<'e'>();
+    else if( character == 'f')
+            postKeyEvent<'f'>();
+    else if( character == 'g')
+            postKeyEvent<'g'>();
+    else if( character == 'h')
+            postKeyEvent<'h'>();
+    else if( character == 'y')
+            postKeyEvent<'y'>();
+    else if( character == 'j')
+            postKeyEvent<'j'>();
+    else if( character == 'k')
+            postKeyEvent<'k'>();
+    else if( character == 'l')
+            postKeyEvent<'l'>();
+    else if( character == 'm')
+            postKeyEvent<'m'>();
+    else if( character == 'n')
+            postKeyEvent<'n'>();
+    else if( character == 'o')
+            postKeyEvent<'o'>();
+    else if( character == 'p')
+            postKeyEvent<'p'>();
+    else if( character == 'q')
+            postKeyEvent<'q'>();
+    else if( character == 'r')
+            postKeyEvent<'r'>();
+    else if( character == 's')
+            postKeyEvent<'s'>();
+    else if( character == 't')
+            postKeyEvent<'t'>();
+    else if( character == 'u')
+            postKeyEvent<'u'>();
+    else if( character == 'v')
+            postKeyEvent<'v'>();
+    else if( character == 'w')
+            postKeyEvent<'w'>();
+    else if( character == 'x')
+            postKeyEvent<'x'>();
+    else if( character == 'y')
+            postKeyEvent<'y'>();
+    else if( character == 'z')
+            postKeyEvent<'z'>();
   }
 
   template <char keychar>
   void postKeyEvent()
   {
-    auto event= new KeyPressEvent<keychar>();
+    ROS_WARN("keypressed: %c", keychar);
+    auto event = new KeyPressEvent<keychar>();
     this->postEvent(event);
-
-  }      
+  }
 };
-}
+} // namespace smacc

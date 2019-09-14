@@ -19,5 +19,6 @@ struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, SmDanceBot>
    {
       this->configure<NavigationOrthogonal>(new SbNavigateBackwards(2));
       this->configure<ToolOrthogonal>(new SbToolStop());
+      this->configure<KeyboardOrthogonal>(new SbKeyboard());
    }
 };

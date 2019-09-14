@@ -28,6 +28,12 @@ public:
     // returns a custom identifier defined by the specific plugin implementation
     virtual std::string getName() const;
 
+    template <typename EventType>
+    void postEvent(const EventType &ev)
+    {
+        stateMachine_->postEvent(ev);
+    }
+
 protected:
     // a reference to the state machine object that owns this resource
     ISmaccStateMachine* stateMachine_;

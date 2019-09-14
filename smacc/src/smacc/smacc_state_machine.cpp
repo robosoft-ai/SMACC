@@ -6,6 +6,7 @@
 #include <smacc/smacc_state_machine.h>
 #include <smacc/signal_detector.h>
 #include <smacc/orthogonal.h>
+#include <smacc/interface_components/smacc_action_client.h>
 
 
 namespace smacc

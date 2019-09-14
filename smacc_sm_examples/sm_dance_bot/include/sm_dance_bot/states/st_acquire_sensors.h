@@ -27,6 +27,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
    {
       this->configure<ObstaclePerceptionOrthogonal>(new LidarSensor("/front/scan", 1, ros::Duration(10)));
       this->configure<SensorOrthogonal>(new SbConditionTemperatureSensor("/temperature"));
+      this->configure<KeyboardOrthogonal>(new SbKeyboard());
 
       allSensorsReady.setTriggerEventTypesCount(2);
    }

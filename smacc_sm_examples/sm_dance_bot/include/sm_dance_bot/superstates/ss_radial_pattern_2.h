@@ -31,10 +31,12 @@ public:
     int iteration_count;
     int total_iterations;
 
-    void onEntry()
+    void onInitialize()
     {
         iteration_count = 0;
         total_iterations = 2;
+
+        this->configure<KeyboardOrthogonal>(new SbKeyboard());
     }
 
     sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)
