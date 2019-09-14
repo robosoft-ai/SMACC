@@ -7,7 +7,7 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-class sb_navigate_forward : public smacc::SmaccStateBehavior
+class SbNavigateForward : public smacc::SmaccStateBehavior
 {
 public:
     boost::optional<float> forwardDistance;
@@ -23,12 +23,12 @@ public:
 
     smacc_planner_switcher::PlannerSwitcher *plannerSwitcher_;
 
-    sb_navigate_forward(float forwardDistance)
+    SbNavigateForward(float forwardDistance)
     {
         this->forwardDistance = forwardDistance;
     }
 
-    sb_navigate_forward()
+    SbNavigateForward()
     {
     }
 

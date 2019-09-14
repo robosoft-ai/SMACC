@@ -55,6 +55,12 @@ target_link_libraries(${PROJECT_NAME}_node
                       ${catkin_LIBRARIES}
                       ${boost_LIBRARIES})
 
+add_executable(tool_action_server_node test/tool_action_server/src/tool_action_server_node.cpp)
+
+ target_link_libraries(
+   tool_action_server_node
+   ${catkin_LIBRARIES}
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

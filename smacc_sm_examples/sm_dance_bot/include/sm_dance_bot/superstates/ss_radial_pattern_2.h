@@ -2,29 +2,35 @@
 namespace SS2
 {
 //forward declaration for initial ssr
-class ssr_radial_rotate;
-class ssr_radial_return;
+class SsrRadialRotate;
+class SsrRadialReturn;
 
-struct ss_radial_pattern_2 : smacc::SmaccState<ss_radial_pattern_2, sm_dance_bot, ssr_radial_rotate>
+struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, SmDanceBot, SsrRadialRotate>
 {
 public:
     using SmaccState::SmaccState;
 
-    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<ssr_radial_return>>,
-                      sc::transition<EvStateFinish<ss_radial_pattern_2>, st_navigate_reverse_1>>
-        reactions;
+    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>,
+                      sc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
+
+                      sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+                > reactions;
+        
 
     int iteration_count;
+    int total_iterations;
 
     void onEntry()
     {
         iteration_count = 0;
+        total_iterations = 2;
     }
 
-    sc::result react(const smacc::EvStateFinish<ssr_radial_return> &ev)
+    sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)
     {
         ROS_INFO("Superstate count: %d", iteration_count);
-        if (++iteration_count == 2) // 1 == two times
+        if (++iteration_count == total_iterations) // 1 == two times
         {
             this->throwFinishEvent();
         }
@@ -32,7 +38,7 @@ public:
 };
 
 //forward declaration for the superstate
-using SS = ss_radial_pattern_2;
+using SS = SsRadialPattern2;
 #include <sm_dance_bot/superstate_routines/ssr_radial_end_point.h>
 #include <sm_dance_bot/superstate_routines/ssr_radial_return.h>
 #include <sm_dance_bot/superstate_routines/ssr_radial_rotate.h>

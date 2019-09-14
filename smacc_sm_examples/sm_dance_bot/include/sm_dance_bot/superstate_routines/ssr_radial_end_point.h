@@ -1,13 +1,13 @@
-struct ssr_radial_end_point: smacc::SmaccState<ssr_radial_end_point,SS>
+struct SsrRadialEndPoint: smacc::SmaccState<SsrRadialEndPoint,SS>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  ssr_radial_return> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, SsrRadialReturn> reactions; 
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new sb_navigate_forward(1));
-    this->configure<ToolOrthogonal>(new sb_tool_stop());    
+    this->configure<NavigationOrthogonal>(new SbNavigateForward(1));
+    this->configure<ToolOrthogonal>(new SbToolStop());    
   }
   
 };

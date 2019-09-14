@@ -1,12 +1,17 @@
-struct st_navigate_reverse_1 : smacc::SmaccState<st_navigate_reverse_1, sm_dance_bot>
+struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, SmDanceBot>
 {
    using SmaccState::SmaccState;
 
-   typedef sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, st_rotate_degrees_3> reactions;
+   typedef mpl::list<
+            sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, StRotateDegrees3>,
+
+            sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+            sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+            > reactions;
 
    void onInitialize()
    {
-      this->configure<NavigationOrthogonal>(new sb_navigate_backwards(1));
-      this->configure<ToolOrthogonal>(new sb_tool_stop());
+      this->configure<NavigationOrthogonal>(new SbNavigateBackwards(2));
+      this->configure<ToolOrthogonal>(new SbToolStop());
    }
 };

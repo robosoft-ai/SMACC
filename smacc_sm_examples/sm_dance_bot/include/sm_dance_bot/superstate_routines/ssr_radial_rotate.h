@@ -1,12 +1,18 @@
-struct ssr_radial_rotate: smacc::SmaccState<ssr_radial_rotate, SS>
+struct SsrRadialRotate: smacc::SmaccState<SsrRadialRotate, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  ssr_radial_end_point>> reactions; 
+  typedef mpl::list<sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  SsrRadialEndPoint>> reactions; 
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new sb_rotate(45));
-    this->configure<ToolOrthogonal>(new sb_tool_stop());
+    auto currentIteration = this->context<SS>().iteration_count ;
+
+    ROS_INFO("Radial rotate: SS current iteration: %d", currentIteration);
+    if(currentIteration < this->context<SS>().total_iterations)
+    {
+        this->configure<NavigationOrthogonal>(new SbRotate(45));
+        this->configure<ToolOrthogonal>(new SbToolStop());
+    }
   }
 };

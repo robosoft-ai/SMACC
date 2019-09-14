@@ -1,16 +1,22 @@
 
-struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x, sm_dance_bot>
+struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanceBot>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::custom_reaction<smacc::SmaccMoveBaseActionClient::SuccessEv> reactions;
+  typedef mpl::list<
+              sc::custom_reaction<smacc::SmaccMoveBaseActionClient::SuccessEv>,
+
+              sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+              sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+          > reactions;
 
   int currentIteration;
 
   void onInitialize()
   {
     this->currentIteration = 0;
-    // IDEA: this->declarePersistentVariable(currentIteration)
+
+    // IDEA: this->declarePersistentVariable(&currentIteration)
     this->getGlobalSMData("navigation_x_iteration", currentIteration);
 
     ROS_INFO("current iteration waypoints x: %d", currentIteration);
@@ -22,8 +28,8 @@ struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x
 
     auto &target = waypoints[currentIteration];
 
-    this->configure<NavigationOrthogonal>(new sb_navigate_global_position(target.first, target.second));
-    this->configure<ToolOrthogonal>(new sb_tool_start());
+    this->configure<NavigationOrthogonal>(new SbNavigateGlobalPosition(target.first, target.second));
+    this->configure<ToolOrthogonal>(new SbToolStart());
   }
 
   sc::result react(const smacc::SmaccMoveBaseActionClient::SuccessEv &ev)
@@ -37,13 +43,13 @@ struct st_navigate_to_waypoints_x : smacc::SmaccState<st_navigate_to_waypoints_x
     {
     case 1:
       ROS_INFO("transition to ss1");
-      return transit<SS1::ss_radial_pattern_1>();
+      return transit<SS1::SsRadialPattern1>();
     case 2:
       ROS_INFO("transition to ss2");
-      return transit<SS2::ss_radial_pattern_2>();
+      return transit<SS2::SsRadialPattern2>();
     case 3:
       ROS_INFO("transition to ss3");
-      return transit<SS3::ss_radial_pattern_3>();
+      return transit<SS3::SsRadialPattern3>();
     default:
       ROS_INFO("error in transition");
     }

@@ -8,7 +8,7 @@
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 
-class sb_rotate : public smacc::SmaccStateBehavior
+class SbRotate : public smacc::SmaccStateBehavior
 {
 public:
     tf::TransformListener listener;
@@ -19,11 +19,11 @@ public:
 
     boost::optional<float> rotateDegree;
 
-    sb_rotate()
+    SbRotate()
     {
     }
 
-    sb_rotate(float rotate_degree)
+    SbRotate(float rotate_degree)
     {
         rotateDegree = rotate_degree;
     }

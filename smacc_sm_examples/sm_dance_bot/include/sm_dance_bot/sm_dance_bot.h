@@ -3,41 +3,45 @@
 
 
 //STATES
-class st_acquire_sensors;
-class st_rotate_degrees_4;
-class st_navigate_forward_1;
-class st_navigate_to_waypoint_1;
-class st_navigate_to_waypoints_x;
-class st_rotate_degrees_2;
-class st_rotate_degrees_1;
-class st_navigate_reverse_2;
-class st_rotate_degrees_3;
-class st_navigate_reverse_1;
+class StAcquireSensors;
+class StRotateDegrees4;
+class StNavigateForward1;
+class StNavigateToWaypoint1;
+class StNavigateToWaypointsX;
+class StRotateDegrees2;
+class StRotateDegrees1;
+class StNavigateReverse2;
+class StRotateDegrees3;
+class StNavigateReverse1;
 
 //SUPERSTATES
 namespace SS1
 {
-    class ss_radial_pattern_1;
+    class SsRadialPattern1;
 }
 
 namespace SS2
 {
-    class ss_radial_pattern_2;
+    class SsRadialPattern2;
 }
 
 namespace SS3
 {
-    class ss_radial_pattern_3;
+    class SsRadialPattern3;
 }
 
-
 // STATE MACHINE
-struct sm_dance_bot
-    : public smacc::SmaccStateMachineBase<sm_dance_bot, st_acquire_sensors>
+struct SmDanceBot
+    : public smacc::SmaccStateMachineBase<SmDanceBot, StAcquireSensors>
 {
-    sm_dance_bot(my_context ctx, smacc::SignalDetector *signalDetector)
-        : SmaccStateMachineBase<sm_dance_bot, st_acquire_sensors>(ctx, signalDetector)
+    int counter_1;
+    bool rt_ready_flag;
+
+    SmDanceBot(my_context ctx, smacc::SignalDetector *signalDetector)
+        : SmaccStateMachineBase<SmDanceBot, StAcquireSensors>(ctx, signalDetector)
     {
+        this->setGlobalSMData("counter_1", counter_1);
+        this->setGlobalSMData("rt_ready_flag", rt_ready_flag);
     }
 };
 
@@ -68,6 +72,10 @@ struct sm_dance_bot
 #include <smacc/all_event_aggregator.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sensor_msgs/LaserScan.h>
+
+//class LidarSensor;
+// COMPONENTS AND SUBSTATE BEHAVIORS FORWARD DECLARATIONS
+using LidarSensor= smacc::SensorTopic<sensor_msgs::LaserScan>;
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>

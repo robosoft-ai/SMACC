@@ -7,11 +7,13 @@ struct EvCustomTemperatureAlert: sc::event<EvCustomTemperatureAlert>
 };
 
 //--------------------------------------------------------------------------------------
-class CustomConditionTemperatureSensor: public smacc::SensorTopic<sensor_msgs::Temperature>
+class SbConditionTemperatureSensor: public smacc::SensorTopic<sensor_msgs::Temperature>
 {
   public:
   
-  CustomConditionTemperatureSensor(std::string topicName, int queueSize = 1, ros::Duration timeout= ros::Duration(5))
+  typedef smacc::SensorTopic<sensor_msgs::Temperature> Base;
+  
+  SbConditionTemperatureSensor(std::string topicName, int queueSize = 1, ros::Duration timeout= ros::Duration(5))
   : smacc::SensorTopic<sensor_msgs::Temperature>(topicName, queueSize, timeout)
   {
   }

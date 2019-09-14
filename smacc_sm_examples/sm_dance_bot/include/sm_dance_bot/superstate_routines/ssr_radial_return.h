@@ -1,12 +1,12 @@
-struct ssr_radial_return: smacc::SmaccState<ssr_radial_return,SS>
+struct SsrRadialReturn: smacc::SmaccState<SsrRadialReturn,SS>
 {
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  ssr_radial_rotate> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  SsrRadialRotate> reactions; 
 
   using SmaccState::SmaccState;
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new sb_undo_path_backwards());
-    this->configure<ToolOrthogonal>(new sb_tool_stop());
+    this->configure<NavigationOrthogonal>(new SbUndoPathBackwards());
+    this->configure<ToolOrthogonal>(new SbToolStop());
   }
 };

@@ -7,18 +7,18 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-class sb_navigate_global_position : public smacc::SmaccStateBehavior
+class SbNavigateGlobalPosition : public smacc::SmaccStateBehavior
 {
 public:
   
   boost::optional<geometry_msgs::Point> initialPoint;
 
-  sb_navigate_global_position()
+  SbNavigateGlobalPosition()
   {
 
   }
 
-  sb_navigate_global_position(float x, float y)
+  SbNavigateGlobalPosition(float x, float y)
   {
     auto p =  geometry_msgs::Point();
     p.x = x;

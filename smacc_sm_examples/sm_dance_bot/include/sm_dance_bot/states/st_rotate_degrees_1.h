@@ -1,12 +1,17 @@
-struct st_rotate_degrees_1 : smacc::SmaccState<st_rotate_degrees_1, sm_dance_bot>
+struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, SmDanceBot>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, st_navigate_forward_1> reactions;
+  typedef mpl::list<
+            sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, StNavigateForward1>,
+
+            sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+            sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+          > reactions;
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new sb_rotate(30));
-    this->configure<ToolOrthogonal>(new sb_tool_stop());
+    this->configure<NavigationOrthogonal>(new SbRotate(/*30*/90));
+    this->configure<ToolOrthogonal>(new SbToolStop());
   }
 };

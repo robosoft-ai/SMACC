@@ -21,7 +21,7 @@
 
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_radial_motion)/config/navigation.rviz"/>
 
-    <node pkg="smacc_action_client_generic" type="smacc_action_client_generic_node" name="smacc_action_client_generic_node" launch-prefix="xterm -hold -e"/>
+    <node pkg="sm_dance_bot" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="xterm -hold -e"/>
     <node pkg="sm_dance_bot" type="temperature_sensor_node" name="temperature_sensor_node"/>
     
 </launch>

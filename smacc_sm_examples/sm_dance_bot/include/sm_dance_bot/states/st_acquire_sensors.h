@@ -3,18 +3,15 @@
 
 using namespace smacc;
 
-typedef smacc::SensorTopic<sensor_msgs::LaserScan> LidarSensor;
-typedef smacc::SensorTopic<sensor_msgs::Temperature> TemperatureSensor;
-
-struct st_acquire_sensors : smacc::SmaccState<st_acquire_sensors, sm_dance_bot>
+struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
 {
    using SmaccState::SmaccState;
 
    typedef mpl::list<
        sc::custom_reaction<EvSensorMessage<LidarSensor>>,
-       sc::custom_reaction<EvSensorMessage<TemperatureSensor>>,
+       sc::custom_reaction<EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>,
 
-       sc::transition<EvStateFinish<st_acquire_sensors>, st_navigate_to_waypoints_x>>
+       sc::transition<EvStateFinish<StAcquireSensors>, StNavigateToWaypointsX>>
        reactions;
 
    AllEventAggregator allSensorsReady;
@@ -22,7 +19,7 @@ struct st_acquire_sensors : smacc::SmaccState<st_acquire_sensors, sm_dance_bot>
    void onInitialize()
    {
       this->configure<ObstaclePerceptionOrthogonal>(new LidarSensor("/front/scan", 1, ros::Duration(10)));
-      this->configure<SensorOrthogonal>(new TemperatureSensor("/temperature"));
+      this->configure<SensorOrthogonal>(new SbConditionTemperatureSensor("/temperature"));
 
       allSensorsReady.setTriggerEventTypesCount(2);
    }
@@ -37,7 +34,7 @@ struct st_acquire_sensors : smacc::SmaccState<st_acquire_sensors, sm_dance_bot>
       return discard_event();
    }
 
-   sc::result react(const EvSensorMessage<TemperatureSensor> &ev)
+   sc::result react(const EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>> &ev)
    {
       ROS_INFO_ONCE("Temperature sensor is ready");
       if (allSensorsReady.notify(ev))
