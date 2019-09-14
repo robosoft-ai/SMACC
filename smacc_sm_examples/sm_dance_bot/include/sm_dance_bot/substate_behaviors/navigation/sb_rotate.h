@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/smacc_state.h>
+#include <smacc/smacc_substate_behavior.h>
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 

@@ -5,7 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 #include <smacc/common.h>
-#include <smacc/smacc_state.h>
+#include <smacc/smacc_state_base.h>
 
 #include <smacc_msgs/SmaccContainerStructure.h>
 #include <smacc_msgs/SmaccContainerInitialStatusCmd.h>

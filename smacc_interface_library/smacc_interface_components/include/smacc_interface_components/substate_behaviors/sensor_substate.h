@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/smacc_state.h>
+#include <smacc/smacc_substate_behavior.h>
 #include <boost/statechart/event.hpp>
 
 #include <ros/ros.h>
