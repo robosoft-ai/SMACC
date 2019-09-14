@@ -3,8 +3,13 @@ struct StNavigateToWaypoint1: smacc::SmaccState<StNavigateToWaypoint1,SmDanceBot
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, StNavigateToWaypointsX>,
-              
+              // Expected event
+              sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
+
+              // Keyboard events
+              sc::transition<KeyPressEvent<'p'>,StNavigateReverse2>,
+
+              // Error events
               sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
               sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
             > reactions;

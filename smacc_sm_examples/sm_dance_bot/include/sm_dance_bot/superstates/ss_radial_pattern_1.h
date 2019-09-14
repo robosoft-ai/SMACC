@@ -11,11 +11,20 @@ public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-                    sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>,
+                    
+                    // Expected event
                     sc::transition<EvStateFinish<SsRadialPattern1>, StRotateDegrees1>,
 
+                    // Keyboard event
+                    sc::transition<KeyPressEvent<'n'>, StRotateDegrees1>,
+                    sc::transition<KeyPressEvent<'p'>,StNavigateToWaypointsX>,
+
+                    // Error events
                     sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
-                    sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+                    sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
+
+                    // Internal events
+                    sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>
                 > reactions;
 
     int iteration_count;

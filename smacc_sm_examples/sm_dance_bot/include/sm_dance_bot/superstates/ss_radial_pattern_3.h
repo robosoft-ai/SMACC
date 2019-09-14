@@ -10,11 +10,20 @@ struct SsRadialPattern3 : smacc::SmaccState<SsRadialPattern3, SmDanceBot, SsrRad
 public:
     using SmaccState::SmaccState;
 
-    typedef mpl::list<sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>,
+    typedef mpl::list<
+                      // Expected event
                       sc::transition<EvStateFinish<SsRadialPattern3>, StRotateDegrees4>,
-                      
+
+                      // Keyboard events
+                      sc::transition<smacc::KeyPressEvent<'n'>, StRotateDegrees4>,
+                      sc::transition<KeyPressEvent<'p'>,StNavigateToWaypointsX>,
+                       
+                      // Error events
                       sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
-                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
+
+                      // Internal events
+                      sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>
             > reactions;
 
     int iteration_count;

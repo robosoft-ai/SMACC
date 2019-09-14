@@ -3,8 +3,14 @@ struct StRotateDegrees3 : smacc::SmaccState<StRotateDegrees3, SmDanceBot>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              sc::transition<smacc::SmaccMoveBaseActionClient::SuccessEv, StNavigateToWaypointsX>,
+              // Expected event
+              sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
               
+              // Keyboard events
+              sc::transition<KeyPressEvent<'p'>,StNavigateReverse1>,
+              sc::transition<smacc::KeyPressEvent<'n'>, StNavigateToWaypointsX>,
+
+              // Error events
               sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
               sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
               > reactions;

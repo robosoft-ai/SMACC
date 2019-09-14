@@ -15,8 +15,6 @@ class SmaccMoveBaseActionClient : public SmaccActionClientBase<move_base_msgs::M
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
 public:
-    typedef EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result> SuccessEv;
-
     SmaccMoveBaseActionClient();
     SmaccMoveBaseActionClient(std::string action_server_namespace);
     virtual std::string getName() const override;

@@ -8,10 +8,17 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
    using SmaccState::SmaccState;
 
    typedef mpl::list<
-       sc::custom_reaction<EvSensorMessage<LidarSensor>>,
-       sc::custom_reaction<EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>,
+       
+       // Expected event
+       sc::transition<EvStateFinish<StAcquireSensors>, StNavigateToWaypointsX>,
+       
+       // Keyboard event
+       sc::transition<KeyPressEvent<'n'>,StNavigateToWaypointsX>,
 
-       sc::transition<EvStateFinish<StAcquireSensors>, StNavigateToWaypointsX>>
+       // Sensor events
+       sc::custom_reaction<EvSensorMessage<LidarSensor>>,
+       sc::custom_reaction<EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>
+       >
        reactions;
 
    AllEventAggregator allSensorsReady;

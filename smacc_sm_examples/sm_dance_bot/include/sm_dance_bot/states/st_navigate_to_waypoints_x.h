@@ -4,8 +4,14 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              sc::custom_reaction<smacc::SmaccMoveBaseActionClient::SuccessEv>,
+              // Expected event
+              sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>>,
 
+              // Keyboard event
+              sc::custom_reaction<KeyPressEvent<'n'>>,
+              sc::custom_reaction<KeyPressEvent<'p'>>,
+
+              // Error events
               sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
               sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
           > reactions;
@@ -32,13 +38,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     this->configure<ToolOrthogonal>(new SbToolStart());
   }
 
-  sc::result react(const smacc::SmaccMoveBaseActionClient::SuccessEv &ev)
+  sc::result navigateState()
   {
-    ROS_INFO("Waypoints X reaction");
-
-    currentIteration++;
-    this->setGlobalSMData("navigation_x_iteration", currentIteration);
-
     switch (currentIteration)
     {
     case 1:
@@ -51,6 +52,35 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       ROS_INFO("transition to ss3");
       return transit<SS3::SsRadialPattern3>();
     default:
+      ROS_INFO("error in transition");
+    }
+  }
+
+  sc::result react(const EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result> &ev)
+  {
+    ROS_INFO("Waypoints X reaction");
+
+    currentIteration++;
+    this->setGlobalSMData("navigation_x_iteration", currentIteration);
+    return navigateState();
+  }
+
+  sc::result react(const KeyPressEvent<'n'> &ev)
+  {
+    currentIteration++;
+    this->setGlobalSMData("navigation_x_iteration", currentIteration);
+    return navigateState();
+  }
+
+  sc::result react(const KeyPressEvent<'p'> &ev)
+  {
+    switch (currentIteration)
+    {
+      case 0:
+        return transit<StRotateDegrees2>();
+      case 1:
+        return transit<StRotateDegrees3>();
+      default:
       ROS_INFO("error in transition");
     }
   }
