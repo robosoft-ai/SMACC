@@ -58,12 +58,13 @@ public:
         :ISmaccStateMachine(signalDetector),
         sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >(ctx)
     {
+        ROS_ERROR("State machine base creation");
         nh = ros::NodeHandle(cleanShortTypeName(typeid(DerivedStateMachine)));
 
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
         
-	InitialStateType* test;
+	    InitialStateType* test;
         updateCurrentState<InitialStateType>(true,test);
         
         info_->printAllStates();

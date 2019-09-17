@@ -2,8 +2,8 @@
   <name>smacc_viewer</name>
   <version>2.0.2</version>
   <description>
-    The cmach viewer is a GUI that shows the state of hierarchical
-    SMACC state machines. It can visualize the possible transitions
+    The smacc viewer is a GUI that shows the state of hierarchical
+    smacc state machines. It can visualize the possible transitions
     between states, as well as the currently active state and the
     values of user data that is passed around between states. The
     smacc viewer uses the smacc debugging interface based on
@@ -25,7 +25,6 @@
   <build_depend>rostest</build_depend>
 
   <!-- Dependencies needed after this package is compiled. -->
-  
   <run_depend>smacc_msgs</run_depend>
   <!-- originally depends on xdot : https://github.com/jbohren/xdot/blob/2.0.1/package.xml#L25-L26 -->
   <run_depend>wxpython</run_depend>

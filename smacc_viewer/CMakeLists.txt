@@ -11,5 +11,5 @@ catkin_package(
   )
 
 # Install targets
-#install(PROGRAMS scripts/smacc_viewer.py
-#  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
+install(PROGRAMS scripts/smacc_viewer.py
+  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION})
