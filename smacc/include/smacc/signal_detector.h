@@ -19,13 +19,13 @@ class SignalDetector
 
         void setProcessorHandle(SmaccScheduler::processor_handle processorHandle);
             
-        // runs the polling loop into a thread
+        // Runs the polling loop into a thread...
         void runThread();
 
-        // waits the polling thread to end
+        // Waits for the polling thread to end...
         void join();
         
-        // prints the current state of the signal detector into a string
+        // Prints the current state of the signal detector into a string...
         void toString(std::stringstream& ss);
 
         void pollingLoop();
@@ -58,7 +58,7 @@ class SignalDetector
         // TODO: this should be thread safe since it may be updated from others threads
         std::vector<ISmaccActionClient*> openRequests_;
 
-        // loop frequency of the signal detector (to check answers from actionservers)
+        // Loop frequency of the signal detector (to check answers from actionservers)
         double loop_rate_hz;
 
         friend class ISmaccStateMachine;

@@ -21,7 +21,7 @@ public:
 
     ISmaccActionClient();
 
-    // the destructor. This is called when the object is not 
+    // The destructor. This is called when the object is not 
     // referenced anymore by its owner
     virtual ~ISmaccActionClient();
 
@@ -29,13 +29,13 @@ public:
 
     virtual void init(ros::NodeHandle& nh, std::string) override;
     
-    // return the current state of the actionclient
+    // Returns the current state of the actionclient...
     virtual SimpleClientGoalState getState()=0;
 
-    // checks if there is some feedback message waiting
+    // Checks if there is some feedback message waiting...
     virtual bool hasFeedback() = 0;
 
-    // gets the ros path of the action
+    // Gets the ros path of the action...
     inline std::string getNamespace() const
     {
         return name_;
@@ -44,10 +44,10 @@ public:
 protected:
     virtual void postEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle)=0;
 
-    // used internally by the Signal detector
+    // Used internally by the Signal detector
     virtual void postFeedbackEvent(SmaccScheduler* scheduler, SmaccScheduler::processor_handle processorHandle)=0;
 
-    // the ros path where the action is located
+    // The ros path where the action is located
     std::string name_;
 
     friend class SignalDetector;

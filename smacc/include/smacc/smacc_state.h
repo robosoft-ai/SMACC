@@ -20,7 +20,7 @@ class ISmaccState
 public:
   ros::NodeHandle nh;
 
-  // by default nullptr
+  // Default nullptr
   SmaccStateBehavior *stateBehavior;
 
   void configureStateBehavior(SmaccStateBehavior *stateBehavior)
@@ -37,21 +37,21 @@ public:
     }
   }
 
-  // delegates to ROS param access with the current NodeHandle
+  // Delegates to ROS param access with the current NodeHandle
   template <typename T>
   bool getParam(std::string param_name, T &param_storage)
   {
     return nh.getParam(param_name, param_storage);
   }
 
-  // delegates to ROS param access with the current NodeHandle
+  // Delegates to ROS param access with the current NodeHandle
   template <typename T>
   void setParam(std::string param_name, T param_val)
   {
     return nh.setParam(param_name, param_val);
   }
 
-  // delegates to ROS param access with the current NodeHandle
+  //Delegates to ROS param access with the current NodeHandle
   template <typename T>
   bool param(std::string param_name, T &param_val, const T &default_val) const
   {
@@ -82,7 +82,7 @@ public:
     this->getStateMachine().getGlobalSMData(name, ret);
   }
 
-  // store globally in this state machine. (By value parameter )
+  // Store globally in this state machine. (By value parameter )
   template <typename T>
   void setGlobalSMData(std::string name, T value)
   {
