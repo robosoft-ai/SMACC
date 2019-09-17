@@ -20,7 +20,7 @@ template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >
 {
 public:
-    // the node handle for this state
+    // The node handle for this state
     ros::NodeHandle nh;
     
     ros::Timer timer_;
@@ -86,21 +86,21 @@ public:
         sc::state_machine< DerivedStateMachine, InitialStateType, SmaccAllocator >::initiate();
     }
 
-     // delegates to ROS param access with the current NodeHandle
+     // Delegates to ROS param access with the current NodeHandle
     template <typename T>
     bool getParam(std::string param_name, T& param_storage)
     {
         return nh.getParam(param_name, param_storage);
     }
 
-    // delegates to ROS param access with the current NodeHandle
+    // Delegates to ROS param access with the current NodeHandle
     template <typename T>
     void setParam(std::string param_name, T param_val)
     {
         return nh.setParam(param_name, param_val);
     }
 
-    // delegates to ROS param access with the current NodeHandle
+    // Delegates to ROS param access with the current NodeHandle
     template<typename T>
     bool param(std::string param_name, T& param_val, const T& default_val) const
     {

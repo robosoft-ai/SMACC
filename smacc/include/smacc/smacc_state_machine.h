@@ -26,7 +26,7 @@ class Orthogonal;
 class ISmaccState;
 
 
-// this class describes the concept of Smacc State Machine in an abastract way.
+// This class describes the concept of Smacc State Machine in an abastract way.
 // The SmaccStateMachineBase inherits from this state machine and from 
 // statechart::StateMachine<> (via multiple inheritance)
 class ISmaccStateMachine
@@ -99,7 +99,7 @@ class ISmaccStateMachine
         globalData_[name] = value;
     }
 
-    /// used by the ISMaccActionClients when a new send goal is launched
+    /// Used by the ISMaccActionClients when a new send goal is launched
     void registerActionClientRequest(ISmaccActionClient* component);
 
     template <typename StateField, typename BehaviorType> 
@@ -111,7 +111,7 @@ class ISmaccStateMachine
         SmaccStateBehavior* globalreference;
         if(!this->getGlobalSMData(stateFieldName,globalreference))
         {
-            // using the requires component approach we force to an unique existence
+            // Using the requires component approach, we force a unique existence
             // of this component
             BehaviorType* behavior;
             this->requiresComponent(behavior);
@@ -131,7 +131,7 @@ private:
 
     std::map<std::string, smacc::Orthogonal*> orthogonals_;
 
-    //event to notify to the signaldetection thread that a request has been created
+    // Event to notify to the signaldetection thread that a request has been created...
     SignalDetector* signalDetector_;
 };
 

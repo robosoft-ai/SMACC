@@ -34,7 +34,7 @@ public:
     return base_type::outermost_context().getGlobalSMData(name, ret);
   }
 
-  // store globally in this state machine. (By value parameter )
+  // Store globally in this state machine. (By value parameter )
   template <typename T>
   void setGlobalSMData(std::string name, T value)
   {
@@ -54,7 +54,7 @@ public:
 
   SmaccState() = delete;
 
-  // constructor that initialize the state ros node handle
+  // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
@@ -173,13 +173,13 @@ public:
     return nullptr;
   }
 
-  // this method is static-polimorphic because of the curiously recurreing pattern. It
+  // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
   void onEntry()
   {
   }
 
-  // this method is static-polimorphic because of the curiously recurreing pattern. It
+  // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
   void onInitialize()
   {

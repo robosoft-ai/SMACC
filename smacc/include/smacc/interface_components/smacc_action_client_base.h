@@ -17,7 +17,7 @@ template <typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
 {
 public:
-    // inside this macro you can find the typedefs for Goal and other types
+    // Inside this macro you can find the typedefs for Goal and other types
     ACTION_DEFINITION(ActionType);
     typedef actionlib::SimpleActionClient<ActionType> ActionClient;
     typedef actionlib::SimpleActionClient<ActionType> GoalHandle;

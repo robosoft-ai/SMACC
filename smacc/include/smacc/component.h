@@ -17,15 +17,15 @@ public:
 
     virtual ~ISmaccComponent();
 
-    // it is called just after the component is created by the State Machine
+    // Called just after the component is created by the State Machine...
     virtual void init(ros::NodeHandle& nh);
 
     virtual void init(ros::NodeHandle& nh, std::string value);
 
-    // assings the owner of this resource to the given state machine parameter object 
+    // Assigns the owner of this resource to the given state machine parameter object 
     void setStateMachine(ISmaccStateMachine* stateMachine);
 
-    // returns a custom identifier defined by the specific plugin implementation
+    // Returns a custom identifier defined by the specific plugin implementation
     virtual std::string getName() const;
 
     template <typename EventType>
@@ -35,7 +35,7 @@ public:
     }
 
 protected:
-    // a reference to the state machine object that owns this resource
+    // A reference to the state machine object that owns this resource
     ISmaccStateMachine* stateMachine_;
     
 };
