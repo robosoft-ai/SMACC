@@ -66,6 +66,8 @@ namespace smacc
   class ISmaccActionClient;
   class ISmaccSubscriber;
   class SignalDetector;
+  class SmaccStateMachineInfo;
+  class SmaccStateInfo;
 
   struct IActionResult
   {

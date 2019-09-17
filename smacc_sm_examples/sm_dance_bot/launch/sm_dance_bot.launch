@@ -23,5 +23,7 @@
 
     <node pkg="sm_dance_bot" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="xterm -hold -e"/>
     <node pkg="sm_dance_bot" type="temperature_sensor_node" name="temperature_sensor_node"/>
+
+    <node pkg="smacc_viewer" type="smacc_viewer.py" name="smacc_viewer"/>
     
 </launch>

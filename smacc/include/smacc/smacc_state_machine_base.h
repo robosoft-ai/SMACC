@@ -6,6 +6,8 @@
 #pragma once
 #include <smacc/common.h>
 #include <smacc/smacc_state_base.h>
+#include <smacc/smacc_state_info.h>
+#include <smacc/smacc_state_machine_info.h>
 
 #include <smacc_msgs/SmaccContainerStructure.h>
 #include <smacc_msgs/SmaccContainerInitialStatusCmd.h>
@@ -316,7 +318,6 @@ public:
     }
 
     
-    //ROS_WARN("status");
     recursivePublishStatus(nullptr);
     
 
