@@ -108,14 +108,14 @@ class ISmaccStateMachine
         std::string stateFieldName =demangleSymbol(typeid(StateField).name());
         std::string behaviorType =demangleSymbol(typeid(BehaviorType).name());
         ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
-        SmaccStateBehavior* globalreference;
+        SmaccSubStateBehavior* globalreference;
         if(!this->getGlobalSMData(stateFieldName,globalreference))
         {
             // Using the requires component approach, we force a unique existence
             // of this component
             BehaviorType* behavior;
             this->requiresComponent(behavior);
-            globalreference =  dynamic_cast<SmaccStateBehavior*>(behavior);
+            globalreference =  dynamic_cast<SmaccSubStateBehavior*>(behavior);
 
             this->setGlobalSMData(stateFieldName, globalreference);
         }

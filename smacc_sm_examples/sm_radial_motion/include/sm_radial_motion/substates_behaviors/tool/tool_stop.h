@@ -2,7 +2,7 @@
 
 #include <thread>
 
-class ToolStop: public smacc::SmaccStateBehavior
+class ToolStop: public smacc::SmaccSubStateBehavior
 { 
 public:
     

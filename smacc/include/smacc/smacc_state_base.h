@@ -168,7 +168,7 @@ public:
   }
 
 public:
-  SmaccStateBehavior *definesBehavioralSmaccState()
+  SmaccSubStateBehavior *definesBehavioralSmaccState()
   {
     return nullptr;
   }

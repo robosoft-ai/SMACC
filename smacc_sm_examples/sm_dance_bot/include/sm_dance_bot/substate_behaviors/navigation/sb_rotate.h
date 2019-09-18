@@ -8,7 +8,7 @@
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 
-class SbRotate : public smacc::SmaccStateBehavior
+class SbRotate : public smacc::SmaccSubStateBehavior
 {
 public:
     tf::TransformListener listener;

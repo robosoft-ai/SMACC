@@ -7,7 +7,7 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-class NavigateGlobalPosition : public smacc::SmaccStateBehavior
+class NavigateGlobalPosition : public smacc::SmaccSubStateBehavior
 {
 public:
   

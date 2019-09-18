@@ -7,7 +7,7 @@ void Orthogonal::setStateMachine(ISmaccStateMachine *value)
     this->stateMachine_ = value;
 }
 
-void Orthogonal::setStateBehavior(smacc::SmaccStateBehavior *statebehavior)
+void Orthogonal::setStateBehavior(smacc::SmaccSubStateBehavior *statebehavior)
 {
     if (statebehavior != nullptr)
     {

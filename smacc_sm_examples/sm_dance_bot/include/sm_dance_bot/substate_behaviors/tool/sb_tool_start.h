@@ -3,7 +3,7 @@
 #include <thread>
 #include <smacc_action_client_generic/smacc_tool_plugin.h>
 
-class SbToolStart: public smacc::SmaccStateBehavior
+class SbToolStart: public smacc::SmaccSubStateBehavior
 { 
 public:
     

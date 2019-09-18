@@ -32,11 +32,16 @@ struct testEvent: sc::event<testEvent>
 
 };
 
+template <typename MessageType>
+class SensorComponent: public smacc::ISmaccComponent
+{
+
+};
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
 template <typename MessageType>
-class SensorTopic : public smacc::SmaccStateBehavior
+class SensorTopic : public smacc::SmaccSubStateBehavior
 {
  public:
   typedef MessageType TMessageType;
@@ -48,6 +53,7 @@ class SensorTopic : public smacc::SmaccStateBehavior
   bool firstTime_;
   ros::Timer timeoutTimer_;
   ros::Duration timeoutDuration_;
+  SensorComponent<MessageType>* sensor_;
 
   SensorTopic(std::string topicName, int queueSize = 1, ros::Duration timeout= ros::Duration(5))
   {
@@ -59,6 +65,7 @@ class SensorTopic : public smacc::SmaccStateBehavior
 
   void onEntry()
   {
+     this->requiresComponent(sensor_);
      ROS_INFO_STREAM("Subscribing to sensor topic: " << topicName_);
      sub_ = nh_.subscribe(topicName_, queueSize_, &SensorTopic<MessageType>::messageCallback, this);
      timeoutTimer_ = nh_.createTimer(this->timeoutDuration_,boost::bind(&SensorTopic<MessageType>::timeoutCallback, this, _1));

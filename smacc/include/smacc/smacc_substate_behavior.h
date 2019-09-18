@@ -5,11 +5,11 @@
 
 namespace smacc
 {
-class SmaccStateBehavior;
+class SmaccSubStateBehavior;
 class ISmaccState;
 
 //#define SMACC_STATE_BEHAVIOR(BEHAVIOR_CLASS) \
-//    SmaccStateBehavior* definesBehavioralSmaccState() \
+//    SmaccSubStateBehavior* definesBehavioralSmaccState() \
 //    {                                                 \
 //      BEHAVIOR_CLASS* behavior;                         \
 //      this->requiresComponent(behavior);              \
@@ -17,18 +17,18 @@ class ISmaccState;
 //    }
 
 #define SMACC_STATE_BEHAVIOR                                                     \
-    SmaccStateBehavior *definesBehavioralSmaccState()                            \
+    SmaccSubStateBehavior *definesBehavioralSmaccState()                            \
     {                                                                            \
         std::string shortname = this->getFullName();                             \
         ROS_INFO("trying to get the substate behavior: %s", shortname.c_str());  \
-        SmaccStateBehavior *behavior;                                            \
+        SmaccSubStateBehavior *behavior;                                            \
                                                                                  \
         bool found = this->getGlobalSMData(shortname, behavior);                 \
         ROS_INFO("substate behavior '%s' exists? %d", shortname.c_str(), found); \
         return behavior;                                                         \
     }
 
-class SmaccStateBehavior : public smacc::ISmaccComponent
+class SmaccSubStateBehavior
 {
 public:
     // hapens when
@@ -49,14 +49,19 @@ public:
         stateMachine->requiresComponent(storage, nh, value);
     }
 
+    std::string getName() const
+    {
+        return demangleSymbol(typeid(*this).name());
+    }
+
     virtual void onEntry()
     {
-        ROS_INFO("SmaccStateBehavior %s onEntry", this->getName().c_str());
+        ROS_INFO("SmaccSubStateBehavior %s onEntry", this->getName().c_str());
     }
 
     virtual bool onExit()
     {
-        ROS_INFO("SmaccStateBehavior %s onExit", this->getName().c_str());
+        ROS_INFO("SmaccSubStateBehavior %s onExit", this->getName().c_str());
         return true;
     }
 };

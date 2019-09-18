@@ -12,7 +12,7 @@
 
 namespace smacc
 {
-class SmaccStateBehavior;
+class SmaccSubStateBehavior;
 class ISmaccState;
 
 class ISmaccState
@@ -21,9 +21,9 @@ public:
   ros::NodeHandle nh;
 
   // Default nullptr
-  SmaccStateBehavior *stateBehavior;
+  SmaccSubStateBehavior *stateBehavior;
 
-  void configureStateBehavior(SmaccStateBehavior *stateBehavior)
+  void configureStateBehavior(SmaccSubStateBehavior *stateBehavior)
   {
     if (stateBehavior != nullptr)
     {
@@ -61,7 +61,7 @@ public:
   virtual ISmaccStateMachine &getStateMachine() = 0;
 
   template <typename TOrthogonal>
-  void configure(SmaccStateBehavior *smaccBehavior)
+  void configure(SmaccSubStateBehavior *smaccBehavior)
   {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());

@@ -5,7 +5,7 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <nav_msgs/Path.h>
 
-class UndoPathBackwards : public smacc::SmaccStateBehavior
+class UndoPathBackwards : public smacc::SmaccSubStateBehavior
 {
   tf::TransformListener listener;
     

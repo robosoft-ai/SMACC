@@ -25,7 +25,7 @@ struct TimerTickEvent: sc::event< TimerTickEvent>
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
-class Timer : public smacc::SmaccStateBehavior
+class Timer : public smacc::SmaccSubStateBehavior
 {
   
  public:

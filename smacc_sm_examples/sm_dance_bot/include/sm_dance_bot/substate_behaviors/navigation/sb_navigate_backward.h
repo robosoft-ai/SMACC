@@ -7,7 +7,7 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-class SbNavigateBackwards : public smacc::SmaccStateBehavior
+class SbNavigateBackwards : public smacc::SmaccSubStateBehavior
 {
 public:
     boost::optional<float> backwardDistance;

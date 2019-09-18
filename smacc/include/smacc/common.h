@@ -62,7 +62,7 @@ namespace smacc
 {
   class ISmaccStateMachine;
   class ISmaccComponent;
-  class SmaccStateBehavior;
+  class SmaccSubStateBehavior;
   class ISmaccActionClient;
   class ISmaccSubscriber;
   class SignalDetector;

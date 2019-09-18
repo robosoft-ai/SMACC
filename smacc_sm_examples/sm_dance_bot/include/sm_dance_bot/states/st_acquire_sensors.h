@@ -3,7 +3,8 @@
 
 using namespace smacc;
 
-struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
+struct StAcquireSensors : 
+      smacc::SmaccState<StAcquireSensors, SmDanceBot>
 {
    using SmaccState::SmaccState;
 

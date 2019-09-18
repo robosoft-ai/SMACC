@@ -23,7 +23,7 @@ struct KeyPressEvent: sc::event< KeyPressEvent<keychar>>
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
-class Keyboard : public smacc::SmaccStateBehavior
+class Keyboard : public smacc::SmaccSubStateBehavior
 {
   
  public:
