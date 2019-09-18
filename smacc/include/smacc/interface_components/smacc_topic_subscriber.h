@@ -1,3 +1,5 @@
+#pragma once
+
 #include <smacc/client.h>
 #include <boost/signals2.hpp>
 
@@ -16,28 +18,28 @@ struct EvTopicMessage : sc::event<EvTopicMessage<SensorBehaviorType>>
 };
 
 template <typename MessageType>
-class SmaccTopicSubcriber : public smacc::ISmaccClient
+class SmaccTopicSubscriberClient : public smacc::ISmaccClient
 {
 public:
   boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
   boost::signals2::signal<void(const MessageType &)> onMessageReceived;
 
-  SmaccTopicSubcriber()
+  SmaccTopicSubscriberClient()
   {
     initialized_ = false;
   }
 
-  virtual ~SmaccTopicSubcriber()
+  virtual ~SmaccTopicSubscriberClient()
   {
   }
 
-  void tryStart(std::string topicName, int queueSize = 1)
+  virtual void initialize(std::string topicName, int queueSize = 1)
   {
     if (!initialized_)
     {
       firstMessage_ = true;
       ROS_INFO_STREAM("[" << this->getName() << "]Subscribing to sensor topic: " << topicName);
-      sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubcriber<MessageType>::messageCallback, this);
+      sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
     }
   }
 
@@ -53,13 +55,13 @@ private:
   {
     if (firstMessage_)
     {
-      auto event = new EvTopicInitialMessage<SmaccTopicSubcriber<MessageType>>();
+      auto event = new EvTopicInitialMessage<SmaccTopicSubscriberClient<MessageType>>();
       this->postEvent(event);
       this->onFirstMessageReceived(msg);
       firstMessage_ = false;
     }
 
-    auto *ev2 = new EvTopicMessage<SmaccTopicSubcriber<MessageType>>();
+    auto *ev2 = new EvTopicMessage<SmaccTopicSubscriberClient<MessageType>>();
     this->postEvent(ev2);
     onMessageReceived(msg);
   }

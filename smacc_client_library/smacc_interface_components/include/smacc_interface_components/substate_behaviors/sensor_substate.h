@@ -4,7 +4,6 @@
 #include <smacc/interface_components/smacc_topic_subscriber.h>
 #include <boost/statechart/event.hpp>
 
-
 #include <ros/ros.h>
 #include <ros/duration.h>
 #include <boost/signals2.hpp>
@@ -19,22 +18,22 @@ struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<SensorBehaviorTyp
 
 //---------------------------------------------------------------
 template <typename MessageType>
-class SensorClient : public SmaccTopicSubcriber<MessageType>
+class SensorClient : public SmaccTopicSubscriberClient<MessageType>
 {
 public:
   boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
 
   SensorClient()
-      : SmaccTopicSubcriber<MessageType>()
+      : SmaccTopicSubscriberClient<MessageType>()
   {
     initialized_ = false;
   }
 
-  void tryStart(std::string topicName, int queueSize = 1, ros::Duration timeout = ros::Duration(5))
+  virtual void initialize(std::string topicName, int queueSize) override
   {
     if (!initialized_)
     {
-      SmaccTopicSubcriber<MessageType>::tryStart(topicName, queueSize);
+      SmaccTopicSubscriberClient<MessageType>::initialize(topicName, queueSize);
 
       this->onMessageReceived.connect(
           [this](auto msg) {
@@ -43,15 +42,22 @@ public:
             this->timeoutTimer_.start();
           });
 
-      timeoutTimer_ = this->nh_.createTimer(timeout, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
+      timeoutTimer_ = this->nh_.createTimer(timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
       timeoutTimer_.start();
       initialized_ = true;
     }
   }
 
+  void initialize(std::string topicName, int queueSize, ros::Duration timeout)
+  {
+    this->timeout_ = timeout;
+    this->initialize(topicName, queueSize);
+  }
+
 private:
   ros::Timer timeoutTimer_;
   bool initialized_;
+  ros::Duration timeout_;
 
   void timeoutCallback(const ros::TimerEvent &ev)
   {
@@ -84,6 +90,7 @@ public:
   void onEntry()
   {
     this->requiresComponent(sensor_);
+
     sensor_->onMessageReceived.connect(
         [this](auto &msg) {
           auto *ev2 = new EvTopicMessage<SensorTopic<MessageType>>();
@@ -102,7 +109,7 @@ public:
           this->postEvent(event);
         });
 
-    sensor_->tryStart(topicName_, queueSize_, timeoutDuration_);
+    sensor_->initialize(topicName_, queueSize_, timeoutDuration_);
   }
 
   bool onExit()
