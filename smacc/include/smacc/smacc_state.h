@@ -6,7 +6,6 @@
 #pragma once
 #include "smacc/smacc_state_machine.h"
 #include "smacc/impl/smacc_state_machine_impl.h"
-#include "smacc/component.h"
 #include "smacc/orthogonal.h"
 #include "smacc/smacc_substate_behavior.h"
 

@@ -35,7 +35,6 @@ typedef sc::fifo_scheduler<> SmaccScheduler;
 
 typedef std::allocator< void > SmaccAllocator;
 
-
 template<class T>
 auto optionalNodeHandle(boost::intrusive_ptr<T>& obj)
  -> decltype(  obj->nh  )
@@ -62,6 +61,8 @@ namespace smacc
 {
   class ISmaccStateMachine;
   class ISmaccComponent;
+  class ISmaccClient;
+
   class SmaccSubStateBehavior;
   class ISmaccActionClient;
   class ISmaccSubscriber;

@@ -6,7 +6,6 @@
 #pragma once
 
 #include <smacc/common.h>
-#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
@@ -29,10 +28,7 @@ public:
     virtual std::string getName() const;
 
     template <typename EventType>
-    void postEvent(const EventType &ev)
-    {
-        stateMachine_->postEvent(ev);
-    }
+    void postEvent(const EventType &ev);
 
 protected:
     // A reference to the state machine object that owns this resource

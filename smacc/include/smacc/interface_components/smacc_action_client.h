@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <smacc/component.h>
+#include <smacc/client.h>
 #include <actionlib/client/simple_action_client.h>
 
 namespace smacc
@@ -15,7 +15,7 @@ using namespace actionlib;
 
 // This class interface shows the basic set of methods that
 // a SMACC "resource" or "plugin" Action Client has
-class ISmaccActionClient: public ISmaccComponent
+class ISmaccActionClient: public ISmaccClient
 {
 public:
 
