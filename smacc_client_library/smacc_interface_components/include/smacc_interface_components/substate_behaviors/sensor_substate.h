@@ -5,37 +5,125 @@
 
 #include <ros/ros.h>
 #include <ros/duration.h>
+#include <boost/signals2.hpp>
 
 namespace smacc
 {
 
 //----------------- TIMER EVENT DEFINITION ----------------------------------------------
-template<typename SensorBehaviorType>
-struct EvSensorInitialMessage: sc::event<EvSensorInitialMessage<SensorBehaviorType>>
+template <typename SensorBehaviorType>
+struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<SensorBehaviorType>>
 {
-    //typename EvSensorInitialMessage<SensorBehaviorType>::TMessageType msgData;
+  //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
-template<typename SensorBehaviorType>
-struct EvSensorMessage: sc::event<EvSensorMessage<SensorBehaviorType>>
+template <typename SensorBehaviorType>
+struct EvTopicMessage : sc::event<EvTopicMessage<SensorBehaviorType>>
 {
-    //typename EvSensorInitialMessage<SensorBehaviorType>::TMessageType msgData;
+  //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
-template<typename SensorBehaviorType>
-struct EvSensorMessageTimeout: sc::event<EvSensorMessageTimeout<SensorBehaviorType>>
+template <typename SensorBehaviorType>
+struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<SensorBehaviorType>>
 {
 };
 
-struct testEvent: sc::event<testEvent>
+struct testEvent : sc::event<testEvent>
 {
-
 };
+//---------------------------------------------------------------
 
 template <typename MessageType>
-class SensorComponent: public smacc::ISmaccComponent
+class SmaccTopicSubcriber : public smacc::ISmaccComponent
 {
+public:
+  boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
+  boost::signals2::signal<void(const MessageType &)> onMessageReceived;
 
+  SmaccTopicSubcriber()
+  {
+    initialized_ = false;
+  }
+
+  virtual ~SmaccTopicSubcriber()
+  {
+  }
+
+  void tryStart(std::string topicName, int queueSize = 1)
+  {
+    if (!initialized_)
+    {
+      firstMessage_ = true;
+      ROS_INFO_STREAM("[" << this->getName() << "]Subscribing to sensor topic: " << topicName);
+      sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubcriber<MessageType>::messageCallback, this);
+    }
+  }
+
+protected:
+  ros::NodeHandle nh_;
+
+private:
+  ros::Subscriber sub_;
+  bool firstMessage_;
+  bool initialized_;
+
+  void messageCallback(const MessageType &msg)
+  {
+    if (firstMessage_)
+    {
+      auto event = new EvTopicInitialMessage<SmaccTopicSubcriber<MessageType>>();
+      this->postEvent(event);
+      this->onFirstMessageReceived(msg);
+      firstMessage_ = false;
+    }
+
+    auto *ev2 = new EvTopicMessage<SmaccTopicSubcriber<MessageType>>();
+    this->postEvent(ev2);
+    onMessageReceived(msg);
+  }
+};
+
+//---------------------------------------------------------------
+template <typename MessageType>
+class SensorClient : public SmaccTopicSubcriber<MessageType>
+{
+public:
+  boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
+
+  SensorClient()
+      : SmaccTopicSubcriber<MessageType>()
+  {
+    initialized_ = false;
+  }
+
+  void tryStart(std::string topicName, int queueSize = 1, ros::Duration timeout = ros::Duration(5))
+  {
+    if (!initialized_)
+    {
+      SmaccTopicSubcriber<MessageType>::tryStart(topicName, queueSize);
+
+      this->onMessageReceived.connect(
+          [this](auto msg) {
+            //reseting the timer
+            this->timeoutTimer_.stop();
+            this->timeoutTimer_.start();
+          });
+
+      timeoutTimer_ = this->nh_.createTimer(timeout, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
+      timeoutTimer_.start();
+      initialized_ = true;
+    }
+  }
+
+private:
+  ros::Timer timeoutTimer_;
+  bool initialized_;
+
+  void timeoutCallback(const ros::TimerEvent &ev)
+  {
+    auto event = new EvTopicMessageTimeout<SensorClient<MessageType>>();
+    this->postEvent(event);
+  }
 };
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
@@ -43,72 +131,54 @@ class SensorComponent: public smacc::ISmaccComponent
 template <typename MessageType>
 class SensorTopic : public smacc::SmaccSubStateBehavior
 {
- public:
+public:
   typedef MessageType TMessageType;
 
-  ros::NodeHandle nh_;
+  SensorClient<MessageType> *sensor_;
+
+  ros::Duration timeoutDuration_;
   std::string topicName_;
   int queueSize_;
-  ros::Subscriber sub_;
-  bool firstTime_;
-  ros::Timer timeoutTimer_;
-  ros::Duration timeoutDuration_;
-  SensorComponent<MessageType>* sensor_;
 
-  SensorTopic(std::string topicName, int queueSize = 1, ros::Duration timeout= ros::Duration(5))
+  SensorTopic(std::string topicName, int queueSize = 1, ros::Duration timeout = ros::Duration(5))
   {
-    topicName_ = topicName;
-    queueSize_ = queueSize;
-    firstTime_ = true;
     timeoutDuration_ = timeout;
-  } 
+    queueSize_ = queueSize;
+    topicName_ = topicName;
+  }
 
   void onEntry()
   {
-     this->requiresComponent(sensor_);
-     ROS_INFO_STREAM("Subscribing to sensor topic: " << topicName_);
-     sub_ = nh_.subscribe(topicName_, queueSize_, &SensorTopic<MessageType>::messageCallback, this);
-     timeoutTimer_ = nh_.createTimer(this->timeoutDuration_,boost::bind(&SensorTopic<MessageType>::timeoutCallback, this, _1));
-     timeoutTimer_.start();
+    this->requiresComponent(sensor_);
+    sensor_->onMessageReceived.connect(
+        [this](auto &msg) {
+          auto *ev2 = new EvTopicMessage<SensorTopic<MessageType>>();
+          this->postEvent(ev2);
+        });
+
+    sensor_->onFirstMessageReceived.connect(
+        [this](auto &msg) {
+          auto event = new EvTopicInitialMessage<SensorTopic<MessageType>>();
+          this->postEvent(event);
+        });
+
+    sensor_->onMessageTimeout.connect(
+        [this](auto &msg) {
+          auto event = new EvTopicMessageTimeout<SensorTopic<MessageType>>();
+          this->postEvent(event);
+        });
+
+    sensor_->tryStart(topicName_, queueSize_, timeoutDuration_);
   }
 
   bool onExit()
   {
-     sub_.shutdown();
-     timeoutTimer_.stop();
   }
 
-  void timeoutCallback(const ros::TimerEvent& ev)
-  {
-    auto event= new EvSensorMessageTimeout<SensorTopic<MessageType>>();
-    this->postEvent(event);
-  }
-
-  virtual void onMessageCallback(const MessageType& msg)
+  virtual void onMessageCallback(const MessageType &msg)
   {
 
     // empty to fill by sensor customization based on inheritance
   }
-
-  void messageCallback(const MessageType& msg)
-  {
-    //ROS_INFO_STREAM("message received from: "<< this->topicName_);
-
-    if(firstTime_)
-    {
-      firstTime_ = false;
-      auto event= new EvSensorInitialMessage<SensorTopic<MessageType>>();
-      this->postEvent(event);
-    }
-    
-
-    EvSensorMessage<SensorTopic<MessageType>>* ev2= new EvSensorMessage<SensorTopic<MessageType>>();
-    this->postEvent(ev2);
-    
-    this->onMessageCallback(msg);
-
-    timeoutTimer_.stop();
-    timeoutTimer_.start();
-  }   
 };
-}
+} // namespace smacc

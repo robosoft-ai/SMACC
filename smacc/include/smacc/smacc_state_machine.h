@@ -46,12 +46,12 @@ class ISmaccStateMachine
     void getOrthogonal(TOrthogonal*& storage);
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value);
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value, bool verbose);
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle())
+    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), bool verbose = false)
     {
-       requiresComponent(storage, nh, "");
+       requiresComponent(storage, nh, "", verbose);
     }
 
     template <typename EventType>

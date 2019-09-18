@@ -16,13 +16,13 @@ struct SensorState: smacc::SmaccState<SensorState, SensorStateMachine>
 {
   public:
   typedef mpl::list<
-                sc::transition<EvSensorInitialMessage<LidarSensor>, SensorState>, 
-                sc::transition<EvSensorMessage<LidarSensor>, SensorState>, 
-                sc::transition<EvSensorMessageTimeout<LidarSensor>, SensorState>,
+                sc::transition<EvTopicInitialMessage<LidarSensor>, SensorState>, 
+                sc::transition<EvTopicMessage<LidarSensor>, SensorState>, 
+                sc::transition<EvTopicMessageTimeout<LidarSensor>, SensorState>,
                 
-                sc::transition<EvSensorInitialMessage<CustomConditionTemperatureSensor>, SensorState>, 
-                sc::transition<EvSensorMessage<CustomConditionTemperatureSensor>, SensorState>, 
-                sc::transition<EvSensorMessageTimeout<CustomConditionTemperatureSensor>, SensorState>,
+                sc::transition<EvTopicInitialMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                sc::transition<EvTopicMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                sc::transition<EvTopicMessageTimeout<CustomConditionTemperatureSensor>, SensorState>,
                 
                 sc::transition<EvCustomTemperatureAlert, SensorState>> reactions; 
 

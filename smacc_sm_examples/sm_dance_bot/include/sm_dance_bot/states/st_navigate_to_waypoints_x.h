@@ -12,7 +12,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
               sc::custom_reaction<KeyPressEvent<'p'>>,
 
               // Error events
-              sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+              sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
               sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
           > reactions;
 

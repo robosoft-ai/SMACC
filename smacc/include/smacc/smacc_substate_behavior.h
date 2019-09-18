@@ -17,11 +17,11 @@ class ISmaccState;
 //    }
 
 #define SMACC_STATE_BEHAVIOR                                                     \
-    SmaccSubStateBehavior *definesBehavioralSmaccState()                            \
+    SmaccSubStateBehavior *definesBehavioralSmaccState()                         \
     {                                                                            \
         std::string shortname = this->getFullName();                             \
         ROS_INFO("trying to get the substate behavior: %s", shortname.c_str());  \
-        SmaccSubStateBehavior *behavior;                                            \
+        SmaccSubStateBehavior *behavior;                                         \
                                                                                  \
         bool found = this->getGlobalSMData(shortname, behavior);                 \
         ROS_INFO("substate behavior '%s' exists? %d", shortname.c_str(), found); \
@@ -37,16 +37,38 @@ public:
     ISmaccStateMachine *stateMachine;
     ISmaccState *currentState;
 
+    SmaccSubStateBehavior()
+    {
+        stateMachine = nullptr;
+        currentState = nullptr;
+    }
+
     template <typename EventType>
     void postEvent(const EventType &ev)
     {
-        stateMachine->postEvent(ev);
+        if (stateMachine == nullptr)
+        {
+            ROS_ERROR("The substate behavior cannot post events before being assigned to an orthogonal. Ignoring post event call.");
+        }
+        else
+        {
+            stateMachine->postEvent(ev);
+        }
     }
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, ros::NodeHandle nh = ros::NodeHandle(), std::string value = "")
+    void requiresComponent(SmaccComponentType *&storage,
+                           ros::NodeHandle nh = ros::NodeHandle(),
+                           std::string value = "", bool verbose = false)
     {
-        stateMachine->requiresComponent(storage, nh, value);
+        if (stateMachine == nullptr)
+        {
+            ROS_ERROR("Cannot use the requiresComponent funcionality before asigning the substate behavior to an orthogonal. Try using the OnEntry method to capture required components.");
+        }
+        else
+        {
+            stateMachine->requiresComponent(storage, nh, value, verbose);
+        }
     }
 
     std::string getName() const

@@ -17,8 +17,8 @@ struct StAcquireSensors :
        sc::transition<KeyPressEvent<'n'>,StNavigateToWaypointsX>,
 
        // Sensor events
-       //sc::custom_reaction<EvSensorMessage<LidarSensor>>,
-       sc::custom_reaction<EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>
+       sc::custom_reaction<EvTopicMessage<LidarSensor>>,
+       sc::custom_reaction<EvTopicMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>
        >
        reactions;
 
@@ -26,15 +26,14 @@ struct StAcquireSensors :
 
    void onInitialize()
    {
-      //this->configure<ObstaclePerceptionOrthogonal>(new LidarSensor("/front/scan", 1, ros::Duration(10)));
+      this->configure<ObstaclePerceptionOrthogonal>(new LidarSensor("/front/scan", 1, ros::Duration(10)));
       this->configure<SensorOrthogonal>(new SbConditionTemperatureSensor("/temperature"));
       this->configure<KeyboardOrthogonal>(new SbKeyboard());
 
       allSensorsReady.setTriggerEventTypesCount(2);
    }
    
-   /*
-   sc::result react(const EvSensorMessage<LidarSensor> &ev)
+   sc::result react(const EvTopicMessage<LidarSensor> &ev)
    {
       ROS_INFO_ONCE("Lidar sensor is ready");
 
@@ -42,9 +41,9 @@ struct StAcquireSensors :
          this->throwFinishEvent();
 
       return discard_event();
-   }*/
+   }
 
-   sc::result react(const EvSensorMessage<smacc::SensorTopic<sensor_msgs::Temperature>> &ev)
+   sc::result react(const EvTopicMessage<smacc::SensorTopic<sensor_msgs::Temperature>> &ev)
    {
       ROS_INFO_ONCE("Temperature sensor is ready");
       if (allSensorsReady.notify(ev))

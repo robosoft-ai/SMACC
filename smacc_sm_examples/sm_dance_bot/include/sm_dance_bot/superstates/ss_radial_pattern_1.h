@@ -20,7 +20,7 @@ public:
                     sc::transition<KeyPressEvent<'p'>,StNavigateToWaypointsX>,
 
                     // Error events
-                    sc::transition<smacc::EvSensorMessageTimeout<LidarSensor>, StAcquireSensors>,
+                    sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
                     sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
 
                     // Internal events

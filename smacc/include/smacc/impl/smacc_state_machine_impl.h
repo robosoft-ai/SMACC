@@ -33,7 +33,7 @@ namespace smacc
 
 
     template <typename SmaccComponentType>
-    void ISmaccStateMachine::requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value)
+    void ISmaccStateMachine::requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value, bool verbose)
     {
         ROS_INFO("requiresComponent %s prelock", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
         std::lock_guard<std::mutex> lock(m_mutex_);

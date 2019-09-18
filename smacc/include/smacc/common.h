@@ -119,11 +119,12 @@ namespace smacc
   };
 
   //--------------------------------
-  template <typename MessageType>
+  /*template <typename MessageType>
   struct EvTopicMessage : sc::event< EvTopicMessage <MessageType> >, ITopicMessage
   { 
       MessageType message;
   };
+*/
 
   //--------------------------------
   template <typename ActionFeedback>
