@@ -7,7 +7,7 @@ struct StNavigateToWaypoint1: smacc::SmaccState<StNavigateToWaypoint1,SmDanceBot
               sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
 
               // Keyboard events
-              sc::transition<KeyPressEvent<'p'>,StNavigateReverse2>,
+              sc::transition<EvKeyPressP<SbKeyboard>,StNavigateReverse2>,
 
               // Error events
               sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,

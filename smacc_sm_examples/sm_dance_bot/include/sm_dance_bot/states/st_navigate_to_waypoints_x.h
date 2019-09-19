@@ -8,8 +8,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
               sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>>,
 
               // Keyboard event
-              sc::custom_reaction<KeyPressEvent<'n'>>,
-              sc::custom_reaction<KeyPressEvent<'p'>>,
+              sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
+              sc::custom_reaction<EvKeyPressP<SbKeyboard>>,
 
               // Error events
               sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
@@ -66,14 +66,14 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     return navigateState();
   }
 
-  sc::result react(const KeyPressEvent<'n'> &ev)
+  sc::result react(const EvKeyPressN<SbKeyboard> &ev)
   {
     currentIteration++;
     this->setGlobalSMData("navigation_x_iteration", currentIteration);
     return navigateState();
   }
 
-  sc::result react(const KeyPressEvent<'p'> &ev)
+  sc::result react(const EvKeyPressP<SbKeyboard> &ev)
   {
     switch (currentIteration)
     {

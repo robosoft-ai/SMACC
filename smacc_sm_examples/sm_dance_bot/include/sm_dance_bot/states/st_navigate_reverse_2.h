@@ -7,8 +7,8 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, SmDanceBot>
             sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypoint1>,
 
             // Keyboard events
-            sc::transition<KeyPressEvent<'p'>,StRotateDegrees4>,
-            sc::transition<smacc::KeyPressEvent<'n'>, StNavigateToWaypoint1>,
+            sc::transition<EvKeyPressP<SbKeyboard>,StRotateDegrees4>,
+            sc::transition<smacc::EvKeyPressN<SbKeyboard>, StNavigateToWaypoint1>,
 
             // Error events
             sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,

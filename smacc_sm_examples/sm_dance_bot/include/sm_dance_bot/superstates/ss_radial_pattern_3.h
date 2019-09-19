@@ -15,8 +15,8 @@ public:
                       sc::transition<EvStateFinish<SsRadialPattern3>, StRotateDegrees4>,
 
                       // Keyboard events
-                      sc::transition<smacc::KeyPressEvent<'n'>, StRotateDegrees4>,
-                      sc::transition<KeyPressEvent<'p'>,StNavigateToWaypointsX>,
+                      sc::transition<smacc::EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
+                      sc::transition<EvKeyPressP<SbKeyboard>,StNavigateToWaypointsX>,
                        
                       // Error events
                       sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,

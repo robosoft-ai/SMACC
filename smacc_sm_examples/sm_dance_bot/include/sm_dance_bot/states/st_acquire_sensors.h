@@ -1,6 +1,3 @@
-
-#include <boost/statechart/custom_reaction.hpp>
-
 using namespace smacc;
 
 struct StAcquireSensors : 
@@ -14,7 +11,7 @@ struct StAcquireSensors :
        sc::transition<EvStateFinish<StAcquireSensors>, StNavigateToWaypointsX>,
        
        // Keyboard event
-       sc::transition<KeyPressEvent<'n'>,StNavigateToWaypointsX>,
+       sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
 
        // Sensor events
        sc::custom_reaction<EvTopicMessage<LidarSensor>>,
