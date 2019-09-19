@@ -28,11 +28,15 @@ public:
 
     int iteration_count;
     int total_iterations;
+    float ray_angle_increment_degree;
+    float ray_length_meters;
 
     void onInitialize()
     {
         iteration_count = 0;
-        total_iterations =2;
+        total_iterations = 2;
+        ray_angle_increment_degree = 45;
+        ray_length_meters = 10;
 
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
@@ -43,6 +47,8 @@ public:
         {
             this->throwFinishEvent();
         }
+
+        return forward_event();
     }
 };
 

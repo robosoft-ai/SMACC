@@ -15,7 +15,7 @@ void PlannerSwitcher::init(ros::NodeHandle& nh, std::string)
 
 void PlannerSwitcher::setBackwardPlanner()
 {
-  ROS_INFO("Planner Switcher: Trying to set BackwardPlanner");
+  ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
   desired_global_planner_ = "backward_global_planner/BackwardGlobalPlanner";
   desired_local_planner_ = "backward_local_planner/BackwardLocalPlanner";
   updatePlanners();
@@ -23,7 +23,7 @@ void PlannerSwitcher::setBackwardPlanner()
 
 void PlannerSwitcher::setForwardPlanner()
 {
-  ROS_INFO("Planner Switcher: Trying to set ForwardPlanner");
+  ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set ForwardPlanner");
   desired_global_planner_ = "forward_global_planner/ForwardGlobalPlanner";
   desired_local_planner_ = "forward_local_planner/ForwardLocalPlanner";
   updatePlanners();
@@ -38,8 +38,8 @@ void PlannerSwitcher::setDefaultPlanners()
 
 void PlannerSwitcher::updatePlanners(bool subscribecallback)
 {
-  ROS_INFO_STREAM("Setting global planner: " << desired_global_planner_);
-  ROS_INFO_STREAM("Setting local planner: " << desired_local_planner_);
+  ROS_INFO_STREAM("[PlannerSwitcher] Setting global planner: " << desired_global_planner_);
+  ROS_INFO_STREAM("[PlannerSwitcher] Setting local planner: " << desired_local_planner_);
 
   dynamic_reconfigure::ReconfigureRequest srv_req;
   dynamic_reconfigure::ReconfigureResponse srv_resp;
@@ -59,7 +59,7 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
   ros::service::call("/move_base/set_parameters", srv_req, srv_resp);
   ros::spinOnce();
   ros::Duration(0.5).sleep();
-  ROS_INFO_STREAM("Response: "<< srv_resp);
+  ROS_DEBUG_STREAM("[PlannerSwitcher] Response: "<< srv_resp);
 }
 
 void PlannerSwitcher::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr& configuration_update)
@@ -78,13 +78,13 @@ void PlannerSwitcher::dynreconfCallback(const dynamic_reconfigure::Config::Const
 
   if(gp== configuration_update->strs.end() ||  lp == configuration_update->strs.end())
     {
-      ROS_INFO("After planner update it is noticed an incorrect move_base planner configuration. Resending request.");
+      ROS_INFO("[PlannerSwitcher] After planner update it is noticed an incorrect move_base planner configuration. Resending request.");
       set_planners_mode_flag =false;
       updatePlanners(false);
     }
     else
     {
-      ROS_INFO("Planners correctly configured according to parameter update callback");
+      ROS_INFO("[PlannerSwitcher] Planners correctly configured according to parameter update callback");
       set_planners_mode_flag= true;
     }
 }

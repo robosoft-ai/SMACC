@@ -143,6 +143,7 @@ template <typename T>
 typename enable_if<boost::mpl::is_sequence<T>>::type
 processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 {
+    ROS_INFO_STREAM("State %s Walker has transition list");
     using boost::mpl::_1;
     using wrappedList = typename boost::mpl::transform<T, add_type_wrapper<_1>>::type;
     boost::mpl::for_each<wrappedList>(AddTransition(sourceState));
@@ -151,7 +152,7 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 template <typename Ev, typename Dst>
 void processTransition(statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    //ROS_INFO_STREAM("GOTCHA");
+    ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
 
     if (!sourceState->stateMachine_->containsState<Dst>())
     {

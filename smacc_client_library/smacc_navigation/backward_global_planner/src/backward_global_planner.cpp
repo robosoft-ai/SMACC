@@ -239,7 +239,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
     planPub_.publish(planMsg);
 
     // this was previously set to size() <= 1, but a plan with a single point is also a valid plan (the goal)
-    if (plan.size() <=0)
+    if (plan.size() <=1)
     {
         ROS_INFO("cannot create backward plan");
         return false;

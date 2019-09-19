@@ -38,12 +38,12 @@ public:
 
         if(a!=nullptr)
         {
-                ROS_WARN_STREAM("setting state active "<< active <<": " << a->getFullPath());
-                a->active_ = active;
+            ROS_WARN_STREAM("[StateMachine] setting state active "<< active <<": " << a->getFullPath());
+            a->active_ = active;
         }
         else
         {
-            ROS_ERROR_STREAM("updated state not found: " <<demangleSymbol(typeid(StateType).name()).c_str());
+            ROS_ERROR_STREAM("[StateMachine] updated state not found: " <<demangleSymbol(typeid(StateType).name()).c_str());
         }  
 
         

@@ -78,7 +78,7 @@ public:
   template <typename T>
   bool getGlobalSMData(std::string name, T &ret)
   {
-    this->getStateMachine().getGlobalSMData(name, ret);
+    return this->getStateMachine().getGlobalSMData(name, ret);
   }
 
   // Store globally in this state machine. (By value parameter )

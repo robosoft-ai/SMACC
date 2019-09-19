@@ -157,7 +157,7 @@ protected:
                     abortedEvent->client = this;
                     abortedEvent->resultMessage = result_msg;
 
-                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(abortedEvent).name()).c_str());
+                    ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
                     scheduler->queue_event(processorHandle, abortedEvent);
                 }
                 else if (resultType == actionlib::SimpleClientGoalState::REJECTED)

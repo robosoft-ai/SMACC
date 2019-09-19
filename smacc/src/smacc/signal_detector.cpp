@@ -174,7 +174,7 @@ void SignalDetector::pollingLoop()
     ROS_INFO_STREAM("[SignalDetector] loop rate hz:" << loop_rate_hz);
     while (ros::ok())
     {
-        ROS_INFO_STREAM_THROTTLE(1, "[SignalDetector] loop iteration" << loop_rate_hz);
+        ROS_INFO_STREAM_THROTTLE(10, "[SignalDetector] heartbeat");
 
         pollOnce();
         ros::spinOnce();
