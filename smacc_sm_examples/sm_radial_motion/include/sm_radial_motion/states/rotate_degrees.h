@@ -16,8 +16,8 @@ public:
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new Rotate(90));
-    this->configure<ToolOrthogonal>(new ToolStop());
+    this->configure<NavigationOrthogonal>(std::make_shared<Rotate>(90));
+    this->configure<ToolOrthogonal>(std::make_shared<ToolStop>());
   }
 
   void onEntry()

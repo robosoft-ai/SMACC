@@ -37,7 +37,7 @@ public:
         //ray_lenght = 10;
         //degree_increment = 20;
 
-        this->configure<KeyboardOrthogonal>(new SbKeyboard());
+        this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
 
     sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)

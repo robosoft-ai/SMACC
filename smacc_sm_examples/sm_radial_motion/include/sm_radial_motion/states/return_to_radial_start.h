@@ -10,8 +10,8 @@ public:
 
    void onInitialize()
    {
-      this->configure<NavigationOrthogonal>(new UndoPathBackwards());
-      this->configure<ToolOrthogonal>(new ToolStop());
+      this->configure<NavigationOrthogonal>(std::make_shared<UndoPathBackwards>());
+      this->configure<ToolOrthogonal>(std::make_shared<ToolStop>());
    }
 
     void onEntry()

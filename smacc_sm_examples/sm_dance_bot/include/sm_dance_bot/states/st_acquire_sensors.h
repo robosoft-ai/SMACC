@@ -23,9 +23,9 @@ struct StAcquireSensors :
 
    void onInitialize()
    {
-      this->configure<ObstaclePerceptionOrthogonal>(new LidarSensor("/front/scan", 1, ros::Duration(10)));
-      this->configure<SensorOrthogonal>(new SbConditionTemperatureSensor("/temperature"));
-      this->configure<KeyboardOrthogonal>(new SbKeyboard());
+      this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<LidarSensor>("/front/scan", 1, ros::Duration(10)));
+      this->configure<SensorOrthogonal>(std::make_shared<SbConditionTemperatureSensor>("/temperature"));
+      this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
 
       allSensorsReady.setTriggerEventTypesCount(2);
    }

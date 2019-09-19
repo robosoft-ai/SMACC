@@ -17,8 +17,8 @@ struct StRotateDegrees3 : smacc::SmaccState<StRotateDegrees3, SmDanceBot>
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new SbRotate(/*30*/180));
-    this->configure<ToolOrthogonal>(new SbToolStop());
-    this->configure<KeyboardOrthogonal>(new SbKeyboard());
+    this->configure<NavigationOrthogonal>(std::make_shared<SbRotate>(/*30*/180));
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
+    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
   }
 };

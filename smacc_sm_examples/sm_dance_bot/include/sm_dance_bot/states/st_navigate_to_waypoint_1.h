@@ -16,8 +16,8 @@ struct StNavigateToWaypoint1: smacc::SmaccState<StNavigateToWaypoint1,SmDanceBot
 
   void onInitialize()
   {
-     this->configure<NavigationOrthogonal>(new SbNavigateGlobalPosition(0, 0));
-     this->configure<ToolOrthogonal>(new SbToolStart());
-     this->configure<KeyboardOrthogonal>(new SbKeyboard());
+     this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(0, 0));
+     this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());
+     this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
   }
 };

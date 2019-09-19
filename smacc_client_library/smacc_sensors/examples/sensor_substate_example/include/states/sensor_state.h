@@ -31,8 +31,8 @@ struct SensorState: smacc::SmaccState<SensorState, SensorStateMachine>
 
   void onInitialize()
   {
-    this->configure<ObstaclePerceptionOrthogonal>(new smacc::SensorTopic<sensor_msgs::LaserScan>("/scan", 1, ros::Duration(10)));
-    this->configure<SensorOrthogonal>(new CustomConditionTemperatureSensor("/temperature"));
+    this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<smacc::SensorTopic<sensor_msgs::LaserScan>>("/scan", 1, ros::Duration(10)));
+    this->configure<SensorOrthogonal>(std::make_shared<CustomConditionTemperatureSensor>("/temperature"));
   }
 
   void onEntry()

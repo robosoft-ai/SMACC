@@ -12,8 +12,8 @@ public:
   void onInitialize()
   {
      ROS_INFO("ON INITIALIZEEEE");
-     this->configure<NavigationOrthogonal>(new NavigateGlobalPosition(1, 0));
-     this->configure<ToolOrthogonal>(new ToolStart());
+     this->configure<NavigationOrthogonal>(std::make_shared<NavigateGlobalPosition>(1, 0));
+     this->configure<ToolOrthogonal>(std::make_shared<ToolStart>());
   }
 
   void onEntry()

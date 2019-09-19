@@ -34,9 +34,9 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
     auto &target = waypoints[currentIteration];
 
-    this->configure<NavigationOrthogonal>(new SbNavigateGlobalPosition(target.first, target.second));
-    this->configure<ToolOrthogonal>(new SbToolStart());
-    this->configure<KeyboardOrthogonal>(new SbKeyboard());
+    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.first, target.second));
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());
+    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
   }
 
   sc::result navigateState()

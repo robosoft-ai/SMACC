@@ -11,8 +11,8 @@ public:
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new NavigateForward(3));
-    this->configure<ToolOrthogonal>(new ToolStart());
+    this->configure<NavigationOrthogonal>(std::make_shared<NavigateForward>(3));
+    this->configure<ToolOrthogonal>(std::make_shared<ToolStart>());
 
     // ALTERNATIVE SYNTAX
     // auto fw = new NavigateForward();

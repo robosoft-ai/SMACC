@@ -43,6 +43,11 @@ public:
         currentState = nullptr;
     }
 
+    virtual ~SmaccSubStateBehavior()
+    {
+        ROS_WARN("Substate behavior deallocated.");
+    }
+
     template <typename EventType>
     void postEvent(const EventType &ev)
     {

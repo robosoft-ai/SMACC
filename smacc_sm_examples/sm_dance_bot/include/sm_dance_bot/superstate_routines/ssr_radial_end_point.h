@@ -6,8 +6,8 @@ struct SsrRadialEndPoint: smacc::SmaccState<SsrRadialEndPoint,SS>
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new SbNavigateForward(1));
-    this->configure<ToolOrthogonal>(new SbToolStop());    
+    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(1));
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());    
   }
   
 };

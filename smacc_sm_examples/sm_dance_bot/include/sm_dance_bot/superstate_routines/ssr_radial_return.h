@@ -6,7 +6,7 @@ struct SsrRadialReturn: smacc::SmaccState<SsrRadialReturn,SS>
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(new SbUndoPathBackwards());
-    this->configure<ToolOrthogonal>(new SbToolStop());
+    this->configure<NavigationOrthogonal>(std::make_shared<SbUndoPathBackwards>());
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
   }
 };

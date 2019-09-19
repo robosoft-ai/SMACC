@@ -60,7 +60,7 @@ public:
   virtual ISmaccStateMachine &getStateMachine() = 0;
 
   template <typename TOrthogonal>
-  void configure(SmaccSubStateBehavior *smaccBehavior)
+  void configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior)
   {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());

@@ -34,7 +34,7 @@ public:
         iteration_count = 0;
         total_iterations =2;
 
-        this->configure<KeyboardOrthogonal>(new SbKeyboard());
+        this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
 
     sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)

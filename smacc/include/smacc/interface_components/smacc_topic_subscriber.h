@@ -31,6 +31,7 @@ public:
 
   virtual ~SmaccTopicSubscriberClient()
   {
+    sub_.shutdown();
   }
 
   virtual void initialize(std::string topicName, int queueSize = 1)
@@ -40,6 +41,7 @@ public:
       firstMessage_ = true;
       ROS_INFO_STREAM("[" << this->getName() << "]Subscribing to sensor topic: " << topicName);
       sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
+      this->initialized_=true;
     }
   }
 

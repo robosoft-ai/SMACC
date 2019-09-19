@@ -11,8 +11,8 @@ struct SsrRadialRotate: smacc::SmaccState<SsrRadialRotate, SS>
     ROS_INFO("Radial rotate: SS current iteration: %d", currentIteration);
     if(currentIteration < this->context<SS>().total_iterations)
     {
-        this->configure<NavigationOrthogonal>(new SbRotate(45));
-        this->configure<ToolOrthogonal>(new SbToolStop());
+        this->configure<NavigationOrthogonal>(std::make_shared<SbRotate>(45));
+        this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
     }
   }
 };

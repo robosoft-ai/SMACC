@@ -7,7 +7,7 @@ void Orthogonal::setStateMachine(ISmaccStateMachine *value)
     this->stateMachine_ = value;
 }
 
-void Orthogonal::setStateBehavior(smacc::SmaccSubStateBehavior *statebehavior)
+void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior)
 {
     if (statebehavior != nullptr)
     {
@@ -49,7 +49,6 @@ void Orthogonal::onExit()
     {
         ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), currentBehavior->getName().c_str());
         currentBehavior->onExit();
-#warning improve this moving to shared pointers
         currentBehavior = nullptr;
     }
     else

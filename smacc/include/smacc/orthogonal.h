@@ -9,11 +9,11 @@ class Orthogonal
 {
 public:
     ISmaccStateMachine *stateMachine_;
-    smacc::SmaccSubStateBehavior *currentBehavior;
+    std::shared_ptr<smacc::SmaccSubStateBehavior> currentBehavior;
 
     void setStateMachine(ISmaccStateMachine *value);
 
-    void setStateBehavior(smacc::SmaccSubStateBehavior *statebehavior);
+    void setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior);
 
     void onEntry();
 
