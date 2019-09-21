@@ -6,6 +6,7 @@
 #pragma once
 
 #include <smacc/component.h>
+#include <smacc/impl/smacc_component_impl.h>
 
 namespace smacc
 {

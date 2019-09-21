@@ -3,10 +3,11 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include "smacc/component.h"
-
+#include <smacc/component.h>
+#include <smacc/impl/smacc_component_impl.h>
 namespace smacc
 {
+
 ISmaccComponent::~ISmaccComponent()
 {
 }

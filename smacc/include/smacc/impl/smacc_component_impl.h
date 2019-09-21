@@ -1,3 +1,4 @@
+    #pragma once
     #include <smacc/component.h>
     
     namespace smacc

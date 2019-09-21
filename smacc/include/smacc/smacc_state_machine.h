@@ -8,7 +8,6 @@
 #include <smacc/common.h>
 #include <smacc/component.h>
 #include <smacc/client.h>
-#include <smacc/impl/smacc_component_impl.h>
 
 #include <boost/any.hpp>
 #include <map>
