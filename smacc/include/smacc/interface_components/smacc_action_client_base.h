@@ -6,6 +6,8 @@
 #pragma once
 
 #include <smacc/interface_components/smacc_action_client.h>
+#include <smacc/impl/smacc_component_impl.h>
+
 #include <queue>
 
 namespace smacc

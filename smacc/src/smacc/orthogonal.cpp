@@ -1,4 +1,6 @@
 #include <smacc/orthogonal.h>
+#include <smacc/impl/smacc_state_machine_impl.h>
+#include <smacc/smacc_substate_behavior.h>
 
 namespace smacc
 {
