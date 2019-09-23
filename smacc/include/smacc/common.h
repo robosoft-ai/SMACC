@@ -114,20 +114,6 @@ namespace smacc
   };
 
   //--------------------------------
-  struct ITopicMessage
-  {
-    
-  };
-
-  //--------------------------------
-  /*template <typename MessageType>
-  struct EvTopicMessage : sc::event< EvTopicMessage <MessageType> >, ITopicMessage
-  { 
-      MessageType message;
-  };
-*/
-
-  //--------------------------------
   template <typename ActionFeedback>
   struct EvActionFeedback : sc::event< EvActionFeedback <ActionFeedback>> 
   {
@@ -138,6 +124,9 @@ namespace smacc
 
   // demangles the type name to be used as a node handle path
   std::string cleanShortTypeName(const std::type_info& tinfo);
+
+ template <typename StateMachineType>
+  void run();
 }
 
 inline std::string demangleSymbol(const char* name)

@@ -30,11 +30,12 @@ namespace smacc
     
     // initialize the asynchronous state machine processor
     signalDetector.setProcessorHandle(sm);
+
     scheduler1.initiate_processor(sm);
+    
 
     //create a thread for the asynchronous state machine processor execution
-    boost::thread otherThread(
-        boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
+    boost::thread otherThread(boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
 
     // use the  main thread for the signal detector component (waiting actionclient requests)
     signalDetector.pollingLoop();

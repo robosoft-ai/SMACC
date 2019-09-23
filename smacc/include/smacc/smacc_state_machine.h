@@ -32,11 +32,25 @@ class ISmaccState;
 class ISmaccStateMachine
 {
     public:
-    
-    std::shared_ptr<SmaccStateMachineInfo> info_;
+
     ISmaccStateMachine( SignalDetector* signalDetector);
 
     virtual ~ISmaccStateMachine();
+
+    virtual void Reset()
+    {
+
+    }
+
+    virtual void Stop()
+    {
+
+    }
+
+    virtual void EStop()
+    {
+
+    }
 
     void notifyOnStateEntry(ISmaccState* state);
 
@@ -133,5 +147,8 @@ private:
 
     // Event to notify to the signaldetection thread that a request has been created...
     SignalDetector* signalDetector_;
+    
+public:
+    std::shared_ptr<SmaccStateMachineInfo> info_;
 };
 }

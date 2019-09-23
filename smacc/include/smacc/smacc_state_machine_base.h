@@ -31,6 +31,22 @@ public:
 
     //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
 
+    virtual void Reset()
+    {
+        this->terminate();
+        smacc::run<DerivedStateMachine>();
+    }
+
+    virtual void Stop()
+    {
+        this->terminate();
+    }
+
+    virtual void EStop()
+    {
+        this->terminate();
+    }
+
     template <typename StateType>
     void updateCurrentState(bool active, StateType* test)
     {

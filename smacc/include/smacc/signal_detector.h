@@ -7,6 +7,7 @@
 
 #include <boost/thread.hpp>
 #include <smacc/common.h>
+#include <atomic>
 
 namespace smacc
 {
@@ -24,6 +25,8 @@ class SignalDetector
 
         // Waits for the polling thread to end...
         void join();
+
+        void stop();
         
         // Prints the current state of the signal detector into a string...
         void toString(std::stringstream& ss);
@@ -60,6 +63,8 @@ class SignalDetector
 
         // Loop frequency of the signal detector (to check answers from actionservers)
         double loop_rate_hz;
+
+        std::atomic<bool> end_;
 
         friend class ISmaccStateMachine;
 };

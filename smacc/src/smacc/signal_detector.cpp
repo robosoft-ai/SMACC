@@ -13,10 +13,11 @@ namespace smacc
 * SignalDetector()
 ******************************************************************************************************************
 */
-SignalDetector::SignalDetector(SmaccScheduler* scheduler)
+SignalDetector::SignalDetector(SmaccScheduler *scheduler)
 {
     scheduler_ = scheduler;
     loop_rate_hz = 10.0;
+    end_= false;
 }
 
 /**
@@ -24,7 +25,7 @@ SignalDetector::SignalDetector(SmaccScheduler* scheduler)
 * registerActionClientRequest()
 ******************************************************************************************************************
 */
-void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo)
+void SignalDetector::registerActionClientRequest(ISmaccActionClient *actionClientRequestInfo)
 {
     ROS_INFO("Signal detector is aware of the '-- %s -- action client request'", actionClientRequestInfo->getName().c_str());
     openRequests_.push_back(actionClientRequestInfo);
@@ -36,7 +37,7 @@ void SignalDetector::registerActionClientRequest(ISmaccActionClient* actionClien
 * initialize()
 ******************************************************************************************************************
 */
-void SignalDetector::initialize(ISmaccStateMachine* stateMachine)
+void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
 {
     smaccStateMachine_ = stateMachine;
 }
@@ -58,7 +59,7 @@ void SignalDetector::setProcessorHandle(SmaccScheduler::processor_handle process
 */
 void SignalDetector::runThread()
 {
-    signalDetectorThread_ = boost::thread( boost::bind(&SignalDetector::pollingLoop, this ));
+    signalDetectorThread_ = boost::thread(boost::bind(&SignalDetector::pollingLoop, this));
 }
 
 /**
@@ -73,17 +74,27 @@ void SignalDetector::join()
 
 /**
 ******************************************************************************************************************
+* stop()
+******************************************************************************************************************
+*/
+void SignalDetector::stop()
+{
+    end_=true;
+}
+
+/**
+******************************************************************************************************************
 * notifyFeedback()
 ******************************************************************************************************************
 */
-void SignalDetector::notifyFeedback(ISmaccActionClient* client)
+void SignalDetector::notifyFeedback(ISmaccActionClient *client)
 {
     //ROS_INFO("Notify feedback");
     //boost::intrusive_ptr< EvActionFeedback > actionFeedbackEvent = new EvActionFeedback();
     //actionFeedbackEvent->client = client;
 
     client->postFeedbackEvent(scheduler_, processorHandle_);
-    
+
     //ROS_INFO("Sending feedback event");
     //scheduler_->queue_event(processorHandle_, actionFeedbackEvent);
 }
@@ -93,10 +104,10 @@ void SignalDetector::notifyFeedback(ISmaccActionClient* client)
 * finalizeRequest()
 ******************************************************************************************************************
 */
-void SignalDetector::finalizeRequest(ISmaccActionClient* client)
+void SignalDetector::finalizeRequest(ISmaccActionClient *client)
 {
     ROS_INFO("SignalDetector: Finalizing actionlib request: %s. RESULT: %s", client->getName().c_str(), client->getState().toString().c_str());
-    auto it = find(openRequests_.begin(),openRequests_.end(),client);
+    auto it = find(openRequests_.begin(), openRequests_.end(), client);
 
     if (it != openRequests_.end())
     {
@@ -118,11 +129,11 @@ void SignalDetector::finalizeRequest(ISmaccActionClient* client)
 * toString()
 ******************************************************************************************************************
 */
-void SignalDetector::toString(std::stringstream& ss)
+void SignalDetector::toString(std::stringstream &ss)
 {
     ss << "--------" << std::endl;
     ss << "Open requests" << std::endl;
-    for(ISmaccActionClient* smaccActionClient: this->openRequests_)
+    for (ISmaccActionClient *smaccActionClient : this->openRequests_)
     {
         auto state = smaccActionClient->getState().toString();
         ss << smaccActionClient->getName() << ": " << state << std::endl;
@@ -137,7 +148,7 @@ void SignalDetector::toString(std::stringstream& ss)
 */
 void SignalDetector::pollOnce()
 {
-    for(ISmaccActionClient* smaccActionClient: openRequests_)
+    for (ISmaccActionClient *smaccActionClient : openRequests_)
     {
         // check feedback messages
         if (smaccActionClient->hasFeedback())
@@ -147,11 +158,11 @@ void SignalDetector::pollOnce()
 
         // check result
         auto state = smaccActionClient->getState();
-        if(state.isDone())
+        if (state.isDone())
         {
             finalizeRequest(smaccActionClient);
         }
-    }            
+    }
 }
 
 /**
@@ -162,17 +173,17 @@ void SignalDetector::pollOnce()
 void SignalDetector::pollingLoop()
 {
     ros::NodeHandle nh("~");
-    
-    if(!nh.param("signal_detector_loop_freq",this->loop_rate_hz))
+
+    if (!nh.param("signal_detector_loop_freq", this->loop_rate_hz))
     {
     }
 
-    nh.setParam("signal_detector_loop_freq",this->loop_rate_hz);
+    nh.setParam("signal_detector_loop_freq", this->loop_rate_hz);
 
     ros::Rate r(loop_rate_hz);
 
     ROS_INFO_STREAM("[SignalDetector] loop rate hz:" << loop_rate_hz);
-    while (ros::ok())
+    while (ros::ok() && !end_)
     {
         ROS_INFO_STREAM_THROTTLE(10, "[SignalDetector] heartbeat");
 
@@ -180,5 +191,5 @@ void SignalDetector::pollingLoop()
         ros::spinOnce();
         r.sleep();
     }
-}   
 }
+} // namespace smacc
