@@ -18,7 +18,7 @@ INIT_TOPIC = '/smacc/container_init'
 STRUCTURE_TOPIC = '/smacc/container_structure'
 
 
-from smacc_user_data import UserData
+from smacc_viewer.smacc_user_data import UserData
 
 class IntrospectionClient():
     def get_servers(self):

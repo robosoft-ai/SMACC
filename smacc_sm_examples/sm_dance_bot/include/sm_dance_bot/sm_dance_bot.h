@@ -70,7 +70,7 @@ struct SmDanceBot
 
 #include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
 
-#include <sm_dance_bot/substate_behaviors/publisher/sb_publisher.h>
+#include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
 
 #include <smacc/all_event_aggregator.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>

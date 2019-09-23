@@ -30,7 +30,7 @@ public:
 
   void publish(const MessageType& msg)
   {
-
+    pub_.publish(msg);
   }
 
 protected:

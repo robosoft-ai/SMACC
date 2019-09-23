@@ -47,7 +47,7 @@
 
   <!-- The export tag contains other, unspecified, tags -->
 <export>
-  <nav_core plugin="${prefix}/blp_plugin.xml" />  
+  <nav_core plugin="${prefix}/flp_plugin.xml" />  
   <rosdoc config="rosdoc.yaml" />
 </export>
 </package>

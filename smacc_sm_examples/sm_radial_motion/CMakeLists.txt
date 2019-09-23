@@ -102,11 +102,23 @@ install(DIRECTORY include/${PROJECT_NAME}/
   PATTERN ".svn" EXCLUDE
 )
 
-## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
     launch/radial_motion.launch
-  # myfile2
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+    launch/ridgeback_simulation.launch
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
+
+install(FILES
+    config/backward_local_planner.yaml
+    config/forward_local_planner.yaml
+    config/navigation.rviz
+    config/radial_motion_sm_config.yaml
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)
+
+install(FILES
+    urdf/empty.xacro
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
 )
 
 #############

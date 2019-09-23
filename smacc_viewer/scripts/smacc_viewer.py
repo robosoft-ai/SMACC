@@ -82,8 +82,8 @@ def import_non_local(name, custom_name=None):
 smacc_viewer = import_non_local('smacc_viewer')
 from smacc_viewer import xdot
 ##
-from smacc_user_data import UserData
-from introspection_container import IntrospectionClient
+from smacc_viewer.smacc_user_data import UserData
+from smacc_viewer.introspection_container import IntrospectionClient
 
 ### Helper Functions
 def graph_attr_string(attrs):

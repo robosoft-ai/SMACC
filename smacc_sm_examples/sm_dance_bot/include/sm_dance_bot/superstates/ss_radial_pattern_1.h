@@ -37,7 +37,7 @@ public:
         iteration_count = 0;
         total_iterations = 2;
         ray_angle_increment_degree = 45;
-        ray_length_meters = 10;
+        ray_length_meters = 1;
         
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
