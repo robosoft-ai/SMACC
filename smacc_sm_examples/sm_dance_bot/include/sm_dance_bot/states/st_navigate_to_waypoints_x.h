@@ -128,5 +128,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     default:
       ROS_INFO("error in transition");
     }
+
+    return forward_event();
   }
 };

@@ -51,6 +51,7 @@ struct SmDanceBot
 #include <sm_dance_bot/orthogonals/tool_orthogonal.h>
 #include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
 #include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
+#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
 
 
 //SUBSTATE BEHAVIORS
@@ -68,6 +69,8 @@ struct SmDanceBot
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
 
 #include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
+
+#include <sm_dance_bot/substate_behaviors/publisher/sb_publisher.h>
 
 #include <smacc/all_event_aggregator.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>

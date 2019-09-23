@@ -39,7 +39,7 @@ public:
     if (!initialized_)
     {
       firstMessage_ = true;
-      ROS_INFO_STREAM("[" << this->getName() << "]Subscribing to sensor topic: " << topicName);
+      ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
       sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
       this->initialized_=true;
     }
