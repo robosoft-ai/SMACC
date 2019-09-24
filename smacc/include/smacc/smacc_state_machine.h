@@ -135,6 +135,9 @@ class ISmaccStateMachine
         }
     }
 
+    template <typename StateType>
+    void updateCurrentState(bool active, StateType* test);
+
 private:
 
     std::mutex m_mutex_;
@@ -144,6 +147,10 @@ private:
     std::map<std::string, boost::any> globalData_;
 
     std::map<std::string, smacc::Orthogonal*> orthogonals_;
+
+    ros::Publisher statusPub_;
+    
+    ros::NodeHandle nh_;
 
     // Event to notify to the signaldetection thread that a request has been created...
     SignalDetector* signalDetector_;

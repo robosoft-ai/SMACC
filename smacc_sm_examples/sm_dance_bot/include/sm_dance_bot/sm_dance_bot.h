@@ -1,7 +1,6 @@
 #include <ros/ros.h>
 #include <smacc/smacc.h>
 
-
 //STATES
 class StAcquireSensors;
 class StRotateDegrees4;

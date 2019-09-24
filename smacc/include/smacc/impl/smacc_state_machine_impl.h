@@ -3,6 +3,9 @@
 #include <smacc/smacc_state_machine.h>
 #include <smacc/orthogonal.h>
 #include <smacc/signal_detector.h>
+#include <smacc/smacc_state_info.h>
+#include <smacc/smacc_state_machine_info.h>
+#include <smacc_msgs/SmaccStatus.h>
 
 namespace smacc
 {
@@ -31,7 +34,7 @@ namespace smacc
         storage = ret;
     }
 
-
+//-------------------------------------------------------------------------------------------------------
     template <typename SmaccComponentType>
     void ISmaccStateMachine::requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value, bool verbose)
     {
@@ -60,11 +63,47 @@ namespace smacc
     
         storage = ret;
     }
-
+//-------------------------------------------------------------------------------------------------------
     template <typename EventType>
     void ISmaccStateMachine::postEvent(EventType* ev)
     {
        this->signalDetector_->postEvent( ev);
+    }
+
+
+    template <typename StateType>
+    void ISmaccStateMachine::updateCurrentState(bool active, StateType* test)
+    {
+        auto stateInfo =  info_->getState<StateType>();
+
+        if(stateInfo!=nullptr)
+        {
+            ROS_WARN_STREAM("[StateMachine] setting state active "<< active <<": " << stateInfo->getFullPath());
+            stateInfo->active_ = active;
+
+            std::list<std::shared_ptr<smacc::SmaccStateInfo>> ancestorList;
+            stateInfo->getAncestors(ancestorList);
+
+            smacc_msgs::SmaccStatus status_msg;
+            for(auto& ancestor: ancestorList)
+            {
+                status_msg.current_states.push_back(ancestor->toShortName());
+            }
+
+            this->statusPub_.publish(status_msg);
+        }
+        else
+        {
+            ROS_ERROR_STREAM("[StateMachine] updated state not found: " <<demangleSymbol(typeid(StateType).name()).c_str());
+        }  
+
+        
+        /*  
+        if(a !=nullptr && a->parentState_==nullptr)
+        {
+            currentState_ =a;
+            ROS_ERROR("really updated");
+        }*/
     }
 
     

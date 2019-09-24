@@ -14,7 +14,7 @@ namespace smacc
 class SignalDetector
 { 
     public:
-        SignalDetector(SmaccScheduler* scheduler);
+        SignalDetector(SmaccScheduler* scheduler, smacc::SMRunMode runMode);
 
         void initialize(ISmaccStateMachine* stateMachine);
 
@@ -49,12 +49,6 @@ class SignalDetector
         void notifyFeedback(ISmaccActionClient* resource);
 
         void registerActionClientRequest(ISmaccActionClient* actionClientRequestInfo);
-
-        SmaccScheduler* scheduler_;
-
-        SmaccScheduler::processor_handle processorHandle_;
-
-        boost::thread signalDetectorThread_ ;
         
         ISmaccStateMachine* smaccStateMachine_;
 
@@ -66,6 +60,21 @@ class SignalDetector
 
         std::atomic<bool> end_;
 
+        smacc::SMRunMode runMode_;
+
+        ros::NodeHandle nh_;
+        
+        ros::Publisher statusPub_;
+
+        // ---- boost statechart related ----
+
+        SmaccScheduler* scheduler_;
+
+        SmaccScheduler::processor_handle processorHandle_;
+
+        boost::thread signalDetectorThread_ ;
+
+        
         friend class ISmaccStateMachine;
 };
 }

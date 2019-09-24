@@ -6,9 +6,12 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation std_msgs)
 
 add_message_files(FILES
+  SmaccSMCommand.msg
+  SmaccStatus.msg
   SmaccContainerInitialStatusCmd.msg
   SmaccContainerStructure.msg
-  SmaccContainerStatus.msg)
+  SmaccContainerStatus.msg
+  )
 
 generate_messages(DEPENDENCIES std_msgs)
 

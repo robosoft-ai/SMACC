@@ -30,6 +30,15 @@ public:
 
     inline int depth() const{return depth_;}
 
+    void getAncestors(std::list<std::shared_ptr<SmaccStateInfo>>& ancestorsList)
+    {
+        ancestorsList.push_front(shared_from_this());
+        if( parentState_!=nullptr)
+        {
+            this->parentState_->getAncestors(ancestorsList);
+            
+        }
+    }
 
     std::string getFullPath()
     {

@@ -7,6 +7,7 @@
 #include <smacc/signal_detector.h>
 #include <smacc/orthogonal.h>
 #include <smacc/interface_components/smacc_action_client.h>
+#include <smacc_msgs/SmaccStatus.h>
 
 
 namespace smacc
@@ -16,6 +17,8 @@ ISmaccStateMachine::ISmaccStateMachine( SignalDetector* signalDetector)
     ROS_INFO("Creating State Machine Base");
     signalDetector_ = signalDetector;
     signalDetector_->initialize(this);
+
+    statusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>("/status", 1);
 } 
 
 ISmaccStateMachine::~ISmaccStateMachine( )

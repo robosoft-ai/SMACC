@@ -33,44 +33,22 @@ public:
 
     virtual void Reset()
     {
+        ISmaccStateMachine::Reset();
         this->terminate();
         smacc::run<DerivedStateMachine>();
     }
 
     virtual void Stop()
     {
+        ISmaccStateMachine::Stop();
         this->terminate();
     }
 
     virtual void EStop()
     {
+        ISmaccStateMachine::EStop();
         this->terminate();
-    }
-
-    template <typename StateType>
-    void updateCurrentState(bool active, StateType* test)
-    {
-        auto a =  info_->getState<StateType>();
-
-        if(a!=nullptr)
-        {
-            ROS_WARN_STREAM("[StateMachine] setting state active "<< active <<": " << a->getFullPath());
-            a->active_ = active;
-        }
-        else
-        {
-            ROS_ERROR_STREAM("[StateMachine] updated state not found: " <<demangleSymbol(typeid(StateType).name()).c_str());
-        }  
-
-        
-        /*  
-        if(a !=nullptr && a->parentState_==nullptr)
-        {
-            currentState_ =a;
-            ROS_ERROR("really updated");
-        }*/
-    }
-  
+    }  
     
     SmaccStateMachineBase( my_context ctx, SignalDetector* signalDetector)
         :ISmaccStateMachine(signalDetector),

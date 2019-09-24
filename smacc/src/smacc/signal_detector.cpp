@@ -13,11 +13,12 @@ namespace smacc
 * SignalDetector()
 ******************************************************************************************************************
 */
-SignalDetector::SignalDetector(SmaccScheduler *scheduler)
+SignalDetector::SignalDetector(SmaccScheduler *scheduler, smacc::SMRunMode runMode)
 {
     scheduler_ = scheduler;
     loop_rate_hz = 10.0;
     end_= false;
+    runMode_ = runMode;
 }
 
 /**

@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   actionlib
   roscpp
   pluginlib
+  smacc_msgs
 )
 
 ################################################
