@@ -65,7 +65,7 @@ SmaccRvizDisplay::SmaccRvizDisplay()
                                                     this, SLOT( updateHistoryLength() ));
                                                     */
 
-  current_state_ = new rviz::StringProperty( "CurrentState", "default value",
+  current_state_ = new rviz::StringProperty( "CurrentState", "",
                                                     "current smacc state",
                                                     this, SLOT( updateCurrentState() ));
 
