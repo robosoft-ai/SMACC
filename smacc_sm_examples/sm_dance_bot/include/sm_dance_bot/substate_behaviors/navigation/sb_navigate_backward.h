@@ -54,6 +54,7 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
+        
         this->requiresComponent(odomTracker_);
         this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
 

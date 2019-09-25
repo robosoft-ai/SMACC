@@ -14,7 +14,7 @@ namespace smacc
 class SignalDetector
 { 
     public:
-        SignalDetector(SmaccScheduler* scheduler, smacc::SMRunMode runMode);
+        SignalDetector(SmaccScheduler* scheduler);
 
         void initialize(ISmaccStateMachine* stateMachine);
 
@@ -59,8 +59,6 @@ class SignalDetector
         double loop_rate_hz;
 
         std::atomic<bool> end_;
-
-        smacc::SMRunMode runMode_;
 
         ros::NodeHandle nh_;
         

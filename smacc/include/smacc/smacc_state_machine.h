@@ -152,6 +152,10 @@ private:
     
     ros::NodeHandle nh_;
 
+    ros::NodeHandle private_nh_;
+
+    smacc::SMRunMode runMode_;
+
     // Event to notify to the signaldetection thread that a request has been created...
     SignalDetector* signalDetector_;
     

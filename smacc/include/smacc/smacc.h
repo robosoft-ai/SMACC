@@ -16,13 +16,13 @@ namespace smacc
   // The created thread is for the state machine process 
   // it locks the current thread to handle events of the state machine 
   template <typename StateMachineType>
-  void run(smacc::SMRunMode mode)
+  void run()
   {
     // create the asynchronous state machine scheduler
     SmaccScheduler scheduler1(true);
 
     // create the signalDetector component
-    SignalDetector signalDetector(&scheduler1, mode);
+    SignalDetector signalDetector(&scheduler1);
 
     // create the asynchronous state machine processor
     SmaccScheduler::processor_handle sm =

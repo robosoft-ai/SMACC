@@ -1,6 +1,10 @@
-
 <launch>
-    <include file="$(find ridgeback_gazebo)/launch/ridgeback_world.launch" />
+    <arg name="show_gz_client" default="true"/>
+
+    <include file="$(find ridgeback_gazebo)/launch/ridgeback_world.launch" >
+        <arg name="gui" value="$(arg show_gz_client)"/>
+    </include>
+
     <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <rosparam file="$(find ridgeback_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
         <rosparam file="$(find ridgeback_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />

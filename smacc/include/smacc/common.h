@@ -131,7 +131,7 @@ enum class SMRunMode
 };
 
 template <typename StateMachineType>
-void run(SMRunMode mode = SMRunMode::DEBUG);
+void run();
 } // namespace smacc
 
 inline std::string demangleSymbol(const char *name)

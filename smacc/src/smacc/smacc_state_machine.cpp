@@ -13,12 +13,34 @@
 namespace smacc
 {
 ISmaccStateMachine::ISmaccStateMachine( SignalDetector* signalDetector)
+    :private_nh_("~")
 {
     ROS_INFO("Creating State Machine Base");
     signalDetector_ = signalDetector;
     signalDetector_->initialize(this);
 
-    statusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>("/status", 1);
+    statusPub_ = private_nh_.advertise<smacc_msgs::SmaccStatus>("status", 1);
+
+    std::string runMode;
+    if(nh_.getParam("run_mode", runMode) )
+    {
+        if(runMode == "debug" )
+        {
+            runMode_ = SMRunMode::DEBUG;
+        }
+        else if (runMode == "release")
+        {
+            runMode_ = SMRunMode::RELEASE;
+        }
+        else
+        {
+            ROS_ERROR("Incorrect run_mode value: %s", runMode.c_str());
+        }
+    }
+    else
+    {
+        runMode_ = SMRunMode::DEBUG;
+    }
 } 
 
 ISmaccStateMachine::~ISmaccStateMachine( )
