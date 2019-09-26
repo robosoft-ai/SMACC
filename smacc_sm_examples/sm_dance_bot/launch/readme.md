@@ -20,13 +20,13 @@ source ~/catkin_ws/devel/setup.bash
 ```
 
 ## Default demo launching
-Below you can see the default launch command to launch this demo:
+Below is the default launch command to launch this demo:
 
 ```
 roslaunch sm_dance_bot sm_dance_bot.launch
 ```
 
-## Lightwave demo launching
+## Lightweight demo launching
 
 We use this launch command to start the process hiding the xterminals for all the servers, the state machine, the smacc_viewer and the gazebo client.
 
