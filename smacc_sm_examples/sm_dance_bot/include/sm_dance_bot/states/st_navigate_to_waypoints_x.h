@@ -12,6 +12,11 @@ struct EvWaypoint3 : sc::event<EvWaypoint3>
 {
 };
 
+struct EvWaypoint4 : sc::event<EvWaypoint4>
+{
+};
+
+//-------------------------------------------------
 struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanceBot>
 {
   using SmaccState::SmaccState;
@@ -48,7 +53,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     std::vector<std::pair<float, float>> waypoints = {
         {2.20, 0.35},
         {2.60, 0.64},
-        {4.24, 1.68}};
+        {4.24, 1.68},
+        {-1.24, -2.68}};
 
     if (currentIteration > waypoints.size())
     {
@@ -90,6 +96,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       ROS_INFO("transition to ss3");
       auto ev3 = new EvWaypoint3();
       this->postEvent(ev3);
+    }
+    break;
+    case 4:
+    {
+      ROS_INFO("transition to ss4");
+      auto ev4 = new EvWaypoint4();
+      this->postEvent(ev4);
     }
     break;
       //return transit<SS3::SsRadialPattern3>();

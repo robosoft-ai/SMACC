@@ -29,6 +29,11 @@ namespace SS3
     class SsRadialPattern3;
 }
 
+namespace SS4
+{
+    class SsFPattern1;
+}
+
 // STATE MACHINE
 struct SmDanceBot
     : public smacc::SmaccStateMachineBase<SmDanceBot, StAcquireSensors>
@@ -96,3 +101,4 @@ using LidarSensor= smacc::SensorTopic<sensor_msgs::LaserScan>;
 #include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
 #include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
+#include <sm_dance_bot/superstates/ss_f_pattern_1.h>

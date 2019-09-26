@@ -59,7 +59,7 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
   ros::service::call("/move_base/set_parameters", srv_req, srv_resp);
   ros::spinOnce();
   ros::Duration(0.5).sleep();
-  ROS_DEBUG_STREAM("[PlannerSwitcher] Response: "<< srv_resp);
+  ROS_INFO_STREAM("[PlannerSwitcher] Response: "<< srv_resp);
 }
 
 void PlannerSwitcher::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr& configuration_update)

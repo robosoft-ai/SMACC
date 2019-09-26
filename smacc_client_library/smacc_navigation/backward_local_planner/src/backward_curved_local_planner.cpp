@@ -46,7 +46,6 @@ void BackwardLocalPlanner::initialize()
     paramServer_.setCallback(f);
     this->currentPoseIndex_ = 0;
     
-
     ros::NodeHandle nh("~/BackwardLocalPlanner");
     nh.param("pure_spinning_straight_line_mode", pureSpinningMode_, true);
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
