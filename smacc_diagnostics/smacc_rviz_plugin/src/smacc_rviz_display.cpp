@@ -134,12 +134,11 @@ void SmaccRvizDisplay::updateCurrentState()
 // This is our callback to handle an incoming message.
 void SmaccRvizDisplay::processMessage( const smacc_msgs::SmaccStatus::ConstPtr& msg )
 {
-
   std::string concatenated;
 
   for(auto& state: msg->current_states)
   {
-    concatenated += std::string("/")+ state;
+    concatenated = concatenated + std::string("/")+ state;
   }
 
   ROS_INFO("current state: %s", concatenated.c_str());
