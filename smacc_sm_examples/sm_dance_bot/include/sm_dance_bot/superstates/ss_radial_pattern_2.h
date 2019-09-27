@@ -36,8 +36,8 @@ public:
     void onInitialize()
     {
         iteration_count = 0;
-        total_iterations = 2;
-        ray_angle_increment_degree = 45;
+        total_iterations = 4;
+        ray_angle_increment_degree = 90;
         ray_length_meters = 1;
 
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
