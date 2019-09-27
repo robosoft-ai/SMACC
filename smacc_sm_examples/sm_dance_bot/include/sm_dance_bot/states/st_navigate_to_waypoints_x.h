@@ -16,6 +16,10 @@ struct EvWaypoint4 : sc::event<EvWaypoint4>
 {
 };
 
+struct EvWaypoint5 : sc::event<EvWaypoint5>
+{
+};
+
 //-------------------------------------------------
 struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanceBot>
 {
@@ -29,6 +33,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       sc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
       sc::transition<EvWaypoint2, SS2::SsRadialPattern2>,
       sc::transition<EvWaypoint3, SS3::SsRadialPattern3>,
+      sc::transition<EvWaypoint4, SS4::SsFPattern1>,
+      sc::transition<EvWaypoint5, SS5::SsSPattern1>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
@@ -54,7 +60,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
         {2.20, 0.35},
         {2.60, 0.64},
         {4.24, 1.68},
-        {-1.24, -2.68}};
+        {-1.24, -2.68},
+        {0, 0}};
 
     if (currentIteration > waypoints.size())
     {
@@ -103,6 +110,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       ROS_INFO("transition to ss4");
       auto ev4 = new EvWaypoint4();
       this->postEvent(ev4);
+    }
+    break;
+    case 5:
+    {
+      ROS_INFO("transition to ss5");
+      auto ev5 = new EvWaypoint5();
+      this->postEvent(ev5);
     }
     break;
       //return transit<SS3::SsRadialPattern3>();

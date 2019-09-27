@@ -12,6 +12,10 @@ class StRotateDegrees1;
 class StNavigateReverse2;
 class StRotateDegrees3;
 class StNavigateReverse1;
+class StNavigateForward2;
+class StRotateDegrees5;
+class StNavigateReverse3;
+
 
 //SUPERSTATES
 namespace SS1
@@ -33,6 +37,12 @@ namespace SS4
 {
     class SsFPattern1;
 }
+
+namespace SS5
+{
+    class SsSPattern1;
+}
+
 
 // STATE MACHINE
 struct SmDanceBot
@@ -88,6 +98,8 @@ using LidarSensor= smacc::SensorTopic<sensor_msgs::LaserScan>;
 #include <sm_dance_bot/states/st_acquire_sensors.h>
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
 
+#include <sm_dance_bot/states/st_rotate_degrees_5.h>
+#include <sm_dance_bot/states/st_navigate_forward_2.h>
 #include <sm_dance_bot/states/st_rotate_degrees_4.h>
 #include <sm_dance_bot/states/st_navigate_forward_1.h>
 #include <sm_dance_bot/states/st_navigate_to_waypoint_1.h>
@@ -102,3 +114,4 @@ using LidarSensor= smacc::SensorTopic<sensor_msgs::LaserScan>;
 #include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>
+#include <sm_dance_bot/superstates/ss_s_pattern_1.h>

@@ -108,4 +108,5 @@ void ISmaccStateMachine::updateCurrentState(bool active, StateType *test)
         }*/
 }
 
+
 } // namespace smacc

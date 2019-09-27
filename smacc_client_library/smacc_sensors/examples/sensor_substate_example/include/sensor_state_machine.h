@@ -1,6 +1,7 @@
 #pragma once
 
 #include <smacc/smacc.h>
+#include <smacc/impl/smacc_state_machine_base_impl.h>
 
 class SensorState;
 

@@ -1,13 +1,13 @@
-struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, SmDanceBot>
+struct StRotateDegrees5: smacc::SmaccState<StRotateDegrees5,SmDanceBot>
 {
-   using SmaccState::SmaccState;
+  using SmaccState::SmaccState;
 
-   typedef mpl::list<
+  typedef mpl::list<
             // Expected event
             sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
-
+            
             // Keyboard events
-            sc::transition<EvKeyPressP<SbKeyboard>,StRotateDegrees4>,
+            sc::transition<EvKeyPressP<SbKeyboard>,StNavigateForward2>,
             sc::transition<smacc::EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
 
             // Error events
@@ -15,10 +15,10 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, SmDanceBot>
             sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
             > reactions;
 
-   void onInitialize()
-   {
-      this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateBackwards>(2));
-      this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
-      this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
-   }
+  void onInitialize()
+  {
+    this->configure<NavigationOrthogonal>(std::make_shared<SbRotate>(/*30*/-180));
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
+    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
+  }
 };

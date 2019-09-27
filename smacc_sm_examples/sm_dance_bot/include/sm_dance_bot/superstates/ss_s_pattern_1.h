@@ -1,25 +1,27 @@
+// Rotate (90)->Fwd(20)->Rotate (-90)->Fwd (2)->Rotate (-90)->Fwd(20)->Rotate (90)->Fwd(2)
 
-namespace SS4
+
+namespace SS5
 {
 
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
-class SsrFPatternRotate1;
-class SsrFPatternForward1;
-class SsrFPatternReturn1;
-class SsrFPatternRotate2;
-class SsrFPatternForward2;
+class SsrSPatternRotate1;
+class SsrSPatternForward1;
+class SsrSPatternRotate2;
+class SsrSPatternForward2;
+class SsrSPatternRotate3;
+class SsrSPatternForward3;
+class SsrSPatternRotate4;
+class SsrSPatternForward4;
 
 enum class TDirection {LEFT, RIGHT } ;
 
-struct SsFPattern1 : smacc::SmaccState<SsFPattern1, SmDanceBot, SsrFPatternRotate1>
+struct SsSPattern1 : smacc::SmaccState<SsSPattern1, SmDanceBot, SsrSPatternRotate1>
 {
 public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-                      // Expected event
-                      sc::transition<EvStateFinish<SsFPattern1>, StNavigateForward2>,
-
                       // Keyboard events
                       sc::transition<smacc::EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
                       sc::transition<EvKeyPressP<SbKeyboard>,StNavigateToWaypointsX>,
@@ -29,11 +31,10 @@ public:
                       sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
 
                       // Internal events
-                      sc::custom_reaction<smacc::EvStateFinish<SsrFPatternRotate2>>
+                      sc::custom_reaction<smacc::EvStateFinish<SsrSPatternForward4>>
             > reactions;
 
 
-    float ray_lenght_meters;
     float pitch_lenght_meters;
     int iteration_count;
     int total_iterations;
@@ -42,7 +43,6 @@ public:
 
     void onInitialize()
     {
-        this->ray_lenght_meters = 2;
         this->pitch_lenght_meters = 0.6;
         this->iteration_count = 0 ;
         this->total_iterations = 2;
@@ -51,9 +51,8 @@ public:
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
 
-    sc::result react(const smacc::EvStateFinish<SsrFPatternRotate2> &ev)
+    sc::result react(const smacc::EvStateFinish<SsrSPatternForward4> &ev)
     {
-        ROS_INFO("FPATTERN iteration: %d", iteration_count);
         if (++iteration_count == total_iterations) // 1 == two times
         {
             this->throwFinishEvent();
@@ -64,10 +63,15 @@ public:
 };
 
 //forward declaration for the superstate
-using SS = SsFPattern1;
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_rotate_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_return_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_rotate_2.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_2.h>
+using SS = SsSPattern1;
+
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_1.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_1.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_2.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_2.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_3.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_3.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_4.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_4.h>
+
 } // namespace SS3
