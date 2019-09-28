@@ -1,14 +1,13 @@
 #!/bin/bash
 
-#TEST GHPAGES LOCALLY VARIABLES
+#---- TEST GHPAGES LOCALLY VARIABLES------
+#TRAVIS_BRANCH=master
+#TRAVIS_REPO_SLUG=smacc
+#GITHUB_TOKEN=
+#CATKIN_WORKSPACE_ROOT=`pwd`/../..
+# -----------------------------------
 
-TRAVIS_BRANCH=master
-TRAVIS_REPO_SLUG=smacc
-GITHUB_TOKEN=f6695f7ab615d78e8098c3a931bf4a0412f0c7cc
-#CATKIN_WORKSPACE_ROOT=/root/catkin_ws 
-CATKIN_WORKSPACE_ROOT=`pwd`/../..
-
-
+CATKIN_WORKSPACE_ROOT=/root/catkin_ws 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
 
@@ -77,9 +76,6 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "pushing new documentation"
     
-    echo "adfadfds" 
-    exit
-
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
     git push -f -q https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null
