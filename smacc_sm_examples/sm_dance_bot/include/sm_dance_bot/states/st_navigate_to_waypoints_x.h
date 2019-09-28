@@ -57,11 +57,11 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
     std::vector<std::pair<float, float>> waypoints = {
-        {2.20, 0.35},
-        {2.60, 0.64},
-        {4.24, 1.68},
-        {-1.24, -2.68},
-        {0, 0}};
+        {3.0, -2.0},
+        {-5.5, 3.0},
+        {-11.0, -5.0},
+        {2.0, -8.58},
+        {-10.0, 13.0}};
 
     if (currentIteration > waypoints.size())
     {
