@@ -64,10 +64,6 @@ public:
         updateCurrentState<InitialStateType>(true,test);
         
         info_->printAllStates();
-          
-        timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);
-        stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/RadialMotionStateMachine/smacc/container_structure",1);
-        stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/RadialMotionStateMachine/smacc/container_status",1);     
     }
     
     virtual ~SmaccStateMachineBase( )
@@ -80,6 +76,13 @@ public:
     {
         ROS_INFO("initiate_impl");
         sc::state_machine< DerivedStateMachine, InitialStateType, SmaccAllocator >::initiate();
+
+        timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);
+
+        auto stateMachineName = this->getStateMachineName();
+        stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/"+ stateMachineName + "/smacc/container_structure",1);
+        stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/"+ stateMachineName + "/smacc/container_status",1);     
+
     }
 
      // Delegates to ROS param access with the current NodeHandle
@@ -175,10 +178,13 @@ public:
         //ROS_WARN_STREAM("*" + parentstate->toShortName());
         smacc_msgs::SmaccContainerStatus status_msg;
         status_msg.header.stamp = ros::Time::now();
+        auto stateMachineName = this->getStateMachineName();
 
         if(parentstate==nullptr)
         {
-            status_msg.path = "/RadialMotion";
+            
+
+            status_msg.path = "/" + stateMachineName;
 
             for(auto& val: info_->states)
             {
@@ -219,7 +225,7 @@ public:
         }
         else
         {
-            status_msg.path = "/RadialMotion/"+ parentstate->getFullPath();
+            status_msg.path = "/" + stateMachineName + "/" + parentstate->getFullPath();
 
             //status_msg.initial_states.push_back("NavigateToRadialStart");
             for(auto& child: parentstate->children_)
@@ -272,7 +278,8 @@ public:
     */
 
     std::vector<smacc_msgs::SmaccContainerStructure> structure_msgs;
-    createStructureMessage(nullptr, "RadialMotion", structure_msgs,-1);
+    auto stateMachineName = this->getStateMachineName();
+    createStructureMessage(nullptr, stateMachineName , structure_msgs,-1);
 
     /*
     structure_msg.children.push_back("NavigateToEndPoint");

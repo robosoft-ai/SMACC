@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#TEST GHPAGES LOCALLY VARIABLES
+
+TRAVIS_BRANCH=master
+TRAVIS_REPO_SLUG=smacc
+GITHUB_TOKEN=f6695f7ab615d78e8098c3a931bf4a0412f0c7cc
+#CATKIN_WORKSPACE_ROOT=/root/catkin_ws 
+CATKIN_WORKSPACE_ROOT=`pwd`/../..
+
+
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
 
@@ -7,8 +16,11 @@ echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
     cd "$TRAVIS_BUILD_DIR"
 
-    source /root/catkin_ws/devel/setup.bash
+    source $CATKIN_WORKSPACE_ROOT/install/setup.bash
     #source /root/catkin_ws/install/setup.bash
+
+    #remove cloned folder just in case it already existed
+    rm -R /tmp/doc
 
     # This generates a `web` directory containing the website.
     echo "cloning gh-pages"
@@ -16,15 +28,17 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "removing specific branch folder from repo clone.."
     cd /tmp/doc
-    git rm -r $TRAVIS_BRANCH/$TRAVI_REPO_SLUG >/dev/null
-    mkdir -p $TRAVIS_BRANCH/$TRAVI_REPO_SLUG
+    git rm -r $TRAVIS_BRANCH/$TRAVIS_REPO_SLUG >/dev/null
+    mkdir -p $TRAVIS_BRANCH/$TRAVIS_REPO_SLUG
 
-    echo "cd /root/catkin_ws/src/SMACC"
-    ls /root/catkin_ws/src
-    cd /root/catkin_ws/src/SMACC
+    echo "cd $CATKIN_WORKSPACE_ROOT"
+    ls $CATKIN_WORKSPACE_ROOT/src
+    cd $CATKIN_WORKSPACE_ROOT/src/SMACC
     ls
+    
     echo "executing doxygen command"
     doxygen Doxyfile
+
     echo "moving result files to branch directory..."
     mv /tmp/html /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
     mv /tmp/latex /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
@@ -33,7 +47,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     #git checkout -b gh-pages
     "cd /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG"
     cd /tmp/doc/SMACC/$TRAVIS_BRANCH/$TRAVI_REPO_SLUG
-
+    
     #git init
     #git checkout -b gh-pages
     #cd $TRAVIS_BRANCH/$TRAVI_REPO_SLUG
@@ -63,6 +77,9 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "pushing new documentation"
     
+    echo "adfadfds" 
+    exit
+
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
     git push -f -q https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null

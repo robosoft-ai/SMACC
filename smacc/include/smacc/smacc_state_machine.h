@@ -138,6 +138,11 @@ class ISmaccStateMachine
     template <typename StateType>
     void updateCurrentState(bool active, StateType* test);
 
+    std::string getStateMachineName()
+    {
+        return demangleSymbol(typeid(*this).name());
+    }
+
 private:
 
     std::mutex m_mutex_;
