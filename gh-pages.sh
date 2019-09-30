@@ -72,6 +72,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
     find . 
     echo "commiting new documentation"
     
+    echo `which git`
+    echo $(git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis")
     git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis"
 
     echo "pushing new documentation"
