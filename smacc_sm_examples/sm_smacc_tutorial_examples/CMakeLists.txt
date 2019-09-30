@@ -10,6 +10,7 @@ find_package(catkin REQUIRED COMPONENTS
   smacc_navigation_plugin
   smacc_interface_components
   tf
+  smacc_msgs
 )
 
 ## System dependencies are found with CMake's conventions
