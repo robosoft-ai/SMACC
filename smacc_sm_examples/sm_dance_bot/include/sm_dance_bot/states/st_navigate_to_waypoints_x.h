@@ -152,7 +152,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   {
     ROS_INFO("Waypoints X reaction");
 
-    currentIteration--;
+    currentIteration++;
     this->setGlobalSMData("navigation_x_iteration", currentIteration);
     return navigateState();
   }
