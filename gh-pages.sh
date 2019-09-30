@@ -14,6 +14,8 @@ echo $DIRECTORY
 echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
     cd "$TRAVIS_BUILD_DIR"
+
+    find / | grep SMACC
     
     apt-get install -y git
 
@@ -48,25 +50,6 @@ if [ -n "$GITHUB_TOKEN" ]; then
     #git checkout -b gh-pages
     "cd /tmp/doc/SMACC/$TRAVIS_BRANCH"
     cd /tmp/doc/SMACC/$TRAVIS_BRANCH
-    
-    #git init
-    #git checkout -b gh-pages
-    #cd $TRAVIS_BRANCH/$TRAVI_REPO_SLUG
-
-    #echo "generating roslite documentation"
-    #rosdoc_lite `rospack find smacc` -o smacc
-    #rosdoc_lite `rospack find backward_global_planner` -o backward_global_planner
-    #rosdoc_lite `rospack find backward_local_planner` -o backward_local_planner
-    #rosdoc_lite `rospack find forward_global_planner` -o forward_global_planner
-    #rosdoc_lite `rospack find forward_local_planner` -o forward_local_planner
-    #rosdoc_lite `rospack find smacc_navigation_plugin` -o smacc_navigation_plugin
-    #rosdoc_lite `rospack find smacc_odom_tracker` -o smacc_odom_tracker
-    #rosdoc_lite `rospack find smacc_planner_switcher` -o smacc_planner_switcher
-    #rosdoc_lite `rospack find smacc_tool_plugin_template` -o smacc_tool_plugin_template
-
-    #python $DIRECTORY/generate_main_index.py
-    #echo "moving index.html to /tmp/doc" 
-    #mv index.html /tmp/doc
 
     git add .
     #git add -f /tmp/doc/index.html
