@@ -17,7 +17,7 @@ echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
     cd "$TRAVIS_BUILD_DIR"
 
-    find / | grep SMACC
+    #find / | grep SMACC
     
     apt-get install -y git
 
@@ -55,8 +55,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     git add .
     #git add -f /tmp/doc/index.html
-    echo "------LIST OF FILES ------"
-    find . 
+    #echo "------LIST OF FILES ------"
+    #find . 
     echo "commiting new documentation"
     
     echo `which git`
