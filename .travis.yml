@@ -13,7 +13,7 @@ env:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install -y graphviz
-  - sudo apt-get install -y ghostscript git
+  - sudo apt-get install -y ghostscript
 install:
   - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
   - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
