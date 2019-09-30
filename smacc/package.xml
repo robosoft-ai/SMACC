@@ -15,7 +15,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   
-  <exec_depend>smacc_msgs</exec_depend>
+  <build_depend>smacc_msgs</build_depend>
   <build_depend>actionlib</build_depend>
   <build_depend>std_msgs</build_depend>
   <build_depend>roscpp</build_depend>
