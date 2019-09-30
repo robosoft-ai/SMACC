@@ -149,6 +149,7 @@ target_link_libraries(${PROJECT_NAME}
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
    test/keyboard_node/src/keyboard_node.py
+   test/service_node_3/src/service_node_3.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

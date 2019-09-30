@@ -21,29 +21,28 @@ class StNavigateReverse3;
 //SUPERSTATES
 namespace SS1
 {
-    class SsRadialPattern1;
+class SsRadialPattern1;
 }
 
 namespace SS2
 {
-    class SsRadialPattern2;
+class SsRadialPattern2;
 }
 
 namespace SS3
 {
-    class SsRadialPattern3;
+class SsRadialPattern3;
 }
 
 namespace SS4
 {
-    class SsFPattern1;
+class SsFPattern1;
 }
 
 namespace SS5
 {
-    class SsSPattern1;
+class SsSPattern1;
 }
-
 
 // STATE MACHINE
 struct SmDanceBot
@@ -67,7 +66,7 @@ struct SmDanceBot
 #include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
 #include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
 #include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
-
+#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
 
 //SUBSTATE BEHAVIORS
 #include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
@@ -93,7 +92,10 @@ struct SmDanceBot
 
 //class LidarSensor;
 // COMPONENTS AND SUBSTATE BEHAVIORS FORWARD DECLARATIONS
-using LidarSensor= smacc::SensorTopic<sensor_msgs::LaserScan>;
+using LidarSensor = smacc::SensorTopic<sensor_msgs::LaserScan>;
+
+#include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
+#include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>

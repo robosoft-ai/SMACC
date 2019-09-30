@@ -26,7 +26,9 @@ struct StAcquireSensors :
       this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<LidarSensor>("/front/scan", 1, ros::Duration(10)));
       this->configure<SensorOrthogonal>(std::make_shared<SbConditionTemperatureSensor>("/temperature"));
       this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
+
       this->configure<PublisherOrthogonal>(std::make_shared<SbStringPublisher>("Hello World!"));
+      this->configure<Service3Orthogonal>(std::make_shared<Service3Behavior>(Service3Command::SERVICE3_ON));
 
       allSensorsReady.setTriggerEventTypesCount(2);
    }

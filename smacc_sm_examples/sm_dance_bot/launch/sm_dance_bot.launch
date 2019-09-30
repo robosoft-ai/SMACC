@@ -48,6 +48,7 @@
     <node pkg="sm_dance_bot" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="$(arg server_nodes_xterms)"/>
     <node pkg="sm_dance_bot" type="keyboard_node.py" name="keyboard_node" launch-prefix="$(arg server_nodes_xterms)"/>
     <node pkg="sm_dance_bot" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)"/>
+    <node pkg="sm_dance_bot" type="service_node_3.py" name="service_server_node" launch-prefix="$(arg server_nodes_xterms)"/>
 
     <node pkg="smacc_viewer" type="smacc_viewer.py" name="smacc_viewer" if="$(arg show_smacc_viewer)"/>
 </launch>
