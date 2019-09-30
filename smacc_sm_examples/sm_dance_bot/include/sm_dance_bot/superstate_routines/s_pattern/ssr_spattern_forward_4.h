@@ -8,7 +8,7 @@ struct SsrSPatternForward4: public smacc::SmaccState<SsrSPatternForward4,SS>
   {
     auto& superstate = this->context<SS>();
     
-    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(superstate.pitch_lenght_meters));
+    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(superstate.pitch1_lenght_meters));
     this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());    
   }
 };

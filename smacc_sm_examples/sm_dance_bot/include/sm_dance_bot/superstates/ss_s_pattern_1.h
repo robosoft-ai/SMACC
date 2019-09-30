@@ -38,7 +38,8 @@ public:
             > reactions;
 
 
-    float pitch_lenght_meters;
+    float pitch1_lenght_meters;
+    float pitch2_lenght_meters;
     int iteration_count;
     int total_iterations;
 
@@ -46,10 +47,11 @@ public:
 
     void onInitialize()
     {
-        this->pitch_lenght_meters = 0.6;
+        this->pitch1_lenght_meters = 0.6;
+        this->pitch2_lenght_meters = 3.2;
         this->iteration_count = 0 ;
-        this->total_iterations = 2;
-        this->direction = TDirection::LEFT;
+        this->total_iterations = 3;
+        this->direction = TDirection::RIGHT;
 
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }

@@ -6,24 +6,27 @@
 #include <smacc_navigation_plugin/move_base_to_goal.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
+#include <tf/tf.h>
 
 class SbNavigateGlobalPosition : public smacc::SmaccSubStateBehavior
 {
 public:
   
   boost::optional<geometry_msgs::Point> initialPoint;
+  boost::optional<float> initialYaw;
 
   SbNavigateGlobalPosition()
   {
 
   }
 
-  SbNavigateGlobalPosition(float x, float y)
+  SbNavigateGlobalPosition(float x, float y, float yaw)
   {
     auto p =  geometry_msgs::Point();
     p.x = x;
     p.y =y;
     initialPoint = p;
+    initialYaw = yaw;
   }
 
   virtual void onEntry()
@@ -66,14 +69,17 @@ public:
     {
       this->currentState->getParam("start_position_x", goal.target_pose.pose.position.x);
       this->currentState->getParam("start_position_y", goal.target_pose.pose.position.y);
+      double yaw;
+      this->currentState->getParam("start_position_yaw", yaw);
+
+      goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
     }
     else
     {
       goal.target_pose.pose.position= *initialPoint;
+      goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(*initialYaw);
     }
     
-    goal.target_pose.pose.orientation.w = 1;
-
     ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);
   }
 

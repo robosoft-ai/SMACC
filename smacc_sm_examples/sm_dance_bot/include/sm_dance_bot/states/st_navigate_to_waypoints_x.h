@@ -20,6 +20,22 @@ struct EvWaypoint5 : sc::event<EvWaypoint5>
 {
 };
 
+
+struct Pose2D
+{
+  Pose2D(double x, double y, double yaw)
+  {
+    this->x_ = x;
+    this->y_ = y;
+    this->yaw_ = yaw;
+
+  }
+
+  double x_;
+  double y_;
+  double yaw_;
+};
+
 //-------------------------------------------------
 struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanceBot>
 {
@@ -56,12 +72,15 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
     ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
-    std::vector<std::pair<float, float>> waypoints = {
-        {3.0, -2.0},
-        {-5.5, 3.0},
-        {-11.0, -5.0},
-        {2.0, -8.58},
-        {-10.0, 13.0}};
+    // x, y, yaw (orientation)
+    std::vector<Pose2D> waypoints = 
+    {
+        {3.0, -2.0, 0},
+        {-5.5, 3.0 , 0},
+        {-11.0, -5.0 , 0},
+        {2.0, -8.58, 0},
+        {-10.0, 14.5, 0}
+    };
 
     if (currentIteration > waypoints.size())
     {
@@ -72,7 +91,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     {
       auto &target = waypoints[currentIteration];
 
-      this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.first, target.second));
+      ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_ , target.yaw_);
+      this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_));
       this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());
       this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
@@ -132,7 +152,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   {
     ROS_INFO("Waypoints X reaction");
 
-    currentIteration++;
+    currentIteration--;
     this->setGlobalSMData("navigation_x_iteration", currentIteration);
     return navigateState();
   }

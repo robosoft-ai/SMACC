@@ -46,7 +46,7 @@ public:
         this->pitch_lenght_meters = 0.6;
         this->iteration_count = 0 ;
         this->total_iterations = 2;
-        this->direction = TDirection::LEFT;
+        this->direction = TDirection::RIGHT;
 
         this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
