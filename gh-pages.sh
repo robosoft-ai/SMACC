@@ -15,7 +15,7 @@ echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
     cd "$TRAVIS_BUILD_DIR"
     
-    apt-get install git
+    apt-get install -y git
 
     source $CATKIN_WORKSPACE_ROOT/install/setup.bash
     #source /root/catkin_ws/install/setup.bash
