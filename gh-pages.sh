@@ -33,7 +33,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "removing specific branch folder from repo clone.."
     cd /tmp/doc
-    git rm -r $TRAVIS_BRANCH >/dev/null
+    rm -r $TRAVIS_BRANCH >/dev/null
     mkdir -p $TRAVIS_BRANCH
 
     echo "cd $CATKIN_WORKSPACE_ROOT"
@@ -45,13 +45,13 @@ if [ -n "$GITHUB_TOKEN" ]; then
     doxygen Doxyfile
 
     echo "moving result files to branch directory..."
-    mv /tmp/html /tmp/doc/SMACC/$TRAVIS_BRANCH
-    mv /tmp/latex /tmp/doc/SMACC/$TRAVIS_BRANCH
+    mv /tmp/html /tmp/doc/$TRAVIS_BRANCH
+    mv /tmp/latex /tmp/doc/$TRAVIS_BRANCH
 
     #git init
     #git checkout -b gh-pages
-    "cd /tmp/doc/SMACC/$TRAVIS_BRANCH"
-    cd /tmp/doc/SMACC/$TRAVIS_BRANCH
+    "cd /tmp/doc/$TRAVIS_BRANCH"
+    cd /tmp/doc/$TRAVIS_BRANCH
 
     git add .
     #git add -f /tmp/doc/index.html
