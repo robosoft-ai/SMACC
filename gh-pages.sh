@@ -7,7 +7,9 @@
 #CATKIN_WORKSPACE_ROOT=`pwd`/../..
 # -----------------------------------
 
-CATKIN_WORKSPACE_ROOT=/root/catkin_ws 
+# industrial_ci catkin workspace
+CATKIN_WORKSPACE_ROOT=/root/target_ws 
+
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
 
