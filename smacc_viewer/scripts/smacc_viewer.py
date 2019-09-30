@@ -915,6 +915,9 @@ class SmaccViewerFrame(wx.Frame):
                         dotstr += '"__empty__" [label="Path not available.", shape="plaintext"]'
 
                     dotstr += '\n}\n'
+
+                    rospy.loginfo(dotstr)
+                    
                     self.dotstr = dotstr
                     # Set the dotcode to the new dotcode, reset the flags
                     self.set_dotcode(dotstr,zoom=False)
