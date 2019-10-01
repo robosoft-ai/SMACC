@@ -16,7 +16,6 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, SmDanceBot>
 
   using SmaccState::SmaccState;
 
-  // Key N -> next state
   void onInitialize()
   {
     this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(1));
