@@ -1,5 +1,6 @@
 #pragma once
 #include <smacc/common.h>
+#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
