@@ -17,16 +17,4 @@ ISmaccActionClient::ISmaccActionClient()
 ISmaccActionClient::~ISmaccActionClient()
 {
 }
-
-void ISmaccActionClient::init(ros::NodeHandle& nh)
-{
-    
-}
-
-void ISmaccActionClient::init(ros::NodeHandle& nh, std::string value)
-{
-    name_ = nh.getNamespace();
-    ROS_DEBUG("Creating Action Client %s", name_.c_str());
-}
-
 }

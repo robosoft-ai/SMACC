@@ -17,16 +17,10 @@ ISmaccComponent::ISmaccComponent()
 {
 }
 
-void ISmaccComponent::init(ros::NodeHandle& nh)
+void ISmaccComponent::initialize()
 {
-    
-}
 
-void ISmaccComponent::init(ros::NodeHandle& nh, std::string value)
-{
-    
 }
-
 
 void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)
 {

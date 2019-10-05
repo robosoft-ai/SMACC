@@ -6,6 +6,7 @@
 #include <ros/ros.h>
 #include <ros/duration.h>
 #include <boost/signals2.hpp>
+#include <boost/optional/optional_io.hpp>
 
 namespace smacc
 {
@@ -28,11 +29,11 @@ public:
     initialized_ = false;
   }
 
-  virtual void initialize(std::string topicName, int queueSize) override
+  virtual void initialize() override
   {
     if (!initialized_)
     {
-      SmaccTopicSubscriberClient<MessageType>::initialize(topicName, queueSize);
+      SmaccTopicSubscriberClient<MessageType>::initialize();
 
       this->onMessageReceived.connect(
           [this](auto msg) {
@@ -41,23 +42,26 @@ public:
             this->timeoutTimer_.start();
           });
 
-      timeoutTimer_ = this->nh_.createTimer(timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
-      timeoutTimer_.start();
+      if(timeout_)
+      {
+        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
+        timeoutTimer_.start();
+      }
+      else
+      {
+        ROS_WARN("Timeout sensor client not set, skipping timeout watchdog funcionality");
+      }
+      
       initialized_ = true;
     }
   }
 
-  void initialize(std::string topicName, int queueSize, ros::Duration timeout)
-  {
-    this->timeout_ = timeout;
-    this->initialize(topicName, queueSize);
-  }
+  boost::optional<ros::Duration> timeout_;
 
 private:
   ros::Timer timeoutTimer_;
   bool initialized_;
-  ros::Duration timeout_;
-
+  
   void timeoutCallback(const ros::TimerEvent &ev)
   {
     auto event = new EvTopicMessageTimeout<SensorClient<MessageType>>();

@@ -17,9 +17,8 @@ public:
 
   virtual void onEntry() override
   {
-    this->requiresComponent(serviceClient_);
-    serviceClient_->initialize("/service_node3");
-
+    this->requiresClient(serviceClient_);
+    
     std_srvs::SetBool req;
     if(value_ == Service3Command::SERVICE3_ON)
       req.request.data = true;

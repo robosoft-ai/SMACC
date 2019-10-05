@@ -13,22 +13,21 @@ class SbUndoPathBackwards : public smacc::SmaccSubStateBehavior
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
 
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;  
-
   virtual void onEntry() override
   {
-    this->requiresComponent(moveBaseClient_ ,ros::NodeHandle("move_base"));
+    this->requiresClient(moveBaseClient_);
     this->requiresComponent(odomTracker_);
-    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
     nav_msgs::Path forwardpath = this->odomTracker_->getPath();
+    //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
+
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
     
     smacc::SmaccMoveBaseActionClient::Goal goal;
     if ( forwardpath.poses.size()>0)
     {
       goal.target_pose = forwardpath.poses.front();
-      this->plannerSwitcher_->setBackwardPlanner();
+      moveBaseClient_->plannerSwitcher_->setBackwardPlanner();
       moveBaseClient_->sendGoal(goal);
     }
   }    

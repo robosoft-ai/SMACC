@@ -2,6 +2,7 @@
 
 #include <smacc/client.h>
 #include <boost/signals2.hpp>
+#include <boost/optional/optional_io.hpp>
 
 namespace smacc
 {
@@ -24,6 +25,9 @@ public:
   boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
   boost::signals2::signal<void(const MessageType &)> onMessageReceived;
 
+  boost::optional<std::string> topicName;
+  boost::optional<int> queueSize;
+
   SmaccTopicSubscriberClient()
   {
     initialized_ = false;
@@ -34,14 +38,26 @@ public:
     sub_.shutdown();
   }
 
-  virtual void initialize(std::string topicName, int queueSize = 1)
+  virtual void initialize()
   {
     if (!initialized_)
     {
       firstMessage_ = true;
-      ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
-      sub_ = nh_.subscribe(topicName, queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
-      this->initialized_=true;
+
+      if (!queueSize)
+        queueSize = 1;
+
+      if (!topicName)
+      {
+        ROS_ERROR("topic client with no topic name set. Skipping subscribing");
+      }
+      else
+      {
+        ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
+
+        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
+        this->initialized_ = true;
+      }
     }
   }
 
@@ -68,4 +84,4 @@ private:
     onMessageReceived(msg);
   }
 };
-}
+} // namespace smacc

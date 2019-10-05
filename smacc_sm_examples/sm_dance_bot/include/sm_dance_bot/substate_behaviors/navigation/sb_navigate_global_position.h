@@ -35,13 +35,12 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
+    this->requiresClient(moveBaseClient_ );
     this->requiresComponent(odomTracker_);
-    this->requiresComponent(plannerSwitcher_ , ros::NodeHandle("move_base"));   
 
     ROS_INFO("Component requirements completed");
 
-    this->plannerSwitcher_->setDefaultPlanners();
+    moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart(); 
@@ -96,6 +95,4 @@ private:
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker* odomTracker_;
-
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;
 };

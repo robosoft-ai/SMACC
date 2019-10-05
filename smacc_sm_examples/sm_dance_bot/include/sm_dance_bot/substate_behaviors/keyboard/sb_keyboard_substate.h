@@ -5,9 +5,8 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace smacc
+namespace dance_bot
 {
-
 class SbKeyboard : public smacc::SmaccSubStateBehavior
 {
 public:
@@ -16,8 +15,7 @@ public:
 
         void onEntry()
         {
-                this->requiresComponent(keyboardClient_);
-                keyboardClient_->initialize("/keyboard_unicode", 1);
+                this->requiresClient(keyboardClient_);
 
                 c_ = this->keyboardClient_->OnKeyPress.connect(
                     [this](char character) {

@@ -16,7 +16,7 @@ public:
                       sc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
 
                       // Keyboard events
-                      sc::transition<smacc::EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
+                      sc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
                       sc::transition<EvKeyPressP<SbKeyboard>,StNavigateToWaypointsX>,
 
                       // Error events

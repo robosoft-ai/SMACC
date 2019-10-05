@@ -13,7 +13,6 @@ actionlib::SimpleClientGoalState IActionResult::getResult() const
     return client->getState();
 }
 
-
 std::string cleanShortTypeName(const std::type_info& tinfo)
 {
     std::string fullclassname = demangleSymbol(tinfo.name());

@@ -15,8 +15,6 @@ class Rotate : public smacc::SmaccSubStateBehavior
 
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
-  smacc_planner_switcher::PlannerSwitcher* plannerSwitcher_;
-
   boost::optional<float> rotateDegree;
 
   Rotate()
@@ -42,11 +40,10 @@ class Rotate : public smacc::SmaccSubStateBehavior
        angle_increment_degree = *rotateDegree;
     }
 
-    this->requiresComponent(moveBaseClient_ , ros::NodeHandle("move_base"));
-    this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
+    this->requiresClient(moveBaseClient_ );
     
     //this->plannerSwitcher_->setDefaultPlanners();
-    this->plannerSwitcher_->setForwardPlanner();
+    moveBaseClient_->plannerSwitcher_->setForwardPlanner();
 
     //this should work better with a coroutine and await
     ros::Rate rate(10.0);

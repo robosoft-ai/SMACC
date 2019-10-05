@@ -6,7 +6,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
                     
                     // Keyboard events
                     sc::transition<EvKeyPressP<SbKeyboard>,SS4::SsFPattern1>,
-                    sc::transition<smacc::EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
+                    sc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
                     
                     // Error events
                     sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,

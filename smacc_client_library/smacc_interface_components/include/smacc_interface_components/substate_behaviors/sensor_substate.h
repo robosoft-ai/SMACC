@@ -14,23 +14,17 @@ public:
 
   SensorClient<MessageType> *sensor_;
 
-  ros::Duration timeoutDuration_;
-  std::string topicName_;
-  int queueSize_;
   boost::signals2::scoped_connection c1_;
   boost::signals2::scoped_connection c2_;
   boost::signals2::scoped_connection c3_;
 
-  SensorTopic(std::string topicName, int queueSize = 1, ros::Duration timeout = ros::Duration(5))
+  SensorTopic()
   {
-    timeoutDuration_ = timeout;
-    queueSize_ = queueSize;
-    topicName_ = topicName;
   }
 
   void onEntry()
   {
-    this->requiresComponent(sensor_);
+    this->requiresClient(sensor_);
 
     c1_ = sensor_->onMessageReceived.connect(
         [this](auto &msg) {
@@ -50,7 +44,7 @@ public:
           this->postEvent(event);
         });
 
-    sensor_->initialize(topicName_, queueSize_, timeoutDuration_);
+    sensor_->initialize();
   }
 
   bool onExit()

@@ -12,9 +12,11 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>pluginlib</build_depend>
+  <build_depend>smacc_planner_switcher</build_depend>
   <exec_depend>pluginlib</exec_depend>
   <build_depend>smacc</build_depend>
   <exec_depend>smacc</exec_depend>
+  <exec_depend>smacc_planner_switcher</exec_depend>
 
   <export>
       <smacc plugin="${prefix}/smacc_plugin.xml" />

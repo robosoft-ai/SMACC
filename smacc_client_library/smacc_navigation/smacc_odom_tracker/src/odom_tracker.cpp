@@ -14,14 +14,16 @@ OdomTracker::OdomTracker()
     publishMessages = true;
     subscribeToOdometryTopic_ = true;
 }
-        
+
 /**
 ******************************************************************************************************************
 * init()
 ******************************************************************************************************************
 */
-void OdomTracker::init(ros::NodeHandle& nh, std::string)
+void OdomTracker::initialize(std::string nodeName)
 {
+    ros::NodeHandle nh(nodeName);
+
     ROS_WARN("Initializing Odometry Tracker");
 
     if(!nh.getParam("min_point_distance_forward_thresh",minPointDistanceForwardThresh_))
@@ -62,6 +64,7 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
 {
     //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_INFO("[OdomTracker] setting working mode to: %d", workingMode);
     workingMode_ = workingMode;
     //ROS_INFO("odom_tracker m_mutex release");
 }

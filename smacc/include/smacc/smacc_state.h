@@ -64,9 +64,16 @@ public:
   {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
-    TOrthogonal *orthogonal;
-    this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal);
-    orthogonal->setStateBehavior(smaccBehavior);
+    
+    std::shared_ptr<TOrthogonal> orthogonal;
+    if(this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
+    {
+      orthogonal->setStateBehavior(smaccBehavior);
+    }
+    else
+    {
+      ROS_ERROR("Skipping substate behavior creation. Orthogonal did not exist.");
+    }
   }
 
   template <typename SmaccComponentType>

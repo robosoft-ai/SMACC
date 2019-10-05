@@ -10,7 +10,7 @@ public:
 
     virtual void onEntry() override
     {
-      this->requiresComponent(toolActionClient_ , ros::NodeHandle("tool_action_server"));
+      this->requiresClient(toolActionClient_ );
 
       smacc::SmaccToolActionClient::Goal goal;
       goal.command = smacc::SmaccToolActionClient::Goal::CMD_STOP;

@@ -16,7 +16,6 @@
 #include <boost/mpl/list.hpp>
 #include <boost/utility/enable_if.hpp>
 
-
 namespace smacc
 {
 
@@ -57,16 +56,10 @@ class ISmaccStateMachine
     void notifyOnStateExit(ISmaccState* state);
 
     template <typename TOrthogonal>
-    void getOrthogonal(TOrthogonal*& storage);
+    bool getOrthogonal(std::shared_ptr<TOrthogonal>& storage);
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh, std::string value, bool verbose);
-
-    template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage, ros::NodeHandle nh=ros::NodeHandle(), bool verbose = false)
-    {
-       requiresComponent(storage, nh, "", verbose);
-    }
+    void requiresComponent(SmaccComponentType*& storage,  bool verbose);
 
     template <typename EventType>
     void postEvent( EventType* ev);
@@ -142,6 +135,10 @@ class ISmaccStateMachine
     {
         return demangleSymbol(typeid(*this).name());
     }
+    
+    protected:
+    template <typename TOrthogonal>
+    void createOrthogonal();
 
 private:
 
@@ -151,7 +148,7 @@ private:
 
     std::map<std::string, boost::any> globalData_;
 
-    std::map<std::string, smacc::Orthogonal*> orthogonals_;
+    std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
 
     ros::Publisher statusPub_;
     
@@ -168,3 +165,7 @@ public:
     std::shared_ptr<SmaccStateMachineInfo> info_;
 };
 }
+
+#include <smacc/impl/smacc_state_machine_base_impl.h>
+#include <smacc/impl/smacc_client_impl.h>
+#include <smacc/impl/smacc_component_impl.h>

@@ -7,6 +7,7 @@ namespace smacc
 void Orthogonal::setStateMachine(ISmaccStateMachine *value)
 {
     this->stateMachine_ = value;
+    this->onInitialize();
 }
 
 void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior)
@@ -15,12 +16,19 @@ void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> 
     {
         ROS_INFO("Setting Ortho %s State behavior: %s", this->getName().c_str(), statebehavior->getName().c_str());
         statebehavior->stateMachine = this->stateMachine_;
-        currentBehavior = statebehavior;
+        statebehavior->currentOrthogonal = this;
+        
+        currentBehavior_ = statebehavior;
     }
     else
     {
         ROS_INFO("Not behavioral State by orthogonal");
     }
+}
+
+void Orthogonal::onInitialize()
+{
+
 }
 
 std::string Orthogonal::getName() const
@@ -30,13 +38,13 @@ std::string Orthogonal::getName() const
 
 void Orthogonal::onEntry()
 {
-    if (currentBehavior != nullptr)
+    if (currentBehavior_ != nullptr)
     {
         ROS_INFO("Orthogonal %s OnEntry, current Behavior: %s",
                  this->getName().c_str(),
-                 currentBehavior->getName().c_str());
+                 currentBehavior_->getName().c_str());
 
-        currentBehavior->onEntry();
+        currentBehavior_->onEntry();
     }
     else
     {
@@ -47,11 +55,11 @@ void Orthogonal::onEntry()
 
 void Orthogonal::onExit()
 {
-    if (currentBehavior != nullptr)
+    if (currentBehavior_ != nullptr)
     {
-        ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), currentBehavior->getName().c_str());
-        currentBehavior->onExit();
-        currentBehavior = nullptr;
+        ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), currentBehavior_->getName().c_str());
+        currentBehavior_->onExit();
+        currentBehavior_ = nullptr;
     }
     else
     {

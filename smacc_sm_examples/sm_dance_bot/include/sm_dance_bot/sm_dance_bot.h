@@ -44,6 +44,17 @@ namespace SS5
 class SsSPattern1;
 }
 
+// ORTHOGONALS
+#include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
+#include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
+#include <sm_dance_bot/orthogonals/tool_orthogonal.h>
+#include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
+#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
+#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
+#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
+
+using namespace dance_bot;
+
 // STATE MACHINE
 struct SmDanceBot
     : public smacc::SmaccStateMachineBase<SmDanceBot, StAcquireSensors>
@@ -56,19 +67,20 @@ struct SmDanceBot
     {
         this->setGlobalSMData("counter_1", counter_1);
         this->setGlobalSMData("rt_ready_flag", rt_ready_flag);
+
+        this->createOrthogonal<NavigationOrthogonal>();
+        this->createOrthogonal<ObstaclePerceptionOrthogonal>();
+        this->createOrthogonal<ToolOrthogonal>();
+        this->createOrthogonal<SensorOrthogonal>();
+        this->createOrthogonal<KeyboardOrthogonal>();
+        this->createOrthogonal<PublisherOrthogonal>();
+        this->createOrthogonal<Service3Orthogonal>();
     }
 };
 
-// ORTHOGONALS
-#include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
-#include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
-#include <sm_dance_bot/orthogonals/tool_orthogonal.h>
-#include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
-#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
-#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
-#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
-
 //SUBSTATE BEHAVIORS
+
+
 #include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
 
 #include <sm_dance_bot/substate_behaviors/navigation/sb_rotate.h>

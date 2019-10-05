@@ -11,8 +11,8 @@ class CustomConditionTemperatureSensor: public smacc::SensorTopic<sensor_msgs::T
 {
   public:
   
-  CustomConditionTemperatureSensor(std::string topicName, int queueSize = 1, ros::Duration timeout= ros::Duration(5))
-  : smacc::SensorTopic<sensor_msgs::Temperature>(topicName, queueSize, timeout)
+  CustomConditionTemperatureSensor()
+  : smacc::SensorTopic<sensor_msgs::Temperature>()
   {
   }
 

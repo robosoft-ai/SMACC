@@ -7,6 +7,7 @@
 
 #include <smacc/interface_components/smacc_action_client.h>
 #include <smacc/impl/smacc_component_impl.h>
+#include <boost/optional/optional_io.hpp>
 
 #include <queue>
 
@@ -32,17 +33,17 @@ public:
         : ISmaccActionClient()
     {
         feedback_queue_size_ = feedback_queue_size;
+
     }
 
-    virtual void init(ros::NodeHandle &nh) override
-    {
-        init(nh, "");
-    }
+    boost::optional<std::string> name_;
 
-    virtual void init(ros::NodeHandle &nh, std::string value) override
+    virtual void initialize() override
     {
-        ISmaccActionClient::init(nh, value);
-        client_ = std::make_shared<ActionClient>(name_, false);
+        if(!name_)
+           name_ = demangleSymbol(typeid(*this).name());
+
+        client_ = std::make_shared<ActionClient>(*name_);
     }
 
     virtual ~SmaccActionClientBase()
@@ -67,7 +68,7 @@ public:
 
     void sendGoal(Goal &goal)
     {
-        ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ << "\"");
+        ROS_INFO_STREAM("Sending goal to actionserver located in " << *(this->name_) << "\"");
 
         if (!client_->isServerConnected())
         {

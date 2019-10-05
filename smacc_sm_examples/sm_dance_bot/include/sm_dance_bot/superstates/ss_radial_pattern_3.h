@@ -15,7 +15,7 @@ public:
                       sc::transition<EvStateFinish<SsRadialPattern3>, StRotateDegrees4>,
 
                       // Keyboard events
-                      sc::transition<smacc::EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
+                      sc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
                       sc::transition<EvKeyPressP<SbKeyboard>,StNavigateToWaypointsX>,
                        
                       // Error events

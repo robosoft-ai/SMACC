@@ -36,6 +36,7 @@ public:
 
     ISmaccStateMachine *stateMachine;
     ISmaccState *currentState;
+    smacc::Orthogonal *currentOrthogonal;
 
     SmaccSubStateBehavior()
     {
@@ -61,10 +62,14 @@ public:
         }
     }
 
+    template <typename SmaccClientType>
+    void requiresClient(SmaccClientType *&storage, bool verbose = false)
+    {
+        currentOrthogonal->requiresClient(storage,verbose);
+    }
+
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage,
-                           ros::NodeHandle nh = ros::NodeHandle(),
-                           std::string value = "", bool verbose = false)
+    void requiresComponent(SmaccComponentType *&storage, bool verbose = false)
     {
         if (stateMachine == nullptr)
         {
@@ -72,7 +77,7 @@ public:
         }
         else
         {
-            stateMachine->requiresComponent(storage, nh, value, verbose);
+            stateMachine->requiresComponent(storage, verbose);
         }
     }
 

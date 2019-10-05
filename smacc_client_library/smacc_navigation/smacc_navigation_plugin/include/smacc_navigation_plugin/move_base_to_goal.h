@@ -7,6 +7,7 @@
 
 #include <smacc/interface_components/smacc_action_client_base.h>
 #include <move_base_msgs/MoveBaseAction.h>
+#include <smacc_planner_switcher/planner_switcher.h>
 
 namespace smacc
 {
@@ -15,8 +16,11 @@ class SmaccMoveBaseActionClient : public SmaccActionClientBase<move_base_msgs::M
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
 public:
+    std::shared_ptr<smacc_planner_switcher::PlannerSwitcher> plannerSwitcher_;
+
     SmaccMoveBaseActionClient();
-    SmaccMoveBaseActionClient(std::string action_server_namespace);
+    virtual void initialize() override;
+
     virtual std::string getName() const override;
     virtual ~SmaccMoveBaseActionClient();
 };

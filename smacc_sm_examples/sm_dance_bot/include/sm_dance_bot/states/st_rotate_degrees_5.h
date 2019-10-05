@@ -8,7 +8,7 @@ struct StRotateDegrees5: smacc::SmaccState<StRotateDegrees5,SmDanceBot>
             
             // Keyboard events
             sc::transition<EvKeyPressP<SbKeyboard>,StNavigateForward2>,
-            sc::transition<smacc::EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
+            sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
 
             // Error events
             sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,

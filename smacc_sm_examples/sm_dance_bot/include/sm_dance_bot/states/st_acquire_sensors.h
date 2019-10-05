@@ -12,7 +12,7 @@ struct StAcquireSensors :
        
        // Keyboard event
        sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
-
+       
        // Sensor events
        sc::custom_reaction<EvTopicMessage<LidarSensor>>,
        sc::custom_reaction<EvTopicMessage<smacc::SensorTopic<sensor_msgs::Temperature>>>
@@ -23,8 +23,8 @@ struct StAcquireSensors :
 
    void onInitialize()
    {
-      this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<LidarSensor>("/front/scan", 1, ros::Duration(10)));
-      this->configure<SensorOrthogonal>(std::make_shared<SbConditionTemperatureSensor>("/temperature"));
+      this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<LidarSensor>());
+      this->configure<SensorOrthogonal>(std::make_shared<SbConditionTemperatureSensor>());
       this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
 
       this->configure<PublisherOrthogonal>(std::make_shared<SbStringPublisher>("Hello World!"));

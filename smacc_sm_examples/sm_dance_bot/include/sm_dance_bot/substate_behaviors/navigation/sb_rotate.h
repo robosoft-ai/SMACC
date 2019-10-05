@@ -15,8 +15,6 @@ public:
 
     smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
-    smacc_planner_switcher::PlannerSwitcher *plannerSwitcher_;
-
     boost::optional<float> rotateDegree;
 
     SbRotate()
@@ -41,12 +39,11 @@ public:
             angle_increment_degree = *rotateDegree;
         }
         
-        this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
-        this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
+        this->requiresClient(moveBaseClient_);
 
         //this should work better with a coroutine and await
         //this->plannerSwitcher_->setForwardPlanner();
-        this->plannerSwitcher_->setDefaultPlanners();
+        moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
 
         ros::Rate rate(10.0);
         geometry_msgs::Pose currentPoseMsg;

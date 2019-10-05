@@ -5,7 +5,9 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/interface_components/smacc_action_client.h>
+#include <smacc/common.h>
+#include <smacc/component.h>
+
 #include <move_base_msgs/MoveBaseAction.h>
 
 #include <ros/ros.h>
@@ -38,7 +40,7 @@ class OdomTracker: public smacc::ISmaccComponent
         /// Must be called at the begining of the execution
         // by default, the component start in record_forward mode and publishing the
         // current path
-        virtual void init(ros::NodeHandle& nh, std::string) override;
+        void initialize(std::string nodeName);
 
         
         // threadsafe

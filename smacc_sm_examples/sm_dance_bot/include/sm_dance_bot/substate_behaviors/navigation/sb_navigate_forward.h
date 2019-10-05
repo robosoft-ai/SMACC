@@ -21,8 +21,6 @@ public:
 
     smacc_odom_tracker::OdomTracker *odomTracker_;
 
-    smacc_planner_switcher::PlannerSwitcher *plannerSwitcher_;
-
     SbNavigateForward(float forwardDistance)
     {
         this->forwardDistance = forwardDistance;
@@ -48,9 +46,8 @@ public:
 
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
-        this->requiresComponent(moveBaseClient_, ros::NodeHandle("move_base"));
+        this->requiresClient(moveBaseClient_);
         this->requiresComponent(odomTracker_);
-        this->requiresComponent(plannerSwitcher_, ros::NodeHandle("move_base"));
 
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
@@ -94,7 +91,7 @@ public:
         this->odomTracker_->setStartPoint(currentPoseMsg);
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
-        this->plannerSwitcher_->setForwardPlanner();
+        moveBaseClient_->plannerSwitcher_->setForwardPlanner();
 
         moveBaseClient_->sendGoal(goal);
     }

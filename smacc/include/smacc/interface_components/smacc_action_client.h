@@ -24,10 +24,6 @@ public:
     // The destructor. This is called when the object is not 
     // referenced anymore by its owner
     virtual ~ISmaccActionClient();
-
-    virtual void init(ros::NodeHandle& nh) override;
-
-    virtual void init(ros::NodeHandle& nh, std::string) override;
     
     // Returns the current state of the actionclient...
     virtual SimpleClientGoalState getState()=0;

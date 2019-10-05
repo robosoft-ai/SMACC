@@ -9,7 +9,7 @@ namespace smacc
 class SbStringPublisher : public smacc::SmaccSubStateBehavior
 {
 public:
-    smacc::StringPublisherClient* publisherClient_;
+    dance_bot::StringPublisherClient* publisherClient_;
     std::string msg_;
 
     SbStringPublisher(std::string msg)
@@ -19,8 +19,7 @@ public:
 
     virtual void onEntry()
     {
-        this->requiresComponent(publisherClient_);
-        publisherClient_->initialize("/string_publisher_out");
+        this->requiresClient(publisherClient_);
     }
 
     virtual bool onExit()

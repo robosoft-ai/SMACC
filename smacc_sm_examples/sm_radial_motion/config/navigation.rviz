@@ -5,10 +5,10 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /BW Plan1/Status1
         - /Odometry1/Shape1
         - /TF1/Frames1
         - /MarkerArray1
+        - /SmaccRvizDisplay1
       Splitter Ratio: 0.526845992
     Tree Height: 770
   - Class: rviz/Selection
@@ -30,6 +30,8 @@ Panels:
     Name: Time
     SyncMode: 0
     SyncSource: LaserScan
+Toolbars:
+  toolButtonStyle: 2
 Visualization Manager:
   Class: ""
   Displays:
@@ -181,7 +183,7 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 1.29914166e-34
+      Max Intensity: 999999
       Min Color: 0; 0; 0
       Min Intensity: 0
       Name: LaserScan
@@ -340,7 +342,7 @@ Visualization Manager:
           Value: true
         Value: false
       Enabled: true
-      Keep: 2500
+      Keep: 3500
       Name: Odometry
       Position Tolerance: 0.100000001
       Shape:
@@ -471,8 +473,14 @@ Visualization Manager:
       Marker Topic: /tool_markers
       Name: MarkerArray
       Namespaces:
-        my_namespace2: true
+        tool_namespace: true
       Queue Size: 1
+      Value: true
+    - Class: smacc_rviz_plugin/SmaccRvizDisplay
+      CurrentState: ""
+      Enabled: true
+      Name: SmaccRvizDisplay
+      Topic: /sm_dance_bot/status
       Value: true
   Enabled: true
   Global Options:
@@ -498,7 +506,7 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Angle: -0.0149999205
+      Angle: -0.00499992073
       Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
@@ -508,11 +516,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 161.757111
+      Scale: 78.8257675
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz)
-      X: 3.63343287
-      Y: 1.68743861
+      X: 0.489924222
+      Y: -0.269858032
     Saved: ~
 Window Geometry:
   Displays:

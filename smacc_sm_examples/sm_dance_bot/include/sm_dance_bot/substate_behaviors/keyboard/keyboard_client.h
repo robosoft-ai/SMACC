@@ -14,7 +14,7 @@
 
 using namespace boost::asio;
 
-namespace smacc
+namespace dance_bot
 {
 
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
@@ -163,21 +163,19 @@ public:
 
         virtual ~KeyboardClient()
         {
-
         }
 
-        virtual void initialize(std::string topicName, int queueSize) override
+        virtual void initialize() override
         {
-                SmaccTopicSubscriberClient<std_msgs::UInt16>::initialize(topicName, queueSize);
+                SmaccTopicSubscriberClient<std_msgs::UInt16>::initialize();
 
-                if(!this->initialized_)
+                if (!this->initialized_)
                 {
                         c_ = this->onMessageReceived.connect([this](auto msg) {
                                 this->onKeyboardMessage(msg);
 
-                        this->initialized_ = true;
-                }
-                );
+                                this->initialized_ = true;
+                        });
                 }
         }
 
@@ -253,4 +251,4 @@ public:
 private:
         bool initialized_;
 };
-}
+} // namespace smacc

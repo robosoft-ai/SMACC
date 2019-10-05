@@ -15,10 +15,7 @@ public:
 
     virtual ~ISmaccComponent();
 
-    // Called just after the component is created by the State Machine...
-    virtual void init(ros::NodeHandle& nh);
-
-    virtual void init(ros::NodeHandle& nh, std::string value);
+    virtual void initialize();
 
     // Assigns the owner of this resource to the given state machine parameter object 
     void setStateMachine(ISmaccStateMachine* stateMachine);
