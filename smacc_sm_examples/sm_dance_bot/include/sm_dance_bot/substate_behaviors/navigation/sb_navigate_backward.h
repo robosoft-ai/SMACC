@@ -102,7 +102,7 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 
-    virtual bool onExit()
+    virtual void onExit() override
     {
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::IDLE);
     }

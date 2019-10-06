@@ -16,5 +16,7 @@ struct RadialMotionSuperState: smacc::SmaccState<RadialMotionSuperState,RadialMo
     {
       this->throwFinishEvent();
     }
+    
+    return forward_event();
   }
 };

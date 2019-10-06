@@ -1,6 +1,5 @@
 #pragma once
 
-#include <thread>
 #include <smacc_action_client_generic/smacc_tool_plugin.h>
 
 class ToolStart: public smacc::SmaccSubStateBehavior
@@ -18,9 +17,8 @@ public:
       toolActionClient_->sendGoal(goal);
     }
 
-    virtual bool onExit() override
+    virtual void onExit() override
     {
       //ROS_INFO("Entering ToolSubstateBehavior");
-      return true;
     }
 };

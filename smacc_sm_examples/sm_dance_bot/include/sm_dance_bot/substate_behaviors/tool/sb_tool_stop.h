@@ -17,9 +17,8 @@ public:
       toolActionClient_->sendGoal(goal);
     }
 
-    virtual bool onExit() override
+    virtual void onExit() override
     {
       //ROS_INFO("Entering ToolSubstateBehavior");
-      return true;
     }
 };

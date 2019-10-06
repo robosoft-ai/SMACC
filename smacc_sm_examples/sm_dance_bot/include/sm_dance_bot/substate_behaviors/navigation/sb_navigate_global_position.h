@@ -84,7 +84,7 @@ public:
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  virtual bool onExit() 
+  virtual void onExit() override
   { 
     ROS_INFO("Exiting move goal Action Client"); 
   }

@@ -31,7 +31,7 @@ class Keyboard : public smacc::SmaccSubStateBehavior
   {
   }
 
-  bool onExit()
+  void onExit()
   {
   }
 

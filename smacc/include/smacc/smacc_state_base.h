@@ -79,24 +79,14 @@ public:
     this->updateCurrentState(true, test); //<MostDerived>
 
     this->setParam("created", true);
-    stateBehavior = static_cast<MostDerived *>(this)->definesBehavioralSmaccState();
 
     static_cast<MostDerived *>(this)->onInitialize();
 
-    this->configureStateBehavior(stateBehavior);
-
     this->getStateMachine().notifyOnStateEntry(this);
 
-    if (stateBehavior != nullptr)
-    {
-      //ROS_INFO("Behavioral State");
-      stateBehavior->onEntry();
-    }
-    else
-    {
-      //ROS_INFO("Not behavioral State");
-      static_cast<MostDerived *>(this)->onEntry();
-    }
+    //ROS_INFO("Not behavioral State");
+    static_cast<MostDerived *>(this)->onEntry();
+    
   }
 
   template <typename StateType>
@@ -139,15 +129,8 @@ public:
 
     this->getStateMachine().notifyOnStateExit(this);
 
-    if (this->stateBehavior != nullptr)
-    {
-      stateBehavior->onExit();
-    }
-    else
-    {
-      //this->updateCurrentState<MostDerived>(false);
-      static_cast<MostDerived *>(this)->onExit();
-    }
+    //this->updateCurrentState<MostDerived>(false);
+    static_cast<MostDerived *>(this)->onExit();    
 
     ROS_INFO_STREAM("throwing finish event " << fullname);
     this->throwFinishEvent();
@@ -168,20 +151,16 @@ public:
   }
 
 public:
-  SmaccSubStateBehavior *definesBehavioralSmaccState()
+
+  // This method is static-polymorphic because of the curiously recurring template pattern. It
+  // calls to the most derived class onEntry method if declared on smacc state construction
+  void onInitialize()
   {
-    return nullptr;
   }
 
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
   void onEntry()
-  {
-  }
-
-  // This method is static-polymorphic because of the curiously recurring template pattern. It
-  // calls to the most derived class onEntry method if declared on smacc state construction
-  void onInitialize()
   {
   }
 

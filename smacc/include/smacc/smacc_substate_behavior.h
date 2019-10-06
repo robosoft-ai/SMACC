@@ -91,10 +91,9 @@ public:
         ROS_INFO("SmaccSubStateBehavior %s onEntry", this->getName().c_str());
     }
 
-    virtual bool onExit()
+    virtual void onExit()
     {
         ROS_INFO("SmaccSubStateBehavior %s onExit", this->getName().c_str());
-        return true;
     }
 };
 } // namespace smacc

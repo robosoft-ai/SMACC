@@ -23,10 +23,6 @@ public:
                     });
         }
 
-        bool onExit()
-        {
-        }
-
         void OnKeyPress(char character)
         {
                 if (character == 'a')

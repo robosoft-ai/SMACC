@@ -47,7 +47,7 @@ class Timer : public smacc::SmaccSubStateBehavior
     timer = nh.createTimer(duration, boost::bind(&Timer::timerCallback, this, _1),oneshot);
   }
 
-  bool onExit()
+  void onExit()
   {
     timer.stop();
   }

@@ -47,7 +47,7 @@ public:
     sensor_->initialize();
   }
 
-  bool onExit()
+  void onExit()
   {
   }
 

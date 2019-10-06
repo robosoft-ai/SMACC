@@ -22,7 +22,7 @@ public:
         this->requiresClient(publisherClient_);
     }
 
-    virtual bool onExit()
+    virtual void onExit() override
     {
         std_msgs::String rosmsg;
         rosmsg.data =  msg_;
