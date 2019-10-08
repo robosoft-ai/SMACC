@@ -11,9 +11,6 @@
 
 namespace smacc
 {
-class SmaccSubStateBehavior;
-class ISmaccState;
-
 class ISmaccState
 {
 public:

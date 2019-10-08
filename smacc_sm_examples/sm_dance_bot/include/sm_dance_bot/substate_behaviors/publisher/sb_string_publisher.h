@@ -14,6 +14,7 @@ public:
 
     SbStringPublisher(std::string msg)
     {
+        ROS_INFO_STREAM("Creating SbStringPublisher behavior with stored message: " << msg);
         msg_ = msg;
     }
 

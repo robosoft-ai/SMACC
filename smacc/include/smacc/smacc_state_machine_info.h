@@ -196,6 +196,50 @@ void AddTransition::operator()(T)
     processTransitions<type_t>(currentState_);
 }
 
+//------------------ onDefinition -----------------------------
+
+
+
+// SFINAE test
+template <typename T>
+class HasOnDefinition
+{
+private:
+    typedef char YesType[1];
+    typedef char NoType[2];
+
+    template <typename C> static YesType& test( decltype(&C::onDefinition) ) ;
+    template <typename C> static NoType& test(...);
+
+
+public:
+    enum { value = sizeof(test<T>(0)) == sizeof(YesType) };
+};
+
+template<typename T> 
+typename std::enable_if<HasOnDefinition<T>::value, void>::type
+CallOnDefinition() {
+   /* something when T has toString ... */
+   ROS_INFO_STREAM("EXECUTING ONDEFINITION: " << demangleSymbol(typeid(T).name()));
+   T::onDefinition();
+}
+
+template<typename T> 
+typename std::enable_if<!HasOnDefinition<T>::value, void>::type
+CallOnDefinition() {
+    ROS_INFO_STREAM("static OnDefinition: dont exist for " << demangleSymbol(typeid(T).name()));
+   /* something when T has toString ... */
+   
+}
+
+/*
+void CallOnDefinition(...)
+{
+   
+}*/
+
+
+//-----------------------------------------------------------------------------------
 template <typename InitialStateType>
 void WalkStatesExecutor<InitialStateType>::walkStates(std::shared_ptr<SmaccStateInfo> &parentState, bool rootInitialNode)
 {
@@ -218,6 +262,8 @@ void WalkStatesExecutor<InitialStateType>::walkStates(std::shared_ptr<SmaccState
     {
         targetState = parentState;
     }
+    
+    CallOnDefinition<InitialStateType>();
 
     typedef typename std::remove_pointer<decltype(InitialStateType::smacc_inner_type)>::type InnerType;
     processSubState<InnerType>(targetState);
@@ -228,6 +274,9 @@ void WalkStatesExecutor<InitialStateType>::walkStates(std::shared_ptr<SmaccState
 
     processTransitions<reactions>(targetState);
 }
+
+
+//------------------------------------------------
 
 template <typename InitialStateType>
 void SmaccStateMachineInfo::buildStateMachineInfo()

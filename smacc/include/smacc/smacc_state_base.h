@@ -1,5 +1,7 @@
 #pragma once
 #include <smacc/smacc_state.h>
+#include <typeindex>
+#include <typeinfo>
 
 namespace smacc
 {
@@ -80,13 +82,37 @@ public:
 
     this->setParam("created", true);
 
+    // before dynamic onInitialize, we execute the onDefinition behavior configurations
+    {
+      ROS_INFO("-- STATIC STATE DESCRIPTION --");
+
+      for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
+      {
+        ROS_INFO_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
+        for (auto &bhinfo : *(stateBehaviorsVector.second))
+        {
+          ROS_INFO_STREAM(" - substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+        }
+      }
+
+      const std::type_info *tindex = &(typeid(MostDerived));
+      auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
+
+      ROS_INFO("---- BEGIN STATIC STATE ACTIONS");
+      for (auto &bhinfo : *staticDefinedBehaviors)
+      {
+        ROS_INFO("- Creating static substate behavior");
+        bhinfo.factoryFunction(this);
+      }
+      ROS_INFO("---- END STATIC STATE ACTIONS");
+    }
+
     static_cast<MostDerived *>(this)->onInitialize();
 
     this->getStateMachine().notifyOnStateEntry(this);
 
     //ROS_INFO("Not behavioral State");
     static_cast<MostDerived *>(this)->onEntry();
-    
   }
 
   template <typename StateType>
@@ -130,7 +156,7 @@ public:
     this->getStateMachine().notifyOnStateExit(this);
 
     //this->updateCurrentState<MostDerived>(false);
-    static_cast<MostDerived *>(this)->onExit();    
+    static_cast<MostDerived *>(this)->onExit();
 
     ROS_INFO_STREAM("throwing finish event " << fullname);
     this->throwFinishEvent();
@@ -151,7 +177,6 @@ public:
   }
 
 public:
-
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
   void onInitialize()
@@ -168,6 +193,30 @@ public:
   // calls to the most derived class onExit method if declared on smacc state destruction
   void onExit()
   {
+  }
+
+  template <typename TOrthogonal, typename TBehavior, typename ...Args>
+  static void static_configure(Args && ...args)
+  {
+    auto strorthogonal = demangleSymbol(typeid(TOrthogonal).name());
+    auto strbehavior = demangleSymbol(typeid(TBehavior).name());
+
+    ROS_INFO_STREAM("Orthogonal " << strorthogonal << " -> " << strbehavior);
+
+    StateBehaviorInfoEntry bhinfo;
+    bhinfo.factoryFunction = [&](ISmaccState *state) {
+      auto bh = std::make_shared<TBehavior>(std::forward<Args>(args)...);
+      state->configure<TOrthogonal>(bh);
+    };
+
+    const std::type_info *tindex = &(typeid(MostDerived));
+    bhinfo.behaviorType = &(typeid(TBehavior));
+    bhinfo.orthogonalType = &(typeid(TOrthogonal));
+
+    if (!SmaccStateInfo::staticBehaviorInfo.count(tindex))
+      SmaccStateInfo::staticBehaviorInfo[tindex] = std::make_shared<std::vector<StateBehaviorInfoEntry>>();
+
+    SmaccStateInfo::staticBehaviorInfo[tindex]->push_back(bhinfo);
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -208,4 +257,4 @@ public:
     return pInnerContext;
   }
 };
-}
+} // namespace smacc

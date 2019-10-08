@@ -63,6 +63,12 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
   int currentIteration;
 
+  static void onDefinition()
+  {
+    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<KeyboardOrthogonal, SbKeyboard>();
+  }
+
   void onInitialize()
   {
     this->currentIteration = 0;
@@ -93,8 +99,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
       ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_ , target.yaw_);
       this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_));
-      this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());
-      this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
+      
     }
   }
 
