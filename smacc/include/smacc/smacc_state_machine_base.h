@@ -82,7 +82,6 @@ public:
         auto stateMachineName = this->getStateMachineName();
         stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/"+ stateMachineName + "/smacc/container_structure",1);
         stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/"+ stateMachineName + "/smacc/container_status",1);     
-
     }
 
      // Delegates to ROS param access with the current NodeHandle
@@ -148,8 +147,8 @@ public:
                 for(auto& transition: state->transitions_)
                 {
                     structure_msg.internal_outcomes.push_back("success");//transition.first);  
-                    structure_msg.outcomes_to.push_back(transition.second->toShortName());
-                    structure_msg.outcomes_from.push_back(state->toShortName());
+                    structure_msg.outcomes_to.push_back(transition.destinyState->toShortName());
+                    structure_msg.outcomes_from.push_back(state->toShortName()); // or transition.sourceState
                 }
 
                 if(state->parentState_!=nullptr)
@@ -182,8 +181,6 @@ public:
 
         if(parentstate==nullptr)
         {
-            
-
             status_msg.path = "/" + stateMachineName;
 
             for(auto& val: info_->states)
@@ -220,8 +217,6 @@ public:
 
                 recursivePublishStatus(state);
             }
-
-
         }
         else
         {

@@ -60,7 +60,9 @@ public:
 
                 for (auto &transition : state->transitions_)
                 {
-                    ss << " - " << transition.first << " -> " << transition.second->demangledStateName << std::endl;
+                    auto eventTypeName = demangleSymbol(transition.eventType->name());
+
+                    ss << " - Transition. Index: "<< transition.index <<", Event Type Name:" << eventTypeName << ", Destiny State: " <<  transition.destinyState->demangledStateName<< ", Source State: " <<  transition.sourceState->demangledStateName << std::endl;
                 }
 
                 ROS_INFO_STREAM(ss.str());
@@ -171,7 +173,28 @@ template <typename EvType>
 void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState)
 {
     auto evtype = demangledTypeName<EvType>();
-    transitions_[evtype] = dstState;
+
+    SmaccTransitionInfo transitionInfo;
+    transitionInfo.index = transitions_.size();
+    transitionInfo.sourceState = shared_from_this();
+    transitionInfo.destinyState = dstState;
+
+    transitionInfo.eventType = &(typeid(EvType));
+    transitions_.push_back(transitionInfo);
+}
+
+template<typename TevSource, template<typename> typename EvType >
+void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState)
+{
+    auto evtype = demangledTypeName<EvType<TevSource>>();
+
+    SmaccTransitionInfo transitionInfo;
+    transitionInfo.index = transitions_.size();
+    transitionInfo.sourceState = shared_from_this();
+    transitionInfo.destinyState = dstState;
+
+    transitionInfo.eventType = &(typeid(EvType<TevSource>));
+    transitions_.push_back(transitionInfo);
 }
 
 template <typename Ev>
@@ -197,8 +220,6 @@ void AddTransition::operator()(T)
 }
 
 //------------------ onDefinition -----------------------------
-
-
 
 // SFINAE test
 template <typename T>

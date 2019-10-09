@@ -9,12 +9,21 @@ namespace smacc
 {
 class ISmaccState;
 class SmaccStateMachineInfo;
+class SmaccStateInfo;
 
 struct StateBehaviorInfoEntry
 {
     std::function<void(smacc::ISmaccState *)> factoryFunction;
     const std::type_info *behaviorType;
     const std::type_info *orthogonalType;
+};
+
+struct SmaccTransitionInfo
+{
+    int index;
+    std::shared_ptr<SmaccStateInfo> sourceState;
+    std::shared_ptr<SmaccStateInfo> destinyState;
+    const std::type_info* eventType;
 };
 
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
@@ -28,7 +37,7 @@ public:
 
     std::shared_ptr<SmaccStateMachineInfo> stateMachine_;
     std::shared_ptr<SmaccStateInfo> parentState_;
-    std::map<std::string, std::shared_ptr<SmaccStateInfo>> transitions_;
+    std::vector<SmaccTransitionInfo> transitions_;
 
     std::vector<std::shared_ptr<SmaccStateInfo>> children_;
     int depth_;
@@ -45,6 +54,9 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState);
+
+    template<typename EvSource, template<typename> typename EvType >
     void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState);
 
     const std::string &toShortName() const;
