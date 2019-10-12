@@ -1,18 +1,16 @@
 using namespace smacc;
 
-
 struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
 {
-   template<typename TSource>
-   struct EvAll: sc::event<EvAll<TSource>>
+   template <typename TSource>
+   struct EvAll : sc::event<EvAll<TSource>>
    {
    };
 
-   template<typename TSource>
-   struct EvAll2: sc::event<EvAll2<TSource>>
+   template <typename TSource>
+   struct EvAll2 : sc::event<EvAll2<TSource>>
    {
    };
-
 
    using SmaccState::SmaccState;
 
@@ -23,8 +21,8 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
        sc::transition<EvAll<LuAll>, StNavigateToWaypointsX>,
 
        // Keyboard event
-       sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>//,
-       
+       sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX> //,
+
        //sc::transition<EvAll2<LuAl2>, StateDestiny2>,
 
        // Sensor events
@@ -52,7 +50,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
       //allSensorsReady.setTriggerEventTypesCount(2);
    }
 
-/*
+   /*
    sc::result react(const EvTopicMessage<LidarSensor> &ev)
    {
       ROS_INFO_ONCE("Lidar sensor is ready");

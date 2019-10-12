@@ -1,18 +1,19 @@
 struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
 {
   typedef mpl::list<
-                    // Expected event
-                    sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StRotateDegrees5>,
-                    
-                    // Keyboard events
-                    sc::transition<EvKeyPressP<SbKeyboard>,SS4::SsFPattern1>,
-                    sc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
-                    
-                    // Error events
-                    sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-                    sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+      // Expected event
+      sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StRotateDegrees5>,
 
-                    > reactions; 
+      // Keyboard events
+      sc::transition<EvKeyPressP<SbKeyboard>, SS4::SsFPattern1>,
+      sc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
+
+      // Error events
+      sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
+      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+
+      >
+      reactions;
 
   using SmaccState::SmaccState;
 

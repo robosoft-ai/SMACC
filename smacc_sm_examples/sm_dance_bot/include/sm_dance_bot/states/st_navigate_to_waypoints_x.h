@@ -20,7 +20,6 @@ struct EvWaypoint5 : sc::event<EvWaypoint5>
 {
 };
 
-
 struct Pose2D
 {
   Pose2D(double x, double y, double yaw)
@@ -28,7 +27,6 @@ struct Pose2D
     this->x_ = x;
     this->y_ = y;
     this->yaw_ = yaw;
-
   }
 
   double x_;
@@ -79,14 +77,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
     // x, y, yaw (orientation)
-    std::vector<Pose2D> waypoints = 
-    {
-        {3.0, -2.0, 0},
-        {-5.5, 3.0 , 0},
-        {-11.0, -5.0 , 0},
-        {2.0, -8.58, 0},
-        {-10.0, 14.5, 0}
-    };
+    std::vector<Pose2D> waypoints =
+        {
+            {3.0, -2.0, 0},
+            {-5.5, 3.0, 0},
+            {-11.0, -5.0, 0},
+            {2.0, -8.58, 0},
+            {-10.0, 14.5, 0}};
 
     if (currentIteration > waypoints.size())
     {
@@ -97,9 +94,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     {
       auto &target = waypoints[currentIteration];
 
-      ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_ , target.yaw_);
+      ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_, target.yaw_);
       this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_));
-      
     }
   }
 
