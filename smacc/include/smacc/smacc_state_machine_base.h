@@ -12,6 +12,7 @@
 #include <smacc_msgs/SmaccContainerStructure.h>
 #include <smacc_msgs/SmaccContainerInitialStatusCmd.h>
 #include <smacc_msgs/SmaccContainerStatus.h>
+#include <smacc/logic_units/logic_unit_base.h>
 //-------------------------------------------------------------------------------------------------
 
 namespace smacc
@@ -22,12 +23,7 @@ template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >
 {
 public:
-    // The node handle for this state
-    ros::NodeHandle nh;
     
-    ros::Timer timer_;
-    ros::Publisher stateMachineStructurePub_;
-    ros::Publisher stateMachineStatePub_;
 
     //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
 
@@ -60,8 +56,8 @@ public:
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
         
-	    InitialStateType* test;
-        updateCurrentState<InitialStateType>(true,test);
+	    //InitialStateType* test;
+        //updateCurrentState<InitialStateType>(true,test);
         
         info_->printAllStates();
     }

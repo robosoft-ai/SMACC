@@ -6,6 +6,7 @@
 #pragma once
 
 #include <smacc/common.h>
+#include <smacc/logic_units/logic_unit_base.h>
 
 #include <boost/any.hpp>
 #include <map>
@@ -16,6 +17,7 @@
 #include <boost/mpl/list.hpp>
 #include <boost/utility/enable_if.hpp>
 
+
 namespace smacc
 {
 
@@ -24,13 +26,20 @@ class SmaccStateInfo;
 class Orthogonal;
 class ISmaccState;
 
-
 // This class describes the concept of Smacc State Machine in an abastract way.
 // The SmaccStateMachineBase inherits from this state machine and from 
 // statechart::StateMachine<> (via multiple inheritance)
 class ISmaccStateMachine
 {
     public:
+    // The node handle for this state
+    ros::NodeHandle nh;
+    
+    ros::Timer timer_;
+    ros::Publisher stateMachineStructurePub_;
+    ros::Publisher stateMachineStatePub_;
+
+    ISmaccState* currentState_;
 
     ISmaccStateMachine( SignalDetector* signalDetector);
 

@@ -26,10 +26,20 @@ struct SmaccTransitionInfo
     const std::type_info* eventType;
 };
 
+struct SmaccLogicUnitInfo
+{
+    std::shared_ptr<SmaccStateInfo> ownerState;
+    std::function<void(smacc::ISmaccState *)> factoryFunction;
+    const std::type_info* logicUnitType;
+};
+
+enum class SmaccStateType{SUPERSTATE = 2, STATE = 1, SUPERSTATE_ROUTINE = 1};
+
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 {
 public:
-    static std::map<const std::type_info *, std::shared_ptr<std::vector<StateBehaviorInfoEntry>>> staticBehaviorInfo;
+    static std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> staticBehaviorInfo;
+    static std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> logicUnitsInfo;
 
     bool active_;
     std::string fullStateName;
@@ -41,8 +51,11 @@ public:
 
     std::vector<std::shared_ptr<SmaccStateInfo>> children_;
     int depth_;
+    const std::type_info* tid_;
 
-    SmaccStateInfo(std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo);
+    SmaccStateInfo(const std::type_info* tid, std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo);
+
+    SmaccStateType getStateLevel();
 
     inline int depth() const { return depth_; }
 

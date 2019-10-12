@@ -48,7 +48,9 @@ public:
             std::stringstream ss;
             if (state->parentState_ == nullptr)
             {
-                ss << "**** Print StateType: " << state->demangledStateName << std::endl;
+                ss << "**** Print State: " << state->demangledStateName << std::endl;
+                ss << "StateLevel: " << (int)state->getStateLevel() << std::endl;
+
                 ss << " Childstates:" << std::endl;
 
                 for (auto &child : state->children_)
@@ -62,8 +64,40 @@ public:
                 {
                     auto eventTypeName = demangleSymbol(transition.eventType->name());
 
-                    ss << " - Transition. Index: "<< transition.index <<", Event Type Name:" << eventTypeName << ", Destiny State: " <<  transition.destinyState->demangledStateName<< ", Source State: " <<  transition.sourceState->demangledStateName << std::endl;
+                    ss << " - Transition. Index: " << transition.index << ", Event Type Name:" << eventTypeName << ", Destiny State: " << transition.destinyState->demangledStateName << ", Source State: " << transition.sourceState->demangledStateName << std::endl;
                 }
+
+                const std::type_info *statetid = state->tid_;
+
+                ss << " Substate behaviors:" << std::endl;
+                if(SmaccStateInfo::staticBehaviorInfo.count(statetid) > 0)
+                {
+                    for (auto &bhinfo : SmaccStateInfo::staticBehaviorInfo[statetid])
+                    {
+                        ss << " - orthogonal: " << demangleSymbol(bhinfo.orthogonalType->name()) << std::endl;
+                        ss << " |-> substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()) << std::endl;
+                        
+                    }
+                }
+                else
+                {
+                    ss << "- NO SUBSTATE BEHAVIORS -" << std::endl;
+                }
+                
+                
+                ss << " Logic units:" << std::endl;
+                if(SmaccStateInfo::logicUnitsInfo.count(statetid) > 0)
+                {
+                    for (auto &luinfo : SmaccStateInfo::logicUnitsInfo[statetid])
+                    {
+                        ss << " - logic unit: " << demangleSymbol(luinfo.logicUnitType->name()) << std::endl;
+                    }
+                }
+                else
+                {
+                    ss << "- NO LOGIC UNITS - " << std::endl;
+                }
+      
 
                 ROS_INFO_STREAM(ss.str());
             }
@@ -183,7 +217,7 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitions_.push_back(transitionInfo);
 }
 
-template<typename TevSource, template<typename> typename EvType >
+template <typename TevSource, template <typename> typename EvType>
 void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState)
 {
     auto evtype = demangledTypeName<EvType<TevSource>>();
@@ -229,28 +263,33 @@ private:
     typedef char YesType[1];
     typedef char NoType[2];
 
-    template <typename C> static YesType& test( decltype(&C::onDefinition) ) ;
-    template <typename C> static NoType& test(...);
-
+    template <typename C>
+    static YesType &test(decltype(&C::onDefinition));
+    template <typename C>
+    static NoType &test(...);
 
 public:
-    enum { value = sizeof(test<T>(0)) == sizeof(YesType) };
+    enum
+    {
+        value = sizeof(test<T>(0)) == sizeof(YesType)
+    };
 };
 
-template<typename T> 
+template <typename T>
 typename std::enable_if<HasOnDefinition<T>::value, void>::type
-CallOnDefinition() {
-   /* something when T has toString ... */
-   ROS_INFO_STREAM("EXECUTING ONDEFINITION: " << demangleSymbol(typeid(T).name()));
-   T::onDefinition();
+CallOnDefinition()
+{
+    /* something when T has toString ... */
+    ROS_INFO_STREAM("EXECUTING ONDEFINITION: " << demangleSymbol(typeid(T).name()));
+    T::onDefinition();
 }
 
-template<typename T> 
+template <typename T>
 typename std::enable_if<!HasOnDefinition<T>::value, void>::type
-CallOnDefinition() {
+CallOnDefinition()
+{
     ROS_INFO_STREAM("static OnDefinition: dont exist for " << demangleSymbol(typeid(T).name()));
-   /* something when T has toString ... */
-   
+    /* something when T has toString ... */
 }
 
 /*
@@ -258,7 +297,6 @@ void CallOnDefinition(...)
 {
    
 }*/
-
 
 //-----------------------------------------------------------------------------------
 template <typename InitialStateType>
@@ -283,7 +321,7 @@ void WalkStatesExecutor<InitialStateType>::walkStates(std::shared_ptr<SmaccState
     {
         targetState = parentState;
     }
-    
+
     CallOnDefinition<InitialStateType>();
 
     typedef typename std::remove_pointer<decltype(InitialStateType::smacc_inner_type)>::type InnerType;
@@ -295,7 +333,6 @@ void WalkStatesExecutor<InitialStateType>::walkStates(std::shared_ptr<SmaccState
 
     processTransitions<reactions>(targetState);
 }
-
 
 //------------------------------------------------
 
@@ -310,8 +347,13 @@ template <typename StateType>
 std::shared_ptr<SmaccStateInfo> SmaccStateMachineInfo::createState(std::shared_ptr<SmaccStateInfo> parent)
 {
     auto thisptr = this->shared_from_this();
-    auto state = std::shared_ptr<SmaccStateInfo>(new SmaccStateInfo(parent, thisptr));
-    state->demangledStateName = demangledTypeName<StateType>();
+    auto *statetid = &(typeid(StateType));
+
+    auto demangledName = demangledTypeName<StateType>();
+    ROS_INFO_STREAM("Creating State Info: " << demangledName);
+
+    auto state = std::make_shared<SmaccStateInfo>(statetid, parent, thisptr);
+    state->demangledStateName = demangledName;
     state->fullStateName = typeid(StateType).name();
 
     std::vector<std::string> strs;
@@ -347,4 +389,4 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 
     return childState;
 }
-}
+} // namespace smacc

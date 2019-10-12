@@ -16,7 +16,6 @@ struct SensorStateMachine
           this->createOrthogonal<SensorOrthogonal>();
           this->createOrthogonal<ObstaclePerceptionOrthogonal>();
       }      
-
 };
 
 #include <states/sensor_state.h>

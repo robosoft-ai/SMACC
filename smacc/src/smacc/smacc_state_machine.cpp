@@ -13,7 +13,7 @@
 namespace smacc
 {
 ISmaccStateMachine::ISmaccStateMachine( SignalDetector* signalDetector)
-    :private_nh_("~")
+    :private_nh_("~"), currentState_(nullptr)
 {
     ROS_INFO("Creating State Machine Base");
     signalDetector_ = signalDetector;

@@ -2,6 +2,7 @@
 #include <smacc/smacc_state.h>
 #include <typeindex>
 #include <typeinfo>
+#include <smacc/logic_units/logic_unit_base.h>
 
 namespace smacc
 {
@@ -27,8 +28,6 @@ public:
 
     typename base_type::context_ptr_type pContext_;
   };
-
-  typedef SmaccState my_base;
 
   template <typename T>
   bool getGlobalSMData(std::string name, T &ret)
@@ -63,6 +62,8 @@ public:
 
     this->set_context(ctx.pContext_);
 
+    
+
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
 
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
@@ -76,9 +77,8 @@ public:
     this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
 
     ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
-    MostDerived *test;
 
-    this->updateCurrentState(true, test); //<MostDerived>
+    this->updateCurrentState(true); //<MostDerived>
 
     this->setParam("created", true);
 
@@ -86,25 +86,32 @@ public:
     {
       ROS_INFO("-- STATIC STATE DESCRIPTION --");
 
-      for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
-      {
-        ROS_INFO_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
-        for (auto &bhinfo : *(stateBehaviorsVector.second))
-        {
-          ROS_INFO_STREAM(" - substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
-        }
-      }
+      // for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
+      // {
+      //   ROS_INFO_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
+      //   for (auto &bhinfo : stateBehaviorsVector.second)
+      //   {
+      //     ROS_INFO_STREAM(" - substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+      //   }
+      // }
 
       const std::type_info *tindex = &(typeid(MostDerived));
       auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
-
-      ROS_INFO("---- BEGIN STATIC STATE ACTIONS");
-      for (auto &bhinfo : *staticDefinedBehaviors)
+      auto &staticDefinedLogicUnits = SmaccStateInfo::logicUnitsInfo[tindex];
+      
+      for (auto &bhinfo : staticDefinedBehaviors)
       {
-        ROS_INFO("- Creating static substate behavior");
+        ROS_INFO_STREAM("- Creating static substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
         bhinfo.factoryFunction(this);
       }
-      ROS_INFO("---- END STATIC STATE ACTIONS");
+
+      for (auto &lu : staticDefinedLogicUnits)
+      {
+        ROS_INFO_STREAM("- Creating static logic unit: " << demangleSymbol(lu.logicUnitType->name()));
+        lu.factoryFunction(this);
+      }
+      
+      ROS_INFO("---- END STATIC DESCRIPTION");
     }
 
     static_cast<MostDerived *>(this)->onInitialize();
@@ -115,10 +122,9 @@ public:
     static_cast<MostDerived *>(this)->onEntry();
   }
 
-  template <typename StateType>
-  void updateCurrentState(bool active, StateType *test)
+  void updateCurrentState(bool active)
   {
-    base_type::outermost_context().updateCurrentState(active, test);
+    base_type::outermost_context().updateCurrentState(active, static_cast<MostDerived *>(this));
   }
 
   InnerInitial *smacc_inner_type;
@@ -208,15 +214,34 @@ public:
       auto bh = std::make_shared<TBehavior>(std::forward<Args>(args)...);
       state->configure<TOrthogonal>(bh);
     };
-
-    const std::type_info *tindex = &(typeid(MostDerived));
+    
     bhinfo.behaviorType = &(typeid(TBehavior));
     bhinfo.orthogonalType = &(typeid(TOrthogonal));
 
+    const std::type_info *tindex = &(typeid(MostDerived));
     if (!SmaccStateInfo::staticBehaviorInfo.count(tindex))
-      SmaccStateInfo::staticBehaviorInfo[tindex] = std::make_shared<std::vector<StateBehaviorInfoEntry>>();
+      SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<StateBehaviorInfoEntry>();
 
-    SmaccStateInfo::staticBehaviorInfo[tindex]->push_back(bhinfo);
+    SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
+  }
+
+
+  template <typename TLUnit, typename TTriggerEvent, typename ...TEvArgs>
+  static void static_createLogicUnit()
+  {
+    SmaccLogicUnitInfo luinfo;
+
+    luinfo.logicUnitType = &(typeid(TLUnit));
+    luinfo.factoryFunction = [&](ISmaccState *state) {
+      state->createLogicUnit<TLUnit, TTriggerEvent, TEvArgs...>();
+    };
+
+    const std::type_info *tindex = &(typeid(MostDerived));
+    if (!SmaccStateInfo::logicUnitsInfo.count(tindex))
+      SmaccStateInfo::logicUnitsInfo[tindex] = std::vector<SmaccLogicUnitInfo>();
+
+    SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
+    
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -256,5 +281,5 @@ public:
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
   }
-};
+};                 
 } // namespace smacc

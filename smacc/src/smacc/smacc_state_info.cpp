@@ -3,10 +3,12 @@
 namespace smacc
 {
 
-std::map<const std::type_info *, std::shared_ptr<std::vector<StateBehaviorInfoEntry>>> SmaccStateInfo::staticBehaviorInfo;
+std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> SmaccStateInfo::staticBehaviorInfo;
+std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> SmaccStateInfo::logicUnitsInfo;
 
-SmaccStateInfo::SmaccStateInfo(std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo)
+SmaccStateInfo::SmaccStateInfo(const std::type_info *tid, std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo)
 {
+    tid_ = tid;
     parentState_ = parentState;
     stateMachine_ = stateMachineInfo;
 
@@ -23,6 +25,25 @@ void SmaccStateInfo::getAncestors(std::list<std::shared_ptr<SmaccStateInfo>> &an
     }
 }
 
+SmaccStateType SmaccStateInfo::getStateLevel()
+{
+    if (this->children_.size() == 0)
+    {
+        if (this->parentState_ != nullptr)
+        {
+            return SmaccStateType::SUPERSTATE_ROUTINE;
+        }
+        else
+        {
+            return SmaccStateType::STATE;
+        }
+    }
+    else
+    {
+        return SmaccStateType::SUPERSTATE;
+    }
+}
+
 std::string SmaccStateInfo::getFullPath()
 {
     if (parentState_ == nullptr)
@@ -36,4 +57,4 @@ const std::string &SmaccStateInfo::toShortName() const
     return this->demangledStateName;
 }
 
-}
+} // namespace smacc

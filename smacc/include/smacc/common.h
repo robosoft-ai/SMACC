@@ -134,6 +134,8 @@ template <typename StateMachineType>
 void run();
 } // namespace smacc
 
+
+
 inline std::string demangleSymbol(const char *name)
 {
 #if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
@@ -151,6 +153,14 @@ inline std::string demangleSymbol(const char *name)
   return std::string(name);
 #endif
 }
+
+
+template <typename T>
+inline std::string demangleSymbol()
+{
+  return demangleSymbol(typeid(T).name());
+}
+
 template <class T>
 inline std::string demangledTypeName()
 {

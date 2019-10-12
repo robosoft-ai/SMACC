@@ -8,6 +8,7 @@
 #include "smacc/impl/smacc_state_machine_impl.h"
 #include "smacc/orthogonal.h"
 #include "smacc/smacc_substate_behavior.h"
+#include "smacc/logic_units/logic_unit_base.h"
 
 namespace smacc
 {
@@ -15,23 +16,6 @@ class ISmaccState
 {
 public:
   ros::NodeHandle nh;
-
-  // Default nullptr
-  SmaccSubStateBehavior *stateBehavior;
-
-  void configureStateBehavior(SmaccSubStateBehavior *stateBehavior)
-  {
-    if (stateBehavior != nullptr)
-    {
-      ROS_INFO("Behavioral State");
-      stateBehavior->stateMachine = &this->getStateMachine();
-      stateBehavior->currentState = this;
-    }
-    else
-    {
-      ROS_INFO("Not behavioral State");
-    }
-  }
 
   // Delegates to ROS param access with the current NodeHandle
   template <typename T>
@@ -55,6 +39,11 @@ public:
   }
 
   virtual ISmaccStateMachine &getStateMachine() = 0;
+
+  virtual std::string getClassName()
+  {
+    return demangleSymbol(typeid(*this).name());
+  }
 
   template <typename TOrthogonal>
   void configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior)
@@ -91,7 +80,32 @@ public:
   {
     this->getStateMachine().setGlobalSMData(name, value);
   }
+
+  template <typename TLUnit, typename TTriggerEvent, typename ...TEvArgs>
+  std::shared_ptr<TLUnit> createLogicUnit()
+  {
+    auto lu = std::make_shared<TLUnit>();
+    lu->initialize(this,typelist<TEvArgs...>());
+    lu->declarePostEvent(typelist<TTriggerEvent>());
+    logicUnits_.push_back(lu);
+
+    return lu;
+  }
+
+  std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
 };
+
+template<typename TEv>
+void LogicUnit::declarePostEvent(typelist<TEv>)
+{
+    this->postEventFn = [this]()
+    {
+        ROS_INFO_STREAM("[Logic Unit Base] postingfn posting event: " << demangleSymbol<TEv>());
+        auto* ev = new TEv();
+        this->ownerState->getStateMachine().postEvent(ev);
+    };
+}
+
 //-------------------------------------------------------------------------------------------------------------------
 
 } // namespace smacc

@@ -7,6 +7,7 @@
 #include <smacc/smacc_state_machine_info.h>
 #include <smacc_msgs/SmaccStatus.h>
 #include <sstream>
+#include <smacc/logic_units/logic_unit_base.h>
 
 namespace smacc
 {
@@ -101,13 +102,30 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool ve
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType *ev)
-{
+{    
+    // when a postting event is requested by any component, client, or substate behavior
+    // we reach this place. Now, we propagate the events to all the state logic units to generate
+    // some more events
+    if(currentState_!=nullptr)
+    {
+        for(auto& lu : currentState_->logicUnits_)
+        {
+            lu->notifyEvent(ev);
+        }
+    }
+    else
+    {
+        ROS_INFO_THROTTLE(0.5,"debug post event, to lu, but currentState was nullptr");
+    }
+
     this->signalDetector_->postEvent(ev);
 }
 
 template <typename StateType>
-void ISmaccStateMachine::updateCurrentState(bool active, StateType *test)
+void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState)
 {
+    currentState_= currentState;
+
     auto stateInfo = info_->getState<StateType>();
 
     if (stateInfo != nullptr)

@@ -109,6 +109,10 @@ using LidarSensor = smacc::SensorTopic<sensor_msgs::LaserScan>;
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
 
+//LOGIC UNITS
+#include <event_aggregator/logic_units/lu_event_all.h>
+
+
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
