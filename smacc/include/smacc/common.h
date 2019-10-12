@@ -72,38 +72,38 @@ class SmaccStateInfo;
 struct IActionResult
 {
   smacc::ISmaccActionClient *client;
-  actionlib::SimpleClientGoalState getResult() const;
+  actionlib::SimpleClientGoalState getResultState() const;
 };
 
-template <typename ActionResult>
-struct EvActionResult : sc::event<EvActionResult<ActionResult>>, IActionResult
+template <typename TSource>
+struct EvActionResult : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  ActionResult resultMessage;
+  typename TSource::Result resultMessage;
 };
 
 //--------------------------------
-template <typename ActionResult>
-struct EvActionSucceded : sc::event<EvActionResult<ActionResult>>, IActionResult
+template <typename TSource>
+struct EvActionSucceded : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  ActionResult resultMessage;
+  typename TSource::Result resultMessage;
 };
 
-template <typename ActionResult>
-struct EvActionAborted : sc::event<EvActionResult<ActionResult>>, IActionResult
+template <typename TSource>
+struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  ActionResult resultMessage;
+  typename TSource::Result  resultMessage;
 };
 
-template <typename ActionResult>
-struct EvActionPreempted : sc::event<EvActionResult<ActionResult>>, IActionResult
+template <typename TSource>
+struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  ActionResult resultMessage;
+  typename TSource::Result  resultMessage;
 };
 
-template <typename ActionResult>
-struct EvActionRejected : sc::event<EvActionResult<ActionResult>>, IActionResult
+template <typename TSource>
+struct EvActionRejected : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  ActionResult resultMessage;
+  typename TSource::Result  resultMessage;
 };
 
 template <typename StateType>

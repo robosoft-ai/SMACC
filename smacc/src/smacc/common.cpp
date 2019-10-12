@@ -8,7 +8,7 @@
 
 namespace smacc
 {
-actionlib::SimpleClientGoalState IActionResult::getResult() const
+actionlib::SimpleClientGoalState IActionResult::getResultState() const
 {
     return client->getState();
 }

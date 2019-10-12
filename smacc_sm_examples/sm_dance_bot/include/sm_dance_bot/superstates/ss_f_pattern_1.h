@@ -26,7 +26,7 @@ public:
                        
                       // Error events
                       sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>,
+                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
                       // Internal events
                       sc::custom_reaction<smacc::EvStateFinish<SsrFPatternRotate2>>

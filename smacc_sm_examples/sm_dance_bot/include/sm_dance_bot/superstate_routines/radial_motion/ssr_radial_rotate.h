@@ -2,7 +2,7 @@ struct SsrRadialRotate: smacc::SmaccState<SsrRadialRotate, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>,  SsrRadialEndPoint>> reactions; 
+  typedef mpl::list<sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>,  SsrRadialEndPoint>> reactions; 
 
   void onInitialize()
   {

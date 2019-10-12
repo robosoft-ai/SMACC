@@ -5,13 +5,14 @@
 
 namespace smacc
 {
-class SmaccToolActionClient: public SmaccActionClientBase<smacc_action_client_generic::ToolControlAction>
+class SmaccToolActionClient : public SmaccActionClientBase<SmaccToolActionClient, smacc_action_client_generic::ToolControlAction>
 {
-    typedef SmaccActionClientBase<smacc_action_client_generic::ToolControlAction> Base;
+public:
+    // for any action client you develop you need to call the ros action client type definition macro
+    ACTION_DEFINITION(smacc_action_client_generic::ToolControlAction);
 
-    public:
-        SmaccToolActionClient();
-        virtual std::string getName() const override;
-        virtual ~SmaccToolActionClient();
+    SmaccToolActionClient();
+    virtual std::string getName() const override;
+    virtual ~SmaccToolActionClient();
 };
-}
+} // namespace smacc

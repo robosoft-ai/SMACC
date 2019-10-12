@@ -2,7 +2,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
 {
   typedef mpl::list<
       // Expected event
-      sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient::Result>, StRotateDegrees5>,
+      sc::transition<EvActionSucceded<SmaccMoveBaseActionClient>, StRotateDegrees5>,
 
       // Keyboard events
       sc::transition<EvKeyPressP<SbKeyboard>, SS4::SsFPattern1>,
@@ -10,7 +10,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
 
       // Error events
       sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient::Result>, StNavigateToWaypointsX>
+      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
 
       >
       reactions;
