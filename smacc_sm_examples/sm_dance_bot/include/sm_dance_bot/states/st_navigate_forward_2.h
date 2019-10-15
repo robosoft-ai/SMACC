@@ -17,11 +17,15 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
 
   using SmaccState::SmaccState;
 
+  static void onDefinition()
+  {
+    static_configure<NavigationOrthogonal,SbNavigateForward>(1);
+    static_configure<ToolOrthogonal,SbToolStop>();
+    static_configure<KeyboardOrthogonal,SbKeyboard>();
+  }
+
   // Key N -> next state
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(1));
-    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
-    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
   }
 };

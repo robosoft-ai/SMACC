@@ -14,11 +14,16 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, SmDanceB
       sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
+  static void onDefinition()
+  {
+    static_configure<NavigationOrthogonal, SbNavigateGlobalPosition>(0, 0, 0);
+    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<KeyboardOrthogonal, SbKeyboard>();
+    static_configure<PublisherOrthogonal, SbStringPublisher>("All Done!");
+  }
+
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(0, 0, 0));
-    this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());
-    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
-    this->configure<PublisherOrthogonal>(std::make_shared<SbStringPublisher>("All Done!"));
+    
   }
 };

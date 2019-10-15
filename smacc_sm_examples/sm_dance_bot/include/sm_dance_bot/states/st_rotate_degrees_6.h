@@ -15,10 +15,14 @@ struct StRotateDegrees6 : smacc::SmaccState<StRotateDegrees6, SmDanceBot>
       sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
+  static void onDefinition()
+  {
+    static_configure<NavigationOrthogonal,SbRotate>(/*30*/ -180);
+    static_configure<ToolOrthogonal, SbToolStop>();
+    static_configure<KeyboardOrthogonal,SbKeyboard>();
+  }
+
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(std::make_shared<SbRotate>(/*30*/ -180));
-    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
-    this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
   }
 };

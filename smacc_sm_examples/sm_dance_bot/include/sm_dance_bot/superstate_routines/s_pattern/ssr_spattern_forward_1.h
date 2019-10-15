@@ -1,14 +1,16 @@
-struct SsrSPatternForward1: public smacc::SmaccState<SsrSPatternForward1,SS>
+struct SsrSPatternForward1 : public smacc::SmaccState<SsrSPatternForward1, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrSPatternRotate2> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrSPatternRotate2> reactions;
+
+  static void onDefinition()
+  {
+    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<NavigationOrthogonal, SbNavigateForward>(SS::pitch2_lenght_meters());
+  }
 
   void onInitialize()
   {
-    auto& superstate = this->context<SS>();
-    
-    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(superstate.pitch2_lenght_meters));
-    this->configure<ToolOrthogonal>(std::make_shared<SbToolStart>());    
   }
 };

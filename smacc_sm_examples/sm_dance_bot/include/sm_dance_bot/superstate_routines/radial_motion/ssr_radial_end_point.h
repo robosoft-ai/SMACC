@@ -1,15 +1,18 @@
-struct SsrRadialEndPoint: smacc::SmaccState<SsrRadialEndPoint,SS>
+struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn> reactions; 
+  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn> reactions;
+
+  static void onDefinition()
+  {
+    ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
+    static_configure<NavigationOrthogonal, SbNavigateForward>(SS::ray_length_meters());
+    static_configure<ToolOrthogonal, SbToolStop>();
+  }
 
   void onInitialize()
   {
-    auto& superstate = this->context<SS>();
-    
-    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(superstate.ray_length_meters));
-    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());    
+
   }
-  
 };

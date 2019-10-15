@@ -210,8 +210,8 @@ public:
     ROS_INFO_STREAM("Orthogonal " << strorthogonal << " -> " << strbehavior);
 
     StateBehaviorInfoEntry bhinfo;
-    bhinfo.factoryFunction = [&](ISmaccState *state) {
-      auto bh = std::make_shared<TBehavior>(std::forward<Args>(args)...);
+    bhinfo.factoryFunction = [=](ISmaccState *state) {
+      auto bh = std::make_shared<TBehavior>(args...);
       state->configure<TOrthogonal>(bh);
     };
     

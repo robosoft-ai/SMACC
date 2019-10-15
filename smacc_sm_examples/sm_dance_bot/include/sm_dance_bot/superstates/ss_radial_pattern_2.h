@@ -11,42 +11,41 @@ public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-    
-                      // Expected event
-                      sc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
 
-                      // Keyboard events
-                      sc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
-                      sc::transition<EvKeyPressP<SbKeyboard>,StNavigateToWaypointsX>,
+        // Expected event
+        sc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
 
-                      // Error events
-                      sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-                      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+        // Keyboard events
+        sc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
+        sc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
 
-                      // Internal events
-                      sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>
-                > reactions;
-        
+        // Error events
+        sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
+        sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
-    int iteration_count;
-    int total_iterations;
-    float ray_angle_increment_degree;
-    float ray_length_meters;
+        // Internal events
+        sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>>
+        reactions;
+
+    static void onDefinition()
+    {
+        static_configure<KeyboardOrthogonal, SbKeyboard>();
+    }
+
+    int iteration_count = 0;
+    static constexpr int total_iterations() { return 4; }
+    static constexpr float ray_angle_increment_degree() { return 90; }
+    static constexpr float ray_length_meters() { return 3; }
 
     void onInitialize()
     {
         iteration_count = 0;
-        total_iterations = 4;
-        ray_angle_increment_degree = 90;
-        ray_length_meters = 3;
-
-        this->configure<KeyboardOrthogonal>(std::make_shared<SbKeyboard>());
     }
 
     sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)
     {
         ROS_INFO("Superstate count: %d", iteration_count);
-        if (++iteration_count == total_iterations) // 1 == two times
+        if (++iteration_count == total_iterations()) // 1 == two times
         {
             this->throwFinishEvent();
         }
