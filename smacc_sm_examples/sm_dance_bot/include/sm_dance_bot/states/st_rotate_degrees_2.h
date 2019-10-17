@@ -4,15 +4,15 @@ struct StRotateDegrees2 : smacc::SmaccState<StRotateDegrees2, SmDanceBot>
 
   typedef mpl::list<
       // Expected event
-      sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+      smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
       // Keyboard events
-      sc::transition<EvKeyPressP<SbKeyboard>, StNavigateForward1>,
-      sc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
+      smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateForward1>,
+      smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX>,
 
       // Error events
-      sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()

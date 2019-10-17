@@ -6,7 +6,7 @@
 
 namespace smacc
 {
-template <typename MessageType>
+template <typename Derived, typename MessageType>
 class SensorTopic : public smacc::SmaccSubStateBehavior
 {
 public:
@@ -28,19 +28,19 @@ public:
 
     c1_ = sensor_->onMessageReceived.connect(
         [this](auto &msg) {
-          auto *ev2 = new EvTopicMessage<SensorTopic<MessageType>>();
+          auto *ev2 = new EvTopicMessage<Derived>();
           this->postEvent(ev2);
         });
 
     c2_ = sensor_->onFirstMessageReceived.connect(
         [this](auto &msg) {
-          auto event = new EvTopicInitialMessage<SensorTopic<MessageType>>();
+          auto event = new EvTopicInitialMessage<Derived>();
           this->postEvent(event);
         });
 
     c3_ = sensor_->onMessageTimeout.connect(
         [this](auto &msg) {
-          auto event = new EvTopicMessageTimeout<SensorTopic<MessageType>>();
+          auto event = new EvTopicMessageTimeout<Derived>();
           this->postEvent(event);
         });
 

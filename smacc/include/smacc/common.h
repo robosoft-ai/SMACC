@@ -29,6 +29,8 @@
 
 namespace sc = boost::statechart;
 
+#include <smacc/transition.h>
+
 using namespace boost;
 
 typedef sc::fifo_scheduler<> SmaccScheduler;

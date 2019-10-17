@@ -1,6 +1,6 @@
 struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
 {
-  //typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialRotate> reactions;
+  //typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialRotate> reactions;
 
   using SmaccState::SmaccState;
 

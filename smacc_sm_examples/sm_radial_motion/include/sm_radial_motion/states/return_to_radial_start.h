@@ -3,7 +3,7 @@
 struct ReturnToRadialStart : SmaccState< ReturnToRadialStart, RadialMotionSuperState > // <- these are the orthogonal lines of this State
 {
     // when this state is finished then move to the RotateDegress state
-    typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, RotateDegress> reactions; 
+    typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, RotateDegress> reactions; 
 
 public:
   using SmaccState::SmaccState;

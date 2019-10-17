@@ -44,19 +44,19 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       // Expected event
       sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient>>,
 
-      sc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
-      sc::transition<EvWaypoint2, SS2::SsRadialPattern2>,
-      sc::transition<EvWaypoint3, SS3::SsRadialPattern3>,
-      sc::transition<EvWaypoint4, SS4::SsFPattern1>,
-      sc::transition<EvWaypoint5, SS5::SsSPattern1>,
+      smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
+      smacc::transition<EvWaypoint2, SS2::SsRadialPattern2>,
+      smacc::transition<EvWaypoint3, SS3::SsRadialPattern3>,
+      smacc::transition<EvWaypoint4, SS4::SsFPattern1>,
+      smacc::transition<EvWaypoint5, SS5::SsSPattern1>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
       sc::custom_reaction<EvKeyPressP<SbKeyboard>>,
 
       // Error events
-      sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
   int currentIteration;

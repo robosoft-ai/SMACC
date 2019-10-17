@@ -62,8 +62,6 @@ public:
 
     this->set_context(ctx.pContext_);
 
-    
-
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
 
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
@@ -98,7 +96,7 @@ public:
       const std::type_info *tindex = &(typeid(MostDerived));
       auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
       auto &staticDefinedLogicUnits = SmaccStateInfo::logicUnitsInfo[tindex];
-      
+
       for (auto &bhinfo : staticDefinedBehaviors)
       {
         ROS_INFO_STREAM("- Creating static substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
@@ -110,7 +108,7 @@ public:
         ROS_INFO_STREAM("- Creating static logic unit: " << demangleSymbol(lu.logicUnitType->name()));
         lu.factoryFunction(this);
       }
-      
+
       ROS_INFO("---- END STATIC DESCRIPTION");
     }
 
@@ -201,8 +199,8 @@ public:
   {
   }
 
-  template <typename TOrthogonal, typename TBehavior, typename ...Args>
-  static void static_configure(Args && ...args)
+  template <typename TOrthogonal, typename TBehavior, typename... Args>
+  static void static_configure(Args &&... args)
   {
     auto strorthogonal = demangleSymbol(typeid(TOrthogonal).name());
     auto strbehavior = demangleSymbol(typeid(TBehavior).name());
@@ -214,7 +212,7 @@ public:
       auto bh = std::make_shared<TBehavior>(args...);
       state->configure<TOrthogonal>(bh);
     };
-    
+
     bhinfo.behaviorType = &(typeid(TBehavior));
     bhinfo.orthogonalType = &(typeid(TOrthogonal));
 
@@ -225,8 +223,7 @@ public:
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
   }
 
-
-  template <typename TLUnit, typename TTriggerEvent, typename ...TEvArgs>
+  template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
   static void static_createLogicUnit()
   {
     SmaccLogicUnitInfo luinfo;
@@ -241,7 +238,6 @@ public:
       SmaccStateInfo::logicUnitsInfo[tindex] = std::vector<SmaccLogicUnitInfo>();
 
     SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
-    
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -281,5 +277,5 @@ public:
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
   }
-};                 
+};
 } // namespace smacc

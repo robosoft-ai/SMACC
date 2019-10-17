@@ -1,4 +1,7 @@
 #include <smacc/smacc_state_info.h>
+#include <ros/ros.h>
+#include <smacc/common.h>
+#include <smacc/string_type_walker.h>
 
 namespace smacc
 {
@@ -55,6 +58,18 @@ std::string SmaccStateInfo::getFullPath()
 const std::string &SmaccStateInfo::toShortName() const
 {
     return this->demangledStateName;
+}
+
+std::string SmaccTransitionInfo::getSourceTypeName()
+{
+    if(eventType!=nullptr)
+    {
+        return  eventType->getNonTemplatetypename();;
+    }
+    else
+    {
+        return "";
+    }
 }
 
 } // namespace smacc

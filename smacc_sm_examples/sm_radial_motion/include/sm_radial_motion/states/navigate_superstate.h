@@ -4,7 +4,7 @@ struct RadialMotionSuperState: smacc::SmaccState<RadialMotionSuperState,RadialMo
 {
   using SmaccState::SmaccState;
 
-  typedef sc::custom_reaction<EvStateFinish<ReturnToRadialStart>> reactions;
+  typedef mpl::list<sc::custom_reaction<EvStateFinish<ReturnToRadialStart>>> reactions;
 
   int times;
 

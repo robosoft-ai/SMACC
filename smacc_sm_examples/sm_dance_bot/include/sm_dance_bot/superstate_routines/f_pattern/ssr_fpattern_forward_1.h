@@ -2,7 +2,7 @@ struct SsrFPatternForward1 : public smacc::SmaccState<SsrFPatternForward1, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrFPatternReturn1> reactions;
+  typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrFPatternReturn1> reactions;
 
   static void onDefinition()
   {

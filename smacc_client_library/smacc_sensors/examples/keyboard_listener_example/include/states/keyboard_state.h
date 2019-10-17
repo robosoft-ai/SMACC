@@ -7,7 +7,7 @@
 //--------------------------------------------
 struct KeyboardState: smacc::SmaccState<KeyboardState, KeyboardStateMachine>
 {
-  typedef sc::transition<smacc::KeyPressEvent<'k'>, KeyboardState> reactions; 
+  typedef smacc::transition<smacc::KeyPressEvent<'k'>, KeyboardState> reactions; 
 
 public:
   using SmaccState::SmaccState;

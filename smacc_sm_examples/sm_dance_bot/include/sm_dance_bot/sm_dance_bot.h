@@ -90,6 +90,7 @@ struct SmDanceBot
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
 
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
+#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
 
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
@@ -102,9 +103,6 @@ struct SmDanceBot
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sensor_msgs/LaserScan.h>
 
-//class LidarSensor;
-// COMPONENTS AND SUBSTATE BEHAVIORS FORWARD DECLARATIONS
-using LidarSensor = smacc::SensorTopic<sensor_msgs::LaserScan>;
 
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>

@@ -4,7 +4,7 @@ using namespace smacc;
 struct NavigateToEndPoint: SmaccState<NavigateToEndPoint,RadialMotionSuperState>
 {
   // when this state is finished move to the ReturnToRadialStart state
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, ReturnToRadialStart> reactions; 
+  typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, ReturnToRadialStart> reactions; 
 
 public:
   using SmaccState::SmaccState;

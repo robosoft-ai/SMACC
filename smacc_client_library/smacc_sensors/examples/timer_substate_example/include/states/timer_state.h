@@ -7,7 +7,7 @@
 //--------------------------------------------
 struct TimerState: smacc::SmaccState<TimerState, TimerStateMachine>
 {
-  typedef sc::transition<smacc::Timer::TickEvent, TimerState> reactions; 
+  //typedef smacc::transition<smacc::Timer::TickEvent, TimerState> reactions; 
 
 public:
   using SmaccState::SmaccState;

@@ -10,28 +10,32 @@
 
 using namespace smacc;
 
-typedef smacc::SensorTopic<sensor_msgs::LaserScan> LidarSensor ;
+class SbLidarSensor: public SensorTopic<SbLidarSensor, sensor_msgs::LaserScan>
+{
+
+};
 
 struct SensorState: smacc::SmaccState<SensorState, SensorStateMachine>
 {
   public:
   typedef mpl::list<
-                sc::transition<EvTopicInitialMessage<LidarSensor>, SensorState>, 
-                sc::transition<EvTopicMessage<LidarSensor>, SensorState>, 
-                sc::transition<EvTopicMessageTimeout<LidarSensor>, SensorState>,
+                smacc::transition<EvTopicInitialMessage<SbLidarSensor>, SensorState>, 
+                smacc::transition<EvTopicMessage<SbLidarSensor>, SensorState>, 
+                smacc::transition<EvTopicMessageTimeout<SbLidarSensor>, SensorState>,
                 
-                sc::transition<EvTopicInitialMessage<CustomConditionTemperatureSensor>, SensorState>, 
-                sc::transition<EvTopicMessage<CustomConditionTemperatureSensor>, SensorState>, 
-                sc::transition<EvTopicMessageTimeout<CustomConditionTemperatureSensor>, SensorState>,
+                smacc::transition<EvTopicInitialMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                smacc::transition<EvTopicMessage<CustomConditionTemperatureSensor>, SensorState>, 
+                smacc::transition<EvTopicMessageTimeout<CustomConditionTemperatureSensor>, SensorState>
                 
-                sc::transition<EvCustomTemperatureAlert, SensorState>> reactions; 
+                //smacc::transition<EvCustomTemperatureAlert<SensorState>, SensorState>
+                > reactions; 
 
 
   using SmaccState::SmaccState;
 
   void onInitialize()
   {
-    this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<smacc::SensorTopic<sensor_msgs::LaserScan>>());
+    this->configure<ObstaclePerceptionOrthogonal>(std::make_shared<SbLidarSensor>());
     this->configure<SensorOrthogonal>(std::make_shared<CustomConditionTemperatureSensor>());
   }
 

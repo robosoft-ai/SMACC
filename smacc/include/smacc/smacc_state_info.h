@@ -4,28 +4,43 @@
 #include <functional>
 #include <vector>
 #include <list>
+#include <regex>
 
 namespace smacc
 {
 class ISmaccState;
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
+class TypeInfo;
 
+//---------------------------------------------
 struct StateBehaviorInfoEntry
 {
     std::function<void(smacc::ISmaccState *)> factoryFunction;
     const std::type_info *behaviorType;
     const std::type_info *orthogonalType;
 };
-
+//---------------------------------------------
 struct SmaccTransitionInfo
 {
+    SmaccTransitionInfo()
+    {
+        eventType= nullptr;
+        eventSourceType= nullptr;
+    }
+
     int index;
     std::shared_ptr<SmaccStateInfo> sourceState;
     std::shared_ptr<SmaccStateInfo> destinyState;
-    const std::type_info* eventType;
-};
+    
+    std::string transitionTag;
+    std::shared_ptr<smacc::TypeInfo> eventType;
+    std::shared_ptr<smacc::TypeInfo> eventSourceType;
+    std::shared_ptr<smacc::TypeInfo> eventObjectTag;
 
+    std::string getSourceTypeName();
+};
+//---------------------------------------------
 struct SmaccLogicUnitInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
@@ -34,7 +49,7 @@ struct SmaccLogicUnitInfo
 };
 
 enum class SmaccStateType{SUPERSTATE = 2, STATE = 1, SUPERSTATE_ROUTINE = 1};
-
+//---------------------------------------------
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 {
 public:
@@ -67,10 +82,10 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag );
 
     template<typename EvSource, template<typename> typename EvType >
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
 
     const std::string &toShortName() const;
 };

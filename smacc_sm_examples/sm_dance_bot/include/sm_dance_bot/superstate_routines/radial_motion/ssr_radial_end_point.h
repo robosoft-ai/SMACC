@@ -2,7 +2,7 @@ struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn> reactions;
+  typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn> reactions;
 
   static void onDefinition()
   {

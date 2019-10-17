@@ -4,14 +4,14 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, SmDanceB
 
   typedef mpl::list<
       // Expected event
-      sc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+      smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
       // Keyboard events
-      sc::transition<EvKeyPressP<SbKeyboard>, StNavigateReverse2>,
+      smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateReverse2>,
 
       // Error events
-      sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-      sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()

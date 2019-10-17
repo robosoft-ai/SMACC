@@ -12,15 +12,15 @@ public:
 
     typedef mpl::list<
         // Expected event
-        sc::transition<EvStateFinish<SsRadialPattern3>, StRotateDegrees4>,
+        smacc::transition<EvStateFinish<SsRadialPattern3>, StRotateDegrees4>,
 
         // Keyboard events
-        sc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
-        sc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
+        smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
+        smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
 
         // Error events
-        sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-        sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+        smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
         // Internal events
         sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>>

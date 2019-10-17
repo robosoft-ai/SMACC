@@ -23,8 +23,6 @@ template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine,  public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >
 {
 public:
-    
-
     //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
 
     virtual void Reset()

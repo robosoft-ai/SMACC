@@ -13,15 +13,15 @@ public:
     typedef mpl::list<
 
         // Expected event
-        sc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
+        smacc::transition<EvStateFinish<SsRadialPattern2>, StNavigateReverse1>,
 
         // Keyboard events
-        sc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
-        sc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
+        smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
+        smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
 
         // Error events
-        sc::transition<smacc::EvTopicMessageTimeout<LidarSensor>, StAcquireSensors>,
-        sc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+        smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
         // Internal events
         sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>>
