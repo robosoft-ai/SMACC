@@ -1,18 +1,16 @@
 #pragma once
 
-#include <smacc_interface_components/clients/sensor_client.h>
 #include <smacc/smacc_substate_behavior.h>
-
 
 namespace smacc
 {
-template <typename Derived, typename MessageType>
+template <typename Derived, typename MessageType, typename ClientType>
 class SensorTopic : public smacc::SmaccSubStateBehavior
 {
 public:
   typedef MessageType TMessageType;
 
-  SensorClient<MessageType> *sensor_;
+  ClientType *sensor_;
 
   boost::signals2::scoped_connection c1_;
   boost::signals2::scoped_connection c2_;

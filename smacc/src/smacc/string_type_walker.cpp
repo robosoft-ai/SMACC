@@ -48,6 +48,11 @@ std::string replace_back(std::string roottype, std::map<std::string, std::string
     //     return roottype
 }
 
+std::shared_ptr<TypeInfo> getTypeInfoFromTypeid(const std::type_info& tid)
+{
+    return TypeInfo::getTypeInfoFromString(tid.name());
+}
+
 std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
 {
     bool ok = false;

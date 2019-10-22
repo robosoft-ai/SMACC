@@ -17,7 +17,6 @@
 #include <boost/mpl/list.hpp>
 #include <boost/utility/enable_if.hpp>
 
-
 namespace smacc
 {
 
@@ -66,6 +65,11 @@ class ISmaccStateMachine
 
     template <typename TOrthogonal>
     bool getOrthogonal(std::shared_ptr<TOrthogonal>& storage);
+
+    const std::map<std::string, std::shared_ptr<smacc::Orthogonal>>& getOrthogonals() const
+    {
+        return this->orthogonals_;
+    }
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType*& storage,  bool verbose);
@@ -178,3 +182,4 @@ public:
 #include <smacc/impl/smacc_state_machine_base_impl.h>
 #include <smacc/impl/smacc_client_impl.h>
 #include <smacc/impl/smacc_component_impl.h>
+#include <smacc/impl/smacc_orthogonal_impl.h>

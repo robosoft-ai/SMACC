@@ -18,7 +18,7 @@ struct EvTopicMessage : sc::event<EvTopicMessage<SensorBehaviorType>>
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
-template <typename MessageType>
+template <typename TDerived, typename MessageType>
 class SmaccTopicSubscriberClient : public smacc::ISmaccClient
 {
 public:
@@ -55,7 +55,7 @@ public:
       {
         ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
 
-        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccTopicSubscriberClient<MessageType>::messageCallback, this);
+        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccTopicSubscriberClient<TDerived, MessageType>::messageCallback, this);
         this->initialized_ = true;
       }
     }
@@ -73,13 +73,13 @@ private:
   {
     if (firstMessage_)
     {
-      auto event = new EvTopicInitialMessage<SmaccTopicSubscriberClient<MessageType>>();
+      auto event = new EvTopicInitialMessage<TDerived>();
       this->postEvent(event);
       this->onFirstMessageReceived(msg);
       firstMessage_ = false;
     }
 
-    auto *ev2 = new EvTopicMessage<SmaccTopicSubscriberClient<MessageType>>();
+    auto *ev2 = new EvTopicMessage<TDerived>();
     this->postEvent(ev2);
     onMessageReceived(msg);
   }

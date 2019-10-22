@@ -1,7 +1,7 @@
 #pragma once
 
-#include <smacc/orthogonal.h>
 #include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
+#include <smacc/orthogonal.h>
 
 class PublisherOrthogonal : public smacc::Orthogonal
 {

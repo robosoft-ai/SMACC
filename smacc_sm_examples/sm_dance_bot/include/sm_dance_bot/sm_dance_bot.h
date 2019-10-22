@@ -1,4 +1,5 @@
 #include <ros/ros.h>
+
 #include <smacc/smacc.h>
 
 //STATES
@@ -43,6 +44,15 @@ namespace SS5
 {
 class SsSPattern1;
 }
+
+// CLIENTS
+#include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
+#include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
+#include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
+
+
+#include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
+#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
@@ -89,8 +99,6 @@ struct SmDanceBot
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
 
-#include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
-#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
 
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>

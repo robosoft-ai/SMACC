@@ -46,6 +46,7 @@ struct SmaccLogicUnitInfo
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
     const std::type_info* logicUnitType;
+    std::shared_ptr<smacc::TypeInfo> objectTagType;
 };
 
 enum class SmaccStateType{SUPERSTATE = 2, STATE = 1, SUPERSTATE_ROUTINE = 1};

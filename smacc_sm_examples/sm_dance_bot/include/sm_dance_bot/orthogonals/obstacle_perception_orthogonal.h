@@ -1,20 +1,19 @@
 #pragma once
 
+#include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
 #include <smacc/orthogonal.h>
-#include <sensor_msgs/LaserScan.h>
-#include <smacc_interface_components/clients/sensor_client.h>
 
 class ObstaclePerceptionOrthogonal : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto* lidarClient = this->createClient<smacc::SensorClient<sensor_msgs::LaserScan>>();
+        /*auto* lidarClient = this->createClient<dance_bot::LaserSensor>();
         
         lidarClient->topicName = "/front/scan";
         //lidarClient->queueSize = "/front/scan";
         lidarClient->timeout_ =  ros::Duration(10);
 
-        lidarClient->initialize();
+        lidarClient->initialize();*/
     }
 };

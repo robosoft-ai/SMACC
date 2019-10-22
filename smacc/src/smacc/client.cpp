@@ -5,6 +5,7 @@ namespace smacc
 {
 ISmaccClient::ISmaccClient()
 {
+    
 }
 
 ISmaccClient::~ISmaccClient()

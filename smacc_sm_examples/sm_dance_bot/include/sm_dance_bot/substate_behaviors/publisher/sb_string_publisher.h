@@ -4,7 +4,7 @@
 #include <smacc/smacc_substate_behavior.h>
 #include <std_msgs/String.h>
 
-namespace smacc
+namespace dance_bot
 {
 class SbStringPublisher : public smacc::SmaccSubStateBehavior
 {

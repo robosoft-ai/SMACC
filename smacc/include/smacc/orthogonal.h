@@ -1,6 +1,5 @@
 #pragma once
 #include <smacc/common.h>
-#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
@@ -11,7 +10,7 @@ public:
     void setStateMachine(ISmaccStateMachine *value);
 
     void setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior);
-    
+
     void onEntry();
 
     void onExit();
@@ -19,41 +18,20 @@ public:
     virtual std::string getName() const;
 
     template <typename T>
-    T *createClient()
-    {
-        auto *client = new T();
-        client->setStateMachine(stateMachine_);
-        
-        clients_.push_back(client);
-        return client;
-    }
+    T *createClient();
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, bool verbose = false)
-    {
-        if (stateMachine_ == nullptr)
-        {
-            ROS_ERROR("Cannot use the requiresComponent funcionality from an orthogonal before onInitialize");
-        }
-        else
-        {
-            stateMachine_->requiresComponent(storage, verbose);
-        }
-    }
+    void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
 
     template <typename SmaccClientType>
-    void requiresClient(SmaccClientType *&storage, bool verbose = false)
+    void requiresClient(SmaccClientType *&storage, bool verbose = false);
+
+    const std::vector<smacc::ISmaccClient *> &getClients()
     {
-        for (auto *client : clients_)
-        {
-            storage = dynamic_cast<SmaccClientType *>(client);
-            if (storage != nullptr)
-                break;
-        }
+        return clients_;
     }
 
 private:
-
     virtual void onInitialize();
 
     ISmaccStateMachine *stateMachine_;

@@ -3,6 +3,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <typeinfo>
 
 namespace smacc
 {
@@ -33,5 +34,6 @@ public:
     }
 
     static std::shared_ptr<TypeInfo> getTypeInfoFromString(std::string inputtext);
+    static std::shared_ptr<TypeInfo> getTypeInfoFromTypeid(const std::type_info& tid);  
 };
 }

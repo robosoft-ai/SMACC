@@ -4,6 +4,7 @@
 #include <map>
 #include <smacc/common.h>
 #include <smacc/string_type_walker.h>
+#include <smacc/orthogonal.h>
 
 namespace smacc
 {
@@ -40,7 +41,7 @@ public:
     template <typename StateType>
     void addState(std::shared_ptr<StateType> &state);
 
-    void printAllStates()
+    void printAllStates(ISmaccStateMachine *sm)
     {
         for (auto &val : this->states)
         {
@@ -65,45 +66,83 @@ public:
                 {
                     auto eventTypeName = transition.eventType->getNonTemplatetypename();
 
-                    std::string eventSourceName="";
-                    
-                    if(transition.eventSourceType!=nullptr)
+                    std::string eventSourceName = "";
+
+                    if (transition.eventSourceType != nullptr)
                     {
                         eventSourceName = transition.eventSourceType->finaltype;
                     }
 
-                    if(transition.eventObjectTag!=nullptr)
+                    std::string eventObjectTag = "";
+
+                    if (transition.eventObjectTag != nullptr)
                     {
-                        eventSourceName = transition.eventObjectTag->finaltype;
+                        eventObjectTag = transition.eventObjectTag->finaltype;
                     }
 
-                    std::string eventObjectTag ="";
-
                     ss << " - Transition.  " << std::endl;
-                    ss << "      - Index: " <<  transition.index << std::endl;
-                    ss << "      - Event Type :" << eventTypeName  << std::endl;
-                    ss << "      - Event Source: " <<  eventSourceName << std::endl;
-                    ss << "      - Event ObjectTag: " <<  eventObjectTag << std::endl;
+                    ss << "      - Index: " << transition.index << std::endl;
+                    ss << "      - Event Type :" << eventTypeName << std::endl;
+                    ss << "      - Event Source: " << eventSourceName << std::endl;
+                    ss << "      - Event ObjectTag: " << eventObjectTag << std::endl;
                     ss << "      - Destiny State: " << transition.destinyState->demangledStateName << std::endl;
-                    ss << "      - Transition Tag: " << transition.transitionTag  << std::endl;
+                    ss << "      - Transition Tag: " << transition.transitionTag << std::endl;
                     ss << "      - Owner State: " << transition.sourceState->demangledStateName << std::endl;
                 }
 
                 const std::type_info *statetid = state->tid_;
 
-                ss << " Substate behaviors:" << std::endl;
+                std::map<const std::type_info*, std::vector<smacc::StateBehaviorInfoEntry*>> smaccBehaviorInfoMappingByOrthogonalType;
+
+                ss << " Orthogonals:" << std::endl;
                 if (SmaccStateInfo::staticBehaviorInfo.count(statetid) > 0)
                 {
                     for (auto &bhinfo : SmaccStateInfo::staticBehaviorInfo[statetid])
                     {
-                        ss << " - orthogonal: " << demangleSymbol(bhinfo.orthogonalType->name()) << std::endl;
-                        ss << "          - substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()) << std::endl;
+                        if(smaccBehaviorInfoMappingByOrthogonalType.count(bhinfo.orthogonalType) == 0)
+                        {
+                            smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType] = std::vector<smacc::StateBehaviorInfoEntry*>();
+                        }
+
+                        smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType].push_back(&bhinfo);
                     }
                 }
-                else
+
+                auto &runtimeOrthogonals= sm->getOrthogonals();
+
+                for(auto& orthogonal: runtimeOrthogonals)
                 {
-                    ss << "- NO SUBSTATE BEHAVIORS -" << std::endl;
+                    const auto* orthogonaltid = &typeid(*(orthogonal.second));
+                    ss << " - orthogonal: " << demangleSymbol(orthogonaltid->name()) << std::endl;
+
+                    if (smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid].size()>0)
+                    {
+                        auto& behaviors = smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid];
+                        for (auto &bhinfo : behaviors)
+                        {
+                            ss << "          - substate behavior: " << demangleSymbol(bhinfo->behaviorType->name()) << std::endl;
+                        }
+                    }
+                    else
+                    {
+                        ss << "          - NO SUBSTATE BEHAVIORS -" << std::endl;
+                    }
+
+                    auto& clients = orthogonal.second->getClients();
+                    if(clients.size()>0)
+                    {
+                        for(auto* client: clients)
+                        {
+                            auto clientTid = &(typeid(*client));
+                                ss << "          - client: " << demangleSymbol(clientTid->name()) << std::endl;
+                        }
+                    }
+                    else
+                    {
+                        ss << "          - NO CLIENTS - " << std::endl;
+                    }
                 }
+                
 
                 ss << " Logic units:" << std::endl;
                 if (SmaccStateInfo::logicUnitsInfo.count(statetid) > 0)
@@ -111,12 +150,16 @@ public:
                     for (auto &luinfo : SmaccStateInfo::logicUnitsInfo[statetid])
                     {
                         ss << " - logic unit: " << demangleSymbol(luinfo.logicUnitType->name()) << std::endl;
+                        if(luinfo.objectTagType!=nullptr)
+                        {
+                            ss << "        - object tag: " << luinfo.objectTagType->finaltype << std::endl;
+                        }
                     }
                 }
                 else
                 {
                     ss << "- NO LOGIC UNITS - " << std::endl;
-                }
+                }                
 
                 ROS_INFO_STREAM(ss.str());
             }
@@ -162,16 +205,15 @@ struct AddTransition
     {
     }
 
-    template <template <typename,typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename Tag, typename DestinyState >
-    void operator()(TTransition<EvType<TevSource>,DestinyState, Tag>);
+    template <template <typename, typename, typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename Tag, typename DestinyState>
+    void operator()(TTransition<EvType<TevSource>, DestinyState, Tag>);
 
-    template <template <typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename DestinyState >
-    void operator()(TTransition<EvType<TevSource>,DestinyState>);
+    template <template <typename, typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename DestinyState>
+    void operator()(TTransition<EvType<TevSource>, DestinyState>);
 
     template <typename T>
     void operator()(T);
 };
-
 
 //---------------------------------------------
 template <typename InitialStateType>
@@ -242,7 +284,6 @@ void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::sha
     }
 }
 
-
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
@@ -276,16 +317,15 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitionInfo.transitionTag = transitionTag;
 
     transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name()));
-    if(transitionInfo.eventType->templateParameters.size()>0)
+    if (transitionInfo.eventType->templateParameters.size() > 0)
     {
         transitionInfo.eventSourceType = transitionInfo.eventType->templateParameters.front();
     }
 
-    if(transitionInfo.eventType->templateParameters.size()>1)
+    if (transitionInfo.eventType->templateParameters.size() > 1)
     {
         transitionInfo.eventObjectTag = transitionInfo.eventType->templateParameters[1];
     }
-    
 
     transitions_.push_back(transitionInfo);
 }
@@ -302,14 +342,14 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitionInfo.sourceState = shared_from_this();
     transitionInfo.destinyState = dstState;
     transitionInfo.transitionTag = transitionTag;
-    
+
     transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name()));
-    if(transitionInfo.eventType->templateParameters.size()>0)
+    if (transitionInfo.eventType->templateParameters.size() > 0)
     {
         transitionInfo.eventSourceType = transitionInfo.eventType->templateParameters.front();
     }
 
-    if(transitionInfo.eventType->templateParameters.size()>1)
+    if (transitionInfo.eventType->templateParameters.size() > 1)
     {
         transitionInfo.eventObjectTag = transitionInfo.eventType->templateParameters[1];
     }
@@ -361,22 +401,22 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 
 //--------------------------------------------
 
-template <template <typename,typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename Tag, typename DestinyState >
-void AddTransition::operator()(TTransition<EvType<TevSource>,DestinyState, Tag>)
+template <template <typename, typename, typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename Tag, typename DestinyState>
+void AddTransition::operator()(TTransition<EvType<TevSource>, DestinyState, Tag>)
 {
     //using type_t = typename TTrans::type;
     ROS_INFO("DETECTED COMPLEX TRANSITION **************");
-    processTransitions<TTransition<EvType<TevSource>,DestinyState, Tag>>(currentState_);
+    processTransitions<TTransition<EvType<TevSource>, DestinyState, Tag>>(currentState_);
 }
 
 //--------------------------------------------
 
-template <template <typename,typename> typename TTransition, typename TevSource, template <typename> typename EvType,  typename DestinyState >
-void AddTransition::operator()(TTransition<EvType<TevSource>,DestinyState>)
+template <template <typename, typename> typename TTransition, typename TevSource, template <typename> typename EvType, typename DestinyState>
+void AddTransition::operator()(TTransition<EvType<TevSource>, DestinyState>)
 {
     //using type_t = typename TTrans::type;
     ROS_INFO("DETECTED COMPLEX TRANSITION **************");
-    processTransitions<TTransition<EvType<TevSource>,DestinyState>>(currentState_);
+    processTransitions<TTransition<EvType<TevSource>, DestinyState>>(currentState_);
 }
 
 template <typename TTrans>

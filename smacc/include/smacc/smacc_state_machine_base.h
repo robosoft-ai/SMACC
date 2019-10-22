@@ -56,8 +56,6 @@ public:
         
 	    //InitialStateType* test;
         //updateCurrentState<InitialStateType>(true,test);
-        
-        info_->printAllStates();
     }
     
     virtual ~SmaccStateMachineBase( )
@@ -70,6 +68,8 @@ public:
     {
         ROS_INFO("initiate_impl");
         sc::state_machine< DerivedStateMachine, InitialStateType, SmaccAllocator >::initiate();
+        
+        info_->printAllStates(this);
 
         timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);
 

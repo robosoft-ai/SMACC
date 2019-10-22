@@ -140,11 +140,11 @@ target_link_libraries(keyboard_listener_example
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(sensor_substate_example examples/sensor_substate_example/src/sensor_main.cpp)
+#add_executable(sensor_substate_example examples/sensor_substate_example/src/sensor_main.cpp)
 
-target_link_libraries(sensor_substate_example
-   ${catkin_LIBRARIES}
- )
+#target_link_libraries(sensor_substate_example
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##

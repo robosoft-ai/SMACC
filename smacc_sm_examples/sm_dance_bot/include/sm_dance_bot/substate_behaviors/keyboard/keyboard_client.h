@@ -150,7 +150,7 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource>>
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
-class KeyboardClient : public smacc::SmaccTopicSubscriberClient<std_msgs::UInt16>
+class KeyboardClient : public smacc::SmaccTopicSubscriberClient<KeyboardClient, std_msgs::UInt16>
 {
 public:
         boost::signals2::signal<void(char keypress)> OnKeyPress;
@@ -167,7 +167,7 @@ public:
 
         virtual void initialize() override
         {
-                SmaccTopicSubscriberClient<std_msgs::UInt16>::initialize();
+                SmaccTopicSubscriberClient<KeyboardClient, std_msgs::UInt16>::initialize();
 
                 if (!this->initialized_)
                 {

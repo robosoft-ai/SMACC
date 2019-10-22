@@ -228,7 +228,20 @@ public:
   {
     SmaccLogicUnitInfo luinfo;
 
-    luinfo.logicUnitType = &(typeid(TLUnit));
+    luinfo.logicUnitType = &typeid(TLUnit);
+
+    std::string eventtypename = typeid(TTriggerEvent).name();
+    auto eventType = TypeInfo::getTypeInfoFromString(eventtypename);
+
+    if (eventType->templateParameters.size() > 1)
+    {
+      luinfo.objectTagType = eventType->templateParameters[1];
+    }
+    else
+    {
+      luinfo.objectTagType = nullptr;
+    }
+
     luinfo.factoryFunction = [&](ISmaccState *state) {
       state->createLogicUnit<TLUnit, TTriggerEvent, TEvArgs...>();
     };

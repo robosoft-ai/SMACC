@@ -5,8 +5,11 @@
 
 namespace dance_bot
 {
-class StringPublisherClient: public smacc::SmaccTopicPublisherClient<std_msgs::String>
+class StringPublisherClient : public smacc::SmaccTopicPublisherClient<std_msgs::String>
 {
-
+public:
+    StringPublisherClient() : smacc::SmaccTopicPublisherClient<std_msgs::String>()
+    {
+    }
 };
-}
+} // namespace dance_bot

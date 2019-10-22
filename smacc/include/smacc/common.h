@@ -77,8 +77,10 @@ struct IActionResult
   actionlib::SimpleClientGoalState getResultState() const;
 };
 
-template <typename TSource>
-struct EvActionResult : sc::event<EvActionResult<TSource>>, IActionResult
+struct default_object_tag{};
+
+template <typename TSource, typename TObjectTag = default_object_tag>
+struct EvActionResult : sc::event<EvActionResult<TSource, default_object_tag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 };

@@ -17,14 +17,14 @@ struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<SensorBehaviorTyp
 };
 
 //---------------------------------------------------------------
-template <typename MessageType>
-class SensorClient : public SmaccTopicSubscriberClient<MessageType>
+template <typename TDerived, typename MessageType>
+class SensorClient : public SmaccTopicSubscriberClient<TDerived, MessageType>
 {
 public:
   boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
 
   SensorClient()
-      : SmaccTopicSubscriberClient<MessageType>()
+      : SmaccTopicSubscriberClient<TDerived, MessageType>()
   {
     initialized_ = false;
   }
@@ -33,7 +33,7 @@ public:
   {
     if (!initialized_)
     {
-      SmaccTopicSubscriberClient<MessageType>::initialize();
+      SmaccTopicSubscriberClient<TDerived, MessageType>::initialize();
 
       this->onMessageReceived.connect(
           [this](auto msg) {
@@ -44,7 +44,7 @@ public:
 
       if(timeout_)
       {
-        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
+        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<TDerived,MessageType>::timeoutCallback, this, _1));
         timeoutTimer_.start();
       }
       else
@@ -64,7 +64,7 @@ private:
   
   void timeoutCallback(const ros::TimerEvent &ev)
   {
-    auto event = new EvTopicMessageTimeout<SensorClient<MessageType>>();
+    auto event = new EvTopicMessageTimeout<TDerived>();
     this->postEvent(event);
   }
 };
