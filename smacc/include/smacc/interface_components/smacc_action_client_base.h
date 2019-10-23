@@ -136,8 +136,8 @@ protected:
 
             //scheduler->queue_event(processorHandle, actionResultEvent);
 
-            auto resultType = actionResultEvent->getResultState();
-            ROS_INFO("[%s] request result: %d", this->getName().c_str(), resultType);
+            const auto& resultType = actionResultEvent->getResultState();
+            ROS_INFO("[%s] request result: %s", this->getName().c_str(), resultType.toString().c_str());
 
             {
                 if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
@@ -186,7 +186,7 @@ protected:
                 }
                 else
                 {
-                    ROS_INFO("[%s] request result: NOT HANDLED TYPE;", resultType);
+                    ROS_INFO("[%s] request result: NOT HANDLED TYPE: %s", this->getName().c_str(), resultType.toString().c_str());
                 }
             }
         }

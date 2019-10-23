@@ -6,6 +6,7 @@
 #pragma once
 
 #include <smacc/common.h>
+#include <smacc/smacc_state.h>
 #include <smacc/logic_units/logic_unit_base.h>
 
 #include <boost/any.hpp>
@@ -36,8 +37,9 @@ class ISmaccStateMachine
     
     ros::Timer timer_;
     ros::Publisher stateMachineStructurePub_;
+    ros::Publisher stateMachinePub_;
     ros::Publisher stateMachineStatePub_;
-
+    
     ISmaccState* currentState_;
 
     ISmaccStateMachine( SignalDetector* signalDetector);
@@ -179,6 +181,7 @@ public:
 };
 }
 
+#include <smacc/impl/smacc_state_impl.h>
 #include <smacc/impl/smacc_state_machine_base_impl.h>
 #include <smacc/impl/smacc_client_impl.h>
 #include <smacc/impl/smacc_component_impl.h>

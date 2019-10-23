@@ -64,7 +64,7 @@ void OdomTracker::setWorkingMode(WorkingMode workingMode)
 {
     //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
-    ROS_INFO("[OdomTracker] setting working mode to: %d", workingMode);
+    ROS_INFO("[OdomTracker] setting working mode to: %d", (uint8_t)workingMode);
     workingMode_ = workingMode;
     //ROS_INFO("odom_tracker m_mutex release");
 }

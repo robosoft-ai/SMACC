@@ -101,7 +101,7 @@ find_package(catkin REQUIRED smacc smacc_interface_components)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES smacc_sensors
-#  CATKIN_DEPENDS other_catkin_pkg
+  CATKIN_DEPENDS smacc_msgs
 #  DEPENDS system_lib
 )
 

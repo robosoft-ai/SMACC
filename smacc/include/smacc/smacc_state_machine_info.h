@@ -5,6 +5,14 @@
 #include <smacc/common.h>
 #include <smacc/string_type_walker.h>
 #include <smacc/orthogonal.h>
+#include <boost/mpl/for_each.hpp>
+#include <smacc/smacc_state_info.h>
+
+// smacc_msgs
+#include <smacc_msgs/SmaccState.h>
+#include <smacc_msgs/SmaccTransition.h>
+#include <smacc_msgs/SmaccOrthogonal.h>
+#include <smacc_msgs/SmaccLogicUnit.h>
 
 namespace smacc
 {
@@ -13,6 +21,8 @@ class SmaccStateMachineInfo : public std::enable_shared_from_this<SmaccStateMach
 {
 public:
     std::map<std::string, std::shared_ptr<SmaccStateInfo>> states;
+
+    std::vector<smacc_msgs::SmaccState> stateMsgs;
 
     template <typename InitialStateType>
     void buildStateMachineInfo();
@@ -41,130 +51,11 @@ public:
     template <typename StateType>
     void addState(std::shared_ptr<StateType> &state);
 
-    void printAllStates(ISmaccStateMachine *sm)
+    void computeAllStateMessage(std::vector<smacc_msgs::SmaccState> &msg)
     {
-        for (auto &val : this->states)
-        {
-            auto state = val.second;
-
-            std::stringstream ss;
-            if (state->parentState_ == nullptr)
-            {
-                ss << "**** Print State: " << state->demangledStateName << std::endl;
-                ss << "StateLevel: " << (int)state->getStateLevel() << std::endl;
-
-                ss << " Childstates:" << std::endl;
-
-                for (auto &child : state->children_)
-                {
-                    ss << " - " << child->demangledStateName << std::endl;
-                }
-
-                ss << " Transitions:" << std::endl;
-
-                for (auto &transition : state->transitions_)
-                {
-                    auto eventTypeName = transition.eventType->getNonTemplatetypename();
-
-                    std::string eventSourceName = "";
-
-                    if (transition.eventSourceType != nullptr)
-                    {
-                        eventSourceName = transition.eventSourceType->finaltype;
-                    }
-
-                    std::string eventObjectTag = "";
-
-                    if (transition.eventObjectTag != nullptr)
-                    {
-                        eventObjectTag = transition.eventObjectTag->finaltype;
-                    }
-
-                    ss << " - Transition.  " << std::endl;
-                    ss << "      - Index: " << transition.index << std::endl;
-                    ss << "      - Event Type :" << eventTypeName << std::endl;
-                    ss << "      - Event Source: " << eventSourceName << std::endl;
-                    ss << "      - Event ObjectTag: " << eventObjectTag << std::endl;
-                    ss << "      - Destiny State: " << transition.destinyState->demangledStateName << std::endl;
-                    ss << "      - Transition Tag: " << transition.transitionTag << std::endl;
-                    ss << "      - Owner State: " << transition.sourceState->demangledStateName << std::endl;
-                }
-
-                const std::type_info *statetid = state->tid_;
-
-                std::map<const std::type_info*, std::vector<smacc::StateBehaviorInfoEntry*>> smaccBehaviorInfoMappingByOrthogonalType;
-
-                ss << " Orthogonals:" << std::endl;
-                if (SmaccStateInfo::staticBehaviorInfo.count(statetid) > 0)
-                {
-                    for (auto &bhinfo : SmaccStateInfo::staticBehaviorInfo[statetid])
-                    {
-                        if(smaccBehaviorInfoMappingByOrthogonalType.count(bhinfo.orthogonalType) == 0)
-                        {
-                            smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType] = std::vector<smacc::StateBehaviorInfoEntry*>();
-                        }
-
-                        smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType].push_back(&bhinfo);
-                    }
-                }
-
-                auto &runtimeOrthogonals= sm->getOrthogonals();
-
-                for(auto& orthogonal: runtimeOrthogonals)
-                {
-                    const auto* orthogonaltid = &typeid(*(orthogonal.second));
-                    ss << " - orthogonal: " << demangleSymbol(orthogonaltid->name()) << std::endl;
-
-                    if (smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid].size()>0)
-                    {
-                        auto& behaviors = smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid];
-                        for (auto &bhinfo : behaviors)
-                        {
-                            ss << "          - substate behavior: " << demangleSymbol(bhinfo->behaviorType->name()) << std::endl;
-                        }
-                    }
-                    else
-                    {
-                        ss << "          - NO SUBSTATE BEHAVIORS -" << std::endl;
-                    }
-
-                    auto& clients = orthogonal.second->getClients();
-                    if(clients.size()>0)
-                    {
-                        for(auto* client: clients)
-                        {
-                            auto clientTid = &(typeid(*client));
-                                ss << "          - client: " << demangleSymbol(clientTid->name()) << std::endl;
-                        }
-                    }
-                    else
-                    {
-                        ss << "          - NO CLIENTS - " << std::endl;
-                    }
-                }
-                
-
-                ss << " Logic units:" << std::endl;
-                if (SmaccStateInfo::logicUnitsInfo.count(statetid) > 0)
-                {
-                    for (auto &luinfo : SmaccStateInfo::logicUnitsInfo[statetid])
-                    {
-                        ss << " - logic unit: " << demangleSymbol(luinfo.logicUnitType->name()) << std::endl;
-                        if(luinfo.objectTagType!=nullptr)
-                        {
-                            ss << "        - object tag: " << luinfo.objectTagType->finaltype << std::endl;
-                        }
-                    }
-                }
-                else
-                {
-                    ss << "- NO LOGIC UNITS - " << std::endl;
-                }                
-
-                ROS_INFO_STREAM(ss.str());
-            }
-        }
     }
+
+    void printAllStates(ISmaccStateMachine *sm);
 };
 
 //--------------------------------

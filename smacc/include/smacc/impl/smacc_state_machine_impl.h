@@ -1,6 +1,7 @@
 #pragma once
 
 #include <smacc/smacc_state_machine.h>
+#include <smacc/smacc_state.h>
 #include <smacc/orthogonal.h>
 #include <smacc/signal_detector.h>
 #include <smacc/smacc_state_info.h>
@@ -108,6 +109,7 @@ void ISmaccStateMachine::postEvent(EventType *ev)
     // some more events
     if(currentState_!=nullptr)
     {
+        ROS_INFO_STREAM("EVENT: " << demangleSymbol<EventType>());
         for(auto& lu : currentState_->logicUnits_)
         {
             lu->notifyEvent(ev);

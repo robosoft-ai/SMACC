@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <regex>
+#include <smacc/string_type_walker.h>
 
 namespace smacc
 {
@@ -25,14 +26,14 @@ struct SmaccTransitionInfo
 {
     SmaccTransitionInfo()
     {
-        eventType= nullptr;
-        eventSourceType= nullptr;
+        eventType = nullptr;
+        eventSourceType = nullptr;
     }
 
     int index;
     std::shared_ptr<SmaccStateInfo> sourceState;
     std::shared_ptr<SmaccStateInfo> destinyState;
-    
+
     std::string transitionTag;
     std::shared_ptr<smacc::TypeInfo> eventType;
     std::shared_ptr<smacc::TypeInfo> eventSourceType;
@@ -45,11 +46,16 @@ struct SmaccLogicUnitInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
-    const std::type_info* logicUnitType;
+    const std::type_info *logicUnitType;
     std::shared_ptr<smacc::TypeInfo> objectTagType;
 };
 
-enum class SmaccStateType{SUPERSTATE = 2, STATE = 1, SUPERSTATE_ROUTINE = 1};
+enum class SmaccStateType
+{
+    SUPERSTATE = 2,
+    STATE = 1,
+    SUPERSTATE_ROUTINE = 1
+};
 //---------------------------------------------
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 {
@@ -67,9 +73,9 @@ public:
 
     std::vector<std::shared_ptr<SmaccStateInfo>> children_;
     int depth_;
-    const std::type_info* tid_;
+    const std::type_info *tid_;
 
-    SmaccStateInfo(const std::type_info* tid, std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo);
+    SmaccStateInfo(const std::type_info *tid, std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo);
 
     SmaccStateType getStateLevel();
 
@@ -83,9 +89,9 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag );
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
 
-    template<typename EvSource, template<typename> typename EvType >
+    template <typename EvSource, template <typename> typename EvType>
     void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
 
     const std::string &toShortName() const;

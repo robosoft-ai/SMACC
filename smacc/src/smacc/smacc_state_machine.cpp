@@ -59,7 +59,7 @@ void ISmaccStateMachine::registerActionClientRequest(ISmaccActionClient* client)
 
 void ISmaccStateMachine::notifyOnStateEntry(ISmaccState* state)
 {
-    ROS_INFO("Notification State Entry, orthogonals: %d", this->orthogonals_.size());
+    ROS_INFO("Notification State Entry, orthogonals: %ld", this->orthogonals_.size());
     int i =0;
     for( auto pair: this->orthogonals_)
     {

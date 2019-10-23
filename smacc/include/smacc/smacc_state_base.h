@@ -1,5 +1,6 @@
 #pragma once
 #include <smacc/smacc_state.h>
+#include <smacc/smacc_state_info.h>
 #include <typeindex>
 #include <typeinfo>
 #include <smacc/logic_units/logic_unit_base.h>
@@ -53,11 +54,13 @@ public:
     return base_type::outermost_context();
   }
 
+  bool finishStateThrown;
   SmaccState() = delete;
 
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
+    finishStateThrown = false;
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
 
     this->set_context(ctx.pContext_);
@@ -175,9 +178,13 @@ public:
 
   void throwFinishEvent()
   {
-    auto *finishEvent = new EvStateFinish<MostDerived>();
-    finishEvent->state = static_cast<MostDerived *>(this);
-    this->postEvent(finishEvent);
+    if(!finishStateThrown)
+    {
+      auto *finishEvent = new EvStateFinish<MostDerived>();
+      finishEvent->state = static_cast<MostDerived *>(this);
+      this->postEvent(finishEvent);
+      finishStateThrown=true;
+    }
   }
 
 public:

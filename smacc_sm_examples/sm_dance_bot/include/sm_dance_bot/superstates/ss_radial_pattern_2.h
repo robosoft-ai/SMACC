@@ -21,10 +21,8 @@ public:
 
         // Error events
         smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
 
-        // Internal events
-        sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>>
         reactions;
 
     static void onDefinition()
@@ -40,17 +38,6 @@ public:
     void onInitialize()
     {
         iteration_count = 0;
-    }
-
-    sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)
-    {
-        ROS_INFO("Superstate count: %d", iteration_count);
-        if (++iteration_count == total_iterations()) // 1 == two times
-        {
-            this->throwFinishEvent();
-        }
-
-        return forward_event();
     }
 };
 

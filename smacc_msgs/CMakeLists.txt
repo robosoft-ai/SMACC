@@ -11,6 +11,12 @@ add_message_files(FILES
   SmaccContainerInitialStatusCmd.msg
   SmaccContainerStructure.msg
   SmaccContainerStatus.msg
+
+  SmaccState.msg
+  SmaccTransition.msg
+  SmaccOrthogonal.msg
+  SmaccLogicUnit.msg
+  SmaccStateMachine.msg
   )
 
 generate_messages(DEPENDENCIES std_msgs)

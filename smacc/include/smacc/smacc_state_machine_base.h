@@ -5,13 +5,17 @@
  ******************************************************************************************************************/
 #pragma once
 #include <smacc/common.h>
+
 #include <smacc/smacc_state_base.h>
 #include <smacc/smacc_state_info.h>
 #include <smacc/smacc_state_machine_info.h>
+#include <smacc/smacc_state_machine.h>
 
 #include <smacc_msgs/SmaccContainerStructure.h>
 #include <smacc_msgs/SmaccContainerInitialStatusCmd.h>
 #include <smacc_msgs/SmaccContainerStatus.h>
+#include <smacc_msgs/SmaccStateMachine.h>
+
 #include <smacc/logic_units/logic_unit_base.h>
 //-------------------------------------------------------------------------------------------------
 
@@ -74,8 +78,10 @@ public:
         timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);
 
         auto stateMachineName = this->getStateMachineName();
+        
         stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/"+ stateMachineName + "/smacc/container_structure",1);
         stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/"+ stateMachineName + "/smacc/container_status",1);     
+        stateMachinePub_=nh.advertise<smacc_msgs::SmaccStateMachine>("/"+ stateMachineName + "/smacc/state_machine_description",1);
     }
 
      // Delegates to ROS param access with the current NodeHandle
@@ -265,6 +271,10 @@ public:
     outcomes_to: [BAR, outcome4, FOO]
     container_outcomes: [outcome4, outcome5]
     */
+
+    smacc_msgs::SmaccStateMachine state_machine_msg;
+    state_machine_msg.states = info_->stateMsgs;
+    this->stateMachinePub_.publish(state_machine_msg);
 
     std::vector<smacc_msgs::SmaccContainerStructure> structure_msgs;
     auto stateMachineName = this->getStateMachineName();

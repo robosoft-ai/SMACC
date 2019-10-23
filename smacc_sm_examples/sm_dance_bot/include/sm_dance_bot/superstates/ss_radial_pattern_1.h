@@ -13,7 +13,9 @@ public:
     typedef mpl::list<
 
         // Expected event
+        //sc::transition<EvStateFinish<SsRadialPattern1>, StRotateDegrees1>,
         smacc::transition<EvStateFinish<SsRadialPattern1>, StRotateDegrees1>,
+        //sc::custom_reaction<EvStateFinish<SsRadialPattern1>>,
 
         // Keyboard event
         smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees1>,
@@ -21,10 +23,9 @@ public:
 
         // Error events
         smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
-
-        // Internal events
-        sc::custom_reaction<smacc::EvStateFinish<SsrRadialReturn>>>
+        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
+        >
+        
         reactions;
 
     static constexpr int total_iterations() {return 2;}
@@ -42,25 +43,13 @@ public:
     {
     }
 
-    sc::result react(const smacc::EvStateFinish<SsrRadialReturn> &ev)
+/*
+    sc::result react(const EvStateFinish<SsRadialPattern1> &ev)
     {
-        ROS_INFO("Superstate count: %d", iteration_count);
-        ROS_INFO("RADIAL RETURN FINISH EVENT");
-        if (++iteration_count == total_iterations()) // 1 == two times
-        {
-            
-            ROS_INFO("Breaking radial motion");
-            this->throwFinishEvent();
-        }
-        else
-        {
-            ROS_INFO("LOOPING TO Radial Rotate");
-            return transit<SS1::SsrRadialRotate>();
-        }
-        
-
-        return forward_event();
+        ROS_INFO("EV FINISHED FROM SUPERSTATE");
+        return transit<StRotateDegrees1>();
     }
+    */
 };
 //forward declaration for the superstate
 using SS = SsRadialPattern1;

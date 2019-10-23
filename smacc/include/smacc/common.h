@@ -70,6 +70,7 @@ class ISmaccSubscriber;
 class SignalDetector;
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
+class LogicUnit;
 
 struct IActionResult
 {

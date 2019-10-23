@@ -40,7 +40,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-
       // Expected event
       sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient>>,
 

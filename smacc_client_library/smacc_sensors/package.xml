@@ -50,6 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <depend>smacc</depend>
+  <depend>smacc_msgs</depend>
   <depend>smacc_interface_components</depend>
  
 

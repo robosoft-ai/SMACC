@@ -8,12 +8,12 @@ class ObstaclePerceptionOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        /*auto* lidarClient = this->createClient<dance_bot::LaserSensor>();
-        
+        auto *lidarClient = this->createClient<dance_bot::LaserSensor>();
+
         lidarClient->topicName = "/front/scan";
         //lidarClient->queueSize = "/front/scan";
-        lidarClient->timeout_ =  ros::Duration(10);
+        lidarClient->timeout_ = ros::Duration(10);
 
-        lidarClient->initialize();*/
+        lidarClient->initialize();
     }
 };

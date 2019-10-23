@@ -18,31 +18,42 @@ public:
 
   SensorTopic()
   {
+    sensor_=nullptr;
   }
 
-  void onEntry()
+  virtual void onEntry() override
   {
+    ROS_INFO("SensorTopic onEntry. Requires client:");
+
     this->requiresClient(sensor_);
 
-    c1_ = sensor_->onMessageReceived.connect(
-        [this](auto &msg) {
-          auto *ev2 = new EvTopicMessage<Derived>();
-          this->postEvent(ev2);
-        });
+    if(sensor_==nullptr)
+    {
+      ROS_FATAL_STREAM("Sensor Substate behavior needs a client of type: "<< demangleSymbol<ClientType>()<< " but it is not found.");
+    }
+    else
+    {
+      c1_ = sensor_->onMessageReceived.connect(
+          [this](auto &msg) {
+            auto *ev2 = new EvTopicMessage<Derived>();
+            this->postEvent(ev2);
+          });
 
-    c2_ = sensor_->onFirstMessageReceived.connect(
-        [this](auto &msg) {
-          auto event = new EvTopicInitialMessage<Derived>();
-          this->postEvent(event);
-        });
+      c2_ = sensor_->onFirstMessageReceived.connect(
+          [this](auto &msg) {
+            auto event = new EvTopicInitialMessage<Derived>();
+            this->postEvent(event);
+          });
 
-    c3_ = sensor_->onMessageTimeout.connect(
-        [this](auto &msg) {
-          auto event = new EvTopicMessageTimeout<Derived>();
-          this->postEvent(event);
-        });
+      c3_ = sensor_->onMessageTimeout.connect(
+          [this](auto &msg) {
+            auto event = new EvTopicMessageTimeout<Derived>();
+            this->postEvent(event);
+          });
 
-    sensor_->initialize();
+      ROS_INFO("SensorTopic onEntry. sensor initialize");
+      sensor_->initialize();
+    }
   }
 
   void onExit()
@@ -51,7 +62,6 @@ public:
 
   virtual void onMessageCallback(const MessageType &msg)
   {
-
     // empty to fill by sensor customization based on inheritance
   }
 };

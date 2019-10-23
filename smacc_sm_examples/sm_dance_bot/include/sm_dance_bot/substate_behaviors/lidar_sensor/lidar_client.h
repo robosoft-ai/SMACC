@@ -12,7 +12,7 @@ class LaserSensor: public smacc::SensorClient<LaserSensor, sensor_msgs::LaserSca
     public:
     LaserSensor()
     {
-
+        
     }
 };
 }
