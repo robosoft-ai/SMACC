@@ -121,7 +121,7 @@ protected:
     virtual void postEvent(SmaccScheduler *scheduler, SmaccScheduler::processor_handle processorHandle) override
     {
         Result result_msg;
-        boost::intrusive_ptr<EvActionResult<TDerived>> actionResultEvent = new EvActionResult<TDerived>();
+        auto* actionResultEvent = new EvActionResult<TDerived>();
         actionResultEvent->client = this;
 
         ROS_INFO("[%s] Action client received a result of the request, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
@@ -143,46 +143,50 @@ protected:
                 if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
                 {
                     ROS_INFO("[%s] request result: Success", this->getName().c_str());
-                    boost::intrusive_ptr<EvActionSucceded<TDerived>> successEvent = new EvActionSucceded<TDerived>();
-                    ;
+                    auto* successEvent = new EvActionSucceded<TDerived>();
+                    
                     successEvent->client = this;
                     successEvent->resultMessage = result_msg;
 
                     ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
-                    scheduler->queue_event(processorHandle, successEvent);
+                    stateMachine_->postEvent(successEvent);
+                    //scheduler->queue_event(processorHandle, successEvent);
                 }
                 else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
                 {
                     ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
-                    boost::intrusive_ptr<EvActionAborted<TDerived>> abortedEvent = new EvActionAborted<TDerived>();
-                    ;
+                    auto* abortedEvent = new EvActionAborted<TDerived>();
+                    
                     abortedEvent->client = this;
                     abortedEvent->resultMessage = result_msg;
 
                     ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
-                    scheduler->queue_event(processorHandle, abortedEvent);
+                    stateMachine_->postEvent(abortedEvent);
+                    //scheduler->queue_event(processorHandle, abortedEvent);
                 }
                 else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
                 {
                     ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
-                    boost::intrusive_ptr<EvActionRejected<TDerived>> rejectedEvent = new EvActionRejected<TDerived>();
-                    ;
+                    auto* rejectedEvent = new EvActionRejected<TDerived>();
+                    
                     rejectedEvent->client = this;
                     rejectedEvent->resultMessage = result_msg;
 
                     ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(rejectedEvent).name()).c_str());
-                    scheduler->queue_event(processorHandle, rejectedEvent);
+                    //scheduler->queue_event(processorHandle, rejectedEvent);
+                    stateMachine_->postEvent(rejectedEvent);
                 }
                 else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
                 {
                     ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
-                    boost::intrusive_ptr<EvActionPreempted<TDerived>> preemtedEvent = new EvActionPreempted<TDerived>();
-                    ;
+                    auto* preemtedEvent = new EvActionPreempted<TDerived>();
+                    
                     preemtedEvent->client = this;
                     preemtedEvent->resultMessage = result_msg;
 
                     ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
-                    scheduler->queue_event(processorHandle, preemtedEvent);
+                    //scheduler->queue_event(processorHandle, preemtedEvent);
+                    stateMachine_->postEvent(preemtedEvent);
                 }
                 else
                 {
@@ -190,6 +194,11 @@ protected:
                 }
             }
         }
+        else
+        {
+            ROS_WARN("action client result queue is empty");
+        }
+        
     }
 
     virtual void postFeedbackEvent(SmaccScheduler *scheduler, SmaccScheduler::processor_handle processorHandle) override

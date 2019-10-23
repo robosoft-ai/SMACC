@@ -165,8 +165,8 @@ public:
     //this->updateCurrentState<MostDerived>(false);
     static_cast<MostDerived *>(this)->onExit();
 
-    ROS_INFO_STREAM("throwing finish event " << fullname);
-    this->throwFinishEvent();
+    //ROS_INFO_STREAM("throwing finish event " << fullname);
+    //this->throwFinishEvent();
     ROS_WARN_STREAM("state exit: " << fullname);
   }
 

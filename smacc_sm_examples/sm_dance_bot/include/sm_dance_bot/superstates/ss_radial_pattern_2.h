@@ -30,15 +30,15 @@ public:
         static_configure<KeyboardOrthogonal, SbKeyboard>();
     }
 
+    void onInitialize()
+    {
+    }
+
     int iteration_count = 0;
     static constexpr int total_iterations() { return 4; }
     static constexpr float ray_angle_increment_degree() { return 90; }
     static constexpr float ray_length_meters() { return 3; }
 
-    void onInitialize()
-    {
-        iteration_count = 0;
-    }
 };
 
 //forward declaration for the superstate
