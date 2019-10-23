@@ -203,8 +203,6 @@ class ContainerNode():
 
         return needs_update
 
-    
-
 
     def get_dotcode(self, selected_paths, closed_paths, depth, max_depth, containers, show_all, label_wrapper, attrs={}):
         """Generate the dotcode representing this container.
@@ -633,9 +631,11 @@ class SmaccViewerFrame(wx.Frame):
         self._needs_zoom = True
         self._structure_changed = True
         self._statemachine_changed = True
+        self.state_machine_msg = None
 
         # Start a thread in the background to update the server list
         self._keep_running = True
+        
         rospy.loginfo("starting update server list")
         self._server_list_thread = threading.Thread(target=self._update_server_list)
         self._server_list_thread.start()
@@ -835,7 +835,8 @@ class SmaccViewerFrame(wx.Frame):
                 self._update_cond.notify_all()
 
     def _state_machine_update(self,msg):
-        pass
+        self.state_machine_msg = copy.deepcopy(msg)
+        #self._structure_changed = True
 
     def _status_msg_update(self, msg):
         """Process status messages."""
@@ -895,7 +896,7 @@ class SmaccViewerFrame(wx.Frame):
 
                 # Check if we need to re-generate the dotcode (if the structure changed)
                 # TODO: needs_zoom is a misnomer
-                if self._structure_changed and self._statemachine_changed or self._needs_zoom:
+                if self._structure_changed or self._needs_zoom:
                     dotstr = "digraph {\n\t"
                     dotstr += ';'.join([
                         "compound=true",
@@ -1006,15 +1007,48 @@ class SmaccViewerFrame(wx.Frame):
             "Container A" -> "Container C";
         }
         """
+        
+        if self.state_machine_msg!=None:
+            dotstr=""
+            for st in self.state_machine_msg.states:
+                dotstr+= """
+                subgraph cluster_%d
+            {
+                    node [style=filled];
+                
+                """%(st.index)
 
-        dotstr= """
+                for orthogonal in st.orthogonals:
+                    orthogonalidstr = orthogonal.name + str(st.index)
+                    dotstr+= "subgraph orthogonal_" + orthogonalidstr
+                    dotstr+="{\n"
+                    dotstr+= "node [style=filled shape=box];\n"
+                    
+                    for i, client in enumerate(orthogonal.client_names):
+                        dotstr+= "\""client.replace("::","_") +"_"+str(st.index) +"\" "
+                    dotstr+=";\n"
+                    dotstr+= "label "+ orthogonal.name+"\n"
+                    dotstr+="}"
+                    
+                
+                dotstr+="""
+                label = "%s";
+                color=blue;
+                }
+                """%(st.name)
+
+                        
+
+        
+        else:
+            dotstr= """
             subgraph cluster_0 {
                 node [style=filled];
                 "Item 1" "Item 2";
                 label = "Container A";
                 color=blue;
             }
-        """
+            """
 
         return dotstr
 
