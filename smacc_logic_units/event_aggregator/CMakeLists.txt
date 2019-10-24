@@ -109,6 +109,7 @@ catkin_package(
 ## Build ##
 ###########
 SET(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

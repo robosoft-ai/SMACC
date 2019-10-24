@@ -6,6 +6,7 @@ include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ## This setting causes Qt's "MOC" generation to happen automatically.
 set(CMAKE_AUTOMOC ON)

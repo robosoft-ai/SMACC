@@ -52,14 +52,13 @@ public:
        :ISmaccStateMachine(signalDetector),
         sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator >(ctx)
     {
-        ROS_ERROR("State machine base creation");
-        nh = ros::NodeHandle(cleanShortTypeName(typeid(DerivedStateMachine)));
+        auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
+        ROS_WARN_STREAM("State machine base creation:" << shortname);
+
+        nh = ros::NodeHandle(shortname);
 
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
-        
-	    //InitialStateType* test;
-        //updateCurrentState<InitialStateType>(true,test);
     }
     
     virtual ~SmaccStateMachineBase( )
@@ -67,7 +66,6 @@ public:
         //updateCurrentState<InitialStateType>(false);
     }
 
-    // This function is defined in the Player.cpp
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");
@@ -77,11 +75,13 @@ public:
 
         timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);
 
-        auto stateMachineName = this->getStateMachineName();
+        //auto stateMachineName = this->getStateMachineName(); // <- contains :: symbols
+        auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
         
-        stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/"+ stateMachineName + "/smacc/container_structure",1);
-        stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/"+ stateMachineName + "/smacc/container_status",1);     
-        stateMachinePub_=nh.advertise<smacc_msgs::SmaccStateMachine>("/"+ stateMachineName + "/smacc/state_machine_description",1);
+        // STATE MACHINE TOPICS
+        stateMachineStructurePub_=nh.advertise<smacc_msgs::SmaccContainerStructure>("/"+ shortname + "/smacc/container_structure",1);
+        stateMachineStatePub_ = nh.advertise<smacc_msgs::SmaccContainerStatus>("/"+ shortname + "/smacc/container_status",1);     
+        stateMachinePub_=nh.advertise<smacc_msgs::SmaccStateMachine>("/"+ shortname + "/smacc/state_machine_description",1);
     }
 
      // Delegates to ROS param access with the current NodeHandle

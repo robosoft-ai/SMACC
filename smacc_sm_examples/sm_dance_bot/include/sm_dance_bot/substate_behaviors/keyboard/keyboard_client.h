@@ -12,8 +12,6 @@
 #include <memory>
 #include <std_msgs/UInt16.h>
 
-using namespace boost::asio;
-
 namespace dance_bot
 {
 
