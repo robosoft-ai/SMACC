@@ -3,6 +3,7 @@ project(smacc_sensors)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)

@@ -124,8 +124,9 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
 add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})

@@ -19,6 +19,7 @@ find_package(catkin REQUIRED roscpp actionlib actionlib_msgs std_msgs smacc mess
 # catkin_python_setup()
 
 set(CMAKE_CXX_STANDARD 14)
+add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ################################################
 ## Declare ROS messages, services and actions ##
