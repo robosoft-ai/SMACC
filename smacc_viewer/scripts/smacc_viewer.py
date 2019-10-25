@@ -1076,17 +1076,13 @@ class SmaccViewerFrame(wx.Frame):
                     sourcelabelstr = transition.event_source.split("::")[-1]
                     sourcestr = sourcelabelstr+ "_" + str(st.index)
                     transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[label=%s]\n"%transition.event_type.split("::")[-1]
-                    transitionlist.append(transitionstr)
-                        
+                    transitionlist.append(transitionstr)        
 
                 dotstr+="}\n"                        
 
             for transitionstr in transitionlist:
-                dotstr+=transitionstr
+                dotstr+=transitionstr                
 
-                
-
-        
         else:
             #dotstr= """
             #subgraph cluster_0 {
