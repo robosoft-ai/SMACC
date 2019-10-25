@@ -1,4 +1,5 @@
 #pragma once
+#include <smacc/common.h>
 #include <smacc/logic_units/logic_unit_base.h>
 #include <map>
 #include <typeinfo>
@@ -6,8 +7,6 @@
 
 namespace smacc
 {
-
-namespace sc= boost::statechart;
 
 struct empty_object_tag
 {
