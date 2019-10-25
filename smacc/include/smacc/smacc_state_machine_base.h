@@ -55,10 +55,12 @@ public:
         auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
         ROS_WARN_STREAM("State machine base creation:" << shortname);
 
-        nh = ros::NodeHandle(shortname);
+        nh = ros::NodeHandle(shortname);   
+    }
 
-        info_ = std::make_shared<SmaccStateMachineInfo>();
-        info_->buildStateMachineInfo<InitialStateType>();
+    virtual void onInitialize()
+    {
+
     }
     
     virtual ~SmaccStateMachineBase( )
@@ -69,8 +71,15 @@ public:
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");
+        this->onInitialize();
+
+        info_ = std::make_shared<SmaccStateMachineInfo>();
+        info_->buildStateMachineInfo<InitialStateType>();
+
         sc::state_machine< DerivedStateMachine, InitialStateType, SmaccAllocator >::initiate();
         
+        
+
         info_->printAllStates(this);
 
         timer_= nh.createTimer(ros::Duration(0.1),&SmaccStateMachineBase<DerivedStateMachine,InitialStateType>::state_machine_visualization, this);

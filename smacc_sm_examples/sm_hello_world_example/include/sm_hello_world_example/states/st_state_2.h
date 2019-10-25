@@ -2,24 +2,25 @@ using namespace smacc;
 
 namespace hello_world_example
 {
-// ---- TAGS ----
-struct MY_EVENT{};
-//----------------
-
 struct StState2 : smacc::SmaccState<StState2, SmHelloWorld>
 {
-   using SmaccState::SmaccState;
+    using SmaccState::SmaccState;
 
-   typedef smacc::transition<smacc::EvTopicMessage<Client2>, StState1, MY_EVENT>
-       reactions;
-       
-   static void onDefinition()
-   {
-     
-   }
+    typedef mpl::list<
+        smacc::transition<smacc::EvTopicMessage<Client2>, StState1>,
+        smacc::transition<EvAll<LuAll>, StState1>>
+        reactions;
 
-   void onInitialize()
-   {
-   }
+    static void onDefinition()
+    {
+        static_configure<Orthogonal1, SbBehavior1b>();
+        static_configure<Orthogonal2, SbBehavior2b>();
+
+        static_createLogicUnit<LuAll, EvAll<LuAll>, EvTopicMessage<SbBehavior1b>, EvTopicMessage<Client1>>();
+    }
+
+    void onInitialize()
+    {
+    }
 };
-}
+} // namespace hello_world_example

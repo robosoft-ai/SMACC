@@ -1012,11 +1012,14 @@ class SmaccViewerFrame(wx.Frame):
         
         #if False: #self.state_machine_msg!=None:
         transitionlist = list()
+        
+
         if self.state_machine_msg!=None:
             
             dotstr=""
             orthogonal_count =0
             for st in self.state_machine_msg.states:
+                logic_units_full_names = set()
                 
                 stateid = "cluster_%d"%(st.index)
                 dotstr+= "\nsubgraph "+stateid+"\n"
@@ -1033,37 +1036,44 @@ class SmaccViewerFrame(wx.Frame):
                     dotstr+= "\tsubgraph " + orthogonalidstr + "\n"
                     dotstr+="\t{\n"
                     orthogonal_count+=1
-                    #dotstr+= "\t\tlabel = \"Orthogonal%d\";\n"%orthogonal_count
-                    #dotstr+="\t\ta%d;\n"%orthogonal_count
-                    #dotstr+= "\t\tnode [style=filled shape=box];\n"
-                    #dotstr+= "\t\tItem_%s;\n"%orthogonalidstr
+
                     orthogonal_label = (orthogonal.name.split("::")[-1]).replace("::","_")
                     dotstr+= "\t\tlabel = \""+ orthogonal_label+"\";\n"
                     
                     for i, client in enumerate(orthogonal.client_names):
                         labelstr = client.split("::")[-1]
                         idclientstr = labelstr+ "_" + str(st.index)
-                        #dotstr+= "\t\tsubgraph cluster_client_" + idclientstr+"\n"
-                        #dotstr+= "\t\t{\n"
-                        #dotstr+= "\t\t\tnode [style=filled shape=box];\n"
-                        #dotstr+= "\t\t\tlabel = \"Clients\";\n"
                         dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idclientstr,labelstr)
-                        #dotstr+= "\t\t}\n"
-                    
-                    
-                    #dotstr+="\"Item2\";\n"
-                    
+
+                    for i, sb in enumerate(orthogonal.substate_behavior_names):
+                        labelstr = sb.split("::")[-1]
+                        idsbtr = labelstr+ "_" + str(st.index)
+                        dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idsbtr,labelstr)
+                                        
                     dotstr+="\t}\n"
+                # LOGIC UNITS
+                for i, lu in enumerate(st.logic_units): 
+                    logic_units_full_names.add(lu.type_name)
+                    labelstr = lu.type_name.split("::")[-1] 
+                    idlu = labelstr+ "_" + str(st.index)+"_"+ str(lu.index)
+                    dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idlu,labelstr)    
+
+                    for i,evsource in enumerate(lu.event_sources):
+                        sourcelabelstr = evsource.event_source.split("::")[-1]
+                        if evsource.event_source in logic_units_full_names:
+                            sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
+                        else:
+                            sourcestr = sourcelabelstr+ "_" + str(st.index)
+
+                        transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[label=%s]\n"%evsource.event_type.split("::")[-1]
+                        transitionlist.append(transitionstr)
+
+
 
                 for i, transition in enumerate(st.transitions):
-                    labelstr = transition.event_type.split("::")[-1] + "_" + transition.destiny_state_name
+                    labelstr = transition.event.event_type.split("::")[-1] + "_" + transition.destiny_state_name
                     idev = labelstr+ "_" + str(st.index)
-                    #dotstr+= "\t\tsubgraph cluster_client_" + idclientstr+"\n"
-                    #dotstr+= "\t\t{\n"
-                    #dotstr+= "\t\t\tnode [style=filled shape=box];\n"
-                    #dotstr+= "\t\t\tlabel = \"Clients\";\n"
-                    dotstr+="\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idev,transition.transition_tag.split("::")[-1])
-                    #dotstr+= "\t\t}\n"
+                    dotstr+="\t\t\"%s\"[style=filled shape=ellipse label=%s color=\"#ff8888\"];\n"%(idev,transition.transition_tag.split("::")[-1])
                     
                     # EXTERNAL ARROW
                     stdst = [stx for stx in self.state_machine_msg.states if stx.name.split("::")[-1] == transition.destiny_state_name][0]
@@ -1073,11 +1083,14 @@ class SmaccViewerFrame(wx.Frame):
                     transitionlist.append(transitionstr)
 
                     # INTERNAL ARROW
-                    sourcelabelstr = transition.event_source.split("::")[-1]
-                    sourcestr = sourcelabelstr+ "_" + str(st.index)
-                    transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[label=%s]\n"%transition.event_type.split("::")[-1]
-                    transitionlist.append(transitionstr)        
-
+                    sourcelabelstr = transition.event.event_source.split("::")[-1]
+                    if transition.event.event_source in logic_units_full_names:
+                        sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
+                    else:
+                        sourcestr = sourcelabelstr+ "_" + str(st.index)
+                    transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[label=%s]\n"%transition.event.event_type.split("::")[-1]
+                    transitionlist.append(transitionstr)   
+                    
                 dotstr+="}\n"                        
 
             for transitionstr in transitionlist:

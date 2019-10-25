@@ -159,7 +159,17 @@ template <template <typename> typename Ev, typename EvSourceType, typename Dst, 
 void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev<EvSourceType>).name()).c_str());
-    auto transitionTag = demangleSymbol<Tag>();
+
+    std::string transitionTag;
+    if (typeid(Tag) != typeid(smacc::default_transition_name))
+    {
+        transitionTag = demangleSymbol<Tag>();
+    }
+    else
+    {
+        transitionTag = "";
+    }
+
     ROS_INFO_STREAM("Transition tag: " << transitionTag);
 
     if (!sourceState->stateMachine_->containsState<Dst>())
@@ -179,7 +189,16 @@ template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
-    auto transitionTag = demangleSymbol<Tag>();
+    std::string transitionTag;
+    if (typeid(Tag) != typeid(smacc::default_transition_name))
+    {
+        transitionTag = demangleSymbol<Tag>();
+    }
+    else
+    {
+        transitionTag = "";
+    }
+
     ROS_INFO_STREAM("Transition tag: " << transitionTag);
 
     if (!sourceState->stateMachine_->containsState<Dst>())
@@ -205,7 +224,11 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitionInfo.index = transitions_.size();
     transitionInfo.sourceState = shared_from_this();
     transitionInfo.destinyState = dstState;
-    transitionInfo.transitionTag = transitionTag;
+
+    if (transitionTag != "")
+        transitionInfo.transitionTag = transitionTag;
+    else
+        transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
     transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name()));
     if (transitionInfo.eventType->templateParameters.size() > 0)
@@ -232,7 +255,11 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitionInfo.index = transitions_.size();
     transitionInfo.sourceState = shared_from_this();
     transitionInfo.destinyState = dstState;
-    transitionInfo.transitionTag = transitionTag;
+
+    if (transitionTag != "")
+        transitionInfo.transitionTag = transitionTag;
+    else
+        transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
     transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name()));
     if (transitionInfo.eventType->templateParameters.size() > 0)

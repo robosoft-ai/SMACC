@@ -14,6 +14,7 @@ add_message_files(FILES
 
   SmaccState.msg
   SmaccTransition.msg
+  SmaccEvent.msg
   SmaccOrthogonal.msg
   SmaccLogicUnit.msg
   SmaccStateMachine.msg

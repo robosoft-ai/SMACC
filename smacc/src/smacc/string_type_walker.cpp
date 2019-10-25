@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <boost/algorithm/string/trim.hpp>
 
+#include <smacc/common.h>
 
 namespace smacc
 {
@@ -48,9 +49,9 @@ std::string replace_back(std::string roottype, std::map<std::string, std::string
     //     return roottype
 }
 
-std::shared_ptr<TypeInfo> getTypeInfoFromTypeid(const std::type_info& tid)
+std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromTypeid(const std::type_info &tid)
 {
-    return TypeInfo::getTypeInfoFromString(tid.name());
+    return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
 }
 
 std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
@@ -202,20 +203,19 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
         for (auto &t2 : types)
         {
             auto index = t->codedtype.find(t2->tkey);
-            if(index!=std::string::npos)
+            if (index != std::string::npos)
             {
-                auto pair = std::make_pair(index,t2);
+                auto pair = std::make_pair(index, t2);
                 unorderedTemplateParameters.push_back(pair);
             }
         }
 
-        std::sort(unorderedTemplateParameters.begin(), unorderedTemplateParameters.end(), 
-        [](auto & a, auto & b) -> bool
-        { 
-            return a.first <= b.first; 
-        });
+        std::sort(unorderedTemplateParameters.begin(), unorderedTemplateParameters.end(),
+                  [](auto &a, auto &b) -> bool {
+                      return a.first <= b.first;
+                  });
 
-        for(auto& item: unorderedTemplateParameters)
+        for (auto &item : unorderedTemplateParameters)
         {
             t->templateParameters.push_back(item.second);
         }
@@ -246,4 +246,4 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
 }
 */
 
-}
+} // namespace smacc

@@ -3,7 +3,7 @@
 #include <smacc/smacc_substate_behavior.h>
 namespace hello_world_example
 {
-class SbBehavior1 : public smacc::SmaccSubStateBehavior
+class SbBehavior1b : public smacc::SmaccSubStateBehavior
 {
 public:
         void onEntry()

@@ -8,6 +8,25 @@
 namespace smacc
 {
 
+template <typename T>
+static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
+{
+  auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
+  luinfo.sourceEventTypes.push_back(sourceType);
+  ROS_INFO_STREAM("event: " << sourceType->finaltype);
+  ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
+}
+
+template <typename TLuEventSource, typename... TEvArgs>
+static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TLuEventSource, TEvArgs...>)
+{
+  auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(TLuEventSource));
+  luinfo.sourceEventTypes.push_back(sourceType);
+  ROS_INFO_STREAM("event: " << sourceType->finaltype);
+  ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
+  walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
+}
+
 template <class MostDerived,
           class Context,
           class InnerInitial = mpl::list<>,
@@ -178,12 +197,12 @@ public:
 
   void throwFinishEvent()
   {
-    if(!finishStateThrown)
+    if (!finishStateThrown)
     {
       auto *finishEvent = new EvStateFinish<MostDerived>();
       finishEvent->state = static_cast<MostDerived *>(this);
       this->postEvent(finishEvent);
-      finishStateThrown=true;
+      finishStateThrown = true;
     }
   }
 
@@ -248,6 +267,8 @@ public:
     {
       luinfo.objectTagType = nullptr;
     }
+
+    walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
 
     luinfo.factoryFunction = [&](ISmaccState *state) {
       state->createLogicUnit<TLUnit, TTriggerEvent, TEvArgs...>();

@@ -38,10 +38,13 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
         for (auto &transition : state->transitions_)
         {
             smacc_msgs::SmaccTransition transitionMsg;
+
             auto eventTypeName = transition.eventType->getNonTemplatetypename();
+
             transitionMsg.index = transition.index;
-            transitionMsg.event_type = eventTypeName;
+            transitionMsg.event.event_type = eventTypeName;
             transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
+
             transitionMsg.transition_tag = transition.transitionTag;
 
             std::string eventSourceName = "";
@@ -49,7 +52,7 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
             if (transition.eventSourceType != nullptr)
             {
                 eventSourceName = transition.eventSourceType->finaltype;
-                transitionMsg.event_source = eventSourceName;
+                transitionMsg.event.event_source = eventSourceName;
             }
 
             std::string eventObjectTag = "";
@@ -57,14 +60,14 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
             if (transition.eventObjectTag != nullptr)
             {
                 eventObjectTag = transition.eventObjectTag->finaltype;
-                transitionMsg.event_object_tag = eventObjectTag;
+                transitionMsg.event.event_object_tag = eventObjectTag;
             }
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;
-            ss << "      - Event Type :" << transitionMsg.event_type << std::endl;
-            ss << "      - Event Source: " << transitionMsg.event_source << std::endl;
-            ss << "      - Event ObjectTag: " << transitionMsg.event_object_tag << std::endl;
+            ss << "      - Event Type :" << transitionMsg.event.event_type << std::endl;
+            ss << "      - Event Source: " << transitionMsg.event.event_source << std::endl;
+            ss << "      - Event ObjectTag: " << transitionMsg.event.event_object_tag << std::endl;
             ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
             ss << "      - Transition Tag: " << transitionMsg.transition_tag << std::endl;
             ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;
@@ -149,6 +152,34 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
                 {
                     logicUnitMsg.object_tag = luinfo.objectTagType->finaltype;
                     ss << "        - object tag: " << logicUnitMsg.object_tag << std::endl;
+                }
+
+                for (auto &tev : luinfo.sourceEventTypes)
+                {
+                    // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
+                    auto eventTypeName = demangleSymbol(tev->getNonTemplatetypename().c_str());
+                    smacc_msgs::SmaccEvent event;
+
+                    ss << "             - triggering event: " << demangleSymbol(tev->finaltype.c_str()) << std::endl;
+                    event.event_type = eventTypeName;
+
+                    std::string eventSourceName = "";
+                    if (tev->templateParameters.size() > 0)
+                    {
+                        eventSourceName = demangleSymbol(tev->templateParameters[0]->finaltype.c_str());
+                        event.event_source = eventSourceName;
+                    }
+                    ss << "                 - source type: " << event.event_source << std::endl;
+
+                    std::string eventObjectTag = "";
+                    if (tev->templateParameters.size() > 1)
+                    {
+                        eventObjectTag = demangleSymbol(tev->templateParameters[1]->finaltype.c_str());
+                        event.event_object_tag = eventObjectTag;
+                    }
+
+                    ss << "                 - source object: " << event.event_object_tag << std::endl;
+                    logicUnitMsg.event_sources.push_back(event);
                 }
 
                 stateMsg.logic_units.push_back(logicUnitMsg);
