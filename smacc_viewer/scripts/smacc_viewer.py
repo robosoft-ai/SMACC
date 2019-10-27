@@ -795,6 +795,8 @@ class SmaccViewerFrame(wx.Frame):
         # Get the node path
         path = msg.path
         pathsplit = path.split('/')
+        pathsplit = [p.split("::")[-1] for p in pathsplit]
+        path = "/".join(pathsplit)
         parent_path = '/'.join(pathsplit[0:-1])
 
         rospy.logdebug("RECEIVED: "+path)
@@ -820,7 +822,9 @@ class SmaccViewerFrame(wx.Frame):
                 self._top_containers[path] = container
 
             # Append paths to selector
+            print(path)
             self.path_combo.Append(path)
+            
             self.path_input.Append(path)
 
             # We need to redraw thhe graph if this container's parent is already known
@@ -960,6 +964,93 @@ class SmaccViewerFrame(wx.Frame):
 
                 # Redraw
                 self.widget.Refresh()
+
+    def state_to_dotlanguage(self, dotstr, cluster_count, st, transitionlist, allstates):
+        logic_units_full_names = set()
+                
+        stateid = "cluster_%d"%(st.index)
+        dotstr+= "\nsubgraph "+stateid+"\n"
+        dotstr+= "{\n"
+        #dotstr+= "\tnode [style=filled];\n"
+        dotstr+="\tlabel = \"%s\";\n"%(st.name.split("::")[-1])
+        #dotstr+="\tcolor=blue;\n"
+        #dotstr+= "\tItem_%d;\n"%st.index
+        dotstr+="\tentry_"+str(st.index)+"[label=entry style = invis]"
+
+        dotstr+="\n"
+        orthogonal_count = 0
+        for orthogonal in st.orthogonals:
+            orthogonalidstr = "cluster_Orthogonal_%d_%d"%(st.index, orthogonal_count)
+            dotstr+= "\tsubgraph " + orthogonalidstr + "\n"
+            dotstr+="\t{\n"
+            orthogonal_count+=1
+
+            orthogonal_label = (orthogonal.name.split("::")[-1])
+            dotstr+= "\t\tlabel = \""+ orthogonal_label+"\";\n"
+            
+            for i, client in enumerate(orthogonal.client_names):
+                labelstr = client.split("::")[-1]
+                idclientstr = labelstr+ "_" + str(st.index)
+                dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idclientstr,labelstr)
+
+            for i, sb in enumerate(orthogonal.substate_behavior_names):
+                labelstr = sb.split("::")[-1]
+                idsbtr = labelstr+ "_" + str(st.index)
+                dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idsbtr,labelstr)
+                                
+            dotstr+="\t}\n"
+        # LOGIC UNITS
+        for i, lu in enumerate(st.logic_units): 
+            logic_units_full_names.add(lu.type_name)
+            labelstr = lu.type_name.split("::")[-1] 
+            idlu = labelstr+ "_" + str(st.index)+"_"+ str(lu.index)
+            dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idlu,labelstr)    
+
+            for i,evsource in enumerate(lu.event_sources):
+                sourcelabelstr = evsource.event_source.split("::")[-1]
+                if evsource.event_source in logic_units_full_names:
+                    sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
+                else:
+                    sourcestr = sourcelabelstr+ "_" + str(st.index)
+
+                transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[label=%s]\n"%(evsource.event_type.split("::")[-1]+"\n"+ evsource.label)
+                transitionlist.append(transitionstr)
+
+        for i, transition in enumerate(st.transitions):
+            labelstr = transition.event.event_type.split("::")[-1] + "_" + transition.destiny_state_name
+            idev = labelstr+ "_" + str(st.index)
+            dotstr+="\t\t\"%s\"[style=filled shape=ellipse label=%s color=\"#ff8888\"];\n"%(idev,transition.transition_tag.split("::")[-1])
+            
+            # EXTERNAL ARROW
+            stdst = [stx for stx in self.state_machine_msg.states if stx.name.split("::")[-1] == transition.destiny_state_name][0]
+            target_stateid = "cluster_%d"%(stdst.index)
+            source_stateid = "cluster_%d"%(st.index)
+            transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[lhead=%s];\n"%(target_stateid)
+            transitionlist.append(transitionstr)
+
+            # INTERNAL ARROW
+            sourcelabelstr = transition.event.event_source.split("::")[-1]
+            if transition.event.event_source in logic_units_full_names:
+                sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
+            else:
+                sourcestr = sourcelabelstr+ "_" + str(st.index)
+            transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[label=\"%s\"]\n"%(transition.event.event_type.split("::")[-1]+"\n"+ transition.event.label)
+            transitionlist.append(transitionstr)   
+
+        childrenstate = [stx for stx in allstates if stx.name in st.children_states]
+        for sti in childrenstate:
+            substatestr, cluster_count = self.state_to_dotlanguage("", cluster_count, sti, transitionlist, allstates)
+            #print("--------------------------------------")
+            #print(substatestr)
+            dotstr+=substatestr
+
+        cluster_count+=1
+            
+        dotstr+="}\n"    
+        #print("--------------------------------------")
+        #print(dotstr)      
+        return dotstr  , cluster_count           
+
     
     def smacc_get_dotcode(self, selected_paths, closed_paths, depth, max_depth, containers, show_all, label_wrapper, attrs={}):
         """Generate the dotcode representing this container.
@@ -1011,87 +1102,25 @@ class SmaccViewerFrame(wx.Frame):
         """
         
         #if False: #self.state_machine_msg!=None:
-        transitionlist = list()
         
 
         if self.state_machine_msg!=None:
-            
-            dotstr=""
-            orthogonal_count =0
+            transitionlist = list()
+
+            parent_mapping = {}
             for st in self.state_machine_msg.states:
-                logic_units_full_names = set()
-                
-                stateid = "cluster_%d"%(st.index)
-                dotstr+= "\nsubgraph "+stateid+"\n"
-                dotstr+= "{\n"
-                #dotstr+= "\tnode [style=filled];\n"
-                dotstr+="\tlabel = \"%s\";\n"%(st.name.split("::")[-1])
-                #dotstr+="\tcolor=blue;\n"
-                #dotstr+= "\tItem_%d;\n"%st.index
-                dotstr+="\tentry_"+str(st.index)+"[label=entry style = invis]"
-        
-                dotstr+="\n"
-                for orthogonal in st.orthogonals:
-                    orthogonalidstr = "cluster_Orthogonal%d"%orthogonal_count
-                    dotstr+= "\tsubgraph " + orthogonalidstr + "\n"
-                    dotstr+="\t{\n"
-                    orthogonal_count+=1
+                for child in st.children_states:
+                    parent_mapping[child] = st
 
-                    orthogonal_label = (orthogonal.name.split("::")[-1]).replace("::","_")
-                    dotstr+= "\t\tlabel = \""+ orthogonal_label+"\";\n"
-                    
-                    for i, client in enumerate(orthogonal.client_names):
-                        labelstr = client.split("::")[-1]
-                        idclientstr = labelstr+ "_" + str(st.index)
-                        dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idclientstr,labelstr)
+            root_states = [st for st in self.state_machine_msg.states if st.name not in parent_mapping.keys()]
 
-                    for i, sb in enumerate(orthogonal.substate_behavior_names):
-                        labelstr = sb.split("::")[-1]
-                        idsbtr = labelstr+ "_" + str(st.index)
-                        dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idsbtr,labelstr)
-                                        
-                    dotstr+="\t}\n"
-                # LOGIC UNITS
-                for i, lu in enumerate(st.logic_units): 
-                    logic_units_full_names.add(lu.type_name)
-                    labelstr = lu.type_name.split("::")[-1] 
-                    idlu = labelstr+ "_" + str(st.index)+"_"+ str(lu.index)
-                    dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idlu,labelstr)    
-
-                    for i,evsource in enumerate(lu.event_sources):
-                        sourcelabelstr = evsource.event_source.split("::")[-1]
-                        if evsource.event_source in logic_units_full_names:
-                            sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
-                        else:
-                            sourcestr = sourcelabelstr+ "_" + str(st.index)
-
-                        transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[label=%s]\n"%evsource.event_type.split("::")[-1]
-                        transitionlist.append(transitionstr)
-
-
-
-                for i, transition in enumerate(st.transitions):
-                    labelstr = transition.event.event_type.split("::")[-1] + "_" + transition.destiny_state_name
-                    idev = labelstr+ "_" + str(st.index)
-                    dotstr+="\t\t\"%s\"[style=filled shape=ellipse label=%s color=\"#ff8888\"];\n"%(idev,transition.transition_tag.split("::")[-1])
-                    
-                    # EXTERNAL ARROW
-                    stdst = [stx for stx in self.state_machine_msg.states if stx.name.split("::")[-1] == transition.destiny_state_name][0]
-                    target_stateid = "cluster_%d"%(stdst.index)
-                    source_stateid = "cluster_%d"%(st.index)
-                    transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[lhead=%s];\n"%(target_stateid)
-                    transitionlist.append(transitionstr)
-
-                    # INTERNAL ARROW
-                    sourcelabelstr = transition.event.event_source.split("::")[-1]
-                    if transition.event.event_source in logic_units_full_names:
-                        sourcestr = sourcelabelstr + "_" + str(st.index)+"_"+ str(lu.index)
-                    else:
-                        sourcestr = sourcelabelstr+ "_" + str(st.index)
-                    transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[label=%s]\n"%transition.event.event_type.split("::")[-1]
-                    transitionlist.append(transitionstr)   
-                    
-                dotstr+="}\n"                        
+            dotstr=""
+            
+            countsclusters=0
+            for st in root_states:
+                substatestr, countsclusters = self.state_to_dotlanguage(dotstr, countsclusters, st, transitionlist, self.state_machine_msg.states)
+                dotstr += substatestr
+               
 
             for transitionstr in transitionlist:
                 dotstr+=transitionstr                
@@ -1299,7 +1328,8 @@ class SmaccViewerFrame(wx.Frame):
                 self.tree.DeleteAllItems()
                 self._tree_nodes = {}
                 for path,tc in self._top_containers.iteritems():
-                    self.add_to_tree(path, None)
+                    pathfixed= path
+                    self.add_to_tree(pathfixed, None)
 
     def add_to_tree(self, path, parent):
         """Add a path to the tree view."""

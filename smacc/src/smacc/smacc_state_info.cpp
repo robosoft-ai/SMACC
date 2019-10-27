@@ -60,7 +60,7 @@ const std::string &SmaccStateInfo::toShortName() const
     return this->demangledStateName;
 }
 
-std::string SmaccTransitionInfo::getSourceTypeName()
+std::string SmaccEventInfo::getSourceTypeName()
 {
     if(eventType!=nullptr)
     {

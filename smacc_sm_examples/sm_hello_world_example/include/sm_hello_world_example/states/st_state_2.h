@@ -7,7 +7,7 @@ struct StState2 : smacc::SmaccState<StState2, SmHelloWorld>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<smacc::EvTopicMessage<Client2>, StState1>,
+        smacc::transition<smacc::EvActionSucceded<Client2>, hello_world_example::SS1::Ss1>,
         smacc::transition<EvAll<LuAll>, StState1>>
         reactions;
 

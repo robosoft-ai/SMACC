@@ -15,7 +15,7 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
         auto state = val.second;
 
         std::stringstream ss;
-        ss << "**** State: " << val.first << std::endl;
+        ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
 
         stateMsg.name = state->demangledStateName;
         stateMsg.level = (int)state->getStateLevel();
@@ -39,7 +39,7 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
         {
             smacc_msgs::SmaccTransition transitionMsg;
 
-            auto eventTypeName = transition.eventType->getNonTemplatetypename();
+            auto eventTypeName = transition.eventInfo.eventType->getNonTemplatetypename();
 
             transitionMsg.index = transition.index;
             transitionMsg.event.event_type = eventTypeName;
@@ -49,25 +49,27 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
 
             std::string eventSourceName = "";
 
-            if (transition.eventSourceType != nullptr)
+            if (transition.eventInfo.eventSourceType != nullptr)
             {
-                eventSourceName = transition.eventSourceType->finaltype;
+                eventSourceName = transition.eventInfo.eventSourceType->finaltype;
                 transitionMsg.event.event_source = eventSourceName;
             }
 
             std::string eventObjectTag = "";
 
-            if (transition.eventObjectTag != nullptr)
+            if (transition.eventInfo.eventObjectTag != nullptr)
             {
-                eventObjectTag = transition.eventObjectTag->finaltype;
+                eventObjectTag = transition.eventInfo.eventObjectTag->finaltype;
                 transitionMsg.event.event_object_tag = eventObjectTag;
             }
+            transitionMsg.event.label = transition.eventInfo.label;
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;
             ss << "      - Event Type :" << transitionMsg.event.event_type << std::endl;
             ss << "      - Event Source: " << transitionMsg.event.event_source << std::endl;
             ss << "      - Event ObjectTag: " << transitionMsg.event.event_object_tag << std::endl;
+            ss << "      - Event Label: " << transitionMsg.event.label << std::endl;
             ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
             ss << "      - Transition Tag: " << transitionMsg.transition_tag << std::endl;
             ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;

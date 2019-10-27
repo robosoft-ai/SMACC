@@ -80,6 +80,50 @@ struct IActionResult
 
 struct default_object_tag{};
 
+
+//-------------------------------------------------------------------------
+template <typename T>
+class HasEventLabel
+{
+private:
+    typedef char YesType[1];
+    typedef char NoType[2];
+
+    template <typename C>
+    static YesType &test(decltype(&C::getEventLabel));
+    template <typename C>
+    static NoType &test(...);
+
+public:
+    enum
+    {
+        value = sizeof(test<T>(0)) == sizeof(YesType)
+    };
+};
+
+template <typename T>
+typename std::enable_if<HasEventLabel<T>::value, void>::type
+EventLabel(std::string& label)
+{
+  label = T::getEventLabel();
+}
+
+template <typename T>
+typename std::enable_if<!HasEventLabel<T>::value, void>::type
+EventLabel(std::string& label)
+{
+    label = "";
+}
+
+
+
+
+
+
+
+//-------------------------------------------------------------------------
+
+
 template <typename TSource, typename TObjectTag = default_object_tag>
 struct EvActionResult : sc::event<EvActionResult<TSource, default_object_tag>>, IActionResult
 {
@@ -91,6 +135,14 @@ template <typename TSource>
 struct EvActionSucceded : sc::event<EvActionResult<TSource>>, IActionResult
 {
   typename TSource::Result resultMessage;
+
+  static std::string getEventLabel()
+  {
+    // show ros message type
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
 };
 
 template <typename TSource>

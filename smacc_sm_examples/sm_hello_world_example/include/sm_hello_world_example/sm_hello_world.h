@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <smacc/smacc.h>
+#include <smacc/smacc_state.h>
 
 // CLIENTS
 #include <sm_hello_world_example/clients/client_1.h>
@@ -20,6 +21,12 @@
 
 namespace hello_world_example
 {
+//SUPERSTATES
+namespace SS1
+{
+class Ss1;
+}
+
 //STATES
 class StState1; // first state specially needs a forward declaration
 class StState2;
@@ -29,7 +36,12 @@ class StState3;
 struct SmHelloWorld
     : public smacc::SmaccStateMachineBase<SmHelloWorld, StState1>
 {
-    using SmaccStateMachineBase::SmaccStateMachineBase;
+    //using SmaccStateMachineBase::SmaccStateMachineBase;
+
+    SmHelloWorld(my_context ctx, smacc::SignalDetector *signalDetector)
+        : smacc::SmaccStateMachineBase<SmHelloWorld, StState1>(ctx, signalDetector)
+    {
+    }
 
     virtual void onInitialize() override
     {
@@ -43,3 +55,5 @@ struct SmHelloWorld
 #include <sm_hello_world_example/states/st_state_1.h>
 #include <sm_hello_world_example/states/st_state_2.h>
 #include <sm_hello_world_example/states/st_state_3.h>
+
+#include <sm_hello_world_example/superstates/ss_superstate_1.h>

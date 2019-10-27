@@ -122,7 +122,7 @@ void ISmaccStateMachine::postEvent(EventType *ev)
 
     this->signalDetector_->postEvent(ev);
 }
-
+//-------------------------------------------------------------------------------------------------------
 template <typename StateType>
 void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState)
 {
@@ -154,13 +154,6 @@ void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState
     {
         ROS_ERROR_STREAM("[StateMachine] updated state not found: " << demangleSymbol(typeid(StateType).name()).c_str());
     }
-
-    /*  
-        if(a !=nullptr && a->parentState_==nullptr)
-        {
-            currentState_ =a;
-            ROS_ERROR("really updated");
-        }*/
 }
 
 } // namespace smacc

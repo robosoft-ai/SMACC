@@ -6,8 +6,10 @@ namespace hello_world_example
 class SbBehavior1b : public smacc::SmaccSubStateBehavior
 {
 public:
-        void onEntry()
-        {
-        }
+typedef std_msgs::UInt16 TMessageType;
+
+void onEntry()
+{
+}
 };
 } // namespace hello_world_example

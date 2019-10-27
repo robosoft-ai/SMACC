@@ -72,8 +72,9 @@ struct SmDanceBot
     int counter_1;
     bool rt_ready_flag;
 
-    SmDanceBot(my_context ctx, smacc::SignalDetector *signalDetector)
-        : SmaccStateMachineBase<SmDanceBot, StAcquireSensors>(ctx, signalDetector)
+    using SmaccStateMachineBase::SmaccStateMachineBase;
+
+    virtual void onInitialize() override
     {
         this->setGlobalSMData("counter_1", counter_1);
         this->setGlobalSMData("rt_ready_flag", rt_ready_flag);
@@ -89,7 +90,6 @@ struct SmDanceBot
 };
 
 //SUBSTATE BEHAVIORS
-
 
 #include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
 

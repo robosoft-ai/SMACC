@@ -21,6 +21,12 @@ public:
     sensor_=nullptr;
   }
 
+  static std::string getEventLabel()
+  {
+    // show ros message type
+    return demangleSymbol(typeid(MessageType).name());
+  }
+
   virtual void onEntry() override
   {
     ROS_INFO("SensorTopic onEntry. Requires client:");

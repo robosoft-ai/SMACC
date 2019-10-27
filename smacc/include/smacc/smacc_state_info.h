@@ -22,12 +22,26 @@ struct StateBehaviorInfoEntry
     const std::type_info *orthogonalType;
 };
 //---------------------------------------------
+struct SmaccEventInfo
+{
+    SmaccEventInfo()
+    {
+        eventType = nullptr;
+        eventSourceType = nullptr;
+    }
+
+    std::shared_ptr<smacc::TypeInfo> eventType;
+    std::shared_ptr<smacc::TypeInfo> eventSourceType;
+    std::shared_ptr<smacc::TypeInfo> eventObjectTag;
+    std::string label;
+
+    std::string getSourceTypeName();
+};
+
 struct SmaccTransitionInfo
 {
     SmaccTransitionInfo()
     {
-        eventType = nullptr;
-        eventSourceType = nullptr;
     }
 
     int index;
@@ -35,11 +49,7 @@ struct SmaccTransitionInfo
     std::shared_ptr<SmaccStateInfo> destinyState;
 
     std::string transitionTag;
-    std::shared_ptr<smacc::TypeInfo> eventType;
-    std::shared_ptr<smacc::TypeInfo> eventSourceType;
-    std::shared_ptr<smacc::TypeInfo> eventObjectTag;
-
-    std::string getSourceTypeName();
+    SmaccEventInfo eventInfo;
 };
 //---------------------------------------------
 struct SmaccLogicUnitInfo

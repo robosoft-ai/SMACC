@@ -314,7 +314,11 @@ public:
       outermost_context_base_type &outermostContextBase)
   {
     const inner_context_ptr_type pInnerContext(
-        new MostDerived(my_context(pContext)));
+
+      new MostDerived(
+          SmaccState<MostDerived, Context, InnerInitial , historyMode>::
+
+          my_context(pContext)));
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
   }

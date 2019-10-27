@@ -6,15 +6,23 @@
 
 namespace smacc
 {
-template <typename SensorBehaviorType>
-struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<SensorBehaviorType>>
+template <typename TSource>
+struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource>>
 {
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
-template <typename SensorBehaviorType>
-struct EvTopicMessage : sc::event<EvTopicMessage<SensorBehaviorType>>
+template <typename TSource>
+struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
 {
+  static std::string getEventLabel()
+  {
+    auto typeinfo = TypeInfo::getTypeInfoFromTypeid(typeid(typename TSource::TMessageType));
+
+    std::string label = typeinfo->getNonTemplatetypename();
+    return label;
+  }
+
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
 };
 
@@ -27,6 +35,8 @@ public:
 
   boost::optional<std::string> topicName;
   boost::optional<int> queueSize;
+
+  typedef MessageType TMessageType;
 
   SmaccTopicSubscriberClient()
   {

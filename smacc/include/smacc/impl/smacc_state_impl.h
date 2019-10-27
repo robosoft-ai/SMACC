@@ -6,6 +6,7 @@
 
 namespace smacc
 {
+//-------------------------------------------------------------------------------------------------------
 
 // Delegates to ROS param access with the current NodeHandle
 template <typename T>
@@ -13,6 +14,7 @@ bool ISmaccState::getParam(std::string param_name, T &param_storage)
 {
     return nh.getParam(param_name, param_storage);
 }
+//-------------------------------------------------------------------------------------------------------
 
 // Delegates to ROS param access with the current NodeHandle
 template <typename T>
@@ -20,6 +22,7 @@ void ISmaccState::setParam(std::string param_name, T param_val)
 {
     return nh.setParam(param_name, param_val);
 }
+//-------------------------------------------------------------------------------------------------------
 
 //Delegates to ROS param access with the current NodeHandle
 template <typename T>
@@ -27,6 +30,7 @@ bool ISmaccState::param(std::string param_name, T &param_val, const T &default_v
 {
     return nh.param(param_name, param_val, default_val);
 }
+//-------------------------------------------------------------------------------------------------------
 
 template <typename TOrthogonal>
 void ISmaccState::configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior)
@@ -44,18 +48,21 @@ void ISmaccState::configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior
         ROS_ERROR("Skipping substate behavior creation. Orthogonal did not exist.");
     }
 }
+//-------------------------------------------------------------------------------------------------------
 
 template <typename SmaccComponentType>
 void ISmaccState::requiresComponent(SmaccComponentType *&storage)
 {
     this->getStateMachine().requiresComponent(storage);
 }
+//-------------------------------------------------------------------------------------------------------
 
 template <typename T>
 bool ISmaccState::getGlobalSMData(std::string name, T &ret)
 {
     return this->getStateMachine().getGlobalSMData(name, ret);
 }
+//-------------------------------------------------------------------------------------------------------
 
 // Store globally in this state machine. (By value parameter )
 template <typename T>
@@ -63,6 +70,7 @@ void ISmaccState::setGlobalSMData(std::string name, T value)
 {
     this->getStateMachine().setGlobalSMData(name, value);
 }
+//-------------------------------------------------------------------------------------------------------
 
 template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
 std::shared_ptr<TLUnit> ISmaccState::createLogicUnit()
@@ -74,6 +82,7 @@ std::shared_ptr<TLUnit> ISmaccState::createLogicUnit()
 
     return lu;
 }
+//-------------------------------------------------------------------------------------------------------
 
 template <typename TEv>
 void LogicUnit::declarePostEvent(typelist<TEv>)

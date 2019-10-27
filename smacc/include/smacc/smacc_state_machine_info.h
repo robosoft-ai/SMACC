@@ -230,15 +230,20 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
-    transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name()));
-    if (transitionInfo.eventType->templateParameters.size() > 0)
+    std::string label;
+    EventLabel<EvType>(label);
+    ROS_ERROR_STREAM("LABEL: " << label);
+    transitionInfo.eventInfo.label = label;
+
+    transitionInfo.eventInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name()));
+    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 0)
     {
-        transitionInfo.eventSourceType = transitionInfo.eventType->templateParameters.front();
+        transitionInfo.eventInfo.eventSourceType = transitionInfo.eventInfo.eventType->templateParameters.front();
     }
 
-    if (transitionInfo.eventType->templateParameters.size() > 1)
+    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 1)
     {
-        transitionInfo.eventObjectTag = transitionInfo.eventType->templateParameters[1];
+        transitionInfo.eventInfo.eventObjectTag = transitionInfo.eventInfo.eventType->templateParameters[1];
     }
 
     transitions_.push_back(transitionInfo);
@@ -261,15 +266,15 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
-    transitionInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name()));
-    if (transitionInfo.eventType->templateParameters.size() > 0)
+    transitionInfo.eventInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name()));
+    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 0)
     {
-        transitionInfo.eventSourceType = transitionInfo.eventType->templateParameters.front();
+        transitionInfo.eventInfo.eventSourceType = transitionInfo.eventInfo.eventType->templateParameters.front();
     }
 
-    if (transitionInfo.eventType->templateParameters.size() > 1)
+    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 1)
     {
-        transitionInfo.eventObjectTag = transitionInfo.eventType->templateParameters[1];
+        transitionInfo.eventInfo.eventObjectTag = transitionInfo.eventInfo.eventType->templateParameters[1];
     }
 
     transitions_.push_back(transitionInfo);
