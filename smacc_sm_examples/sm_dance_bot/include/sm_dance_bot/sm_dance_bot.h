@@ -50,7 +50,6 @@ class SsSPattern1;
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
 
-
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
 
@@ -99,10 +98,8 @@ struct SmDanceBot
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
 #include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
 
-
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
-
 #include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
 
 #include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
@@ -111,13 +108,11 @@ struct SmDanceBot
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sensor_msgs/LaserScan.h>
 
-
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
 
 //LOGIC UNITS
 #include <event_aggregator/logic_units/lu_event_all.h>
-
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>

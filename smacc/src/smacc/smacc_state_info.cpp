@@ -60,11 +60,28 @@ const std::string &SmaccStateInfo::toShortName() const
     return this->demangledStateName;
 }
 
-std::string SmaccEventInfo::getSourceTypeName()
+std::string SmaccEventInfo::getEventSourceName()
 {
-    if(eventType!=nullptr)
+    if (eventType->templateParameters.size() > 0)
     {
-        return  eventType->getNonTemplatetypename();;
+        return demangleSymbol(eventType->templateParameters[0]->finaltype.c_str());
+    }
+    else
+    {
+        return "";
+    }
+}
+
+std::string SmaccEventInfo::getEventTypeName()
+{
+    return demangleSymbol(eventType->getNonTemplatetypename().c_str());
+}
+
+std::string SmaccEventInfo::getObjectTagName()
+{
+    if (eventType->templateParameters.size() > 1)
+    {
+        return demangleSymbol(eventType->templateParameters[1]->finaltype.c_str());
     }
     else
     {

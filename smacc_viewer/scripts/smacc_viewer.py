@@ -1013,7 +1013,7 @@ class SmaccViewerFrame(wx.Frame):
                 else:
                     sourcestr = sourcelabelstr+ "_" + str(st.index)
 
-                transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[label=%s]\n"%(evsource.event_type.split("::")[-1]+"\n"+ evsource.label)
+                transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[label=\"%s\"]\n"%(evsource.event_type.split("::")[-1]+"\n"+ evsource.label)
                 transitionlist.append(transitionstr)
 
         for i, transition in enumerate(st.transitions):

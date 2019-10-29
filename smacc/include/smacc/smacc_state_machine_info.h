@@ -230,25 +230,13 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
-    std::string label;
-    EventLabel<EvType>(label);
-    ROS_ERROR_STREAM("LABEL: " << label);
-    transitionInfo.eventInfo.label = label;
-
-    transitionInfo.eventInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name()));
-    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 0)
-    {
-        transitionInfo.eventInfo.eventSourceType = transitionInfo.eventInfo.eventType->templateParameters.front();
-    }
-
-    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 1)
-    {
-        transitionInfo.eventInfo.eventObjectTag = transitionInfo.eventInfo.eventType->templateParameters[1];
-    }
+    transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name())));
+    
+    EventLabel<EvType>(transitionInfo.eventInfo->label);
+    ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 
     transitions_.push_back(transitionInfo);
 }
-
 //---------------------------------------------
 
 template <typename TevSource, template <typename> typename EvType>
@@ -266,16 +254,10 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
-    transitionInfo.eventInfo.eventType = smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name()));
-    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 0)
-    {
-        transitionInfo.eventInfo.eventSourceType = transitionInfo.eventInfo.eventType->templateParameters.front();
-    }
-
-    if (transitionInfo.eventInfo.eventType->templateParameters.size() > 1)
-    {
-        transitionInfo.eventInfo.eventObjectTag = transitionInfo.eventInfo.eventType->templateParameters[1];
-    }
+    transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
+    
+    EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
+    ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 
     transitions_.push_back(transitionInfo);
 }

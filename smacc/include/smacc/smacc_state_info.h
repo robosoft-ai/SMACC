@@ -5,6 +5,7 @@
 #include <vector>
 #include <list>
 #include <regex>
+#include <smacc/common.h>
 #include <smacc/string_type_walker.h>
 
 namespace smacc
@@ -24,18 +25,20 @@ struct StateBehaviorInfoEntry
 //---------------------------------------------
 struct SmaccEventInfo
 {
-    SmaccEventInfo()
+    SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType)
     {
-        eventType = nullptr;
-        eventSourceType = nullptr;
+        this->eventType =eventType;
     }
 
-    std::shared_ptr<smacc::TypeInfo> eventType;
-    std::shared_ptr<smacc::TypeInfo> eventSourceType;
-    std::shared_ptr<smacc::TypeInfo> eventObjectTag;
-    std::string label;
+    std::string getEventTypeName();
+    
+    std::string getEventSourceName();
 
-    std::string getSourceTypeName();
+    std::string getObjectTagName();
+    
+    std::string label;
+private:
+    std::shared_ptr<smacc::TypeInfo> eventType;
 };
 
 struct SmaccTransitionInfo
@@ -49,7 +52,7 @@ struct SmaccTransitionInfo
     std::shared_ptr<SmaccStateInfo> destinyState;
 
     std::string transitionTag;
-    SmaccEventInfo eventInfo;
+    std::shared_ptr<smacc::SmaccEventInfo> eventInfo;
 };
 //---------------------------------------------
 struct SmaccLogicUnitInfo
@@ -59,7 +62,7 @@ struct SmaccLogicUnitInfo
     
     const std::type_info *logicUnitType;
     std::shared_ptr<smacc::TypeInfo> objectTagType;
-    std::vector<std::shared_ptr<smacc::TypeInfo>> sourceEventTypes;
+    std::vector<std::shared_ptr<smacc::SmaccEventInfo>> sourceEventTypes;
 };
 
 enum class SmaccStateType

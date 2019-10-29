@@ -12,7 +12,9 @@ template <typename T>
 static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
 {
   auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
-  luinfo.sourceEventTypes.push_back(sourceType);
+  auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+  EventLabel<T>(evinfo->label);
+  luinfo.sourceEventTypes.push_back(evinfo);
   ROS_INFO_STREAM("event: " << sourceType->finaltype);
   ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
 }
@@ -21,7 +23,9 @@ template <typename TLuEventSource, typename... TEvArgs>
 static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TLuEventSource, TEvArgs...>)
 {
   auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(TLuEventSource));
-  luinfo.sourceEventTypes.push_back(sourceType);
+  auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+  EventLabel<TLuEventSource>(evinfo->label);
+  luinfo.sourceEventTypes.push_back(evinfo);
   ROS_INFO_STREAM("event: " << sourceType->finaltype);
   ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
   walkLogicUnitSources(luinfo, typelist<TEvArgs...>());

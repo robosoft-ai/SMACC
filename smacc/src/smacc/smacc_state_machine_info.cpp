@@ -39,30 +39,14 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
         {
             smacc_msgs::SmaccTransition transitionMsg;
 
-            auto eventTypeName = transition.eventInfo.eventType->getNonTemplatetypename();
-
             transitionMsg.index = transition.index;
-            transitionMsg.event.event_type = eventTypeName;
+            transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();;
             transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
 
             transitionMsg.transition_tag = transition.transitionTag;
-
-            std::string eventSourceName = "";
-
-            if (transition.eventInfo.eventSourceType != nullptr)
-            {
-                eventSourceName = transition.eventInfo.eventSourceType->finaltype;
-                transitionMsg.event.event_source = eventSourceName;
-            }
-
-            std::string eventObjectTag = "";
-
-            if (transition.eventInfo.eventObjectTag != nullptr)
-            {
-                eventObjectTag = transition.eventInfo.eventObjectTag->finaltype;
-                transitionMsg.event.event_object_tag = eventObjectTag;
-            }
-            transitionMsg.event.label = transition.eventInfo.label;
+            transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
+            transitionMsg.event.event_object_tag = transition.eventInfo->getObjectTagName();
+            transitionMsg.event.label = transition.eventInfo->label;
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;
@@ -159,28 +143,21 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
                 for (auto &tev : luinfo.sourceEventTypes)
                 {
                     // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
-                    auto eventTypeName = demangleSymbol(tev->getNonTemplatetypename().c_str());
+                    auto eventTypeName = tev->getEventTypeName();
                     smacc_msgs::SmaccEvent event;
 
-                    ss << "             - triggering event: " << demangleSymbol(tev->finaltype.c_str()) << std::endl;
+                    ss << "             - triggering event: " << tev->getEventTypeName() << std::endl;
                     event.event_type = eventTypeName;
 
-                    std::string eventSourceName = "";
-                    if (tev->templateParameters.size() > 0)
-                    {
-                        eventSourceName = demangleSymbol(tev->templateParameters[0]->finaltype.c_str());
-                        event.event_source = eventSourceName;
-                    }
+                    event.event_source = tev->getEventSourceName();
                     ss << "                 - source type: " << event.event_source << std::endl;
 
-                    std::string eventObjectTag = "";
-                    if (tev->templateParameters.size() > 1)
-                    {
-                        eventObjectTag = demangleSymbol(tev->templateParameters[1]->finaltype.c_str());
-                        event.event_object_tag = eventObjectTag;
-                    }
-
+                    event.event_object_tag = tev->getObjectTagName();
                     ss << "                 - source object: " << event.event_object_tag << std::endl;
+                    
+                    event.label  = tev->label;
+                    ss << "                 - event label: " << event.label << std::endl;
+
                     logicUnitMsg.event_sources.push_back(event);
                 }
 
