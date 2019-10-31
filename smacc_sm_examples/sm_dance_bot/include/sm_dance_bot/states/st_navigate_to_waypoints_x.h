@@ -53,10 +53,10 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       //smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
       smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, SS1::SsRadialPattern1>,
 
-      // smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2>,
-      // smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3>,
-      // smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1>,
-      // smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1>,
+       smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2>,
+       smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3>,
+       smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1>,
+       smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
