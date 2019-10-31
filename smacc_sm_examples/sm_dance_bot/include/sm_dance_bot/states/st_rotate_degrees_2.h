@@ -20,6 +20,7 @@ struct StRotateDegrees2 : smacc::SmaccState<StRotateDegrees2, SmDanceBot>
     static_configure<NavigationOrthogonal, SbRotate>(/*30*/ -90);
     static_configure<ToolOrthogonal, SbToolStop>();
     static_configure<KeyboardOrthogonal, SbKeyboard>();
+    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
   }
   
   void onInitialize()

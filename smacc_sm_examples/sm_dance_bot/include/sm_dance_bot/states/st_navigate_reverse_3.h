@@ -20,6 +20,7 @@ struct StNavigateReverse3 : smacc::SmaccState<StNavigateReverse3, SmDanceBot>
       static_configure<NavigationOrthogonal, SbNavigateBackwards>(2);
       static_configure<ToolOrthogonal, SbToolStop>();
       static_configure<KeyboardOrthogonal, SbKeyboard>();
+      static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
    }
 
    void onInitialize()

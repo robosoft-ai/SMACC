@@ -26,6 +26,7 @@ public:
     static void onDefinition()
     {
         static_configure<KeyboardOrthogonal, SbKeyboard>();
+        static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
     }
 
     int iteration_count;

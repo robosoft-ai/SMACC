@@ -13,9 +13,7 @@ public:
     typedef mpl::list<
 
         // Expected event
-        //sc::transition<EvStateFinish<SsRadialPattern1>, StRotateDegrees1>,
-        smacc::transition<EvStateFinish<SsRadialPattern1>, StRotateDegrees1>,
-        //sc::custom_reaction<EvStateFinish<SsRadialPattern1>>,
+        smacc::transition<EvStateFinish<SsrRadialReturn>, StRotateDegrees1>,
 
         // Keyboard event
         smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees1>,
@@ -37,6 +35,7 @@ public:
     static void onDefinition()
     {
         static_configure<KeyboardOrthogonal, SbKeyboard>();
+        static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
     }
 
     void onInitialize()

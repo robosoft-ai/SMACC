@@ -60,6 +60,11 @@ const std::string &SmaccStateInfo::toShortName() const
     return this->demangledStateName;
 }
 
+std::string SmaccStateInfo::getDemangledFullName() const
+{
+    return demangleSymbol(this->fullStateName.c_str());
+}
+
 std::string SmaccEventInfo::getEventSourceName()
 {
     if (eventType->templateParameters.size() > 0)

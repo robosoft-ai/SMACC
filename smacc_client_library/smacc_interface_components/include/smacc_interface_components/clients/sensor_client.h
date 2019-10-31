@@ -11,9 +11,16 @@
 namespace smacc
 {
 
-template <typename SensorBehaviorType>
-struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<SensorBehaviorType>>
+template <typename TSource>
+struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource>>
 {
+  static std::string getEventLabel()
+  {
+    auto typeinfo = TypeInfo::getTypeInfoFromTypeid(typeid(typename TSource::TMessageType));
+
+    std::string label = typeinfo->getNonTemplatetypename();
+    return label;
+  }
 };
 
 //---------------------------------------------------------------

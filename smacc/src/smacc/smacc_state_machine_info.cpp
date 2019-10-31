@@ -17,7 +17,7 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
         std::stringstream ss;
         ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
 
-        stateMsg.name = state->demangledStateName;
+        stateMsg.name = state->getDemangledFullName();
         stateMsg.level = (int)state->getStateLevel();
 
         ss << "**** State: " << stateMsg.name << std::endl;
@@ -27,7 +27,7 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
 
         for (auto &child : state->children_)
         {
-            auto childStateName = child->demangledStateName;
+            auto childStateName = child->getDemangledFullName();
             stateMsg.children_states.push_back(childStateName);
 
             ss << " - " << childStateName << std::endl;

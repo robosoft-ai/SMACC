@@ -110,5 +110,7 @@ public:
     void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
 
     const std::string &toShortName() const;
+    
+    std::string getDemangledFullName() const;
 };
 } // namespace smacc

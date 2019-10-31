@@ -78,51 +78,45 @@ struct IActionResult
   actionlib::SimpleClientGoalState getResultState() const;
 };
 
-struct default_object_tag{};
-
+struct default_object_tag
+{
+};
 
 //-------------------------------------------------------------------------
 template <typename T>
 class HasEventLabel
 {
 private:
-    typedef char YesType[1];
-    typedef char NoType[2];
+  typedef char YesType[1];
+  typedef char NoType[2];
 
-    template <typename C>
-    static YesType &test(decltype(&C::getEventLabel));
-    template <typename C>
-    static NoType &test(...);
+  template <typename C>
+  static YesType &test(decltype(&C::getEventLabel));
+  template <typename C>
+  static NoType &test(...);
 
 public:
-    enum
-    {
-        value = sizeof(test<T>(0)) == sizeof(YesType)
-    };
+  enum
+  {
+    value = sizeof(test<T>(0)) == sizeof(YesType)
+  };
 };
 
 template <typename T>
 typename std::enable_if<HasEventLabel<T>::value, void>::type
-EventLabel(std::string& label)
+EventLabel(std::string &label)
 {
   label = T::getEventLabel();
 }
 
 template <typename T>
 typename std::enable_if<!HasEventLabel<T>::value, void>::type
-EventLabel(std::string& label)
+EventLabel(std::string &label)
 {
-    label = "";
+  label = "";
 }
 
-
-
-
-
-
-
 //-------------------------------------------------------------------------
-
 
 template <typename TSource, typename TObjectTag = default_object_tag>
 struct EvActionResult : sc::event<EvActionResult<TSource, default_object_tag>>, IActionResult
@@ -148,19 +142,43 @@ struct EvActionSucceded : sc::event<EvActionResult<TSource>>, IActionResult
 template <typename TSource>
 struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  typename TSource::Result  resultMessage;
+  typename TSource::Result resultMessage;
+
+  static std::string getEventLabel()
+  {
+    // show ros message type
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
 };
 
 template <typename TSource>
 struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  typename TSource::Result  resultMessage;
+  typename TSource::Result resultMessage;
+
+  static std::string getEventLabel()
+  {
+    // show ros message type
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
 };
 
 template <typename TSource>
 struct EvActionRejected : sc::event<EvActionResult<TSource>>, IActionResult
 {
-  typename TSource::Result  resultMessage;
+  typename TSource::Result resultMessage;
+
+  static std::string getEventLabel()
+  {
+    // show ros message type
+    std::string label;
+    EventLabel<TSource>(label);
+    return label;
+  }
 };
 
 template <typename StateType>
@@ -191,7 +209,10 @@ template <typename StateMachineType>
 void run();
 } // namespace smacc
 
-
+inline std::string demangleSymbol(const std::string &name)
+{
+  return demangleSymbol(name.c_str());
+}
 
 inline std::string demangleSymbol(const char *name)
 {
@@ -210,7 +231,6 @@ inline std::string demangleSymbol(const char *name)
   return std::string(name);
 #endif
 }
-
 
 template <typename T>
 inline std::string demangleSymbol()

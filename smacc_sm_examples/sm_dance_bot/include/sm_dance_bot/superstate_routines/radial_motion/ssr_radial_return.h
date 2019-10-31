@@ -22,7 +22,8 @@ struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
     if (++(superstate.iteration_count) == superstate.total_iterations()) // 1 == two times
     {
       ROS_INFO("Breaking radial motion. Throwing superstate finith event.");
-      superstate.throwFinishEvent();
+      //superstate.throwFinishEvent();
+      this->throwFinishEvent();
     }
     else
     {

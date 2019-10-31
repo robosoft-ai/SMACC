@@ -10,6 +10,13 @@ template <typename TSource>
 struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource>>
 {
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
+  static std::string getEventLabel()
+  {
+    auto typeinfo = TypeInfo::getTypeInfoFromTypeid(typeid(typename TSource::TMessageType));
+
+    std::string label = typeinfo->getNonTemplatetypename();
+    return label;
+  }
 };
 
 template <typename TSource>

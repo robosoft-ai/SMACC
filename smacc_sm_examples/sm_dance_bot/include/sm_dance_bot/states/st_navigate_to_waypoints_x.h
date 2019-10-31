@@ -1,22 +1,27 @@
 
 
-struct EvWaypoint1 : sc::event<EvWaypoint1>
+template <typename TSource>
+struct EvWaypoint1 : sc::event<EvWaypoint1<TSource>>
 {
 };
 
-struct EvWaypoint2 : sc::event<EvWaypoint2>
+template <typename TSource>
+struct EvWaypoint2 : sc::event<EvWaypoint2<TSource>>
 {
 };
 
-struct EvWaypoint3 : sc::event<EvWaypoint3>
+template <typename TSource>
+struct EvWaypoint3 : sc::event<EvWaypoint3<TSource>>
 {
 };
 
-struct EvWaypoint4 : sc::event<EvWaypoint4>
+template <typename TSource>
+struct EvWaypoint4 : sc::event<EvWaypoint4<TSource>>
 {
 };
 
-struct EvWaypoint5 : sc::event<EvWaypoint5>
+template <typename TSource>
+struct EvWaypoint5 : sc::event<EvWaypoint5<TSource>>
 {
 };
 
@@ -43,11 +48,15 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       // Expected event
       sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient>>,
 
-      smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
-      smacc::transition<EvWaypoint2, SS2::SsRadialPattern2>,
-      smacc::transition<EvWaypoint3, SS3::SsRadialPattern3>,
-      smacc::transition<EvWaypoint4, SS4::SsFPattern1>,
-      smacc::transition<EvWaypoint5, SS5::SsSPattern1>,
+      //smacc::transition<EvCounter<LuCounter, 14>, SS1::SsRadialPattern1>,
+      //smacc::transition<EvCounter<LuCounter, 19>, SS1::SsRadialPattern1>,
+      //smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
+      smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, SS1::SsRadialPattern1>,
+
+      // smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2>,
+      // smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3>,
+      // smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1>,
+      // smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
@@ -64,6 +73,40 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   {
     static_configure<ToolOrthogonal, SbToolStart>();
     static_configure<KeyboardOrthogonal, SbKeyboard>();
+    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+
+    //static_createLogicUnit<LuAll, EvAll<LuAll, Unit1>, mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
+
+    //static_createLogicUnit<LuCounter, mpl::list<EvCounter1<LuCounter>, EvCounter2<LuCounter>, EvCounter1<LuCounter>, EvCounter4<LuCounter> EvCounter5<LuCounter>>,
+    //                       EvActionSucceded<MoveBaseClient>>();
+
+    //static_createLogicUnit<LuCounter, LuCounter::GenerateListEvents<20>::type, EvActionSucceded<MoveBaseClient>>();
+
+    //static_createLogicUnit<LuAll, EvAll<LuAll, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
+
+    // static_transition_dynamic_logic_unit< SS1::SsRadialPattern1,
+    //                                       SS2::SsRadialPattern2,
+    //                                       SS2::SsRadialPattern3>();
+
+    // static_createLogicUnit<lusource, outevent, invent, dststate1, dststate2 ...>();
+    // static_createLogicUnit<LuCounter, EvCountFinish<LuCounter>,    >();
+    // function<T1, T2, Targs...>
+    // function<T1, T2, TOutEvents..., TInEvents...>
+
+    // function<LogicUnitType, mpl::list<>, mpl::list<>>();
+    // function<LogicUnitType, TEvOut, mpl::list<>>();
+    // function<LogicUnitType, mpl::list<>, TEvIn>();
+
+    //static_createLogicUnit<LuAll,  EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
+
+    // static_transition(
+    // (
+    //   {
+    //     {0, typeid(SS1::SsRadialPattern1)},
+    //     {1, typeid(SS1::SsRadialPattern2)}
+    //     {3, typeid(SS1::SsRadialPattern3)}
+    //   }
+    // ));
   }
 
   void onInitialize()
@@ -105,7 +148,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     case 1:
     {
       ROS_INFO("transition to ss1");
-      auto ev1 = new EvWaypoint1();
+      auto ev1 = new EvWaypoint1<StNavigateToWaypointsX>();
       this->postEvent(ev1);
     }
     break;
@@ -113,7 +156,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     case 2:
     {
       ROS_INFO("transition to ss2");
-      auto ev2 = new EvWaypoint2();
+      auto ev2 = new EvWaypoint2<StNavigateToWaypointsX>();
       this->postEvent(ev2);
     }
     break;
@@ -121,21 +164,21 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     case 3:
     {
       ROS_INFO("transition to ss3");
-      auto ev3 = new EvWaypoint3();
+      auto ev3 = new EvWaypoint3<StNavigateToWaypointsX>();
       this->postEvent(ev3);
     }
     break;
     case 4:
     {
       ROS_INFO("transition to ss4");
-      auto ev4 = new EvWaypoint4();
+      auto ev4 = new EvWaypoint4<StNavigateToWaypointsX>();
       this->postEvent(ev4);
     }
     break;
     case 5:
     {
       ROS_INFO("transition to ss5");
-      auto ev5 = new EvWaypoint5();
+      auto ev5 = new EvWaypoint5<StNavigateToWaypointsX>();
       this->postEvent(ev5);
     }
     break;

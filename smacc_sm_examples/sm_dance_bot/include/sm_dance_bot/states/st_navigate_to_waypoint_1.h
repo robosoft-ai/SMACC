@@ -20,6 +20,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, SmDanceB
     static_configure<ToolOrthogonal, SbToolStart>();
     static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<PublisherOrthogonal, SbStringPublisher>("All Done!");
+    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
   }
 
   void onInitialize()
