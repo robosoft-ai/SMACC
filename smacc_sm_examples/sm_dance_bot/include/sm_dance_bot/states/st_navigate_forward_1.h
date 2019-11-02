@@ -1,16 +1,19 @@
+using namespace smacc;
+
 struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, SmDanceBot>
 {
   typedef mpl::list<
       // Expected event
-      smacc::transition<EvActionSucceded<SmaccMoveBaseActionClient>, StRotateDegrees2>,
+      transition<EvActionSucceded<SmaccMoveBaseActionClient>, StRotateDegrees2>,
 
       // Keyboard events
-      smacc::transition<EvKeyPressP<SbKeyboard>, StRotateDegrees1>,
-      smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees2>,
+      transition<EvKeyPressP<SbKeyboard>, StRotateDegrees1, SUCCESS >,
+      transition<EvKeyPressN<SbKeyboard>, StRotateDegrees2, ABORT>,
 
       // Error events
-      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX, ABORT>,
+      smacc::transition<EvActionPreempted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX, PREEMPT>>
       reactions;
 
   using SmaccState::SmaccState;

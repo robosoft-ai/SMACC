@@ -434,11 +434,6 @@ std::shared_ptr<SmaccStateInfo> SmaccStateMachineInfo::createState(std::shared_p
     state->demangledStateName = demangledName;
     state->fullStateName = typeid(StateType).name();
 
-    std::vector<std::string> strs;
-    boost::split(strs, state->demangledStateName, boost::is_any_of(":"));
-
-    state->demangledStateName = strs.back();
-
     if (parent != nullptr)
     {
         parent->children_.push_back(state);

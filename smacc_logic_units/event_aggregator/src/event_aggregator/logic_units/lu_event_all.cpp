@@ -4,7 +4,7 @@
 
 namespace smacc
 {
-void LuAll::onInitialized()
+void LuAllEventsGo::onInitialized()
 {
     for (auto type : eventTypes)
     {
@@ -12,7 +12,7 @@ void LuAll::onInitialized()
     }
 }
 
-void LuAll::onEventNotified(const std::type_info *eventType)
+void LuAllEventsGo::onEventNotified(const std::type_info *eventType)
 {
     ROS_INFO_STREAM("LU ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
     triggeredEvents[eventType] = true;
@@ -23,7 +23,7 @@ void LuAll::onEventNotified(const std::type_info *eventType)
     }
 }
 
-bool LuAll::triggers()
+bool LuAllEventsGo::triggers()
 {
     ROS_INFO("LU All TRIGGERS?");
     for (auto &entry : triggeredEvents)

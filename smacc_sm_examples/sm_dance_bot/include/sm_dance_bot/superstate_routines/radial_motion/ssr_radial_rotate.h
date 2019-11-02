@@ -12,7 +12,5 @@ struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
 
   void onInitialize()
   {
-    auto &superstate = this->context<SS>();
-    ROS_INFO("[SsrRadialRotate] Radial rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
   }
 };

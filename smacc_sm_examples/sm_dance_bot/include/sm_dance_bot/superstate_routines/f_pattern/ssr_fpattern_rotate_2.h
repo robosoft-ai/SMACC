@@ -18,7 +18,5 @@ struct SsrFPatternRotate2 : smacc::SmaccState<SsrFPatternRotate2, SS>
 
   void onInitialize()
   {
-    auto &superstate = this->context<SS>();
-    ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
   }
 };

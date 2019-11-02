@@ -9,7 +9,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, SmDanceBot>
       smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
 
       // Error events
-      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
       >
       reactions;

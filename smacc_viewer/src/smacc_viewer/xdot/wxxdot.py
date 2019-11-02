@@ -447,6 +447,8 @@ class WxDotWindow(wx.Panel):
       shell=False,
       universal_newlines=True
     )
+    
+    # generating "xdot assembly" code
     xdotcode, error = p.communicate(dotcode)
     if p.returncode != 0:
       print "ERROR PARSING DOT CODE", error

@@ -78,9 +78,19 @@ struct IActionResult
   actionlib::SimpleClientGoalState getResultState() const;
 };
 
-struct default_object_tag
-{
-};
+// ----TAGS FOR TRANSITIONS -----
+
+// all transitions are by default labeled with this structname
+struct default_object_tag {};
+
+// you can also use these other labels in order to have
+// a better code readability and also to improve the visual representation 
+// in the viewer
+struct ABORT{};
+struct SUCCESS{};
+struct PREEMPT{};
+struct CONTINUELOOP{};
+struct ENDLOOP{};
 
 //-------------------------------------------------------------------------
 template <typename T>
@@ -186,6 +196,12 @@ struct EvStateFinish : sc::event<EvStateFinish<StateType>>
 {
   StateType *state;
 };
+
+template<typename TSource>
+struct EvLoopContinue: sc::event<EvLoopContinue<TSource>>{};
+
+template<typename TSource>
+struct EvLoopEnd: sc::event<EvLoopEnd<TSource>>{};
 
 //--------------------------------
 template <typename ActionFeedback>

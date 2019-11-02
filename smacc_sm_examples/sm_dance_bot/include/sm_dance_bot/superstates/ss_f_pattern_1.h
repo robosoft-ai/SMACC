@@ -8,6 +8,7 @@ class SsrFPatternForward1;
 class SsrFPatternReturn1;
 class SsrFPatternRotate2;
 class SsrFPatternForward2;
+class SsrFPatternEndLoop;
 
 enum class TDirection
 {
@@ -22,47 +23,36 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::transition<EvStateFinish<SsFPattern1>, StNavigateForward2>,
+        smacc::transition<EvLoopEnd<SsrFPatternEndLoop>, StNavigateForward2, ENDLOOP >,
 
         // Keyboard events
-        smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
-        smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
+        //smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
+        //smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
 
         // Error events
-        smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
-
-        // Internal events
-        sc::custom_reaction<smacc::EvStateFinish<SsrFPatternRotate2>>>
+        //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
+        >
         reactions;
 
+    // superstate parameters
     static constexpr float ray_lenght_meters() { return 2; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
     static constexpr int total_iterations() { return 2; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
+    // superstate state variables
     int iteration_count;
 
     static void onDefinition()
     {
-        static_configure<KeyboardOrthogonal, SbKeyboard>();
-        static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+        //static_configure<KeyboardOrthogonal, SbKeyboard>();
+        //static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
     }
 
     void onInitialize()
     {
         iteration_count = 0;
-    }
-
-    sc::result react(const smacc::EvStateFinish<SsrFPatternRotate2> &ev)
-    {
-        ROS_INFO("FPATTERN iteration: %d", iteration_count);
-        if (++iteration_count == total_iterations()) // 1 == two times
-        {
-            this->throwFinishEvent();
-        }
-
-        return forward_event();
     }
 }; // namespace SS4
 
@@ -73,4 +63,5 @@ using SS = SsFPattern1;
 #include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_return_1.h>
 #include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_rotate_2.h>
 #include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_2.h>
+#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_loop_end.h>
 } // namespace SS4

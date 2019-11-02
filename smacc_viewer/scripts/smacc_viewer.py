@@ -646,6 +646,13 @@ class SmaccViewerFrame(wx.Frame):
         self._update_tree_thread = threading.Thread(target=self._update_tree)
         self._update_tree_thread.start()
 
+        #other fields and style
+        self.transition_color_by_tag = {"SUCCESS": '#99FF99', 'ABORT': '#FF9999',  'PREEMPT':'#FFFF99', 'CONTINUELOOP': '#AAAAFF', 'ENDLOOP': '#99FF99'}
+        self.edge_color_by_tag = {"SUCCESS": '#22AA22', 'ABORT': '#FF4444', 'PREEMPT':'#AAAA44', 'CONTINUELOOP': '#4444FF', 'ENDLOOP': '#22AA22'}
+
+        self.transition_label_font_size = str(14)
+        self.first_message_file_flag=False
+
     def OnQuit(self,event):
         """Quit Event: kill threads and wait for join."""
         with self._update_cond:
@@ -947,6 +954,8 @@ class SmaccViewerFrame(wx.Frame):
                     dotstr += '\n}\n'
 
                     rospy.loginfo_throttle(1, dotstr)
+                    self.serialize_dotstr_file(dotstr)
+                    
                     
                     self.dotstr = dotstr
                     # Set the dotcode to the new dotcode, reset the flags
@@ -968,6 +977,13 @@ class SmaccViewerFrame(wx.Frame):
                 self.widget.Refresh()
 
  
+    def serialize_dotstr_file(self, dotstr):
+        if not self.first_message_file_flag:
+            outfile=open("state_machine.dot","w")
+            outfile.write(dotstr)
+            outfile.close()
+
+    
     def get_state_id_from_state_name(self, state_name, allstates):
         return "cluster_" + allstates.index(state_name)
 
@@ -977,7 +993,7 @@ class SmaccViewerFrame(wx.Frame):
         idlu = labelstr+ "_" + str(current_state.index)+"_"+ str(logic_unit.index)
         return idlu
     
-    def node_id_from_event_source(self, event, current_state, logic_units_full_names, allstates):
+    def node_id_from_event_source(self, event, current_state, logic_units_full_names, allstates, issource = True):
         sourcelabelstr = event.event_source.split("::")[-1]
         lrheadtail = ""
         if event.event_source in logic_units_full_names: 
@@ -991,10 +1007,15 @@ class SmaccViewerFrame(wx.Frame):
                 event_source_state = candidatestates[0]
 
                 if current_state != event_source_state:
+                    # IN THIS CASE THE SOURCE OF THE EVENT IS ANOTHER STATE
                     #sourcestr = "cluster_"+str(candidatestates[0].index)
                     #sourcestr = candidatestates[0].name
-                    sourcestr = "entry_"+str(event_source_state.index)
-                    lrheadtail = "cluster_"+str(candidatestates[0].index)
+                    if issource:
+                        sourcestr = "internally_generated_"+str(event_source_state.index)
+                    else:
+                        sourcestr = "entry_"+str(event_source_state.index)
+
+                    #lrheadtail = "cluster_"+str(candidatestates[0].index)
                 else:
                     sourcestr = "internally_generated_"+str(event_source_state.index)
 
@@ -1006,16 +1027,30 @@ class SmaccViewerFrame(wx.Frame):
         return sourcestr, lrheadtail
 
     def sequentially_orthogonal_step_nodes(self, nodeid, previousNode, localtransitions):
-                if previousNode is not None:
-                    localtransition= "\t\t\t" + previousNode + " -> " + nodeid +"[tailport=e headport=w style=invis]\n"
-                    if localtransition not in localtransitions:
-                        localtransitions.append(localtransition)
+        if previousNode is not None:
+            localtransition= "\t\t\t" + previousNode + " -> " + nodeid +"[tailport=e headport=w style=invis]\n"
+            if localtransition not in localtransitions:
+                localtransitions.append(localtransition)
 
-                return nodeid
+        return nodeid
     
+    def get_transition_style_by_tag(self, transition_node_tag):
+        if transition_node_tag in self.transition_color_by_tag:
+            return {
+                        "node_color": self.transition_color_by_tag[transition_node_tag],
+                        "edge_color":  self.edge_color_by_tag[transition_node_tag]
+                    }
+        else:
+            return {
+                "node_color":"#DDDDDD",
+                "edge_color":"#222222"
+            }
+
     def state_to_dotlanguage(self, dotstr, cluster_count, st, transitionlist, allstates):
         rospy.loginfo("[SmaccViewer] plotting state: "+ str(st.name))
         logic_units_full_names = list()
+        #childrenstate = [stx for stx in allstates if stx.name in st.children_states]
+        childrenstate = [[stx for stx in allstates if stx.name == childname][0] for childname in st.children_states]
                 
         stateid = "cluster_%d"%(st.index)
         dotstr+= "\nsubgraph "+stateid+"\n"
@@ -1029,8 +1064,6 @@ class SmaccViewerFrame(wx.Frame):
         dotstr+="\tcolor=black;\n"
         #dotstr+= "\tItem_%d;\n"%st.index
         
-        
-
         contains_internal_events = [t for t in st.transitions if t.event.event_source==st.name]
         if len(contains_internal_events)> 0:
             dotstr+="\t\tinternally_generated_%d[style=\"filled,rounded\" shape=box color=\"#88aaff\" label=\"Internal\nevents\"];\n"%st.index
@@ -1040,12 +1073,18 @@ class SmaccViewerFrame(wx.Frame):
 
         dotstr+="\n"
         orthogonal_count = 0
+
         orthogonalid = "cluster_orthogonals_block_"+str(st.index);
         dotstr+= "\tsubgraph "+orthogonalid+"\n"
         dotstr+="\t{\n"      
         dotstr+= "\tlabel = \"\";\n"
         dotstr+= "\tcolor = \"#bbbbbb\";\n"
         dotstr+= "\rank = \"same\";\n"
+        
+        # hide orthogonals on superstates
+        hidden_orthogonal = any(childrenstate)
+        if hidden_orthogonal:
+            dotstr+= "\tstyle = \"invis\";\n"
         
         orthcount = len(st.orthogonals)
 
@@ -1067,11 +1106,18 @@ class SmaccViewerFrame(wx.Frame):
             for i, client in enumerate(orthogonal.client_names):
                 labelstr = client.split("::")[-1]
                 idclientstr = labelstr+ "_" + str(st.index)
-                dotstr+="\t\t\t\"%s\"[style=filled shape=box label=%s];\n"%(idclientstr,labelstr)
+
+                if hidden_orthogonal:
+                    clientstyle = "style=invis"
+                else:
+                    clientstyle = "style=filled"
+                
+                hidden_orthogonal
+                dotstr+="\t\t\t\"%s\"[%s shape=box label=%s];\n"%(idclientstr,clientstyle, labelstr)
                 previousNode = self.sequentially_orthogonal_step_nodes(idclientstr, previousNode, localtransitions)
 
                 if j == 0 and i==0:
-                    transitionlist.append(entrynodeid +" -> " + idclientstr +"[color=\"#cccccc\"]")
+                    transitionlist.append("\""+entrynodeid +"\" -> \"" + idclientstr +"\"[color=\"#cccccc\"]")
                 
             for i, sb in enumerate(orthogonal.substate_behavior_names):
                 labelstr = sb.split("::")[-1]
@@ -1086,7 +1132,6 @@ class SmaccViewerFrame(wx.Frame):
         exit_orthogonal_node = "exit_orthogonal_node"+str(st.index)
         dotstr+= exit_orthogonal_node + "[label=\"\" color=\"#dddddd\" shape=circle bgcolor=\"#dddddd\" style=filled width=0.05]\n"
         dotstr+="\t}\n"
-
    
         logicunit_node_id = "logicunit_block_id"+str(st.index)
         logicunits_block_id = "cluster_"+ logicunit_node_id
@@ -1097,7 +1142,7 @@ class SmaccViewerFrame(wx.Frame):
         dotstr+= "\tcolor = \"#bbbbbb\";\n"
         
         dotstr += logicunit_node_id+"[label=\"\" width=0.1 color=\"#dddddd\" shape=circle style=fill]\n"
-        transitionlist.append(previousNode+ " -> "+ logicunit_node_id +"[color=\"#dddddd\"]\n")
+        transitionlist.append("\""+previousNode+ "\" -> \""+ logicunit_node_id +"\"[color=\"#dddddd\" penwidth=2]\n")
 
         # LOGIC UNITS
         for i, lu in enumerate(st.logic_units): 
@@ -1109,7 +1154,7 @@ class SmaccViewerFrame(wx.Frame):
             for i,evsource in enumerate(lu.event_sources):
                 sourcestr, statelrheadtail = self.node_id_from_event_source(evsource, st, logic_units_full_names, allstates )
 
-                transitionstr="\t\t\""+sourcestr + "\"-> " + idlu + "[tailport=e headport=w xlabel=\"%s\" fontsize=\"8\"]\n"%(evsource.event_type.split("::")[-1]+"\n"+ evsource.label)
+                transitionstr="\t\t\""+sourcestr + "\"-> \"" + idlu + "\"[tailport=e headport=w xlabel=\"%s\" fontsize=\"%s\" penwidth=2]\n"%(evsource.event_type.split("::")[-1]+"\n"+ evsource.label, self.transition_label_font_size)
                 transitionlist.append(transitionstr)
         dotstr+="\t}\n"
 
@@ -1121,20 +1166,25 @@ class SmaccViewerFrame(wx.Frame):
         lasttransitionid = None
         for i, transition in enumerate(st.transitions):
 
+            # TRANSITION NODE
             labelstr = transition.event.event_type.split("::")[-1] + "_" + transition.destiny_state_name
+            
             idev = labelstr+ "_" + str(st.index)
+            transition_node_tag = transition.transition_tag.split("::")[-1]
+            transition_style = self.get_transition_style_by_tag(transition_node_tag)
+
+            dotstr+="\t\t\"%s\"[style=\"filled,rounded\" shape=box label=%s color=black fillcolor=\"%s\"];\n"%(idev,transition_node_tag, transition_style["node_color"])
+            
             lasttransitionid = idev
-
+            #ordering helper - edge
             if i == 0:
-                transitionlist.append(logicunit_node_id+ " -> "+ idev +"[color=\"#dddddd\"]\n")
-
-            dotstr+="\t\t\"%s\"[style=filled shape=ellipse label=%s color=\"#ff8888\"];\n"%(idev,transition.transition_tag.split("::")[-1])
+                transitionlist.append("\""+logicunit_node_id+ "\" -> \""+ idev +"\"[color=\"#dddddd\" penwidth=2]\n")
             
             # TRANSITION OUTPUT ARROW
-            stdst = [stx for stx in self.state_machine_msg.states if stx.name.split("::")[-1] == transition.destiny_state_name][0]
+            stdst = [stx for stx in self.state_machine_msg.states if stx.name== transition.destiny_state_name][0]
             target_stateid = "cluster_%d"%(stdst.index)
             source_stateid = "cluster_%d"%(st.index)
-            transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[tailport=e headport=w color=blue];\n"
+            transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[tailport=e headport=w color=\"%s\" penwidth=2];\n"%transition_style["edge_color"]
             #transitionstr="\t\t\""+idev + "\"-> "+source_stateid+"[tailport=e headport=w color=blue];\n"
             transitionlist.append(transitionstr)
             #dotstr+=transitionstr
@@ -1147,7 +1197,7 @@ class SmaccViewerFrame(wx.Frame):
             else:
                 statelrheadtail=""
 
-            transitionstr="\t\t\""+sourcestr + "\"-> " + idev + "[tailport=e headport=w "+statelrheadtail+" xlabel=\"%s\" fontsize=\"8\"]\n"%(transition.event.event_type.split("::")[-1]+"\n"+ transition.event.label)
+            transitionstr="\t\t\""+sourcestr + "\"-> \"" + idev + "\"[tailport=e headport=w "+statelrheadtail+" xlabel=\"%s\" fontsize=\"%s\" color=\"%s\" penwidth=2]\n"%(transition.event.event_type.split("::")[-1]+"\n"+ transition.event.label, self.transition_label_font_size, transition_style["edge_color"])
             transitionlist.append(transitionstr)   
         dotstr+="\t}\n"
 
@@ -1167,7 +1217,7 @@ class SmaccViewerFrame(wx.Frame):
 
         dotstr += children_block_id+"[label=\"\" width=0.1 color=\"#dddddd\" shape=circle style=fill]\n"
 
-        childrenstate = [stx for stx in allstates if stx.name in st.children_states]
+        
         childlasttransitionid = None
         subchildentrynodeid =None
         for sti in childrenstate:
@@ -1177,11 +1227,11 @@ class SmaccViewerFrame(wx.Frame):
             dotstr+=substatestr
 
         if childlasttransitionid is not None and logicunit_node_id is not None:
-            transitionstr=childlasttransitionid + " -> " + logicunit_node_id +"[color=\"#dddddd\"]"
+            transitionstr="\""+childlasttransitionid + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
             dotstr += transitionstr+"\n"
 
         if subchildentrynodeid is not None:
-            transitionstr=exit_orthogonal_node + " -> " + children_block_id +"[color=\"#dddddd\"]"
+            transitionstr="\""+exit_orthogonal_node + "\" -> \"" + children_block_id +"\"[color=\"#dddddd\"]"
             dotstr += transitionstr+"\n"
 
         cluster_count+=1
@@ -1264,7 +1314,7 @@ class SmaccViewerFrame(wx.Frame):
                
             rospy.loginfo("STATE STR PLOTTING COMPLETE. Now plotting transitions.")
             for transitionstr in transitionlist:
-                dotstr+=transitionstr                
+                dotstr+=transitionstr + "\n"        
 
             rospy.loginfo("[STATE STR PLOTTING COMPLETE]")
 

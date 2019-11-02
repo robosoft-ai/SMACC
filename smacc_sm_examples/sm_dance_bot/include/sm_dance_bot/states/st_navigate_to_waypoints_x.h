@@ -63,7 +63,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       sc::custom_reaction<EvKeyPressP<SbKeyboard>>,
 
       // Error events
-      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
@@ -75,14 +75,14 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
 
-    //static_createLogicUnit<LuAll, EvAll<LuAll, Unit1>, mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
+    //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>, mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
 
     //static_createLogicUnit<LuCounter, mpl::list<EvCounter1<LuCounter>, EvCounter2<LuCounter>, EvCounter1<LuCounter>, EvCounter4<LuCounter> EvCounter5<LuCounter>>,
     //                       EvActionSucceded<MoveBaseClient>>();
 
     //static_createLogicUnit<LuCounter, LuCounter::GenerateListEvents<20>::type, EvActionSucceded<MoveBaseClient>>();
 
-    //static_createLogicUnit<LuAll, EvAll<LuAll, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
+    //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
 
     // static_transition_dynamic_logic_unit< SS1::SsRadialPattern1,
     //                                       SS2::SsRadialPattern2,
@@ -97,7 +97,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
     // function<LogicUnitType, TEvOut, mpl::list<>>();
     // function<LogicUnitType, mpl::list<>, TEvIn>();
 
-    //static_createLogicUnit<LuAll,  EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
+    //static_createLogicUnit<LuAllEventsGo,  EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
 
     // static_transition(
     // (

@@ -285,6 +285,21 @@ public:
     SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
   }
 
+  void throwLoopEventFromCondition(bool (MostDerived::*conditionFn)() )
+  {
+    auto condition = boost::bind(conditionFn, dynamic_cast<MostDerived*>(this));
+    if (condition()) // 1 == two times
+      {
+        auto evloopend = new EvLoopEnd<MostDerived>();
+        this->postEvent(evloopend);
+      }
+      else
+      {
+        auto evloopcontinue = new EvLoopEnd<MostDerived>();
+        this->postEvent(evloopcontinue);
+      }
+  }
+
   //////////////////////////////////////////////////////////////////////////
   // The following declarations should be private.
   // They are only public because many compilers lack template friends.

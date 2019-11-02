@@ -2,7 +2,7 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrFPatternRotate1> reactions;
+  typedef smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrFPatternEndLoop> reactions;
 
   static void onDefinition()
   {
@@ -13,11 +13,7 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
     auto &superstate = this->context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
 
-    if (superstate.iteration_count < SS::total_iterations())
-    {
-      
-      this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(SS::pitch_lenght_meters()));
-      this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
-    }
+    this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateForward>(SS::pitch_lenght_meters()));
+    this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
   }
 };

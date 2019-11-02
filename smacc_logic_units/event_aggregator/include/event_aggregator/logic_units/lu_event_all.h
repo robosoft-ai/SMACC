@@ -17,7 +17,7 @@ struct EvAll : sc::event<EvAll<TSource, TObjectTag>>
 {
 };
 
-class LuAll : public LogicUnit
+class LuAllEventsGo : public LogicUnit
 {
     std::map<const std::type_info *, bool> triggeredEvents;
 

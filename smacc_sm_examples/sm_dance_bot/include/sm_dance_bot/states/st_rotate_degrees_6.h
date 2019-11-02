@@ -11,15 +11,15 @@ struct StRotateDegrees6 : smacc::SmaccState<StRotateDegrees6, SmDanceBot>
       smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse3>,
 
       // Error events
-      smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal,SbRotate>(/*30*/ -180);
+    static_configure<NavigationOrthogonal, SbRotate>(/*30*/ -180);
     static_configure<ToolOrthogonal, SbToolStop>();
-    static_configure<KeyboardOrthogonal,SbKeyboard>();
+    static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
   }
 

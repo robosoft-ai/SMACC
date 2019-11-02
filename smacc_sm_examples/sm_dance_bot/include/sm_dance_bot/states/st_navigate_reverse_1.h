@@ -11,7 +11,7 @@ struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, SmDanceBot>
        smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees3>,
 
        // Sensor events
-       smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
        reactions;
 
