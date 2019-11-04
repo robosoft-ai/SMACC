@@ -1,7 +1,7 @@
-struct SsrSPatternLoopEnd : smacc::SmaccState<SsrSPatternLoopEnd, SS>
+struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  typedef smacc::transition<EvLoopContinue<SsrSPatternLoopEnd>, SsrSPatternRotate1, CONTINUELOOP> reactions;
+  typedef smacc::transition<EvLoopContinue<SsrRadialLoopStart>, SsrRadialRotate, CONTINUELOOP> reactions;
 
   static void onDefinition()
   {
@@ -20,7 +20,7 @@ struct SsrSPatternLoopEnd : smacc::SmaccState<SsrSPatternLoopEnd, SS>
 
   void onEntry()
   {
-    throwLoopEventFromCondition(&SsrSPatternLoopEnd::loopCondition);
+    throwLoopEventFromCondition(&SsrRadialLoopStart::loopCondition);
   }
 };
 

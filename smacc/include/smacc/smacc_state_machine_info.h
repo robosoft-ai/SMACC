@@ -168,6 +168,7 @@ void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::sha
     else
     {
         transitionTag = "";
+        automaticTransitionTag<Ev<EvSourceType>>(transitionTag);        
     }
 
     ROS_INFO_STREAM("Transition tag: " << transitionTag);
@@ -197,6 +198,7 @@ void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccS
     else
     {
         transitionTag = "";
+        automaticTransitionTag<Ev>(transitionTag);        
     }
 
     ROS_INFO_STREAM("Transition tag: " << transitionTag);

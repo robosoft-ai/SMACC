@@ -649,8 +649,11 @@ class SmaccViewerFrame(wx.Frame):
         #other fields and style
         self.transition_color_by_tag = {"SUCCESS": '#99FF99', 'ABORT': '#FF9999',  'PREEMPT':'#FFFF99', 'CONTINUELOOP': '#AAAAFF', 'ENDLOOP': '#99FF99'}
         self.edge_color_by_tag = {"SUCCESS": '#22AA22', 'ABORT': '#FF4444', 'PREEMPT':'#AAAA44', 'CONTINUELOOP': '#4444FF', 'ENDLOOP': '#22AA22'}
+        self.no_constraint_edge_by_tag = {"SUCCESS": False, 'ABORT': True, 'PREEMPT': True, 'CONTINUELOOP': False, 'ENDLOOP': False}
 
         self.transition_label_font_size = str(14)
+        self.transition_node_font_size = str(20)
+
         self.first_message_file_flag=False
 
     def OnQuit(self,event):
@@ -1062,7 +1065,10 @@ class SmaccViewerFrame(wx.Frame):
 
         dotstr+= "\tstyle=rounded;\n"
         dotstr+="\tcolor=black;\n"
+        dotstr+= "\tfontsize = 35;\n"
         #dotstr+= "\tItem_%d;\n"%st.index
+
+        draw_helpers = True
         
         contains_internal_events = [t for t in st.transitions if t.event.event_source==st.name]
         if len(contains_internal_events)> 0:
@@ -1077,72 +1083,119 @@ class SmaccViewerFrame(wx.Frame):
         orthogonalid = "cluster_orthogonals_block_"+str(st.index);
         dotstr+= "\tsubgraph "+orthogonalid+"\n"
         dotstr+="\t{\n"      
-        dotstr+= "\tlabel = \"\";\n"
-        dotstr+= "\tcolor = \"#bbbbbb\";\n"
-        dotstr+= "\rank = \"same\";\n"
+        dotstr+= "\t\tlabel = \"\";\n"
+        dotstr+= "\t\tcolor = \"#bbbbbb\";\n"
+        
+        exit_orthogonal_node = "exit_orthogonal_node"+str(st.index)
         
         # hide orthogonals on superstates
+        #hidden_orthogonal = False
         hidden_orthogonal = any(childrenstate)
         if hidden_orthogonal:
             dotstr+= "\tstyle = \"invis\";\n"
         
         orthcount = len(st.orthogonals)
 
+        localorthogonals_to_endblock=list()
         previousNode = None
-        for j, orthogonal in enumerate(st.orthogonals):
-            orthogonalidstr = "cluster_Orthogonal_%d_%d"%(st.index, orthogonal_count)
-            dotstr+= "\tsubgraph " + orthogonalidstr + "\n"
-            dotstr+="\t{\n"
-            dotstr+= "\rank = \"same\";\n"
 
-            orthogonal_count+=1
 
-            orthogonal_label = (orthogonal.name.split("::")[-1])
-            dotstr+= "\t\tlabel = \""+ orthogonal_label+"\";\n"
-            dotstr+= "\tcolor = \"black\";\n"
-            previousNode = None
-            localtransitions = list()
+        if not hidden_orthogonal:
+            maxorthogonalitems =0 
+            for j, orthogonal in enumerate(st.orthogonals):
+                clientcount= len(orthogonal.client_names)
+                substatebehaviorscount= len(orthogonal.substate_behavior_names)
+                totalitems = clientcount + substatebehaviorscount
+                if totalitems > maxorthogonalitems:
+                    maxorthogonalitems = totalitems
 
-            for i, client in enumerate(orthogonal.client_names):
-                labelstr = client.split("::")[-1]
-                idclientstr = labelstr+ "_" + str(st.index)
+            for j, orthogonal in enumerate(st.orthogonals):
+                orthogonalidstr = "cluster_Orthogonal_%d_%d"%(st.index, orthogonal_count)
+                dotstr+= "\t\tsubgraph " + orthogonalidstr + "\n"
+                dotstr+="\t\t{\n"
+                dotstr+= "\t\t\tfontsize=18;\n"
+                #"node", "clust" , "graph" , "array(_flags)?(%d)?"
+                #dotstr+= "\t\t\tpackmode=\"node\";\n"  
+                dotstr+= "\t\t\trank=\"same\";\n"  
 
-                if hidden_orthogonal:
-                    clientstyle = "style=invis"
-                else:
-                    clientstyle = "style=filled"
+
+                orthogonal_count+=1
+
+                orthogonal_label = (orthogonal.name.split("::")[-1])
+                dotstr+= "\t\t\tlabel = \""+ orthogonal_label+"\";\n"
+                dotstr+= "\t\t\tcolor = \"black\";\n"
+                previousNode = None
+                localtransitions = list()
                 
-                hidden_orthogonal
-                dotstr+="\t\t\t\"%s\"[%s shape=box label=%s];\n"%(idclientstr,clientstyle, labelstr)
-                previousNode = self.sequentially_orthogonal_step_nodes(idclientstr, previousNode, localtransitions)
 
-                if j == 0 and i==0:
-                    transitionlist.append("\""+entrynodeid +"\" -> \"" + idclientstr +"\"[color=\"#cccccc\"]")
-                
-            for i, sb in enumerate(orthogonal.substate_behavior_names):
-                labelstr = sb.split("::")[-1]
-                idsbtr = labelstr+ "_" + str(st.index)
-                dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idsbtr,labelstr)
-                previousNode= self.sequentially_orthogonal_step_nodes(idsbtr, previousNode, localtransitions)
+                for i, client in enumerate(orthogonal.client_names):
+                    labelstr = client.split("::")[-1]
+                    idclientstr = labelstr+ "_" + str(st.index)
 
-            for lt in localtransitions:
-                dotstr+=lt
-                                
-            dotstr+="\t}\n"
-        exit_orthogonal_node = "exit_orthogonal_node"+str(st.index)
-        dotstr+= exit_orthogonal_node + "[label=\"\" color=\"#dddddd\" shape=circle bgcolor=\"#dddddd\" style=filled width=0.05]\n"
+                    if hidden_orthogonal:
+                        clientstyle = "style=invis"
+                    else:
+                        clientstyle = "style=filled"
+                    
+                    hidden_orthogonal
+                    dotstr+="\t\t\t\"%s\"[%s shape=box label=%s];\n"%(idclientstr,clientstyle, labelstr)
+                    previousNode = self.sequentially_orthogonal_step_nodes(idclientstr, previousNode, localtransitions)
+
+                    #if j == 0 and i==0:
+                    if i==0:
+                        transitionlist.append("\""+entrynodeid +"\" -> \"" + idclientstr +"\"[color=\"#cccccc\"]")
+                    
+                for i, sb in enumerate(orthogonal.substate_behavior_names):
+                    labelstr = sb.split("::")[-1]
+                    idsbtr = labelstr+ "_" + str(st.index)
+                    dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=%s];\n"%(idsbtr,labelstr)
+                    previousNode= self.sequentially_orthogonal_step_nodes(idsbtr, previousNode, localtransitions)
+
+                # INVISIBLE ITEMS
+                clientcount= len(orthogonal.client_names)
+                substatebehaviorscount= len(orthogonal.substate_behavior_names)
+                totalitems = clientcount + substatebehaviorscount
+
+                for k in xrange(maxorthogonalitems - totalitems ):
+                    idsbtr = "helpernode_" + str(st.index) +"_"+ str(j) + "_" + str(k)
+                    stylestr="style=invis"
+                    if draw_helpers:
+                        stylestr=""
+
+                    dotstr+="\t\t\t\"%s\"[style=filled shape=ellipse label=SbNodes1 %s];\n"%(idsbtr,stylestr)
+                    previousNode= self.sequentially_orthogonal_step_nodes(idsbtr, previousNode, localtransitions)
+
+                if previousNode is not None:
+                    localorthogonals_to_endblock.append(previousNode+"->\""+exit_orthogonal_node +"\"")
+
+                for lt in localtransitions:
+                    dotstr+=lt
+                                    
+                dotstr+="\t\t}\n"
+
+        # EXIT NODE OF ORTHOGONAL BLOCK
+        dotstr+= "\t\t"+exit_orthogonal_node + "[label=\"\" color=\"#dddddd\" shape=circle bgcolor=\"#dddddd\" style=filled width=0.05];\n"
+
+        # ONE ARROW FROM ORTHOGONAL CONTENTS TO NEXT BLOCK
+        #if any(localorthogonals_to_endblock):
+        #    dotstr+="\t\t"+ localorthogonals_to_endblock[-1]+"[color=\"#cccccc\"]\n"
+
+        # MANY ARROWS FROM ORTHOGONAL CONTENTS TO NEXT BLOCK
+        for t in localorthogonals_to_endblock:
+            dotstr+="\t\t"+t+"[color=\"#cccccc\"]\n"
+
         dotstr+="\t}\n"
-   
+
+
         logicunit_node_id = "logicunit_block_id"+str(st.index)
         logicunits_block_id = "cluster_"+ logicunit_node_id
 
-        dotstr+= "\tsubgraph "+logicunits_block_id+"\n"
+        dotstr+= "\n\tsubgraph "+logicunits_block_id+"\n"
         dotstr+="\t{\n"      
-        dotstr+= "\tlabel = \"\";\n"
-        dotstr+= "\tcolor = \"#bbbbbb\";\n"
+        dotstr+= "\t\tlabel = \"\";\n"
+        dotstr+= "\t\tcolor = \"#bbbbbb\";\n"
         
-        dotstr += logicunit_node_id+"[label=\"\" width=0.1 color=\"#dddddd\" shape=circle style=fill]\n"
-        transitionlist.append("\""+previousNode+ "\" -> \""+ logicunit_node_id +"\"[color=\"#dddddd\" penwidth=2]\n")
+        dotstr += "\t\t"+logicunit_node_id+"[label=\"\" width=0.1 color=\"#dddddd\" shape=circle style=fill]\n"
 
         # LOGIC UNITS
         for i, lu in enumerate(st.logic_units): 
@@ -1158,6 +1211,7 @@ class SmaccViewerFrame(wx.Frame):
                 transitionlist.append(transitionstr)
         dotstr+="\t}\n"
 
+        # TRANSITIONS
         transition_block_id = "cluster_transition_block_"+str(st.index);
         dotstr+= "\tsubgraph "+transition_block_id+"\n"
         dotstr+="\t{\n"      
@@ -1172,8 +1226,17 @@ class SmaccViewerFrame(wx.Frame):
             idev = labelstr+ "_" + str(st.index)
             transition_node_tag = transition.transition_tag.split("::")[-1]
             transition_style = self.get_transition_style_by_tag(transition_node_tag)
+            
+            noconstraintattribute = "constraint=false"
+            if transition_node_tag in self.no_constraint_edge_by_tag.keys():
+                if self.no_constraint_edge_by_tag[transition_node_tag]:
+                    noconstraintattribute = "constraint=false"
+                else:
+                    noconstraintattribute = ""
+            
+                
 
-            dotstr+="\t\t\"%s\"[style=\"filled,rounded\" shape=box label=%s color=black fillcolor=\"%s\"];\n"%(idev,transition_node_tag, transition_style["node_color"])
+            dotstr+="\t\t\"%s\"[style=\"filled,rounded\" shape=box label=%s color=black fillcolor=\"%s\"];\n"%(idev, transition_node_tag, transition_style["node_color"])
             
             lasttransitionid = idev
             #ordering helper - edge
@@ -1184,7 +1247,7 @@ class SmaccViewerFrame(wx.Frame):
             stdst = [stx for stx in self.state_machine_msg.states if stx.name== transition.destiny_state_name][0]
             target_stateid = "cluster_%d"%(stdst.index)
             source_stateid = "cluster_%d"%(st.index)
-            transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[tailport=e headport=w color=\"%s\" penwidth=2];\n"%transition_style["edge_color"]
+            transitionstr="\t\t\""+idev + "\"-> entry_"+str(stdst.index)+"[tailport=e headport=w color=\"%s\" penwidth=2 %s];\n"%(transition_style["edge_color"],noconstraintattribute)
             #transitionstr="\t\t\""+idev + "\"-> "+source_stateid+"[tailport=e headport=w color=blue];\n"
             transitionlist.append(transitionstr)
             #dotstr+=transitionstr
@@ -1215,24 +1278,78 @@ class SmaccViewerFrame(wx.Frame):
         dotstr+= "\tlabel = \"\";\n"
         dotstr+= "\tcolor = \"#bbbbbb\";\n"
 
-        dotstr += children_block_id+"[label=\"\" width=0.1 color=\"#dddddd\" shape=circle style=fill]\n"
+        if draw_helpers:
+            submachine_helper_nodes_stylestr = "style=fill"
+        else:
+            submachine_helper_nodes_stylestr = "style=invis"
+
+        #entry block of the substate machine
+        dotstr += children_block_id+"[label=\"ENTRY\" width=0.1 color=\"#dddddd\" shape=circle %s]\n"%submachine_helper_nodes_stylestr
 
         
+        children_block_end_id = "children_end_block_id"+str(st.index)
         childlasttransitionid = None
-        subchildentrynodeid =None
+        initialsubchildentrynodeid =None
+        childrentransitions = list()
         for sti in childrenstate:
             substatestr, cluster_count,subchildentrynodeid,childlasttransitionid = self.state_to_dotlanguage("", cluster_count, sti, transitionlist, allstates)
+            
+            if initialsubchildentrynodeid is None:
+                initialsubchildentrynodeid = subchildentrynodeid
             #print("--------------------------------------")
-            #print(substatestr)
+            
+            #transitionstr="\""+children_block_id + "\"->\"" + subchildentrynodeid +"\"[color=\"#dddddd\"]\n"
+            #childrentransitions.append(transitionstr)
+
+            # substate routine exit to substatemachine exit
+            transitionstr="\""+childlasttransitionid + "\" -> \"" + children_block_end_id +"\"[color=\"#dddddd\"]"
+            childrentransitions.append(transitionstr)
             dotstr+=substatestr
 
-        if childlasttransitionid is not None and logicunit_node_id is not None:
-            transitionstr="\""+childlasttransitionid + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
+            lastsubchildentrynodeid,lastchildlasttransitionid = subchildentrynodeid,childlasttransitionid
+
+            #transitionstr="\""+lastchildlasttransitionid + "\" -> \"" + subchildentrynodeid +"\"[color=\"#dddddd\"]"
+            #childrentransitions.append(transitionstr)
+
+
+
+        
+        #SETTING END BLOCK OF THE SUBSTATE MACHINE
+        dotstr += children_block_end_id+"[label=\"EXIT\" width=0.1 color=\"#dddddd\" shape=circle %s]\n"%submachine_helper_nodes_stylestr
+
+        # ORTHOGONALS -> SUBSTATEMACHINE
+        transitionstr="\""+exit_orthogonal_node + "\" -> \"" + children_block_id +"\"[color=\"#dddddd\"]"
+        dotstr += transitionstr+"\n"            
+
+        # SUBSTATEMACHINE -> LOGIC UNITS
+        transitionstr="\""+children_block_end_id + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
+        dotstr += transitionstr+"\n"            
+
+        #transitionstr="\""+children_block_end_id + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
+        #dotstr += transitionstr+"\n"            
+
+        
+        if initialsubchildentrynodeid is not None:
+            transitionstr="\""+children_block_id + "\" -> \"" + initialsubchildentrynodeid +"\"[color=\"#dddddd\"]"
             dotstr += transitionstr+"\n"
 
-        if subchildentrynodeid is not None:
+        """
+            transitionstr="\""+exit_orthogonal_node + "\" -> \"" + initialsubchildentrynodeid +"\"[color=\"#dddddd\"]"
+            dotstr += transitionstr+"\n"
+
             transitionstr="\""+exit_orthogonal_node + "\" -> \"" + children_block_id +"\"[color=\"#dddddd\"]"
             dotstr += transitionstr+"\n"
+        """
+    
+        #for chtrans in childrentransitions:
+        #    dotstr += chtrans+"\n"
+
+        if len(childrentransitions):
+            dotstr += childrentransitions[-1]
+
+        # SUBSTATEMACHINE ENTRY -> EXIT
+        #transitionstr="\""+children_block_id + "\" -> \"" + children_block_end_id +"\"[color=\"#dddddd\"]"
+        #dotstr += transitionstr+"\n"        
 
         cluster_count+=1
         dotstr+="}\n"    

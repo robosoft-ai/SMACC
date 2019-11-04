@@ -125,6 +125,44 @@ EventLabel(std::string &label)
 {
   label = "";
 }
+//-----------------------------------------------------------------------
+
+template <typename T>
+class HasAutomaticTransitionTag
+{
+private:
+  typedef char YesType[1];
+  typedef char NoType[2];
+
+  template <typename C>
+  static YesType &test(decltype(&C::getDefaultTransitionTag));
+  template <typename C>
+  static NoType &test(...);
+
+public:
+  enum
+  {
+    value = sizeof(test<T>(0)) == sizeof(YesType)
+  };
+};
+
+template <typename T>
+typename std::enable_if<HasAutomaticTransitionTag<T>::value, void>::type
+automaticTransitionTag(std::string &transition_tag)
+{
+  transition_tag = T::getDefaultTransitionTag();
+}
+
+template <typename T>
+typename std::enable_if<!HasAutomaticTransitionTag<T>::value, void>::type
+automaticTransitionTag(std::string &transition_tag)
+{
+  transition_tag = "";
+}
+
+
+
+
 
 //-------------------------------------------------------------------------
 
@@ -147,6 +185,11 @@ struct EvActionSucceded : sc::event<EvActionResult<TSource>>, IActionResult
     EventLabel<TSource>(label);
     return label;
   }
+
+  static std::string getDefaultTransitionTag()
+  {
+    return "SUCCESS";
+  }
 };
 
 template <typename TSource>
@@ -160,6 +203,11 @@ struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
     std::string label;
     EventLabel<TSource>(label);
     return label;
+  }
+
+  static std::string getDefaultTransitionTag()
+  {
+    return "ABORT";
   }
 };
 
@@ -175,6 +223,11 @@ struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
     EventLabel<TSource>(label);
     return label;
   }
+
+  static std::string getDefaultTransitionTag()
+  {
+    return "PREEMPT";
+  }
 };
 
 template <typename TSource>
@@ -188,6 +241,11 @@ struct EvActionRejected : sc::event<EvActionResult<TSource>>, IActionResult
     std::string label;
     EventLabel<TSource>(label);
     return label;
+  }
+
+  static std::string getDefaultTransitionTag()
+  {
+    return "REJECT";
   }
 };
 

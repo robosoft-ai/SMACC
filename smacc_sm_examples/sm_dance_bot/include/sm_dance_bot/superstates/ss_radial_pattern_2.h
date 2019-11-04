@@ -4,9 +4,10 @@ namespace SS2
 //forward declaration for initial ssr
 class SsrRadialRotate;
 class SsrRadialReturn;
-class SsrRadialLoopEnd;
+class SsrRadialEndPoint;
+class SsrRadialLoopStart;
 
-struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, SmDanceBot, SsrRadialRotate>
+struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, SmDanceBot, SsrRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;
@@ -14,7 +15,7 @@ public:
     typedef mpl::list<
 
         // Expected event
-        smacc::transition<EvLoopEnd<SsrRadialLoopEnd>, StRotateDegrees1, ENDLOOP >,
+        smacc::transition<EvLoopEnd<SsrRadialLoopStart>, StNavigateReverse1, ENDLOOP>//,
 
         // Keyboard events
         //smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse1>,
@@ -22,8 +23,8 @@ public:
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
-
+        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
+        >
         reactions;
 
     static void onDefinition()
@@ -47,5 +48,5 @@ using SS = SsRadialPattern2;
 #include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_end_point.h>
 #include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_return.h>
 #include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_rotate.h>
-#include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_loop_end.h>
+#include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_loop_start.h>
 } // namespace SS2

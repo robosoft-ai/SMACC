@@ -12,7 +12,7 @@ class SsrSPatternRotate3;
 class SsrSPatternForward3;
 class SsrSPatternRotate4;
 class SsrSPatternForward4;
-class SsrSPatternLoopEnd;
+class SsrSPatternLoopStart;
 
 enum class TDirection
 {
@@ -20,14 +20,14 @@ enum class TDirection
     RIGHT
 };
 
-struct SsSPattern1 : smacc::SmaccState<SsSPattern1, SmDanceBot, SsrSPatternRotate1>
+struct SsSPattern1 : smacc::SmaccState<SsSPattern1, SmDanceBot, SsrSPatternLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
         // Expected event
-        smacc::transition<EvLoopEnd<SsrSPatternLoopEnd>, StRotateDegrees6, ENDLOOP >,
+        smacc::transition<EvLoopEnd<SsrSPatternLoopStart>, StRotateDegrees6, ENDLOOP>//,
 
         // Keyboard events
         //smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees6>,
@@ -35,7 +35,7 @@ public:
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
+        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
 
         // Internal events
         >
@@ -71,6 +71,6 @@ using SS = SsSPattern1;
 #include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_3.h>
 #include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_4.h>
 #include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_4.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_loop_end.h>
+#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_loop_start.h>
 
 } // namespace SS5
