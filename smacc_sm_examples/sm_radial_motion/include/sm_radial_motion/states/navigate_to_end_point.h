@@ -1,5 +1,3 @@
-using namespace smacc;
-//--------------------------------------------
 /// NavigateToEndPoint State
 struct NavigateToEndPoint: SmaccState<NavigateToEndPoint,RadialMotionSuperState>
 {

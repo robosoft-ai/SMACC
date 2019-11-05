@@ -19,6 +19,8 @@
 //LOGIC UNITS
 #include <event_aggregator/logic_units/lu_event_all.h>
 
+using namespace smacc;
+
 namespace hello_world_example
 {
 //SUPERSTATES

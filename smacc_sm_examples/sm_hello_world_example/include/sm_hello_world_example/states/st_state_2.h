@@ -1,5 +1,3 @@
-using namespace smacc;
-
 namespace hello_world_example
 {
 struct StState2 : smacc::SmaccState<StState2, SmHelloWorld>

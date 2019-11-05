@@ -14,9 +14,7 @@ struct Ss1 : smacc::SmaccState<Ss1, hello_world_example::SmHelloWorld,Ssr1>
 public:
     using SmaccState::SmaccState;
 
-    typedef mpl::list<
-    smacc::transition<EvTopicMessage<Client1>, StState1>>
-        reactions;
+    typedef smacc::transition<EvLoopContinue<Ssr1>, StState1> reactions;
 
 
     static void onDefinition()

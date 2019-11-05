@@ -1,5 +1,3 @@
-using namespace smacc;
-
 /// State NavigateToRadialStart
 struct NavigateToRadialStart: smacc::SmaccState<NavigateToRadialStart, RadialMotionSuperState> // <- these are the orthogonal lines of this State
 {
