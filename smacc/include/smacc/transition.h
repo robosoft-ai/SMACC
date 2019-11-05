@@ -1,9 +1,12 @@
+#pragma once
+
+#include <smacc/common.h>
 #include <boost/statechart/transition.hpp>
 
 namespace smacc
 {
 
-struct default_transition_name {};
+struct default_transition_name: smacc::SUCCESS {};
 
 //////////////////////////////////////////////////////////////////////////////
 template< class Event, 

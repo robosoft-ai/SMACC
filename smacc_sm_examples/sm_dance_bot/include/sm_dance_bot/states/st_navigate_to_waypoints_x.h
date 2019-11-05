@@ -3,26 +3,31 @@
 template <typename TSource>
 struct EvWaypoint1 : sc::event<EvWaypoint1<TSource>>
 {
+  
 };
 
 template <typename TSource>
 struct EvWaypoint2 : sc::event<EvWaypoint2<TSource>>
 {
+  
 };
 
 template <typename TSource>
 struct EvWaypoint3 : sc::event<EvWaypoint3<TSource>>
 {
+  
 };
 
 template <typename TSource>
 struct EvWaypoint4 : sc::event<EvWaypoint4<TSource>>
 {
+  
 };
 
 template <typename TSource>
 struct EvWaypoint5 : sc::event<EvWaypoint5<TSource>>
 {
+  
 };
 
 struct Pose2D
@@ -44,6 +49,12 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 {
   using SmaccState::SmaccState;
 
+  struct TRANSITION_1: SUCCESS{};
+  struct TRANSITION_2: SUCCESS{};
+  struct TRANSITION_3: SUCCESS{};
+  struct TRANSITION_4: SUCCESS{};
+  struct TRANSITION_5: SUCCESS{};
+  
   typedef mpl::list<
       // Expected event
       sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient>>,
@@ -51,12 +62,12 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
       //smacc::transition<EvCounter<LuCounter, 14>, SS1::SsRadialPattern1>,
       //smacc::transition<EvCounter<LuCounter, 19>, SS1::SsRadialPattern1>,
       //smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
-      smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, SS1::SsRadialPattern1>,
+      smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, SS1::SsRadialPattern1, TRANSITION_1>,
 
-       smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2>,
-       smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3>,
-       smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1>,
-       smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1>,
+       smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2, TRANSITION_2>,
+       smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3, TRANSITION_3>,
+       smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1, TRANSITION_4>,
+       smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1, TRANSITION_5>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,

@@ -63,6 +63,7 @@ class SsSPattern1;
 #include <sm_dance_bot/orthogonals/service3_orthogonal.h>
 
 using namespace dance_bot;
+using namespace smacc;
 
 // STATE MACHINE
 struct SmDanceBot

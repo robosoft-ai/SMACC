@@ -27,16 +27,17 @@ struct SmaccEventInfo
 {
     SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType)
     {
-        this->eventType =eventType;
+        this->eventType = eventType;
     }
 
     std::string getEventTypeName();
-    
+
     std::string getEventSourceName();
 
     std::string getObjectTagName();
-    
+
     std::string label;
+
 private:
     std::shared_ptr<smacc::TypeInfo> eventType;
 };
@@ -52,6 +53,7 @@ struct SmaccTransitionInfo
     std::shared_ptr<SmaccStateInfo> destinyState;
 
     std::string transitionTag;
+    std::string transitionType;
     std::shared_ptr<smacc::SmaccEventInfo> eventInfo;
 };
 //---------------------------------------------
@@ -59,7 +61,7 @@ struct SmaccLogicUnitInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
-    
+
     const std::type_info *logicUnitType;
     std::shared_ptr<smacc::TypeInfo> objectTagType;
     std::vector<std::shared_ptr<smacc::SmaccEventInfo>> sourceEventTypes;
@@ -104,13 +106,13 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType);
 
     template <typename EvSource, template <typename> typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType);
 
     const std::string &toShortName() const;
-    
+
     std::string getDemangledFullName() const;
 };
 } // namespace smacc

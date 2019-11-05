@@ -1,5 +1,3 @@
-using namespace smacc;
-
 struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, SmDanceBot>
 {
   typedef mpl::list<

@@ -33,7 +33,9 @@
 import rospy
 import rospkg
 import sys
-sys.path.append('../devel/lib/python2.7/dist-packages/')
+import os
+debugpath = os.path.abspath('../devel/lib/python2.7/dist-packages/')
+sys.path.append(debugpath )
 
 from smacc_msgs.msg import SmaccContainerStatus,SmaccContainerInitialStatusCmd,SmaccContainerStructure, SmaccStateMachine
 
@@ -1068,7 +1070,7 @@ class SmaccViewerFrame(wx.Frame):
         dotstr+= "\tfontsize = 35;\n"
         #dotstr+= "\tItem_%d;\n"%st.index
 
-        draw_helpers = True
+        draw_helpers = False
         
         contains_internal_events = [t for t in st.transitions if t.event.event_source==st.name]
         if len(contains_internal_events)> 0:
@@ -1224,18 +1226,18 @@ class SmaccViewerFrame(wx.Frame):
             labelstr = transition.event.event_type.split("::")[-1] + "_" + transition.destiny_state_name
             
             idev = labelstr+ "_" + str(st.index)
-            transition_node_tag = transition.transition_tag.split("::")[-1]
-            transition_style = self.get_transition_style_by_tag(transition_node_tag)
+            transition_node_tag = transition.transition_name.split("::")[-1]
+            transition_node_type = transition.transition_type.split("::")[-1]
+
+            transition_style = self.get_transition_style_by_tag(transition_node_type)
             
             noconstraintattribute = "constraint=false"
-            if transition_node_tag in self.no_constraint_edge_by_tag.keys():
-                if self.no_constraint_edge_by_tag[transition_node_tag]:
+            if transition_node_type in self.no_constraint_edge_by_tag.keys():
+                if self.no_constraint_edge_by_tag[transition_node_type]:
                     noconstraintattribute = "constraint=false"
                 else:
                     noconstraintattribute = ""
             
-                
-
             dotstr+="\t\t\"%s\"[style=\"filled,rounded\" shape=box label=%s color=black fillcolor=\"%s\"];\n"%(idev, transition_node_tag, transition_style["node_color"])
             
             lasttransitionid = idev
@@ -1268,8 +1270,6 @@ class SmaccViewerFrame(wx.Frame):
         #transitionlist.append("\t" + logicunits_block_id +"->"+ transition_block_id +"\n")
         #trans="\t" + logicunits_block_id.replace("cluster_","") +"->"+ transition_block_id.replace("cluster_","") +"\n"
         #transitionlist.append(trans)
-
-        
 
         children_block_id = "children_block_id"+str(st.index)
         children_block_cluster_id = "cluster_"+ children_block_id

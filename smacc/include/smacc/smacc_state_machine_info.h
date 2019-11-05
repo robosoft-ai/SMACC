@@ -58,21 +58,6 @@ public:
     void printAllStates(ISmaccStateMachine *sm);
 };
 
-//--------------------------------
-
-template <typename T>
-struct type_
-{
-    using type = T;
-};
-
-//---------------------------------------------
-template <typename T>
-struct add_type_wrapper
-{
-    using type = type_<T>;
-};
-
 //---------------------------------------------
 struct AddSubState
 {
@@ -161,14 +146,18 @@ void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::sha
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev<EvSourceType>).name()).c_str());
 
     std::string transitionTag;
+    std::string transitionType;
     if (typeid(Tag) != typeid(smacc::default_transition_name))
     {
         transitionTag = demangleSymbol<Tag>();
+        transitionType = getTransitionType<Tag>();
+        ROS_ERROR_STREAM("TRANSITION TYPE:" << transitionType);
     }
     else
     {
         transitionTag = "";
-        automaticTransitionTag<Ev<EvSourceType>>(transitionTag);        
+        automaticTransitionTag<Ev<EvSourceType>>(transitionTag);
+        automaticTransitionType<Ev<EvSourceType>>(transitionType);
     }
 
     ROS_INFO_STREAM("Transition tag: " << transitionTag);
@@ -177,12 +166,12 @@ void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::sha
     {
         auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
         WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
-        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag);
+        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
     }
     else
     {
         auto siblingnode = sourceState->stateMachine_->getState<Dst>();
-        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag);
+        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
     }
 }
 
@@ -191,14 +180,19 @@ void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccS
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
     std::string transitionTag;
+    std::string transitionType;
+
     if (typeid(Tag) != typeid(smacc::default_transition_name))
     {
         transitionTag = demangleSymbol<Tag>();
+        transitionType = getTransitionType<Tag>();
+        ROS_ERROR_STREAM("TRANSITION TYPE:" << transitionType);
     }
     else
     {
         transitionTag = "";
-        automaticTransitionTag<Ev>(transitionTag);        
+        automaticTransitionTag<Ev>(transitionTag);
+        automaticTransitionType<Ev>(transitionType);
     }
 
     ROS_INFO_STREAM("Transition tag: " << transitionTag);
@@ -207,18 +201,18 @@ void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccS
     {
         auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
         WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
-        sourceState->declareTransition<Ev>(siblingnode, transitionTag);
+        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType);
     }
     else
     {
         auto siblingnode = sourceState->stateMachine_->getState<Dst>();
-        sourceState->declareTransition<Ev>(siblingnode, transitionTag);
+        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType);
     }
 }
 
 //---------------------------------------------
 template <typename EvType>
-void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag)
+void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType)
 {
     auto evtype = demangledTypeName<EvType>();
 
@@ -232,8 +226,10 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
+    transitionInfo.transitionType = transitionType;
+
     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name())));
-    
+
     EventLabel<EvType>(transitionInfo.eventInfo->label);
     ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 
@@ -242,7 +238,7 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
 //---------------------------------------------
 
 template <typename TevSource, template <typename> typename EvType>
-void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag)
+void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType)
 {
     auto evtype = demangledTypeName<EvType<TevSource>>();
 
@@ -256,8 +252,10 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     else
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
+    transitionInfo.transitionType = transitionType;
+
     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
-    
+
     EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
     ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 

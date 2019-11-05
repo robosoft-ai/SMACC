@@ -29,8 +29,6 @@
 
 namespace sc = boost::statechart;
 
-#include <smacc/transition.h>
-
 using namespace boost;
 
 typedef sc::fifo_scheduler<> SmaccScheduler;
@@ -48,6 +46,42 @@ template <class T>
 auto optionalNodeHandle(T *) -> ros::NodeHandle
 {
   return ros::NodeHandle("");
+}
+
+
+inline std::string demangleSymbol(const std::string &name)
+{
+  return demangleSymbol(name.c_str());
+}
+
+inline std::string demangleSymbol(const char *name)
+{
+#if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
+  int status;
+  char *res = abi::__cxa_demangle(name, 0, 0, &status);
+  if (res)
+  {
+    const std::string demangled_name(res);
+    std::free(res);
+    return demangled_name;
+  }
+  // Demangling failed, fallback to mangled name
+  return std::string(name);
+#else
+  return std::string(name);
+#endif
+}
+
+template <typename T>
+inline std::string demangleSymbol()
+{
+  return demangleSymbol(typeid(T).name());
+}
+
+template <class T>
+inline std::string demangledTypeName()
+{
+  return demangleSymbol(typeid(T).name());
 }
 
 //typedef boost::fast_pool_allocator< int > MyAllocator;
@@ -81,16 +115,35 @@ struct IActionResult
 // ----TAGS FOR TRANSITIONS -----
 
 // all transitions are by default labeled with this structname
-struct default_object_tag {};
+struct default_object_tag
+{
+};
 
 // you can also use these other labels in order to have
-// a better code readability and also to improve the visual representation 
+// a better code readability and also to improve the visual representation
 // in the viewer
-struct ABORT{};
-struct SUCCESS{};
-struct PREEMPT{};
-struct CONTINUELOOP{};
-struct ENDLOOP{};
+struct DEFAULT
+{
+};
+
+struct ABORT
+{
+};
+struct SUCCESS
+{
+};
+struct PREEMPT
+{
+};
+struct REJECT
+{
+};
+struct CONTINUELOOP
+{
+};
+struct ENDLOOP
+{
+};
 
 //-------------------------------------------------------------------------
 template <typename T>
@@ -148,20 +201,130 @@ public:
 
 template <typename T>
 typename std::enable_if<HasAutomaticTransitionTag<T>::value, void>::type
-automaticTransitionTag(std::string &transition_tag)
+automaticTransitionTag(std::string &transition_name)
 {
-  transition_tag = T::getDefaultTransitionTag();
+  transition_name = T::getDefaultTransitionTag();
 }
 
 template <typename T>
 typename std::enable_if<!HasAutomaticTransitionTag<T>::value, void>::type
-automaticTransitionTag(std::string &transition_tag)
+automaticTransitionTag(std::string &transition_name)
 {
-  transition_tag = "";
+  transition_name = "";
 }
 
+//-------------------------------------------------
+template <typename T>
+class HasAutomaticTransitionType
+{
+private:
+  typedef char YesType[1];
+  typedef char NoType[2];
+
+  template <typename C>
+  static YesType &test(decltype(&C::getDefaultTransitionType));
+  template <typename C>
+  static NoType &test(...);
+
+public:
+  enum
+  {
+    value = sizeof(test<T>(0)) == sizeof(YesType)
+  };
+};
+
+template <typename T>
+typename std::enable_if<HasAutomaticTransitionType<T>::value, void>::type
+automaticTransitionType(std::string &transition_type)
+{
+  transition_type = T::getDefaultTransitionType();
+}
+
+template <typename T>
+typename std::enable_if<!HasAutomaticTransitionType<T>::value, void>::type
+automaticTransitionType(std::string &transition_type)
+{
+  transition_type = demangledTypeName<DEFAULT>();
+}
+//--------------------------------
+template <typename ActionFeedback>
+struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback>>
+{
+  smacc::ISmaccActionClient *client;
+  ActionFeedback feedbackMessage;
+  //boost::any feedbackMessage;
+};
+
+// demangles the type name to be used as a node handle path
+std::string cleanShortTypeName(const std::type_info &tinfo);
+
+enum class SMRunMode
+{
+  DEBUG,
+  RELEASE
+};
+
+template <typename StateMachineType>
+void run();
+} // namespace smacc
+
+#include <boost/mpl/for_each.hpp>
+
+namespace smacc
+{
+// there are many ways to implement this, for instance adding static methods to the types
+typedef mpl::list<SUCCESS, ABORT, PREEMPT, CONTINUELOOP, ENDLOOP> DEFAULT_TRANSITION_TYPES;
 
 
+//--------------------------------
+
+template <typename T>
+struct type_
+{
+    using type = T;
+};
+
+//---------------------------------------------
+template <typename T>
+struct add_type_wrapper
+{
+    using type = type_<T>;
+};
+
+
+template <typename TTransition>
+struct CheckType
+{
+  CheckType(std::string* transitionTypeName)
+  {
+    this->transitionTypeName = transitionTypeName;
+
+  }
+
+  std::string* transitionTypeName;
+  template <typename T>
+  void operator()(T)
+  {
+    //ROS_INFO_STREAM("comparing.."<< demangleSymbol<T>() <<" vs " << demangleSymbol<TTransition>() );
+    if (std::is_base_of<T, TTransition>::value || std::is_same<T, TTransition>::value)
+    {
+      *(this->transitionTypeName) = demangledTypeName<T>();
+      //ROS_INFO("YESS!");
+    }
+  }
+};
+
+template <typename TTransition>
+static std::string getTransitionType()
+{
+  std::string output;
+  CheckType<TTransition> op(&output);
+  using boost::mpl::_1;
+  using wrappedList = typename boost::mpl::transform<DEFAULT_TRANSITION_TYPES, _1>::type;
+
+  mpl::for_each<wrappedList>(op);
+  return output;
+};
 
 
 //-------------------------------------------------------------------------
@@ -188,8 +351,14 @@ struct EvActionSucceded : sc::event<EvActionResult<TSource>>, IActionResult
 
   static std::string getDefaultTransitionTag()
   {
-    return "SUCCESS";
+    return demangledTypeName<SUCCESS>();
   }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<SUCCESS>();
+  }
+  
 };
 
 template <typename TSource>
@@ -207,7 +376,12 @@ struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
 
   static std::string getDefaultTransitionTag()
   {
-    return "ABORT";
+    return demangledTypeName<ABORT>();
+  }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<ABORT>();
   }
 };
 
@@ -226,7 +400,12 @@ struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
 
   static std::string getDefaultTransitionTag()
   {
-    return "PREEMPT";
+    return demangledTypeName<PREEMPT>();
+  }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<PREEMPT>();
   }
 };
 
@@ -245,7 +424,12 @@ struct EvActionRejected : sc::event<EvActionResult<TSource>>, IActionResult
 
   static std::string getDefaultTransitionTag()
   {
-    return "REJECT";
+    return demangledTypeName<REJECT>();
+  }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<REJECT>();
   }
 };
 
@@ -255,65 +439,19 @@ struct EvStateFinish : sc::event<EvStateFinish<StateType>>
   StateType *state;
 };
 
-template<typename TSource>
-struct EvLoopContinue: sc::event<EvLoopContinue<TSource>>{};
-
-template<typename TSource>
-struct EvLoopEnd: sc::event<EvLoopEnd<TSource>>{};
-
-//--------------------------------
-template <typename ActionFeedback>
-struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback>>
+template <typename TSource>
+struct EvLoopContinue : sc::event<EvLoopContinue<TSource>>
 {
-  smacc::ISmaccActionClient *client;
-  ActionFeedback feedbackMessage;
-  //boost::any feedbackMessage;
 };
 
-// demangles the type name to be used as a node handle path
-std::string cleanShortTypeName(const std::type_info &tinfo);
-
-enum class SMRunMode
+template <typename TSource>
+struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
 {
-  DEBUG,
-  RELEASE
 };
 
-template <typename StateMachineType>
-void run();
+
 } // namespace smacc
 
-inline std::string demangleSymbol(const std::string &name)
-{
-  return demangleSymbol(name.c_str());
-}
 
-inline std::string demangleSymbol(const char *name)
-{
-#if (__GNUC__ && __cplusplus && __GNUC__ >= 3)
-  int status;
-  char *res = abi::__cxa_demangle(name, 0, 0, &status);
-  if (res)
-  {
-    const std::string demangled_name(res);
-    std::free(res);
-    return demangled_name;
-  }
-  // Demangling failed, fallback to mangled name
-  return std::string(name);
-#else
-  return std::string(name);
-#endif
-}
 
-template <typename T>
-inline std::string demangleSymbol()
-{
-  return demangleSymbol(typeid(T).name());
-}
-
-template <class T>
-inline std::string demangledTypeName()
-{
-  return demangleSymbol(typeid(T).name());
-}
+#include <smacc/transition.h>

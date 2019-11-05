@@ -1,23 +1,19 @@
-using namespace smacc;
-
-
-// ---- TAGS ----
-struct ON_KEYBOARD{};
-struct ON_SENSORS_AVAILABLE{};
-struct Unit1;
-//----------------
-
 struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
-{
+{ 
+   // transition names
+   // ---- TAGS ----
+   struct ON_KEYBOARD:PREEMPT{};
+   struct ON_KEYBOARD2:ABORT{};
+   struct ON_SENSORS_AVAILABLE:SUCCESS{};
+   struct Unit1;
+   //----------------
+
    using SmaccState::SmaccState;
 
    typedef mpl::list<
 
        // Expected event
-       transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
-
-       // Keyboard event
-       transition<EvKeyPressN<SbKeyboard>, StNavigateToWaypointsX, ON_KEYBOARD> 
+       transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>
 
        //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
        >

@@ -43,19 +43,22 @@ void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
             transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();;
             transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
 
-            transitionMsg.transition_tag = transition.transitionTag;
+            transitionMsg.transition_name = transition.transitionTag;
+            transitionMsg.transition_type = transition.transitionType;
             transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
             transitionMsg.event.event_object_tag = transition.eventInfo->getObjectTagName();
             transitionMsg.event.label = transition.eventInfo->label;
+            
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;
+            ss << "      - Transition Name: " << transitionMsg.transition_name << std::endl;
+            ss << "      - Transition Type: " << transitionMsg.transition_type << std::endl;
             ss << "      - Event Type :" << transitionMsg.event.event_type << std::endl;
             ss << "      - Event Source: " << transitionMsg.event.event_source << std::endl;
             ss << "      - Event ObjectTag: " << transitionMsg.event.event_object_tag << std::endl;
             ss << "      - Event Label: " << transitionMsg.event.label << std::endl;
             ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
-            ss << "      - Transition Tag: " << transitionMsg.transition_tag << std::endl;
             ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;
 
             stateMsg.transitions.push_back(transitionMsg);
