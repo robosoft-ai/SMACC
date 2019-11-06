@@ -27,66 +27,53 @@ class Orthogonal;
 class ISmaccState;
 
 // This class describes the concept of Smacc State Machine in an abastract way.
-// The SmaccStateMachineBase inherits from this state machine and from 
+// The SmaccStateMachineBase inherits from this state machine and from
 // statechart::StateMachine<> (via multiple inheritance)
 class ISmaccStateMachine
 {
-    public:
-    // The node handle for this state
-    ros::NodeHandle nh;
-    
-    ros::Timer timer_;
-    ros::Publisher stateMachineStructurePub_;
-    ros::Publisher stateMachinePub_;
-    ros::Publisher stateMachineStatePub_;
-    
-    ISmaccState* currentState_;
-
-    ISmaccStateMachine( SignalDetector* signalDetector);
+public:
+        ISmaccStateMachine(SignalDetector *signalDetector);
 
     virtual ~ISmaccStateMachine();
 
     virtual void Reset()
     {
-
     }
 
     virtual void Stop()
     {
-
     }
 
     virtual void EStop()
     {
-
     }
 
-    void notifyOnStateEntry(ISmaccState* state);
+    void notifyOnStateEntry(ISmaccState *state);
 
-    void notifyOnStateExit(ISmaccState* state);
+    void notifyOnStateExit(ISmaccState *state);
 
     template <typename TOrthogonal>
-    bool getOrthogonal(std::shared_ptr<TOrthogonal>& storage);
+    bool getOrthogonal(std::shared_ptr<TOrthogonal> &storage);
 
-    const std::map<std::string, std::shared_ptr<smacc::Orthogonal>>& getOrthogonals() const
+    const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const
     {
         return this->orthogonals_;
     }
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType*& storage,  bool verbose);
+    void requiresComponent(SmaccComponentType *&storage, bool verbose);
 
     template <typename EventType>
-    void postEvent( EventType* ev);
+    void postEvent(EventType *ev);
 
     template <typename T>
-    bool getGlobalSMData(std::string name, T& ret)
+    bool getGlobalSMData(std::string name, T &ret)
     {
         std::lock_guard<std::mutex> lock(m_mutex_);
         //ROS_WARN("get SM Data lock acquire");
         bool success = false;
 
-        if(!globalData_.count(name))
+        if (!globalData_.count(name))
         {
             //ROS_WARN("get SM Data - data do not exist");
             success = false;
@@ -99,10 +86,10 @@ class ISmaccStateMachine
                 boost::any v = globalData_[name];
                 //ROS_WARN("get SM DAta -data exist. any cast");
                 ret = boost::any_cast<T>(v);
-                success = true;    
+                success = true;
                 //ROS_WARN("get SM DAta -data exist. success");
             }
-            catch(boost::bad_any_cast& ex)
+            catch (boost::bad_any_cast &ex)
             {
                 ROS_ERROR("bad any cast: %s", ex.what());
                 success = false;
@@ -122,64 +109,91 @@ class ISmaccStateMachine
     }
 
     /// Used by the ISMaccActionClients when a new send goal is launched
-    void registerActionClientRequest(ISmaccActionClient* component);
+    void registerActionClientRequest(ISmaccActionClient *component);
 
-    template <typename StateField, typename BehaviorType> 
+    template <typename StateField, typename BehaviorType>
     void mapBehavior()
     {
-        std::string stateFieldName =demangleSymbol(typeid(StateField).name());
-        std::string behaviorType =demangleSymbol(typeid(BehaviorType).name());
+        std::string stateFieldName = demangleSymbol(typeid(StateField).name());
+        std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
         ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
-        SmaccSubStateBehavior* globalreference;
-        if(!this->getGlobalSMData(stateFieldName,globalreference))
+        SmaccSubStateBehavior *globalreference;
+        if (!this->getGlobalSMData(stateFieldName, globalreference))
         {
             // Using the requires component approach, we force a unique existence
             // of this component
-            BehaviorType* behavior;
+            BehaviorType *behavior;
             this->requiresComponent(behavior);
-            globalreference =  dynamic_cast<SmaccSubStateBehavior*>(behavior);
+            globalreference = dynamic_cast<SmaccSubStateBehavior *>(behavior);
 
             this->setGlobalSMData(stateFieldName, globalreference);
         }
     }
 
     template <typename StateType>
-    void updateCurrentState(bool active, StateType* test);
+    void updateCurrentState(bool active, StateType *test);
 
     std::string getStateMachineName()
     {
         return demangleSymbol(typeid(*this).name());
     }
-    
-    protected:
+
+protected:
     template <typename TOrthogonal>
     void createOrthogonal();
 
+    // Delegates to ROS param access with the current NodeHandle
+    template <typename T>
+    bool getParam(std::string param_name, T &param_storage)
+    {
+        return nh_.getParam(param_name, param_storage);
+    }
+
+    // Delegates to ROS param access with the current NodeHandle
+    template <typename T>
+    void setParam(std::string param_name, T param_val)
+    {
+        return nh_.setParam(param_name, param_val);
+    }
+
+    // Delegates to ROS param access with the current NodeHandle
+    template <typename T>
+    bool param(std::string param_name, T &param_val, const T &default_val) const
+    {
+        return nh_.param(param_name, param_val, default_val);
+    }
+
+    // The node handle for this state
+    ros::NodeHandle nh_;
+    ros::NodeHandle private_nh_;
+
+    ros::Timer timer_;
+    ros::Publisher stateMachinePub_;
+    ros::Publisher stateMachineStatusPub_;
+
+    ISmaccState *currentState_;
+
 private:
-
     std::mutex m_mutex_;
-    
-    std::map<std::string, smacc::ISmaccComponent*> plugins_;
 
+    // components
+    std::map<std::string, smacc::ISmaccComponent *> plugins_;
+
+    // shared variables
     std::map<std::string, boost::any> globalData_;
 
+    // orthogonals
     std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
-
-    ros::Publisher statusPub_;
-    
-    ros::NodeHandle nh_;
-
-    ros::NodeHandle private_nh_;
 
     smacc::SMRunMode runMode_;
 
     // Event to notify to the signaldetection thread that a request has been created...
-    SignalDetector* signalDetector_;
-    
+    SignalDetector *signalDetector_;
+
 public:
     std::shared_ptr<SmaccStateMachineInfo> info_;
 };
-}
+} // namespace smacc
 
 #include <smacc/impl/smacc_state_impl.h>
 #include <smacc/impl/smacc_state_machine_base_impl.h>

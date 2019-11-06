@@ -13,9 +13,8 @@ from smacc_msgs.msg import SmaccContainerStatus,SmaccContainerInitialStatusCmd,S
 __all__ = ['IntrospectionClient']
 
 # Topic names
-STATUS_TOPIC = '/smacc/container_status'
+STATUS_TOPIC = '/smacc/status'
 INIT_TOPIC = '/smacc/container_init'
-STRUCTURE_TOPIC = '/smacc/container_structure'
 
 
 from smacc_viewer.smacc_user_data import UserData
@@ -25,9 +24,12 @@ class IntrospectionClient():
         """Get the base names that are broadcasting smacc states."""
 
         # Get the currently broadcasted smacc introspection topics
-        topics = rostopic.find_by_type('smacc_msgs/SmaccContainerStatus')
+        topics = rostopic.find_by_type('smacc_msgs/SmaccStatus')
+        rootservernames= [t[:t.rfind(STATUS_TOPIC)] for t in topics]
+        
+        return rootservernames
 
-        return [t[:t.rfind(STATUS_TOPIC)] for t in topics]
+        #return [t[:t.rfind(STATUS_TOPIC)] for t in topics]
 
     def set_initial_state(self,
             server,

@@ -480,7 +480,7 @@ Visualization Manager:
       CurrentState: ""
       Enabled: true
       Name: SmaccRvizDisplay
-      Topic: /sm_dance_bot/status
+      Topic: /SmDanceBot/status
       Value: true
   Enabled: true
   Global Options:

@@ -147,7 +147,7 @@ void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState
             }
 
             status_msg.header.stamp = ros::Time::now();
-            this->statusPub_.publish(status_msg);
+            this->stateMachineStatusPub_.publish(status_msg);
         }
     }
     else

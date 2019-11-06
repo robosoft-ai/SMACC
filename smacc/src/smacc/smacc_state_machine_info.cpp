@@ -4,7 +4,7 @@
 
 namespace smacc
 {
-void SmaccStateMachineInfo::printAllStates(ISmaccStateMachine *sm)
+void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
 {
     ROS_INFO("----------- PRINT ALL STATES -------------------");
     stateMsgs.clear();

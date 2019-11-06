@@ -285,19 +285,23 @@ public:
     SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
   }
 
-  void throwLoopEventFromCondition(bool (MostDerived::*conditionFn)() )
+  void throwLoopEventFromCondition(bool (MostDerived::*conditionFn)())
   {
-    auto condition = boost::bind(conditionFn, dynamic_cast<MostDerived*>(this));
-    if (condition()) // 1 == two times
-      {
-        auto evloopend = new EvLoopEnd<MostDerived>();
-        this->postEvent(evloopend);
-      }
-      else
-      {
-        auto evloopcontinue = new EvLoopEnd<MostDerived>();
-        this->postEvent(evloopcontinue);
-      }
+    auto *thisobject = static_cast<MostDerived *>(this);
+    auto condition = boost::bind(conditionFn, thisobject);
+    bool conditionResult = condition();
+    //ROS_INFO("LOOP EVENT CONDITION: %d", conditionResult);
+    if (conditionResult)
+    {
+      auto evloopcontinue = new EvLoopContinue<MostDerived>();
+      this->postEvent(evloopcontinue);
+    }
+    else
+    {
+      auto evloopend = new EvLoopEnd<MostDerived>();
+      this->postEvent(evloopend);
+    }
+    ROS_INFO("POST THROW CONDITION");
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -334,10 +338,10 @@ public:
   {
     const inner_context_ptr_type pInnerContext(
 
-      new MostDerived(
-          SmaccState<MostDerived, Context, InnerInitial , historyMode>::
+        new MostDerived(
+            SmaccState<MostDerived, Context, InnerInitial, historyMode>::
 
-          my_context(pContext)));
+                my_context(pContext)));
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
   }

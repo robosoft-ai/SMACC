@@ -55,7 +55,7 @@ public:
     {
     }
 
-    void printAllStates(ISmaccStateMachine *sm);
+    void assembleSMStructureMessage(ISmaccStateMachine *sm);
 };
 
 //---------------------------------------------
