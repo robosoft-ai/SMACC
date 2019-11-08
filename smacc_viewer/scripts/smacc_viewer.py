@@ -658,6 +658,8 @@ class SmaccViewerFrame(wx.Frame):
         self.transition_node_font_size = str(20)
 
         self.first_message_file_flag=False
+        self.smacc_object_graphic_item_mapping = {}
+        self.depth = {}
 
     def OnQuit(self,event):
         """Quit Event: kill threads and wait for join."""
@@ -860,10 +862,82 @@ class SmaccViewerFrame(wx.Frame):
         #self._structure_changed = True
 
     def _status_msg_update(self, msg):
-        rospy.loginfo("STATUS MESSAGE RECEIVED FROM VIEWER: "+ str(msg))
-        self.state_machine_status_msg = copy.deepcopy(msg)
-        self.state_machine_msg_first=True
-        self.update_graph()
+        
+        #rospy.loginfo("STATUS MESSAGE RECEIVED FROM VIEWER: "+ str(msg))
+        
+        oldmsg = self.state_machine_status_msg 
+        self.state_machine_status_msg = msg
+
+        #self.state_machine_msg_first=True
+        t0 = time.time()
+        if oldmsg is not None:
+            for state in oldmsg.current_states:
+                if state in self.smacc_object_graphic_item_mapping:
+                    itemname = self.smacc_object_graphic_item_mapping[state]
+                    if itemname in self.widget.graph.subgraph_shapes:
+                        nodeitems = self.widget.graph.subgraph_shapes[itemname]
+                        for node in nodeitems:
+                            if "Bezier" in str(node):
+                                #fillcolor
+                                node.pen.color = (0.0,0.0, 0.0, 1.0)
+                                node.pen.fillcolor = (1.0,1.0, 1.0, 1.0)
+                                node.pen.linewidth= 1
+        
+        for state in msg.current_states:
+            if state in self.smacc_object_graphic_item_mapping:
+                itemname = self.smacc_object_graphic_item_mapping[state]
+                if itemname in self.widget.graph.subgraph_shapes:
+                    nodeitems = self.widget.graph.subgraph_shapes[itemname]
+                    for node in nodeitems:
+                        if "Bezier" in str(node):
+                           #fillcolor
+                           node.pen.color = (0.0,0.0, 0.0, 1.0)
+                           if state in self.depth and self.depth[state] == 0:
+                               node.pen.fillcolor = (255.0/255.0,250.0/255.0, 77.0/255.0, 1.0)
+                           else:
+                               node.pen.fillcolor = (255.0/255.0,252.0/255.0, 164.0/255.0, 1.0)
+
+                           node.pen.linewidth= 3
+
+                           #bordercolor
+                           #node[0].pen.color = (0.0,0.0, 0.0, 1.0)
+                           #node[0].pen.fillcolor = (0.0,0.0, 0.0, 1.0)
+                           #node[0].pen.linewidth= 3
+
+        t1 = time.time()
+        total = t1-t0
+        self._needs_zoom = True
+        self._statemachine_changed = True
+
+            #         if parent_path in self._containers:
+    #             needs_redraw = True
+
+    #     # Update the graph if necessary
+    #     if needs_redraw:
+    #         with self._update_cond:
+    #             #self._structure_changed = True
+    #             self._statemachine_changed
+    #             self._needs_zoom = True # TODO: Make it so you can disable this
+    #             self._update_cond.notify_all()
+  
+
+        """
+        for stkey in self.widget.graph.subgraph_shapes.keys():
+            node = self.widget.graph.subgraph_shapes[stkey]
+            if "cluster_0" in stkey:
+                if node[0].pen.color[1]==1.0:
+                    node[0].pen.color = (1.0,0.0, 0.0, 1.0)
+                    node[0].pen.fillcolor = (1.0,1.0, 0.0, 1.0)
+                    node[1].pen.color = (1.0,1.0, 0.0, 1.0)
+                    node[1].pen.fillcolor = (1.0,1.0, 0.0, 1.0)
+                else:
+                    node[0].pen.color = (0.0,1.0, 0.0, 1.0)
+                    node[0].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+                    node[1].pen.color = (0.0,1.0, 0.0, 1.0)
+                    node[1].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+        """
+
+        #self.update_graph()
 
     # def _status_msg_update(self, msg):
     #     """Process status messages."""
@@ -923,7 +997,8 @@ class SmaccViewerFrame(wx.Frame):
 
                 # Check if we need to re-generate the dotcode (if the structure changed)
                 # TODO: needs_zoom is a misnomer
-                if ((self.state_machine_msg_first or self._needs_zoom) and self.state_machine_msg is not None and self.state_machine_status_msg is not None ) :
+                if (self.state_machine_msg_first or self._needs_zoom) and self.state_machine_msg is not None : #and self.state_machine_status_msg is not None  :
+
                     self.state_machine_msg_first = False
                     rospy.loginfo("STARTING GRAPH PLOTTING. Current state: "+ str(self.state_machine_status_msg))
                     dotstr = "digraph {\n\t"
@@ -976,7 +1051,9 @@ class SmaccViewerFrame(wx.Frame):
                     self.dotstr = dotstr
                     # Set the dotcode to the new dotcode, reset the flags
                     self.set_dotcode(dotstr,zoom=False)
+                    #self.widget.set_all_substate_behaviors_green()
                     self._structure_changed = False
+
 
                 # Update the styles for the graph if there are any updates
                 """
@@ -1067,14 +1144,20 @@ class SmaccViewerFrame(wx.Frame):
         logic_units_full_names = list()
         #childrenstate = [stx for stx in allstates if stx.name in st.children_states]
         childrenstate = [[stx for stx in allstates if stx.name == childname][0] for childname in st.children_states]
-
+        
+        
         selected = False
+        """
         if self.state_machine_status_msg is not None:
             selected = st.name in self.state_machine_status_msg.current_states
             if selected:
                 rospy.loginfo("SELECTED STATE: " + str(st.name))
+        """
                 
         stateid = "cluster_%d"%(st.index)
+        self.smacc_object_graphic_item_mapping[st.name] = stateid
+        self.depth[st.name] = depth
+
         dotstr+= "\nsubgraph "+stateid+"\n"
         dotstr+= "{\n"
 
@@ -1099,8 +1182,6 @@ class SmaccViewerFrame(wx.Frame):
         else:
             dotstr+="\tpenwidth=1;\n"
             dotstr+="\tfillcolor=white;\n"        
-
-
 
         draw_helpers = False
         
@@ -1155,7 +1236,6 @@ class SmaccViewerFrame(wx.Frame):
                 #dotstr+= "\t\t\tpackmode=\"node\";\n"  
                 dotstr+= "\t\t\trank=\"same\";\n"  
 
-
                 orthogonal_count+=1
 
                 orthogonal_label = (orthogonal.name.split("::")[-1])
@@ -1166,7 +1246,6 @@ class SmaccViewerFrame(wx.Frame):
                 previousNode = None
                 localtransitions = list()
                 
-
                 for i, client in enumerate(orthogonal.client_names):
                     labelstr = client.split("::")[-1]
                     idclientstr = labelstr+ "_" + str(st.index)
@@ -1704,14 +1783,14 @@ class SmaccViewerFrame(wx.Frame):
                         server_name+ STATUS_TOPIC,
                         SmaccStatus,
                         callback = self._status_msg_update,
-                        queue_size=50)
+                        queue_size=1)
 
                 # "/"+ stateMachineName + "/smacc/state_machine_description"
                 self._state_machine_subs[server_name] = rospy.Subscriber(
                         server_name+ STATE_MACHINE_DESC_TOPIC,
                         SmaccStateMachine,
                         callback = self._state_machine_update,
-                        queue_size=50)
+                        queue_size=1)
 
             # This doesn't need to happen very often
             rospy.sleep(1.0)

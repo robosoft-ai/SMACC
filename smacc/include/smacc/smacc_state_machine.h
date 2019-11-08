@@ -17,6 +17,8 @@
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/list.hpp>
 #include <boost/utility/enable_if.hpp>
+#include <smacc_msgs/SmaccStatus.h>
+#include <smacc_msgs/SmaccStateMachine.h>
 
 namespace smacc
 {
@@ -32,7 +34,7 @@ class ISmaccState;
 class ISmaccStateMachine
 {
 public:
-        ISmaccStateMachine(SignalDetector *signalDetector);
+    ISmaccStateMachine(SignalDetector *signalDetector);
 
     virtual ~ISmaccStateMachine();
 
@@ -133,12 +135,18 @@ public:
     template <typename StateType>
     void updateCurrentState(bool active, StateType *test);
 
+    void publishCurrentStateMessage();
+
     std::string getStateMachineName()
     {
         return demangleSymbol(typeid(*this).name());
     }
 
+    void state_machine_visualization(const ros::TimerEvent &);
+
 protected:
+    void initializeRosComponents();
+    
     template <typename TOrthogonal>
     void createOrthogonal();
 
@@ -172,6 +180,9 @@ protected:
     ros::Publisher stateMachineStatusPub_;
 
     ISmaccState *currentState_;
+    std::shared_ptr<smacc::SmaccStateInfo> currentStateInfo_;
+
+    smacc_msgs::SmaccStatus status_msg_;
 
 private:
     std::mutex m_mutex_;

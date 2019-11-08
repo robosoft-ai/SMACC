@@ -207,10 +207,39 @@ class WxDotWindow(wx.Panel):
 
     ctx.scale(self.zoom_ratio, self.zoom_ratio)
     ctx.translate(-self.x, -self.y)
+    
+    #substatebehaviors = [self.nodes_by_name[n] for n in self.nodes_by_name.keys() if "Sb" in n]
+    #self.graph.draw(ctx, highlight_items=substatebehaviors)#self.highlight)
     self.graph.draw(ctx, highlight_items=self.highlight)
+
+
+    
+    """
+    substatebehaviorskeys = [n for n in self.nodes_by_name.keys() if "Sb" in n]
+    for sb in substatebehaviorskeys:
+      node = self.nodes_by_name[sb]
+      node.shapes[0].pen.color = (0.0,1.0, 0.0, 1.0)
+      node.shapes[0].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+      node.shapes[1].pen.color = (0.0,1.0, 0.0, 1.0)
+      node.shapes[1].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+      print (sb)
+      node.draw(ctx)
+    """
+
+    """
+    for stkey in self.graph.subgraph_shapes.keys():
+      node = self.graph.subgraph_shapes[stkey]
+      if "cluster_0" in stkey:
+        node[0].pen.color = (0.0,1.0, 0.0, 1.0)
+        node[0].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+        node[1].pen.color = (0.0,1.0, 0.0, 1.0)
+        node[1].pen.fillcolor = (0.0,1.0, 0.0, 1.0)
+        
+    """
     ctx.restore()
 
     self.drag_action.draw(ctx)
+
 
   def OnScroll(self, event):
     """Zoom the view."""
@@ -490,7 +519,22 @@ class WxDotWindow(wx.Panel):
     parser = XDotParser(xdotcode)
     self.graph = parser.parse()
     self.highlight = None
+    self.nodes_by_name=parser.node_by_name
     #self.zoom_image(self.zoom_ratio, center=True)
+
+  def set_all_substate_behaviors_green(self):
+    dc = wx.PaintDC(self)
+    #print dc
+    ctx = wxcairo.ContextFromDC(dc)
+    ctx = pangocairo.CairoContext(ctx)
+
+    substatebehaviors = [n for n in self.nodes_by_name.keys() if "Sb" in n]
+    for sb in substatebehaviors:
+      node = self.nodes_by_name[sb]
+      node.shapes[0].color = (1.0,0.0, 0.0, 1.0)
+      node.shapes[1].color = (1.0,0.0, 0.0, 1.0)
+      print (sb)
+      node.draw(ctx)
 
   def reload(self):
     if self.openfilename is not None:

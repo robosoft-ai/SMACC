@@ -103,21 +103,21 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool ve
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType *ev)
-{    
+{
     // when a postting event is requested by any component, client, or substate behavior
     // we reach this place. Now, we propagate the events to all the state logic units to generate
     // some more events
-    if(currentState_!=nullptr)
+    if (currentState_ != nullptr)
     {
         ROS_INFO_STREAM("EVENT: " << demangleSymbol<EventType>());
-        for(auto& lu : currentState_->logicUnits_)
+        for (auto &lu : currentState_->logicUnits_)
         {
             lu->notifyEvent(ev);
         }
     }
     else
     {
-        ROS_INFO_THROTTLE(0.5,"debug post event, to lu, but currentState was nullptr");
+        ROS_INFO_THROTTLE(0.5, "debug post event, to lu, but currentState was nullptr");
     }
 
     this->signalDetector_->postEvent(ev);
@@ -126,34 +126,9 @@ void ISmaccStateMachine::postEvent(EventType *ev)
 template <typename StateType>
 void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState)
 {
-    currentState_= currentState;
+    currentState_ = currentState;
 
-    auto stateInfo = info_->getState<StateType>();
-
-    if (stateInfo != nullptr)
-    {
-        ROS_WARN_STREAM("[StateMachine] setting state active " << active << ": " << stateInfo->getFullPath());
-        stateInfo->active_ = active;
-
-        if (this->runMode_ == SMRunMode::DEBUG)
-        {
-            std::list<std::shared_ptr<smacc::SmaccStateInfo>> ancestorList;
-            stateInfo->getAncestors(ancestorList);
-
-            smacc_msgs::SmaccStatus status_msg;
-            for (auto &ancestor : ancestorList)
-            {
-                status_msg.current_states.push_back(ancestor->toShortName());
-            }
-
-            status_msg.header.stamp = ros::Time::now();
-            this->stateMachineStatusPub_.publish(status_msg);
-        }
-    }
-    else
-    {
-        ROS_ERROR_STREAM("[StateMachine] updated state not found: " << demangleSymbol(typeid(StateType).name()).c_str());
-    }
+    currentStateInfo_ = info_->getState<StateType>();
+    this->publishCurrentStateMessage();
 }
-
 } // namespace smacc

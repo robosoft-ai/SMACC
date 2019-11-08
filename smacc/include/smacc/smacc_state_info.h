@@ -80,7 +80,6 @@ public:
     static std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> staticBehaviorInfo;
     static std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> logicUnitsInfo;
 
-    bool active_;
     std::string fullStateName;
     std::string demangledStateName;
 

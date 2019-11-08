@@ -34,7 +34,7 @@ static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TLuEventSo
 template <class MostDerived,
           class Context,
           class InnerInitial = mpl::list<>,
-          sc::history_mode historyMode = sc::has_no_history>
+          sc::history_mode historyMode = sc::has_deep_history>
 class SmaccState : public sc::simple_state<
                        MostDerived, Context, InnerInitial, historyMode>,
                    public ISmaccState
