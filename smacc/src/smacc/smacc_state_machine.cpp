@@ -75,4 +75,54 @@ void ISmaccStateMachine::notifyOnStateExit(ISmaccState *state)
         orthogonal->onExit();
     }
 }
+
+void ISmaccStateMachine::publishCurrentStateMessage()
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+
+    if (currentStateInfo_ != nullptr)
+    {
+        ROS_WARN_STREAM("[StateMachine] setting state active "
+                        << ": " << currentStateInfo_->getFullPath());
+
+        status_msg_.current_states.clear();
+        std::list<std::shared_ptr<smacc::SmaccStateInfo>> ancestorList;
+        currentStateInfo_->getAncestors(ancestorList);
+
+        for (auto &ancestor : ancestorList)
+        {
+            status_msg_.current_states.push_back(ancestor->toShortName());
+        }
+
+        if (this->runMode_ == SMRunMode::DEBUG)
+        {
+
+            status_msg_.header.stamp = ros::Time::now();
+            this->stateMachineStatusPub_.publish(status_msg_);
+        }
+    }
+    else
+    {
+        ROS_ERROR_STREAM("[StateMachine] updated state not found: " << currentStateInfo_->fullStateName);
+    }
+}
+
+void ISmaccStateMachine::initializeRosComponents()
+{
+    timer_ = nh_.createTimer(ros::Duration(0.5), &ISmaccStateMachine::state_machine_visualization, this);
+}
+
+void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+
+    smacc_msgs::SmaccStateMachine state_machine_msg;
+
+    state_machine_msg.states = info_->stateMsgs;
+    this->stateMachinePub_.publish(state_machine_msg);
+
+    status_msg_.header.stamp = ros::Time::now();
+    this->stateMachineStatusPub_.publish(status_msg_);
+}
+
 } // namespace smacc
