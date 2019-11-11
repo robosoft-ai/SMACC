@@ -1,4 +1,4 @@
-struct StRotateDegrees2 : smacc::SmaccState<StRotateDegrees2, SmDanceBot>
+struct StRotateDegrees2 : smacc::SmaccState<StRotateDegrees2, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 

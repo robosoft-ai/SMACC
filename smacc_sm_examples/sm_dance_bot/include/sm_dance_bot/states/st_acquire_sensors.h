@@ -1,10 +1,16 @@
-struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
-{ 
+struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
+{
    // transition names
    // ---- TAGS ----
-   struct ON_KEYBOARD:PREEMPT{};
-   struct ON_KEYBOARD2:ABORT{};
-   struct ON_SENSORS_AVAILABLE:SUCCESS{};
+   struct ON_KEYBOARD : PREEMPT
+   {
+   };
+   struct ON_KEYBOARD2 : ABORT
+   {
+   };
+   struct ON_SENSORS_AVAILABLE : SUCCESS
+   {
+   };
    struct Unit1;
    //----------------
 

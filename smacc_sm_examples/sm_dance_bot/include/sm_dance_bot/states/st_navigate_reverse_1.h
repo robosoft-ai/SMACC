@@ -1,4 +1,4 @@
-struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, SmDanceBot>
+struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, MsDanceBotRunMode>
 {
    using SmaccState::SmaccState;
 

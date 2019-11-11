@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 
 #include <smacc/smacc.h>
+#include <boost/statechart/deep_history.hpp>
 
 //STATES
 class StAcquireSensors;
@@ -45,6 +46,9 @@ namespace SS5
 class SsSPattern1;
 }
 
+class MsDanceBotRunMode;
+class MsDanceBotRecoveryMode;
+
 // CLIENTS
 #include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
@@ -67,10 +71,16 @@ using namespace smacc;
 
 // STATE MACHINE
 struct SmDanceBot
-    : public smacc::SmaccStateMachineBase<SmDanceBot, StAcquireSensors>
+    : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
 {
     int counter_1;
     bool rt_ready_flag;
+
+    typedef mpl::bool_< false > shallow_history;
+    typedef mpl::bool_< false > deep_history;
+    typedef mpl::bool_< false > inherited_deep_history;
+
+    typedef smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode> base;
 
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -115,6 +125,16 @@ struct SmDanceBot
 //LOGIC UNITS
 #include <event_aggregator/logic_units/lu_event_all.h>
 
+
+struct EvGlobalError: sc::event<EvGlobalError>
+{
+
+};
+
+//MEGASTATES
+#include <sm_dance_bot/megastates/ms_dance_bot_run_mode.h>
+#include <sm_dance_bot/megastates/ms_dance_bot_recovery_mode.h>
+
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
@@ -138,3 +158,4 @@ struct SmDanceBot
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>
 #include <sm_dance_bot/superstates/ss_s_pattern_1.h>
+

@@ -45,7 +45,7 @@ struct Pose2D
 };
 
 //-------------------------------------------------
-struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanceBot>
+struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
