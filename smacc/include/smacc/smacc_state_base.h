@@ -196,11 +196,7 @@ public:
     ROS_WARN_STREAM("state exit: " << fullname);
   }
 
-  template <typename EventType>
-  void postEvent(const EventType &ev)
-  {
-    getStateMachine().postEvent(ev);
-  }
+
 
   void throwFinishEvent()
   {

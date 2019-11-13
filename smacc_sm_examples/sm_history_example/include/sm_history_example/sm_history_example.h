@@ -41,6 +41,15 @@ struct EvFail : sc::event<EvFail>
 {
 };
 
+template <typename TEv>
+void delayedPostEvent(smacc::ISmaccState* sm, int delayseconds)
+{
+ std::async(std::launch::async, [=]() {
+            std::this_thread::sleep_for(std::chrono::seconds(delayseconds));
+            sm->postEvent(new TEv());
+        });
+}
+
 struct MsRunMode;
 struct St1;
 struct St2;
@@ -74,6 +83,7 @@ struct SmDanceBot : smacc::SmaccStateMachineBase<SmDanceBot, MsRunMode>
     }
 };
 
+
 //---------------------------------------------------------------------------------------------
 struct MsRunMode : SmaccState<MsRunMode, SmDanceBot, St1, sc::has_full_history>
 {
@@ -93,10 +103,7 @@ struct St1 : SmaccState<St1, MsRunMode>
     void onEntry()
     {
         ROS_INFO("St1");
-        std::async(std::launch::async, [=]() {
-            std::this_thread::sleep_for(std::chrono::seconds(3));
-            this->postEvent(new Ev1());
-        });
+        delayedPostEvent<Ev1>(this, 7);
     }
 };
 
@@ -113,15 +120,9 @@ struct St2 : SmaccState<St2, MsRunMode>
         ROS_INFO("St2");
         ROS_INFO_STREAM("counter: " << counter);
         if (counter == 0)
-            std::async(std::launch::async, [=]() {
-                std::this_thread::sleep_for(std::chrono::seconds(3));
-                this->postEvent(new EvFail());
-            });
+            delayedPostEvent<EvFail>(this,3);
         else
-            std::async(std::launch::async, [=]() {
-                std::this_thread::sleep_for(std::chrono::seconds(3));
-                this->postEvent(new Ev2());
-            });
+            delayedPostEvent<Ev2>(this,3);
 
         counter++;
     }
@@ -150,9 +151,7 @@ struct MsRecoveryMode : SmaccState<MsRecoveryMode, SmDanceBot>
     void onEntry()
     {
         ROS_INFO("Recovery");
-        std::async(std::launch::async, [=]() {
-                std::this_thread::sleep_for(std::chrono::seconds(3));
-        this->postEvent(new EvToDeep()); });
+        delayedPostEvent<EvToDeep>(this,3);
     }
 };
 

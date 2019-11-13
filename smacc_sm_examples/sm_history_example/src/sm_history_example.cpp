@@ -7,6 +7,6 @@ int main(int argc, char **argv)
      ros::init(argc, argv, "sm_history_example");
      ros::NodeHandle nh;
 
-     ros::Duration(5).sleep();
+     ros::Duration(8).sleep();
      smacc::run<SmDanceBot>();
 }

@@ -908,6 +908,18 @@ class SmaccViewerFrame(wx.Frame):
         total = t1-t0
         self._needs_zoom = True
         self._statemachine_changed = True
+        #self._update_cond.notify_all()
+
+        self.widget.Refresh()
+
+        # needs_redraw = True
+
+        # if needs_redraw:
+        #      with self._update_cond:
+        #         self._statemachine_changed
+        #         self._needs_zoom = True # TODO: Make it so you can disable this
+        #         self._update_cond.notify_all()
+
 
             #         if parent_path in self._containers:
     #             needs_redraw = True
@@ -1455,7 +1467,7 @@ class SmaccViewerFrame(wx.Frame):
             #childrentransitions.append(transitionstr)
 
             # substate routine exit to substatemachine exit
-            transitionstr="\""+transition_block_exit_id + "\" -> \"" + children_block_end_id +"\"[color=\"#dddddd\"]"
+            transitionstr="\""+children_block_end_id + "\" -> \"" + transition_block_exit_id +"\"[color=\"#dddddd\"]"
             childrentransitions.append(transitionstr)
             dotstr+=substatestr
 
@@ -1463,12 +1475,11 @@ class SmaccViewerFrame(wx.Frame):
 
             #transitionstr="\""+lastchildlasttransitionid + "\" -> \"" + subchildentrynodeid +"\"[color=\"#dddddd\"]"
             #childrentransitions.append(transitionstr)
-
-
-
         
         #SETTING END BLOCK OF THE SUBSTATE MACHINE
         dotstr += children_block_end_id+"[label=\"EXIT\" width=0.1 color=\"#dddddd\" shape=circle %s]\n"%submachine_helper_nodes_stylestr
+        if childlasttransitionid is not None:
+            dotstr+="\""+lastchildlasttransitionid + "\" -> \"" + children_block_end_id +"\"[color=\"#dddddd\"]"
 
         # ORTHOGONALS -> SUBSTATEMACHINE
         transitionstr="\""+exit_orthogonal_node + "\" -> \"" + children_block_id +"\"[color=\"#dddddd\"]"
@@ -1477,9 +1488,6 @@ class SmaccViewerFrame(wx.Frame):
         # SUBSTATEMACHINE -> LOGIC UNITS
         transitionstr="\""+children_block_end_id + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
         dotstr += transitionstr+"\n"            
-
-        #transitionstr="\""+children_block_end_id + "\" -> \"" + logicunit_node_id +"\"[color=\"#dddddd\"]"
-        #dotstr += transitionstr+"\n"            
 
         
         if initialsubchildentrynodeid is not None:
