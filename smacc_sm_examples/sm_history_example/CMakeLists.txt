@@ -126,19 +126,6 @@ target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
  )
 
- add_executable(temperature_sensor_node test/temperature_sensor_node/src/temperature_sensor_node.cpp)
- target_link_libraries(temperature_sensor_node
-   ${catkin_LIBRARIES}
- )
-
- add_executable(tool_action_server_node test/tool_action_server/src/tool_action_server_node.cpp)
-
- target_link_libraries(
-   tool_action_server_node
-   ${catkin_LIBRARIES}
-)
-
-
 #############
 ## Install ##
 #############
@@ -149,8 +136,6 @@ target_link_libraries(${PROJECT_NAME}
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-   test/keyboard_node/src/keyboard_node.py
-   test/service_node_3/src/service_node_3.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -158,14 +143,12 @@ install(PROGRAMS
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 install(TARGETS 
   ${PROJECT_NAME}
-   temperature_sensor_node
-   tool_action_server_node
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
- install(TARGETS ${PROJECT_NAME} temperature_sensor_node
+ install(TARGETS ${PROJECT_NAME}
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

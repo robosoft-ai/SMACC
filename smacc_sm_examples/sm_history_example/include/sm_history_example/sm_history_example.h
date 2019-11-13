@@ -1,9 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////
-// Copyright 2005-2006 Andreas Huber Doenni
-// Distributed under the Boost Software License, Version 1.0. (See accompany-
-// ing file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
-//////////////////////////////////////////////////////////////////////////////
-
 #include <boost/statechart/state_machine.hpp>
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/event.hpp>
@@ -13,7 +7,6 @@
 
 #include <boost/mpl/list.hpp>
 #include <boost/shared_ptr.hpp>
-#include <smacc/smacc.h>
 
 //#include <boost/test/test_tools.hpp>
 
@@ -23,6 +16,11 @@
 #include <future>
 #include <string>
 #include <mutex>
+
+#include <smacc/smacc.h>
+#include <smacc/orthogonal.h>
+#include <smacc_navigation_plugin/move_base_to_goal.h>
+#include <smacc_odom_tracker/odom_tracker.h>
 
 namespace sc = boost::statechart;
 using namespace smacc;
@@ -50,9 +48,25 @@ struct St3;
 
 struct MsRecoveryMode;
 
+class NavigationOrthogonal : public smacc::Orthogonal
+{
+public:
+    virtual void onInitialize() override
+    {
+        auto *client = this->createClient<smacc::SmaccMoveBaseActionClient>();
+        client->name_ = "move_base";
+        client->initialize();
+    }
+};
+
 struct SmDanceBot : smacc::SmaccStateMachineBase<SmDanceBot, MsRunMode>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
+
+    virtual void onInitialize() override
+    {
+        this->createOrthogonal<NavigationOrthogonal>();
+    }
 
     void unconsumed_event(const sc::event_base &)
     {
@@ -104,8 +118,7 @@ struct St2 : SmaccState<St2, MsRunMode>
                 this->postEvent(new EvFail());
             });
         else
-        std::async(std::launch::async, [=]()
-            {
+            std::async(std::launch::async, [=]() {
                 std::this_thread::sleep_for(std::chrono::seconds(3));
                 this->postEvent(new Ev2());
             });

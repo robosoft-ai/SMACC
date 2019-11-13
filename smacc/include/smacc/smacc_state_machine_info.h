@@ -140,43 +140,56 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 //---------------------------------------------
 // process single smacc transition
 
-template <template <typename> typename Ev, typename EvSourceType, typename Dst, typename Tag>
-void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
+// template <template <typename> typename Ev, typename EvSourceType, typename Dst, typename Tag>
+// void processTransition(smacc::transition<Ev<EvSourceType>, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
+// {
+//     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev<EvSourceType>).name()).c_str());
+
+//     std::string transitionTag;
+//     std::string transitionType;
+//     if (typeid(Tag) != typeid(smacc::default_transition_name))
+//     {
+//         transitionTag = demangleSymbol<Tag>();
+//         transitionType = getTransitionType<Tag>();
+//         ROS_ERROR_STREAM("TRANSITION TYPE:" << transitionType);
+//     }
+//     else
+//     {
+//         transitionTag = "";
+//         automaticTransitionTag<Ev<EvSourceType>>(transitionTag);
+//         automaticTransitionType<Ev<EvSourceType>>(transitionType);
+//     }
+
+//     ROS_INFO_STREAM("Transition tag: " << transitionTag);
+
+//     if (!sourceState->stateMachine_->containsState<Dst>())
+//     {
+//         auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
+//         WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
+//         sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
+//     }
+//     else
+//     {
+//         auto siblingnode = sourceState->stateMachine_->getState<Dst>();
+//         sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
+//     }
+// }
+
+template <typename Ev, typename Dst, typename Tag>
+void processTransition(smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev<EvSourceType>).name()).c_str());
-
-    std::string transitionTag;
-    std::string transitionType;
-    if (typeid(Tag) != typeid(smacc::default_transition_name))
-    {
-        transitionTag = demangleSymbol<Tag>();
-        transitionType = getTransitionType<Tag>();
-        ROS_ERROR_STREAM("TRANSITION TYPE:" << transitionType);
-    }
-    else
-    {
-        transitionTag = "";
-        automaticTransitionTag<Ev<EvSourceType>>(transitionTag);
-        automaticTransitionType<Ev<EvSourceType>>(transitionType);
-    }
-
-    ROS_INFO_STREAM("Transition tag: " << transitionTag);
-
-    if (!sourceState->stateMachine_->containsState<Dst>())
-    {
-        auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
-        WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
-        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
-    }
-    else
-    {
-        auto siblingnode = sourceState->stateMachine_->getState<Dst>();
-        sourceState->declareTransition<Ev<EvSourceType>>(siblingnode, transitionTag, transitionType);
-    }
+    smacc::transition<Ev, Dst, Tag> *mock;
+    processTransitionAux(mock, sourceState, true);
 }
 
 template <typename Ev, typename Dst, typename Tag>
-void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
+void processTransition(smacc::transition<Ev, Dst, Tag> *t, std::shared_ptr<SmaccStateInfo> &sourceState)
+{
+    processTransitionAux(t, sourceState, false);
+}
+
+template <typename Ev, typename Dst, typename Tag>
+void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history)
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
     std::string transitionTag;
@@ -199,20 +212,26 @@ void processTransition(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccS
 
     if (!sourceState->stateMachine_->containsState<Dst>())
     {
-        auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
+        auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
+        auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
+
+        //auto siblingnode = sourceState->stateMachine_->createState<Dst>(sourceState->parentState_);
         WalkStatesExecutor<Dst>::walkStates(siblingnode, true);
-        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType);
+        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType, history);
     }
     else
     {
+        //auto realparentState = sourceState->stateMachine_->getState<typename Dst::TContext>();
+        //auto siblingnode = sourceState->stateMachine_->createState<Dst>(realparentState);
+
         auto siblingnode = sourceState->stateMachine_->getState<Dst>();
-        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType);
+        sourceState->declareTransition<Ev>(siblingnode, transitionTag, transitionType, history);
     }
 }
 
 //---------------------------------------------
 template <typename EvType>
-void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType)
+void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history)
 {
     auto evtype = demangledTypeName<EvType>();
 
@@ -227,6 +246,7 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
     transitionInfo.transitionType = transitionType;
+    transitionInfo.historyNode = history;
 
     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType).name())));
 
@@ -237,32 +257,38 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
 }
 //---------------------------------------------
 
-template <typename TevSource, template <typename> typename EvType>
-void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType)
-{
-    auto evtype = demangledTypeName<EvType<TevSource>>();
+// template <typename TevSource, template <typename> typename EvType>
+// void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history)
+// {
+//     auto evtype = demangledTypeName<EvType<TevSource>>();
 
-    SmaccTransitionInfo transitionInfo;
-    transitionInfo.index = transitions_.size();
-    transitionInfo.sourceState = shared_from_this();
-    transitionInfo.destinyState = dstState;
+//     SmaccTransitionInfo transitionInfo;
+//     transitionInfo.index = transitions_.size();
+//     transitionInfo.sourceState = shared_from_this();
+//     transitionInfo.destinyState = dstState;
 
-    if (transitionTag != "")
-        transitionInfo.transitionTag = transitionTag;
-    else
-        transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
+//     if (transitionTag != "")
+//         transitionInfo.transitionTag = transitionTag;
+//     else
+//         transitionInfo.transitionTag = "Transition_" + std::to_string(transitionInfo.index);
 
-    transitionInfo.transitionType = transitionType;
+//     transitionInfo.transitionType = transitionType;
 
-    transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
+//     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
 
-    EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
-    ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
+//     EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
+//     ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 
-    transitions_.push_back(transitionInfo);
-}
+//     transitions_.push_back(transitionInfo);
+// }
 
 //---------------------------------------------
+template <typename Ev, typename Dst>
+void processTransition(statechart::transition<Ev, Dst> *, std::shared_ptr<SmaccStateInfo> &sourceState)
+{
+    //ROS_INFO_STREAM("GOTCHA");
+}
+
 template <typename Ev>
 void processTransition(statechart::custom_reaction<Ev> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
@@ -433,6 +459,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateMachineInfo::createState(std::shared_p
     auto state = std::make_shared<SmaccStateInfo>(statetid, parent, thisptr);
     state->demangledStateName = demangledName;
     state->fullStateName = typeid(StateType).name();
+    state->stateIndex_ = states.size();
 
     if (parent != nullptr)
     {
@@ -453,7 +480,16 @@ void SmaccStateMachineInfo::addState(std::shared_ptr<StateType> &state)
 template <typename StateType>
 std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 {
-    auto childState = this->stateMachine_->createState<StateType>(shared_from_this());
+    auto realparentState = this->stateMachine_->getState<typename StateType::TContext>();
+
+    auto childState = this->stateMachine_->createState<StateType>(realparentState);
+
+    ROS_ERROR_STREAM("Real parent state> " << demangleSymbol<typename StateType::TContext>());
+
+    /*auto contextInfo = smacc::TypeInfo::getTypeInfoFromType<InitialStateType>();
+    auto parentState2= getState<InitialStateType::TContext>();
+    parentState2->createChildState<InitialStateType>();*/
+
     //this->stateMachine_->addState(childState);
     //stateMachineInfo.addState(stateMachineInfo)
     //stateNames.push_back(currentname);

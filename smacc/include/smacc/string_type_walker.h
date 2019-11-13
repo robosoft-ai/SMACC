@@ -35,5 +35,11 @@ public:
 
     static std::shared_ptr<TypeInfo> getTypeInfoFromString(std::string inputtext);
     static std::shared_ptr<TypeInfo> getTypeInfoFromTypeid(const std::type_info& tid);  
+    
+    template <typename T>
+    static std::shared_ptr<TypeInfo> getTypeInfoFromType()
+    {
+        return TypeInfo::getTypeInfoFromTypeid(typeid(T));
+    }
 };
 }

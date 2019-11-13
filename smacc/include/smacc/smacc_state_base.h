@@ -43,6 +43,9 @@ class SmaccState : public sc::simple_state<
       base_type;
 
 public:
+
+  typedef Context TContext;
+
   //////////////////////////////////////////////////////////////////////////
   struct my_context
   {

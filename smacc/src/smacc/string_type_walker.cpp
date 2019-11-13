@@ -54,6 +54,7 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromTypeid(const std::type_info &
     return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
 }
 
+
 std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
 {
     bool ok = false;

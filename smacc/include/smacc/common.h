@@ -24,6 +24,7 @@
 
 #include <boost/statechart/termination.hpp>
 #include <boost/statechart/transition.hpp>
+#include <boost/statechart/deep_history.hpp>
 #include <boost/any.hpp>
 #include <boost/algorithm/string.hpp>
 

@@ -37,7 +37,7 @@ public:
 
     static std::string getEventLabel()
     {
-        auto type = TypeInfo::getTypeInfoFromTypeid(typeid(ActionType));
+        auto type = TypeInfo::getTypeInfoFromType<ActionType>();
         return type->getNonTemplatetypename();
     }
 
