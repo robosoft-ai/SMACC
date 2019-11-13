@@ -12,7 +12,7 @@ struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource>>
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
   {
-    auto typeinfo = TypeInfo::getTypeInfoFromTypeid(typeid(typename TSource::TMessageType));
+    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
 
     std::string label = typeinfo->getNonTemplatetypename();
     return label;
@@ -24,7 +24,7 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
 {
   static std::string getEventLabel()
   {
-    auto typeinfo = TypeInfo::getTypeInfoFromTypeid(typeid(typename TSource::TMessageType));
+    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
 
     std::string label = typeinfo->getNonTemplatetypename();
     return label;

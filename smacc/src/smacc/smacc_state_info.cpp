@@ -69,7 +69,7 @@ std::string SmaccEventInfo::getEventSourceName()
 {
     if (eventType->templateParameters.size() > 0)
     {
-        return demangleSymbol(eventType->templateParameters[0]->finaltype.c_str());
+        return demangleSymbol(eventType->templateParameters[0]->getFullName().c_str());
     }
     else
     {
@@ -86,7 +86,7 @@ std::string SmaccEventInfo::getObjectTagName()
 {
     if (eventType->templateParameters.size() > 1)
     {
-        return demangleSymbol(eventType->templateParameters[1]->finaltype.c_str());
+        return demangleSymbol(eventType->templateParameters[1]->getFullName().c_str());
     }
     else
     {

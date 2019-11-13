@@ -144,6 +144,10 @@ public:
 
     void state_machine_visualization(const ros::TimerEvent &);
 
+    inline ISmaccState * getCurrentState(){return currentState_;};
+
+    inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo(){return currentStateInfo_;}
+
 protected:
     void initializeRosComponents();
     

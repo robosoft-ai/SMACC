@@ -7,7 +7,7 @@ class SsrRadialReturn;
 class SsrRadialEndPoint;
 class SsrRadialLoopStart;
 
-struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, SmDanceBot, SsrRadialLoopStart>
+struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, MsDanceBotRunMode, SsrRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;

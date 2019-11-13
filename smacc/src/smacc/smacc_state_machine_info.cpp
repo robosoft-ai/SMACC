@@ -6,13 +6,13 @@ namespace smacc
 {
 void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
 {
-    ROS_INFO("----------- PRINT ALL STATES -------------------");
+    ROS_INFO("----------- PRINT STATE MACHINE STRUCTURE -------------------");
     stateMsgs.clear();
     for (auto &val : this->states)
     {
         smacc_msgs::SmaccState stateMsg;
-        stateMsg.index = stateMsgs.size();
         auto state = val.second;
+        stateMsg.index = state->stateIndex_;
 
         std::stringstream ss;
         ss << "**** State: " << demangleSymbol(val.first.c_str()) << std::endl;
@@ -21,6 +21,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
         stateMsg.level = (int)state->getStateLevel();
 
         ss << "**** State: " << stateMsg.name << std::endl;
+
+        ss << "Index: " << stateMsg.index << std::endl;
         ss << "StateLevel: " << stateMsg.level << std::endl;
 
         ss << " Childstates:" << std::endl;
@@ -40,7 +42,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             smacc_msgs::SmaccTransition transitionMsg;
 
             transitionMsg.index = transition.index;
-            transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();;
+            transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();
+            ;
             transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
 
             transitionMsg.transition_name = transition.transitionTag;
@@ -48,7 +51,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
             transitionMsg.event.event_object_tag = transition.eventInfo->getObjectTagName();
             transitionMsg.event.label = transition.eventInfo->label;
-            
+            transitionMsg.history_node = transition.historyNode;
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;
@@ -60,6 +63,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             ss << "      - Event Label: " << transitionMsg.event.label << std::endl;
             ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
             ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;
+            ss << "      - Is History Node: " << std::to_string(transitionMsg.history_node) << std::endl;
+            ss << "      - C++Type: " << transition.transitionTypeInfo->getFullName() << std::endl;
 
             stateMsg.transitions.push_back(transitionMsg);
         }
@@ -139,7 +144,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
                 ss << " - logic unit: " << logicUnitMsg.type_name << std::endl;
                 if (luinfo.objectTagType != nullptr)
                 {
-                    logicUnitMsg.object_tag = luinfo.objectTagType->finaltype;
+                    logicUnitMsg.object_tag = luinfo.objectTagType->getFullName();
                     ss << "        - object tag: " << logicUnitMsg.object_tag << std::endl;
                 }
 
@@ -157,8 +162,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
 
                     event.event_object_tag = tev->getObjectTagName();
                     ss << "                 - source object: " << event.event_object_tag << std::endl;
-                    
-                    event.label  = tev->label;
+
+                    event.label = tev->label;
                     ss << "                 - event label: " << event.label << std::endl;
 
                     logicUnitMsg.event_sources.push_back(event);
@@ -175,5 +180,9 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
         ROS_INFO_STREAM(ss.str());
         stateMsgs.push_back(stateMsg);
     }
+
+    std::sort(stateMsgs.begin(), stateMsgs.end(), [](auto &a, auto &b) {
+        return a.index > b.index;
+    });
 }
 } // namespace smacc

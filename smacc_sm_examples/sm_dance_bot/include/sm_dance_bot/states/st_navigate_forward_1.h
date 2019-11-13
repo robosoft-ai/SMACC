@@ -1,4 +1,4 @@
-struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, SmDanceBot>
+struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunMode>
 {
   typedef mpl::list<
       // Expected event

@@ -15,7 +15,7 @@ static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
   auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
   EventLabel<T>(evinfo->label);
   luinfo.sourceEventTypes.push_back(evinfo);
-  ROS_INFO_STREAM("event: " << sourceType->finaltype);
+  ROS_INFO_STREAM("event: " << sourceType->getFullName());
   ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
 }
 
@@ -26,7 +26,7 @@ static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TLuEventSo
   auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
   EventLabel<TLuEventSource>(evinfo->label);
   luinfo.sourceEventTypes.push_back(evinfo);
-  ROS_INFO_STREAM("event: " << sourceType->finaltype);
+  ROS_INFO_STREAM("event: " << sourceType->getFullName());
   ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
   walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
 }
@@ -43,6 +43,8 @@ class SmaccState : public sc::simple_state<
       base_type;
 
 public:
+  typedef Context TContext;
+
   //////////////////////////////////////////////////////////////////////////
   struct my_context
   {
@@ -191,12 +193,6 @@ public:
     //ROS_INFO_STREAM("throwing finish event " << fullname);
     //this->throwFinishEvent();
     ROS_WARN_STREAM("state exit: " << fullname);
-  }
-
-  template <typename EventType>
-  void postEvent(const EventType &ev)
-  {
-    getStateMachine().postEvent(ev);
   }
 
   void throwFinishEvent()

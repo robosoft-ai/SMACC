@@ -49,12 +49,13 @@ std::string replace_back(std::string roottype, std::map<std::string, std::string
     //     return roottype
 }
 
-std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromTypeid(const std::type_info &tid)
+smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromTypeid(const std::type_info &tid)
 {
     return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
 }
 
-std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
+
+smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 {
     bool ok = false;
     int typecount = 0;
@@ -175,7 +176,7 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
     //     print t
 
     //std::cout << "---------- TYPES -------" << std::endl;
-    std::vector<std::shared_ptr<TypeInfo>> types;
+    std::vector<smacc::TypeInfo::Ptr> types;
     for (auto &t : typesdict)
     {
         auto &tkey = t.first;
@@ -187,7 +188,7 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
         //std::cout << tinfo->toString() << std::endl;
     }
 
-    std::shared_ptr<TypeInfo> roottype = nullptr;
+    smacc::TypeInfo::Ptr roottype = nullptr;
     for (auto &t : types)
     {
         if (t->finaltype == originalinputtext)
@@ -199,7 +200,7 @@ std::shared_ptr<TypeInfo> TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     for (auto &t : types)
     {
-        std::vector<std::pair<int, std::shared_ptr<TypeInfo>>> unorderedTemplateParameters;
+        std::vector<std::pair<int, smacc::TypeInfo::Ptr>> unorderedTemplateParameters;
         for (auto &t2 : types)
         {
             auto index = t->codedtype.find(t2->tkey);

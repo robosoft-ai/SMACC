@@ -3,6 +3,7 @@
 #include <smacc/orthogonal.h>
 #include <smacc/smacc_substate_behavior.h>
 #include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/string_type_walker.h>
 
 namespace smacc
 {
@@ -84,6 +85,27 @@ std::shared_ptr<TLUnit> ISmaccState::createLogicUnit()
 }
 //-------------------------------------------------------------------------------------------------------
 
+template <typename EventType>
+void ISmaccState::postEvent(const EventType &ev)
+{
+    getStateMachine().postEvent(ev);
+}
+//-------------------------------------------------------------------------------------------------------
+
+template <typename TransitionType>
+void ISmaccState::notifyTransition()
+{
+    auto transitionType = smacc::TypeInfo::getTypeInfoFromType<TransitionType>();
+    ROS_ERROR_STREAM("NOTIFY TRANSITION: " << transitionType->getFullName());
+
+    auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
+    if(currstateinfo!=nullptr)
+    {
+        ROS_ERROR_STREAM("CURRENT STATE INFO: " << currstateinfo->fullStateName);
+    }    
+}
+
+//-------------------------------------------------------------------------------------------------------
 template <typename TEv>
 void LogicUnit::declarePostEvent(typelist<TEv>)
 {
@@ -95,4 +117,5 @@ void LogicUnit::declarePostEvent(typelist<TEv>)
 }
 
 //-------------------------------------------------------------------------------------------------------------------
-}
+
+} // namespace smacc

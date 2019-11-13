@@ -10,10 +10,9 @@ namespace smacc
 class TypeInfo
 {
 public:
-    std::string tkey;
-    std::string codedtype;
-    std::string finaltype;
-    std::vector<std::shared_ptr<TypeInfo>> templateParameters;
+    typedef std::shared_ptr<smacc::TypeInfo> Ptr;
+
+    std::vector<smacc::TypeInfo::Ptr> templateParameters;
 
     TypeInfo(std::string tkey, std::string codedtype, std::string finaltype)
     {
@@ -30,10 +29,26 @@ public:
     std::string getNonTemplatetypename()
     {
         auto index = this->finaltype.find("<");
-        return this->finaltype.substr(0,index);
+        return this->finaltype.substr(0, index);
     }
 
-    static std::shared_ptr<TypeInfo> getTypeInfoFromString(std::string inputtext);
-    static std::shared_ptr<TypeInfo> getTypeInfoFromTypeid(const std::type_info& tid);  
+    static smacc::TypeInfo::Ptr getTypeInfoFromString(std::string inputtext);
+    static smacc::TypeInfo::Ptr getTypeInfoFromTypeid(const std::type_info &tid);
+
+    template <typename T>
+    static smacc::TypeInfo::Ptr getTypeInfoFromType()
+    {
+        return TypeInfo::getTypeInfoFromTypeid(typeid(T));
+    }
+
+    const std::string& getFullName()
+    {
+        return this->finaltype;
+    }
+
+private:
+    std::string tkey;
+    std::string codedtype;
+    std::string finaltype;
 };
-}
+} // namespace smacc

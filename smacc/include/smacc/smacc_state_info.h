@@ -48,6 +48,7 @@ struct SmaccTransitionInfo
     {
     }
 
+    bool historyNode;
     int index;
     std::shared_ptr<SmaccStateInfo> sourceState;
     std::shared_ptr<SmaccStateInfo> destinyState;
@@ -55,6 +56,7 @@ struct SmaccTransitionInfo
     std::string transitionTag;
     std::string transitionType;
     std::shared_ptr<smacc::SmaccEventInfo> eventInfo;
+    smacc::TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
 struct SmaccLogicUnitInfo
@@ -76,10 +78,14 @@ enum class SmaccStateType
 //---------------------------------------------
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 {
+
 public:
+    typedef std::shared_ptr<SmaccStateInfo> Ptr;
+
     static std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> staticBehaviorInfo;
     static std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> logicUnitsInfo;
 
+    int stateIndex_;
     std::string fullStateName;
     std::string demangledStateName;
 
@@ -105,10 +111,10 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history, smacc::TypeInfo::Ptr transitionTypeInfo);
 
-    template <typename EvSource, template <typename> typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType);
+    // template <typename EvSource, template <typename> typename EvType>
+    // void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history);
 
     const std::string &toShortName() const;
 

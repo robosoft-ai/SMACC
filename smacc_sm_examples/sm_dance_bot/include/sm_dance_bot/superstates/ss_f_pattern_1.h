@@ -16,7 +16,7 @@ enum class TDirection
     RIGHT
 };
 
-struct SsFPattern1 : smacc::SmaccState<SsFPattern1, SmDanceBot, SsrFPatternStartLoop>
+struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, SsrFPatternStartLoop>
 {
 public:
     using SmaccState::SmaccState;

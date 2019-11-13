@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>smacc_action_client_generic</name>
+  <name>sm_history_example</name>
   <version>0.0.0</version>
-  <description>The smacc_action_client_generic package</description>
+  <description>The sm_history_example package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/smacc_action_client_generic</url> -->
+  <!-- <url type="website">http://wiki.ros.org/sm_history_example</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -49,27 +49,20 @@
   <!-- Use doc_depend for packages you need only for building documentation: -->
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
-
-
-  <build_depend>roscpp</build_depend>
-  <build_depend>actionlib</build_depend>
-  <build_depend>actionlib_msgs</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>smacc</build_depend>
-  <build_depend>smacc_msgs</build_depend>
-  <build_depend>message_generation</build_depend>
-
-  <exec_depend>roscpp</exec_depend>
-  <exec_depend>actionlib</exec_depend>
-  <exec_depend>actionlib_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>smacc</exec_depend>
-  <exec_depend>smacc_msgs</exec_depend>
-  <exec_depend>message_runtime</exec_depend>
+  <depend>roscpp</depend>
+  <depend>smacc</depend>
+  <depend>smacc_navigation_plugin</depend>
+  <depend>smacc_odom_tracker</depend>
+  <depend>smacc_planner_switcher</depend>
+  <depend>smacc_interface_components</depend>
+  <depend>smacc_action_client_generic</depend>
+  <depend>event_aggregator</depend>
+  <depend>tf</depend>
   
+
+  <!-- The export tag contains other, unspecified, tags -->
   <export>
-      <smacc plugin="${prefix}/smacc_plugin.xml" />
-      <rosdoc config="rosdoc.yaml" />
+    <!-- Other tools can request additional information be placed here -->
+
   </export>
-  
 </package>

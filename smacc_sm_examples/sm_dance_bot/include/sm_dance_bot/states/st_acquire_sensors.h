@@ -1,23 +1,28 @@
-struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, SmDanceBot>
-{ 
+struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
+{
    // transition names
    // ---- TAGS ----
-   struct ON_KEYBOARD:PREEMPT{};
-   struct ON_KEYBOARD2:ABORT{};
-   struct ON_SENSORS_AVAILABLE:SUCCESS{};
+   struct ON_KEYBOARD : PREEMPT
+   {
+   };
+   struct ON_KEYBOARD2 : ABORT
+   {
+   };
+   struct ON_SENSORS_AVAILABLE : SUCCESS
+   {
+   };
    struct Unit1;
    //----------------
 
    using SmaccState::SmaccState;
 
-   typedef mpl::list<
+   typedef mpl::list <
+         // Expected event
+         transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
 
-       // Expected event
-       transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>
-
-       //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
-       >
-       reactions;
+         //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
+         smacc::transition<EvGlobalError, sc::deep_history<StAcquireSensors>> 
+      > reactions;
 
    //AllEventAggregator allSensorsReady;
 

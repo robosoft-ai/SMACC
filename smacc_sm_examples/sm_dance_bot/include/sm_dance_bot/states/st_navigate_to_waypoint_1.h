@@ -1,4 +1,4 @@
-struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, SmDanceBot>
+struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
 
