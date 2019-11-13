@@ -96,13 +96,7 @@ template <typename TransitionType>
 void ISmaccState::notifyTransition()
 {
     auto transitionType = smacc::TypeInfo::getTypeInfoFromType<TransitionType>();
-    ROS_ERROR_STREAM("NOTIFY TRANSITION: " << transitionType->getFullName());
-
-    auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
-    if(currstateinfo!=nullptr)
-    {
-        ROS_ERROR_STREAM("CURRENT STATE INFO: " << currstateinfo->fullStateName);
-    }    
+    this->notifyTransitionFromTransitionTypeInfo(transitionType);
 }
 
 //-------------------------------------------------------------------------------------------------------

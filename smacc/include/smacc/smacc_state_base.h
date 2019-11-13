@@ -1,6 +1,6 @@
 #pragma once
 #include <smacc/smacc_state.h>
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 #include <typeindex>
 #include <typeinfo>
 #include <smacc/logic_units/logic_unit_base.h>

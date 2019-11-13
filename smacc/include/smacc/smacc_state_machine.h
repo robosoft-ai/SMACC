@@ -6,6 +6,7 @@
 #pragma once
 
 #include <smacc/common.h>
+#include <smacc/reflection.h>
 #include <smacc/smacc_state.h>
 #include <smacc/logic_units/logic_unit_base.h>
 
@@ -19,6 +20,7 @@
 #include <boost/utility/enable_if.hpp>
 #include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccStateMachine.h>
+
 
 namespace smacc
 {
@@ -148,6 +150,8 @@ public:
 
     inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo(){return currentStateInfo_;}
 
+    void publishTransition(SmaccTransitionInfo& transitionInfo);
+
 protected:
     void initializeRosComponents();
     
@@ -182,6 +186,7 @@ protected:
     ros::Timer timer_;
     ros::Publisher stateMachinePub_;
     ros::Publisher stateMachineStatusPub_;
+    ros::Publisher transitionLogPub_;
 
     ISmaccState *currentState_;
     std::shared_ptr<smacc::SmaccStateInfo> currentStateInfo_;

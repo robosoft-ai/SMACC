@@ -1,4 +1,4 @@
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 #include <ros/ros.h>
 #include <smacc/common.h>
 #include <smacc/string_type_walker.h>

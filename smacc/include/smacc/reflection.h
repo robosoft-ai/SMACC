@@ -1,18 +1,15 @@
+
 #pragma once
-#include <memory>
-#include <map>
-#include <functional>
-#include <vector>
-#include <list>
-#include <regex>
-#include <smacc/common.h>
+
 #include <smacc/string_type_walker.h>
+
+#include <smacc_msgs/SmaccTransition.h>
 
 namespace smacc
 {
+class SmaccStateInfo;
 class ISmaccState;
 class SmaccStateMachineInfo;
-class SmaccStateInfo;
 class TypeInfo;
 
 //---------------------------------------------
@@ -56,6 +53,7 @@ struct SmaccTransitionInfo
     std::string transitionTag;
     std::string transitionType;
     std::shared_ptr<smacc::SmaccEventInfo> eventInfo;
+
     smacc::TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
@@ -75,7 +73,7 @@ enum class SmaccStateType
     STATE = 1,
     SUPERSTATE_ROUTINE = 1
 };
-//---------------------------------------------
+
 class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 {
 
@@ -120,4 +118,6 @@ public:
 
     std::string getDemangledFullName() const;
 };
+
+void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::SmaccTransition &transitionMsg);
 } // namespace smacc

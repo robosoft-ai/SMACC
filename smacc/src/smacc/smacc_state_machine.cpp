@@ -8,6 +8,7 @@
 #include <smacc/orthogonal.h>
 #include <smacc/interface_components/smacc_action_client.h>
 #include <smacc_msgs/SmaccStatus.h>
+#include <smacc_msgs/SmaccTransitionLogEntry.h>
 
 namespace smacc
 {
@@ -105,6 +106,15 @@ void ISmaccStateMachine::publishCurrentStateMessage()
     {
         ROS_ERROR_STREAM("[StateMachine] updated state not found: " << currentStateInfo_->fullStateName);
     }
+}
+
+void ISmaccStateMachine::publishTransition(SmaccTransitionInfo &transitionInfo)
+{
+    smacc_msgs::SmaccTransitionLogEntry transitionLogEntry;
+    transitionLogEntry.timestamp = ros::Time::now();
+    transitionInfoToMsg(transitionInfo, transitionLogEntry.transition);
+
+    transitionLogPub_.publish(transitionLogEntry);
 }
 
 void ISmaccStateMachine::initializeRosComponents()

@@ -1,5 +1,5 @@
 #include <smacc/smacc_state_machine_info.h>
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 #include <smacc/smacc_state_machine.h>
 
 namespace smacc
@@ -41,17 +41,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
         {
             smacc_msgs::SmaccTransition transitionMsg;
 
-            transitionMsg.index = transition.index;
-            transitionMsg.event.event_type = transition.eventInfo->getEventTypeName();
-            ;
-            transitionMsg.destiny_state_name = transition.destinyState->demangledStateName;
-
-            transitionMsg.transition_name = transition.transitionTag;
-            transitionMsg.transition_type = transition.transitionType;
-            transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
-            transitionMsg.event.event_object_tag = transition.eventInfo->getObjectTagName();
-            transitionMsg.event.label = transition.eventInfo->label;
-            transitionMsg.history_node = transition.historyNode;
+            transitionInfoToMsg(transition, transitionMsg);
 
             ss << " - Transition.  " << std::endl;
             ss << "      - Index: " << transitionMsg.index << std::endl;

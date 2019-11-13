@@ -18,6 +18,7 @@ add_message_files(FILES
   SmaccOrthogonal.msg
   SmaccLogicUnit.msg
   SmaccStateMachine.msg
+  SmaccTransitionLogEntry.msg
   )
 
 generate_messages(DEPENDENCIES std_msgs)

@@ -6,7 +6,7 @@
 #include <smacc/string_type_walker.h>
 #include <smacc/orthogonal.h>
 #include <boost/mpl/for_each.hpp>
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 
 // smacc_msgs
 #include <smacc_msgs/SmaccState.h>
@@ -141,21 +141,21 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
+    auto transitionTypeInfo = smacc::TypeInfo::getTypeInfoFromType<smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag>>();
     smacc::transition<Ev, Dst, Tag> *mock;
-    processTransitionAux(mock, sourceState, true);
+    processTransitionAux(mock, sourceState, true, transitionTypeInfo);
 }
 
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, Dst, Tag> *t, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    processTransitionAux(t, sourceState, false);
+    auto transitionTypeInfo = smacc::TypeInfo::getTypeInfoFromType<smacc::transition<Ev, Dst, Tag>>();
+    processTransitionAux(t, sourceState, false, transitionTypeInfo);
 }
 
 template <typename Ev, typename Dst, typename Tag>
-void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history)
+void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history, smacc::TypeInfo::Ptr& transitionTypeInfo)
 {
-    auto transitionTypeInfo = smacc::TypeInfo::getTypeInfoFromType<smacc::transition<Ev, Dst, Tag>>();
-
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
     std::string transitionTag;
     std::string transitionType;

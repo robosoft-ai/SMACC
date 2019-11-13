@@ -2,5 +2,6 @@ int32 index
 string transition_name
 string transition_type
 string destiny_state_name
+string source_state_name
 bool history_node
 smacc_msgs/SmaccEvent event

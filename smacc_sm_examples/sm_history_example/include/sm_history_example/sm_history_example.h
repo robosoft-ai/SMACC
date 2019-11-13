@@ -68,7 +68,7 @@ public:
     }
 };
 
-struct SmDanceBot : smacc::SmaccStateMachineBase<SmDanceBot, MsRunMode>
+struct SmHistoryExample : smacc::SmaccStateMachineBase<SmHistoryExample, MsRunMode>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -85,7 +85,7 @@ struct SmDanceBot : smacc::SmaccStateMachineBase<SmDanceBot, MsRunMode>
 
 
 //---------------------------------------------------------------------------------------------
-struct MsRunMode : SmaccState<MsRunMode, SmDanceBot, St1, sc::has_full_history>
+struct MsRunMode : SmaccState<MsRunMode, SmHistoryExample, St1, sc::has_full_history>
 {
     using SmaccState::SmaccState;
     void onEntry()
@@ -140,7 +140,7 @@ struct St3 : SmaccState<St3, MsRunMode>
 };
 
 //---------------------------------------------------------------------------------------------
-struct MsRecoveryMode : SmaccState<MsRecoveryMode, SmDanceBot>
+struct MsRecoveryMode : SmaccState<MsRecoveryMode, SmHistoryExample>
 {
     typedef mpl::list<
 

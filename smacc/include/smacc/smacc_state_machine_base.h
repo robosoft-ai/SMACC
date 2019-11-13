@@ -7,11 +7,12 @@
 #include <smacc/common.h>
 
 #include <smacc/smacc_state_base.h>
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 #include <smacc/smacc_state_machine_info.h>
 #include <smacc/smacc_state_machine.h>
 
 #include <smacc/logic_units/logic_unit_base.h>
+#include <smacc_msgs/SmaccTransitionLogEntry.h>
 //-------------------------------------------------------------------------------------------------
 
 namespace smacc
@@ -52,6 +53,7 @@ public:
         // STATE MACHINE TOPICS
         stateMachinePub_ = nh_.advertise<smacc_msgs::SmaccStateMachine>(shortname + "/smacc/state_machine_description", 1);
         stateMachineStatusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>(shortname + "/smacc/status", 1);
+        transitionLogPub_ = nh_.advertise<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
     }
 
     virtual void onInitialize()

@@ -4,7 +4,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/orthogonal.h>
 #include <smacc/signal_detector.h>
-#include <smacc/smacc_state_info.h>
+#include <smacc/reflection.h>
 #include <smacc/smacc_state_machine_info.h>
 #include <smacc_msgs/SmaccStatus.h>
 #include <sstream>

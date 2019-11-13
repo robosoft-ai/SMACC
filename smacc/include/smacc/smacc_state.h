@@ -5,6 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 #include "smacc/common.h"
+#include "smacc/string_type_walker.h"
 
 namespace smacc
 {
@@ -50,6 +51,8 @@ public:
 
   template <typename TransitionType>
   void notifyTransition();
+
+  void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::TypeInfo>& transitionTypeInfo);
   
   std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
 };
