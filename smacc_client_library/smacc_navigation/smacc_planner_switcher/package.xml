@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>smacc_planner_switcher</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>The smacc_planner_switcher package</description>
 
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>

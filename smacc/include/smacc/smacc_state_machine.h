@@ -21,7 +21,6 @@
 #include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccStateMachine.h>
 
-
 namespace smacc
 {
 
@@ -87,9 +86,10 @@ public:
             //ROS_WARN("get SM DAta -data exist. accessing");
             try
             {
-                boost::any v = globalData_[name];
+                auto &v = globalData_[name];
+
                 //ROS_WARN("get SM DAta -data exist. any cast");
-                ret = boost::any_cast<T>(v);
+                ret = boost::any_cast<T>(v.second);
                 success = true;
                 //ROS_WARN("get SM DAta -data exist. success");
             }
@@ -107,9 +107,21 @@ public:
     template <typename T>
     void setGlobalSMData(std::string name, T value)
     {
-        std::lock_guard<std::mutex> lock(m_mutex_);
-        //ROS_WARN("set SM Data lock acquire");
-        globalData_[name] = value;
+        {
+            std::lock_guard<std::mutex> lock(m_mutex_);
+            //ROS_WARN("set SM Data lock acquire");
+
+            globalData_[name] = {
+                [this, name]() {
+                    std::stringstream ss;
+                    auto val = any_cast<T>(globalData_[name].second);
+                    ss << val;
+                    return ss.str();
+                },
+                value};
+        }
+
+        this->updateStatusMessage();
     }
 
     /// Used by the ISMaccActionClients when a new send goal is launched
@@ -137,7 +149,7 @@ public:
     template <typename StateType>
     void updateCurrentState(bool active, StateType *test);
 
-    void publishCurrentStateMessage();
+    void updateStatusMessage();
 
     std::string getStateMachineName()
     {
@@ -146,15 +158,15 @@ public:
 
     void state_machine_visualization(const ros::TimerEvent &);
 
-    inline ISmaccState * getCurrentState(){return currentState_;};
+    inline ISmaccState *getCurrentState() { return currentState_; };
 
-    inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo(){return currentStateInfo_;}
+    inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
 
-    void publishTransition(SmaccTransitionInfo& transitionInfo);
+    void publishTransition(SmaccTransitionInfo &transitionInfo);
 
 protected:
     void initializeRosComponents();
-    
+
     template <typename TOrthogonal>
     void createOrthogonal();
 
@@ -200,7 +212,7 @@ private:
     std::map<std::string, smacc::ISmaccComponent *> plugins_;
 
     // shared variables
-    std::map<std::string, boost::any> globalData_;
+    std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
     // orthogonals
     std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
@@ -216,7 +228,6 @@ public:
 } // namespace smacc
 
 #include <smacc/impl/smacc_state_impl.h>
-#include <smacc/impl/smacc_state_machine_base_impl.h>
 #include <smacc/impl/smacc_client_impl.h>
 #include <smacc/impl/smacc_component_impl.h>
 #include <smacc/impl/smacc_orthogonal_impl.h>

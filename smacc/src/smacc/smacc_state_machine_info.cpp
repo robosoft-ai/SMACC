@@ -54,7 +54,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             ss << "      - Destiny State: " << transitionMsg.destiny_state_name << std::endl;
             ss << "      - Owner State: " << transitionMsg.destiny_state_name << std::endl;
             ss << "      - Is History Node: " << std::to_string(transitionMsg.history_node) << std::endl;
-            ss << "      - C++Type: " << transition.transitionTypeInfo->getFullName() << std::endl;
+            ss << "      - TransitionC++Type: " << transition.transitionTypeInfo->getFullName() << std::endl;
+            ss << "      - EventC++Type: " << transition.eventInfo->eventType->getFullName() << std::endl;
 
             stateMsg.transitions.push_back(transitionMsg);
         }

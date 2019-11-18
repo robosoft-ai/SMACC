@@ -73,10 +73,10 @@ public:
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
 
-        sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();
-
         info_->assembleSMStructureMessage(this);
         this->initializeRosComponents();
+
+        sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();        
     }
 };
 } // namespace smacc

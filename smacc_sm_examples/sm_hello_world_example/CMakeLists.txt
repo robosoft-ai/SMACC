@@ -8,7 +8,7 @@ project(sm_hello_world_example)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc smacc_interface_components smacc_action_client_generic event_aggregator)
+find_package(catkin REQUIRED smacc smacc_interface_components smacc_planner_switcher smacc_action_client_generic event_aggregator)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

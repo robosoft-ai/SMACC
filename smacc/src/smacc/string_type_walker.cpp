@@ -49,14 +49,20 @@ std::string replace_back(std::string roottype, std::map<std::string, std::string
     //     return roottype
 }
 
+std::map<std::string, TypeInfo::Ptr> TypeInfo::typeInfoDatabase;
+
 smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromTypeid(const std::type_info &tid)
 {
     return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
 }
 
-
 smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 {
+    auto it = typeInfoDatabase.find(inputtext);
+    
+    if(it != typeInfoDatabase.end())
+        return typeInfoDatabase[inputtext];
+
     bool ok = false;
     int typecount = 0;
     std::string originalinputtext = inputtext;
@@ -203,6 +209,9 @@ smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         std::vector<std::pair<int, smacc::TypeInfo::Ptr>> unorderedTemplateParameters;
         for (auto &t2 : types)
         {
+            if (t == t2)
+                continue;
+
             auto index = t->codedtype.find(t2->tkey);
             if (index != std::string::npos)
             {
@@ -216,12 +225,25 @@ smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
                       return a.first <= b.first;
                   });
 
+        ROS_ERROR_STREAM("------------------");
+        ROS_ERROR_STREAM("CREATING TYPE:" << t->getFullName());
+
         for (auto &item : unorderedTemplateParameters)
         {
+            ROS_ERROR_STREAM(" - template paramter: " << item.second->getFullName());
             t->templateParameters.push_back(item.second);
         }
+        ROS_ERROR_STREAM("------------------");
     }
 
+    ROS_ERROR_STREAM("ADDING TYPE TO DATABASE: "<< inputtext);
+    ROS_ERROR_STREAM("Current Database");
+    for(auto& en : typeInfoDatabase)
+    {
+        ROS_ERROR_STREAM("- " << en.first);
+    }
+
+    typeInfoDatabase[originalinputtext] = roottype;
     return roottype;
 }
 

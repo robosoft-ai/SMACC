@@ -129,6 +129,6 @@ void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState
     currentState_ = currentState;
 
     currentStateInfo_ = info_->getState<StateType>();
-    this->publishCurrentStateMessage();
+    this->updateStatusMessage();
 }
 } // namespace smacc

@@ -77,7 +77,7 @@ void ISmaccStateMachine::notifyOnStateExit(ISmaccState *state)
     }
 }
 
-void ISmaccStateMachine::publishCurrentStateMessage()
+void ISmaccStateMachine::updateStatusMessage()
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
 
@@ -86,17 +86,25 @@ void ISmaccStateMachine::publishCurrentStateMessage()
         ROS_WARN_STREAM("[StateMachine] setting state active "
                         << ": " << currentStateInfo_->getFullPath());
 
-        status_msg_.current_states.clear();
-        std::list<smacc::SmaccStateInfo::Ptr> ancestorList;
-        currentStateInfo_->getAncestors(ancestorList);
-
-        for (auto &ancestor : ancestorList)
-        {
-            status_msg_.current_states.push_back(ancestor->toShortName());
-        }
-
         if (this->runMode_ == SMRunMode::DEBUG)
         {
+            status_msg_.current_states.clear();
+            std::list<smacc::SmaccStateInfo::Ptr> ancestorList;
+            currentStateInfo_->getAncestors(ancestorList);
+
+            for (auto &ancestor : ancestorList)
+            {
+                status_msg_.current_states.push_back(ancestor->toShortName());
+            }
+
+            status_msg_.global_variable_names.clear();
+            status_msg_.global_variable_values.clear();
+            
+            for(auto entry: this->globalData_)
+            {
+                status_msg_.global_variable_names.push_back(entry.first);
+                status_msg_.global_variable_values.push_back(entry.second.first()); // <- invoke to_string()
+            }
 
             status_msg_.header.stamp = ros::Time::now();
             this->stateMachineStatusPub_.publish(status_msg_);
@@ -124,10 +132,10 @@ void ISmaccStateMachine::initializeRosComponents()
 
 void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
 {
+
     std::lock_guard<std::mutex> lock(m_mutex_);
 
     smacc_msgs::SmaccStateMachine state_machine_msg;
-
     state_machine_msg.states = info_->stateMsgs;
     this->stateMachinePub_.publish(state_machine_msg);
 

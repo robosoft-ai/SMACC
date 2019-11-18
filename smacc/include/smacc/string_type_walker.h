@@ -4,6 +4,7 @@
 #include <memory>
 #include <vector>
 #include <typeinfo>
+#include <map>
 
 namespace smacc
 {
@@ -45,6 +46,8 @@ public:
     {
         return this->finaltype;
     }
+
+    static std::map<std::string, Ptr> typeInfoDatabase;
 
 private:
     std::string tkey;

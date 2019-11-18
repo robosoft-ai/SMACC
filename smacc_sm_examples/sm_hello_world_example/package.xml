@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>sm_hello_world_example</name>
-  <version>0.0.0</version>
+  <version>0.0.1</version>
   <description>The sm_hello_world_example package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
@@ -54,6 +54,8 @@
   <depend>smacc_action_client_generic</depend>
   <depend>event_aggregator</depend>  
   <depend>std_msgs</depend>
+  <depend>smacc_planner_switcher</depend>
+  
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

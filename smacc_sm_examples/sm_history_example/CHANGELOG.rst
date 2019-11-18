@@ -4,8 +4,5 @@ Changelog for package sm_history_example
 
 Forthcoming
 -----------
-* Progressing on transition log
-* dynamic behavior
-* progress on viewer, megastates and history mode
-* history example
+* Initial SMACC version
 * Contributors: Pablo Iñigo Blasco

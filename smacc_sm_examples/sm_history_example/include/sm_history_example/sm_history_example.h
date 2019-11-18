@@ -42,12 +42,12 @@ struct EvFail : sc::event<EvFail>
 };
 
 template <typename TEv>
-void delayedPostEvent(smacc::ISmaccState* sm, int delayseconds)
+void delayedPostEvent(smacc::ISmaccState *sm, int delayseconds)
 {
- std::async(std::launch::async, [=]() {
-            std::this_thread::sleep_for(std::chrono::seconds(delayseconds));
-            sm->postEvent(new TEv());
-        });
+    std::async(std::launch::async, [=]() {
+        std::this_thread::sleep_for(std::chrono::seconds(delayseconds));
+        sm->postEvent(new TEv());
+    });
 }
 
 struct MsRunMode;
@@ -75,6 +75,8 @@ struct SmHistoryExample : smacc::SmaccStateMachineBase<SmHistoryExample, MsRunMo
     virtual void onInitialize() override
     {
         this->createOrthogonal<NavigationOrthogonal>();
+        int initialcounterValue = 0;
+        //this->setGlobalSMData("St2Attempts", initialcounterValue);
     }
 
     void unconsumed_event(const sc::event_base &)
@@ -82,7 +84,6 @@ struct SmHistoryExample : smacc::SmaccStateMachineBase<SmHistoryExample, MsRunMo
         throw std::runtime_error("Event was not consumed!");
     }
 };
-
 
 //---------------------------------------------------------------------------------------------
 struct MsRunMode : SmaccState<MsRunMode, SmHistoryExample, St1, sc::has_full_history>
@@ -115,27 +116,33 @@ struct St2 : SmaccState<St2, MsRunMode>
         reactions;
 
     using SmaccState::SmaccState;
+
     void onEntry()
     {
         ROS_INFO("St2");
+
         ROS_INFO_STREAM("counter: " << counter);
-        if (counter == 0)
-            delayedPostEvent<EvFail>(this,3);
+        if (counter % 2 == 0)
+            delayedPostEvent<EvFail>(this, 3);
         else
-            delayedPostEvent<Ev2>(this,3);
+            delayedPostEvent<Ev2>(this, 3);
 
         counter++;
+        this->setGlobalSMData("St2Attempts", counter);
     }
 };
 
 struct St3 : SmaccState<St3, MsRunMode>
 {
-    typedef smacc::transition<EvFail, MsRecoveryMode, smacc::ABORT> reactions;
+    typedef mpl::list<smacc::transition<Ev3, St1, smacc::SUCCESS>,
+                      smacc::transition<EvFail, MsRecoveryMode, smacc::ABORT>>
+        reactions;
 
     using SmaccState::SmaccState;
     void onEntry()
     {
         ROS_INFO("St3");
+        delayedPostEvent<Ev3>(this, 3);
     }
 };
 
@@ -151,7 +158,7 @@ struct MsRecoveryMode : SmaccState<MsRecoveryMode, SmHistoryExample>
     void onEntry()
     {
         ROS_INFO("Recovery");
-        delayedPostEvent<EvToDeep>(this,3);
+        delayedPostEvent<EvToDeep>(this, 3);
     }
 };
 

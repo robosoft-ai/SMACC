@@ -22,10 +22,7 @@ struct StateBehaviorInfoEntry
 //---------------------------------------------
 struct SmaccEventInfo
 {
-    SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType)
-    {
-        this->eventType = eventType;
-    }
+    SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType);
 
     std::string getEventTypeName();
 
@@ -35,8 +32,9 @@ struct SmaccEventInfo
 
     std::string label;
 
-private:
     std::shared_ptr<smacc::TypeInfo> eventType;
+private:
+    
 };
 
 struct SmaccTransitionInfo

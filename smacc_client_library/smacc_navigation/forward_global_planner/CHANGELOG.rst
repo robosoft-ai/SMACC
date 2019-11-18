@@ -4,8 +4,5 @@ Changelog for package forward_global_planner
 
 Forthcoming
 -----------
-* moving to c++11 to make build the travis build
-* f-pattern motion
-* several improvements: adding topicPublisherClient, fixing install build, further testing of sm_dance_bot on install workspace
-* renaming folder
+* Initial SMACC version
 * Contributors: Pablo Iñigo Blasco

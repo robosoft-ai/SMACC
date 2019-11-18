@@ -64,12 +64,21 @@ std::string SmaccStateInfo::getDemangledFullName() const
 {
     return demangleSymbol(this->fullStateName.c_str());
 }
+//---------------------------------------------
+SmaccEventInfo::SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType)
+{
+    ROS_INFO_STREAM("CREATING EVENT INFO: " << eventType->getFullName());
+
+    this->eventType = eventType;
+}
 
 std::string SmaccEventInfo::getEventSourceName()
 {
     if (eventType->templateParameters.size() > 0)
     {
-        return demangleSymbol(eventType->templateParameters[0]->getFullName().c_str());
+        auto eventsourcename = demangleSymbol(eventType->templateParameters[0]->getFullName().c_str());
+        ROS_ERROR_STREAM("EVENT SOURCE NAME -------------" << eventsourcename);
+        return eventsourcename;
     }
     else
     {
