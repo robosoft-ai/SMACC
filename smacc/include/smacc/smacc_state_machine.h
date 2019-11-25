@@ -205,6 +205,9 @@ protected:
 
     smacc_msgs::SmaccStatus status_msg_;
 
+    // orthogonals
+    std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
+
 private:
     std::mutex m_mutex_;
 
@@ -214,8 +217,6 @@ private:
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
-    // orthogonals
-    std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
 
     smacc::SMRunMode runMode_;
 

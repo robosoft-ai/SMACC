@@ -12,8 +12,6 @@ namespace smacc
 class ISmaccState
 {
 public:
-  ros::NodeHandle nh;
-
   // Delegates to ROS param access with the current NodeHandle
   template <typename T>
   bool getParam(std::string param_name, T &param_storage);
@@ -36,6 +34,9 @@ public:
   template <typename SmaccComponentType>
   void requiresComponent(SmaccComponentType *&storage);
 
+  template <typename SmaccClientType>
+  void requiresClient(SmaccClientType *&storage, bool verbose = false);
+
   template <typename T>
   bool getGlobalSMData(std::string name, T &ret);
 
@@ -52,11 +53,10 @@ public:
   template <typename TransitionType>
   void notifyTransition();
 
-  void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::TypeInfo>& transitionTypeInfo);
-  
+  void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::TypeInfo> &transitionTypeInfo);
+
+  ros::NodeHandle nh;
+
   std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
 };
-
-//-------------------------------------------------------------------------------------------------------------------
-
 } // namespace smacc

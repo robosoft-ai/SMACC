@@ -69,9 +69,9 @@ public:
   }
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *&storage, ros::NodeHandle nh = ros::NodeHandle(), std::string value = "", bool verbose = false)
+  void requiresComponent(SmaccComponentType *&storage, bool verbose = false)
   {
-    base_type::outermost_context().requiresComponent(storage, nh, value, verbose);
+    base_type::outermost_context().requiresComponent(storage, verbose);
   }
 
   virtual ISmaccStateMachine &getStateMachine()

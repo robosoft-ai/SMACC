@@ -58,6 +58,20 @@ void ISmaccState::requiresComponent(SmaccComponentType *&storage)
 }
 //-------------------------------------------------------------------------------------------------------
 
+template <typename SmaccClientType>
+void ISmaccState::requiresClient(SmaccClientType *&storage, bool verbose)
+{
+  storage = nullptr;
+  auto& orthogonals = this->getStateMachine().getOrthogonals();
+  for(auto& ortho: orthogonals)
+  {
+    ortho.second->requiresClient(storage,verbose);
+    if(storage != nullptr)
+       break;
+  }
+}
+//-------------------------------------------------------------------------------------------------------
+
 template <typename T>
 bool ISmaccState::getGlobalSMData(std::string name, T &ret)
 {

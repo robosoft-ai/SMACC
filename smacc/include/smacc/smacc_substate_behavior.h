@@ -34,8 +34,13 @@ public:
     // hapens when
     // return true to destroy the object and false to keep it alive
 
+    // a reference to the owner state machine
     ISmaccStateMachine *stateMachine;
+
+    // a reference to the state where the substate behavior is being executed
     ISmaccState *currentState;
+
+    
     smacc::Orthogonal *currentOrthogonal;
 
     SmaccSubStateBehavior()
