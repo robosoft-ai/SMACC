@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc_substate_behavior.h>
-#include <smacc_navigation_plugin/move_base_to_goal.h>
+#include <smacc_navigation_plugin/move_base_action_client.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
 #include <boost/optional.hpp>
