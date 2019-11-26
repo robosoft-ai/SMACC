@@ -11,12 +11,18 @@
     bloom-generate rosdebian --os-name ubuntu --os-version xenial --ros-distro kinetic $TARGET_PKG
     cp -R debian $TARGET_PKG
     cd $TARGET_PKG
-    fakeroot debian/rules binary
+    fakeroot debian/rules build
     rm -R debian/ obj-x86_64-linux-gnu/
     cd ..
-    DEBIANFILE=find . | grep `echo "$TARGET_PKG | sed "s/_/-/g"`
+    echo "Finding debian file for package: $TARGET_PKG"
+    echo "Current directory: $(pwd)"
+    FILTER=`echo "$TARGET_PKG" | sed "s/_/-/g"`
+    echo "Filter string: $FILTER"
+    DEBIANFILE=`find . | grep $FILTER`
     echo $DEBIANFILE
-   sudo gdebi  $DEBIANFILE
+    #sudo gdebi  $DEBIANFILE | yes
+    sudo gdebi --option=APT::Get::force-yes,APT::Get::Assume-Yes $DEBIANFILE
+
 }  
 
 
@@ -42,9 +48,32 @@ done
 mv *.deb ../..
 cd ../..
 
-#---------- ROOT -----------------------
-for TARGET_PKG in smacc_msgs smacc smacc_logic_units
+#---------- smacc_sm_examples -----------------------
+cd smacc_logic_units/
+for TARGET_PKG in event_aggregator
 do
 build_package $TARGET_PKG
 done
+mv *.deb ..
+cd ..
+
+
+#---------- smacc_sm_examples -----------------------
+cd smacc_sm_examples/
+for TARGET_PKG in sm_dance_bot sm_hello_world_example sm_history_example sm_radial_motion sm_smacc_tutorial_examples
+do
+build_package $TARGET_PKG
+done
+mv *.deb ..
+cd ..
+
+#---------- ROOT -----------------------
+for TARGET_PKG in smacc_msgs smacc 
+do
+build_package $TARGET_PKG
+done
+
+
+
+
 
