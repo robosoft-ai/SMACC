@@ -1,2 +1,0 @@
-time timestamp
-smacc_msgs/SmaccTransition transition
