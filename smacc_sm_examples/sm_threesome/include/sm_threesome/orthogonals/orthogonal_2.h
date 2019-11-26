@@ -1,9 +1,9 @@
 #pragma once
 
-#include <sm_threesome_example/clients/client_2.h>
+#include <sm_threesome/clients/client_2.h>
 #include <smacc/orthogonal.h>
 
-namespace sm_threesome_example
+namespace sm_threesome
 {
 class Orthogonal2 : public smacc::Orthogonal
 {
@@ -14,4 +14,4 @@ public:
         client2->initialize();
     }
 };
-} // namespace sm_threesome_example
+} // namespace sm_threesome

@@ -1,5 +1,5 @@
 #pragma once
-namespace sm_threesome_example
+namespace sm_threesome
 {
 namespace SS1
 {
@@ -27,8 +27,8 @@ public:
 
 //forward declaration for the superstate
 using SS = SS1::Ss1;
-#include <sm_threesome_example/superstate_routines/ss_superstate_1/ssr_1.h>
-#include <sm_threesome_example/superstate_routines/ss_superstate_1/ssr_2.h>
-#include <sm_threesome_example/superstate_routines/ss_superstate_1/ssr_3.h>
+#include <sm_threesome/superstate_routines/ss_superstate_1/ssr_1.h>
+#include <sm_threesome/superstate_routines/ss_superstate_1/ssr_2.h>
+#include <sm_threesome/superstate_routines/ss_superstate_1/ssr_3.h>
 } // namespace SS1
-} // namespace sm_threesome_example
+} // namespace sm_threesome

@@ -5,10 +5,10 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
-namespace sm_threesome_example
+namespace sm_threesome
 {
 class Client2 : public smacc::SmaccActionClientBase<Client2, move_base_msgs::MoveBaseAction>
 {
 };
 
-} // namespace sm_threesome_example
+} // namespace sm_threesome

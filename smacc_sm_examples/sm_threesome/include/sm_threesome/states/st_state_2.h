@@ -1,4 +1,4 @@
-namespace sm_threesome_example
+namespace sm_threesome
 {
 struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
 {
@@ -21,4 +21,4 @@ struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
     {
     }
 };
-} // namespace sm_threesome_example
+} // namespace sm_threesome

@@ -2,7 +2,7 @@
 #pragma once
 #include <smacc/smacc_substate_behavior.h>
 
-namespace sm_threesome_example
+namespace sm_threesome
 {
 class SbBehavior2b : public smacc::SmaccSubStateBehavior
 {
@@ -12,4 +12,4 @@ public:
     {
     }
 };
-} // namespace sm_threesome_example
+} // namespace sm_threesome
