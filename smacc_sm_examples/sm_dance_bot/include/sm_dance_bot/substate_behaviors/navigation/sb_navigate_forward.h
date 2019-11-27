@@ -7,6 +7,8 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
+namespace sm_dancebot
+{
 class SbNavigateForward : public smacc::SmaccSubStateBehavior
 {
 public:
@@ -57,7 +59,7 @@ public:
         {
             try
             {
-                listener.lookupTransform("/odom", "/base_link", 
+                listener.lookupTransform("/odom", "/base_link",
                                          ros::Time(0), currentPose);
 
                 break;
@@ -101,3 +103,4 @@ public:
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::IDLE);
     }
 };
+} // namespace sm_dancebot

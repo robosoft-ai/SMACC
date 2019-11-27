@@ -3,7 +3,7 @@
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 {
@@ -25,4 +25,4 @@ public:
     }
   }
 };
-} // namespace sm_dance_bot
+} // namespace sm_dancebot

@@ -1,23 +1,17 @@
 #pragma once
 
-#include <smacc/common.h>
-#include <boost/statechart/transition.hpp>
+#include <smacc/introspection/introspection.h>
 
 namespace smacc
 {
 
-struct default_transition_name : smacc::SUCCESS
-{
-};
-
 //////////////////////////////////////////////////////////////////////////////
 template <class Event,
           class Destination,
-          typename Tag = default_transition_name,
-          class TransitionContext = boost::statechart::detail::no_context<Event>,
-          void (TransitionContext::*pTransitionAction)(const Event &) =
-              &boost::statechart::detail::no_context<Event>::no_function>
-class transition 
+          typename Tag,
+          class TransitionContext,
+          void (TransitionContext::*pTransitionAction)(const Event &)>
+class transition
 {
 public:
   typedef Tag TRANSITION_TAG;
@@ -40,7 +34,7 @@ private:
     {
       ROS_ERROR("REACT WITH ACTION AND EVENT");
       typedef smacc::transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
-      stt.template notifyTransition<Transtype> ();
+      stt.template notifyTransition<Transtype>();
       return stt.template transit<Destination>(pTransitionAction, evt);
     }
   };
@@ -59,7 +53,6 @@ public:
         dispatcher;
     return dispatcher::react(stt, evt, eventType);
   }
-
 };
 
 } // namespace smacc

@@ -40,7 +40,6 @@ public:
     // a reference to the state where the substate behavior is being executed
     ISmaccState *currentState;
 
-    
     smacc::Orthogonal *currentOrthogonal;
 
     SmaccSubStateBehavior()
@@ -70,7 +69,7 @@ public:
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage, bool verbose = false)
     {
-        currentOrthogonal->requiresClient(storage,verbose);
+        currentOrthogonal->requiresClient(storage, verbose);
     }
 
     template <typename SmaccComponentType>

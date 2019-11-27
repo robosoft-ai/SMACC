@@ -1,7 +1,7 @@
 #pragma once
 
 #include <sm_threesome/clients/client_2.h>
-#include <smacc/orthogonal.h>
+#include <smacc/smacc_orthogonal.h>
 
 namespace sm_threesome
 {

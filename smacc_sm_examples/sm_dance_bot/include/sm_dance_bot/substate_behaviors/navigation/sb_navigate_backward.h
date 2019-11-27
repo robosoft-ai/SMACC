@@ -7,6 +7,8 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <smacc_planner_switcher/planner_switcher.h>
 
+namespace sm_dancebot
+{
 class SbNavigateBackwards : public smacc::SmaccSubStateBehavior
 {
 public:
@@ -23,7 +25,7 @@ public:
 
     SbNavigateBackwards(float backwardDistance)
     {
-        if(backwardDistance <0 )
+        if (backwardDistance < 0)
         {
             ROS_ERROR("sb backward: distance must be greater or equal than 0");
             this->backwardDistance = 0;
@@ -52,7 +54,7 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-        
+
         this->requiresComponent(odomTracker_);
 
         //this should work better with a coroutine and await
@@ -63,7 +65,7 @@ public:
         {
             try
             {
-                listener.lookupTransform("/odom", "/base_link", 
+                listener.lookupTransform("/odom", "/base_link",
                                          ros::Time(0), currentPose);
 
                 break;
@@ -107,3 +109,4 @@ public:
         this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::IDLE);
     }
 };
+} // namespace sm_dancebot

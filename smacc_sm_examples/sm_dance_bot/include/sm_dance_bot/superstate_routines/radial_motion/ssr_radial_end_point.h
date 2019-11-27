@@ -3,7 +3,7 @@ struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn, SUCCESS>,
+              smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, SsrRadialReturn, SUCCESS>,
               smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, SsrRadialRotate, ABORT>
               > reactions;
 

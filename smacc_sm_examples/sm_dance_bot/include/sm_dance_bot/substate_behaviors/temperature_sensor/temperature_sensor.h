@@ -4,15 +4,14 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/Temperature.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 
 class TemperatureSensor : public smacc::SensorClient<TemperatureSensor, sensor_msgs::Temperature>
 {
-    public:
+public:
     TemperatureSensor()
     {
-
     }
 };
-} // namespace dance_bot
+} // namespace sm_dancebot

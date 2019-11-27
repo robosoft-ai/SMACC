@@ -4,15 +4,11 @@
 #include <memory>
 #include <vector>
 #include <algorithm>
+#include <smacc/introspection/introspection.h>
 
 namespace smacc
 {
 class ISmaccState;
-
-template <typename...>
-struct typelist
-{
-};
 
 class LogicUnit
 {

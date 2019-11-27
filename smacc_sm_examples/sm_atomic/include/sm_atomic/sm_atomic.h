@@ -9,6 +9,8 @@
 //SUBSTATE BEHAVIORS
 #include <sm_atomic/substate_behaviors/sb_state_1.h>
 
+using namespace boost;
+
 namespace sm_atomic
 {
 

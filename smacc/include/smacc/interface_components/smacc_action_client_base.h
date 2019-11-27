@@ -155,7 +155,7 @@ protected:
                 if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
                 {
                     ROS_INFO("[%s] request result: Success", this->getName().c_str());
-                    auto *successEvent = new EvActionSucceded<TDerived>();
+                    auto *successEvent = new EvActionSucceeded<TDerived>();
 
                     successEvent->client = this;
                     successEvent->resultMessage = result_msg;

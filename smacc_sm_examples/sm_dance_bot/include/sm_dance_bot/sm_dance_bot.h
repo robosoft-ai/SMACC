@@ -1,8 +1,8 @@
-#include <ros/ros.h>
-
 #include <smacc/smacc.h>
-#include <boost/statechart/deep_history.hpp>
+#include <sensor_msgs/LaserScan.h>
 
+namespace sm_dancebot
+{
 //STATES
 class StAcquireSensors;
 class StRotateDegrees4;
@@ -48,6 +48,7 @@ class SsSPattern1;
 
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
+} // namespace sm_dancebot
 
 // CLIENTS
 #include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
@@ -66,9 +67,11 @@ class MsDanceBotRecoveryMode;
 #include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
 #include <sm_dance_bot/orthogonals/service3_orthogonal.h>
 
-using namespace dance_bot;
+using namespace sm_dancebot;
 using namespace smacc;
 
+namespace sm_dancebot
+{
 // STATE MACHINE
 struct SmDanceBot
     : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
@@ -76,9 +79,9 @@ struct SmDanceBot
     int counter_1;
     bool rt_ready_flag;
 
-    typedef mpl::bool_< false > shallow_history;
-    typedef mpl::bool_< false > deep_history;
-    typedef mpl::bool_< false > inherited_deep_history;
+    typedef mpl::bool_<false> shallow_history;
+    typedef mpl::bool_<false> deep_history;
+    typedef mpl::bool_<false> inherited_deep_history;
 
     typedef smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode> base;
 
@@ -98,6 +101,7 @@ struct SmDanceBot
         this->createOrthogonal<Service3Orthogonal>();
     }
 };
+} // namespace sm_dancebot
 
 //SUBSTATE BEHAVIORS
 
@@ -114,23 +118,20 @@ struct SmDanceBot
 #include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
 
 #include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
-
-#include <smacc/all_event_aggregator.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
-#include <sensor_msgs/LaserScan.h>
-
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
 
 //LOGIC UNITS
-#include <event_aggregator/logic_units/lu_event_all.h>
+#include <smacc/all_event_aggregator.h>
+#include <event_aggregator/logic_units/lu_all_events_go.h>
 
-
-struct EvGlobalError: sc::event<EvGlobalError>
+struct EvGlobalError : sc::event<EvGlobalError>
 {
-
 };
 
+namespace sm_dancebot
+{
 class StAcquireSensors;
 
 //MEGASTATES
@@ -160,4 +161,4 @@ class StAcquireSensors;
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>
 #include <sm_dance_bot/superstates/ss_s_pattern_1.h>
-
+} // namespace sm_dancebot

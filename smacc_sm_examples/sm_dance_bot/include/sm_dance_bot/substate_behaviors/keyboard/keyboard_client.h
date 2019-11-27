@@ -1,18 +1,16 @@
 #pragma once
 
-#include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc.h>
 #include <smacc/interface_components/smacc_topic_subscriber.h>
 
-#include <boost/statechart/event.hpp>
 #include <boost/asio/posix/stream_descriptor.hpp>
-
 #include <boost/asio.hpp>
 #include <iostream>
 #include <thread>
-#include <memory>
+
 #include <std_msgs/UInt16.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
@@ -241,7 +239,7 @@ public:
         template <typename TEv>
         void postKeyEvent()
         {
-                ROS_WARN("KeyboardClient ev: %s", demangleSymbol(typeid(TEv).name()).c_str());
+                ROS_WARN("KeyboardClient ev: %s", smacc::demangleSymbol(typeid(TEv).name()).c_str());
                 auto event = new TEv();
                 this->postEvent(event);
         }
@@ -249,4 +247,4 @@ public:
 private:
         bool initialized_;
 };
-} // namespace smacc
+} // namespace sm_dancebot

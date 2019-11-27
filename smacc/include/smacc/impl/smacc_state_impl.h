@@ -1,9 +1,9 @@
 #pragma once
 #include <smacc/smacc_state.h>
-#include <smacc/orthogonal.h>
+#include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_substate_behavior.h>
 #include <smacc/logic_units/logic_unit_base.h>
-#include <smacc/string_type_walker.h>
+#include <smacc/introspection/string_type_walker.h>
 
 namespace smacc
 {

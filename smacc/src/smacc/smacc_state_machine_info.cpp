@@ -1,5 +1,4 @@
-#include <smacc/smacc_state_machine_info.h>
-#include <smacc/reflection.h>
+#include <smacc/introspection/introspection.h>
 #include <smacc/smacc_state_machine.h>
 
 namespace smacc

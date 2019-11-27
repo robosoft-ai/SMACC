@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <smacc/client.h>
+#include <smacc/smacc_client.h>
 #include <actionlib/client/simple_action_client.h>
 
 namespace smacc

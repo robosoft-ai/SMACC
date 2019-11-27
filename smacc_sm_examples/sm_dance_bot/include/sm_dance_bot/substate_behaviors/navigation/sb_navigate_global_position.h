@@ -8,23 +8,23 @@
 #include <smacc_planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
+namespace sm_dancebot
+{
 class SbNavigateGlobalPosition : public smacc::SmaccSubStateBehavior
 {
 public:
-  
   boost::optional<geometry_msgs::Point> initialPoint;
   boost::optional<float> initialYaw;
 
   SbNavigateGlobalPosition()
   {
-
   }
 
   SbNavigateGlobalPosition(float x, float y, float yaw)
   {
-    auto p =  geometry_msgs::Point();
+    auto p = geometry_msgs::Point();
     p.x = x;
-    p.y =y;
+    p.y = y;
     initialPoint = p;
     initialYaw = yaw;
   }
@@ -35,7 +35,7 @@ public:
 
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
-    this->requiresClient(moveBaseClient_ );
+    this->requiresClient(moveBaseClient_);
     this->requiresComponent(odomTracker_);
 
     ROS_INFO("Component requirements completed");
@@ -43,11 +43,11 @@ public:
     moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
-    goToRadialStart(); 
+    goToRadialStart();
   }
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToRadialStart() 
+  void goToRadialStart()
   {
     ROS_INFO("Sending Goal to MoveBase");
     smacc::SmaccMoveBaseActionClient::Goal goal;
@@ -62,9 +62,9 @@ public:
     moveBaseClient_->sendGoal(goal);
   }
 
-  void readStartPoseFromParameterServer(smacc::SmaccMoveBaseActionClient::Goal& goal)
+  void readStartPoseFromParameterServer(smacc::SmaccMoveBaseActionClient::Goal &goal)
   {
-    if(! initialPoint)
+    if (!initialPoint)
     {
       this->currentState->getParam("start_position_x", goal.target_pose.pose.position.x);
       this->currentState->getParam("start_position_y", goal.target_pose.pose.position.y);
@@ -75,24 +75,25 @@ public:
     }
     else
     {
-      goal.target_pose.pose.position= *initialPoint;
+      goal.target_pose.pose.position = *initialPoint;
       goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(*initialYaw);
     }
-    
+
     ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);
   }
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
   virtual void onExit() override
-  { 
-    ROS_INFO("Exiting move goal Action Client"); 
+  {
+    ROS_INFO("Exiting move goal Action Client");
   }
 
 private:
-  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server). 
+  // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).
   // this resource can be used from any method in this state
   smacc::SmaccMoveBaseActionClient *moveBaseClient_;
 
-  smacc_odom_tracker::OdomTracker* odomTracker_;
+  smacc_odom_tracker::OdomTracker *odomTracker_;
 };
+} // namespace sm_dancebot

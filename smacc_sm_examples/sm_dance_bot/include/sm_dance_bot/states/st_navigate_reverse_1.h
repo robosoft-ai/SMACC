@@ -4,7 +4,7 @@ struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, MsDanceBotRunM
 
    typedef mpl::list<
        // Expected event
-       smacc::transition<EvActionSucceded<SmaccMoveBaseActionClient>, StRotateDegrees3>,
+       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees3>,
 
        // Keyboard event
        smacc::transition<EvKeyPressP<SbKeyboard>, SS2::SsRadialPattern2>,

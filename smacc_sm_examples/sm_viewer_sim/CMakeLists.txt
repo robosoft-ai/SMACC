@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sm_history_example)
+project(sm_viewer_sim)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tra
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES sm_history_example
+#  LIBRARIES sm_viewer_sim
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -119,7 +119,7 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} src/sm_history_example.cpp)
+add_executable(${PROJECT_NAME} src/sm_viewer_sim.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
@@ -163,7 +163,7 @@ install(TARGETS
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 #install(FILES
-#   launch/sm_history_example.launch
+#   launch/sm_viewer_sim.launch
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 # )
 
@@ -172,7 +172,7 @@ install(TARGETS
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_history_example.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_sim_viewer.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

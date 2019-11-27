@@ -1,24 +1,18 @@
 
-#pragma once
-
-#include <smacc/string_type_walker.h>
-
-#include <smacc_msgs/SmaccTransition.h>
+#include <memory>
+#include <functional>
+#include <smacc/smacc_types.h>
 
 namespace smacc
 {
-class SmaccStateInfo;
-class ISmaccState;
-class SmaccStateMachineInfo;
-class TypeInfo;
 
-//---------------------------------------------
 struct StateBehaviorInfoEntry
 {
     std::function<void(smacc::ISmaccState *)> factoryFunction;
     const std::type_info *behaviorType;
     const std::type_info *orthogonalType;
 };
+
 //---------------------------------------------
 struct SmaccEventInfo
 {
@@ -33,8 +27,8 @@ struct SmaccEventInfo
     std::string label;
 
     std::shared_ptr<smacc::TypeInfo> eventType;
+
 private:
-    
 };
 
 struct SmaccTransitionInfo
@@ -116,6 +110,4 @@ public:
 
     std::string getDemangledFullName() const;
 };
-
-void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::SmaccTransition &transitionMsg);
-} // namespace smacc
+}

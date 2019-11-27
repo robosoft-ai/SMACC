@@ -3,7 +3,7 @@
 #include <smacc/interface_components/smacc_topic_publisher.h>
 #include <std_msgs/String.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 class StringPublisherClient : public smacc::SmaccTopicPublisherClient<std_msgs::String>
 {

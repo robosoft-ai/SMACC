@@ -16,7 +16,7 @@
 #include <sm_threesome/substate_behaviors/client_2/substate_behavior_2b.h>
 
 //LOGIC UNITS
-#include <event_aggregator/logic_units/lu_event_all.h>
+#include <event_aggregator/logic_units/lu_all_events_go.h>
 
 using namespace smacc;
 

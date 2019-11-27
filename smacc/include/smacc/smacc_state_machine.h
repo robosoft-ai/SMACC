@@ -6,7 +6,7 @@
 #pragma once
 
 #include <smacc/common.h>
-#include <smacc/reflection.h>
+#include <smacc/introspection/introspection.h>
 #include <smacc/smacc_state.h>
 #include <smacc/logic_units/logic_unit_base.h>
 

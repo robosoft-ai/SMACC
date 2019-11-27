@@ -1,28 +1,22 @@
-#include <boost/statechart/state_machine.hpp>
-#include <boost/statechart/simple_state.hpp>
-#include <boost/statechart/event.hpp>
-#include <boost/statechart/transition.hpp>
-#include <boost/statechart/shallow_history.hpp>
-#include <boost/statechart/deep_history.hpp>
-
-#include <boost/mpl/list.hpp>
-#include <boost/shared_ptr.hpp>
-
-//#include <boost/test/test_tools.hpp>
-
-#include <stdexcept>
-#include <thread>
-
-#include <future>
-#include <string>
-#include <mutex>
+// #include <boost/statechart/state_machine.hpp>
+// #include <boost/statechart/simple_state.hpp>
+// #include <boost/statechart/event.hpp>
+// #include <boost/statechart/transition.hpp>
+// #include <boost/statechart/shallow_history.hpp>
+// #include <boost/shared_ptr.hpp>
+// #include <boost/test/test_tools.hpp>
+// #include <stdexcept>
+ #include <thread>
+ #include <future>
+// #include <string>
+// #include <mutex>
 
 #include <smacc/smacc.h>
-#include <smacc/orthogonal.h>
+#include <smacc/smacc_orthogonal.h>
 #include <smacc_navigation_plugin/move_base_action_client.h>
 #include <smacc_odom_tracker/odom_tracker.h>
 
-namespace sc = boost::statechart;
+
 using namespace smacc;
 
 struct EvToDeep : sc::event<EvToDeep>

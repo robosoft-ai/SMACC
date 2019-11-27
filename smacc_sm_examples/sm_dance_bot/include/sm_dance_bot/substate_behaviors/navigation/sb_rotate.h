@@ -7,7 +7,8 @@
 #include <boost/optional.hpp>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
-
+namespace sm_dancebot
+{
 class SbRotate : public smacc::SmaccSubStateBehavior
 {
 public:
@@ -38,7 +39,7 @@ public:
         {
             angle_increment_degree = *rotateDegree;
         }
-        
+
         this->requiresClient(moveBaseClient_);
 
         //this should work better with a coroutine and await
@@ -79,3 +80,4 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 };
+} // namespace sm_dancebot

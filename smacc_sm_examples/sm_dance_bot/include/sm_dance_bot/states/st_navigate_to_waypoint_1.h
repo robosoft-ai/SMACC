@@ -4,7 +4,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
 
   typedef mpl::list<
       // Expected event
-      smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
+      smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>,
 
       // Keyboard events
       smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateReverse2>,

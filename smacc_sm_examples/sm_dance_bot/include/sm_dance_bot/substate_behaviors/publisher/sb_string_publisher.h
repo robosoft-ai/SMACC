@@ -4,12 +4,12 @@
 #include <smacc/smacc_substate_behavior.h>
 #include <std_msgs/String.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 class SbStringPublisher : public smacc::SmaccSubStateBehavior
 {
 public:
-    dance_bot::StringPublisherClient* publisherClient_;
+    sm_dancebot::StringPublisherClient *publisherClient_;
     std::string msg_;
 
     SbStringPublisher(std::string msg)
@@ -26,9 +26,9 @@ public:
     virtual void onExit() override
     {
         std_msgs::String rosmsg;
-        rosmsg.data =  msg_;
+        rosmsg.data = msg_;
         publisherClient_->publish(rosmsg);
     }
 };
 
-} // namespace smacc
+} // namespace sm_dancebot

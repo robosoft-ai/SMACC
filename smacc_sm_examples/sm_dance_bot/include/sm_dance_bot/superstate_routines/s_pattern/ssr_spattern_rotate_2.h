@@ -2,7 +2,7 @@ struct SsrSPatternRotate2 : smacc::SmaccState<SsrSPatternRotate2, SS>
 {
     using SmaccState::SmaccState;
 
-    typedef mpl::list<smacc::transition<EvActionSucceded<smacc::SmaccMoveBaseActionClient>, SsrSPatternForward2>,
+    typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, SsrSPatternForward2>,
                     smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, SsrSPatternForward1>
                     > reactions;
 

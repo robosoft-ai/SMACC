@@ -1,5 +1,5 @@
 
-#include <event_aggregator/logic_units/lu_event_all.h>
+#include <event_aggregator/logic_units/lu_all_events_go.h>
 #include <smacc/common.h>
 
 namespace smacc

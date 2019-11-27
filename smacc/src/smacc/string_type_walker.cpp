@@ -1,4 +1,4 @@
-#include <smacc/string_type_walker.h>
+#include <smacc/introspection/string_type_walker.h>
 
 #include <regex>
 #include <memory>

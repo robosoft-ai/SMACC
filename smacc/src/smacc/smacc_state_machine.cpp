@@ -4,8 +4,8 @@
  *
  ******************************************************************************************************************/
 #include <smacc/smacc_state_machine.h>
-#include <smacc/signal_detector.h>
-#include <smacc/orthogonal.h>
+#include <smacc/smacc_signal_detector.h>
+#include <smacc/smacc_orthogonal.h>
 #include <smacc/interface_components/smacc_action_client.h>
 #include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccTransitionLogEntry.h>

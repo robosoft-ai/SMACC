@@ -5,13 +5,13 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 class SbKeyboard : public smacc::SmaccSubStateBehavior
 {
 public:
         KeyboardClient *keyboardClient_;
-        boost::signals2::scoped_connection c_; 
+        boost::signals2::scoped_connection c_;
 
         void onEntry()
         {
@@ -82,10 +82,10 @@ public:
         template <typename TEv>
         void postKeyEvent()
         {
-                ROS_WARN("SbKeyboard %ld ev: %s", (long)(void*)this , demangleSymbol(typeid(TEv).name()).c_str());
+                ROS_WARN("SbKeyboard %ld ev: %s", (long)(void *)this, demangleSymbol(typeid(TEv).name()).c_str());
                 auto event = new TEv();
                 this->postEvent(event);
         }
 };
 
-} // namespace smacc
+} // namespace sm_dancebot

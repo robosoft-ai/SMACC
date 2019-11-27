@@ -7,11 +7,9 @@
 #include <smacc/common.h>
 
 #include <smacc/smacc_state_base.h>
-#include <smacc/reflection.h>
-#include <smacc/smacc_state_machine_info.h>
 #include <smacc/smacc_state_machine.h>
-
 #include <smacc/logic_units/logic_unit_base.h>
+
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
 //-------------------------------------------------------------------------------------------------
 

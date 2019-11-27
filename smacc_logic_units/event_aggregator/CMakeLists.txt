@@ -120,7 +120,7 @@ include
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/logic_units/lu_event_all.cpp
+   src/${PROJECT_NAME}/logic_units/lu_all_events_go.cpp
  )
 
 ## Add cmake target dependencies of the library

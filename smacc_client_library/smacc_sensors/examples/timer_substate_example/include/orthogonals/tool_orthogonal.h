@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/orthogonal.h>
+#include <smacc/smacc_orthogonal.h>
 
 class ToolOrthogonal: public smacc::Orthogonal
 {

@@ -1,4 +1,4 @@
-#include <smacc/client.h>
+#include <smacc/smacc_client.h>
 #include <smacc/impl/smacc_client_impl.h>
 
 namespace smacc

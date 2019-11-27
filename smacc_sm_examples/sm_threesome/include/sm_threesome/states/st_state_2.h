@@ -5,7 +5,7 @@ struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<smacc::EvActionSucceded<Client2>, SS1::Ss1>,
+        smacc::transition<smacc::EvActionSucceeded<Client2>, SS1::Ss1>,
         smacc::transition<EvAll<LuAllEventsGo>, StState1>>
         reactions;
 

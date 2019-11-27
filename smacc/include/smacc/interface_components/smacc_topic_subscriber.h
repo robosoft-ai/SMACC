@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/client.h>
+#include <smacc/smacc_client.h>
 #include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
 

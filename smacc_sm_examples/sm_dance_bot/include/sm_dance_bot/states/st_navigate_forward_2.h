@@ -2,7 +2,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 {
   typedef mpl::list<
       // Expected event
-      smacc::transition<EvActionSucceded<SmaccMoveBaseActionClient>, StRotateDegrees5>,
+      smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees5>,
 
       // Keyboard events
       smacc::transition<EvKeyPressP<SbKeyboard>, SS4::SsFPattern1>,

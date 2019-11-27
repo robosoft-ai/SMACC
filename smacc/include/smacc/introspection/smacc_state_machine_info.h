@@ -1,12 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <map>
 #include <smacc/common.h>
-#include <smacc/string_type_walker.h>
-#include <smacc/orthogonal.h>
-#include <boost/mpl/for_each.hpp>
-#include <smacc/reflection.h>
+#include <smacc/smacc_orthogonal.h>
 
 // smacc_msgs
 #include <smacc_msgs/SmaccState.h>

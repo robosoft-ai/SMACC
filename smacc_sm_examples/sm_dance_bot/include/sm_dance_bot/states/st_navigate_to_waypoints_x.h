@@ -57,7 +57,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   
   typedef mpl::list<
       // Expected event
-      sc::custom_reaction<EvActionSucceded<smacc::SmaccMoveBaseActionClient>>,
+      sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>,
 
       //smacc::transition<EvCounter<LuCounter, 14>, SS1::SsRadialPattern1>,
       //smacc::transition<EvCounter<LuCounter, 19>, SS1::SsRadialPattern1>,
@@ -88,9 +88,9 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>, mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
 
     //static_createLogicUnit<LuCounter, mpl::list<EvCounter1<LuCounter>, EvCounter2<LuCounter>, EvCounter1<LuCounter>, EvCounter4<LuCounter> EvCounter5<LuCounter>>,
-    //                       EvActionSucceded<MoveBaseClient>>();
+    //                       EvActionSucceeded<MoveBaseClient>>();
 
-    //static_createLogicUnit<LuCounter, LuCounter::GenerateListEvents<20>::type, EvActionSucceded<MoveBaseClient>>();
+    //static_createLogicUnit<LuCounter, LuCounter::GenerateListEvents<20>::type, EvActionSucceeded<MoveBaseClient>>();
 
     //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
 
@@ -201,7 +201,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     return forward_event();
   }
 
-  sc::result react(const EvActionSucceded<smacc::SmaccMoveBaseActionClient> &ev)
+  sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient> &ev)
   {
     ROS_INFO("Waypoints X reaction");
 

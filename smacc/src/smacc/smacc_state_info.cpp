@@ -1,7 +1,6 @@
-#include <smacc/reflection.h>
+#include <smacc/introspection/introspection.h>
 #include <ros/ros.h>
 #include <smacc/common.h>
-#include <smacc/string_type_walker.h>
 
 namespace smacc
 {

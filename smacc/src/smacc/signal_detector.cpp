@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <smacc/signal_detector.h>
+#include <smacc/smacc_signal_detector.h>
 #include <smacc/interface_components/smacc_action_client_base.h>
 
 namespace smacc

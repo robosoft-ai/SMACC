@@ -1,4 +1,3 @@
-
 class MsDanceBotRecoveryMode : public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBot>
 {
 public:

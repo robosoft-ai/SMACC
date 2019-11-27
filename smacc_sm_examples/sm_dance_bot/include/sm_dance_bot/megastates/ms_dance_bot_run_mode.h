@@ -1,8 +1,7 @@
-class MsDanceBotRunMode: public smacc::SmaccState<MsDanceBotRunMode, SmDanceBot, StAcquireSensors>
+class MsDanceBotRunMode : public smacc::SmaccState<MsDanceBotRunMode, SmDanceBot, StAcquireSensors>
 {
-   public:
+public:
    using SmaccState::SmaccState;
 
    typedef smacc::transition<EvGlobalError, MsDanceBotRecoveryMode> reactions;
-
 };

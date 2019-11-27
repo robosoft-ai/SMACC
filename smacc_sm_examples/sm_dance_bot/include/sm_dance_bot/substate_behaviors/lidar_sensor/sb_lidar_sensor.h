@@ -2,7 +2,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
 
-namespace dance_bot
+namespace sm_dancebot
 {
 struct SbLidarSensor : smacc::SensorTopic<SbLidarSensor, sensor_msgs::LaserScan, LaserSensor>
 {
@@ -23,4 +23,4 @@ public:
   {
   }
 };
-}
+} // namespace sm_dancebot

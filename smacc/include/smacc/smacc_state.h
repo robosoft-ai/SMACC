@@ -4,8 +4,7 @@
  *
  ******************************************************************************************************************/
 #pragma once
-#include "smacc/common.h"
-#include "smacc/string_type_walker.h"
+#include <smacc/common.h>
 
 namespace smacc
 {
