@@ -5,5 +5,5 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "sm_viewer_sim");
     ros::NodeHandle nh;
 
-    smacc::run<SmViewerSim>();
+    smacc::run<sm_viewer_sim::SmViewerSim>();
 }
