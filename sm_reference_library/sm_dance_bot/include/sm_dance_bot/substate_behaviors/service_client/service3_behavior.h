@@ -1,7 +1,7 @@
 #include <smacc/smacc_substate_behavior.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 enum class Service3Command
 {
@@ -34,4 +34,4 @@ public:
     serviceClient_->call(req);
   }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

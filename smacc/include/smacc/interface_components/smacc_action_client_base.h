@@ -1,21 +1,12 @@
-/*****************************************************************************************************************
- * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
- * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
- *
- ******************************************************************************************************************/
 #pragma once
 
 #include <smacc/interface_components/smacc_action_client.h>
-#include <smacc/impl/smacc_component_impl.h>
+#include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
-
-#include <queue>
 
 namespace smacc
 {
-// Smacc Action Clients (AKA resources or plugins) can inherit from this object
-// inhteriting from this class works as a template .h library. That is why the code
-// implementation is located here.
+
 template <typename TDerived, typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
 {
@@ -29,10 +20,9 @@ public:
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
 
-    SmaccActionClientBase(int feedback_queue_size = 10)
+    SmaccActionClientBase()
         : ISmaccActionClient()
     {
-        feedback_queue_size_ = feedback_queue_size;
     }
 
     static std::string getEventLabel()
@@ -49,7 +39,7 @@ public:
         {
             name_ = demangleSymbol(typeid(*this).name());
             std::vector<std::string> strs;
-            boost::split(strs,*name_,boost::is_any_of("::"));
+            boost::split(strs, *name_, boost::is_any_of("::"));
             std::string classname = strs.back();
             name_ = classname;
         }
@@ -61,7 +51,7 @@ public:
     {
     }
 
-    virtual void cancelGoal()
+    virtual void cancelGoal() override
     {
         ROS_INFO("Cancelling goal of %s", this->getName().c_str());
         client_->cancelGoal();
@@ -70,11 +60,6 @@ public:
     virtual SimpleClientGoalState getState() override
     {
         return client_->getState();
-    }
-
-    virtual bool hasFeedback() override
-    {
-        return !feedback_queue_.empty();
     }
 
     void sendGoal(Goal &goal)
@@ -95,150 +80,76 @@ public:
         SimpleFeedbackCallback feedback_cb = boost::bind(&SmaccActionClientBase<TDerived, ActionType>::onFeedback, this, _1);
 
         client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
-
-        stateMachine_->registerActionClientRequest(this);
     }
 
 protected:
     std::shared_ptr<ActionClient> client_;
 
-    int feedback_queue_size_;
-    std::list<Feedback> feedback_queue_;
-
-    int result_queue_size_;
-    std::list<Result> result_queue_;
-
-    void onFeedback(const FeedbackConstPtr &feedback)
+    void onFeedback(const FeedbackConstPtr &feedback_msg)
     {
-        Feedback copy = *feedback;
-        feedback_queue_.push_back(copy);
-        ROS_DEBUG("FEEDBACK MESSAGE RECEIVED, enqueuing Queue Size: %ld", feedback_queue_.size());
-        if (feedback_queue_.size() > feedback_queue_size_)
-        {
-            feedback_queue_.pop_front();
-        }
+        auto actionFeedbackEvent = new EvActionFeedback<Feedback>();
+        actionFeedbackEvent->client = this;
+        actionFeedbackEvent->feedbackMessage = *feedback_msg;
+        this->postEvent(actionFeedbackEvent);
     }
 
-    void onResult(const SimpleClientGoalState &state, const ResultConstPtr &result)
+    void onResult(const SimpleClientGoalState &state, const ResultConstPtr &result_msg)
     {
-        Result copy = *result;
-        result_queue_.push_back(copy);
-        ROS_DEBUG("RESULT MESSAGE RECEIVED, enqueuing Queue Size: %ld", result_queue_.size());
-        if (result_queue_.size() > result_queue_size_)
-        {
-            result_queue_.pop_front();
-        }
-    }
-
-    virtual void postEvent(SmaccScheduler *scheduler, SmaccScheduler::processor_handle processorHandle) override
-    {
-        Result result_msg;
         auto *actionResultEvent = new EvActionResult<TDerived>();
         actionResultEvent->client = this;
+        actionResultEvent->resultMessage = *result_msg;
 
-        ROS_INFO("[%s] Action client received a result of the request, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
+        const auto &resultType = actionResultEvent->getResultState();
+        ROS_INFO("[%s] request result: %s", this->getName().c_str(), resultType.toString().c_str());
 
-        if (!result_queue_.empty())
+        if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
-            ROS_INFO("[%s]Popping RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
-            result_msg = result_queue_.front();
-            result_queue_.pop_front();
-            ROS_INFO("[%s]popped RESULT MESSAGE, Queue Size: %ld", this->getName().c_str(), result_queue_.size());
-            actionResultEvent->resultMessage = result_msg;
+            ROS_INFO("[%s] request result: Success", this->getName().c_str());
+            auto *successEvent = new EvActionSucceeded<TDerived>();
 
-            //scheduler->queue_event(processorHandle, actionResultEvent);
+            successEvent->client = this;
+            successEvent->resultMessage = *result_msg;
 
-            const auto &resultType = actionResultEvent->getResultState();
-            ROS_INFO("[%s] request result: %s", this->getName().c_str(), resultType.toString().c_str());
+            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
+            this->postEvent(successEvent);
+        }
+        else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
+        {
+            ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
+            auto *abortedEvent = new EvActionAborted<TDerived>();
 
-            {
-                if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
-                {
-                    ROS_INFO("[%s] request result: Success", this->getName().c_str());
-                    auto *successEvent = new EvActionSucceeded<TDerived>();
+            abortedEvent->client = this;
+            abortedEvent->resultMessage = *result_msg;
 
-                    successEvent->client = this;
-                    successEvent->resultMessage = result_msg;
+            ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
+            this->postEvent(abortedEvent);
+        }
+        else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
+        {
+            ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
+            auto *rejectedEvent = new EvActionRejected<TDerived>();
 
-                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
-                    stateMachine_->postEvent(successEvent);
-                    //scheduler->queue_event(processorHandle, successEvent);
-                }
-                else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
-                {
-                    ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
-                    auto *abortedEvent = new EvActionAborted<TDerived>();
+            rejectedEvent->client = this;
+            rejectedEvent->resultMessage = *result_msg;
 
-                    abortedEvent->client = this;
-                    abortedEvent->resultMessage = result_msg;
+            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(rejectedEvent).name()).c_str());
+            this->postEvent(rejectedEvent);
+        }
+        else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
+        {
+            ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
+            auto *preemtedEvent = new EvActionPreempted<TDerived>();
 
-                    ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
-                    stateMachine_->postEvent(abortedEvent);
-                    //scheduler->queue_event(processorHandle, abortedEvent);
-                }
-                else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
-                {
-                    ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
-                    auto *rejectedEvent = new EvActionRejected<TDerived>();
+            preemtedEvent->client = this;
+            preemtedEvent->resultMessage = *result_msg;
 
-                    rejectedEvent->client = this;
-                    rejectedEvent->resultMessage = result_msg;
-
-                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(rejectedEvent).name()).c_str());
-                    //scheduler->queue_event(processorHandle, rejectedEvent);
-                    stateMachine_->postEvent(rejectedEvent);
-                }
-                else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
-                {
-                    ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
-                    auto *preemtedEvent = new EvActionPreempted<TDerived>();
-
-                    preemtedEvent->client = this;
-                    preemtedEvent->resultMessage = result_msg;
-
-                    ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
-                    //scheduler->queue_event(processorHandle, preemtedEvent);
-                    stateMachine_->postEvent(preemtedEvent);
-                }
-                else
-                {
-                    ROS_INFO("[%s] request result: NOT HANDLED TYPE: %s", this->getName().c_str(), resultType.toString().c_str());
-                }
-            }
+            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
+            this->postEvent(preemtedEvent);
         }
         else
         {
-            ROS_WARN("action client result queue is empty");
+            ROS_INFO("[%s] request result: NOT HANDLED TYPE: %s", this->getName().c_str(), resultType.toString().c_str());
         }
     }
-
-    virtual void postFeedbackEvent(SmaccScheduler *scheduler, SmaccScheduler::processor_handle processorHandle) override
-    {
-        boost::intrusive_ptr<EvActionFeedback<Feedback>> actionFeedbackEvent = new EvActionFeedback<Feedback>();
-        actionFeedbackEvent->client = this;
-
-        bool ok = false;
-        if (!feedback_queue_.empty())
-        {
-            ROS_DEBUG("[%s]Popping FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
-            Feedback feedback_msg = feedback_queue_.front();
-            feedback_queue_.pop_front();
-            ROS_DEBUG("[%s]popped FEEDBACK MESSAGE, Queue Size: %ld", this->getName().c_str(), feedback_queue_.size());
-            actionFeedbackEvent->feedbackMessage = feedback_msg;
-            ok = true;
-        }
-        else
-        {
-            ok = false;
-        };
-
-        if (ok)
-        {
-            //ROS_INFO("Sending feedback event");
-            scheduler->queue_event(processorHandle, actionFeedbackEvent);
-        }
-    }
-
-    friend class SignalDetector;
 };
 } // namespace smacc

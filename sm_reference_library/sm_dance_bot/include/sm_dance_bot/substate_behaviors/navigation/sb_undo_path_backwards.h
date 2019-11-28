@@ -5,7 +5,7 @@
 #include <smacc_odom_tracker/odom_tracker.h>
 #include <nav_msgs/Path.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbUndoPathBackwards : public smacc::SmaccSubStateBehavior
 {
@@ -34,4 +34,4 @@ class SbUndoPathBackwards : public smacc::SmaccSubStateBehavior
     }
   }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

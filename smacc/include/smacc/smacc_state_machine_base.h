@@ -8,10 +8,7 @@
 
 #include <smacc/smacc_state_base.h>
 #include <smacc/smacc_state_machine.h>
-#include <smacc/logic_units/logic_unit_base.h>
-
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
-//-------------------------------------------------------------------------------------------------
 
 namespace smacc
 {
@@ -68,13 +65,16 @@ public:
         ROS_INFO("initiate_impl");
         this->onInitialize();
 
+        ROS_INFO("Introspecting state machine via typeWalker");
         info_ = std::make_shared<SmaccStateMachineInfo>();
         info_->buildStateMachineInfo<InitialStateType>();
 
+        ROS_INFO("Initializing ROS communication mechanisms");
         info_->assembleSMStructureMessage(this);
         this->initializeRosComponents();
 
-        sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();        
+        ROS_INFO("Initializing state machine");
+        sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();
     }
 };
 } // namespace smacc

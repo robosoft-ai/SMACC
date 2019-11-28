@@ -2,7 +2,7 @@
 #include <smacc/smacc_orthogonal.h>
 #include <smacc_action_client_generic/smacc_tool_plugin.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class ToolOrthogonal : public smacc::Orthogonal
 {

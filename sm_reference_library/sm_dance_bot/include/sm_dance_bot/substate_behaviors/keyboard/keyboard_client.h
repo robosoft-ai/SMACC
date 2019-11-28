@@ -10,7 +10,7 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
@@ -247,4 +247,4 @@ public:
 private:
         bool initialized_;
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

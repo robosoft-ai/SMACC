@@ -5,14 +5,14 @@
 #include <smacc_interface_components/clients/sensor_client.h>
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SensorOrthogonal : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto *temperatureSensor = this->createClient<sm_dancebot::TemperatureSensor>();
+        auto *temperatureSensor = this->createClient<sm_dance_bot::TemperatureSensor>();
 
         temperatureSensor->topicName = "/temperature";
         //temperatureSensor->queueSize = "/front/scan";
@@ -21,4 +21,4 @@ public:
         temperatureSensor->initialize();
     }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

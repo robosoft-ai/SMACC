@@ -1,9 +1,10 @@
 
+#pragma once
 #include <sensor_msgs/Temperature.h>
 #include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 {
@@ -25,4 +26,4 @@ public:
     }
   }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

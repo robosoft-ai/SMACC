@@ -124,8 +124,6 @@ public:
         this->updateStatusMessage();
     }
 
-    /// Used by the ISMaccActionClients when a new send goal is launched
-    void registerActionClientRequest(ISmaccActionClient *component);
 
     template <typename StateField, typename BehaviorType>
     void mapBehavior()

@@ -4,12 +4,12 @@
 #include <smacc/smacc_substate_behavior.h>
 #include <std_msgs/String.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbStringPublisher : public smacc::SmaccSubStateBehavior
 {
 public:
-    sm_dancebot::StringPublisherClient *publisherClient_;
+    sm_dance_bot::StringPublisherClient *publisherClient_;
     std::string msg_;
 
     SbStringPublisher(std::string msg)
@@ -31,4 +31,4 @@ public:
     }
 };
 
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

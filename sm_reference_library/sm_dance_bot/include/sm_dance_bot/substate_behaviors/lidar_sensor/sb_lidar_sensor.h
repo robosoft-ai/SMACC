@@ -1,8 +1,10 @@
+#pragma once
+
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 struct SbLidarSensor : smacc::SensorTopic<SbLidarSensor, sensor_msgs::LaserScan, LaserSensor>
 {
@@ -23,4 +25,4 @@ public:
   {
   }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

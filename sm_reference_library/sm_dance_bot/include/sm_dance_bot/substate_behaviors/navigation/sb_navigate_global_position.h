@@ -8,7 +8,7 @@
 #include <smacc_planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbNavigateGlobalPosition : public smacc::SmaccSubStateBehavior
 {
@@ -96,4 +96,4 @@ private:
 
   smacc_odom_tracker::OdomTracker *odomTracker_;
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

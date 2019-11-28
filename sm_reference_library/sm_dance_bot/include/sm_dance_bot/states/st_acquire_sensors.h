@@ -16,15 +16,13 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    using SmaccState::SmaccState;
 
-   // typedef mpl::list <
-   //       // Expected event
-   //       transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
+   typedef mpl::list<
+       // Expected event
+       transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
 
-   //       //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
-   //       smacc::transition<EvGlobalError, sc::deep_history<StAcquireSensors>> 
-   //    > reactions;
-
-   //AllEventAggregator allSensorsReady;
+       //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
+       smacc::transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
+       reactions;
 
    static void onDefinition()
    {

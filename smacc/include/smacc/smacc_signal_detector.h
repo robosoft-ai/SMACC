@@ -28,9 +28,6 @@ public:
 
     void stop();
 
-    // Prints the current state of the signal detector into a string...
-    void toString(std::stringstream &ss);
-
     void pollingLoop();
 
     void pollOnce();
@@ -43,11 +40,6 @@ public:
     }
 
 private:
-    void finalizeRequest(ISmaccActionClient *resource);
-
-    void notifyFeedback(ISmaccActionClient *resource);
-
-    void registerActionClientRequest(ISmaccActionClient *actionClientRequestInfo);
 
     ISmaccStateMachine *smaccStateMachine_;
 

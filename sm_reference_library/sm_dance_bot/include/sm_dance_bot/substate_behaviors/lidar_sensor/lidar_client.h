@@ -4,7 +4,7 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/LaserScan.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 
 class LaserSensor : public smacc::SensorClient<LaserSensor, sensor_msgs::LaserScan>
@@ -14,4 +14,4 @@ public:
     {
     }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

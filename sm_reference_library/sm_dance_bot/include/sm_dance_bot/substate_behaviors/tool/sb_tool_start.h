@@ -3,7 +3,7 @@
 #include <smacc/smacc.h>
 #include <smacc_action_client_generic/smacc_tool_plugin.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbToolStart : public smacc::SmaccSubStateBehavior
 {
@@ -24,4 +24,4 @@ public:
     //ROS_INFO("Entering ToolSubstateBehavior");
   }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

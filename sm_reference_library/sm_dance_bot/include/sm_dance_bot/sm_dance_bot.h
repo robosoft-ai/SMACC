@@ -1,9 +1,43 @@
 #include <smacc/smacc.h>
+
 #include <sensor_msgs/LaserScan.h>
 
-namespace sm_dancebot
+//SUBSTATE BEHAVIORS
+#include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
+
+#include <sm_dance_bot/substate_behaviors/navigation/sb_rotate.h>
+#include <sm_dance_bot/substate_behaviors/navigation/sb_undo_path_backwards.h>
+#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_global_position.h>
+#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
+#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
+
+#include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
+#include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
+#include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
+
+#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
+
+#include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
+#include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
+#include <smacc_interface_components/substate_behaviors/sensor_substate.h>
+#include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
+#include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
+
+//LOGIC UNITS
+#include <event_aggregator/logic_units/lu_all_events_go.h>
+
+// ORTHOGONALS
+#include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
+#include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
+#include <sm_dance_bot/orthogonals/tool_orthogonal.h>
+#include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
+#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
+#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
+#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
+
+namespace sm_dance_bot
 {
-//STATES
+//STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StRotateDegrees4;
 class StNavigateForward1;
@@ -20,7 +54,7 @@ class StNavigateReverse3;
 class StRotateDegrees6;
 class StNavigateReverse3;
 
-//SUPERSTATES
+//SUPERSTATE FORWARD DECLARATIONS
 namespace SS1
 {
 class SsRadialPattern1;
@@ -46,31 +80,22 @@ namespace SS5
 class SsSPattern1;
 }
 
+// MEGASTATE FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
-} // namespace sm_dancebot
 
-// CLIENTS
-#include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
-#include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
-#include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
+// custom smd_dance_bot event
+struct EvGlobalError: sc::event<EvGlobalError>
+{
 
-#include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
-#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
+};
 
-// ORTHOGONALS
-#include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
-#include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
-#include <sm_dance_bot/orthogonals/tool_orthogonal.h>
-#include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
-#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
-#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
-#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
+} // namespace sm_dance_bot
 
-using namespace sm_dancebot;
+using namespace sm_dance_bot;
 using namespace smacc;
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 // STATE MACHINE
 struct SmDanceBot
@@ -101,38 +126,8 @@ struct SmDanceBot
         this->createOrthogonal<Service3Orthogonal>();
     }
 };
-} // namespace sm_dancebot
 
-//SUBSTATE BEHAVIORS
-
-#include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
-
-#include <sm_dance_bot/substate_behaviors/navigation/sb_rotate.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_undo_path_backwards.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_global_position.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
-
-#include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
-#include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
-#include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
-
-#include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
-#include <smacc_interface_components/substate_behaviors/sensor_substate.h>
-#include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
-#include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
-
-//LOGIC UNITS
-#include <smacc/all_event_aggregator.h>
-#include <event_aggregator/logic_units/lu_all_events_go.h>
-
-struct EvGlobalError : sc::event<EvGlobalError>
-{
-};
-
-namespace sm_dancebot
-{
-class StAcquireSensors;
+using namespace sm_dance_bot;
 
 //MEGASTATES
 #include <sm_dance_bot/megastates/ms_dance_bot_run_mode.h>
@@ -161,4 +156,5 @@ class StAcquireSensors;
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>
 #include <sm_dance_bot/superstates/ss_s_pattern_1.h>
-} // namespace sm_dancebot
+
+} // namespace sm_dance_bot

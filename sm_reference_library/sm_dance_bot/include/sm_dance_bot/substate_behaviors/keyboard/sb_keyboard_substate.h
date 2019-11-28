@@ -5,7 +5,7 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbKeyboard : public smacc::SmaccSubStateBehavior
 {
@@ -82,10 +82,10 @@ public:
         template <typename TEv>
         void postKeyEvent()
         {
-                ROS_WARN("SbKeyboard %ld ev: %s", (long)(void *)this, demangleSymbol(typeid(TEv).name()).c_str());
+                ROS_WARN("SbKeyboard %ld ev: %s", (long)(void *)this, smacc::demangleSymbol(typeid(TEv).name()).c_str());
                 auto event = new TEv();
                 this->postEvent(event);
         }
 };
 
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

@@ -4,7 +4,7 @@
 #include <std_msgs/String.h>
 #include <sensor_msgs/Temperature.h>
 
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 
 class TemperatureSensor : public smacc::SensorClient<TemperatureSensor, sensor_msgs::Temperature>
@@ -14,4 +14,4 @@ public:
     {
     }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

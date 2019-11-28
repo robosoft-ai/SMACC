@@ -7,7 +7,7 @@
 #include <boost/optional.hpp>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
-namespace sm_dancebot
+namespace sm_dance_bot
 {
 class SbRotate : public smacc::SmaccSubStateBehavior
 {
@@ -80,4 +80,4 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 };
-} // namespace sm_dancebot
+} // namespace sm_dance_bot

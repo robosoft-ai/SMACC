@@ -46,15 +46,6 @@ ISmaccStateMachine::~ISmaccStateMachine()
     ROS_INFO("Finishing State Machine");
 }
 
-/// used by the actionclients when a new send goal is launched
-void ISmaccStateMachine::registerActionClientRequest(ISmaccActionClient *client)
-{
-    std::lock_guard<std::mutex> lock(m_mutex_);
-
-    ROS_INFO("Registering action client request: %s", client->getName().c_str());
-    signalDetector_->registerActionClientRequest(client);
-}
-
 void ISmaccStateMachine::notifyOnStateEntry(ISmaccState *state)
 {
     ROS_INFO("Notification State Entry, orthogonals: %ld", this->orthogonals_.size());
@@ -109,10 +100,6 @@ void ISmaccStateMachine::updateStatusMessage()
             status_msg_.header.stamp = ros::Time::now();
             this->stateMachineStatusPub_.publish(status_msg_);
         }
-    }
-    else
-    {
-        ROS_ERROR_STREAM("[StateMachine] updated state not found: " << currentStateInfo_->fullStateName);
     }
 }
 
