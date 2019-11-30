@@ -42,16 +42,9 @@ public:
 
     smacc::Orthogonal *currentOrthogonal;
 
-    SmaccSubStateBehavior()
-    {
-        stateMachine = nullptr;
-        currentState = nullptr;
-    }
+    SmaccSubStateBehavior();
 
-    virtual ~SmaccSubStateBehavior()
-    {
-        ROS_WARN("Substate behavior deallocated.");
-    }
+    virtual ~SmaccSubStateBehavior();
 
     template <typename EventType>
     void postEvent(const EventType &ev)
@@ -85,19 +78,10 @@ public:
         }
     }
 
-    std::string getName() const
-    {
-        return demangleSymbol(typeid(*this).name());
-    }
+    std::string getName() const;
 
-    virtual void onEntry()
-    {
-        ROS_INFO("SmaccSubStateBehavior %s onEntry", this->getName().c_str());
-    }
+    virtual void onEntry();
 
-    virtual void onExit()
-    {
-        ROS_INFO("SmaccSubStateBehavior %s onExit", this->getName().c_str());
-    }
+    virtual void onExit();
 };
 } // namespace smacc

@@ -131,8 +131,8 @@ struct SmDanceBot
 using namespace sm_dance_bot;
 
 //MEGASTATES
-#include <sm_dance_bot/megastates/ms_dance_bot_run_mode.h>
-#include <sm_dance_bot/megastates/ms_dance_bot_recovery_mode.h>
+#include <sm_dance_bot/mode_states/ms_dance_bot_run_mode.h>
+#include <sm_dance_bot/mode_states/ms_dance_bot_recovery_mode.h>
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>

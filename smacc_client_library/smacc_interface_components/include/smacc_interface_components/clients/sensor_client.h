@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/client_bases/smacc_topic_subscriber.h>
+#include <smacc/client_bases/smacc_subscriber_client.h>
 #include <boost/statechart/event.hpp>
 
 #include <ros/ros.h>
@@ -25,13 +25,13 @@ struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource>>
 
 //---------------------------------------------------------------
 template <typename TDerived, typename MessageType>
-class SensorClient : public SmaccTopicSubscriberClient<TDerived, MessageType>
+class SensorClient : public SmaccSubscriberClient<TDerived, MessageType>
 {
 public:
   boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
 
   SensorClient()
-      : SmaccTopicSubscriberClient<TDerived, MessageType>()
+      : SmaccSubscriberClient<TDerived, MessageType>()
   {
     ROS_INFO("SbLidarSensor constructor");
     initialized_ = false;
@@ -41,7 +41,7 @@ public:
   {
     if (!initialized_)
     {
-      SmaccTopicSubscriberClient<TDerived, MessageType>::initialize();
+      SmaccSubscriberClient<TDerived, MessageType>::initialize();
 
       this->onMessageReceived.connect(
           [this](auto msg) {

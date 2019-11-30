@@ -34,7 +34,7 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
 };
 
 template <typename TDerived, typename MessageType>
-class SmaccTopicSubscriberClient : public smacc::ISmaccClient
+class SmaccSubscriberClient : public smacc::ISmaccClient
 {
 public:
   boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
@@ -45,12 +45,12 @@ public:
 
   typedef MessageType TMessageType;
 
-  SmaccTopicSubscriberClient()
+  SmaccSubscriberClient()
   {
     initialized_ = false;
   }
 
-  virtual ~SmaccTopicSubscriberClient()
+  virtual ~SmaccSubscriberClient()
   {
     sub_.shutdown();
   }
@@ -72,7 +72,7 @@ public:
       {
         ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
 
-        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccTopicSubscriberClient<TDerived, MessageType>::messageCallback, this);
+        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccSubscriberClient<TDerived, MessageType>::messageCallback, this);
         this->initialized_ = true;
       }
     }

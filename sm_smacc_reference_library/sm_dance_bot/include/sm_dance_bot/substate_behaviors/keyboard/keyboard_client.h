@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc.h>
-#include <smacc/client_bases/smacc_topic_subscriber.h>
+#include <smacc/client_bases/smacc_subscriber_client.h>
 
 #include <boost/asio/posix/stream_descriptor.hpp>
 #include <boost/asio.hpp>
@@ -146,7 +146,7 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource>>
 
 //------------------  TIMER SUBSTATE ---------------------------------------------
 
-class KeyboardClient : public smacc::SmaccTopicSubscriberClient<KeyboardClient, std_msgs::UInt16>
+class KeyboardClient : public smacc::SmaccSubscriberClient<KeyboardClient, std_msgs::UInt16>
 {
 public:
         boost::signals2::signal<void(char keypress)> OnKeyPress;
@@ -163,7 +163,7 @@ public:
 
         virtual void initialize() override
         {
-                SmaccTopicSubscriberClient<KeyboardClient, std_msgs::UInt16>::initialize();
+                SmaccSubscriberClient<KeyboardClient, std_msgs::UInt16>::initialize();
 
                 if (!this->initialized_)
                 {

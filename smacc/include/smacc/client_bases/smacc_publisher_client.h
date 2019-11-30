@@ -6,18 +6,18 @@
 namespace smacc
 {
 template <typename MessageType>
-class SmaccTopicPublisherClient : public smacc::ISmaccClient
+class SmaccPublisherClient : public smacc::ISmaccClient
 {
 public:
   boost::optional<std::string> topicName;
   boost::optional<int> queueSize;
 
-  SmaccTopicPublisherClient()
+  SmaccPublisherClient()
   {
     initialized_ = false;
   }
 
-  virtual ~SmaccTopicPublisherClient()
+  virtual ~SmaccPublisherClient()
   {
     pub_.shutdown();
   }

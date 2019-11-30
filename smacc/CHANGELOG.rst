@@ -6,7 +6,7 @@ Forthcoming
 -----------
 * Progressing on transition log
 * dynamic behavior
-* progress on viewer, megastates and history mode
+* progress on viewer, mode_states and history mode
 * smacc megastate example
 * missing changes on previous commit
 * more improvements on status message on the viewer and the smacc core
