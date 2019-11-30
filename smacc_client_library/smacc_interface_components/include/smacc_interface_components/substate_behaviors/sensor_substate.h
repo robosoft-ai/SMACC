@@ -40,9 +40,7 @@ public:
     }
     else
     {
-
-      // just propagate the client events from this substate behavior source.
-      
+      // just propagate the client events from this substate behavior source. 
       c1_ = sensor_->onMessageReceived.connect(
           [this](auto &msg) {
             auto *ev2 = new EvTopicMessage<Derived>();

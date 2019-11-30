@@ -3,10 +3,10 @@
 
 namespace smacc
 {
-template <typename T>
-T *Orthogonal::createClient()
+template <typename T, typename ...TArgs>
+T *Orthogonal::createClient(TArgs... args)
 {
-    auto *client = new T();
+    auto *client = new T(args...);
     client->setStateMachine(stateMachine_);
 
     clients_.push_back(client);

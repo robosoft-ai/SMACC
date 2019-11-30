@@ -35,11 +35,13 @@
 #include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
 #include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
 #include <sm_dance_bot/orthogonals/service3_orthogonal.h>
+#include <sm_dance_bot/orthogonals/timer_orthogonal.h>
 
 namespace sm_dance_bot
 {
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
+class StEventCountDown;
 class StRotateDegrees4;
 class StNavigateForward1;
 class StNavigateToWaypoint1;
@@ -125,6 +127,7 @@ struct SmDanceBot
         this->createOrthogonal<KeyboardOrthogonal>();
         this->createOrthogonal<PublisherOrthogonal>();
         this->createOrthogonal<Service3Orthogonal>();
+        this->createOrthogonal<TimerOrthogonal>();
     }
 };
 
@@ -136,6 +139,8 @@ using namespace sm_dance_bot;
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>
+#include <sm_dance_bot/states/st_event_count_down.h>
+
 #include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
 
 #include <sm_dance_bot/states/st_rotate_degrees_6.h>
@@ -157,5 +162,4 @@ using namespace sm_dance_bot;
 #include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
 #include <sm_dance_bot/superstates/ss_f_pattern_1.h>
 #include <sm_dance_bot/superstates/ss_s_pattern_1.h>
-
 } // namespace sm_dance_bot

@@ -56,7 +56,6 @@ class Timer : public smacc::SmaccSubStateBehavior
   {
     TimerTickEvent* event= new TimerTickEvent(this, timedata);
     this->postEvent(event);
-
   }   
 };
 }

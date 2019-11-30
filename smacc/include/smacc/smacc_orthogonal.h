@@ -1,5 +1,6 @@
 #pragma once
 #include <smacc/common.h>
+#include <utility>
 
 namespace smacc
 {
@@ -17,8 +18,8 @@ public:
 
     virtual std::string getName() const;
 
-    template <typename T>
-    T *createClient();
+    template <typename T, typename ...TArgs>
+    T *createClient(TArgs... args);
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
