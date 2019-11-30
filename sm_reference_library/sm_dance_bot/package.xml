@@ -57,6 +57,8 @@
   <depend>smacc_interface_components</depend>
   <depend>smacc_action_client_generic</depend>
   <depend>event_aggregator</depend>
+  <depend>event_countdown</depend>
+  
   <depend>tf</depend>
   
 

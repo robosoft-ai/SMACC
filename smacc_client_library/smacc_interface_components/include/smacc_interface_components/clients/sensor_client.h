@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/interface_components/smacc_topic_subscriber.h>
+#include <smacc/client_bases/smacc_topic_subscriber.h>
 #include <boost/statechart/event.hpp>
 
 #include <ros/ros.h>

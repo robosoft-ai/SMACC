@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc.h>
-#include <smacc/interface_components/smacc_topic_subscriber.h>
+#include <smacc/client_bases/smacc_topic_subscriber.h>
 
 #include <boost/asio/posix/stream_descriptor.hpp>
 #include <boost/asio.hpp>

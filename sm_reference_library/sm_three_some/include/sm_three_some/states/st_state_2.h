@@ -14,7 +14,7 @@ struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
         static_configure<Orthogonal1, SbBehavior1b>();
         static_configure<Orthogonal2, SbBehavior2b>();
 
-        static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo>, EvTopicMessage<SbBehavior1b>, EvTopicMessage<Client1>>();
+        static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo>, mpl::list<EvTopicMessage<SbBehavior1b>, EvTopicMessage<Client1>>>();
     }
 
     void onInitialize()

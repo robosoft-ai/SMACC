@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc/interface_components/smacc_topic_publisher.h>
+#include <smacc/client_bases/smacc_topic_publisher.h>
 #include <std_msgs/String.h>
 
 namespace sm_dance_bot

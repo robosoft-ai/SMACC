@@ -50,6 +50,7 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <depend>catkin</depend>
+  <depend>smacc</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
