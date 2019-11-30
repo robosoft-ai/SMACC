@@ -10,6 +10,10 @@ namespace smacc
 {
 class ISmaccState;
 
+struct empty_object_tag
+{
+};
+
 class LogicUnit
 {
 public:
@@ -21,19 +25,33 @@ public:
 
     virtual void onInitialized();
 
-    template <typename Head, typename... Tail>
-    void initialize(ISmaccState *ownerState, typelist<Head, Tail...>)
+    template<typename TEventList>
+    struct AddTEventType
     {
-        eventTypes.push_back(&typeid(Head));
-        initialize<Tail...>(ownerState, typelist<Tail...>());
-    }
+        LogicUnit* owner_;
+        AddTEventType(LogicUnit* owner):
+            owner_(owner)
+        {
 
-    template <typename Head>
-    void initialize(ISmaccState *ownerState, typelist<Head>)
+        }
+        
+        template <typename T>
+        void operator()(T)
+        {
+            owner_->eventTypes.push_back(&typeid(T));
+        }
+    };
+
+    template <typename TEventList>
+    void initialize(ISmaccState *ownerState, TEventList*)
     {
-        eventTypes.push_back(&typeid(Head));
-
         this->ownerState = ownerState;
+        
+        using boost::mpl::_1;
+        using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
+        AddTEventType<TEventList> op(this);
+        boost::mpl::for_each<wrappedList>(op);
+        
         this->onInitialized();
     }
 

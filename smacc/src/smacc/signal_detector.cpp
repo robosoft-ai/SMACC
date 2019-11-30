@@ -13,7 +13,7 @@ namespace smacc
 * SignalDetector()
 ******************************************************************************************************************
 */
-SignalDetector::SignalDetector(SmaccScheduler *scheduler)
+SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
 {
     scheduler_ = scheduler;
     loop_rate_hz = 10.0;
@@ -35,7 +35,7 @@ void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
 * setProcessorHandle()
 ******************************************************************************************************************
 */
-void SignalDetector::setProcessorHandle(SmaccScheduler::processor_handle processorHandle)
+void SignalDetector::setProcessorHandle(SmaccFifoScheduler::processor_handle processorHandle)
 {
     processorHandle_ = processorHandle;
 }

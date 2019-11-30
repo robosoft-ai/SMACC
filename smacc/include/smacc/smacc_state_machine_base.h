@@ -15,7 +15,7 @@ namespace smacc
 
 /// State Machine
 template <typename DerivedStateMachine, typename InitialStateType>
-struct SmaccStateMachineBase : public ISmaccStateMachine, public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator>
+struct SmaccStateMachineBase : public ISmaccStateMachine, public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccFifoScheduler, SmaccAllocator>
 {
 public:
     //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
@@ -41,7 +41,7 @@ public:
 
     SmaccStateMachineBase(my_context ctx, SignalDetector *signalDetector)
         : ISmaccStateMachine(signalDetector),
-          sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccScheduler, SmaccAllocator>(ctx)
+          sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccFifoScheduler, SmaccAllocator>(ctx)
     {
         auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
         ROS_WARN_STREAM("State machine base creation:" << shortname);

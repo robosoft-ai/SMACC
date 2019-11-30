@@ -8,10 +8,6 @@
 namespace smacc
 {
 
-struct empty_object_tag
-{
-};
-
 template <typename TSource, typename TObjectTag = empty_object_tag>
 struct EvAll : sc::event<EvAll<TSource, TObjectTag>>
 {
@@ -22,6 +18,10 @@ class LuAllEventsGo : public LogicUnit
     std::map<const std::type_info *, bool> triggeredEvents;
 
 public:
+    LuAllEventsGo()
+    {
+    }
+
     virtual void onInitialized() override;
     virtual void onEventNotified(const std::type_info *eventType) override;
     virtual bool triggers() override;

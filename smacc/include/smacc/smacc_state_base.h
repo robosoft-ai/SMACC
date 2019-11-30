@@ -223,7 +223,70 @@ public:
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
   }
 
-  template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
+  template <typename TTransition>
+  struct AddLogicUnitEventType
+  {
+    AddLogicUnitEventType(SmaccLogicUnitInfo &luinfo)
+        : luInfo_(luinfo)
+    {
+    }
+
+    SmaccLogicUnitInfo &luInfo_;
+    template <typename T>
+    void operator()(T)
+    {
+      auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
+      auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+      EventLabel<T>(evinfo->label);
+      luInfo_.sourceEventTypes.push_back(evinfo);
+      ROS_INFO_STREAM("event: " << sourceType->getFullName());
+      ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
+    }
+  };
+
+  template <typename TEventList>
+  static void iterateLogicUnitEventTypes(SmaccLogicUnitInfo &luinfo)
+  {
+    using boost::mpl::_1;
+    using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
+    AddLogicUnitEventType<wrappedList> op(luinfo);
+    boost::mpl::for_each<wrappedList>(op);
+  }
+
+  template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename... TUArgs>
+  static void static_createLogicUnit(TUArgs... args)
+  {
+    SmaccLogicUnitInfo luinfo;
+
+    luinfo.logicUnitType = &typeid(TLUnit);
+
+    std::string eventtypename = typeid(TTriggerEvent).name();
+    auto eventType = TypeInfo::getTypeInfoFromString(eventtypename);
+
+    if (eventType->templateParameters.size() > 1)
+    {
+      luinfo.objectTagType = eventType->templateParameters[1];
+    }
+    else
+    {
+      luinfo.objectTagType = nullptr;
+    }
+
+    iterateLogicUnitEventTypes<TEventList>(luinfo);
+
+    luinfo.factoryFunction = [&, args...](ISmaccState *state) {
+      auto lu = state->createLogicUnit<TLUnit, TTriggerEvent, TEventList>(args...);
+      return lu;
+    };
+
+    const std::type_info *tindex = &(typeid(MostDerived));
+    if (!SmaccStateInfo::logicUnitsInfo.count(tindex))
+      SmaccStateInfo::logicUnitsInfo[tindex] = std::vector<SmaccLogicUnitInfo>();
+
+    SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
+  }
+
+  /*template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
   static void static_createLogicUnit()
   {
     SmaccLogicUnitInfo luinfo;
@@ -254,7 +317,7 @@ public:
 
     SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
   }
-
+*/
   void throwLoopEventFromCondition(bool (MostDerived::*conditionFn)())
   {
     auto *thisobject = static_cast<MostDerived *>(this);

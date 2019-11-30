@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(event_aggregator)
+project(all_events_go)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED smacc)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES event_aggregator
+  LIBRARIES all_events_go
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -120,7 +120,7 @@ include
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/logic_units/lu_all_events_go.cpp
+   src/${PROJECT_NAME}/lu_all_events_go.cpp
  )
 
 ## Add cmake target dependencies of the library
@@ -131,7 +131,7 @@ add_library(${PROJECT_NAME}
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/event_aggregator_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/all_events_go_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -195,7 +195,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_event_aggregator.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_all_events_go.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

@@ -61,14 +61,14 @@ void ISmaccState::requiresComponent(SmaccComponentType *&storage)
 template <typename SmaccClientType>
 void ISmaccState::requiresClient(SmaccClientType *&storage, bool verbose)
 {
-  storage = nullptr;
-  auto& orthogonals = this->getStateMachine().getOrthogonals();
-  for(auto& ortho: orthogonals)
-  {
-    ortho.second->requiresClient(storage,verbose);
-    if(storage != nullptr)
-       break;
-  }
+    storage = nullptr;
+    auto &orthogonals = this->getStateMachine().getOrthogonals();
+    for (auto &ortho : orthogonals)
+    {
+        ortho.second->requiresClient(storage, verbose);
+        if (storage != nullptr)
+            break;
+    }
 }
 //-------------------------------------------------------------------------------------------------------
 
@@ -87,16 +87,28 @@ void ISmaccState::setGlobalSMData(std::string name, T value)
 }
 //-------------------------------------------------------------------------------------------------------
 
-template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
-std::shared_ptr<TLUnit> ISmaccState::createLogicUnit()
+template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
 {
-    auto lu = std::make_shared<TLUnit>();
-    lu->initialize(this, typelist<TEvArgs...>());
+    auto lu = std::make_shared<TLUnit>(args...);
+    TEventList* mock;
+    lu->initialize(this, mock);
     lu->declarePostEvent(typelist<TTriggerEvent>());
     logicUnits_.push_back(lu);
-
     return lu;
 }
+
+
+// template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
+// std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
+// {
+//     auto lu = std::make_shared<TLUnit>(std::forward(args...));
+//     lu->initialize(this, typelist<TEvArgs...>());
+//     lu->declarePostEvent(typelist<TTriggerEvent>());
+//     logicUnits_.push_back(lu);
+
+//     return lu;
+// }
 //-------------------------------------------------------------------------------------------------------
 
 template <typename EventType>

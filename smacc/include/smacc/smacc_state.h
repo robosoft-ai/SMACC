@@ -43,8 +43,8 @@ public:
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
-  template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
-  std::shared_ptr<TLUnit> createLogicUnit();
+  template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+  std::shared_ptr<TLUnit> createLogicUnit(TEvArgs... args);
 
   template <typename EventType>
   void postEvent(const EventType &ev);

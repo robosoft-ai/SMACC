@@ -14,11 +14,11 @@ namespace smacc
 class SignalDetector
 {
 public:
-    SignalDetector(SmaccScheduler *scheduler);
+    SignalDetector(SmaccFifoScheduler *scheduler);
 
     void initialize(ISmaccStateMachine *stateMachine);
 
-    void setProcessorHandle(SmaccScheduler::processor_handle processorHandle);
+    void setProcessorHandle(SmaccFifoScheduler::processor_handle processorHandle);
 
     // Runs the polling loop into a thread...
     void runThread();
@@ -57,9 +57,9 @@ private:
 
     // ---- boost statechart related ----
 
-    SmaccScheduler *scheduler_;
+    SmaccFifoScheduler *scheduler_;
 
-    SmaccScheduler::processor_handle processorHandle_;
+    SmaccFifoScheduler::processor_handle processorHandle_;
 
     boost::thread signalDetectorThread_;
 
@@ -75,13 +75,13 @@ template <typename StateMachineType>
 void run()
 {
     // create the asynchronous state machine scheduler
-    SmaccScheduler scheduler1(true);
+    SmaccFifoScheduler scheduler1(true);
 
     // create the signalDetector component
     SignalDetector signalDetector(&scheduler1);
 
     // create the asynchronous state machine processor
-    SmaccScheduler::processor_handle sm =
+    SmaccFifoScheduler::processor_handle sm =
         scheduler1.create_processor<StateMachineType>(&signalDetector);
 
     // initialize the asynchronous state machine processor

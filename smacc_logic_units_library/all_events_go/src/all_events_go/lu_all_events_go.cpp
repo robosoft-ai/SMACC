@@ -1,5 +1,5 @@
 
-#include <event_aggregator/logic_units/lu_all_events_go.h>
+#include <all_events_go/lu_all_events_go.h>
 #include <smacc/common.h>
 
 namespace smacc
@@ -34,5 +34,4 @@ bool LuAllEventsGo::triggers()
     ROS_INFO("LU ALL TRIGGERED");
     return true;
 }
-
 }
