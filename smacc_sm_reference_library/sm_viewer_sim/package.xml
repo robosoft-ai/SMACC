@@ -56,7 +56,7 @@
   <depend>smacc_planner_switcher</depend>
   <depend>smacc_interface_components</depend>
   <depend>smacc_action_client_generic</depend>
-  <depend>event_aggregator</depend>
+  <depend>all_events_go</depend>
   <depend>tf</depend>
   
 

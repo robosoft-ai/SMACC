@@ -7,7 +7,7 @@ project(sm_viewer_sim)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tracker smacc_planner_switcher smacc_interface_components smacc_action_client_generic tf event_aggregator)
+find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tracker smacc_planner_switcher smacc_interface_components smacc_action_client_generic tf all_events_go)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

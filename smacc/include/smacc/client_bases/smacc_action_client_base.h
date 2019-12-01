@@ -91,6 +91,7 @@ protected:
         actionFeedbackEvent->client = this;
         actionFeedbackEvent->feedbackMessage = *feedback_msg;
         this->postEvent(actionFeedbackEvent);
+        ROS_WARN("FEEDBACK EVENT");
     }
 
     void onResult(const SimpleClientGoalState &state, const ResultConstPtr &result_msg)
