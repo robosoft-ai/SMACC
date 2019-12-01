@@ -17,7 +17,7 @@
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
-#include <forward_global_planner/reel_path_tools.h>
+#include <forward_global_planner/smacc_move_base_client_tools.h>
 
 
 //register this planner as a BaseGlobalPlanner plugin
@@ -140,10 +140,10 @@ const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>&
         double offset = angles::shortest_angular_distance(startyaw, heading_direction);
         heading_direction = startyaw+offset;
         
-        prevState = reel_path_tools::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
+        prevState = smacc_move_base_client::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
         //ROS_INFO("2 - going forward keep orientation pure straight");
         
-        prevState = reel_path_tools::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
+        prevState = smacc_move_base_client::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
     }
     else
     {
@@ -228,7 +228,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
      
     //ROS_INFO("3 - heading to goal orientation");
     //double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
-    //reel_path_tools::makePureSpinningSubPlan(prevState,goalOrientation,plan);
+    //smacc_move_base_client::makePureSpinningSubPlan(prevState,goalOrientation,plan);
 
     //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose,1.0,0,1.0);

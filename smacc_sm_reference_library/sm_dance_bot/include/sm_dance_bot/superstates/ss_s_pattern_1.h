@@ -1,5 +1,5 @@
-// Rotate (90)->Fwd(20)->Rotate (-90)->Fwd (2)->Rotate (-90)->Fwd(20)->Rotate (90)->Fwd(2)
-
+namespace sm_dance_bot
+{
 namespace SS5
 {
 
@@ -74,3 +74,4 @@ using SS = SsSPattern1;
 #include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_loop_start.h>
 
 } // namespace SS5
+}

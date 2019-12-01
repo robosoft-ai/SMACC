@@ -39,20 +39,11 @@
 
 #include <smacc_msgs/SmaccStatus.h>
 #include <rviz/message_filter_display.h>
+#include <rviz/ogre_helpers/arrow.h>
 
 
-
-namespace Ogre
-{
-class SceneNode;
-}
-
-namespace rviz
-{
-class ColorProperty;
-class FloatProperty;
-class IntProperty;
-}
+using namespace Ogre;
+using namespace rviz;
 
 // All the source in this plugin is in its own namespace.  This is not
 // required but is good practice.

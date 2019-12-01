@@ -1,4 +1,5 @@
-
+namespace sm_dance_bot
+{
 namespace SS4
 {
 
@@ -65,3 +66,4 @@ using SS = SsFPattern1;
 #include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_2.h>
 #include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_loop_start.h>
 } // namespace SS4
+}

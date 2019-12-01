@@ -5,7 +5,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees5>,
 
       // Keyboard events
-      smacc::transition<EvKeyPressP<SbKeyboard>, SS4::SsFPattern1>,
+      smacc::transition<EvKeyPressP<SbKeyboard>, sm_dance_bot::SS4::SsFPattern1>,
       smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
 
       // Error events

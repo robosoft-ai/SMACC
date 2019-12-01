@@ -8,7 +8,7 @@
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
    
-namespace reel_path_tools
+namespace smacc_move_base_client
 {
     geometry_msgs::PoseStamped makePureSpinningSubPlan(const geometry_msgs::PoseStamped& start, double dstRads, std::vector<geometry_msgs::PoseStamped>& plan, double puresSpinningRadStep=1000)
     {

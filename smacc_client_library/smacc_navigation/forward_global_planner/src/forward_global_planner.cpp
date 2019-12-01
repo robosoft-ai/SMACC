@@ -8,7 +8,7 @@
 #include <boost/range/algorithm/copy.hpp>
 #include <pluginlib/class_list_macros.h>
 #include <forward_global_planner/forward_global_planner.h>
-#include <forward_global_planner/reel_path_tools.h>
+#include <forward_global_planner/smacc_move_base_client_tools.h>
 #include <fstream>
 #include <streambuf>
 #include <nav_msgs/Path.h>
@@ -61,9 +61,9 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
         // skip initial pure spinning and initial straight motion
         //ROS_INFO("1 - heading to goal position pure spinning");
         double heading_direction = atan2(dy, dx);
-        prevState = reel_path_tools::makePureSpinningSubPlan(start,heading_direction,plan,puresSpinningRadStep_);
+        prevState = smacc_move_base_client::makePureSpinningSubPlan(start,heading_direction,plan,puresSpinningRadStep_);
         //ROS_INFO("2 - going forward keep orientation pure straight");
-        prevState = reel_path_tools::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
+        prevState = smacc_move_base_client::makePureStraightSubPlan(prevState, goal.pose.position,  lenght, plan);
     }
     else
     {
@@ -72,7 +72,7 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped& start,
 
     //ROS_INFO("3 - heading to goal orientation");
     double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
-    reel_path_tools::makePureSpinningSubPlan(prevState,goalOrientation,plan,puresSpinningRadStep_);
+    smacc_move_base_client::makePureSpinningSubPlan(prevState,goalOrientation,plan,puresSpinningRadStep_);
     
     nav_msgs::Path planMsg;
     planMsg.poses = plan;

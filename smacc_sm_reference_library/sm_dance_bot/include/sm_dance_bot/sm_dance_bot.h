@@ -58,6 +58,12 @@ class StRotateDegrees6;
 class StNavigateReverse3;
 
 //SUPERSTATE FORWARD DECLARATIONS
+
+
+// MEGASTATE FORWARD DECLARATIONS
+class MsDanceBotRunMode;
+class MsDanceBotRecoveryMode;
+
 namespace SS1
 {
 class SsRadialPattern1;
@@ -82,10 +88,6 @@ namespace SS5
 {
 class SsSPattern1;
 }
-
-// MEGASTATE FORWARD DECLARATIONS
-class MsDanceBotRunMode;
-class MsDanceBotRecoveryMode;
 
 // custom smd_dance_bot event
 struct EvGlobalError: sc::event<EvGlobalError>
@@ -131,11 +133,16 @@ struct SmDanceBot
     }
 };
 
-using namespace sm_dance_bot;
-
 //MEGASTATES
 #include <sm_dance_bot/mode_states/ms_dance_bot_run_mode.h>
 #include <sm_dance_bot/mode_states/ms_dance_bot_recovery_mode.h>
+
+//SUPERSTATES
+#include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
+#include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
+#include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
+#include <sm_dance_bot/superstates/ss_f_pattern_1.h>
+#include <sm_dance_bot/superstates/ss_s_pattern_1.h>
 
 //STATES
 #include <sm_dance_bot/states/st_acquire_sensors.h>
@@ -156,10 +163,5 @@ using namespace sm_dance_bot;
 #include <sm_dance_bot/states/st_navigate_reverse_1.h>
 #include <sm_dance_bot/states/st_navigate_reverse_3.h>
 
-//SUPERSTATES
-#include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
-#include <sm_dance_bot/superstates/ss_f_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_s_pattern_1.h>
+
 } // namespace sm_dance_bot

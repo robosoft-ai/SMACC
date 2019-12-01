@@ -31,17 +31,10 @@
 #define IMU_VISUAL_H
 
 #include <sensor_msgs/Imu.h>
+#include <rviz/ogre_helpers/arrow.h>
 
-namespace Ogre
-{
-class Vector3;
-class Quaternion;
-}
-
-namespace rviz
-{
-class Arrow;
-}
+using namespace rviz;
+using namespace Ogre;
 
 namespace smacc_rviz_plugin
 {

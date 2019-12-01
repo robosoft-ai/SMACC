@@ -7,7 +7,7 @@ struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, MsDanceBotRunM
        smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees3>,
 
        // Keyboard event
-       smacc::transition<EvKeyPressP<SbKeyboard>, SS2::SsRadialPattern2>,
+       smacc::transition<EvKeyPressP<SbKeyboard>, sm_dance_bot::SS2::SsRadialPattern2>,
        smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees3>,
 
        // Sensor events

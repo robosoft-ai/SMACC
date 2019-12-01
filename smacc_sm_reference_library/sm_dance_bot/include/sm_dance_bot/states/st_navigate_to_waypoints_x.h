@@ -59,14 +59,14 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       // Expected event
       sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>,
 
-      //smacc::transition<EvCounter<LuCounter, 14>, SS1::SsRadialPattern1>,
-      //smacc::transition<EvCounter<LuCounter, 19>, SS1::SsRadialPattern1>,
-      //smacc::transition<EvWaypoint1, SS1::SsRadialPattern1>,
-      smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, SS1::SsRadialPattern1, TRANSITION_1>,
-      smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, SS2::SsRadialPattern2, TRANSITION_2>,
-      smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, SS3::SsRadialPattern3, TRANSITION_3>,
-      smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, SS4::SsFPattern1, TRANSITION_4>,
-      smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, SS5::SsSPattern1, TRANSITION_5>,
+      //smacc::transition<EvCounter<LuCounter, 14>, sm_dance_bot::SS1::SsRadialPattern1>,
+      //smacc::transition<EvCounter<LuCounter, 19>, sm_dance_bot::SS1::SsRadialPattern1>,
+      //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
+      smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
+      smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
+      smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
+      smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
+      smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
 
       // Keyboard event
       sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
@@ -94,9 +94,9 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
 
-    // static_transition_dynamic_logic_unit< SS1::SsRadialPattern1,
-    //                                       SS2::SsRadialPattern2,
-    //                                       SS2::SsRadialPattern3>();
+    // static_transition_dynamic_logic_unit< sm_dance_bot::SS1::SsRadialPattern1,
+    //                                       sm_dance_bot::SS2::SsRadialPattern2,
+    //                                       sm_dance_bot::SS2::SsRadialPattern3>();
 
     // static_createLogicUnit<lusource, outevent, invent, dststate1, dststate2 ...>();
     // static_createLogicUnit<LuCounter, EvCountFinish<LuCounter>,    >();

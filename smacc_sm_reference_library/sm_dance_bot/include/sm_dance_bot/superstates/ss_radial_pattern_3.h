@@ -1,4 +1,5 @@
-
+namespace sm_dance_bot
+{
 namespace SS3
 {
 //forward declaration for initial ssr
@@ -51,3 +52,4 @@ using SS = SsRadialPattern3;
 #include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_rotate.h>
 #include <sm_dance_bot/superstate_routines/radial_motion/ssr_radial_loop_start.h>
 } // namespace SS3
+}

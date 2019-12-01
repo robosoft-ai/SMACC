@@ -7,7 +7,7 @@ struct StRotateDegrees6 : smacc::SmaccState<StRotateDegrees6, MsDanceBotRunMode>
       smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, StNavigateReverse3>,
 
       // Keyboard events
-      smacc::transition<EvKeyPressP<SbKeyboard>, SS5::SsSPattern1>,
+      smacc::transition<EvKeyPressP<SbKeyboard>, sm_dance_bot::SS5::SsSPattern1>,
       smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateReverse3>,
 
       // Error events
