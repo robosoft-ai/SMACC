@@ -17,8 +17,8 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         //   static_configure<SensorOrthogonal, SbConditionTemperatureSensor>();
         //   static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);
 
-        static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvTimer<SmaccTimerClient>>>(100);
+        static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvTimer<SmaccTimerClient>>>(5);
 
-        static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<MoveBaseActionClient>>>(100);
+        //static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<smacc::SmaccMoveBaseActionClient>>>(100);
     }
 };

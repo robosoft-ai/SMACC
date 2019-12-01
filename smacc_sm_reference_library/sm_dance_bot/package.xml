@@ -59,6 +59,9 @@
   <depend>all_events_go</depend>
   <depend>event_countdown</depend>
   
+  <depend>ridgeback_gazebo</depend>
+  <depend>ridgeback_navigation</depend>
+  
   <depend>tf</depend>
   
 

@@ -1,6 +1,7 @@
 
 #include <smacc/common.h>
 #include <event_countdown/event_countdown.h>
+#include <memory>
 
 namespace smacc
 {
