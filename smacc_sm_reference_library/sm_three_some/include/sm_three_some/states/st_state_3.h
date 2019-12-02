@@ -4,7 +4,13 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
 {
     using SmaccState::SmaccState;
 
-    typedef smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, SS1::Ss1> reactions;
+    typedef mpl::list<
+                    smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, SS1::Ss1>,
+
+                    // Keyboard events
+                    smacc::transition<EvKeyPressP<SbKeyboard>, StState1>,
+                    smacc::transition<EvKeyPressN<SbKeyboard>, StState3>
+                    > reactions;
 
     static void onDefinition()
     {

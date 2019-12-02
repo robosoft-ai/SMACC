@@ -14,7 +14,14 @@ struct Ss1 : smacc::SmaccState<Ss1, SmThreeSome, Ssr1>
 public:
     using SmaccState::SmaccState;
 
-    typedef smacc::transition<EvLoopContinue<Ssr1>, StState1> reactions;
+    typedef mpl::list<
+                    smacc::transition<EvLoopContinue<Ssr1>, StState1>,
+
+                    // Keyboard events
+                    smacc::transition<EvKeyPressP<SbKeyboard>, StState3>,
+                    smacc::transition<EvKeyPressN<SbKeyboard>, StState1>
+            >
+             reactions;
 
     static void onDefinition()
     {

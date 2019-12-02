@@ -5,7 +5,12 @@ struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<EvAll<LuAllEventsGo>, StState3>>
+                    smacc::transition<EvAll<LuAllEventsGo>, StState3>,
+                    
+                    // Keyboard events
+                    smacc::transition<EvKeyPressP<SbKeyboard>, StState1>,
+                    smacc::transition<EvKeyPressN<SbKeyboard>, StState3>
+        >
         reactions;
 
     static void onDefinition()
