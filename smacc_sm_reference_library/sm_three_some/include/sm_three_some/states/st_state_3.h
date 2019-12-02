@@ -8,8 +8,8 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
                     smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, SS1::Ss1>,
 
                     // Keyboard events
-                    smacc::transition<EvKeyPressP<SbKeyboard>, StState1>,
-                    smacc::transition<EvKeyPressN<SbKeyboard>, StState3>
+                    smacc::transition<EvKeyPressP<SbKeyboard>, StState2>,
+                    smacc::transition<EvKeyPressN<SbKeyboard>, SS1::Ss1>
                     > reactions;
 
     static void onDefinition()

@@ -99,7 +99,6 @@ using namespace sm_dance_bot;
 using namespace ros_timer_client;
 using namespace smacc;
 
-
 namespace sm_dance_bot
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
