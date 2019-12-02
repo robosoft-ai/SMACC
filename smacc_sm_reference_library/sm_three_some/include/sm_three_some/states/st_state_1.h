@@ -4,8 +4,7 @@ struct StState1 : smacc::SmaccState<StState1, SmThreeSome>
 {
     using SmaccState::SmaccState;
 
-    typedef mpl::list<smacc::transition<smacc::EvTopicMessage<Client1>, StState2>,
-                      smacc::transition<smacc::EvTopicMessage<SbBehavior2>, StState3>
+    typedef mpl::list<smacc::transition<smacc::EvTopicMessage<Client1>, StState2>
 
                     //   // Keyboard events
                     //   smacc::transition<EvKeyPressP<SbKeyboard>, StRotateDegrees4>,

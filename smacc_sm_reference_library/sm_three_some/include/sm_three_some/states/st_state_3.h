@@ -4,7 +4,7 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
 {
     using SmaccState::SmaccState;
 
-    typedef smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, StState2> reactions;
+    typedef smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, SS1::Ss1> reactions;
 
     static void onDefinition()
     {
