@@ -1,6 +1,6 @@
 #!/bin/bash
 
-GITHUB_USER=pabloinigoblasco
+GITHUB_USER=reelrobotics
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK
