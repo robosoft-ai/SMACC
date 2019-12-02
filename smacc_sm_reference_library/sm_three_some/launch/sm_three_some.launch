@@ -1,3 +1,5 @@
 <launch>
     <node pkg="sm_three_some" type="sm_three_some_node" name="sm_three_some" />
+
+    <node pkg="sm_three_some" type="keyboard_node.py" name="keyboard_node" launch-prefix="$(arg server_nodes_xterms)"/>
 </launch>
