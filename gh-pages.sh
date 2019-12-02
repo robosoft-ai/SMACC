@@ -67,10 +67,13 @@ if [ -n "$GITHUB_TOKEN" ]; then
     echo $(git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis")
     git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis"
 
+    git diff origin/master..HEAD
     echo "pushing new documentation"
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
     git push -f -q https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null
+
+    # going back to travis build dir
     cd "$TRAVIS_BUILD_DIR"
 fi

@@ -3,31 +3,26 @@
 template <typename TSource>
 struct EvWaypoint1 : sc::event<EvWaypoint1<TSource>>
 {
-  
 };
 
 template <typename TSource>
 struct EvWaypoint2 : sc::event<EvWaypoint2<TSource>>
 {
-  
 };
 
 template <typename TSource>
 struct EvWaypoint3 : sc::event<EvWaypoint3<TSource>>
 {
-  
 };
 
 template <typename TSource>
 struct EvWaypoint4 : sc::event<EvWaypoint4<TSource>>
 {
-  
 };
 
 template <typename TSource>
 struct EvWaypoint5 : sc::event<EvWaypoint5<TSource>>
 {
-  
 };
 
 struct Pose2D
@@ -49,19 +44,28 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 {
   using SmaccState::SmaccState;
 
-  struct TRANSITION_1: SUCCESS{};
-  struct TRANSITION_2: SUCCESS{};
-  struct TRANSITION_3: SUCCESS{};
-  struct TRANSITION_4: SUCCESS{};
-  struct TRANSITION_5: SUCCESS{};
-  
+  struct TRANSITION_1 : SUCCESS
+  {
+  };
+  struct TRANSITION_2 : SUCCESS
+  {
+  };
+  struct TRANSITION_3 : SUCCESS
+  {
+  };
+  struct TRANSITION_4 : SUCCESS
+  {
+  };
+  struct TRANSITION_5 : SUCCESS
+  {
+  };
+
   typedef mpl::list<
       // Expected event
       sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>,
 
-      //smacc::transition<EvCounter<LuCounter, 14>, sm_dance_bot::SS1::SsRadialPattern1>,
-      //smacc::transition<EvCounter<LuCounter, 19>, sm_dance_bot::SS1::SsRadialPattern1>,
       //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
+
       smacc::transition<EvWaypoint1<StNavigateToWaypointsX>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
       smacc::transition<EvWaypoint2<StNavigateToWaypointsX>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
       smacc::transition<EvWaypoint3<StNavigateToWaypointsX>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
@@ -75,7 +79,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
-      reactions;
+          reactions;
 
   int currentIteration;
 
@@ -85,14 +89,35 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
 
-    //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>, mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
+    /*
+    std::vector<Pose2D> waypoints =
+        {
+            {3.0, -2.0, 0},
+            {-5.5, 3.0, 0},
+            {-11.0, -5.0, 0},
+            {2.0, -8.58, 0},
+            {-10.0, 14.5, 0}};
+*/
+    //static_configure<NavigationOrthogonal, SbWaypointsNavigator>(waypoints);
 
-    //static_createLogicUnit<LuCounter, mpl::list<EvCounter1<LuCounter>, EvCounter2<LuCounter>, EvCounter1<LuCounter>, EvCounter4<LuCounter> EvCounter5<LuCounter>>,
-    //                       EvActionSucceeded<MoveBaseClient>>();
+    /*
+    static_createLogicUnit<LuRoundRobin, 
+                              mpl::list<
+                                   EvWaypoint1<StNavigateToWaypointsX>,
+                                   EvWaypoint2<StNavigateToWaypointsX>,
+                                   EvWaypoint3<StNavigateToWaypointsX>, 
+                                   EvWaypoint4<StNavigateToWaypointsX>,
+                                   EvWaypoint5<StNavigateToWaypointsX>
+                                  >, 
+                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>();
+                         */
 
-    //static_createLogicUnit<LuCounter, LuCounter::GenerateListEvents<20>::type, EvActionSucceeded<MoveBaseClient>>();
+    // what about persistence
+    // would we have any output event?
 
-    //static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo, Unit1>,           EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
+    // WaypointNaigator
+    // it is a logic unit
+    // it does not contain the transition table internally
 
     // static_transition_dynamic_logic_unit< sm_dance_bot::SS1::SsRadialPattern1,
     //                                       sm_dance_bot::SS2::SsRadialPattern2,
@@ -106,8 +131,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     // function<LogicUnitType, mpl::list<>, mpl::list<>>();
     // function<LogicUnitType, TEvOut, mpl::list<>>();
     // function<LogicUnitType, mpl::list<>, TEvIn>();
-
-    //static_createLogicUnit<LuAllEventsGo,  EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>();
 
     // static_transition(
     // (
@@ -128,7 +151,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
-    // x, y, yaw (orientation)
     std::vector<Pose2D> waypoints =
         {
             {3.0, -2.0, 0},
@@ -136,6 +158,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
             {-11.0, -5.0, 0},
             {2.0, -8.58, 0},
             {-10.0, 14.5, 0}};
+
+    // x, y, yaw (orientation)
 
     if (currentIteration > waypoints.size())
     {
