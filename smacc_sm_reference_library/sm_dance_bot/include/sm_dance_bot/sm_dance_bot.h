@@ -102,7 +102,8 @@ using namespace smacc;
 
 namespace sm_dance_bot
 {
-// STATE MACHINE
+/// \brief Advanced example of state machine with smacc that shows multiple techniques
+///  for the development of state machines
 struct SmDanceBot
     : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
 {

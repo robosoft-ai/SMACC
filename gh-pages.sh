@@ -1,20 +1,22 @@
 #!/bin/bash
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
+# uncomment this for local testing and comment the TRAVIS BLOCK
 #TRAVIS_BRANCH=master
 #TRAVIS_REPO_SLUG=smacc
-#GITHUB_TOKEN=
+#GITHUB_TOKEN=a1afdac67294a92e49a695a7b880ed4b5a08628e
 #CATKIN_WORKSPACE_ROOT=`pwd`/../..
-# -----------------------------------
-
+# ----------- TRAVIS --------------------------
 # industrial_ci catkin workspace
 CATKIN_WORKSPACE_ROOT=/root/target_ws 
+#---------------------------------------
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
 
 echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
+    echo "GH - PAGES script working directory: $TRAVIS_BUILD_DIR"
     cd "$TRAVIS_BUILD_DIR"
 
     #find / | grep SMACC
@@ -45,12 +47,14 @@ if [ -n "$GITHUB_TOKEN" ]; then
     doxygen Doxyfile
 
     echo "moving result files to branch directory..."
+    ls /tmp
     mv /tmp/html /tmp/doc/$TRAVIS_BRANCH
     mv /tmp/latex /tmp/doc/$TRAVIS_BRANCH
 
     #git init
     #git checkout -b gh-pages
-    "cd /tmp/doc/$TRAVIS_BRANCH"
+    echo "cd /tmp/doc/$TRAVIS_BRANCH -> directories:"
+    ls /tmp/doc
     cd /tmp/doc/$TRAVIS_BRANCH
 
     git add .
