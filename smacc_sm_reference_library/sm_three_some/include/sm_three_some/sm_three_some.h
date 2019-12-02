@@ -8,12 +8,15 @@
 // ORTHOGONALS
 #include <sm_three_some/orthogonals/orthogonal_1.h>
 #include <sm_three_some/orthogonals/orthogonal_2.h>
+#include <sm_three_some/orthogonals/keyboard_orthogonal.h>
 
 //SUBSTATE BEHAVIORS
 #include <sm_three_some/substate_behaviors/client_1/substate_behavior_1.h>
 #include <sm_three_some/substate_behaviors/client_1/substate_behavior_1b.h>
 #include <sm_three_some/substate_behaviors/client_2/substate_behavior_2.h>
 #include <sm_three_some/substate_behaviors/client_2/substate_behavior_2b.h>
+#include <sm_three_some/substate_behaviors/keyboard/sb_keyboard_substate.h>
+
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
@@ -43,6 +46,7 @@ struct SmThreeSome
     {
         this->createOrthogonal<Orthogonal1>();
         this->createOrthogonal<Orthogonal2>();
+        this->createOrthogonal<KeyboardOrthogonal>();
     }
 };
 } // namespace sm_three_some

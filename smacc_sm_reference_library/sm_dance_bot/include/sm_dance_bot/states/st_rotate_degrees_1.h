@@ -6,10 +6,6 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
       // Expected event
       smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, StNavigateForward1>,
 
-      // Keyboard event
-      smacc::transition<EvKeyPressP<SbKeyboard>, sm_dance_bot::SS1::SsRadialPattern1>,
-      smacc::transition<EvKeyPressN<SbKeyboard>, StNavigateForward1>,
-
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
@@ -19,7 +15,6 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
   {
     static_configure<NavigationOrthogonal, SbRotate>(/*30*/ 90);
     static_configure<ToolOrthogonal, SbToolStop>();
-    static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
   }
 

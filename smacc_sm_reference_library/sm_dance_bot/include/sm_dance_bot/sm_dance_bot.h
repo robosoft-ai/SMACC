@@ -32,7 +32,6 @@
 #include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
 #include <sm_dance_bot/orthogonals/tool_orthogonal.h>
 #include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
-#include <sm_dance_bot/orthogonals/keyboard_orthogonal.h>
 #include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
 #include <sm_dance_bot/orthogonals/service3_orthogonal.h>
 #include <sm_dance_bot/orthogonals/timer_orthogonal.h>
@@ -127,7 +126,6 @@ struct SmDanceBot
         this->createOrthogonal<ObstaclePerceptionOrthogonal>();
         this->createOrthogonal<ToolOrthogonal>();
         this->createOrthogonal<SensorOrthogonal>();
-        this->createOrthogonal<KeyboardOrthogonal>();
         this->createOrthogonal<PublisherOrthogonal>();
         this->createOrthogonal<Service3Orthogonal>();
         this->createOrthogonal<TimerOrthogonal>();

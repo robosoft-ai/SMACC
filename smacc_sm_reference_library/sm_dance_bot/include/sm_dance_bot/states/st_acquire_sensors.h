@@ -27,7 +27,6 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
    static void onDefinition()
    {
       static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
-      static_configure<KeyboardOrthogonal, SbKeyboard>();
       static_configure<PublisherOrthogonal, SbStringPublisher>("Hello World!");
       static_configure<SensorOrthogonal, SbConditionTemperatureSensor>();
       static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);

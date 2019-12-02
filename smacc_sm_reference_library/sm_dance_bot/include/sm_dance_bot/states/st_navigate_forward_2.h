@@ -4,10 +4,6 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
       // Expected event
       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees5>,
 
-      // Keyboard events
-      smacc::transition<EvKeyPressP<SbKeyboard>, sm_dance_bot::SS4::SsFPattern1>,
-      smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees5>,
-
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
@@ -20,7 +16,6 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
   {
     static_configure<NavigationOrthogonal,SbNavigateForward>(1);
     static_configure<ToolOrthogonal,SbToolStop>();
-    static_configure<KeyboardOrthogonal,SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
   }
 

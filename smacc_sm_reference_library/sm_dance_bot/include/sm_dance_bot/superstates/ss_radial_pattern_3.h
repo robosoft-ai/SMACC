@@ -17,10 +17,6 @@ public:
         // Expected event
         smacc::transition<EvLoopEnd<SsrRadialLoopStart>, StRotateDegrees4, ENDLOOP>//,
 
-        // Keyboard events
-        //smacc::transition<EvKeyPressN<SbKeyboard>, StRotateDegrees4>,
-        //smacc::transition<EvKeyPressP<SbKeyboard>, StNavigateToWaypointsX>,
-
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
         //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>
@@ -29,7 +25,6 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<KeyboardOrthogonal, SbKeyboard>();
         //static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
     }
 

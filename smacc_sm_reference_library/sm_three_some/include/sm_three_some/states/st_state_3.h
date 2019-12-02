@@ -10,6 +10,7 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
     {
         static_configure<Orthogonal1, SbBehavior1b>();
         static_configure<Orthogonal2, SbBehavior2b>();
+        static_configure<KeyboardOrthogonal, SbKeyboard>();
     }
 
     void onInitialize()

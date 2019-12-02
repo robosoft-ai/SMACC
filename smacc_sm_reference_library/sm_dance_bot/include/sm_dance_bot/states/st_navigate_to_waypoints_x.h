@@ -72,10 +72,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       smacc::transition<EvWaypoint4<StNavigateToWaypointsX>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
       smacc::transition<EvWaypoint5<StNavigateToWaypointsX>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
 
-      // Keyboard event
-      sc::custom_reaction<EvKeyPressN<SbKeyboard>>,
-      sc::custom_reaction<EvKeyPressP<SbKeyboard>>,
-
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
@@ -86,7 +82,6 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   static void onDefinition()
   {
     static_configure<ToolOrthogonal, SbToolStart>();
-    static_configure<KeyboardOrthogonal, SbKeyboard>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
 
     /*

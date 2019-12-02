@@ -1,11 +1,11 @@
 #pragma once
 
-#include <sm_dance_bot/substate_behaviors/keyboard/keyboard_client.h>
+#include <sm_three_some/substate_behaviors/keyboard/keyboard_client.h>
 #include <smacc/smacc_substate_behavior.h>
 
 #include <std_msgs/UInt16.h>
 
-namespace sm_dance_bot
+namespace sm_three_some
 {
 class SbKeyboard : public smacc::SmaccSubStateBehavior
 {
@@ -88,4 +88,4 @@ public:
         }
 };
 
-} // namespace sm_dance_bot
+} // namespace sm_three_some
