@@ -1,10 +1,12 @@
 #!/bin/bash
 
+GITHUB_USER=pabloinigoblasco
+
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK
 #TRAVIS_BRANCH=master
 #TRAVIS_REPO_SLUG=smacc
-#GITHUB_TOKEN=a1afdac67294a92e49a695a7b880ed4b5a08628e
+#GITHUB_TOKEN=
 #CATKIN_WORKSPACE_ROOT=`pwd`/../..
 # ----------- TRAVIS --------------------------
 # industrial_ci catkin workspace
@@ -72,7 +74,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -q https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null
+    git push -f -q https://$GIHTUB_USER:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null
 
     # going back to travis build dir
     cd "$TRAVIS_BUILD_DIR"
