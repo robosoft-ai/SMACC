@@ -228,26 +228,4 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     this->setGlobalSMData("navigation_x_iteration", currentIteration);
     return navigateState();
   }
-
-  sc::result react(const EvKeyPressN<SbKeyboard> &ev)
-  {
-    currentIteration++;
-    this->setGlobalSMData("navigation_x_iteration", currentIteration);
-    return navigateState();
-  }
-
-  sc::result react(const EvKeyPressP<SbKeyboard> &ev)
-  {
-    switch (currentIteration)
-    {
-    case 0:
-      return transit<StRotateDegrees2>();
-    case 1:
-      return transit<StRotateDegrees3>();
-    default:
-      ROS_INFO("error in transition");
-    }
-
-    return forward_event();
-  }
 };

@@ -3,7 +3,7 @@
 #include <sensor_msgs/LaserScan.h>
 
 //SUBSTATE BEHAVIORS
-#include <sm_dance_bot/substate_behaviors/timer/sb_timer_substate.h>
+#include <ros_timer_client/sb_timer_substate.h>
 
 #include <sm_dance_bot/substate_behaviors/navigation/sb_rotate.h>
 #include <sm_dance_bot/substate_behaviors/navigation/sb_undo_path_backwards.h>
@@ -13,7 +13,6 @@
 
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
 #include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
-#include <sm_dance_bot/substate_behaviors/keyboard/sb_keyboard_substate.h>
 
 #include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
 
@@ -97,7 +96,9 @@ struct EvGlobalError: sc::event<EvGlobalError>
 } // namespace sm_dance_bot
 
 using namespace sm_dance_bot;
+using namespace ros_timer_client;
 using namespace smacc;
+
 
 namespace sm_dance_bot
 {
