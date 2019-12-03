@@ -3,18 +3,29 @@ struct Ssr1 : smacc::SmaccState<Ssr1, SS>
 public:
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvTopicMessage<SbBehavior1b>, Ssr2> reactions;
+  typedef smacc::transition<EvLoopContinue<Ssr1>, Ssr2, CONTINUELOOP> reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()
   {
-    static_configure<Orthogonal1, SbBehavior1b>();
-    static_configure<Orthogonal2, SbBehavior2b>();
-    static_configure<KeyboardOrthogonal, SbKeyboard>();
   }
 
   //-------------------------------------------------------------------------------
   void onInitialize()
   {
+  }
+
+  bool loopWhileCondition()
+  {
+    auto &superstate = this->context<SS>();
+
+    ROS_INFO("Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
+    return superstate.iteration_count++ < superstate.total_iterations();
+  }
+
+  void onEntry()
+  {
+    ROS_INFO("LOOP START ON ENTRY");
+    throwLoopEventFromCondition(&Ssr1::loopWhileCondition);
   }
 };

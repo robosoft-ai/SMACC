@@ -17,11 +17,15 @@ public:
     typedef mpl::list<
                     smacc::transition<EvLoopContinue<Ssr1>, StState1>,
 
+                    // smacc::transition<EvSuperstateFinish<Ssr3>, StState1>
+
                     // Keyboard events
-                    smacc::transition<EvKeyPressP<SbKeyboard>, StState3>,
-                    smacc::transition<EvKeyPressN<SbKeyboard>, StState1>
+                    smacc::transition<EvLoopEnd<Ssr1>, StState1>
             >
              reactions;
+
+    static constexpr int total_iterations() { return 3; }
+    int iteration_count = 0;
 
     static void onDefinition()
     {

@@ -92,6 +92,8 @@ protected:
         actionFeedbackEvent->feedbackMessage = *feedback_msg;
         this->postEvent(actionFeedbackEvent);
         ROS_WARN("FEEDBACK EVENT");
+
+        //invokeOurFeedbackSignal(feedback_msg);
     }
 
     void onResult(const SimpleClientGoalState &state, const ResultConstPtr &result_msg)
@@ -113,6 +115,8 @@ protected:
 
             ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
             this->postEvent(successEvent);
+            
+            //invokeOurSuccessSignal(feedback_msg);
         }
         else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
         {

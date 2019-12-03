@@ -2,7 +2,12 @@ struct Ssr2 : smacc::SmaccState<Ssr2, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvTopicMessage<SbBehavior2b>, Ssr3> reactions;
+  typedef mpl::list<
+      smacc::transition<EvTopicMessage<SbBehavior2b>, Ssr3>,
+
+      smacc::transition<EvKeyPressN<SbKeyboard>, Ssr3>,
+      smacc::transition<EvKeyPressP<SbKeyboard>, Ssr1>>
+      reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()
