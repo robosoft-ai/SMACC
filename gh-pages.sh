@@ -69,7 +69,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     echo $(git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis")
     git -c user.name='travis' -c user.email='travis' commit -q -m "gh-pages travis"
 
-    git diff origin/master..HEAD
+    #git diff origin/master..HEAD
     echo "pushing new documentation"
     
     # Make sure to make the output quiet, or else the API token will leak!
