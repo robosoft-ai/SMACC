@@ -71,6 +71,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     #git diff origin/master..HEAD
     echo "pushing new documentation"
+    echo "GITHUB USER: $GITHUB_USER"
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
