@@ -74,7 +74,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -q https://$GIHTUB_USER:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages&>/dev/null
+    git push -f -v https://$GIHTUB_USER:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages > pushout.txt
+    cat pushout.txt
 
     # going back to travis build dir
     cd "$TRAVIS_BUILD_DIR"
