@@ -128,11 +128,29 @@ struct EvStateFinish : sc::event<EvStateFinish<StateType>>
 template <typename TSource>
 struct EvLoopContinue : sc::event<EvLoopContinue<TSource>>
 {
+  static std::string getDefaultTransitionTag()
+  {
+    return demangledTypeName<CONTINUELOOP>();
+  }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<CONTINUELOOP>();
+  }
 };
 
 template <typename TSource>
 struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
 {
+  static std::string getDefaultTransitionTag()
+  {
+    return demangledTypeName<ENDLOOP>();
+  }
+
+  static std::string getDefaultTransitionType()
+  {
+    return demangledTypeName<ENDLOOP>();
+  }
 };
 
 } // namespace smacc
