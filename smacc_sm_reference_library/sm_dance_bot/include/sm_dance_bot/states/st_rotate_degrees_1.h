@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
@@ -23,3 +26,4 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
     
   }
 };
+}

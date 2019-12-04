@@ -1,3 +1,5 @@
+#include <smacc/smacc.h>
+
 namespace sm_dance_bot
 {
 namespace SS3

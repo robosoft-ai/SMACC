@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceBotRunMode>
 {
   using SmaccState::SmaccState;
@@ -24,3 +27,4 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
     
   }
 };
+}

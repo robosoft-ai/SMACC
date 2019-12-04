@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 class MsDanceBotRunMode : public smacc::SmaccState<MsDanceBotRunMode, SmDanceBot, StAcquireSensors>
 {
 public:
@@ -5,3 +8,4 @@ public:
 
    typedef smacc::transition<EvGlobalError, MsDanceBotRecoveryMode> reactions;
 };
+}

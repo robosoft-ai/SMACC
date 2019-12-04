@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunMode>
 {
   typedef mpl::list<
@@ -24,3 +27,4 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
   {
   }
 };
+}

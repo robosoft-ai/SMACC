@@ -1,3 +1,5 @@
+#include <smacc/smacc.h>
+
 namespace sm_dance_bot
 {
 namespace SS5
@@ -27,7 +29,7 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::transition<EvLoopEnd<SsrSPatternLoopStart>, StRotateDegrees6, ENDLOOP>//,
+        smacc::transition<EvLoopEnd<SsrSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
@@ -69,4 +71,4 @@ using SS = SsSPattern1;
 #include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_loop_start.h>
 
 } // namespace SS5
-}
+} // namespace sm_dance_bot

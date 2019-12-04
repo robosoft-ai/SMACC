@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 {
     using SmaccState::SmaccState;
@@ -21,3 +24,4 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         //static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<smacc::SmaccMoveBaseActionClient>>>(100);
     }
 };
+}

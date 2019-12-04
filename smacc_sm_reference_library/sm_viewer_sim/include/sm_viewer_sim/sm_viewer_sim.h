@@ -64,8 +64,8 @@ struct SmViewerSim : smacc::SmaccStateMachineBase<SmViewerSim, MsRunMode>
 } // namespace sm_viewer_sim
 
 // MODE STATES
-#include <sm_viewer_sim/mode_states/ms_recovery_mode.h>
-#include <sm_viewer_sim/mode_states/ms_run_mode.h>
+#include <sm_viewer_sim/modestates/ms_recovery_mode.h>
+#include <sm_viewer_sim/modestates/ms_run_mode.h>
 
 // STATES
 #include <sm_viewer_sim/states/st_st1.h>

@@ -1,4 +1,6 @@
-
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 
 template <typename TSource>
 struct EvWaypoint1 : sc::event<EvWaypoint1<TSource>>
@@ -229,3 +231,5 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     return navigateState();
   }
 };
+
+}

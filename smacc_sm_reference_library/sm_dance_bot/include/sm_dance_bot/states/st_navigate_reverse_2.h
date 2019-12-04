@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, MsDanceBotRunMode>
 {
    using SmaccState::SmaccState;
@@ -22,3 +25,4 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, MsDanceBotRunM
    {
    }
 };
+}

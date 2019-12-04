@@ -1,3 +1,6 @@
+#include <smacc/smacc.h>
+namespace sm_dance_bot
+{
 struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
    // transition names
@@ -41,3 +44,4 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       //allSensorsReady.setTriggerEventTypesCount(2);
    }
 };
+}

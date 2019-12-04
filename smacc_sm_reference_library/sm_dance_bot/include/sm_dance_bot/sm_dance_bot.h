@@ -57,7 +57,6 @@ class StNavigateReverse3;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
-
 // MEGASTATE FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
@@ -88,9 +87,8 @@ class SsSPattern1;
 }
 
 // custom smd_dance_bot event
-struct EvGlobalError: sc::event<EvGlobalError>
+struct EvGlobalError : sc::event<EvGlobalError>
 {
-
 };
 
 } // namespace sm_dance_bot
@@ -132,9 +130,11 @@ struct SmDanceBot
     }
 };
 
+} // namespace sm_dance_bot
+
 //MEGASTATES
-#include <sm_dance_bot/mode_states/ms_dance_bot_run_mode.h>
-#include <sm_dance_bot/mode_states/ms_dance_bot_recovery_mode.h>
+#include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
+#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
 
 //SUPERSTATES
 #include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
@@ -161,6 +161,3 @@ struct SmDanceBot
 #include <sm_dance_bot/states/st_rotate_degrees_3.h>
 #include <sm_dance_bot/states/st_navigate_reverse_1.h>
 #include <sm_dance_bot/states/st_navigate_reverse_3.h>
-
-
-} // namespace sm_dance_bot
