@@ -20,8 +20,8 @@ class State2;
 
 //--------------------------------------------------------------------
 //STATE_MACHINE
-struct BaseStateMachine
-    : public smacc::SmaccStateMachineBase<BaseStateMachine, State1>
+struct SmAtomicStateMachine
+    : public smacc::SmaccStateMachineBase<SmAtomicStateMachine, State1>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
