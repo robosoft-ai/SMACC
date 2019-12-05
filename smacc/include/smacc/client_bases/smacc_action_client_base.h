@@ -6,6 +6,7 @@
 
 namespace smacc
 {
+using namespace boost::signals2;
 
 template <typename TDerived, typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
@@ -19,6 +20,12 @@ public:
     typedef typename ActionClient::SimpleDoneCallback SimpleDoneCallback;
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
+
+    signal<void(const ResultConstPtr &)> onSucceeded;
+    signal<void(const ResultConstPtr &)> onAborted;
+    signal<void(const ResultConstPtr &)> onPreempted;
+    signal<void(const ResultConstPtr &)> onCancelled;
+    signal<void(const ResultConstPtr &)> onRejected;
 
     SmaccActionClientBase()
         : ISmaccActionClient()
@@ -108,32 +115,36 @@ protected:
         if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
             ROS_INFO("[%s] request result: Success", this->getName().c_str());
-            auto *successEvent = new EvActionSucceeded<TDerived>();
+            onSuccess(result_msg);
 
+            auto *successEvent = new EvActionSucceeded<TDerived>();
             successEvent->client = this;
             successEvent->resultMessage = *result_msg;
 
             ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
             this->postEvent(successEvent);
-            
+
             //invokeOurSuccessSignal(feedback_msg);
         }
         else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
         {
             ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
-            auto *abortedEvent = new EvActionAborted<TDerived>();
+            onAborted(result_msg);
 
+            auto *abortedEvent = new EvActionAborted<TDerived>();
             abortedEvent->client = this;
             abortedEvent->resultMessage = *result_msg;
 
+            onAborted(result_msg);
             ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
             this->postEvent(abortedEvent);
         }
         else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
         {
             ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
-            auto *rejectedEvent = new EvActionRejected<TDerived>();
+            onRejected(result_msg);
 
+            auto *rejectedEvent = new EvActionRejected<TDerived>();
             rejectedEvent->client = this;
             rejectedEvent->resultMessage = *result_msg;
 
@@ -143,11 +154,11 @@ protected:
         else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
         {
             ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
-            auto *preemtedEvent = new EvActionPreempted<TDerived>();
+            onPreempted(result_msg);
 
+            auto *preemtedEvent = new EvActionPreempted<TDerived>();
             preemtedEvent->client = this;
             preemtedEvent->resultMessage = *result_msg;
-
             ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
             this->postEvent(preemtedEvent);
         }

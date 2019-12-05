@@ -21,6 +21,11 @@ add_message_files(FILES
   SmaccTransitionLogEntry.msg
   )
 
+ add_service_files(
+   FILES
+   SmaccGetTransitionHistory.srv
+ )
+
 generate_messages(DEPENDENCIES std_msgs)
 
 catkin_package(CATKIN_DEPENDS message_runtime)

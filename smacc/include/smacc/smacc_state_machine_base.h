@@ -47,8 +47,7 @@ public:
         ISmaccStateMachine::EStop();
         this->terminate();
     }
-
-
+    
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");

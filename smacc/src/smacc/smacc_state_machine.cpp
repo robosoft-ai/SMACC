@@ -9,7 +9,6 @@
 #include <smacc/client_bases/smacc_action_client.h>
 #include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
-
 namespace smacc
 {
 ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
@@ -108,6 +107,7 @@ void ISmaccStateMachine::publishTransition(SmaccTransitionInfo &transitionInfo)
     smacc_msgs::SmaccTransitionLogEntry transitionLogEntry;
     transitionLogEntry.timestamp = ros::Time::now();
     transitionInfoToMsg(transitionInfo, transitionLogEntry.transition);
+    this->transitionLogHistory_.push_back(transitionLogEntry);
 
     transitionLogPub_.publish(transitionLogEntry);
 }
@@ -128,9 +128,18 @@ void ISmaccStateMachine::onInitializing(std::string shortname)
     stateMachinePub_ = nh_.advertise<smacc_msgs::SmaccStateMachine>(shortname + "/smacc/state_machine_description", 1);
     stateMachineStatusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>(shortname + "/smacc/status", 1);
     transitionLogPub_ = nh_.advertise<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
-    //transitionLogHistoryServer_ = nh_.advertiseService<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
+
+    // STATE MACHINE SERVICES
+    transitionHistoryService_ = nh_.advertiseService(shortname + "/smacc/transition_log_history", &ISmaccStateMachine::getTransitionLogHistory, this);
 
     this->onInitialize();
+}
+
+bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request& req, smacc_msgs::SmaccGetTransitionHistory::Response& res)
+{
+    ROS_WARN("Requesting Transition Log History, current size: %ld", this->transitionLogHistory_.size());
+    res.history = this->transitionLogHistory_;
+    return true;
 }
 
 void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)

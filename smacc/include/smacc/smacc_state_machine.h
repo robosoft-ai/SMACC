@@ -18,6 +18,8 @@
 #include <smacc_msgs/SmaccStateMachine.h>
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
 
+#include <smacc_msgs/SmaccGetTransitionHistory.h>
+
 namespace smacc
 {
 
@@ -50,6 +52,8 @@ public:
 
     void notifyOnStateEntry(ISmaccState *state);
 
+
+
     void notifyOnStateExit(ISmaccState *state);
 
     template <typename TOrthogonal>
@@ -65,6 +69,8 @@ public:
 
     template <typename EventType>
     void postEvent(EventType *ev);
+
+    void getTransitionLogHistory();
 
     template <typename T>
     bool getGlobalSMData(std::string name, T &ret)
@@ -161,6 +167,8 @@ public:
     /// this function should be implemented by the user to create the orthogonals
     virtual void onInitialize();
 
+    bool getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request& req, smacc_msgs::SmaccGetTransitionHistory::Response& res);
+
 protected:
     void onInitializing(std::string smshortname);
 
@@ -190,6 +198,7 @@ protected:
         return nh_.param(param_name, param_val, default_val);
     }
 
+protected:
     // The node handle for this state
     ros::NodeHandle nh_;
     ros::NodeHandle private_nh_;
@@ -198,6 +207,7 @@ protected:
     ros::Publisher stateMachinePub_;
     ros::Publisher stateMachineStatusPub_;
     ros::Publisher transitionLogPub_;
+    ros::ServiceServer transitionHistoryService_;
 
     ISmaccState *currentState_;
     std::shared_ptr<smacc::SmaccStateInfo> currentStateInfo_;
