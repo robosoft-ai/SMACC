@@ -21,12 +21,6 @@ public:
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
 
-    signal<void(const ResultConstPtr &)> onSucceeded;
-    signal<void(const ResultConstPtr &)> onAborted;
-    signal<void(const ResultConstPtr &)> onPreempted;
-    signal<void(const ResultConstPtr &)> onCancelled;
-    signal<void(const ResultConstPtr &)> onRejected;
-
     SmaccActionClientBase()
         : ISmaccActionClient()
     {
@@ -38,6 +32,11 @@ public:
         return type->getNonTemplatetypename();
     }
 
+    virtual ~SmaccActionClientBase()
+    {
+    }
+
+    /// rosnamespace path
     boost::optional<std::string> name_;
 
     virtual void initialize() override
@@ -54,8 +53,64 @@ public:
         client_ = std::make_shared<ActionClient>(*name_);
     }
 
-    virtual ~SmaccActionClientBase()
+    template <typename T>
+    connection onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
     {
+        return this->onSucceeded_.connect([&](auto msg) { (object->*callback)(msg); });
+    }
+
+    template <typename T>
+    connection onSucceeded(std::function<void(ResultConstPtr &)> callback)
+    {
+        return this->onSucceeded_.connect(callback);
+    }
+
+    template <typename T>
+    connection onAborted(void (T::*callback)(ResultConstPtr &), T *object)
+    {
+        return this->onAborted_.connect([&](auto msg) { (object->*callback)(msg); });
+    }
+
+    template <typename T>
+    connection onAborted(std::function<void(ResultConstPtr &)> callback)
+    {
+        return this->onAborted_.connect(callback);
+    }
+
+    template <typename T>
+    connection onPreempted(void (T::*callback)(ResultConstPtr &), T *object)
+    {
+        return this->onPreempted_.connect([&](auto msg) { (object->*callback)(msg); });
+    }
+
+    template <typename T>
+    connection onPreempted(std::function<void(ResultConstPtr &)> callback)
+    {
+        return this->onPreempted_.connect(callback);
+    }
+
+    template <typename T>
+    connection onCancelled(void (T::*callback)(ResultConstPtr &), T *object)
+    {
+        return this->onCancelled_.connect([&](auto msg) { (object->*callback)(msg); });
+    }
+
+    template <typename T>
+    connection onCancelled(std::function<void(ResultConstPtr &)> callback)
+    {
+        return this->onCancelled_.connect(callback);
+    }
+
+    template <typename T>
+    connection onRejected(void (T::*callback)(ResultConstPtr &), T *object)
+    {
+        return this->onRejected_.connect([&](auto msg) { (object->*callback)(msg); });
+    }
+
+    template <typename T>
+    connection onRejected(std::function<void(ResultConstPtr &)> callback)
+    {
+        return this->onRejected_.connect(callback);
     }
 
     virtual void cancelGoal() override
@@ -92,6 +147,12 @@ public:
 protected:
     std::shared_ptr<ActionClient> client_;
 
+    signal<void(const ResultConstPtr &)> onSucceeded_;
+    signal<void(const ResultConstPtr &)> onAborted_;
+    signal<void(const ResultConstPtr &)> onPreempted_;
+    signal<void(const ResultConstPtr &)> onCancelled_;
+    signal<void(const ResultConstPtr &)> onRejected_;
+
     void onFeedback(const FeedbackConstPtr &feedback_msg)
     {
         auto actionFeedbackEvent = new EvActionFeedback<Feedback>();
@@ -115,7 +176,7 @@ protected:
         if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
             ROS_INFO("[%s] request result: Success", this->getName().c_str());
-            onSuccess(result_msg);
+            onSucceeded_(result_msg);
 
             auto *successEvent = new EvActionSucceeded<TDerived>();
             successEvent->client = this;
@@ -129,20 +190,19 @@ protected:
         else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
         {
             ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
-            onAborted(result_msg);
+            onAborted_(result_msg);
 
             auto *abortedEvent = new EvActionAborted<TDerived>();
             abortedEvent->client = this;
             abortedEvent->resultMessage = *result_msg;
 
-            onAborted(result_msg);
             ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
             this->postEvent(abortedEvent);
         }
         else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
         {
             ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
-            onRejected(result_msg);
+            onRejected_(result_msg);
 
             auto *rejectedEvent = new EvActionRejected<TDerived>();
             rejectedEvent->client = this;
@@ -154,7 +214,7 @@ protected:
         else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
         {
             ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
-            onPreempted(result_msg);
+            onPreempted_(result_msg);
 
             auto *preemtedEvent = new EvActionPreempted<TDerived>();
             preemtedEvent->client = this;

@@ -34,14 +34,23 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       static_configure<SensorOrthogonal, SbConditionTemperatureSensor>();
       static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);
 
-      static_createLogicUnit<LuAllEventsGo, 
-                              EvAll<LuAllEventsGo, Unit1>, 
-                              mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>> >();
+      static_createLogicUnit<LuAllEventsGo,
+                             EvAll<LuAllEventsGo, Unit1>,
+                             mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
    }
 
    void onInitialize()
    {
-      //allSensorsReady.setTriggerEventTypesCount(2);
+      SmaccMoveBaseActionClient* move_base_action_client;
+      this->requiresClient(move_base_action_client);
+
+      // we careful with the lifetime of the callbac, us a scoped connection if is not forever
+      move_base_action_client->onSucceeded(&StAcquireSensors::onActionClientSucceded, this);
+   }
+
+   void onActionClientSucceded(SmaccMoveBaseActionClient::ResultConstPtr &msg)
+   {
+      ROS_INFO_STREAM("Success Detected from StAquireSensors (connected to client signal), result data: " << *msg);
    }
 };
-}
+} // namespace sm_dance_bot
