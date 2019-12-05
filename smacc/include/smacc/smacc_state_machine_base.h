@@ -8,7 +8,7 @@
 
 #include <smacc/smacc_state_base.h>
 #include <smacc/smacc_state_machine.h>
-#include <smacc_msgs/SmaccTransitionLogEntry.h>
+
 
 namespace smacc
 {
@@ -18,7 +18,16 @@ template <typename DerivedStateMachine, typename InitialStateType>
 struct SmaccStateMachineBase : public ISmaccStateMachine, public sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccFifoScheduler, SmaccAllocator>
 {
 public:
-    //std::vector<std::shared_ptr<SmaccStateInfo>> currentState_;
+    SmaccStateMachineBase(my_context ctx, SignalDetector *signalDetector)
+        : ISmaccStateMachine(signalDetector),
+          sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccFifoScheduler, SmaccAllocator>(ctx)
+    {
+    }
+
+    virtual ~SmaccStateMachineBase()
+    {
+        //updateCurrentState<InitialStateType>(false);
+    }
 
     virtual void Reset() override
     {
@@ -39,31 +48,12 @@ public:
         this->terminate();
     }
 
-    SmaccStateMachineBase(my_context ctx, SignalDetector *signalDetector)
-        : ISmaccStateMachine(signalDetector),
-          sc::asynchronous_state_machine<DerivedStateMachine, InitialStateType, SmaccFifoScheduler, SmaccAllocator>(ctx)
-    {
-        auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
-        ROS_WARN_STREAM("State machine base creation:" << shortname);
-        // STATE MACHINE TOPICS
-        stateMachinePub_ = nh_.advertise<smacc_msgs::SmaccStateMachine>(shortname + "/smacc/state_machine_description", 1);
-        stateMachineStatusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>(shortname + "/smacc/status", 1);
-        transitionLogPub_ = nh_.advertise<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
-    }
-
-    virtual void onInitialize()
-    {
-    }
-
-    virtual ~SmaccStateMachineBase()
-    {
-        //updateCurrentState<InitialStateType>(false);
-    }
 
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");
-        this->onInitialize();
+        auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
+        this->onInitializing(shortname);
 
         ROS_INFO("Introspecting state machine via typeWalker");
         info_ = std::make_shared<SmaccStateMachineInfo>();
@@ -71,7 +61,7 @@ public:
 
         ROS_INFO("Initializing ROS communication mechanisms");
         info_->assembleSMStructureMessage(this);
-        this->initializeRosComponents();
+        this->onInitialized();
 
         ROS_INFO("Initializing state machine");
         sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();

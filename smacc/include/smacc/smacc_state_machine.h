@@ -14,12 +14,9 @@
 #include <map>
 #include <mutex>
 
-#include <type_traits>
-#include <boost/mpl/for_each.hpp>
-#include <boost/mpl/list.hpp>
-#include <boost/utility/enable_if.hpp>
 #include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccStateMachine.h>
+#include <smacc_msgs/SmaccTransitionLogEntry.h>
 
 namespace smacc
 {
@@ -124,7 +121,6 @@ public:
         this->updateStatusMessage();
     }
 
-
     template <typename StateField, typename BehaviorType>
     void mapBehavior()
     {
@@ -162,8 +158,13 @@ public:
 
     void publishTransition(SmaccTransitionInfo &transitionInfo);
 
+    /// this function should be implemented by the user to create the orthogonals
+    virtual void onInitialize();
+
 protected:
-    void initializeRosComponents();
+    void onInitializing(std::string smshortname);
+
+    void onInitialized();
 
     template <typename TOrthogonal>
     void createOrthogonal();
@@ -215,6 +216,7 @@ private:
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
+    std::vector<smacc_msgs::SmaccTransitionLogEntry> transitionLogHistory_;
 
     smacc::SMRunMode runMode_;
 

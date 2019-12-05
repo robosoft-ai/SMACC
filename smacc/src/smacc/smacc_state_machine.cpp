@@ -90,8 +90,8 @@ void ISmaccStateMachine::updateStatusMessage()
 
             status_msg_.global_variable_names.clear();
             status_msg_.global_variable_values.clear();
-            
-            for(auto entry: this->globalData_)
+
+            for (auto entry : this->globalData_)
             {
                 status_msg_.global_variable_names.push_back(entry.first);
                 status_msg_.global_variable_values.push_back(entry.second.first()); // <- invoke to_string()
@@ -112,9 +112,25 @@ void ISmaccStateMachine::publishTransition(SmaccTransitionInfo &transitionInfo)
     transitionLogPub_.publish(transitionLogEntry);
 }
 
-void ISmaccStateMachine::initializeRosComponents()
+void ISmaccStateMachine::onInitialize()
+{
+}
+
+void ISmaccStateMachine::onInitialized()
 {
     timer_ = nh_.createTimer(ros::Duration(0.5), &ISmaccStateMachine::state_machine_visualization, this);
+}
+
+void ISmaccStateMachine::onInitializing(std::string shortname)
+{
+    ROS_WARN_STREAM("State machine base creation:" << shortname);
+    // STATE MACHINE TOPICS
+    stateMachinePub_ = nh_.advertise<smacc_msgs::SmaccStateMachine>(shortname + "/smacc/state_machine_description", 1);
+    stateMachineStatusPub_ = nh_.advertise<smacc_msgs::SmaccStatus>(shortname + "/smacc/status", 1);
+    transitionLogPub_ = nh_.advertise<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
+    //transitionLogHistoryServer_ = nh_.advertiseService<smacc_msgs::SmaccTransitionLogEntry>(shortname + "/smacc/transition_log", 1);
+
+    this->onInitialize();
 }
 
 void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
