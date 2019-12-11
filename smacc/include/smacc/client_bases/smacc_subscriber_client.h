@@ -30,7 +30,7 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
     return label;
   }
 
-  //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
+  typename TSource::TMessageType msgData;
 };
 
 template <typename TDerived, typename MessageType>

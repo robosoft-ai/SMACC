@@ -5,6 +5,8 @@
 #include <vector>
 #include <algorithm>
 #include <smacc/introspection/introspection.h>
+#include <boost/statechart/event.hpp>
+#include <map>
 
 namespace smacc
 {
@@ -20,6 +22,7 @@ public:
     ISmaccState *ownerState;
     std::function<void()> postEventFn;
     std::vector<const std::type_info *> eventTypes;
+    std::map<const std::type_info *, std::function<void(void*)>> eventCallbacks_;
 
     LogicUnit();
 
@@ -63,10 +66,37 @@ public:
         {
             this->onEventNotified(tid);
             this->update();
+
+            if(eventCallbacks_.count(tid))
+            {
+                eventCallbacks_[tid]((void*)ev);
+            }
         }
     }
 
     virtual void onEventNotified(const std::type_info *eventType);
+
+    template <typename T, typename TClass>
+    void createEventCallback(void (TClass::*callback)(T* ), TClass *object)
+    {
+        const auto* eventtype = &typeid(T);
+        this->eventCallbacks_[eventtype]= [=](void* msg)
+        {
+            T* evptr = (T*)msg;
+            (object->*callback)(evptr);
+        };
+    }
+
+    template <typename T>
+    void createEventCallback(std::function<void(T* )> callback)
+    {
+        const auto* eventtype = &typeid(T);
+        this->eventCallbacks_[eventtype]= [=](void* msg)
+        {
+            T* evptr = (T*)msg;
+            callback(evptr);
+        };
+    }
 
     void update();
 

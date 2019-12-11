@@ -25,6 +25,7 @@
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
 #include <event_countdown/event_countdown.h>
+#include <conditional/lu_conditional.h>
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/navigation_orthogonal.h>

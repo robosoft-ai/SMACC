@@ -86,6 +86,19 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     static_configure<ToolOrthogonal, SbToolStart>();
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
 
+    // example for temperature sensor
+    
+    std::function<bool(EvTopicMessage<SbConditionTemperatureSensor>*)> temperatureWarningCondition = (
+                          [](EvTopicMessage<SbConditionTemperatureSensor>* ev)
+                          {
+                            return ev->msgData.temperature>30;
+                          }
+                        );
+
+    static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<SbConditionTemperatureSensor>>>(temperatureWarningCondition);
+
+    //smacc::transition<EvTrue<LuConditional>, StNavigateToWaypointsX>>
+
     /*
     std::vector<Pose2D> waypoints =
         {
