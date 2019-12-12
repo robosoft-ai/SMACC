@@ -21,6 +21,7 @@
 #include <smacc_interface_components/substate_behaviors/sensor_substate.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
 #include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
+#include <sm_dance_bot/substate_behaviors/updatable_publisher/sb_updatable_publisher.h>
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
@@ -35,6 +36,7 @@
 #include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
 #include <sm_dance_bot/orthogonals/service3_orthogonal.h>
 #include <sm_dance_bot/orthogonals/timer_orthogonal.h>
+#include <sm_dance_bot/orthogonals/updatable_publisher_orthogonal.h>
 
 namespace sm_dance_bot
 {
@@ -128,6 +130,7 @@ struct SmDanceBot
         this->createOrthogonal<PublisherOrthogonal>();
         this->createOrthogonal<Service3Orthogonal>();
         this->createOrthogonal<TimerOrthogonal>();
+        this->createOrthogonal<UpdatablePublisherOrthogonal>();
     }
 };
 

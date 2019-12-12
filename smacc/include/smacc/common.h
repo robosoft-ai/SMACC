@@ -21,6 +21,8 @@
 #include <boost/any.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include <mutex>
+
 #include <ros/ros.h>
 #include <actionlib/client/simple_action_client.h>
 

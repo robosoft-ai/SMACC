@@ -8,6 +8,7 @@
 #include <smacc/common.h>
 #include <smacc/introspection/introspection.h>
 #include <smacc/smacc_state.h>
+#include <smacc/smacc_updatable.h>
 #include <smacc/logic_units/logic_unit_base.h>
 
 #include <boost/any.hpp>
@@ -51,8 +52,6 @@ public:
     }
 
     void notifyOnStateEntry(ISmaccState *state);
-
-
 
     void notifyOnStateExit(ISmaccState *state);
 
@@ -167,7 +166,17 @@ public:
     /// this function should be implemented by the user to create the orthogonals
     virtual void onInitialize();
 
-    bool getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request& req, smacc_msgs::SmaccGetTransitionHistory::Response& res);
+    bool getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request &req, smacc_msgs::SmaccGetTransitionHistory::Response &res);
+
+    void lockStateMachine()
+    {
+        m_mutex_.lock();
+    }
+
+    void unlockStateMachine()
+    {
+        m_mutex_.unlock();
+    }
 
 protected:
     void onInitializing(std::string smshortname);

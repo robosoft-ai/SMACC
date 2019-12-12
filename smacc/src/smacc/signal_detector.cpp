@@ -5,6 +5,7 @@
  ******************************************************************************************************************/
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/client_bases/smacc_action_client_base.h>
+#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
@@ -17,7 +18,7 @@ SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
 {
     scheduler_ = scheduler;
     loop_rate_hz = 10.0;
-    end_= false;
+    end_ = false;
 }
 
 /**
@@ -28,6 +29,59 @@ SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
 void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
 {
     smaccStateMachine_ = stateMachine;
+    lastState_ = nullptr;
+
+    findUpdatableClients();
+}
+
+/**
+******************************************************************************************************************
+* findUpdatableClients()
+******************************************************************************************************************
+*/
+void SignalDetector::findUpdatableClients()
+{
+    this->updatableClients_.clear();
+    for (auto pair : this->smaccStateMachine_->getOrthogonals())
+    {
+        auto &orthogonal = pair.second;
+        auto &clients = orthogonal->getClients();
+
+        for (auto &client : clients)
+        {
+            auto updatableClient = dynamic_cast<ISmaccUpdatable *>(client);
+
+            if (updatableClient != nullptr)
+            {
+                this->updatableClients_.push_back(updatableClient);
+            }
+        }
+    }
+}
+
+/**
+******************************************************************************************************************
+* findUpdatableSubstateBehaviors()
+******************************************************************************************************************
+*/
+void SignalDetector::findUpdatableBehaviors()
+{
+    this->updatableSubstateBehaviors_.clear();
+    for (auto pair : this->smaccStateMachine_->getOrthogonals())
+    {
+        auto &orthogonal = pair.second;
+        auto *currentBehavior = orthogonal->getCurrentBehavior();
+
+        if (currentBehavior == nullptr)
+            continue;
+
+        ISmaccUpdatable *updatableSubstateBehavior = dynamic_cast<ISmaccUpdatable *>(currentBehavior);
+
+        if (updatableSubstateBehavior != nullptr)
+        {
+            this->updatableSubstateBehaviors_.push_back(updatableSubstateBehavior);
+        }
+    }
 }
 
 /**
@@ -67,7 +121,7 @@ void SignalDetector::join()
 */
 void SignalDetector::stop()
 {
-    end_=true;
+    end_ = true;
 }
 
 /**
@@ -76,7 +130,39 @@ void SignalDetector::stop()
 ******************************************************************************************************************
 */
 void SignalDetector::pollOnce()
-{
+{    
+    for (auto *updatableClient : this->updatableClients_)
+    {
+        ROS_DEBUG("pollOnce update client call: ");
+        updatableClient->update();
+    }
+
+    try
+    {
+        smaccStateMachine_->lockStateMachine();
+        auto *currentState = smaccStateMachine_->getCurrentState();
+        if(currentState!=nullptr)
+        {
+                if (currentState != this->lastState_)
+                {
+                    // we are in a new state, refresh the updatable substate behaviors table
+                    this->findUpdatableBehaviors();
+                }
+
+                this->lastState_ = currentState;
+
+                for (auto *updatableBehavior : this->updatableSubstateBehaviors_)
+                {
+                    ROS_DEBUG("pollOnce update substate behavior call: ");
+                    updatableBehavior->update();
+                }
+        }
+    }
+    catch(...)
+    {
+
+    }
+    smaccStateMachine_->unlockStateMachine();
 }
 
 /**

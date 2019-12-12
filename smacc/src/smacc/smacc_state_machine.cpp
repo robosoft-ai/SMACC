@@ -144,7 +144,6 @@ bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionH
 
 void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
 {
-
     std::lock_guard<std::mutex> lock(m_mutex_);
 
     smacc_msgs::SmaccStateMachine state_machine_msg;

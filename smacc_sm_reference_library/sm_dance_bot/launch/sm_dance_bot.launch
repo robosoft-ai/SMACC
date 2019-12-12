@@ -19,6 +19,8 @@
     <!-- It does not start the sm node in order to start it from your standalone process with debugger-->
     <arg name="debug" default="false"/>    
 
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_dance_bot)/config/rosconsole.config"/>
+    
     <!--================================================================================-->
     <!-- load the navigation environment simulated in gazebo-->
     <include file ="$(find sm_dance_bot)/launch/ridgeback_simulation.launch">

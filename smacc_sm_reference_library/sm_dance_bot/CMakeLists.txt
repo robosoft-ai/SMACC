@@ -188,6 +188,7 @@ install(FILES
     config/forward_local_planner.yaml
     config/navigation.rviz
     config/radial_motion_sm_config.yaml
+    config/rosconsole.config
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
 

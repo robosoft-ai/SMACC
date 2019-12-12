@@ -127,6 +127,8 @@ public:
     base_type::outermost_context().updateCurrentState(active, static_cast<MostDerived *>(this));
   }
 
+  
+
   InnerInitial *smacc_inner_type;
 
   std::string getFullPathName()
@@ -156,17 +158,29 @@ public:
 
   virtual ~SmaccState()
   {
-    auto fullname = demangleSymbol(typeid(MostDerived).name());
-    ROS_WARN_STREAM("exiting state: " << fullname);
+    try
+    {
+      this->getStateMachine().lockStateMachine();
+      auto fullname = demangleSymbol(typeid(MostDerived).name());
+      ROS_WARN_STREAM("exiting state: " << fullname);
 
-    this->getStateMachine().notifyOnStateExit(this);
+      this->updateCurrentState(false); //<MostDerived>
+      this->setParam("destroyed", true);  
+            
+      this->getStateMachine().notifyOnStateExit(this);
 
-    //this->updateCurrentState<MostDerived>(false);
-    static_cast<MostDerived *>(this)->onExit();
+      //this->updateCurrentState<MostDerived>(false);
+      static_cast<MostDerived *>(this)->onExit();
 
-    //ROS_INFO_STREAM("throwing finish event " << fullname);
-    //this->throwFinishEvent();
-    ROS_WARN_STREAM("state exit: " << fullname);
+      //ROS_INFO_STREAM("throwing finish event " << fullname);
+      //this->throwFinishEvent();
+      ROS_WARN_STREAM("state exit: " << fullname);
+    }
+    catch(...)
+    {
+
+    }
+    this->getStateMachine().unlockStateMachine();
   }
 
   void throwFinishEvent()

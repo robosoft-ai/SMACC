@@ -15,6 +15,7 @@ template <typename TOrthogonal>
 bool ISmaccStateMachine::getOrthogonal(std::shared_ptr<TOrthogonal> &storage)
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
+
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     std::shared_ptr<TOrthogonal> ret;
 
@@ -77,6 +78,7 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool ve
 {
     ROS_INFO("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
     std::lock_guard<std::mutex> lock(m_mutex_);
+
     std::string pluginkey = demangledTypeName<SmaccComponentType>();
     SmaccComponentType *ret;
 
@@ -103,20 +105,18 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool ve
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType *ev)
 {
+    std::lock_guard<std::mutex> lock(m_mutex_);
+
     // when a postting event is requested by any component, client, or substate behavior
     // we reach this place. Now, we propagate the events to all the state logic units to generate
     // some more events
     if (currentState_ != nullptr)
     {
         ROS_INFO_STREAM("EVENT: " << demangleSymbol<EventType>());
-        for (auto &lu : currentState_->logicUnits_)
+        for (auto &lu : currentState_->getLogicUnits())
         {
             lu->notifyEvent(ev);
         }
-    }
-    else
-    {
-        ROS_INFO_THROTTLE(0.5, "debug post event, to lu, but currentState was nullptr");
     }
 
     this->signalDetector_->postEvent(ev);
@@ -125,9 +125,15 @@ void ISmaccStateMachine::postEvent(EventType *ev)
 template <typename StateType>
 void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState)
 {
-    currentState_ = currentState;
-
-    currentStateInfo_ = info_->getState<StateType>();
-    this->updateStatusMessage();
+    if (active)
+    {
+        currentState_ = currentState;
+        currentStateInfo_ = info_->getState<StateType>();
+        this->updateStatusMessage();
+    }
+    else
+    {
+        currentState_ = nullptr;
+    }
 }
 } // namespace smacc

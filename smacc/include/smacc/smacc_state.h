@@ -54,8 +54,11 @@ public:
 
   void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::TypeInfo> &transitionTypeInfo);
 
+  inline std::vector<std::shared_ptr<LogicUnit>> &getLogicUnits() { return logicUnits_; }
+
   ros::NodeHandle nh;
 
+protected:
   std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
 };
 } // namespace smacc

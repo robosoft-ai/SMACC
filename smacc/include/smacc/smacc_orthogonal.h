@@ -27,9 +27,14 @@ public:
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage, bool verbose = false);
 
-    const std::vector<smacc::ISmaccClient *> &getClients()
+    inline const std::vector<smacc::ISmaccClient *> &getClients()
     {
         return clients_;
+    }
+
+    inline smacc::SmaccSubStateBehavior* getCurrentBehavior()
+    {
+        return this->currentBehavior_.get();
     }
 
 private:

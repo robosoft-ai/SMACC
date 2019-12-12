@@ -43,8 +43,14 @@ private:
 
     ISmaccStateMachine *smaccStateMachine_;
 
-    // TODO: this should be thread safe since it may be updated from others threads
-    std::vector<ISmaccActionClient *> openRequests_;
+    std::vector<ISmaccUpdatable*> updatableClients_;
+
+    std::vector<ISmaccUpdatable*> updatableSubstateBehaviors_;
+
+    ISmaccState* lastState_;
+
+    void findUpdatableClients();
+    void findUpdatableBehaviors();
 
     // Loop frequency of the signal detector (to check answers from actionservers)
     double loop_rate_hz;
@@ -62,8 +68,6 @@ private:
     SmaccFifoScheduler::processor_handle processorHandle_;
 
     boost::thread signalDetectorThread_;
-
-    friend class ISmaccStateMachine;
 };
 
 // Main entry point for any SMACC state machine

@@ -77,7 +77,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
-          reactions;
+      reactions;
 
   int currentIteration;
 
@@ -87,13 +87,10 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
 
     // example for temperature sensor
-    
-    std::function<bool(EvTopicMessage<SbConditionTemperatureSensor>*)> temperatureWarningCondition = (
-                          [](EvTopicMessage<SbConditionTemperatureSensor>* ev)
-                          {
-                            return ev->msgData.temperature>30;
-                          }
-                        );
+
+    std::function<bool(EvTopicMessage<SbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<SbConditionTemperatureSensor> *ev) {
+      return ev->msgData.temperature > 30;
+    });
 
     static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<SbConditionTemperatureSensor>>>(temperatureWarningCondition);
 
@@ -245,4 +242,4 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   }
 };
 
-}
+} // namespace sm_dance_bot

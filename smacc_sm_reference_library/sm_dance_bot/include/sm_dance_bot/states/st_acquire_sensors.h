@@ -33,6 +33,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       static_configure<PublisherOrthogonal, SbStringPublisher>("Hello World!");
       static_configure<SensorOrthogonal, SbConditionTemperatureSensor>();
       static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);
+      static_configure<UpdatablePublisherOrthogonal, SbUpdatableStringPublisher>();
 
       static_createLogicUnit<LuAllEventsGo,
                              EvAll<LuAllEventsGo, Unit1>,
@@ -41,11 +42,11 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    void onInitialize()
    {
-      SmaccMoveBaseActionClient* move_base_action_client;
+      SmaccMoveBaseActionClient *move_base_action_client;
       this->requiresClient(move_base_action_client);
 
       // we careful with the lifetime of the callbac, us a scoped connection if is not forever
-      move_base_action_client->onSucceeded(&StAcquireSensors::onActionClientSucceded, this);
+      //move_base_action_client->onSucceeded(&StAcquireSensors::onActionClientSucceded, this);
    }
 
    void onActionClientSucceded(SmaccMoveBaseActionClient::ResultConstPtr &msg)

@@ -6,13 +6,14 @@ namespace smacc
 {
 class ISmaccState;
 class ISmaccStateMachine;
-class ISmaccComponent;
 class ISmaccClient;
-
+class ISmaccUpdatable;
+class ISmaccComponent;
 class SmaccSubStateBehavior;
+class SignalDetector;
+
 class ISmaccActionClient;
 class ISmaccSubscriber;
-class SignalDetector;
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
 class LogicUnit;
