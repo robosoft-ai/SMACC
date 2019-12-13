@@ -64,7 +64,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   typedef mpl::list<
       // Expected event
-      sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>,
+      sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>>,
 
       //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
 
@@ -76,7 +76,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
       reactions;
 
   int currentIteration;
@@ -116,7 +116,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
                                    EvWaypoint4<StNavigateToWaypointsX>,
                                    EvWaypoint5<StNavigateToWaypointsX>
                                   >, 
-                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>>();
+                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>>();
                          */
 
     // what about persistence
@@ -232,7 +232,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     return forward_event();
   }
 
-  sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient> &ev)
+  sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal> &ev)
   {
     ROS_INFO("Waypoints X reaction");
 

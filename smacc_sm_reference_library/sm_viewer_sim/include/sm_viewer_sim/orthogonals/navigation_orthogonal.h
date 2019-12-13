@@ -8,7 +8,7 @@ class NavigationOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto *client = this->createClient<smacc::SmaccMoveBaseActionClient>();
+        auto client = this->createClient<NavigationOrthogonal, smacc::SmaccMoveBaseActionClient>();
         client->name_ = "move_base";
         client->initialize();
     }

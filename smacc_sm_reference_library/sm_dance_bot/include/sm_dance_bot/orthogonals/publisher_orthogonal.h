@@ -9,7 +9,7 @@ class PublisherOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto *publisherClient_ = this->createClient<sm_dance_bot::StringPublisherClient>();
+        auto publisherClient_ = this->createClient<PublisherOrthogonal, sm_dance_bot::StringPublisherClient>();
         publisherClient_->topicName = "/string_publisher_out";
         publisherClient_->initialize();
     }

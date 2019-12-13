@@ -21,7 +21,6 @@
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
-
 namespace smacc_odom_tracker
 {
 

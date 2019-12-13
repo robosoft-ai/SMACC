@@ -8,23 +8,23 @@
 namespace smacc
 {
 
-template <typename ActionFeedback>
-struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback>>
+template <typename ActionFeedback, typename TObjectTag>
+struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TObjectTag>>
 {
   smacc::ISmaccActionClient *client;
   ActionFeedback feedbackMessage;
   //boost::any feedbackMessage;
 };
 
-template <typename TSource, typename TObjectTag = default_object_tag>
+template <typename TSource, typename TObjectTag>
 struct EvActionResult : sc::event<EvActionResult<TSource, default_object_tag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 };
 
 //--------------------------------
-template <typename TSource>
-struct EvActionSucceeded : sc::event<EvActionResult<TSource>>, IActionResult
+template <typename TSource, typename TObjectTag>
+struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TObjectTag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 
@@ -47,8 +47,8 @@ struct EvActionSucceeded : sc::event<EvActionResult<TSource>>, IActionResult
   }
 };
 
-template <typename TSource>
-struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
+template <typename TSource, typename TObjectTag>
+struct EvActionAborted : sc::event<EvActionAborted<TSource, TObjectTag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 
@@ -71,8 +71,8 @@ struct EvActionAborted : sc::event<EvActionResult<TSource>>, IActionResult
   }
 };
 
-template <typename TSource>
-struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
+template <typename TSource, typename TObjectTag>
+struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TObjectTag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 
@@ -95,8 +95,8 @@ struct EvActionPreempted : sc::event<EvActionResult<TSource>>, IActionResult
   }
 };
 
-template <typename TSource>
-struct EvActionRejected : sc::event<EvActionResult<TSource>>, IActionResult
+template <typename TSource, typename TObjectTag>
+struct EvActionRejected : sc::event<EvActionRejected<TSource, TObjectTag>>, IActionResult
 {
   typename TSource::Result resultMessage;
 

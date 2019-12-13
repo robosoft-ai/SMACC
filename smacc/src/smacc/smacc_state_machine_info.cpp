@@ -106,7 +106,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             auto &clients = orthogonal.second->getClients();
             if (clients.size() > 0)
             {
-                for (auto *client : clients)
+                for (auto& client : clients)
                 {
                     auto clientTid = &(typeid(*client));
                     auto clientName = demangleSymbol(clientTid->name());

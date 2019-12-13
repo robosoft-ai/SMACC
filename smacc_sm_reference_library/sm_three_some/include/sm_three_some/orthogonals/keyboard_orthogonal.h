@@ -9,7 +9,7 @@ class KeyboardOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto keyboardClient = this->createClient<sm_three_some::KeyboardClient>();
+        auto keyboardClient = this->createClient<KeyboardOrthogonal, sm_three_some::KeyboardClient>();
         keyboardClient->topicName = "/keyboard_unicode";
 
         //keyboardClient.queueSize = 1;

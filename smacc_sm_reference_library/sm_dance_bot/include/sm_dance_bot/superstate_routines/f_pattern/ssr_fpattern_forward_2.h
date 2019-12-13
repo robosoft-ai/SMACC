@@ -2,7 +2,7 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, SsrFPatternStartLoop> reactions;
+  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrFPatternStartLoop> reactions;
 
   static void onDefinition()
   {

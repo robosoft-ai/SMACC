@@ -9,7 +9,7 @@ class ToolOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto *actionclient = this->createClient<smacc::SmaccToolActionClient>();
+        auto actionclient = this->createClient<ToolOrthogonal, smacc::SmaccToolActionClient>();
         actionclient->name_ = "tool_action_server";
         actionclient->initialize();
     }

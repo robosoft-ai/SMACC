@@ -5,7 +5,7 @@
 
 namespace smacc
 {
-class SmaccToolActionClient : public SmaccActionClientBase<SmaccToolActionClient, smacc_action_client_generic::ToolControlAction>
+class SmaccToolActionClient : public SmaccActionClientBase<smacc_action_client_generic::ToolControlAction>
 {
 public:
     // for any action client you develop you need to call the ros action client type definition macro

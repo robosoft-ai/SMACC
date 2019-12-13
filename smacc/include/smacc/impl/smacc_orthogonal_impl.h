@@ -1,14 +1,16 @@
 #pragma once
 #include <smacc/smacc_orthogonal.h>
+#include <smacc/smacc_client.h>
 
 namespace smacc
 {
-template <typename T, typename ...TArgs>
-T *Orthogonal::createClient(TArgs... args)
+template <typename TObjectTag, typename TClient, typename ...TArgs>
+std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
 {
-    auto *client = new T(args...);
+    auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
+    client->template setObjectTagIdentifier<TClient, TObjectTag>();
     clients_.push_back(client);
     return client;
 }
@@ -29,9 +31,9 @@ void Orthogonal::requiresComponent(SmaccComponentType *&storage, bool verbose)
 template <typename SmaccClientType>
 void Orthogonal::requiresClient(SmaccClientType *&storage, bool verbose)
 {
-    for (auto *client : clients_)
+    for (auto& client : clients_)
     {
-        storage = dynamic_cast<SmaccClientType *>(client);
+        storage = dynamic_cast<SmaccClientType *>(client.get());
         if (storage != nullptr)
             break;
     }

@@ -2,8 +2,8 @@ struct SsrSPatternForward4 : public smacc::SmaccState<SsrSPatternForward4, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, SsrSPatternLoopStart>,
-                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, SsrSPatternRotate4>
+  typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternLoopStart>,
+                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternRotate4>
                     > reactions;
 
   static void onDefinition()

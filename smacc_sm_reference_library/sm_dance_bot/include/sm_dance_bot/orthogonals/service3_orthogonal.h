@@ -10,7 +10,7 @@ class Service3Orthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto *serviceClient = this->createClient<ServiceClient3>();
+        auto serviceClient = this->createClient<Service3Orthogonal, ServiceClient3>();
         serviceClient->serviceName_ = "/service_node3";
         serviceClient->initialize();
     }

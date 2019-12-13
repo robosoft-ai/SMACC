@@ -6,7 +6,7 @@ namespace sm_atomic
 struct State1
     : smacc::SmaccState<State1, SmAtomicStateMachine>
 {
-    typedef mpl::list<smacc::transition<smacc::EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, State2>> reactions;
+    typedef mpl::list<smacc::transition<smacc::EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, State2>> reactions;
 
     using SmaccState::SmaccState;
 

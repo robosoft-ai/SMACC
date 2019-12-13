@@ -11,9 +11,9 @@
 
 namespace smacc
 {
-class SmaccMoveBaseActionClient : public SmaccActionClientBase<SmaccMoveBaseActionClient, move_base_msgs::MoveBaseAction>
+class SmaccMoveBaseActionClient : public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
-    typedef SmaccActionClientBase<SmaccMoveBaseActionClient, move_base_msgs::MoveBaseAction> Base;
+    typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
 public:
     std::shared_ptr<smacc_planner_switcher::PlannerSwitcher> plannerSwitcher_;

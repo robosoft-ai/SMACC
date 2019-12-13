@@ -21,7 +21,7 @@ std::string SmaccMoveBaseActionClient::getName() const
 
 void SmaccMoveBaseActionClient::initialize()
 {
-    SmaccActionClientBase<SmaccMoveBaseActionClient, move_base_msgs::MoveBaseAction>::initialize();
+    SmaccActionClientBase<move_base_msgs::MoveBaseAction>::initialize();
     plannerSwitcher_ = std::make_shared<smacc_planner_switcher::PlannerSwitcher>(*(this->name_));
 }
 

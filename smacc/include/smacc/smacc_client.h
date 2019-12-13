@@ -26,11 +26,19 @@ public:
     template <typename EventType>
     void postEvent(const EventType &ev);
 
+    
+
     // template <typename EventType>
     // void connectOnEvent(callback);
 
 protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine* stateMachine_;
+
+private:
+    template <typename TDerived, typename TObjectTag>
+    void setObjectTagIdentifier(){}
+
+    friend class Orthogonal;
 };
 } // namespace smacc

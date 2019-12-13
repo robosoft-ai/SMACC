@@ -10,7 +10,7 @@ class Orthogonal1 : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto client1 = this->createClient<Client1>();
+        auto client1 = this->createClient<Orthogonal1, Client1>();
         client1->initialize();
     }
 };

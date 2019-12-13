@@ -8,7 +8,7 @@ namespace smacc
 {
 using namespace boost::signals2;
 
-template <typename TDerived, typename ActionType>
+template <typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
 {
 public:
@@ -53,6 +53,55 @@ public:
         client_ = std::make_shared<ActionClient>(*name_);
     }
 
+    signal<void(const ResultConstPtr &)> onSucceeded_;
+    signal<void(const ResultConstPtr &)> onAborted_;
+    signal<void(const ResultConstPtr &)> onPreempted_;
+    signal<void(const ResultConstPtr &)> onCancelled_;
+    signal<void(const ResultConstPtr &)> onRejected_;
+
+    // event creation/posting factory functions
+    std::function<void(ResultConstPtr)> postSuccessEvent;
+    std::function<void(ResultConstPtr)> postAbortedEvent;
+    std::function<void(ResultConstPtr)> postPreemptedEvent;
+    std::function<void(ResultConstPtr)> postRejectedEvent;
+
+    std::function<void(FeedbackConstPtr)> postFeedbackEvent;
+
+    SimpleDoneCallback done_cb;
+    SimpleActiveCallback active_cb;
+    SimpleFeedbackCallback feedback_cb;
+
+    template <typename EvType>
+    void postResultEvent(ResultConstPtr result)
+    {
+        auto *ev = new EvType();
+        ev->client = this;
+        ev->resultMessage = *result;
+        ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
+        this->postEvent(ev);
+    }
+
+    template <typename TDerived, typename TObjectTag>
+    void setObjectTagIdentifier()
+    {
+        // we create here all the event factory functions capturing the TObjectTag
+        postSuccessEvent = [=](auto msg) { this->postResultEvent<EvActionSucceeded<TDerived, TObjectTag>>(msg); };
+        postAbortedEvent = [=](auto msg) { this->postResultEvent<EvActionAborted<TDerived, TObjectTag>>(msg); };
+        postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TDerived, TObjectTag>>(msg); };
+        postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TDerived, TObjectTag>>(msg); };
+        postFeedbackEvent = [=](auto msg) {
+            auto actionFeedbackEvent = new EvActionFeedback<Feedback, TObjectTag>();
+            actionFeedbackEvent->client = this;
+            actionFeedbackEvent->feedbackMessage = *msg;
+            this->postEvent(actionFeedbackEvent);
+            ROS_WARN("FEEDBACK EVENT");
+        };
+
+        done_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
+        //active_cb;
+        feedback_cb = boost::bind(&SmaccActionClientBase<ActionType>::onFeedback, this, _1);
+    }
+
     template <typename T>
     connection onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
     {
@@ -90,18 +139,6 @@ public:
     }
 
     template <typename T>
-    connection onCancelled(void (T::*callback)(ResultConstPtr &), T *object)
-    {
-        return this->onCancelled_.connect([&](auto msg) { (object->*callback)(msg); });
-    }
-
-    template <typename T>
-    connection onCancelled(std::function<void(ResultConstPtr &)> callback)
-    {
-        return this->onCancelled_.connect(callback);
-    }
-
-    template <typename T>
     connection onRejected(void (T::*callback)(ResultConstPtr &), T *object)
     {
         return this->onRejected_.connect([&](auto msg) { (object->*callback)(msg); });
@@ -134,12 +171,7 @@ public:
             client_->waitForServer();
         }
 
-        ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl
-                                  << goal);
-
-        SimpleDoneCallback done_cb = boost::bind(&SmaccActionClientBase<TDerived, ActionType>::onResult, this, _1, _2);
-        SimpleActiveCallback active_cb;
-        SimpleFeedbackCallback feedback_cb = boost::bind(&SmaccActionClientBase<TDerived, ActionType>::onFeedback, this, _1);
+        ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl << goal);
 
         client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
     }
@@ -147,80 +179,43 @@ public:
 protected:
     std::shared_ptr<ActionClient> client_;
 
-    signal<void(const ResultConstPtr &)> onSucceeded_;
-    signal<void(const ResultConstPtr &)> onAborted_;
-    signal<void(const ResultConstPtr &)> onPreempted_;
-    signal<void(const ResultConstPtr &)> onCancelled_;
-    signal<void(const ResultConstPtr &)> onRejected_;
-
     void onFeedback(const FeedbackConstPtr &feedback_msg)
     {
-        auto actionFeedbackEvent = new EvActionFeedback<Feedback>();
-        actionFeedbackEvent->client = this;
-        actionFeedbackEvent->feedbackMessage = *feedback_msg;
-        this->postEvent(actionFeedbackEvent);
-        ROS_WARN("FEEDBACK EVENT");
-
-        //invokeOurFeedbackSignal(feedback_msg);
+        postFeedbackEvent(feedback_msg);
     }
 
     void onResult(const SimpleClientGoalState &state, const ResultConstPtr &result_msg)
     {
-        auto *actionResultEvent = new EvActionResult<TDerived>();
-        actionResultEvent->client = this;
-        actionResultEvent->resultMessage = *result_msg;
+        // auto *actionResultEvent = new EvActionResult<TDerived>();
+        // actionResultEvent->client = this;
+        // actionResultEvent->resultMessage = *result_msg;
 
-        const auto &resultType = actionResultEvent->getResultState();
+        const auto &resultType = this->getState();
         ROS_INFO("[%s] request result: %s", this->getName().c_str(), resultType.toString().c_str());
 
         if (resultType == actionlib::SimpleClientGoalState::SUCCEEDED)
         {
             ROS_INFO("[%s] request result: Success", this->getName().c_str());
             onSucceeded_(result_msg);
-
-            auto *successEvent = new EvActionSucceeded<TDerived>();
-            successEvent->client = this;
-            successEvent->resultMessage = *result_msg;
-
-            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(successEvent).name()).c_str());
-            this->postEvent(successEvent);
-
-            //invokeOurSuccessSignal(feedback_msg);
+            postSuccessEvent(result_msg);
         }
         else if (resultType == actionlib::SimpleClientGoalState::ABORTED)
         {
             ROS_INFO("[%s] request result: Aborted", this->getName().c_str());
             onAborted_(result_msg);
-
-            auto *abortedEvent = new EvActionAborted<TDerived>();
-            abortedEvent->client = this;
-            abortedEvent->resultMessage = *result_msg;
-
-            ROS_INFO("[%s] Posting EVENT %s", this->getName().c_str(), demangleSymbol(typeid(abortedEvent).name()).c_str());
-            this->postEvent(abortedEvent);
+            postAbortedEvent(result_msg);
         }
         else if (resultType == actionlib::SimpleClientGoalState::REJECTED)
         {
             ROS_INFO("[%s] request result: Rejected", this->getName().c_str());
             onRejected_(result_msg);
-
-            auto *rejectedEvent = new EvActionRejected<TDerived>();
-            rejectedEvent->client = this;
-            rejectedEvent->resultMessage = *result_msg;
-
-            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(rejectedEvent).name()).c_str());
-            this->postEvent(rejectedEvent);
+            postRejectedEvent(result_msg);
         }
         else if (resultType == actionlib::SimpleClientGoalState::PREEMPTED)
         {
             ROS_INFO("[%s] request result: Preempted", this->getName().c_str());
             onPreempted_(result_msg);
-
-            auto *preemtedEvent = new EvActionPreempted<TDerived>();
-            preemtedEvent->client = this;
-            preemtedEvent->resultMessage = *result_msg;
-            ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(preemtedEvent).name()).c_str());
-            this->postEvent(preemtedEvent);
+            postPreemptedEvent(result_msg);
         }
         else
         {

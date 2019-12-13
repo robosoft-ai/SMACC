@@ -49,7 +49,7 @@ void SignalDetector::findUpdatableClients()
 
         for (auto &client : clients)
         {
-            auto updatableClient = dynamic_cast<ISmaccUpdatable *>(client);
+            auto updatableClient = dynamic_cast<ISmaccUpdatable *>(client.get());
 
             if (updatableClient != nullptr)
             {

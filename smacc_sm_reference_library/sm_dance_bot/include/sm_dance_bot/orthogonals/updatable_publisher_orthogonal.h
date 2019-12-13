@@ -10,7 +10,7 @@ class UpdatablePublisherOrthogonal : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto *publisherClient_ = this->createClient<sm_dance_bot::UpdatableStringPublisherClient>();
+        auto publisherClient_ = this->createClient<UpdatablePublisherOrthogonal, sm_dance_bot::UpdatableStringPublisherClient>();
         publisherClient_->topicName = "/updatable_string_publisher_out";
         publisherClient_->initialize();
     }

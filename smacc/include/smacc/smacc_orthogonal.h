@@ -18,8 +18,8 @@ public:
 
     virtual std::string getName() const;
 
-    template <typename T, typename ...TArgs>
-    T *createClient(TArgs... args);
+    template <typename TObjectTag, typename TClient, typename ...TArgs>
+    std::shared_ptr<TClient> createClient(TArgs... args);
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
@@ -27,7 +27,7 @@ public:
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage, bool verbose = false);
 
-    inline const std::vector<smacc::ISmaccClient *> &getClients()
+    inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &getClients()
     {
         return clients_;
     }
@@ -44,7 +44,7 @@ private:
 
     std::shared_ptr<smacc::SmaccSubStateBehavior> currentBehavior_;
 
-    std::vector<smacc::ISmaccClient *> clients_;
+    std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 };
 
 } // namespace smacc

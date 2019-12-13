@@ -69,7 +69,7 @@ void ISmaccStateMachine::createOrthogonal()
             ss << " - " << orthogonal.first << std::endl;
         }
         ROS_WARN_STREAM(ss.str());
-    }
+    }    
 }
 
 //-------------------------------------------------------------------------------------------------------

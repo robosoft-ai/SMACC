@@ -1,8 +1,8 @@
 struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
 {
   typedef mpl::list<
-            smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient>, SsrRadialLoopStart, SUCCESS>,
-            smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, SsrRadialEndPoint, ABORT>
+            smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialLoopStart, SUCCESS>,
+            smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialEndPoint, ABORT>
             > reactions;
 
   using SmaccState::SmaccState;

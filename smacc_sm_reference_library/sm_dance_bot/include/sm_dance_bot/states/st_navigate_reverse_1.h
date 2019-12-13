@@ -7,11 +7,11 @@ struct StNavigateReverse1 : smacc::SmaccState<StNavigateReverse1, MsDanceBotRunM
 
    typedef mpl::list<
        // Expected event
-       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient>, StRotateDegrees3>,
+       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient, NavigationOrthogonal>, StRotateDegrees3>,
 
        // Sensor events
        //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient>, StNavigateToWaypointsX>>
+       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
        reactions;
 
    static void onDefinition()
