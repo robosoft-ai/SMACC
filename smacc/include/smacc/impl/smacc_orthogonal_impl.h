@@ -10,7 +10,7 @@ std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
     auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
-    client->template setObjectTagIdentifier<TClient, TObjectTag>();
+    client->template assignToOrthogonal<TClient, TObjectTag>();
     clients_.push_back(client);
     return client;
 }

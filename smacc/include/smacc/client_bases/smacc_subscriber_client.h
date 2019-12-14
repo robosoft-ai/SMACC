@@ -6,8 +6,8 @@
 
 namespace smacc
 {
-template <typename TSource>
-struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource>>
+template <typename TSource, typename TObjectTag>
+struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectTag>>
 {
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
@@ -17,10 +17,12 @@ struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource>>
     std::string label = typeinfo->getNonTemplatetypename();
     return label;
   }
+
+  typename TSource::TMessageType msgData;
 };
 
-template <typename TSource>
-struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
+template <typename TSource, typename TObjectTag>
+struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TObjectTag>>
 {
   static std::string getEventLabel()
   {
@@ -33,13 +35,10 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource>>
   typename TSource::TMessageType msgData;
 };
 
-template <typename TDerived, typename MessageType>
+template <typename MessageType>
 class SmaccSubscriberClient : public smacc::ISmaccClient
 {
 public:
-  boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
-  boost::signals2::signal<void(const MessageType &)> onMessageReceived;
-
   boost::optional<std::string> topicName;
   boost::optional<int> queueSize;
 
@@ -53,6 +52,28 @@ public:
   virtual ~SmaccSubscriberClient()
   {
     sub_.shutdown();
+  }
+
+  boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
+  boost::signals2::signal<void(const MessageType &)> onMessageReceived;
+
+  std::function<void(const MessageType &)> postMessageEvent;
+  std::function<void(const MessageType &)> postInitialMessageEvent;
+
+  template <typename TDerived, typename TObjectTag>
+  void assignToOrthogonal()
+  {
+    this->postMessageEvent = [=](auto msg) {
+      auto event = new EvTopicMessage<TDerived, TObjectTag>();
+      event->msgData = msg;
+      this->postEvent(event);
+    };
+
+    this->postInitialMessageEvent = [=](auto msg) {
+      auto event = new EvTopicInitialMessage<TDerived, TObjectTag>();
+      event->msgData = msg;
+      this->postEvent(event);
+    };
   }
 
   virtual void initialize()
@@ -72,7 +93,7 @@ public:
       {
         ROS_INFO_STREAM("[" << this->getName() << "] Subscribing to topic: " << topicName);
 
-        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccSubscriberClient<TDerived, MessageType>::messageCallback, this);
+        sub_ = nh_.subscribe(*topicName, *queueSize, &SmaccSubscriberClient<MessageType>::messageCallback, this);
         this->initialized_ = true;
       }
     }
@@ -90,14 +111,12 @@ private:
   {
     if (firstMessage_)
     {
-      auto event = new EvTopicInitialMessage<TDerived>();
-      this->postEvent(event);
+      postInitialMessageEvent(msg);
       this->onFirstMessageReceived(msg);
       firstMessage_ = false;
     }
 
-    auto *ev2 = new EvTopicMessage<TDerived>();
-    this->postEvent(ev2);
+    postMessageEvent(msg);
     onMessageReceived(msg);
   }
 };

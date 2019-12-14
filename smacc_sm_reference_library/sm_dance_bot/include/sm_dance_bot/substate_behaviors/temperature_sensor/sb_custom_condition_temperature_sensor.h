@@ -11,7 +11,7 @@ struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 };
 
 //--------------------------------------------------------------------------------------
-class SbConditionTemperatureSensor : public smacc::SensorTopic<SbConditionTemperatureSensor, sensor_msgs::Temperature, TemperatureSensor>
+class SbConditionTemperatureSensor : public smacc::SensorTopic<TemperatureSensor>
 {
 public:
   SbConditionTemperatureSensor()

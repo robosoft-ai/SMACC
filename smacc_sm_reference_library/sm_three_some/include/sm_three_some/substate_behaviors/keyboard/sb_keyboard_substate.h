@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_three_some/substate_behaviors/keyboard/keyboard_client.h>
+#include <sm_three_some/clients/keyboard_client.h>
 #include <smacc/smacc_substate_behavior.h>
 
 #include <std_msgs/UInt16.h>
@@ -23,60 +23,70 @@ public:
                     });
         }
 
+        std::function<void(char)> postEventKeyPress;
+
+        template <typename TDerived, typename TObjectTag>
+        void assignToOrthogonal()
+        {
+                postEventKeyPress = [=](char character) {
+                        if (character == 'a')
+                                postKeyEvent<EvKeyPressA<SbKeyboard, TObjectTag>>();
+                        else if (character == 'b')
+                                postKeyEvent<EvKeyPressB<SbKeyboard, TObjectTag>>();
+                        else if (character == 'c')
+                                postKeyEvent<EvKeyPressC<SbKeyboard, TObjectTag>>();
+                        else if (character == 'd')
+                                postKeyEvent<EvKeyPressD<SbKeyboard, TObjectTag>>();
+                        else if (character == 'e')
+                                postKeyEvent<EvKeyPressE<SbKeyboard, TObjectTag>>();
+                        else if (character == 'f')
+                                postKeyEvent<EvKeyPressF<SbKeyboard, TObjectTag>>();
+                        else if (character == 'g')
+                                postKeyEvent<EvKeyPressG<SbKeyboard, TObjectTag>>();
+                        else if (character == 'h')
+                                postKeyEvent<EvKeyPressH<SbKeyboard, TObjectTag>>();
+                        else if (character == 'y')
+                                postKeyEvent<EvKeyPressI<SbKeyboard, TObjectTag>>();
+                        else if (character == 'j')
+                                postKeyEvent<EvKeyPressJ<SbKeyboard, TObjectTag>>();
+                        else if (character == 'k')
+                                postKeyEvent<EvKeyPressK<SbKeyboard, TObjectTag>>();
+                        else if (character == 'l')
+                                postKeyEvent<EvKeyPressL<SbKeyboard, TObjectTag>>();
+                        else if (character == 'm')
+                                postKeyEvent<EvKeyPressM<SbKeyboard, TObjectTag>>();
+                        else if (character == 'n')
+                                postKeyEvent<EvKeyPressN<SbKeyboard, TObjectTag>>();
+                        else if (character == 'o')
+                                postKeyEvent<EvKeyPressO<SbKeyboard, TObjectTag>>();
+                        else if (character == 'p')
+                                postKeyEvent<EvKeyPressP<SbKeyboard, TObjectTag>>();
+                        else if (character == 'q')
+                                postKeyEvent<EvKeyPressQ<SbKeyboard, TObjectTag>>();
+                        else if (character == 'r')
+                                postKeyEvent<EvKeyPressR<SbKeyboard, TObjectTag>>();
+                        else if (character == 's')
+                                postKeyEvent<EvKeyPressS<SbKeyboard, TObjectTag>>();
+                        else if (character == 't')
+                                postKeyEvent<EvKeyPressT<SbKeyboard, TObjectTag>>();
+                        else if (character == 'u')
+                                postKeyEvent<EvKeyPressU<SbKeyboard, TObjectTag>>();
+                        else if (character == 'v')
+                                postKeyEvent<EvKeyPressV<SbKeyboard, TObjectTag>>();
+                        else if (character == 'w')
+                                postKeyEvent<EvKeyPressW<SbKeyboard, TObjectTag>>();
+                        else if (character == 'x')
+                                postKeyEvent<EvKeyPressX<SbKeyboard, TObjectTag>>();
+                        else if (character == 'y')
+                                postKeyEvent<EvKeyPressY<SbKeyboard, TObjectTag>>();
+                        else if (character == 'z')
+                                postKeyEvent<EvKeyPressZ<SbKeyboard, TObjectTag>>();
+                };
+        }
+
         void OnKeyPress(char character)
         {
-                if (character == 'a')
-                        postKeyEvent<EvKeyPressA<SbKeyboard>>();
-                else if (character == 'b')
-                        postKeyEvent<EvKeyPressB<SbKeyboard>>();
-                else if (character == 'c')
-                        postKeyEvent<EvKeyPressC<SbKeyboard>>();
-                else if (character == 'd')
-                        postKeyEvent<EvKeyPressD<SbKeyboard>>();
-                else if (character == 'e')
-                        postKeyEvent<EvKeyPressE<SbKeyboard>>();
-                else if (character == 'f')
-                        postKeyEvent<EvKeyPressF<SbKeyboard>>();
-                else if (character == 'g')
-                        postKeyEvent<EvKeyPressG<SbKeyboard>>();
-                else if (character == 'h')
-                        postKeyEvent<EvKeyPressH<SbKeyboard>>();
-                else if (character == 'y')
-                        postKeyEvent<EvKeyPressI<SbKeyboard>>();
-                else if (character == 'j')
-                        postKeyEvent<EvKeyPressJ<SbKeyboard>>();
-                else if (character == 'k')
-                        postKeyEvent<EvKeyPressK<SbKeyboard>>();
-                else if (character == 'l')
-                        postKeyEvent<EvKeyPressL<SbKeyboard>>();
-                else if (character == 'm')
-                        postKeyEvent<EvKeyPressM<SbKeyboard>>();
-                else if (character == 'n')
-                        postKeyEvent<EvKeyPressN<SbKeyboard>>();
-                else if (character == 'o')
-                        postKeyEvent<EvKeyPressO<SbKeyboard>>();
-                else if (character == 'p')
-                        postKeyEvent<EvKeyPressP<SbKeyboard>>();
-                else if (character == 'q')
-                        postKeyEvent<EvKeyPressQ<SbKeyboard>>();
-                else if (character == 'r')
-                        postKeyEvent<EvKeyPressR<SbKeyboard>>();
-                else if (character == 's')
-                        postKeyEvent<EvKeyPressS<SbKeyboard>>();
-                else if (character == 't')
-                        postKeyEvent<EvKeyPressT<SbKeyboard>>();
-                else if (character == 'u')
-                        postKeyEvent<EvKeyPressU<SbKeyboard>>();
-                else if (character == 'v')
-                        postKeyEvent<EvKeyPressV<SbKeyboard>>();
-                else if (character == 'w')
-                        postKeyEvent<EvKeyPressW<SbKeyboard>>();
-                else if (character == 'x')
-                        postKeyEvent<EvKeyPressX<SbKeyboard>>();
-                else if (character == 'y')
-                        postKeyEvent<EvKeyPressY<SbKeyboard>>();
-                else if (character == 'z')
-                        postKeyEvent<EvKeyPressZ<SbKeyboard>>();
+                postEventKeyPress(character);
         }
 
         template <typename TEv>

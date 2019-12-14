@@ -14,7 +14,7 @@ public:
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal>(std::make_shared<smacc::Timer>(ros::Duration(3)));
+    this->configure<NavigationOrthogonal, smacc::Timer>(ros::Duration(3));
   }
 
   void onEntry()

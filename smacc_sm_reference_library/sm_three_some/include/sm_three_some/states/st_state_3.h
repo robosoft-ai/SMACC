@@ -5,12 +5,12 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-                    smacc::transition<smacc::EvTopicMessage<SbBehavior2b>, SS1::Ss1>,
+        smacc::transition<smacc::EvTopicMessage<SbBehavior2b, Orthogonal2>, SS1::Ss1>,
 
-                    // Keyboard events
-                    smacc::transition<EvKeyPressP<SbKeyboard>, StState2>,
-                    smacc::transition<EvKeyPressN<SbKeyboard>, SS1::Ss1>
-                    > reactions;
+        // Keyboard events
+        smacc::transition<EvKeyPressP<SbKeyboard, KeyboardOrthogonal>, StState2>,
+        smacc::transition<EvKeyPressN<SbKeyboard, KeyboardOrthogonal>, SS1::Ss1>>
+        reactions;
 
     static void onDefinition()
     {

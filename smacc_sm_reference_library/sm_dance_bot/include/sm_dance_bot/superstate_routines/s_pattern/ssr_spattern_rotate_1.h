@@ -25,8 +25,8 @@ struct SsrSPatternRotate1 : smacc::SmaccState<SsrSPatternRotate1, SS>
             else
                 angle = -90;
 
-            this->configure<NavigationOrthogonal>(std::make_shared<SbRotate>(angle));
-            this->configure<ToolOrthogonal>(std::make_shared<SbToolStop>());
+            this->configure<NavigationOrthogonal, SbRotate>(angle);
+            this->configure<ToolOrthogonal, SbToolStop>();
         }
     }
 };

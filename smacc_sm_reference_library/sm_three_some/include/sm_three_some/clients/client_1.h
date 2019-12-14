@@ -6,7 +6,7 @@
 
 namespace sm_three_some
 {
-class Client1 : public smacc::SmaccSubscriberClient<Client1, std_msgs::UInt16>
+class Client1 : public smacc::SmaccSubscriberClient<std_msgs::UInt16>
 {
 };
 } // namespace sm_three_some

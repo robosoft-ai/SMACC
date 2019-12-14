@@ -5,8 +5,8 @@ struct Ssr3 : smacc::SmaccState<Ssr3, SS>
   typedef mpl::list<
       //smacc::transition<EvTopicMessage<SbBehavior1b>, Ssr1>,
 
-      smacc::transition<EvKeyPressP<SbKeyboard>, Ssr2>,
-      smacc::transition<EvKeyPressN<SbKeyboard>, Ssr1>>
+      smacc::transition<EvKeyPressP<SbKeyboard, KeyboardOrthogonal>, Ssr2>,
+      smacc::transition<EvKeyPressN<SbKeyboard, KeyboardOrthogonal>, Ssr1>>
       reactions;
 
   //-------------------------------------------------------------------------------

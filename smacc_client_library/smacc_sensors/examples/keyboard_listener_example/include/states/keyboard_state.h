@@ -14,7 +14,7 @@ public:
 
   void onInitialize()
   {
-    this->configure<InputDeviceOrthogonal>(std::make_shared<smacc::Keyboard>());
+    this->configure<InputDeviceOrthogonal, smacc::Keyboard>();
   }
 
   void onEntry()

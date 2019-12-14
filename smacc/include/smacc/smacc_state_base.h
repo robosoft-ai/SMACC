@@ -223,8 +223,8 @@ public:
 
     StateBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = [=](ISmaccState *state) {
-      auto bh = std::make_shared<TBehavior>(args...);
-      state->configure<TOrthogonal>(bh);
+      //auto bh = std::make_shared<TBehavior>(args...);
+      state->configure<TOrthogonal,TBehavior>(args...);
     };
 
     bhinfo.behaviorType = &(typeid(TBehavior));

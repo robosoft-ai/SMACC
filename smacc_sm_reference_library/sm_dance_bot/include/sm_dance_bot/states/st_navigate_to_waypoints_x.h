@@ -88,11 +88,10 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     // example for temperature sensor
 
-    std::function<bool(EvTopicMessage<SbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<SbConditionTemperatureSensor> *ev) {
-      return ev->msgData.temperature > 30;
-    });
-
-    static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<SbConditionTemperatureSensor>>>(temperatureWarningCondition);
+    //std::function<bool(EvTopicMessage<SbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<SbConditionTemperatureSensor> *ev) {
+    //  return ev->msgData.temperature > 30;
+    //});
+    //static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<SbConditionTemperatureSensor>>>(temperatureWarningCondition);
 
     //smacc::transition<EvTrue<LuConditional>, StNavigateToWaypointsX>>
 
@@ -178,7 +177,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       auto &target = waypoints[currentIteration];
 
       ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_, target.yaw_);
-      this->configure<NavigationOrthogonal>(std::make_shared<SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_));
+      this->configure<NavigationOrthogonal, SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
     }
   }
 

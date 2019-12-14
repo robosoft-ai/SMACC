@@ -11,37 +11,46 @@
 namespace smacc
 {
 
-template <typename TSource>
-struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource>>
+template <typename TSource, typename TObjectTag>
+struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TObjectTag>>
 {
-  static std::string getEventLabel()
-  {
-    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
-
-    std::string label = typeinfo->getNonTemplatetypename();
-    return label;
-  }
+  ros::TimerEvent timerData;
 };
 
 //---------------------------------------------------------------
-template <typename TDerived, typename MessageType>
-class SensorClient : public SmaccSubscriberClient<TDerived, MessageType>
+template <typename MessageType>
+class SensorClient : public SmaccSubscriberClient<MessageType>
 {
 public:
+  typedef MessageType TMessageType;
   boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
 
   SensorClient()
-      : SmaccSubscriberClient<TDerived, MessageType>()
+      : SmaccSubscriberClient<MessageType>()
   {
     ROS_INFO("SbLidarSensor constructor");
     initialized_ = false;
+  }
+
+  std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
+
+  template <typename TDerived, typename TObjectTag>
+  void assignToOrthogonal()
+  {
+    SmaccSubscriberClient<MessageType>::template assignToOrthogonal<TDerived, TObjectTag>();
+
+    this->postTimeoutMessageEvent = [=](auto &timerdata) {
+      auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();
+      event->timerData = timerdata;
+      this->postEvent(event);
+    };
   }
 
   virtual void initialize() override
   {
     if (!initialized_)
     {
-      SmaccSubscriberClient<TDerived, MessageType>::initialize();
+      SmaccSubscriberClient<MessageType>::initialize();
 
       this->onMessageReceived.connect(
           [this](auto msg) {
@@ -50,16 +59,16 @@ public:
             this->timeoutTimer_.start();
           });
 
-      if(timeout_)
+      if (timeout_)
       {
-        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<TDerived,MessageType>::timeoutCallback, this, _1));
+        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
         timeoutTimer_.start();
       }
       else
       {
         ROS_WARN("Timeout sensor client not set, skipping timeout watchdog funcionality");
       }
-      
+
       initialized_ = true;
     }
   }
@@ -69,11 +78,10 @@ public:
 private:
   ros::Timer timeoutTimer_;
   bool initialized_;
-  
-  void timeoutCallback(const ros::TimerEvent &ev)
+
+  void timeoutCallback(const ros::TimerEvent &timerdata)
   {
-    auto event = new EvTopicMessageTimeout<TDerived>();
-    this->postEvent(event);
+    postTimeoutMessageEvent(timerdata);
   }
 };
-}
+} // namespace smacc

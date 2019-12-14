@@ -7,7 +7,7 @@
 namespace sm_dance_bot
 {
 
-class LaserSensor : public smacc::SensorClient<LaserSensor, sensor_msgs::LaserScan>
+class LaserSensor : public smacc::SensorClient<sensor_msgs::LaserScan>
 {
 public:
     LaserSensor()

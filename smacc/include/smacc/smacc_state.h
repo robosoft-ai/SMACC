@@ -27,8 +27,8 @@ public:
 
   virtual std::string getClassName();
 
-  template <typename TOrthogonal>
-  void configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior);
+  template <typename TOrthogonal, typename TBehavior, typename... Args>
+  void configure(Args &&... args);
 
   template <typename SmaccComponentType>
   void requiresComponent(SmaccComponentType *&storage);

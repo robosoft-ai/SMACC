@@ -4,11 +4,11 @@
 #include <smacc/smacc_substate_behavior.h>
 #include <smacc/logic_units/logic_unit_base.h>
 #include <smacc/introspection/string_type_walker.h>
+#include <smacc/smacc_substate_behavior.h>
 
 namespace smacc
 {
 //-------------------------------------------------------------------------------------------------------
-
 // Delegates to ROS param access with the current NodeHandle
 template <typename T>
 bool ISmaccState::getParam(std::string param_name, T &param_storage)
@@ -33,8 +33,8 @@ bool ISmaccState::param(std::string param_name, T &param_val, const T &default_v
 }
 //-------------------------------------------------------------------------------------------------------
 
-template <typename TOrthogonal>
-void ISmaccState::configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior)
+template <typename TOrthogonal, typename TBehavior, typename... Args>
+void ISmaccState::configure(Args &&... args)
 {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
@@ -42,6 +42,8 @@ void ISmaccState::configure(std::shared_ptr<SmaccSubStateBehavior> smaccBehavior
     std::shared_ptr<TOrthogonal> orthogonal;
     if (this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
     {
+        auto smaccBehavior = std::shared_ptr<smacc::SmaccSubStateBehavior>(new TBehavior(args...));
+        smaccBehavior->template assignToOrthogonal<TBehavior, TOrthogonal>();
         orthogonal->setStateBehavior(smaccBehavior);
     }
     else
@@ -91,13 +93,12 @@ template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename
 std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
 {
     auto lu = std::make_shared<TLUnit>(args...);
-    TEventList* mock;
+    TEventList *mock;
     lu->initialize(this, mock);
     lu->declarePostEvent(typelist<TTriggerEvent>());
     logicUnits_.push_back(lu);
     return lu;
 }
-
 
 // template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
 // std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)

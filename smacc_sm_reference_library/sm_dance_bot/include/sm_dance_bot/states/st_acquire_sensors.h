@@ -8,12 +8,15 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
    struct ON_KEYBOARD : PREEMPT
    {
    };
+
    struct ON_KEYBOARD2 : ABORT
    {
    };
+
    struct ON_SENSORS_AVAILABLE : SUCCESS
    {
    };
+
    struct Unit1;
    //----------------
    using SmaccState::SmaccState;
@@ -37,7 +40,11 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
       static_createLogicUnit<LuAllEventsGo,
                              EvAll<LuAllEventsGo, Unit1>,
-                             mpl::list<EvTopicMessage<SbLidarSensor>, EvTopicMessage<SbConditionTemperatureSensor>>>();
+                             mpl::list<EvTopicMessage<SbLidarSensor, ObstaclePerceptionOrthogonal>, EvTopicMessage<SbConditionTemperatureSensor, SensorOrthogonal>>>();
+
+      // auto luall = static_createLogicUnit<LuAllEventsGo>();
+      // luall->enablesOn<EvTopicMessage<SbLidarSensor, ObstaclePerceptionOrthogonal>, EvTopicMessage<SbConditionTemperatureSensor, SensorOrthogonal>>();
+      // luall->throwsEvent<EvAll<LuAllEventsGo, Unit1>>();
    }
 
    void onInitialize()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_three_some/substate_behaviors/keyboard/keyboard_client.h>
+#include <sm_three_some/clients/keyboard_client.h>
 #include <smacc/smacc_orthogonal.h>
 namespace sm_three_some
 {

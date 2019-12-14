@@ -26,8 +26,6 @@ public:
     template <typename EventType>
     void postEvent(const EventType &ev);
 
-    
-
     // template <typename EventType>
     // void connectOnEvent(callback);
 
@@ -37,7 +35,7 @@ protected:
 
 private:
     template <typename TDerived, typename TObjectTag>
-    void setObjectTagIdentifier(){}
+    void assignToOrthogonal(){}
 
     friend class Orthogonal;
 };

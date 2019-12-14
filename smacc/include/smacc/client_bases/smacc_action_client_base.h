@@ -82,7 +82,7 @@ public:
     }
 
     template <typename TDerived, typename TObjectTag>
-    void setObjectTagIdentifier()
+    void assignToOrthogonal()
     {
         // we create here all the event factory functions capturing the TObjectTag
         postSuccessEvent = [=](auto msg) { this->postResultEvent<EvActionSucceeded<TDerived, TObjectTag>>(msg); };

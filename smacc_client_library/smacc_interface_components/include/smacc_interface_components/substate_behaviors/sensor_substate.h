@@ -5,11 +5,11 @@
 
 namespace smacc
 {
-template <typename Derived, typename MessageType, typename ClientType>
+template <typename ClientType>
 class SensorTopic : public smacc::SmaccSubStateBehavior
 {
 public:
-  typedef MessageType TMessageType;
+  typedef typename ClientType::TMessageType TMessageType;
 
   ClientType *sensor_;
 
@@ -19,13 +19,40 @@ public:
 
   SensorTopic()
   {
-    sensor_=nullptr;
+    sensor_ = nullptr;
   }
 
   static std::string getEventLabel()
   {
     // show ros message type
-    return demangleSymbol(typeid(MessageType).name());
+    return demangleSymbol(typeid(TMessageType).name());
+  }
+
+  std::function<void()> deferedEventPropagation;
+
+  template <typename TDerived, typename TObjectTag>
+  void assignToOrthogonal()
+  {
+    deferedEventPropagation = [=]() {
+      // just propagate the client events from this substate behavior source.
+      c1_ = sensor_->onMessageReceived.connect(
+          [this](auto &msg) {
+            auto *ev2 = new EvTopicMessage<TDerived, TObjectTag>();
+            this->postEvent(ev2);
+          });
+
+      c2_ = sensor_->onFirstMessageReceived.connect(
+          [this](auto &msg) {
+            auto event = new EvTopicInitialMessage<TDerived, TObjectTag>();
+            this->postEvent(event);
+          });
+
+      c3_ = sensor_->onMessageTimeout.connect(
+          [this](auto &msg) {
+            auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();
+            this->postEvent(event);
+          });
+    };
   }
 
   virtual void onEntry() override
@@ -34,31 +61,13 @@ public:
 
     this->requiresClient(sensor_);
 
-    if(sensor_==nullptr)
+    if (sensor_ == nullptr)
     {
-      ROS_FATAL_STREAM("Sensor Substate behavior needs a client of type: "<< demangleSymbol<ClientType>()<< " but it is not found.");
+      ROS_FATAL_STREAM("Sensor Substate behavior needs a client of type: " << demangleSymbol<ClientType>() << " but it is not found.");
     }
     else
     {
-      // just propagate the client events from this substate behavior source. 
-      c1_ = sensor_->onMessageReceived.connect(
-          [this](auto &msg) {
-            auto *ev2 = new EvTopicMessage<Derived>();
-            this->postEvent(ev2);
-          });
-
-      c2_ = sensor_->onFirstMessageReceived.connect(
-          [this](auto &msg) {
-            auto event = new EvTopicInitialMessage<Derived>();
-            this->postEvent(event);
-          });
-
-      c3_ = sensor_->onMessageTimeout.connect(
-          [this](auto &msg) {
-            auto event = new EvTopicMessageTimeout<Derived>();
-            this->postEvent(event);
-          });
-
+      deferedEventPropagation();
       ROS_INFO("SensorTopic onEntry. sensor initialize");
       sensor_->initialize();
     }
@@ -68,7 +77,7 @@ public:
   {
   }
 
-  virtual void onMessageCallback(const MessageType &msg)
+  virtual void onMessageCallback(const TMessageType &msg)
   {
     // empty to fill by sensor customization based on inheritance
   }
