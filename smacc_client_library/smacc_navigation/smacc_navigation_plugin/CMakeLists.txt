@@ -55,6 +55,8 @@ include_directories(
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
    src/smacc_navigation_plugin.cpp
+   src/waypoints_event_dispatcher.cpp
+   src/waypoints_navigator_component.cpp
  )
 
 target_link_libraries(${PROJECT_NAME}

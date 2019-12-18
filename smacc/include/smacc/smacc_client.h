@@ -26,8 +26,8 @@ public:
     template <typename EventType>
     void postEvent(const EventType &ev);
 
-    // template <typename EventType>
-    // void connectOnEvent(callback);
+    template <typename EventType>
+    void postEvent();
 
 protected:
     // A reference to the state machine object that owns this resource

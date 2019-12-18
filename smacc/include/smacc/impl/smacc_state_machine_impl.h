@@ -203,10 +203,18 @@ void ISmaccStateMachine::mapBehavior()
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
 void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value);
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value);
 
     auto connection = signal.connect([&](auto msg) { return (object->*callback)(msg); });
-    stateCallbackConnections.push_back(connection);
+
+    if(std::is_base_of<ISmaccComponent, TSmaccObjectType>::value)
+    {
+
+    }
+    else // state life-time objects
+    {
+        stateCallbackConnections.push_back(connection);
+    }
 }
 
 template <typename TSmaccSignal, typename TMemberFunctionPrototype>
@@ -239,8 +247,9 @@ bool ISmaccStateMachine::param(std::string param_name, T &param_val, const T &de
 template <typename StateType>
 void ISmaccStateMachine::notifyOnStateEntryStart(StateType *state)
 {
-    std:lock_guard<std::recursive_mutex> lock(m_mutex_);
-    
+std:
+    lock_guard<std::recursive_mutex> lock(m_mutex_);
+
     ROS_INFO_STREAM("Notification State Entry, orthogonals:" << this->orthogonals_.size() << ", new state " << state);
 
     stateSeqCounter_++;

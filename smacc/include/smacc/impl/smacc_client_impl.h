@@ -10,4 +10,11 @@ void ISmaccClient::postEvent(const EventType &ev)
 {
     stateMachine_->postEvent(ev);
 }
+
+template<typename EventType>
+void ISmaccClient::postEvent()
+{
+    auto* ev = new EventType();
+    stateMachine_->postEvent(ev);
+}
 } // namespace smacc

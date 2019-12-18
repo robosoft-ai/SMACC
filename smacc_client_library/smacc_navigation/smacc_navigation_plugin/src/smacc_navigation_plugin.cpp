@@ -5,6 +5,8 @@
  ******************************************************************************************************************/
 #include <smacc_navigation_plugin/move_base_action_client.h>
 #include <pluginlib/class_list_macros.h>
+#include <smacc_navigation_plugin/waypoints_navigator_component.h>
+#include <smacc_navigation_plugin/impl/move_base_action_client_impl.h>
 
 namespace smacc
 {
@@ -23,6 +25,7 @@ void SmaccMoveBaseActionClient::initialize()
 {
     SmaccActionClientBase<move_base_msgs::MoveBaseAction>::initialize();
     plannerSwitcher_ = std::make_shared<smacc_planner_switcher::PlannerSwitcher>(*(this->name_));
+    waypointsNavigator_ = std::make_shared<smacc::WaypointNavigator>();
 }
 
 SmaccMoveBaseActionClient::~SmaccMoveBaseActionClient()
