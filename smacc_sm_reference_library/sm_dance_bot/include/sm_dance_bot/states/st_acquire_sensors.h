@@ -53,7 +53,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       this->requiresClient(move_base_action_client);
 
       // we careful with the lifetime of the callbac, us a scoped connection if is not forever
-      //move_base_action_client->onSucceeded(&StAcquireSensors::onActionClientSucceded, this);
+      move_base_action_client->onSucceeded(&StAcquireSensors::onActionClientSucceded, this);
    }
 
    void onActionClientSucceded(SmaccMoveBaseActionClient::ResultConstPtr &msg)

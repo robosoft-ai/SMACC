@@ -61,8 +61,12 @@ public:
   {
     finishStateThrown = false;
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
-
     this->set_context(ctx.pContext_);
+
+    this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
+
+    //template< class Target >
+    //Target state_cast() const;
 
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
 
@@ -77,8 +81,6 @@ public:
     this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
 
     ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
-
-    this->updateCurrentState(true); //<MostDerived>
 
     this->setParam("created", true);
 
@@ -116,18 +118,14 @@ public:
 
     static_cast<MostDerived *>(this)->onInitialize();
 
-    this->getStateMachine().notifyOnStateEntry(this);
+    this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));
 
     //ROS_INFO("Not behavioral State");
     static_cast<MostDerived *>(this)->onEntry();
   }
 
-  void updateCurrentState(bool active)
-  {
-    base_type::outermost_context().updateCurrentState(active, static_cast<MostDerived *>(this));
-  }
-
-  
+  typedef typename Context::inner_context_type context_type;
+  typedef typename context_type::state_iterator state_iterator;
 
   InnerInitial *smacc_inner_type;
 
@@ -160,27 +158,18 @@ public:
   {
     try
     {
-      this->getStateMachine().lockStateMachine();
+      this->getStateMachine().lockStateMachine("state exit");
       auto fullname = demangleSymbol(typeid(MostDerived).name());
       ROS_WARN_STREAM("exiting state: " << fullname);
+      this->setParam("destroyed", true);
 
-      this->updateCurrentState(false); //<MostDerived>
-      this->setParam("destroyed", true);  
-            
-      this->getStateMachine().notifyOnStateExit(this);
-
-      //this->updateCurrentState<MostDerived>(false);
-      static_cast<MostDerived *>(this)->onExit();
-
-      //ROS_INFO_STREAM("throwing finish event " << fullname);
-      //this->throwFinishEvent();
+      this->getStateMachine().notifyOnStateExit(static_cast<MostDerived *>(this));
       ROS_WARN_STREAM("state exit: " << fullname);
     }
-    catch(...)
+    catch (...)
     {
-
     }
-    this->getStateMachine().unlockStateMachine();
+    this->getStateMachine().unlockStateMachine("state exit");
   }
 
   void throwFinishEvent()
@@ -224,7 +213,7 @@ public:
     StateBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = [=](ISmaccState *state) {
       //auto bh = std::make_shared<TBehavior>(args...);
-      state->configure<TOrthogonal,TBehavior>(args...);
+      state->configure<TOrthogonal, TBehavior>(args...);
     };
 
     bhinfo.behaviorType = &(typeid(TBehavior));

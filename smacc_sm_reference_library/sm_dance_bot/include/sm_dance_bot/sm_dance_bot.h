@@ -125,7 +125,8 @@ struct SmDanceBot
 
         //this->createOrthogonal<MoveBaseActionClient, Robot1>();
         //this->createOrthogonal<MoveBaseActionClient, Robot2>();
-
+        
+        this->createOrthogonal<NavigationOrthogonal>();
         this->createOrthogonal<ObstaclePerceptionOrthogonal>();
         this->createOrthogonal<ToolOrthogonal>();
         this->createOrthogonal<SensorOrthogonal>();

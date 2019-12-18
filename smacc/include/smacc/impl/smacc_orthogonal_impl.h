@@ -7,6 +7,10 @@ namespace smacc
 template <typename TObjectTag, typename TClient, typename ...TArgs>
 std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
 {
+    ROS_INFO("[%s] creates a client of type '%s' and object tag '%s'", 
+                        demangleType(typeid(*this)).c_str(), 
+                        demangledTypeName<TClient>().c_str(), 
+                        demangledTypeName<TObjectTag>().c_str());
     auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
@@ -35,8 +39,10 @@ void Orthogonal::requiresClient(SmaccClientType *&storage, bool verbose)
     {
         storage = dynamic_cast<SmaccClientType *>(client.get());
         if (storage != nullptr)
-            break;
+            return;
     }
+
+    ROS_ERROR("[Client requirement] Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault in some posterior code.", demangleSymbol<SmaccClientType>().c_str());
 }
 
 }; // namespace smacc

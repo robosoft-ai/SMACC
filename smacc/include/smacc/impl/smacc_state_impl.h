@@ -5,6 +5,7 @@
 #include <smacc/logic_units/logic_unit_base.h>
 #include <smacc/introspection/string_type_walker.h>
 #include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
@@ -42,7 +43,7 @@ void ISmaccState::configure(Args &&... args)
     std::shared_ptr<TOrthogonal> orthogonal;
     if (this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
     {
-        auto smaccBehavior = std::shared_ptr<smacc::SmaccSubStateBehavior>(new TBehavior(args...));
+        auto smaccBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
         smaccBehavior->template assignToOrthogonal<TBehavior, TOrthogonal>();
         orthogonal->setStateBehavior(smaccBehavior);
     }
@@ -69,8 +70,10 @@ void ISmaccState::requiresClient(SmaccClientType *&storage, bool verbose)
     {
         ortho.second->requiresClient(storage, verbose);
         if (storage != nullptr)
-            break;
+            return;
     }
+
+    ROS_ERROR("Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault if the returned reference is used.", demangleSymbol<SmaccClientType>().c_str());
 }
 //-------------------------------------------------------------------------------------------------------
 

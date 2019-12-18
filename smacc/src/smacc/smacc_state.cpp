@@ -10,7 +10,7 @@ std::string ISmaccState::getClassName()
 
 void ISmaccState::notifyTransitionFromTransitionTypeInfo(smacc::TypeInfo::Ptr &transitionType)
 {
-    ROS_ERROR_STREAM("NOTIFY TRANSITION: " << transitionType->getFullName());
+    ROS_INFO_STREAM("NOTIFY TRANSITION: " << transitionType->getFullName());
 
     auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
     if (currstateinfo != nullptr)

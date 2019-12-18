@@ -49,9 +49,11 @@ public:
   template <typename EventType>
   void postEvent(const EventType &ev);
 
+  // used for transition logging
   template <typename TransitionType>
   void notifyTransition();
 
+  // used for transition logging
   void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::TypeInfo> &transitionTypeInfo);
 
   inline std::vector<std::shared_ptr<LogicUnit>> &getLogicUnits() { return logicUnits_; }

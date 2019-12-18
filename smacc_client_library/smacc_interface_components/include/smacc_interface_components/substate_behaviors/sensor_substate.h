@@ -57,7 +57,7 @@ public:
 
   virtual void onEntry() override
   {
-    ROS_INFO("SensorTopic onEntry. Requires client:");
+    ROS_INFO("SensorTopic onEntry. Requires client of type '%s'", demangleSymbol<ClientType>().c_str());
 
     this->requiresClient(sensor_);
 

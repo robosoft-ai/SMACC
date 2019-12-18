@@ -14,7 +14,7 @@ namespace smacc
 template <typename TOrthogonal>
 bool ISmaccStateMachine::getOrthogonal(std::shared_ptr<TOrthogonal> &storage)
 {
-    std::lock_guard<std::mutex> lock(m_mutex_);
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     std::shared_ptr<TOrthogonal> ret;
@@ -48,6 +48,7 @@ bool ISmaccStateMachine::getOrthogonal(std::shared_ptr<TOrthogonal> &storage)
 template <typename TOrthogonal>
 void ISmaccStateMachine::createOrthogonal()
 {
+    this->lockStateMachine("create orthogonal");
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
 
     if (orthogonals_.count(orthogonalkey) == 0)
@@ -69,7 +70,8 @@ void ISmaccStateMachine::createOrthogonal()
             ss << " - " << orthogonal.first << std::endl;
         }
         ROS_WARN_STREAM(ss.str());
-    }    
+    }
+    this->unlockStateMachine("create orthogonal");
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -77,7 +79,7 @@ template <typename SmaccComponentType>
 void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool verbose)
 {
     ROS_INFO("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
-    std::lock_guard<std::mutex> lock(m_mutex_);
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     std::string pluginkey = demangledTypeName<SmaccComponentType>();
     SmaccComponentType *ret;
@@ -105,15 +107,17 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool ve
 template <typename EventType>
 void ISmaccStateMachine::postEvent(EventType *ev)
 {
-    std::lock_guard<std::mutex> lock(m_mutex_);
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     // when a postting event is requested by any component, client, or substate behavior
     // we reach this place. Now, we propagate the events to all the state logic units to generate
     // some more events
-    if (currentState_ != nullptr)
+
+    auto currentstate = currentState_;
+    if (currentstate != nullptr)
     {
-        ROS_INFO_STREAM("EVENT: " << demangleSymbol<EventType>());
-        for (auto &lu : currentState_->getLogicUnits())
+        ROS_DEBUG_STREAM("EVENT: " << demangleSymbol<EventType>());
+        for (auto &lu : currentstate->getLogicUnits())
         {
             lu->notifyEvent(ev);
         }
@@ -121,19 +125,158 @@ void ISmaccStateMachine::postEvent(EventType *ev)
 
     this->signalDetector_->postEvent(ev);
 }
-//-------------------------------------------------------------------------------------------------------
-template <typename StateType>
-void ISmaccStateMachine::updateCurrentState(bool active, StateType *currentState)
+
+template <typename T>
+bool ISmaccStateMachine::getGlobalSMData(std::string name, T &ret)
 {
-    if (active)
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+    //ROS_WARN("get SM Data lock acquire");
+    bool success = false;
+
+    if (!globalData_.count(name))
     {
-        currentState_ = currentState;
-        currentStateInfo_ = info_->getState<StateType>();
-        this->updateStatusMessage();
+        //ROS_WARN("get SM Data - data do not exist");
+        success = false;
     }
     else
     {
-        currentState_ = nullptr;
+        //ROS_WARN("get SM DAta -data exist. accessing");
+        try
+        {
+            auto &v = globalData_[name];
+
+            //ROS_WARN("get SM DAta -data exist. any cast");
+            ret = boost::any_cast<T>(v.second);
+            success = true;
+            //ROS_WARN("get SM DAta -data exist. success");
+        }
+        catch (boost::bad_any_cast &ex)
+        {
+            ROS_ERROR("bad any cast: %s", ex.what());
+            success = false;
+        }
     }
+
+    //ROS_WARN("get SM Data lock release");
+    return success;
+}
+
+template <typename T>
+void ISmaccStateMachine::setGlobalSMData(std::string name, T value)
+{
+    {
+        std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+        //ROS_WARN("set SM Data lock acquire");
+
+        globalData_[name] = {
+            [this, name]() {
+                std::stringstream ss;
+                auto val = any_cast<T>(globalData_[name].second);
+                ss << val;
+                return ss.str();
+            },
+            value};
+    }
+
+    this->updateStatusMessage();
+}
+
+template <typename StateField, typename BehaviorType>
+void ISmaccStateMachine::mapBehavior()
+{
+    std::string stateFieldName = demangleSymbol(typeid(StateField).name());
+    std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
+    ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
+    SmaccSubStateBehavior *globalreference;
+    if (!this->getGlobalSMData(stateFieldName, globalreference))
+    {
+        // Using the requires component approach, we force a unique existence
+        // of this component
+        BehaviorType *behavior;
+        this->requiresComponent(behavior);
+        globalreference = dynamic_cast<SmaccSubStateBehavior *>(behavior);
+
+        this->setGlobalSMData(stateFieldName, globalreference);
+    }
+}
+
+template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+{
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value);
+
+    auto connection = signal.connect([&](auto msg) { return (object->*callback)(msg); });
+    stateCallbackConnections.push_back(connection);
+}
+
+template <typename TSmaccSignal, typename TMemberFunctionPrototype>
+void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback)
+{
+    auto connection = signal.connect(callback);
+    // return signal;
+}
+
+template <typename T>
+bool ISmaccStateMachine::getParam(std::string param_name, T &param_storage)
+{
+    return nh_.getParam(param_name, param_storage);
+}
+
+// Delegates to ROS param access with the current NodeHandle
+template <typename T>
+void ISmaccStateMachine::setParam(std::string param_name, T param_val)
+{
+    return nh_.setParam(param_name, param_val);
+}
+
+// Delegates to ROS param access with the current NodeHandle
+template <typename T>
+bool ISmaccStateMachine::param(std::string param_name, T &param_val, const T &default_val) const
+{
+    return nh_.param(param_name, param_val, default_val);
+}
+
+template <typename StateType>
+void ISmaccStateMachine::notifyOnStateEntryStart(StateType *state)
+{
+    std:lock_guard<std::recursive_mutex> lock(m_mutex_);
+    
+    ROS_INFO_STREAM("Notification State Entry, orthogonals:" << this->orthogonals_.size() << ", new state " << state);
+
+    stateSeqCounter_++;
+    currentState_ = state;
+    currentStateInfo_ = info_->getState<StateType>();
+}
+
+template <typename StateType>
+void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
+{
+    for (auto pair : this->orthogonals_)
+    {
+        ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
+        auto &orthogonal = pair.second;
+        orthogonal->onEntry();
+    }
+
+    this->updateStatusMessage();
+}
+
+template <typename StateType>
+void ISmaccStateMachine::notifyOnStateExit(StateType *state)
+{
+    ROS_DEBUG_STREAM("Notification State Exit: leaving state" << state);
+    for (auto pair : this->orthogonals_)
+    {
+        auto &orthogonal = pair.second;
+        orthogonal->onExit();
+    }
+
+    for (auto &conn : this->stateCallbackConnections)
+    {
+        ROS_DEBUG_STREAM("State On Exit: Disconecting some SmaccSignal subscriptions");
+        conn.disconnect();
+    }
+
+    currentState_ = nullptr;
 }
 } // namespace smacc

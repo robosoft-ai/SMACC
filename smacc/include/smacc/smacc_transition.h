@@ -23,7 +23,7 @@ private:
   {
     static boost::statechart::result react_without_action(State &stt)
     {
-      ROS_ERROR("REACT WITHOUT ACTION");
+      ROS_DEBUG("Smacc Transition: REACT WITHOUT ACTION");
       typedef smacc::transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
 
       stt.template notifyTransition<Transtype>();
@@ -32,7 +32,7 @@ private:
 
     static boost::statechart::result react_with_action(State &stt, const Event &evt)
     {
-      ROS_ERROR("REACT WITH ACTION AND EVENT");
+      ROS_DEBUG("Smacc Transition: REACT WITH ACTION AND EVENT");
       typedef smacc::transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
       stt.template notifyTransition<Transtype>();
       return stt.template transit<Destination>(pTransitionAction, evt);

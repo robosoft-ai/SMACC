@@ -1,11 +1,8 @@
 #pragma once
-
-#include <smacc/component.h>
-#include <smacc/smacc_state_machine.h>
+#include <smacc/common.h>
 
 namespace smacc
 {
-class SmaccSubStateBehavior;
 class ISmaccState;
 
 class SmaccSubStateBehavior

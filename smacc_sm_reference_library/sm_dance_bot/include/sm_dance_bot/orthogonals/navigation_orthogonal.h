@@ -14,16 +14,19 @@ public:
         //what we had
         //auto client = this->createClient<smacc::SmaccMoveBaseActionClient>(23,24);
 
-        auto client = this->createClient<NavigationOrthogonal, smacc::SmaccMoveBaseActionClient>();
+        auto movebaseClient = this->createClient<NavigationOrthogonal, smacc::SmaccMoveBaseActionClient>();
         //auto client = createClient<smacc::SmaccMoveBaseActionClient>(this, 23, 234);
         //auto client = CREATE_CLIENT(smacc::SmaccMoveBaseActionClient, 23, 234);
 
-        client->name_ = "move_base";
-        client->initialize();
+        movebaseClient->name_ = "move_base";
+        movebaseClient->initialize();
 
         smacc_odom_tracker::OdomTracker *odomtracker;
         this->requiresComponent(odomtracker);
         odomtracker->initialize("/");
+
+        // auto odomtracker = movebaseClient->createComponent<OdomTracker>();
+        // odomtracker->initialize("/");
     }
 };
 } // namespace sm_dance_bot

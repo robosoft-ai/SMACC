@@ -3,15 +3,14 @@ namespace sm_dance_bot
 {
 struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunMode>
 {
-  
   typedef mpl::list<
-        // Expected event
-        transition<EvActionSucceeded<SmaccMoveBaseActionClient, NavigationOrthogonal>, StRotateDegrees2>,
+      // Expected event
+      transition<EvActionSucceeded<SmaccMoveBaseActionClient, NavigationOrthogonal>, StRotateDegrees2>,
 
-        // Error events
-        //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
-        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX, ABORT>,
-        smacc::transition<EvActionPreempted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX, PREEMPT>>
+      // Error events
+      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX, ABORT>,
+      smacc::transition<EvActionPreempted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX, PREEMPT>>
       reactions;
 
   using SmaccState::SmaccState;
@@ -27,4 +26,4 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
   {
   }
 };
-}
+} // namespace sm_dance_bot

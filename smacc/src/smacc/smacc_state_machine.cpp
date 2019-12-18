@@ -12,7 +12,7 @@
 namespace smacc
 {
 ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
-    : private_nh_("~"), currentState_(nullptr)
+    : private_nh_("~"), currentState_(nullptr), stateSeqCounter_(0)
 {
     ROS_INFO("Creating State Machine Base");
     signalDetector_ = signalDetector;
@@ -45,31 +45,26 @@ ISmaccStateMachine::~ISmaccStateMachine()
     ROS_INFO("Finishing State Machine");
 }
 
-void ISmaccStateMachine::notifyOnStateEntry(ISmaccState *state)
+void ISmaccStateMachine::Reset()
 {
-    ROS_INFO("Notification State Entry, orthogonals: %ld", this->orthogonals_.size());
-    int i = 0;
-    for (auto pair : this->orthogonals_)
-    {
-        ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
-        auto &orthogonal = pair.second;
-        orthogonal->onEntry();
-    }
 }
 
-void ISmaccStateMachine::notifyOnStateExit(ISmaccState *state)
+void ISmaccStateMachine::Stop()
 {
-    ROS_INFO("Notification State Exit");
-    for (auto pair : this->orthogonals_)
-    {
-        auto &orthogonal = pair.second;
-        orthogonal->onExit();
-    }
+}
+
+void ISmaccStateMachine::EStop()
+{
+}
+
+const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &ISmaccStateMachine::getOrthogonals() const
+{
+    return this->orthogonals_;
 }
 
 void ISmaccStateMachine::updateStatusMessage()
 {
-    std::lock_guard<std::mutex> lock(m_mutex_);
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     if (currentStateInfo_ != nullptr)
     {
@@ -135,7 +130,7 @@ void ISmaccStateMachine::onInitializing(std::string shortname)
     this->onInitialize();
 }
 
-bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request& req, smacc_msgs::SmaccGetTransitionHistory::Response& res)
+bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request &req, smacc_msgs::SmaccGetTransitionHistory::Response &res)
 {
     ROS_WARN("Requesting Transition Log History, current size: %ld", this->transitionLogHistory_.size());
     res.history = this->transitionLogHistory_;
@@ -144,7 +139,7 @@ bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionH
 
 void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
 {
-    std::lock_guard<std::mutex> lock(m_mutex_);
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     smacc_msgs::SmaccStateMachine state_machine_msg;
     state_machine_msg.states = info_->stateMsgs;
@@ -152,6 +147,23 @@ void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
 
     status_msg_.header.stamp = ros::Time::now();
     this->stateMachineStatusPub_.publish(status_msg_);
+}
+
+void ISmaccStateMachine::lockStateMachine(std::string msg)
+{
+    ROS_DEBUG("locking state machine: %s", msg.c_str());
+    m_mutex_.lock();
+}
+
+void ISmaccStateMachine::unlockStateMachine(std::string msg)
+{
+    ROS_DEBUG("unlocking state machine: %s", msg.c_str());
+    m_mutex_.unlock();
+}
+
+std::string ISmaccStateMachine::getStateMachineName()
+{
+    return demangleSymbol(typeid(*this).name());
 }
 
 } // namespace smacc

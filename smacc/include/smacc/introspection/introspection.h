@@ -5,16 +5,17 @@
 #include <boost/statechart/simple_state.hpp>
 #include <boost/statechart/event.hpp>
 
+#include <ros/ros.h>
+#include <typeinfo>
 #include <boost/mpl/list.hpp>
 #include <boost/mpl/for_each.hpp>
 #include <boost/mpl/transform.hpp>
 
 #include <smacc/smacc_types.h>
 #include <smacc/introspection/string_type_walker.h>
+#include <smacc/introspection/smacc_state_info.h>
 
 #include <smacc_msgs/SmaccTransition.h>
-#include <ros/ros.h>
-#include <smacc/introspection/smacc_state_info.h>
 
 namespace sc = boost::statechart;
 
@@ -72,6 +73,11 @@ template <class T>
 inline std::string demangledTypeName()
 {
     return demangleSymbol(typeid(T).name());
+}
+
+inline std::string demangleType(const std::type_info &tinfo)
+{
+    return demangleSymbol(tinfo.name());
 }
 
 template <typename...>
@@ -256,7 +262,6 @@ static std::string getTransitionType()
 //     ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
 //     walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
 // }
-
 
 } // namespace smacc
 

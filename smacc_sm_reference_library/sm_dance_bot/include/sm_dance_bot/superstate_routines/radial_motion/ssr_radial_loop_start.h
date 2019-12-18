@@ -17,7 +17,7 @@ struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
     auto &superstate = this->context<SS>();
 
     ROS_INFO("Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
-    return ++superstate.iteration_count < superstate.total_iterations();
+    return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry()

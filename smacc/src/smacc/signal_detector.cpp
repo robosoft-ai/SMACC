@@ -6,6 +6,7 @@
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/client_bases/smacc_action_client_base.h>
 #include <smacc/smacc_state_machine.h>
+#include <thread>
 
 namespace smacc
 {
@@ -29,8 +30,7 @@ SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
 void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
 {
     smaccStateMachine_ = stateMachine;
-    lastState_ = nullptr;
-
+    lastState_ = std::numeric_limits<unsigned long>::quiet_NaN();
     findUpdatableClients();
 }
 
@@ -53,6 +53,7 @@ void SignalDetector::findUpdatableClients()
 
             if (updatableClient != nullptr)
             {
+                ROS_DEBUG_STREAM("Adding updatable client: " << demangleType(typeid(updatableClient)));
                 this->updatableClients_.push_back(updatableClient);
             }
         }
@@ -79,6 +80,7 @@ void SignalDetector::findUpdatableBehaviors()
 
         if (updatableSubstateBehavior != nullptr)
         {
+            ROS_DEBUG_STREAM("Adding updatable behavior: " << demangleType(typeid(updatableSubstateBehavior)));
             this->updatableSubstateBehaviors_.push_back(updatableSubstateBehavior);
         }
     }
@@ -130,39 +132,57 @@ void SignalDetector::stop()
 ******************************************************************************************************************
 */
 void SignalDetector::pollOnce()
-{    
-    for (auto *updatableClient : this->updatableClients_)
-    {
-        ROS_DEBUG("pollOnce update client call: ");
-        updatableClient->update();
-    }
-
+{
     try
     {
-        smaccStateMachine_->lockStateMachine();
-        auto *currentState = smaccStateMachine_->getCurrentState();
-        if(currentState!=nullptr)
+        if (smaccStateMachine_ == nullptr)
         {
-                if (currentState != this->lastState_)
-                {
-                    // we are in a new state, refresh the updatable substate behaviors table
-                    this->findUpdatableBehaviors();
-                }
+            ROS_DEBUG("[PollOnce] update but state machine is not yet set.");
+            return;
+        }
 
+        smaccStateMachine_->lockStateMachine("update behaviors");
+
+        ROS_DEBUG_STREAM("updatable clients: " << this->updatableClients_.size());
+
+        if (this->updatableClients_.size())
+        {
+            for (auto *updatableClient : this->updatableClients_)
+            {
+                ROS_DEBUG_STREAM("[PollOnce] update client call:  " << demangleType(typeid(updatableClient)));
+                updatableClient->update();
+            }
+        }
+
+        long currentState = smaccStateMachine_->getCurrentStateCounter();
+
+        ROS_DEBUG_STREAM("[PollOnce] update behaviors. checking current state");
+        ROS_DEBUG_STREAM("[PollOnce] current state: " << currentState);
+        ROS_DEBUG_STREAM("[PollOnce] last state: " << this->lastState_);
+
+        if (currentState != 0)
+        {
+            if (currentState != this->lastState_)
+            {
+                ROS_DEBUG_STREAM("[PollOnce] detected new state, refreshing updatable substate behavior table");
+                // we are in a new state, refresh the updatable substate behaviors table
                 this->lastState_ = currentState;
+                this->findUpdatableBehaviors();
+            }
 
-                for (auto *updatableBehavior : this->updatableSubstateBehaviors_)
-                {
-                    ROS_DEBUG("pollOnce update substate behavior call: ");
-                    updatableBehavior->update();
-                }
+            ROS_DEBUG_STREAM("updatable substate_behaviors: " << this->updatableSubstateBehaviors_.size());
+            for (auto *updatableBehavior : this->updatableSubstateBehaviors_)
+            {
+                ROS_DEBUG_STREAM("pollOnce update substate behavior call: " << demangleType(typeid(*updatableBehavior)));
+                updatableBehavior->update();
+            }
         }
     }
-    catch(...)
+    catch (...)
     {
-
+        ROS_ERROR("Exception during Signal Detector update loop.");
     }
-    smaccStateMachine_->unlockStateMachine();
+    smaccStateMachine_->unlockStateMachine("update behaviors");
 }
 
 /**
@@ -180,13 +200,12 @@ void SignalDetector::pollingLoop()
 
     nh.setParam("signal_detector_loop_freq", this->loop_rate_hz);
 
-    ros::Rate r(loop_rate_hz);
-
     ROS_INFO_STREAM("[SignalDetector] loop rate hz:" << loop_rate_hz);
+
+    ros::Rate r(loop_rate_hz);
     while (ros::ok() && !end_)
     {
         ROS_INFO_STREAM_THROTTLE(10, "[SignalDetector] heartbeat");
-
         pollOnce();
         ros::spinOnce();
         r.sleep();

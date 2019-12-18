@@ -132,7 +132,6 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
     boost::mpl::for_each<wrappedList>(AddTransition(sourceState));
 }
 
-
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
@@ -149,7 +148,7 @@ void processTransition(smacc::transition<Ev, Dst, Tag> *t, std::shared_ptr<Smacc
 }
 
 template <typename Ev, typename Dst, typename Tag>
-void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history, smacc::TypeInfo::Ptr& transitionTypeInfo)
+void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history, smacc::TypeInfo::Ptr &transitionTypeInfo)
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
     std::string transitionTag;

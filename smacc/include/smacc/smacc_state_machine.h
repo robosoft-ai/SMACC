@@ -10,6 +10,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_updatable.h>
 #include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/smacc_signal.h>
 
 #include <boost/any.hpp>
 #include <map>
@@ -39,29 +40,16 @@ public:
 
     virtual ~ISmaccStateMachine();
 
-    virtual void Reset()
-    {
-    }
+    virtual void Reset();
 
-    virtual void Stop()
-    {
-    }
+    virtual void Stop();
 
-    virtual void EStop()
-    {
-    }
-
-    void notifyOnStateEntry(ISmaccState *state);
-
-    void notifyOnStateExit(ISmaccState *state);
+    virtual void EStop();
 
     template <typename TOrthogonal>
     bool getOrthogonal(std::shared_ptr<TOrthogonal> &storage);
 
-    const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const
-    {
-        return this->orthogonals_;
-    }
+    const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const;
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage, bool verbose);
@@ -72,92 +60,19 @@ public:
     void getTransitionLogHistory();
 
     template <typename T>
-    bool getGlobalSMData(std::string name, T &ret)
-    {
-        std::lock_guard<std::mutex> lock(m_mutex_);
-        //ROS_WARN("get SM Data lock acquire");
-        bool success = false;
-
-        if (!globalData_.count(name))
-        {
-            //ROS_WARN("get SM Data - data do not exist");
-            success = false;
-        }
-        else
-        {
-            //ROS_WARN("get SM DAta -data exist. accessing");
-            try
-            {
-                auto &v = globalData_[name];
-
-                //ROS_WARN("get SM DAta -data exist. any cast");
-                ret = boost::any_cast<T>(v.second);
-                success = true;
-                //ROS_WARN("get SM DAta -data exist. success");
-            }
-            catch (boost::bad_any_cast &ex)
-            {
-                ROS_ERROR("bad any cast: %s", ex.what());
-                success = false;
-            }
-        }
-
-        //ROS_WARN("get SM Data lock release");
-        return success;
-    }
+    bool getGlobalSMData(std::string name, T &ret);
 
     template <typename T>
-    void setGlobalSMData(std::string name, T value)
-    {
-        {
-            std::lock_guard<std::mutex> lock(m_mutex_);
-            //ROS_WARN("set SM Data lock acquire");
-
-            globalData_[name] = {
-                [this, name]() {
-                    std::stringstream ss;
-                    auto val = any_cast<T>(globalData_[name].second);
-                    ss << val;
-                    return ss.str();
-                },
-                value};
-        }
-
-        this->updateStatusMessage();
-    }
+    void setGlobalSMData(std::string name, T value);
 
     template <typename StateField, typename BehaviorType>
-    void mapBehavior()
-    {
-        std::string stateFieldName = demangleSymbol(typeid(StateField).name());
-        std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
-        ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
-        SmaccSubStateBehavior *globalreference;
-        if (!this->getGlobalSMData(stateFieldName, globalreference))
-        {
-            // Using the requires component approach, we force a unique existence
-            // of this component
-            BehaviorType *behavior;
-            this->requiresComponent(behavior);
-            globalreference = dynamic_cast<SmaccSubStateBehavior *>(behavior);
-
-            this->setGlobalSMData(stateFieldName, globalreference);
-        }
-    }
-
-    template <typename StateType>
-    void updateCurrentState(bool active, StateType *test);
+    void mapBehavior();
 
     void updateStatusMessage();
 
-    std::string getStateMachineName()
-    {
-        return demangleSymbol(typeid(*this).name());
-    }
+    std::string getStateMachineName();
 
     void state_machine_visualization(const ros::TimerEvent &);
-
-    inline ISmaccState *getCurrentState() { return currentState_; };
 
     inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
 
@@ -168,15 +83,28 @@ public:
 
     bool getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request &req, smacc_msgs::SmaccGetTransitionHistory::Response &res);
 
-    void lockStateMachine()
-    {
-        m_mutex_.lock();
-    }
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+    void createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
 
-    void unlockStateMachine()
-    {
-        m_mutex_.unlock();
-    }
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype>
+    void createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+
+    std::list<boost::signals2::connection> stateCallbackConnections;
+
+    void lockStateMachine(std::string msg);
+
+    void unlockStateMachine(std::string msg);
+
+    template <typename StateType>
+    void notifyOnStateEntryStart(StateType *state);
+
+    template <typename StateType>
+    void notifyOnStateEntryEnd(StateType *state);
+
+    template <typename StateType>
+    void notifyOnStateExit(StateType *state);
+
+    inline unsigned long getCurrentStateCounter()const{return this->stateSeqCounter_;}
 
 protected:
     void onInitializing(std::string smshortname);
@@ -188,26 +116,16 @@ protected:
 
     // Delegates to ROS param access with the current NodeHandle
     template <typename T>
-    bool getParam(std::string param_name, T &param_storage)
-    {
-        return nh_.getParam(param_name, param_storage);
-    }
+    bool getParam(std::string param_name, T &param_storage);
 
     // Delegates to ROS param access with the current NodeHandle
     template <typename T>
-    void setParam(std::string param_name, T param_val)
-    {
-        return nh_.setParam(param_name, param_val);
-    }
+    void setParam(std::string param_name, T param_val);
 
     // Delegates to ROS param access with the current NodeHandle
     template <typename T>
-    bool param(std::string param_name, T &param_val, const T &default_val) const
-    {
-        return nh_.param(param_name, param_val, default_val);
-    }
+    bool param(std::string param_name, T &param_val, const T &default_val) const;
 
-protected:
     // The node handle for this state
     ros::NodeHandle nh_;
     ros::NodeHandle private_nh_;
@@ -218,7 +136,10 @@ protected:
     ros::Publisher transitionLogPub_;
     ros::ServiceServer transitionHistoryService_;
 
+    // if it is null, you may be located in a transition. There is a small gap of time where internally
+    // this currentState_ is null. This may change in the future.
     ISmaccState *currentState_;
+
     std::shared_ptr<smacc::SmaccStateInfo> currentStateInfo_;
 
     smacc_msgs::SmaccStatus status_msg_;
@@ -227,7 +148,7 @@ protected:
     std::map<std::string, std::shared_ptr<smacc::Orthogonal>> orthogonals_;
 
 private:
-    std::mutex m_mutex_;
+    std::recursive_mutex m_mutex_;
 
     // components
     std::map<std::string, smacc::ISmaccComponent *> plugins_;
@@ -241,6 +162,10 @@ private:
 
     // Event to notify to the signaldetection thread that a request has been created...
     SignalDetector *signalDetector_;
+
+    unsigned long stateSeqCounter_;
+
+    friend class ISmaccState;
 
 public:
     std::shared_ptr<SmaccStateMachineInfo> info_;

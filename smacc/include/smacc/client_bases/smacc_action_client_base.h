@@ -1,7 +1,8 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_action_client.h>
-#include <boost/signals2.hpp>
+#include <smacc/smacc_signal.h>
+
 #include <boost/optional/optional_io.hpp>
 
 namespace smacc
@@ -53,11 +54,10 @@ public:
         client_ = std::make_shared<ActionClient>(*name_);
     }
 
-    signal<void(const ResultConstPtr &)> onSucceeded_;
-    signal<void(const ResultConstPtr &)> onAborted_;
-    signal<void(const ResultConstPtr &)> onPreempted_;
-    signal<void(const ResultConstPtr &)> onCancelled_;
-    signal<void(const ResultConstPtr &)> onRejected_;
+    smacc::SmaccSignal<void(const ResultConstPtr &)> onSucceeded_;
+    smacc::SmaccSignal<void(const ResultConstPtr &)> onAborted_;
+    smacc::SmaccSignal<void(const ResultConstPtr &)> onPreempted_;
+    smacc::SmaccSignal<void(const ResultConstPtr &)> onRejected_;
 
     // event creation/posting factory functions
     std::function<void(ResultConstPtr)> postSuccessEvent;
@@ -94,7 +94,7 @@ public:
             actionFeedbackEvent->client = this;
             actionFeedbackEvent->feedbackMessage = *msg;
             this->postEvent(actionFeedbackEvent);
-            ROS_WARN("FEEDBACK EVENT");
+            ROS_DEBUG("[%s] FEEDBACK EVENT", demangleType(typeid(*this)).c_str());
         };
 
         done_cb = boost::bind(&SmaccActionClientBase<ActionType>::onResult, this, _1, _2);
@@ -103,51 +103,51 @@ public:
     }
 
     template <typename T>
-    connection onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
+    void onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        return this->onSucceeded_.connect([&](auto msg) { (object->*callback)(msg); });
+        stateMachine_->createSignalConnection(onSucceeded_, callback, object);
     }
 
     template <typename T>
-    connection onSucceeded(std::function<void(ResultConstPtr &)> callback)
+    void onSucceeded(std::function<void(ResultConstPtr &)> callback)
     {
-        return this->onSucceeded_.connect(callback);
+        stateMachine_->createSignalConnection(onSucceeded_, callback);
     }
 
     template <typename T>
-    connection onAborted(void (T::*callback)(ResultConstPtr &), T *object)
+    void onAborted(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        return this->onAborted_.connect([&](auto msg) { (object->*callback)(msg); });
+        stateMachine_->createSignalConnection(onAborted_, callback, object);
     }
 
     template <typename T>
-    connection onAborted(std::function<void(ResultConstPtr &)> callback)
+    void onAborted(std::function<void(ResultConstPtr &)> callback)
     {
-        return this->onAborted_.connect(callback);
+        stateMachine_->createSignalConnection(onAborted_, callback);
     }
 
     template <typename T>
-    connection onPreempted(void (T::*callback)(ResultConstPtr &), T *object)
+    void onPreempted(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        return this->onPreempted_.connect([&](auto msg) { (object->*callback)(msg); });
+        stateMachine_->createSignalConnection(onPreempted_, callback, object);
     }
 
     template <typename T>
-    connection onPreempted(std::function<void(ResultConstPtr &)> callback)
+    void onPreempted(std::function<void(ResultConstPtr &)> callback)
     {
-        return this->onPreempted_.connect(callback);
+        stateMachine_->createSignalConnection(onPreempted_, callback);
     }
 
     template <typename T>
-    connection onRejected(void (T::*callback)(ResultConstPtr &), T *object)
+    void onRejected(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        return this->onRejected_.connect([&](auto msg) { (object->*callback)(msg); });
+        stateMachine_->createSignalConnection(onRejected, callback, object);
     }
 
     template <typename T>
-    connection onRejected(std::function<void(ResultConstPtr &)> callback)
+    void onRejected(std::function<void(ResultConstPtr &)> callback)
     {
-        return this->onRejected_.connect(callback);
+        stateMachine_->createSignalConnection(onRejected, callback);
     }
 
     virtual void cancelGoal() override
@@ -171,7 +171,8 @@ public:
             client_->waitForServer();
         }
 
-        ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl << goal);
+        ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl
+                                  << goal);
 
         client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
     }

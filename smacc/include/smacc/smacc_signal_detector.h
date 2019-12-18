@@ -47,7 +47,7 @@ private:
 
     std::vector<ISmaccUpdatable*> updatableSubstateBehaviors_;
 
-    ISmaccState* lastState_;
+    std::atomic<unsigned long> lastState_;
 
     void findUpdatableClients();
     void findUpdatableBehaviors();
