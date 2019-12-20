@@ -76,7 +76,6 @@ std::string SmaccEventInfo::getEventSourceName()
     if (eventType->templateParameters.size() > 0)
     {
         auto eventsourcename = demangleSymbol(eventType->templateParameters[0]->getFullName().c_str());
-        ROS_ERROR_STREAM("EVENT SOURCE NAME -------------" << eventsourcename);
         return eventsourcename;
     }
     else

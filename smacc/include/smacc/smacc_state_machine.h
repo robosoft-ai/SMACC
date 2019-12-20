@@ -84,10 +84,10 @@ public:
     bool getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request &req, smacc_msgs::SmaccGetTransitionHistory::Response &res);
 
     template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-    void createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
+    boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
 
     template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-    void createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+    boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
 
     std::list<boost::signals2::connection> stateCallbackConnections;
 
@@ -105,6 +105,8 @@ public:
     void notifyOnStateExit(StateType *state);
 
     inline unsigned long getCurrentStateCounter()const{return this->stateSeqCounter_;}
+
+    inline ISmaccState* getCurrentState()const{return this->currentState_;}
 
 protected:
     void onInitializing(std::string smshortname);

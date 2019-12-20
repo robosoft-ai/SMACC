@@ -4,6 +4,8 @@ namespace smacc
 {
 void WaypointEventDispatcher::postWaypointEvent(int index)
 {
-    postWaypointFn[index % WAYPOINTS_EVENTCOUNT]();
+    auto& fn = postWaypointFn[index % WAYPOINTS_EVENTCOUNT];
+    if(fn!=nullptr)
+        fn();
 }
 } // namespace smacc

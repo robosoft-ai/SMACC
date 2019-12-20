@@ -133,14 +133,14 @@ void SignalDetector::stop()
 */
 void SignalDetector::pollOnce()
 {
+    if (smaccStateMachine_ == nullptr)
+    {
+        ROS_DEBUG("[PollOnce] update but state machine is not yet set.");
+        return;
+    }
+
     try
     {
-        if (smaccStateMachine_ == nullptr)
-        {
-            ROS_DEBUG("[PollOnce] update but state machine is not yet set.");
-            return;
-        }
-
         smaccStateMachine_->lockStateMachine("update behaviors");
 
         ROS_DEBUG_STREAM("updatable clients: " << this->updatableClients_.size());
@@ -154,27 +154,31 @@ void SignalDetector::pollOnce()
             }
         }
 
-        long currentState = smaccStateMachine_->getCurrentStateCounter();
+        long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
 
         ROS_DEBUG_STREAM("[PollOnce] update behaviors. checking current state");
-        ROS_DEBUG_STREAM("[PollOnce] current state: " << currentState);
-        ROS_DEBUG_STREAM("[PollOnce] last state: " << this->lastState_);
 
-        if (currentState != 0)
+        if (smaccStateMachine_->getCurrentState() != nullptr)
         {
-            if (currentState != this->lastState_)
-            {
-                ROS_DEBUG_STREAM("[PollOnce] detected new state, refreshing updatable substate behavior table");
-                // we are in a new state, refresh the updatable substate behaviors table
-                this->lastState_ = currentState;
-                this->findUpdatableBehaviors();
-            }
+            ROS_DEBUG_STREAM("[PollOnce] current state: " << currentStateIndex);
+            ROS_DEBUG_STREAM("[PollOnce] last state: " << this->lastState_);
 
-            ROS_DEBUG_STREAM("updatable substate_behaviors: " << this->updatableSubstateBehaviors_.size());
-            for (auto *updatableBehavior : this->updatableSubstateBehaviors_)
+            if (currentStateIndex != 0)
             {
-                ROS_DEBUG_STREAM("pollOnce update substate behavior call: " << demangleType(typeid(*updatableBehavior)));
-                updatableBehavior->update();
+                if (currentStateIndex != this->lastState_)
+                {
+                    ROS_DEBUG_STREAM("[PollOnce] detected new state, refreshing updatable substate behavior table");
+                    // we are in a new state, refresh the updatable substate behaviors table
+                    this->lastState_ = currentStateIndex;
+                    this->findUpdatableBehaviors();
+                }
+
+                ROS_DEBUG_STREAM("updatable substate_behaviors: " << this->updatableSubstateBehaviors_.size());
+                for (auto *updatableBehavior : this->updatableSubstateBehaviors_)
+                {
+                    ROS_DEBUG_STREAM("pollOnce update substate behavior call: " << demangleType(typeid(*updatableBehavior)));
+                    updatableBehavior->update();
+                }
             }
         }
     }

@@ -103,51 +103,51 @@ public:
     }
 
     template <typename T>
-    void onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
+    boost::signals2::connection onSucceeded(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        stateMachine_->createSignalConnection(onSucceeded_, callback, object);
+        return stateMachine_->createSignalConnection(onSucceeded_, callback, object);
     }
 
     template <typename T>
-    void onSucceeded(std::function<void(ResultConstPtr &)> callback)
+    boost::signals2::connection onSucceeded(std::function<void(ResultConstPtr &)> callback)
     {
-        stateMachine_->createSignalConnection(onSucceeded_, callback);
+        return stateMachine_->createSignalConnection(onSucceeded_, callback);
     }
 
     template <typename T>
-    void onAborted(void (T::*callback)(ResultConstPtr &), T *object)
+    boost::signals2::connection onAborted(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        stateMachine_->createSignalConnection(onAborted_, callback, object);
+        return stateMachine_->createSignalConnection(onAborted_, callback, object);
     }
 
     template <typename T>
-    void onAborted(std::function<void(ResultConstPtr &)> callback)
+    boost::signals2::connection onAborted(std::function<void(ResultConstPtr &)> callback)
     {
-        stateMachine_->createSignalConnection(onAborted_, callback);
+        return stateMachine_->createSignalConnection(onAborted_, callback);
     }
 
     template <typename T>
-    void onPreempted(void (T::*callback)(ResultConstPtr &), T *object)
+    boost::signals2::connection onPreempted(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        stateMachine_->createSignalConnection(onPreempted_, callback, object);
+        return stateMachine_->createSignalConnection(onPreempted_, callback, object);
     }
 
     template <typename T>
-    void onPreempted(std::function<void(ResultConstPtr &)> callback)
+    boost::signals2::connection onPreempted(std::function<void(ResultConstPtr &)> callback)
     {
-        stateMachine_->createSignalConnection(onPreempted_, callback);
+        return stateMachine_->createSignalConnection(onPreempted_, callback);
     }
 
     template <typename T>
-    void onRejected(void (T::*callback)(ResultConstPtr &), T *object)
+    boost::signals2::connection onRejected(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        stateMachine_->createSignalConnection(onRejected, callback, object);
+        return stateMachine_->createSignalConnection(onRejected, callback, object);
     }
 
     template <typename T>
-    void onRejected(std::function<void(ResultConstPtr &)> callback)
+    boost::signals2::connection onRejected(std::function<void(ResultConstPtr &)> callback)
     {
-        stateMachine_->createSignalConnection(onRejected, callback);
+        return stateMachine_->createSignalConnection(onRejected, callback);
     }
 
     virtual void cancelGoal() override

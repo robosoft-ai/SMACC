@@ -17,6 +17,24 @@ struct EvWaypoint1 : sc::event<EvWaypoint1<TSource, TObjectTag>>
     int waypointIndex;
 };
 
+template <typename TSource, typename TObjectTag>
+struct EvWaypoint2 : sc::event<EvWaypoint2<TSource, TObjectTag>>
+{
+    int waypointIndex;
+};
+
+template <typename TSource, typename TObjectTag>
+struct EvWaypoint3 : sc::event<EvWaypoint3<TSource, TObjectTag>>
+{
+    int waypointIndex;
+};
+
+template <typename TSource, typename TObjectTag>
+struct EvWaypoint4 : sc::event<EvWaypoint4<TSource, TObjectTag>>
+{
+    int waypointIndex;
+};
+
 class SmaccMoveBaseActionClient;
 
 #define WAYPOINTS_EVENTCOUNT 1000

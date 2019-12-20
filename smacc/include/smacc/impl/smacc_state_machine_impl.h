@@ -201,11 +201,11 @@ void ISmaccStateMachine::mapBehavior()
 }
 
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value);
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
 
-    auto connection = signal.connect([&](auto msg) { return (object->*callback)(msg); });
+    boost::signals2::connection connection = signal.connect([=](auto msg) { return (object->*callback)(msg); });
 
     if(std::is_base_of<ISmaccComponent, TSmaccObjectType>::value)
     {
@@ -213,14 +213,16 @@ void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFun
     }
     else // state life-time objects
     {
+        ROS_WARN("[StateMachine] life-time constrained smacc signal subscription created");
         stateCallbackConnections.push_back(connection);
     }
+    return connection;
 }
 
 template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-void ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback)
+boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback)
 {
-    auto connection = signal.connect(callback);
+    return signal.connect(callback);
     // return signal;
 }
 
@@ -273,7 +275,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
 template <typename StateType>
 void ISmaccStateMachine::notifyOnStateExit(StateType *state)
 {
-    ROS_DEBUG_STREAM("Notification State Exit: leaving state" << state);
+    ROS_INFO_STREAM("Notification State Exit: leaving state" << state);
     for (auto pair : this->orthogonals_)
     {
         auto &orthogonal = pair.second;
@@ -282,9 +284,11 @@ void ISmaccStateMachine::notifyOnStateExit(StateType *state)
 
     for (auto &conn : this->stateCallbackConnections)
     {
-        ROS_DEBUG_STREAM("State On Exit: Disconecting some SmaccSignal subscriptions");
+        ROS_WARN_STREAM("[StateMachine] Disconnecting scoped-lifetime SmaccSignal subscription");
         conn.disconnect();
     }
+
+    this->stateCallbackConnections.clear();
 
     currentState_ = nullptr;
 }

@@ -10,14 +10,25 @@ namespace smacc
 {
 class SmaccMoveBaseActionClient;
 
+struct Pose2D
+{
+  Pose2D(double x, double y, double yaw)
+  {
+    this->x_ = x;
+    this->y_ = y;
+    this->yaw_ = yaw;
+  }
+
+  double x_;
+  double y_;
+  double yaw_;
+};
+
 class WaypointNavigator : public ISmaccComponent
 {
 public:
   WaypointEventDispatcher waypointsEventDispatcher;
 
-  std::vector<geometry_msgs::Pose> waypoints;
-
-  int currentWaypoint;
   SmaccMoveBaseActionClient *client_;
 
   WaypointNavigator();
@@ -31,7 +42,23 @@ public:
 
   void loadWayPointsFromFile(std::string filepath);
 
+  void setWaypoints(const std::vector<geometry_msgs::Pose> &waypoints);
+
+  void setWaypoints(const std::vector<Pose2D> &waypoints);
+
+  void sendNextGoal();
+
+  const std::vector<geometry_msgs::Pose> &getWaypoints() const;
+
+  long getCurrentWaypointIndex() const;
+
 private:
   void onGoalReached(SmaccMoveBaseActionClient::ResultConstPtr &res);
+
+  std::vector<geometry_msgs::Pose> waypoints_;
+
+  boost::signals2::connection succeddedConnection_;
+
+  int currentWaypoint_;
 };
 } // namespace smacc

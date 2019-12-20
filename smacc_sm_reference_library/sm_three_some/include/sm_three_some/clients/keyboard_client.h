@@ -185,57 +185,57 @@ public:
                         ROS_WARN("detected keyboard: %c", character);
 
                         if (character == 'a')
-                                postKeyEvent<EvKeyPressA<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressA<KeyboardClient, TObjectTag>>();
                         else if (character == 'b')
-                                postKeyEvent<EvKeyPressB<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressB<KeyboardClient, TObjectTag>>();
                         else if (character == 'c')
-                                postKeyEvent<EvKeyPressC<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressC<KeyboardClient, TObjectTag>>();
                         else if (character == 'd')
-                                postKeyEvent<EvKeyPressD<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressD<KeyboardClient, TObjectTag>>();
                         else if (character == 'e')
-                                postKeyEvent<EvKeyPressE<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressE<KeyboardClient, TObjectTag>>();
                         else if (character == 'f')
-                                postKeyEvent<EvKeyPressF<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressF<KeyboardClient, TObjectTag>>();
                         else if (character == 'g')
-                                postKeyEvent<EvKeyPressG<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressG<KeyboardClient, TObjectTag>>();
                         else if (character == 'h')
-                                postKeyEvent<EvKeyPressH<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressH<KeyboardClient, TObjectTag>>();
                         else if (character == 'y')
-                                postKeyEvent<EvKeyPressI<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressI<KeyboardClient, TObjectTag>>();
                         else if (character == 'j')
-                                postKeyEvent<EvKeyPressJ<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressJ<KeyboardClient, TObjectTag>>();
                         else if (character == 'k')
-                                postKeyEvent<EvKeyPressK<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressK<KeyboardClient, TObjectTag>>();
                         else if (character == 'l')
-                                postKeyEvent<EvKeyPressL<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressL<KeyboardClient, TObjectTag>>();
                         else if (character == 'm')
-                                postKeyEvent<EvKeyPressM<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressM<KeyboardClient, TObjectTag>>();
                         else if (character == 'n')
-                                postKeyEvent<EvKeyPressN<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressN<KeyboardClient, TObjectTag>>();
                         else if (character == 'o')
-                                postKeyEvent<EvKeyPressO<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressO<KeyboardClient, TObjectTag>>();
                         else if (character == 'p')
-                                postKeyEvent<EvKeyPressP<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressP<KeyboardClient, TObjectTag>>();
                         else if (character == 'q')
-                                postKeyEvent<EvKeyPressQ<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressQ<KeyboardClient, TObjectTag>>();
                         else if (character == 'r')
-                                postKeyEvent<EvKeyPressR<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressR<KeyboardClient, TObjectTag>>();
                         else if (character == 's')
-                                postKeyEvent<EvKeyPressS<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressS<KeyboardClient, TObjectTag>>();
                         else if (character == 't')
-                                postKeyEvent<EvKeyPressT<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressT<KeyboardClient, TObjectTag>>();
                         else if (character == 'u')
-                                postKeyEvent<EvKeyPressU<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressU<KeyboardClient, TObjectTag>>();
                         else if (character == 'v')
-                                postKeyEvent<EvKeyPressV<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressV<KeyboardClient, TObjectTag>>();
                         else if (character == 'w')
-                                postKeyEvent<EvKeyPressW<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressW<KeyboardClient, TObjectTag>>();
                         else if (character == 'x')
-                                postKeyEvent<EvKeyPressX<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressX<KeyboardClient, TObjectTag>>();
                         else if (character == 'y')
-                                postKeyEvent<EvKeyPressY<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressY<KeyboardClient, TObjectTag>>();
                         else if (character == 'z')
-                                postKeyEvent<EvKeyPressZ<KeyboardClient, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressZ<KeyboardClient, TObjectTag>>();
                         OnKeyPress(character); /*  */
                 };
         }
