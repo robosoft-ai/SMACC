@@ -2,12 +2,12 @@ struct SsrFPatternForward1 : public smacc::SmaccState<SsrFPatternForward1, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrFPatternReturn1> reactions;
+  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrFPatternReturn1> reactions;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, CbNavigateForward>(SS::ray_lenght_meters());
-    static_configure<ToolOrthogonal, CbToolStart>();
+    static_configure<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
+    static_configure<OrTool, CbToolStart>();
   }
 
   void onInitialize()

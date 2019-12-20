@@ -4,7 +4,7 @@
 #include <smacc_navigation_plugin/move_base_action_client.h>
 
 // ORTHOGONALS
-#include <sm_atomic/orthogonals/navigation_orthogonal.h>
+#include <sm_atomic/orthogonals/or_navigation.h>
 
 //CLIENT BEHAVIORS
 #include <sm_atomic/client_behaviors/cb_state_1.h>
@@ -27,7 +27,7 @@ struct SmAtomicStateMachine
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<NavigationOrthogonal>();
+        this->createOrthogonal<OrNavigation>();
     }
 };
 

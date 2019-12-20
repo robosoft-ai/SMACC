@@ -2,7 +2,7 @@
 
 #include <smacc/smacc_orthogonal.h>
 
-class ToolOrthogonal: public smacc::Orthogonal
+class OrTool: public smacc::Orthogonal
 {
 
 };

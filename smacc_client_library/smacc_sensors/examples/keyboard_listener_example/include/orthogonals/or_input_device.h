@@ -2,7 +2,7 @@
 
 #include <smacc/smacc_orthogonal.h>
 
-class NavigationOrthogonal: public smacc::Orthogonal
+class OrInputDevice: public smacc::Orthogonal
 {
 
 };

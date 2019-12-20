@@ -2,7 +2,7 @@ struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrFPatternForward1> reactions;
+  typedef smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrFPatternForward1> reactions;
 
   static void onDefinition()
   {
@@ -12,8 +12,8 @@ struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1, SS>
     else
       angle = -90;
 
-    static_configure<NavigationOrthogonal, CbRotate>(angle);
-    static_configure<ToolOrthogonal, CbToolStop>();
+    static_configure<OrNavigation, CbRotate>(angle);
+    static_configure<OrTool, CbToolStop>();
   }
 
   void onInitialize()

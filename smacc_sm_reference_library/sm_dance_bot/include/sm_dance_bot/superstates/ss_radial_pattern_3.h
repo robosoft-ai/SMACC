@@ -21,13 +21,13 @@ public:
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>
+        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateToWaypointsX>
         >
         reactions;
 
     static void onDefinition()
     {
-        //static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
+        //static_configure<OrObstaclePerception, CbLidarSensor>();
     }
 
     int iteration_count;

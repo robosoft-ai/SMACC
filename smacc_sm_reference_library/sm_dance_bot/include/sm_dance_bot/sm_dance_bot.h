@@ -29,14 +29,14 @@
 #include <conditional/lu_conditional.h>
 
 // ORTHOGONALS
-#include <sm_dance_bot/orthogonals/navigation_orthogonal.h>
-#include <sm_dance_bot/orthogonals/obstacle_perception_orthogonal.h>
-#include <sm_dance_bot/orthogonals/tool_orthogonal.h>
-#include <sm_dance_bot/orthogonals/sensor_orthogonal.h>
-#include <sm_dance_bot/orthogonals/publisher_orthogonal.h>
-#include <sm_dance_bot/orthogonals/service3_orthogonal.h>
-#include <sm_dance_bot/orthogonals/timer_orthogonal.h>
-#include <sm_dance_bot/orthogonals/updatable_publisher_orthogonal.h>
+#include <sm_dance_bot/orthogonals/or_navigation.h>
+#include <sm_dance_bot/orthogonals/or_obstacle_perception.h>
+#include <sm_dance_bot/orthogonals/or_tool.h>
+#include <sm_dance_bot/orthogonals/or_temperature_sensor.h>
+#include <sm_dance_bot/orthogonals/or_string_publisher.h>
+#include <sm_dance_bot/orthogonals/or_service3.h>
+#include <sm_dance_bot/orthogonals/or_timer.h>
+#include <sm_dance_bot/orthogonals/or_updatable_publisher.h>
 
 namespace sm_dance_bot
 {
@@ -126,14 +126,14 @@ struct SmDanceBot
         //this->createOrthogonal<MoveBaseActionClient, Robot1>();
         //this->createOrthogonal<MoveBaseActionClient, Robot2>();
         
-        this->createOrthogonal<NavigationOrthogonal>();
-        this->createOrthogonal<ObstaclePerceptionOrthogonal>();
-        this->createOrthogonal<ToolOrthogonal>();
-        this->createOrthogonal<SensorOrthogonal>();
-        this->createOrthogonal<PublisherOrthogonal>();
-        this->createOrthogonal<Service3Orthogonal>();
-        this->createOrthogonal<TimerOrthogonal>();
-        this->createOrthogonal<UpdatablePublisherOrthogonal>();
+        this->createOrthogonal<OrNavigation>();
+        this->createOrthogonal<OrObstaclePerception>();
+        this->createOrthogonal<OrTool>();
+        this->createOrthogonal<OrTemperatureSensor>();
+        this->createOrthogonal<OrStringPublisher>();
+        this->createOrthogonal<OrService3>();
+        this->createOrthogonal<OrTimer>();
+        this->createOrthogonal<OrUpdatablePublisher>();
     }
 };
 

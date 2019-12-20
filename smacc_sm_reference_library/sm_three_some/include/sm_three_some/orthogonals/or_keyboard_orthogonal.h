@@ -4,12 +4,12 @@
 #include <smacc/smacc_orthogonal.h>
 namespace sm_three_some
 {
-class KeyboardOrthogonal : public smacc::Orthogonal
+class OrKeyboard : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto keyboardClient = this->createClient<KeyboardOrthogonal, sm_three_some::KeyboardClient>();
+        auto keyboardClient = this->createClient<OrKeyboard, sm_three_some::KeyboardClient>();
         keyboardClient->topicName = "/keyboard_unicode";
 
         //keyboardClient.queueSize = 1;

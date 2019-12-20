@@ -2,8 +2,8 @@ struct SsrSPatternForward4 : public smacc::SmaccState<SsrSPatternForward4, SS>
 {
   using SmaccState::SmaccState;
 
-  typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternLoopStart>,
-                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternRotate4>
+  typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrSPatternLoopStart>,
+                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrSPatternRotate4>
                     > reactions;
 
   static void onDefinition()
@@ -14,7 +14,7 @@ struct SsrSPatternForward4 : public smacc::SmaccState<SsrSPatternForward4, SS>
   {
     auto &superstate = this->context<SS>();
 
-    this->configure<NavigationOrthogonal, CbNavigateForward>(SS::pitch1_lenght_meters());
-    this->configure<ToolOrthogonal, CbToolStart>();
+    this->configure<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
+    this->configure<OrTool, CbToolStart>();
   }
 };

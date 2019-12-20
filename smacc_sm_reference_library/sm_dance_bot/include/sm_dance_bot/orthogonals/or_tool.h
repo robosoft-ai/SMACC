@@ -4,12 +4,12 @@
 
 namespace sm_dance_bot
 {
-class ToolOrthogonal : public smacc::Orthogonal
+class OrTool : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto actionclient = this->createClient<ToolOrthogonal, smacc::SmaccToolActionClient>();
+        auto actionclient = this->createClient<OrTool, smacc::SmaccToolActionClient>();
         actionclient->name_ = "tool_action_server";
         actionclient->initialize();
     }

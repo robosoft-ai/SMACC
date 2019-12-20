@@ -1,7 +1,7 @@
 #pragma once
 
 #include <keyboard_state_machine.h>
-#include <orthogonals/input_device_orthogonal.h>
+#include <orthogonals/or_input_device.h>
 #include <client_behaviors/input_device/keyboard_substate.h>
 
 //--------------------------------------------
@@ -14,7 +14,7 @@ public:
 
   void onInitialize()
   {
-    this->configure<InputDeviceOrthogonal, smacc::Keyboard>();
+    this->configure<OrInputDevice, smacc::Keyboard>();
   }
 
   void onEntry()

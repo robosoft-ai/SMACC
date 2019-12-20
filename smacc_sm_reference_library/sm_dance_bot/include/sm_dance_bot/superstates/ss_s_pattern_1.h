@@ -33,7 +33,7 @@ public:
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>
+        //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateToWaypointsX>
 
         // Internal events
         >
@@ -41,7 +41,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
+        //static_configure<OrObstaclePerception, CbLidarSensor>();
     }
 
     static constexpr float pitch1_lenght_meters() { return 0.6; }

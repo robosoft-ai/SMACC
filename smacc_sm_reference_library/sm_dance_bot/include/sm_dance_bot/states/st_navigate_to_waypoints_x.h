@@ -25,28 +25,28 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   typedef mpl::list<
       // Expected event
-      // sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>>,
+      // sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>>,
 
       //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
 
       
-      smacc::transition<EvWaypoint0<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
-      smacc::transition<EvWaypoint1<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
-      smacc::transition<EvWaypoint2<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
-      smacc::transition<EvWaypoint3<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
-      smacc::transition<EvWaypoint4<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
+      smacc::transition<EvWaypoint0<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
+      smacc::transition<EvWaypoint1<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
+      smacc::transition<EvWaypoint2<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
+      smacc::transition<EvWaypoint3<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
+      smacc::transition<EvWaypoint4<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   //int currentIteration;
 
   static void onDefinition()
   {
-    static_configure<ToolOrthogonal, CbToolStart>();
-    static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
+    static_configure<OrTool, CbToolStart>();
+    static_configure<OrObstaclePerception, CbLidarSensor>();
     
     // example for temperature sensor
 
@@ -66,7 +66,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
             {2.0, -8.58, 0},
             {-10.0, 14.5, 0}};
 */
-    //static_configure<NavigationOrthogonal, CbWaypointsNavigator>(waypoints);
+    //static_configure<OrNavigation, CbWaypointsNavigator>(waypoints);
 
     /*
     static_createLogicUnit<LuRoundRobin, 
@@ -77,7 +77,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
                                    EvWaypoint4<StNavigateToWaypointsX>,
                                    EvWaypoint5<StNavigateToWaypointsX>
                                   >, 
-                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>>();
+                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>>();
                          */
 
     // what about persistence
@@ -135,7 +135,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       move_base->waypointsNavigator_->setWaypoints(waypoints3d);
     }
 
-    //this->configure<NavigationOrthogonal, CbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
+    //this->configure<OrNavigation, CbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
 
     move_base->waypointsNavigator_->sendNextGoal();
 
@@ -206,7 +206,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     // return forward_event();
   // }
 
-  // sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal> &ev)
+  // sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation> &ev)
   // {
   //   ROS_INFO("Waypoints X reaction");
 

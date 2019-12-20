@@ -32,18 +32,18 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    static void onDefinition()
    {
-      static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
-      static_configure<PublisherOrthogonal, CbStringPublisher>("Hello World!");
-      static_configure<SensorOrthogonal, CbConditionTemperatureSensor>();
-      static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);
-      static_configure<UpdatablePublisherOrthogonal, CbUpdatableStringPublisher>();
+      static_configure<OrObstaclePerception, CbLidarSensor>();
+      static_configure<OrStringPublisher, CbStringPublisher>("Hello World!");
+      static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
+      static_configure<OrService3, Service3Behavior>(Service3Command::SERVICE3_ON);
+      static_configure<OrUpdatablePublisher, CbUpdatableStringPublisher>();
 
       static_createLogicUnit<LuAllEventsGo,
                              EvAll<LuAllEventsGo, Unit1>,
-                             mpl::list<EvTopicMessage<CbLidarSensor, ObstaclePerceptionOrthogonal>, EvTopicMessage<CbConditionTemperatureSensor, SensorOrthogonal>>>();
+                             mpl::list<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>>();
 
       // auto luall = static_createLogicUnit<LuAllEventsGo>();
-      // luall->enablesOn<EvTopicMessage<CbLidarSensor, ObstaclePerceptionOrthogonal>, EvTopicMessage<CbConditionTemperatureSensor, SensorOrthogonal>>();
+      // luall->enablesOn<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
       // luall->throwsEvent<EvAll<LuAllEventsGo, Unit1>>();
    }
 

@@ -6,7 +6,7 @@
 
 namespace sm_dance_bot
 {
-class NavigationOrthogonal : public smacc::Orthogonal
+class OrNavigation : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
@@ -14,7 +14,7 @@ public:
         //what we had
         //auto client = this->createClient<smacc::SmaccMoveBaseActionClient>(23,24);
 
-        auto movebaseClient = this->createClient<NavigationOrthogonal, smacc::SmaccMoveBaseActionClient>();
+        auto movebaseClient = this->createClient<OrNavigation, smacc::SmaccMoveBaseActionClient>();
         //auto client = createClient<smacc::SmaccMoveBaseActionClient>(this, 23, 234);
         //auto client = CREATE_CLIENT(smacc::SmaccMoveBaseActionClient, 23, 234);
 

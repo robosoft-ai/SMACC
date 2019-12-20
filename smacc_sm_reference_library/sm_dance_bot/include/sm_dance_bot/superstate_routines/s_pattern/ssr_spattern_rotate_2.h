@@ -2,8 +2,8 @@ struct SsrSPatternRotate2 : smacc::SmaccState<SsrSPatternRotate2, SS>
 {
     using SmaccState::SmaccState;
 
-    typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternForward2>,
-                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrSPatternForward1>
+    typedef mpl::list<smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrSPatternForward2>,
+                    smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrSPatternForward1>
                     > reactions;
 
     static void onDefinition()
@@ -14,8 +14,8 @@ struct SsrSPatternRotate2 : smacc::SmaccState<SsrSPatternRotate2, SS>
         else
             angle = 90;
 
-        static_configure<NavigationOrthogonal, CbRotate>(angle);
-        static_configure<ToolOrthogonal, CbToolStop>();
+        static_configure<OrNavigation, CbRotate>(angle);
+        static_configure<OrTool, CbToolStop>();
     }
 
     void onInitialize()

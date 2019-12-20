@@ -1,16 +1,16 @@
 struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
 {
   typedef mpl::list<
-            smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialLoopStart, SUCCESS>,
-            smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialEndPoint, ABORT>
+            smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrRadialLoopStart, SUCCESS>,
+            smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrRadialEndPoint, ABORT>
             > reactions;
 
   using SmaccState::SmaccState;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, CbUndoPathBackwards>();
-    static_configure<ToolOrthogonal, CbToolStop>();
+    static_configure<OrNavigation, CbUndoPathBackwards>();
+    static_configure<OrTool, CbToolStop>();
   }
 
   void onInitialize()

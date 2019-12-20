@@ -6,9 +6,9 @@
 #include <sm_three_some/clients/client_2.h>
 
 // ORTHOGONALS
-#include <sm_three_some/orthogonals/orthogonal_1.h>
-#include <sm_three_some/orthogonals/orthogonal_2.h>
-#include <sm_three_some/orthogonals/keyboard_orthogonal.h>
+#include <sm_three_some/orthogonals/or_orthogonal_1.h>
+#include <sm_three_some/orthogonals/or_orthogonal_2.h>
+#include <sm_three_some/orthogonals/or_keyboard_orthogonal.h>
 
 //CLIENT BEHAVIORS
 #include <sm_three_some/client_behaviors/client_1/client_behavior_1.h>
@@ -44,9 +44,9 @@ struct SmThreeSome
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<Orthogonal1>();
-        this->createOrthogonal<Orthogonal2>();
-        this->createOrthogonal<KeyboardOrthogonal>();
+        this->createOrthogonal<OrOrthogonal1>();
+        this->createOrthogonal<OrOrthogonal2>();
+        this->createOrthogonal<OrKeyboard>();
     }
 };
 } // namespace sm_three_some

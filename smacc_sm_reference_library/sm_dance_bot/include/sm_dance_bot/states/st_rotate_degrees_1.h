@@ -7,18 +7,18 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
 
   typedef mpl::list<
       // Expected event
-      smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateForward1>,
+      smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateForward1>,
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
+      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, CbRotate>(/*30*/ 90);
-    static_configure<ToolOrthogonal, CbToolStop>();
-    static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
+    static_configure<OrNavigation, CbRotate>(/*30*/ 90);
+    static_configure<OrTool, CbToolStop>();
+    static_configure<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()

@@ -8,7 +8,7 @@
 // - no client behavior in this example -
 
 // ORTHOGONALS
-#include <sm_viewer_sim/orthogonals/navigation_orthogonal.h>
+#include <sm_viewer_sim/orthogonals/or_navigation.h>
 
 using namespace smacc;
 
@@ -51,7 +51,7 @@ struct SmViewerSim : smacc::SmaccStateMachineBase<SmViewerSim, MsRunMode>
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<NavigationOrthogonal>();
+        this->createOrthogonal<OrNavigation>();
         int initialcounterValue = 0;
         //this->setGlobalSMData("St2Attempts", initialcounterValue);
     }

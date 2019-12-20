@@ -7,12 +7,12 @@
 
 namespace sm_dance_bot
 {
-class SensorOrthogonal : public smacc::Orthogonal
+class OrTemperatureSensor : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto temperatureSensor = this->createClient<SensorOrthogonal, sm_dance_bot::TemperatureSensor>();
+        auto temperatureSensor = this->createClient<OrTemperatureSensor, sm_dance_bot::TemperatureSensor>();
 
         temperatureSensor->topicName = "/temperature";
         //temperatureSensor->queueSize = "/front/scan";

@@ -5,12 +5,12 @@
 
 namespace sm_three_some
 {
-class Orthogonal1 : public smacc::Orthogonal
+class OrOrthogonal1 : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto client1 = this->createClient<Orthogonal1, Client1>();
+        auto client1 = this->createClient<OrOrthogonal1, Client1>();
         client1->initialize();
     }
 };

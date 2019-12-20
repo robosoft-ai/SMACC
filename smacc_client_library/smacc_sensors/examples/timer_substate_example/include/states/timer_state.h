@@ -1,7 +1,7 @@
 #pragma once
 
 #include <timer_state_machine.h>
-#include <orthogonals/navigation_orthogonal.h>
+#include <orthogonals/or_navigation.h>
 #include <client_behaviors/navigation/cb_timer.h>
 
 //--------------------------------------------
@@ -14,7 +14,7 @@ public:
 
   void onInitialize()
   {
-    this->configure<NavigationOrthogonal, smacc::Timer>(ros::Duration(3));
+    this->configure<OrNavigation, smacc::Timer>(ros::Duration(3));
   }
 
   void onEntry()

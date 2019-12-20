@@ -3,14 +3,14 @@ struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialEndPoint, SUCCESS>,
-              smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, SsrRadialLoopStart, ABORT>
+              smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrRadialEndPoint, SUCCESS>,
+              smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, SsrRadialLoopStart, ABORT>
               > reactions;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, CbRotate>(SS::ray_angle_increment_degree());
-    static_configure<ToolOrthogonal, CbToolStop>();
+    static_configure<OrNavigation, CbRotate>(SS::ray_angle_increment_degree());
+    static_configure<OrTool, CbToolStop>();
   }
 
   void onInitialize()
