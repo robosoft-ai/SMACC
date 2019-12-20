@@ -71,17 +71,17 @@ void SignalDetector::findUpdatableBehaviors()
     for (auto pair : this->smaccStateMachine_->getOrthogonals())
     {
         auto &orthogonal = pair.second;
-        auto *currentBehavior = orthogonal->getCurrentBehavior();
+        auto &behaviors = orthogonal->getClientBehaviors();
 
-        if (currentBehavior == nullptr)
-            continue;
-
-        ISmaccUpdatable *updatableClientBehavior = dynamic_cast<ISmaccUpdatable *>(currentBehavior);
-
-        if (updatableClientBehavior != nullptr)
+        for (auto& currentBehavior : behaviors)
         {
-            ROS_DEBUG_STREAM("Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
-            this->updatableClientBehaviors_.push_back(updatableClientBehavior);
+            ISmaccUpdatable *updatableClientBehavior = dynamic_cast<ISmaccUpdatable *>(currentBehavior.get());
+
+            if (updatableClientBehavior != nullptr)
+            {
+                ROS_DEBUG_STREAM("Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
+                this->updatableClientBehaviors_.push_back(updatableClientBehavior);
+            }
         }
     }
 }

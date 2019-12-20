@@ -5,10 +5,10 @@
 
 namespace sm_dance_bot
 {
-class StringPublisherClient : public smacc::SmaccPublisherClient<std_msgs::String>
+class ClStringPublisher : public smacc::SmaccPublisherClient<std_msgs::String>
 {
 public:
-    StringPublisherClient() : smacc::SmaccPublisherClient<std_msgs::String>()
+    ClStringPublisher() : smacc::SmaccPublisherClient<std_msgs::String>()
     {
     }
 };

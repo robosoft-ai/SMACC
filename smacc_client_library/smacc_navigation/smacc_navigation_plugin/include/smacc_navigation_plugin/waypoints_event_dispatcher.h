@@ -35,7 +35,7 @@ struct EvWaypoint4 : sc::event<EvWaypoint4<TSource, TObjectTag>>
     int waypointIndex;
 };
 
-class SmaccMoveBaseActionClient;
+class ClMoveBaseZ;
 
 #define WAYPOINTS_EVENTCOUNT 1000
 
@@ -45,7 +45,7 @@ class WaypointEventDispatcher
 
 public:
     template <typename TDerived, typename TObjectTag>
-    void initialize(SmaccMoveBaseActionClient *client);
+    void initialize(ClMoveBaseZ *client);
 
     void postWaypointEvent(int index);
 };

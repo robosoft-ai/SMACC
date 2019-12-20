@@ -6,7 +6,7 @@ namespace sm_atomic
 {
 struct CbState1 : public smacc::SmaccClientBehavior
 {
-    smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+    smacc::ClMoveBaseZ *moveBaseClient_;
 
     virtual void onEntry() override
     {
@@ -19,7 +19,7 @@ struct CbState1 : public smacc::SmaccClientBehavior
     {
         geometry_msgs::PoseStamped radialStartPose;
 
-        smacc::SmaccMoveBaseActionClient::Goal goal;
+        smacc::ClMoveBaseZ::Goal goal;
         goal.target_pose.header.stamp = ros::Time::now();
 
         goal.target_pose = radialStartPose;

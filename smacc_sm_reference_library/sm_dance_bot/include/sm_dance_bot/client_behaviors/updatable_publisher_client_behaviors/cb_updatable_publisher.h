@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_dance_bot/client_behaviors/updatable_publisher/updatable_publisher_client.h>
+#include <sm_dance_bot/clients/cl_updatable_publisher.h>
 #include <smacc/smacc_client_behavior.h>
 #include <std_msgs/String.h>
 
@@ -10,7 +10,7 @@ class CbUpdatableStringPublisher : public smacc::SmaccClientBehavior,
                                    public smacc::ISmaccUpdatable
 {
 public:
-    sm_dance_bot::UpdatableStringPublisherClient *publisherClient_;
+    sm_dance_bot::ClUpdatableStringPublisher *publisherClient_;
     CbUpdatableStringPublisher()
     {
     }

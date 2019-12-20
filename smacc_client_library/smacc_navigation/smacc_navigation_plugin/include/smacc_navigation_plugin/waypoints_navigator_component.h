@@ -8,7 +8,7 @@
 
 namespace smacc
 {
-class SmaccMoveBaseActionClient;
+class ClMoveBaseZ;
 
 struct Pose2D
 {
@@ -29,12 +29,12 @@ class WaypointNavigator : public ISmaccComponent
 public:
   WaypointEventDispatcher waypointsEventDispatcher;
 
-  SmaccMoveBaseActionClient *client_;
+  ClMoveBaseZ *client_;
 
   WaypointNavigator();
 
   template <typename TDerived, typename TObjectTag>
-  void assignToOrthogonal(SmaccMoveBaseActionClient *client);
+  void assignToOrthogonal(ClMoveBaseZ *client);
 
   void insertWaypoint(int index, geometry_msgs::Pose &newpose);
 
@@ -53,7 +53,7 @@ public:
   long getCurrentWaypointIndex() const;
 
 private:
-  void onGoalReached(SmaccMoveBaseActionClient::ResultConstPtr &res);
+  void onGoalReached(ClMoveBaseZ::ResultConstPtr &res);
 
   std::vector<geometry_msgs::Pose> waypoints_;
 

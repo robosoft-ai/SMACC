@@ -43,9 +43,9 @@ void ISmaccState::configure(Args &&... args)
     std::shared_ptr<TOrthogonal> orthogonal;
     if (this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
     {
-        auto smaccBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
-        smaccBehavior->template assignToOrthogonal<TBehavior, TOrthogonal>();
-        orthogonal->setStateBehavior(smaccBehavior);
+        auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
+        clientBehavior->template assignToOrthogonal<TBehavior, TOrthogonal>();
+        orthogonal->addClientBehavior(clientBehavior);
     }
     else
     {

@@ -7,10 +7,10 @@
 namespace sm_dance_bot
 {
 
-class TemperatureSensor : public smacc::SensorClient<sensor_msgs::Temperature>
+class ClTemperatureSensor : public smacc::SensorClient<sensor_msgs::Temperature>
 {
 public:
-    TemperatureSensor()
+    ClTemperatureSensor()
     {
     }
 };

@@ -12,11 +12,11 @@ public:
     virtual void onInitialize() override
     {
         //what we had
-        //auto client = this->createClient<smacc::SmaccMoveBaseActionClient>(23,24);
+        //auto client = this->createClient<smacc::ClMoveBaseZ>(23,24);
 
-        auto movebaseClient = this->createClient<OrNavigation, smacc::SmaccMoveBaseActionClient>();
-        //auto client = createClient<smacc::SmaccMoveBaseActionClient>(this, 23, 234);
-        //auto client = CREATE_CLIENT(smacc::SmaccMoveBaseActionClient, 23, 234);
+        auto movebaseClient = this->createClient<OrNavigation, smacc::ClMoveBaseZ>();
+        //auto client = createClient<smacc::ClMoveBaseZ>(this, 23, 234);
+        //auto client = CREATE_CLIENT(smacc::ClMoveBaseZ, 23, 234);
 
         movebaseClient->name_ = "move_base";
         movebaseClient->initialize();

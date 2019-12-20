@@ -10,10 +10,10 @@ template <typename TSource>
 struct EvTimer : sc::event<EvTimer<TSource>>
 {
     /*
-    SmaccTimerClient *sender;
+    ClRosTimer *sender;
     ros::TimerEvent timedata;
 
-    EvTimer(SmaccTimerClient *sender, const ros::TimerEvent &timedata)
+    EvTimer(ClRosTimer *sender, const ros::TimerEvent &timedata)
     {
         this->sender = sender;
         this->timedata = timedata;
@@ -21,15 +21,15 @@ struct EvTimer : sc::event<EvTimer<TSource>>
     */
 };
 
-class SmaccTimerClient : public smacc::ISmaccClient
+class ClRosTimer : public smacc::ISmaccClient
 {
 public:
-    boost::signals2::signal<void(EvTimer<SmaccTimerClient> *)> onTimerTick;
+    boost::signals2::signal<void(EvTimer<ClRosTimer> *)> onTimerTick;
     boost::signals2::scoped_connection c_;
 
-    SmaccTimerClient(ros::Duration duration, bool oneshot = false);
+    ClRosTimer(ros::Duration duration, bool oneshot = false);
 
-    virtual ~SmaccTimerClient();
+    virtual ~ClRosTimer();
 
     virtual void initialize();
 

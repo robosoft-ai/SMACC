@@ -6,7 +6,7 @@ struct StState1 : smacc::SmaccState<StState1, SmThreeSome>
 
     typedef mpl::list<
         // Expected transition
-        smacc::transition<smacc::EvTopicMessage<Client1, OrOrthogonal1>, StState2>,
+        smacc::transition<smacc::EvTopicMessage<ClClient1, OrOrthogonal1>, StState2>,
 
         // Keyboard events
         smacc::transition<EvKeyPressP<CbKeyboard, OrKeyboard>, SS1::Ss1>,

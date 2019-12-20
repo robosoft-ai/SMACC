@@ -10,15 +10,15 @@ void Orthogonal::setStateMachine(ISmaccStateMachine *value)
     this->onInitialize();
 }
 
-void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior)
+void Orthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
 {
-    if (statebehavior != nullptr)
+    if (clBehavior != nullptr)
     {
-        ROS_INFO("Setting Ortho %s State behavior: %s", this->getName().c_str(), statebehavior->getName().c_str());
-        statebehavior->stateMachine = this->stateMachine_;
-        statebehavior->currentOrthogonal = this;
-        
-        currentBehavior_ = statebehavior;
+        ROS_INFO("Setting Ortho %s State behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+        clBehavior->stateMachine = this->stateMachine_;
+        clBehavior->currentOrthogonal = this;
+
+        clientBehaviors_.push_back(clBehavior);
     }
     else
     {
@@ -28,7 +28,6 @@ void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccClientBehavior> st
 
 void Orthogonal::onInitialize()
 {
-
 }
 
 std::string Orthogonal::getName() const
@@ -38,28 +37,33 @@ std::string Orthogonal::getName() const
 
 void Orthogonal::onEntry()
 {
-    if (currentBehavior_ != nullptr)
+    if (clientBehaviors_.size() > 0)
     {
-        ROS_INFO("Orthogonal %s OnEntry, current Behavior: %s",
-                 this->getName().c_str(),
-                 currentBehavior_->getName().c_str());
+        for (auto &clBehavior : clientBehaviors_)
+        {
+            ROS_INFO("Orthogonal %s OnEntry, current Behavior: %s",
+                     this->getName().c_str(),
+                     clBehavior->getName().c_str());
 
-        currentBehavior_->onEntry();
+            clBehavior->onEntry();
+        }
     }
     else
     {
-        ROS_INFO("Orthogonal %s OnEntry",
-                 this->getName().c_str());
+        ROS_INFO("Orthogonal %s OnEntry", this->getName().c_str());
     }
 }
 
 void Orthogonal::onExit()
 {
-    if (currentBehavior_ != nullptr)
+    if (clientBehaviors_.size() > 0)
     {
-        ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), currentBehavior_->getName().c_str());
-        currentBehavior_->onExit();
-        currentBehavior_ = nullptr;
+        for (auto &clBehavior : clientBehaviors_)
+        {
+            ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+            clBehavior->onExit();
+        }
+        clientBehaviors_.clear();
     }
     else
     {

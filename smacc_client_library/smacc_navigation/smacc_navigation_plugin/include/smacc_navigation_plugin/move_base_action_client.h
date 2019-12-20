@@ -15,7 +15,7 @@ namespace smacc
 {
 class WaypointNavigator;
 
-class SmaccMoveBaseActionClient : public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
+class ClMoveBaseZ : public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
@@ -26,13 +26,13 @@ public:
 
     std::shared_ptr<smacc::WaypointNavigator> waypointsNavigator_;
 
-    SmaccMoveBaseActionClient();
+    ClMoveBaseZ();
 
     virtual void initialize() override;
 
     virtual std::string getName() const override;
 
-    virtual ~SmaccMoveBaseActionClient();
+    virtual ~ClMoveBaseZ();
 
     template <typename TDerived, typename TObjectTag>
     void assignToOrthogonal();

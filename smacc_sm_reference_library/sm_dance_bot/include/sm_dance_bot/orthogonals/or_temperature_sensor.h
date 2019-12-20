@@ -3,22 +3,22 @@
 #include <smacc/smacc_orthogonal.h>
 #include <sensor_msgs/Temperature.h>
 #include <smacc_interface_components/clients/sensor_client.h>
-#include <sm_dance_bot/client_behaviors/temperature_sensor/temperature_sensor.h>
+#include <sm_dance_bot/clients/cl_temperature_sensor.h>
 
 namespace sm_dance_bot
 {
-class OrTemperatureSensor : public smacc::Orthogonal
+class OrClTemperatureSensor : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto temperatureSensor = this->createClient<OrTemperatureSensor, sm_dance_bot::TemperatureSensor>();
+        auto ClTemperatureSensor = this->createClient<OrClTemperatureSensor, sm_dance_bot::ClTemperatureSensor>();
 
-        temperatureSensor->topicName = "/temperature";
-        //temperatureSensor->queueSize = "/front/scan";
-        temperatureSensor->timeout_ = ros::Duration(10);
+        ClTemperatureSensor->topicName = "/temperature";
+        //ClTemperatureSensor->queueSize = "/front/scan";
+        ClTemperatureSensor->timeout_ = ros::Duration(10);
 
-        temperatureSensor->initialize();
+        ClTemperatureSensor->initialize();
     }
 };
 } // namespace sm_dance_bot

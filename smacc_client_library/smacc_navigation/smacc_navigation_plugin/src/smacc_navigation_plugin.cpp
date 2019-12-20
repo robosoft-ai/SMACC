@@ -11,26 +11,26 @@
 namespace smacc
 {
 
-SmaccMoveBaseActionClient::SmaccMoveBaseActionClient()
+ClMoveBaseZ::ClMoveBaseZ()
 {
     //ROS_INFO("Smacc Move Base Action Client");
     waypointsNavigator_ = std::make_shared<smacc::WaypointNavigator>();
 }
 
-std::string SmaccMoveBaseActionClient::getName() const
+std::string ClMoveBaseZ::getName() const
 {
     return "MOVE BASE ACTION CLIENT";
 }
 
-void SmaccMoveBaseActionClient::initialize()
+void ClMoveBaseZ::initialize()
 {
     plannerSwitcher_ = std::make_shared<smacc_planner_switcher::PlannerSwitcher>(*(this->name_));
     SmaccActionClientBase<move_base_msgs::MoveBaseAction>::initialize();
 }
 
-SmaccMoveBaseActionClient::~SmaccMoveBaseActionClient()
+ClMoveBaseZ::~ClMoveBaseZ()
 {
 }
 } // namespace smacc
 
-PLUGINLIB_EXPORT_CLASS(smacc::SmaccMoveBaseActionClient, smacc::ISmaccClient)
+PLUGINLIB_EXPORT_CLASS(smacc::ClMoveBaseZ, smacc::ISmaccClient)

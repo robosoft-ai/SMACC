@@ -4,10 +4,10 @@
 #include <std_srvs/SetBool.h>
 namespace sm_dance_bot
 {
-class ServiceClient3 : public smacc::SmaccServiceClient<std_srvs::SetBool>
+class ClService3 : public smacc::SmaccServiceClient<std_srvs::SetBool>
 {
 public:
-  ServiceClient3()
+  ClService3()
   {
   }
 };

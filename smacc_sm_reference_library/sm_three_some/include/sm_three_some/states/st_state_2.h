@@ -18,7 +18,7 @@ struct StState2 : smacc::SmaccState<StState2, SmThreeSome>
         static_configure<OrOrthogonal2, CbBehavior2b>();
         static_configure<OrKeyboard, CbKeyboard>();
 
-        static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo>, mpl::list<EvTopicMessage<CbBehavior1b, OrOrthogonal1>, EvTopicMessage<Client1, OrOrthogonal1>>>();
+        static_createLogicUnit<LuAllEventsGo, EvAll<LuAllEventsGo>, mpl::list<EvTopicMessage<CbBehavior1b, OrOrthogonal1>, EvTopicMessage<ClClient1, OrOrthogonal1>>>();
     }
 
     void onInitialize()

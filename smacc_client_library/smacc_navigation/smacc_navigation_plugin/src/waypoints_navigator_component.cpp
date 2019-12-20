@@ -13,7 +13,7 @@ WaypointNavigator::WaypointNavigator()
 {
 }
 
-void WaypointNavigator::onGoalReached(SmaccMoveBaseActionClient::ResultConstPtr &res)
+void WaypointNavigator::onGoalReached(ClMoveBaseZ::ResultConstPtr &res)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);
   currentWaypoint_++;
@@ -26,7 +26,7 @@ void WaypointNavigator::sendNextGoal()
   {
     auto &next = waypoints_[currentWaypoint_];
 
-    smacc::SmaccMoveBaseActionClient::Goal goal;
+    smacc::ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
     goal.target_pose.pose = next;
@@ -91,45 +91,45 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     throw std::string("Waypoints file not found");
   }
 
-  #ifdef HAVE_NEW_YAMLCPP
-    YAML::Node node = YAML::Load(ifs);
-  #else
-    YAML::Parser parser(ifs);
-    parser.GetNextDocument(node);
-  #endif
+#ifdef HAVE_NEW_YAMLCPP
+  YAML::Node node = YAML::Load(ifs);
+#else
+  YAML::Parser parser(ifs);
+  parser.GetNextDocument(node);
+#endif
 
-  #ifdef HAVE_NEW_YAMLCPP
-    const YAML::Node &wp_node_tmp = node["waypoints"];
-    const YAML::Node *wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
-  #else
-    const YAML::Node *wp_node = node.FindValue("waypoints");
-  #endif
+#ifdef HAVE_NEW_YAMLCPP
+  const YAML::Node &wp_node_tmp = node["waypoints"];
+  const YAML::Node *wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+#else
+  const YAML::Node *wp_node = node.FindValue("waypoints");
+#endif
 
-    if (wp_node != NULL)
+  if (wp_node != NULL)
+  {
+    for (unsigned int i = 0; i < wp_node->size(); ++i)
     {
-      for (unsigned int i = 0; i < wp_node->size(); ++i)
-      {
-        // Parse waypoint entries on YAML
-        geometry_msgs::pose wp;
+      // Parse waypoint entries on YAML
+      geometry_msgs::Pose wp;
 
-        // (*wp_node)[i]["name"] >> wp.name;
-        // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
-        (*wp_node)[i]["pose"]["position"]["x"] >> wp.position.x;
-        (*wp_node)[i]["pose"]["position"]["y"] >> wp.position.y;
-        (*wp_node)[i]["pose"]["position"]["z"] >> wp.position.z;
-        (*wp_node)[i]["pose"]["orientation"]["x"] >> wp.orientation.x;
-        (*wp_node)[i]["pose"]["orientation"]["y"] >> wp.orientation.y;
-        (*wp_node)[i]["pose"]["orientation"]["z"] >> wp.orientation.z;
-        (*wp_node)[i]["pose"]["orientation"]["w"] >> wp.orientation.w;
+      // (*wp_node)[i]["name"] >> wp.name;
+      // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
+      wp.position.x = (*wp_node)[i]["pose"]["position"]["x"].as<double>();
+      wp.position.y = (*wp_node)[i]["pose"]["position"]["y"].as<double>();
+      wp.position.z = (*wp_node)[i]["pose"]["position"]["z"].as<double>();
+      wp.orientation.x = (*wp_node)[i]["pose"]["orientation"]["x"].as<double>();
+      wp.orientation.y = (*wp_node)[i]["pose"]["orientation"]["y"].as<double>();
+      wp.orientation.z = (*wp_node)[i]["pose"]["orientation"]["z"].as<double>();
+      wp.orientation.w = (*wp_node)[i]["pose"]["orientation"]["w"].as<double>();
 
-        this->waypoints_.push_back(wp);
-      }
-      ROS_INFO_STREAM("Parsed " << this->waypoints_.size() << " waypoints.");
+      this->waypoints_.push_back(wp);
     }
-    else
-    {
-      ROS_WARN_STREAM("Couldn't find any waypoints in the provided yaml file.");
-    }
+    ROS_INFO_STREAM("Parsed " << this->waypoints_.size() << " waypoints.");
+  }
+  else
+  {
+    ROS_WARN_STREAM("Couldn't find any waypoints in the provided yaml file.");
+  }
 }
 } // namespace smacc
   /*

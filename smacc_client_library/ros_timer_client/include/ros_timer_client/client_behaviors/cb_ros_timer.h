@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc.h>
-#include <ros_timer_client/timer_client.h>
+#include <ros_timer_client/cl_ros_timer.h>
 
 namespace ros_timer_client
 {
@@ -12,6 +12,6 @@ public:
   virtual void onExit() override;
 
 private:
-  SmaccTimerClient *timerClient_;
+  ClRosTimer *timerClient_;
 };
 } // namespace ros_timer_client

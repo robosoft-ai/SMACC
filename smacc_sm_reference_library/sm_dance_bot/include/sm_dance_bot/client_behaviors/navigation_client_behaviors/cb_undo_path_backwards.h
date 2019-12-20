@@ -11,7 +11,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 {
   tf::TransformListener listener;
 
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+  smacc::ClMoveBaseZ *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker *odomTracker_;
 
@@ -25,7 +25,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 
     this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
 
-    smacc::SmaccMoveBaseActionClient::Goal goal;
+    smacc::ClMoveBaseZ::Goal goal;
     if (forwardpath.poses.size() > 0)
     {
       goal.target_pose = forwardpath.poses.front();

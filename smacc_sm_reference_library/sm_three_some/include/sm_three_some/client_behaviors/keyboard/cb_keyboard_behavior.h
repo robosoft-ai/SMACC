@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_three_some/clients/keyboard_client.h>
+#include <sm_three_some/clients/cl_keyboard.h>
 #include <smacc/smacc_client_behavior.h>
 
 #include <std_msgs/UInt16.h>
@@ -10,14 +10,14 @@ namespace sm_three_some
 class CbKeyboard : public smacc::SmaccClientBehavior
 {
 public:
-        KeyboardClient *keyboardClient_;
+        ClKeyboard *ClKeyboard_;
         boost::signals2::scoped_connection c_;
 
         void onEntry()
         {
-                this->requiresClient(keyboardClient_);
+                this->requiresClient(ClKeyboard_);
 
-                c_ = this->keyboardClient_->OnKeyPress.connect(
+                c_ = this->ClKeyboard_->OnKeyPress.connect(
                     [this](char character) {
                             this->OnKeyPress(character);
                     });

@@ -25,20 +25,20 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   typedef mpl::list<
       // Expected event
-      // sc::custom_reaction<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>>,
+      // sc::custom_reaction<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>>,
 
       //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
 
       
-      smacc::transition<EvWaypoint0<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
-      smacc::transition<EvWaypoint1<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
-      smacc::transition<EvWaypoint2<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
-      smacc::transition<EvWaypoint3<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
-      smacc::transition<EvWaypoint4<SmaccMoveBaseActionClient, OrNavigation>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
+      smacc::transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
+      smacc::transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
+      smacc::transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
+      smacc::transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS4::SsFPattern1, TRANSITION_4>,
+      smacc::transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, OrNavigation>, StNavigateToWaypointsX>>
+      smacc::transition<EvActionAborted<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   //int currentIteration;
@@ -50,10 +50,10 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     
     // example for temperature sensor
 
-    //std::function<bool(EvTopicMessage<CbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<CbConditionTemperatureSensor> *ev) {
+    //std::function<bool(EvTopicMessage<CbConditionClTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<CbConditionClTemperatureSensor> *ev) {
     //  return ev->msgData.temperature > 30;
     //});
-    //static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<CbConditionTemperatureSensor>>>(temperatureWarningCondition);
+    //static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<CbConditionClTemperatureSensor>>>(temperatureWarningCondition);
 
     //smacc::transition<EvTrue<LuConditional>, StNavigateToWaypointsX>>
 
@@ -77,7 +77,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
                                    EvWaypoint4<StNavigateToWaypointsX>,
                                    EvWaypoint5<StNavigateToWaypointsX>
                                   >, 
-                         mpl::list<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation>>();
+                         mpl::list<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>>();
                          */
 
     // what about persistence
@@ -119,7 +119,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     //ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
-    SmaccMoveBaseActionClient *move_base;
+    ClMoveBaseZ *move_base;
     this->requiresClient(move_base);
 
     if (move_base->waypointsNavigator_->getWaypoints().size() == 0)
@@ -139,7 +139,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     move_base->waypointsNavigator_->sendNextGoal();
 
-    ROS_INFO("current iteration waypoints x: %d", move_base->waypointsNavigator_->getCurrentWaypointIndex());
+    ROS_INFO("current iteration waypoints x: %ld", move_base->waypointsNavigator_->getCurrentWaypointIndex());
 
     // x, y, yaw (orientation)
 
@@ -206,7 +206,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     // return forward_event();
   // }
 
-  // sc::result react(const EvActionSucceeded<smacc::SmaccMoveBaseActionClient, OrNavigation> &ev)
+  // sc::result react(const EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation> &ev)
   // {
   //   ROS_INFO("Waypoints X reaction");
 

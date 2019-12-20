@@ -5,18 +5,18 @@
 
 namespace sm_dance_bot
 {
-class UpdatableStringPublisherClient : public smacc::SmaccPublisherClient<std_msgs::String>,
+class ClUpdatableStringPublisher : public smacc::SmaccPublisherClient<std_msgs::String>,
                               public smacc::ISmaccUpdatable
 {
 public:
-    UpdatableStringPublisherClient() 
+    ClUpdatableStringPublisher() 
             : smacc::SmaccPublisherClient<std_msgs::String>()
     {
     }
 
     virtual void update()
     {
-        ROS_INFO("[UpdatableStringPublisherClient] update here!");
+        ROS_INFO("[ClUpdatableStringPublisher] update here!");
     }
 };
 } // namespace sm_dance_bot

@@ -1,28 +1,28 @@
-#include <ros_timer_client/timer_client.h>
+#include <ros_timer_client/cl_ros_timer.h>
 
 namespace ros_timer_client
 {
 
-SmaccTimerClient::SmaccTimerClient(ros::Duration duration, bool oneshot)
+ClRosTimer::ClRosTimer(ros::Duration duration, bool oneshot)
 {
     this->duration = duration;
     this->oneshot = oneshot;
 }
 
-SmaccTimerClient::~SmaccTimerClient()
+ClRosTimer::~ClRosTimer()
 {
     timer.stop();
 }
 
-void SmaccTimerClient::initialize()
+void ClRosTimer::initialize()
 {
-    timer = nh_.createTimer(duration, boost::bind(&SmaccTimerClient::timerCallback, this, _1), oneshot);
+    timer = nh_.createTimer(duration, boost::bind(&ClRosTimer::timerCallback, this, _1), oneshot);
 }
 
-void SmaccTimerClient::timerCallback(const ros::TimerEvent &timedata)
+void ClRosTimer::timerCallback(const ros::TimerEvent &timedata)
 {
-    //auto *event = new EvTimer<SmaccTimerClient>(this, timedata);
-    auto *event = new EvTimer<SmaccTimerClient>();
+    //auto *event = new EvTimer<ClRosTimer>(this, timedata);
+    auto *event = new EvTimer<ClRosTimer>();
     this->postEvent(event);
     onTimerTick(event);
 }

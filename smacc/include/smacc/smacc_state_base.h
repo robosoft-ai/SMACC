@@ -4,7 +4,6 @@
 
 namespace smacc
 {
-
 template <class MostDerived,
           class Context,
           class InnerInitial = mpl::list<>,
@@ -118,10 +117,11 @@ public:
 
     static_cast<MostDerived *>(this)->onInitialize();
 
-    this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));
-
     //ROS_INFO("Not behavioral State");
     static_cast<MostDerived *>(this)->onEntry();
+
+    // here orthogonals and client behaviors are entered OnEntry
+    this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));
   }
 
   typedef typename Context::inner_context_type context_type;

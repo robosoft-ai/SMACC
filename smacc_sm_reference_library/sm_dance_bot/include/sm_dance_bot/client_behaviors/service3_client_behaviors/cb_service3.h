@@ -1,5 +1,5 @@
 #include <smacc/smacc_client_behavior.h>
-#include <sm_dance_bot/client_behaviors/service_client/service3_client.h>
+#include <sm_dance_bot/clients/cl_service3.h>
 
 namespace sm_dance_bot
 {
@@ -9,14 +9,14 @@ enum class Service3Command
   SERVICE3_OFF
 };
 
-class Service3Behavior : public smacc::SmaccClientBehavior
+class CbService3 : public smacc::SmaccClientBehavior
 {
 private:
-  ServiceClient3 *serviceClient_;
+  ClService3 *serviceClient_;
   Service3Command value_;
 
 public:
-  Service3Behavior(Service3Command value)
+  CbService3(Service3Command value)
   {
     value_ = value;
   }

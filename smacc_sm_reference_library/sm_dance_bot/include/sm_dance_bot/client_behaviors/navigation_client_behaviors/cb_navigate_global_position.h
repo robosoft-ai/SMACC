@@ -50,7 +50,7 @@ public:
   void goToRadialStart()
   {
     ROS_INFO("Sending Goal to MoveBase");
-    smacc::SmaccMoveBaseActionClient::Goal goal;
+    smacc::ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
     readStartPoseFromParameterServer(goal);
@@ -62,7 +62,7 @@ public:
     moveBaseClient_->sendGoal(goal);
   }
 
-  void readStartPoseFromParameterServer(smacc::SmaccMoveBaseActionClient::Goal &goal)
+  void readStartPoseFromParameterServer(smacc::ClMoveBaseZ::Goal &goal)
   {
     if (!initialPoint)
     {
@@ -92,7 +92,7 @@ public:
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).
   // this resource can be used from any method in this state
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+  smacc::ClMoveBaseZ *moveBaseClient_;
 
   smacc_odom_tracker::OdomTracker *odomTracker_;
 };

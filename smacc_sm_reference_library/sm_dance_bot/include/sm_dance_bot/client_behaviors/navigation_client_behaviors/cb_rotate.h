@@ -14,7 +14,7 @@ class CbRotate : public smacc::SmaccClientBehavior
 public:
     tf::TransformListener listener;
 
-    smacc::SmaccMoveBaseActionClient *moveBaseClient_;
+    smacc::ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> rotateDegree;
 
@@ -66,7 +66,7 @@ public:
             }
         }
 
-        smacc::SmaccMoveBaseActionClient::Goal goal;
+        smacc::ClMoveBaseZ::Goal goal;
         goal.target_pose.header.frame_id = "/odom";
         goal.target_pose.header.stamp = ros::Time::now();
 

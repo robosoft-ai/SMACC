@@ -7,21 +7,21 @@ namespace smacc
 {
 
 template <typename TDerived, typename TObjectTag>
-void WaypointNavigator::assignToOrthogonal(SmaccMoveBaseActionClient *client)
+void WaypointNavigator::assignToOrthogonal(ClMoveBaseZ *client)
 {
     client_ = client;
     waypointsEventDispatcher.initialize<TDerived, TObjectTag>(client);
 }
 
 template <typename TDerived, typename TObjectTag>
-void SmaccMoveBaseActionClient::assignToOrthogonal()
+void ClMoveBaseZ::assignToOrthogonal()
 {
     SmaccActionClientBase<move_base_msgs::MoveBaseAction>::assignToOrthogonal<TDerived, TObjectTag>();
     waypointsNavigator_->template assignToOrthogonal<TDerived, TObjectTag>(this);
 }
 
 template <typename TEv>
-void configurePostEvWaypoint(std::function<void()> *fntarget, SmaccMoveBaseActionClient *client, int index)
+void configurePostEvWaypoint(std::function<void()> *fntarget, ClMoveBaseZ *client, int index)
 {
     fntarget[index] = [=]() {
         client->template postEvent<TEv>();
@@ -29,7 +29,7 @@ void configurePostEvWaypoint(std::function<void()> *fntarget, SmaccMoveBaseActio
 }
 
 template <typename TDerived, typename TObjectTag>
-void WaypointEventDispatcher::initialize(SmaccMoveBaseActionClient *client)
+void WaypointEventDispatcher::initialize(ClMoveBaseZ *client)
 {
     configurePostEvWaypoint<EvWaypoint0<TDerived, TObjectTag>>(postWaypointFn, client, 0);
     configurePostEvWaypoint<EvWaypoint1<TDerived, TObjectTag>>(postWaypointFn, client, 1);

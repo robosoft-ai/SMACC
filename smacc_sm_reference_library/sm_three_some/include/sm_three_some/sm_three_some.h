@@ -2,8 +2,9 @@
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <sm_three_some/clients/client_1.h>
-#include <sm_three_some/clients/client_2.h>
+#include <sm_three_some/clients/cl_client_1.h>
+#include <sm_three_some/clients/cl_client_2.h>
+#include <sm_three_some/clients/cl_keyboard.h>
 
 // ORTHOGONALS
 #include <sm_three_some/orthogonals/or_orthogonal_1.h>

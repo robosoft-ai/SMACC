@@ -10,7 +10,7 @@ class Orthogonal
 public:
     void setStateMachine(ISmaccStateMachine *value);
 
-    void setStateBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior);
+    void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior);
 
     void onEntry();
 
@@ -18,7 +18,7 @@ public:
 
     virtual std::string getName() const;
 
-    template <typename TObjectTag, typename TClient, typename ...TArgs>
+    template <typename TObjectTag, typename TClient, typename... TArgs>
     std::shared_ptr<TClient> createClient(TArgs... args);
 
     template <typename SmaccComponentType>
@@ -32,9 +32,9 @@ public:
         return clients_;
     }
 
-    inline smacc::SmaccClientBehavior* getCurrentBehavior()
+    inline const std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> &getClientBehaviors() const
     {
-        return this->currentBehavior_.get();
+        return this->clientBehaviors_;
     }
 
 private:
@@ -42,7 +42,7 @@ private:
 
     ISmaccStateMachine *stateMachine_;
 
-    std::shared_ptr<smacc::SmaccClientBehavior> currentBehavior_;
+    std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> clientBehaviors_;
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 };
