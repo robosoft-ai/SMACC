@@ -10,7 +10,7 @@ class Orthogonal
 public:
     void setStateMachine(ISmaccStateMachine *value);
 
-    void setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior);
+    void setStateBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior);
 
     void onEntry();
 
@@ -32,7 +32,7 @@ public:
         return clients_;
     }
 
-    inline smacc::SmaccSubStateBehavior* getCurrentBehavior()
+    inline smacc::SmaccClientBehavior* getCurrentBehavior()
     {
         return this->currentBehavior_.get();
     }
@@ -42,7 +42,7 @@ private:
 
     ISmaccStateMachine *stateMachine_;
 
-    std::shared_ptr<smacc::SmaccSubStateBehavior> currentBehavior_;
+    std::shared_ptr<smacc::SmaccClientBehavior> currentBehavior_;
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 };

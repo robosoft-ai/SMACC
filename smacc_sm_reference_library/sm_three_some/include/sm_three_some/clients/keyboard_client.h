@@ -144,7 +144,7 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TObjectTag>>
 {
 };
 
-//------------------  TIMER SUBSTATE ---------------------------------------------
+//------------------  KEYBOARD CLIENT ---------------------------------------------
 
 class KeyboardClient : public smacc::SmaccSubscriberClient<std_msgs::UInt16>
 {

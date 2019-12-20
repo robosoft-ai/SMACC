@@ -12,7 +12,7 @@ struct State1
 
     static void onDefinition()
     {
-        static_configure<NavigationOrthogonal, SbState1>();
+        static_configure<NavigationOrthogonal, CbState1>();
     }
 
     void onInitialize()

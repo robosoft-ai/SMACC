@@ -14,8 +14,8 @@ struct SsrSPatternRotate2 : smacc::SmaccState<SsrSPatternRotate2, SS>
         else
             angle = 90;
 
-        static_configure<NavigationOrthogonal, SbRotate>(angle);
-        static_configure<ToolOrthogonal, SbToolStop>();
+        static_configure<NavigationOrthogonal, CbRotate>(angle);
+        static_configure<ToolOrthogonal, CbToolStop>();
     }
 
     void onInitialize()

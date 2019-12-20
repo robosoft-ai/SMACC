@@ -13,7 +13,7 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
     auto &superstate = this->context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
 
-    this->configure<NavigationOrthogonal, SbNavigateForward>(SS::pitch_lenght_meters());
-    this->configure<ToolOrthogonal, SbToolStop>();
+    this->configure<NavigationOrthogonal, CbNavigateForward>(SS::pitch_lenght_meters());
+    this->configure<ToolOrthogonal, CbToolStop>();
   }
 };

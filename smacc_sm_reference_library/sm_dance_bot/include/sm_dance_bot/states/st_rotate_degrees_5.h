@@ -10,15 +10,15 @@ struct StRotateDegrees5 : smacc::SmaccState<StRotateDegrees5, MsDanceBotRunMode>
       smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>,
 
       // Error events
-      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbRotate>(/*30*/ -180);
-    static_configure<ToolOrthogonal, SbToolStop>();
-    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+    static_configure<NavigationOrthogonal, CbRotate>(/*30*/ -180);
+    static_configure<ToolOrthogonal, CbToolStop>();
+    static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
   }
 
   void onInitialize()

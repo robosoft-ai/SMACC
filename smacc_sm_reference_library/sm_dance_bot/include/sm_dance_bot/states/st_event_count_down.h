@@ -14,9 +14,9 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
     static void onDefinition()
     {
-        //   static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
-        //   static_configure<PublisherOrthogonal, SbStringPublisher>("Hello World!");
-        //   static_configure<SensorOrthogonal, SbConditionTemperatureSensor>();
+        //   static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
+        //   static_configure<PublisherOrthogonal, CbStringPublisher>("Hello World!");
+        //   static_configure<SensorOrthogonal, CbConditionTemperatureSensor>();
         //   static_configure<Service3Orthogonal, Service3Behavior>(Service3Command::SERVICE3_ON);
 
         static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvTimer<SmaccTimerClient>>>(5);

@@ -45,7 +45,7 @@ private:
 
     std::vector<ISmaccUpdatable*> updatableClients_;
 
-    std::vector<ISmaccUpdatable*> updatableSubstateBehaviors_;
+    std::vector<ISmaccUpdatable*> updatableClientBehaviors_;
 
     std::atomic<unsigned long> lastState_;
 

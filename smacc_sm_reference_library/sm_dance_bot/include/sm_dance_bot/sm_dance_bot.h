@@ -2,26 +2,26 @@
 
 #include <sensor_msgs/LaserScan.h>
 
-//SUBSTATE BEHAVIORS
-#include <ros_timer_client/sb_timer_substate.h>
+//CLIENT BEHAVIORS
+#include <ros_timer_client/client_behaviors/cb_timer.h>
 
-#include <sm_dance_bot/substate_behaviors/navigation/sb_rotate.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_undo_path_backwards.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_global_position.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_forward.h>
-#include <sm_dance_bot/substate_behaviors/navigation/sb_navigate_backward.h>
+#include <sm_dance_bot/client_behaviors/navigation/cb_rotate.h>
+#include <sm_dance_bot/client_behaviors/navigation/cb_undo_path_backwards.h>
+#include <sm_dance_bot/client_behaviors/navigation/cb_navigate_global_position.h>
+#include <sm_dance_bot/client_behaviors/navigation/cb_navigate_forward.h>
+#include <sm_dance_bot/client_behaviors/navigation/cb_navigate_backward.h>
 
-#include <sm_dance_bot/substate_behaviors/tool/sb_tool_start.h>
-#include <sm_dance_bot/substate_behaviors/tool/sb_tool_stop.h>
+#include <sm_dance_bot/client_behaviors/tool/cb_tool_start.h>
+#include <sm_dance_bot/client_behaviors/tool/cb_tool_stop.h>
 
-#include <sm_dance_bot/substate_behaviors/lidar_sensor/sb_lidar_sensor.h>
+#include <sm_dance_bot/client_behaviors/lidar_sensor/cb_lidar_sensor.h>
 
-#include <sm_dance_bot/substate_behaviors/temperature_sensor/sb_custom_condition_temperature_sensor.h>
-#include <sm_dance_bot/substate_behaviors/publisher/sb_string_publisher.h>
-#include <smacc_interface_components/substate_behaviors/sensor_substate.h>
-#include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
-#include <sm_dance_bot/substate_behaviors/service_client/service3_behavior.h>
-#include <sm_dance_bot/substate_behaviors/updatable_publisher/sb_updatable_publisher.h>
+#include <sm_dance_bot/client_behaviors/temperature_sensor/cb_custom_condition_temperature_sensor.h>
+#include <sm_dance_bot/client_behaviors/publisher/cb_string_publisher.h>
+#include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
+#include <sm_dance_bot/client_behaviors/service_client/service3_client.h>
+#include <sm_dance_bot/client_behaviors/service_client/service3_behavior.h>
+#include <sm_dance_bot/client_behaviors/updatable_publisher/cb_updatable_publisher.h>
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>

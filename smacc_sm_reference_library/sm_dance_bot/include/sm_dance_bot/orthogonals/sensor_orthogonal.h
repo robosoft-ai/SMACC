@@ -3,7 +3,7 @@
 #include <smacc/smacc_orthogonal.h>
 #include <sensor_msgs/Temperature.h>
 #include <smacc_interface_components/clients/sensor_client.h>
-#include <sm_dance_bot/substate_behaviors/temperature_sensor/temperature_sensor.h>
+#include <sm_dance_bot/client_behaviors/temperature_sensor/temperature_sensor.h>
 
 namespace sm_dance_bot
 {

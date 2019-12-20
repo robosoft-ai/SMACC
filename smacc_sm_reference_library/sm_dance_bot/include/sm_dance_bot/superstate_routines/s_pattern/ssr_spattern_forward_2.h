@@ -14,7 +14,7 @@ struct SsrSPatternForward2 : public smacc::SmaccState<SsrSPatternForward2, SS>
   {
     auto &superstate = this->context<SS>();
 
-    this->configure<NavigationOrthogonal, SbNavigateForward>(SS::pitch1_lenght_meters());
-    this->configure<ToolOrthogonal, SbToolStart>();
+    this->configure<NavigationOrthogonal, CbNavigateForward>(SS::pitch1_lenght_meters());
+    this->configure<ToolOrthogonal, CbToolStart>();
   }
 };

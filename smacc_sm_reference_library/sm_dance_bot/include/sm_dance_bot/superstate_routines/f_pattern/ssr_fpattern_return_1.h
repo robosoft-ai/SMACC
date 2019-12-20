@@ -6,8 +6,8 @@ struct SsrFPatternReturn1 : smacc::SmaccState<SsrFPatternReturn1, SS>
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbUndoPathBackwards>();
-    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<NavigationOrthogonal, CbUndoPathBackwards>();
+    static_configure<ToolOrthogonal, CbToolStart>();
   }
 
   void onInitialize()

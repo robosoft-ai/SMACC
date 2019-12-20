@@ -37,7 +37,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       smacc::transition<EvWaypoint4<SmaccMoveBaseActionClient, NavigationOrthogonal>, sm_dance_bot::SS5::SsSPattern1, TRANSITION_5>,
 
       // Error events
-      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
       reactions;
 
@@ -45,15 +45,15 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   static void onDefinition()
   {
-    static_configure<ToolOrthogonal, SbToolStart>();
-    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+    static_configure<ToolOrthogonal, CbToolStart>();
+    static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
     
     // example for temperature sensor
 
-    //std::function<bool(EvTopicMessage<SbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<SbConditionTemperatureSensor> *ev) {
+    //std::function<bool(EvTopicMessage<CbConditionTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<CbConditionTemperatureSensor> *ev) {
     //  return ev->msgData.temperature > 30;
     //});
-    //static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<SbConditionTemperatureSensor>>>(temperatureWarningCondition);
+    //static_createLogicUnit<LuConditional, EvTrue<LuConditional>, mpl::list<EvTopicMessage<CbConditionTemperatureSensor>>>(temperatureWarningCondition);
 
     //smacc::transition<EvTrue<LuConditional>, StNavigateToWaypointsX>>
 
@@ -66,7 +66,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
             {2.0, -8.58, 0},
             {-10.0, 14.5, 0}};
 */
-    //static_configure<NavigationOrthogonal, SbWaypointsNavigator>(waypoints);
+    //static_configure<NavigationOrthogonal, CbWaypointsNavigator>(waypoints);
 
     /*
     static_createLogicUnit<LuRoundRobin, 
@@ -135,7 +135,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       move_base->waypointsNavigator_->setWaypoints(waypoints3d);
     }
 
-    //this->configure<NavigationOrthogonal, SbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
+    //this->configure<NavigationOrthogonal, CbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
 
     move_base->waypointsNavigator_->sendNextGoal();
 

@@ -6,8 +6,8 @@ struct SsrFPatternForward1 : public smacc::SmaccState<SsrFPatternForward1, SS>
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbNavigateForward>(SS::ray_lenght_meters());
-    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<NavigationOrthogonal, CbNavigateForward>(SS::ray_lenght_meters());
+    static_configure<ToolOrthogonal, CbToolStart>();
   }
 
   void onInitialize()

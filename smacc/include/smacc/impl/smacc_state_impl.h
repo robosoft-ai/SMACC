@@ -1,10 +1,10 @@
 #pragma once
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_orthogonal.h>
-#include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc_client_behavior.h>
 #include <smacc/logic_units/logic_unit_base.h>
 #include <smacc/introspection/string_type_walker.h>
-#include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_state_machine.h>
 
 namespace smacc
@@ -49,7 +49,7 @@ void ISmaccState::configure(Args &&... args)
     }
     else
     {
-        ROS_ERROR("Skipping substate behavior creation. Orthogonal did not exist.");
+        ROS_ERROR("Skipping client behavior creation. Orthogonal did not exist.");
     }
 }
 //-------------------------------------------------------------------------------------------------------

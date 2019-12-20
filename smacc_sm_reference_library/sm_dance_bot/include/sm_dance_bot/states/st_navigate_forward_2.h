@@ -8,7 +8,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
       smacc::transition<EvActionSucceeded<SmaccMoveBaseActionClient, NavigationOrthogonal>, StRotateDegrees5>,
 
       // Error events
-      //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+      //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
       smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
       reactions;
 
@@ -16,9 +16,9 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbNavigateForward>(1);
-    static_configure<ToolOrthogonal, SbToolStop>();
-    static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+    static_configure<NavigationOrthogonal, CbNavigateForward>(1);
+    static_configure<ToolOrthogonal, CbToolStop>();
+    static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
   }
 
   // Key N -> next state

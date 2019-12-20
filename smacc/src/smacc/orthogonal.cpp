@@ -1,6 +1,6 @@
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/impl/smacc_state_machine_impl.h>
-#include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc_client_behavior.h>
 
 namespace smacc
 {
@@ -10,7 +10,7 @@ void Orthogonal::setStateMachine(ISmaccStateMachine *value)
     this->onInitialize();
 }
 
-void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccSubStateBehavior> statebehavior)
+void Orthogonal::setStateBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior)
 {
     if (statebehavior != nullptr)
     {

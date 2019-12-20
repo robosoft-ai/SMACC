@@ -10,12 +10,12 @@
 #include <sm_three_some/orthogonals/orthogonal_2.h>
 #include <sm_three_some/orthogonals/keyboard_orthogonal.h>
 
-//SUBSTATE BEHAVIORS
-#include <sm_three_some/substate_behaviors/client_1/substate_behavior_1.h>
-#include <sm_three_some/substate_behaviors/client_1/substate_behavior_1b.h>
-#include <sm_three_some/substate_behaviors/client_2/substate_behavior_2.h>
-#include <sm_three_some/substate_behaviors/client_2/substate_behavior_2b.h>
-#include <sm_three_some/substate_behaviors/keyboard/sb_keyboard_substate.h>
+//CLIENT BEHAVIORS
+#include <sm_three_some/client_behaviors/client_1/client_behavior_1.h>
+#include <sm_three_some/client_behaviors/client_1/client_behavior_1b.h>
+#include <sm_three_some/client_behaviors/client_2/client_behavior_2.h>
+#include <sm_three_some/client_behaviors/client_2/client_behavior_2b.h>
+#include <sm_three_some/client_behaviors/keyboard/cb_keyboard_behavior.h>
 
 
 //LOGIC UNITS

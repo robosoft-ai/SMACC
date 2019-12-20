@@ -10,15 +10,15 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, MsDanceBotRunM
        smacc::transition<EvActionSucceeded<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>,
 
        // Error events
-       //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
        smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>>
        reactions;
 
    static void onDefinition()
    {
-      static_configure<NavigationOrthogonal, SbNavigateBackwards>(2);
-      static_configure<ToolOrthogonal, SbToolStop>();
-      static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+      static_configure<NavigationOrthogonal, CbNavigateBackwards>(2);
+      static_configure<ToolOrthogonal, CbToolStop>();
+      static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
    }
 
    void onInitialize()

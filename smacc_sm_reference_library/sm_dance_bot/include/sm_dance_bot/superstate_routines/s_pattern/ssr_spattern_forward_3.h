@@ -8,8 +8,8 @@ struct SsrSPatternForward3 : public smacc::SmaccState<SsrSPatternForward3, SS>
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbNavigateForward>(SS::pitch2_lenght_meters());
-    static_configure<ToolOrthogonal, SbToolStart>();
+    static_configure<NavigationOrthogonal, CbNavigateForward>(SS::pitch2_lenght_meters());
+    static_configure<ToolOrthogonal, CbToolStart>();
   }
 
   void onInitialize()

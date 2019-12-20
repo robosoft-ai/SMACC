@@ -9,8 +9,8 @@ struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
 
   static void onDefinition()
   {
-    static_configure<NavigationOrthogonal, SbUndoPathBackwards>();
-    static_configure<ToolOrthogonal, SbToolStop>();
+    static_configure<NavigationOrthogonal, CbUndoPathBackwards>();
+    static_configure<ToolOrthogonal, CbToolStop>();
   }
 
   void onInitialize()

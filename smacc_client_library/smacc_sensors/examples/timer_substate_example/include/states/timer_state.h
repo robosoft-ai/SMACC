@@ -2,7 +2,7 @@
 
 #include <timer_state_machine.h>
 #include <orthogonals/navigation_orthogonal.h>
-#include <substates_behaviors/navigation/timer_substate.h>
+#include <client_behaviors/navigation/cb_timer.h>
 
 //--------------------------------------------
 struct TimerState: smacc::SmaccState<TimerState, TimerStateMachine>

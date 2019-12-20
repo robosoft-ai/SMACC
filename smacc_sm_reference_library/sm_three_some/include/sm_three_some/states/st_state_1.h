@@ -9,15 +9,15 @@ struct StState1 : smacc::SmaccState<StState1, SmThreeSome>
         smacc::transition<smacc::EvTopicMessage<Client1, Orthogonal1>, StState2>,
 
         // Keyboard events
-        smacc::transition<EvKeyPressP<SbKeyboard, KeyboardOrthogonal>, SS1::Ss1>,
-        smacc::transition<EvKeyPressN<SbKeyboard, KeyboardOrthogonal>, StState2>>
+        smacc::transition<EvKeyPressP<CbKeyboard, KeyboardOrthogonal>, SS1::Ss1>,
+        smacc::transition<EvKeyPressN<CbKeyboard, KeyboardOrthogonal>, StState2>>
         reactions;
 
     static void onDefinition()
     {
-        static_configure<Orthogonal1, SbBehavior1>();
-        static_configure<Orthogonal2, SbBehavior2>();
-        static_configure<KeyboardOrthogonal, SbKeyboard>();
+        static_configure<Orthogonal1, CbBehavior1>();
+        static_configure<Orthogonal2, CbBehavior2>();
+        static_configure<KeyboardOrthogonal, CbKeyboard>();
     }
 
     void onInitialize()

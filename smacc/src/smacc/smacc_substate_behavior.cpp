@@ -1,30 +1,30 @@
-#include <smacc/smacc_substate_behavior.h>
+#include <smacc/smacc_client_behavior.h>
 
 namespace smacc
 {
-SmaccSubStateBehavior::SmaccSubStateBehavior()
+SmaccClientBehavior::SmaccClientBehavior()
 {
     stateMachine = nullptr;
     currentState = nullptr;
 }
 
-SmaccSubStateBehavior::~SmaccSubStateBehavior()
+SmaccClientBehavior::~SmaccClientBehavior()
 {
-    ROS_WARN("Substate behavior deallocated.");
+    ROS_WARN("Client behavior deallocated.");
 }
 
-std::string SmaccSubStateBehavior::getName() const
+std::string SmaccClientBehavior::getName() const
 {
     return demangleSymbol(typeid(*this).name());
 }
 
-void SmaccSubStateBehavior::onEntry()
+void SmaccClientBehavior::onEntry()
 {
-    ROS_INFO("SmaccSubStateBehavior %s onEntry", this->getName().c_str());
+    ROS_INFO("SmaccClientBehavior %s onEntry", this->getName().c_str());
 }
 
-void SmaccSubStateBehavior::onExit()
+void SmaccClientBehavior::onExit()
 {
-    ROS_INFO("SmaccSubStateBehavior %s onExit", this->getName().c_str());
+    ROS_INFO("SmaccClientBehavior %s onExit", this->getName().c_str());
 }
 } // namespace smacc

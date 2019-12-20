@@ -5,18 +5,18 @@ struct StState3 : smacc::SmaccState<StState3, SmThreeSome>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<smacc::EvTopicMessage<SbBehavior2b, Orthogonal2>, SS1::Ss1>,
+        smacc::transition<smacc::EvTopicMessage<CbBehavior2b, Orthogonal2>, SS1::Ss1>,
 
         // Keyboard events
-        smacc::transition<EvKeyPressP<SbKeyboard, KeyboardOrthogonal>, StState2>,
-        smacc::transition<EvKeyPressN<SbKeyboard, KeyboardOrthogonal>, SS1::Ss1>>
+        smacc::transition<EvKeyPressP<CbKeyboard, KeyboardOrthogonal>, StState2>,
+        smacc::transition<EvKeyPressN<CbKeyboard, KeyboardOrthogonal>, SS1::Ss1>>
         reactions;
 
     static void onDefinition()
     {
-        static_configure<Orthogonal1, SbBehavior1b>();
-        static_configure<Orthogonal2, SbBehavior2b>();
-        static_configure<KeyboardOrthogonal, SbKeyboard>();
+        static_configure<Orthogonal1, CbBehavior1b>();
+        static_configure<Orthogonal2, CbBehavior2b>();
+        static_configure<KeyboardOrthogonal, CbKeyboard>();
     }
 
     void onInitialize()

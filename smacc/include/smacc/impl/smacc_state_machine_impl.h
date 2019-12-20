@@ -109,7 +109,7 @@ void ISmaccStateMachine::postEvent(EventType *ev)
 {
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-    // when a postting event is requested by any component, client, or substate behavior
+    // when a postting event is requested by any component, client, or client behavior
     // we reach this place. Now, we propagate the events to all the state logic units to generate
     // some more events
 
@@ -187,14 +187,14 @@ void ISmaccStateMachine::mapBehavior()
     std::string stateFieldName = demangleSymbol(typeid(StateField).name());
     std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
     ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
-    SmaccSubStateBehavior *globalreference;
+    SmaccClientBehavior *globalreference;
     if (!this->getGlobalSMData(stateFieldName, globalreference))
     {
         // Using the requires component approach, we force a unique existence
         // of this component
         BehaviorType *behavior;
         this->requiresComponent(behavior);
-        globalreference = dynamic_cast<SmaccSubStateBehavior *>(behavior);
+        globalreference = dynamic_cast<SmaccClientBehavior *>(behavior);
 
         this->setGlobalSMData(stateFieldName, globalreference);
     }
@@ -203,7 +203,7 @@ void ISmaccStateMachine::mapBehavior()
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
 boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccSubStateBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
 
     boost::signals2::connection connection = signal.connect([=](auto msg) { return (object->*callback)(msg); });
 

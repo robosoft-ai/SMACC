@@ -4,8 +4,8 @@
 
 #include <smacc/smacc.h>
 
-// SUBSTATE BEHAVIORS
-// - no substate behavior in this example -
+// CLIENT BEHAVIORS
+// - no client behavior in this example -
 
 // ORTHOGONALS
 #include <sm_viewer_sim/orthogonals/navigation_orthogonal.h>

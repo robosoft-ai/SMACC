@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_dance_bot/substate_behaviors/lidar_sensor/lidar_client.h>
+#include <sm_dance_bot/client_behaviors/lidar_sensor/lidar_client.h>
 #include <smacc/smacc_orthogonal.h>
 
 namespace sm_dance_bot

@@ -2,7 +2,7 @@
 
 #include <keyboard_state_machine.h>
 #include <orthogonals/input_device_orthogonal.h>
-#include <substates_behaviors/input_device/keyboard_substate.h>
+#include <client_behaviors/input_device/keyboard_substate.h>
 
 //--------------------------------------------
 struct KeyboardState: smacc::SmaccState<KeyboardState, KeyboardStateMachine>

@@ -21,7 +21,7 @@ struct SsrSPatternRotate3 : smacc::SmaccState<SsrSPatternRotate3, SS>
         else
             angle = 90;
 
-        this->configure<NavigationOrthogonal, SbRotate>(angle);
-        this->configure<ToolOrthogonal, SbToolStop>();
+        this->configure<NavigationOrthogonal, CbRotate>(angle);
+        this->configure<ToolOrthogonal, CbToolStop>();
     }
 };

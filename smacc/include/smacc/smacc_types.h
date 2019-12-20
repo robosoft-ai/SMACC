@@ -9,7 +9,7 @@ class ISmaccStateMachine;
 class ISmaccClient;
 class ISmaccUpdatable;
 class ISmaccComponent;
-class SmaccSubStateBehavior;
+class SmaccClientBehavior;
 class SignalDetector;
 
 class ISmaccActionClient;

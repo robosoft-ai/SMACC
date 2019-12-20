@@ -93,7 +93,7 @@ public:
       //   ROS_INFO_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
       //   for (auto &bhinfo : stateBehaviorsVector.second)
       //   {
-      //     ROS_INFO_STREAM(" - substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+      //     ROS_INFO_STREAM(" - client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
       //   }
       // }
 
@@ -103,7 +103,7 @@ public:
 
       for (auto &bhinfo : staticDefinedBehaviors)
       {
-        ROS_INFO_STREAM("- Creating static substate behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+        ROS_INFO_STREAM("- Creating static client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
         bhinfo.factoryFunction(this);
       }
 

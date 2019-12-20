@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sm_dance_bot/substate_behaviors/publisher/string_publisher_client.h>
+#include <sm_dance_bot/client_behaviors/publisher/string_publisher_client.h>
 #include <smacc/smacc_orthogonal.h>
 namespace sm_dance_bot
 {

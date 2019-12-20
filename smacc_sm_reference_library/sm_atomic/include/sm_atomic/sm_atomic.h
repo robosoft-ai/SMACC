@@ -6,8 +6,8 @@
 // ORTHOGONALS
 #include <sm_atomic/orthogonals/navigation_orthogonal.h>
 
-//SUBSTATE BEHAVIORS
-#include <sm_atomic/substate_behaviors/sb_state_1.h>
+//CLIENT BEHAVIORS
+#include <sm_atomic/client_behaviors/cb_state_1.h>
 
 using namespace boost;
 

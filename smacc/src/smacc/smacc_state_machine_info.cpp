@@ -93,14 +93,14 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
                 auto &behaviors = smaccBehaviorInfoMappingByOrthogonalType[orthogonaltid];
                 for (auto &bhinfo : behaviors)
                 {
-                    auto substateBehaviorName = demangleSymbol(bhinfo->behaviorType->name());
-                    orthogonalMsg.substate_behavior_names.push_back(substateBehaviorName);
-                    ss << "          - substate behavior: " << substateBehaviorName << std::endl;
+                    auto ClientBehaviorName = demangleSymbol(bhinfo->behaviorType->name());
+                    orthogonalMsg.client_behavior_names.push_back(ClientBehaviorName);
+                    ss << "          - client behavior: " << ClientBehaviorName << std::endl;
                 }
             }
             else
             {
-                ss << "          - NO SUBSTATE BEHAVIORS -" << std::endl;
+                ss << "          - NO Client BEHAVIORS -" << std::endl;
             }
 
             auto &clients = orthogonal.second->getClients();

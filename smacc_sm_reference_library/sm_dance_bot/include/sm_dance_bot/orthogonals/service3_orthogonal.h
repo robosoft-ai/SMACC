@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc_orthogonal.h>
-#include <sm_dance_bot/substate_behaviors/service_client/service3_client.h>
+#include <sm_dance_bot/client_behaviors/service_client/service3_client.h>
 
 namespace sm_dance_bot
 {

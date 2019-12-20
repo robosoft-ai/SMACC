@@ -28,7 +28,7 @@ public:
   SensorClient()
       : SmaccSubscriberClient<MessageType>()
   {
-    ROS_INFO("SbLidarSensor constructor");
+    ROS_INFO("CbLidarSensor constructor");
     initialized_ = false;
   }
 

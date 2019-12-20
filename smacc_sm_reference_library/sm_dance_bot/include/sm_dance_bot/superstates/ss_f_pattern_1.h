@@ -29,7 +29,7 @@ public:
         smacc::transition<EvLoopEnd<SsrFPatternStartLoop>, StNavigateForward2, ENDLOOP>//,
 
         // Error events
-        //smacc::transition<smacc::EvTopicMessageTimeout<SbLidarSensor>, StAcquireSensors>,
+        //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
         //smacc::transition<EvActionAborted<smacc::SmaccMoveBaseActionClient, NavigationOrthogonal>, StNavigateToWaypointsX>
         >
         reactions;
@@ -45,7 +45,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<ObstaclePerceptionOrthogonal, SbLidarSensor>();
+        //static_configure<ObstaclePerceptionOrthogonal, CbLidarSensor>();
     }
 
     void onInitialize()

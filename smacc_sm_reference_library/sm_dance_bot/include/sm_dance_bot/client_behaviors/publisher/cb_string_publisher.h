@@ -1,0 +1,34 @@
+#pragma once
+
+#include <sm_dance_bot/client_behaviors/publisher/string_publisher_client.h>
+#include <smacc/smacc_client_behavior.h>
+#include <std_msgs/String.h>
+
+namespace sm_dance_bot
+{
+class CbStringPublisher : public smacc::SmaccClientBehavior
+{
+public:
+    sm_dance_bot::StringPublisherClient *publisherClient_;
+    std::string msg_;
+
+    CbStringPublisher(std::string msg)
+    {
+        ROS_INFO_STREAM("Creating CbStringPublisher behavior with stored message: " << msg);
+        msg_ = msg;
+    }
+
+    virtual void onEntry()
+    {
+        this->requiresClient(publisherClient_);
+    }
+
+    virtual void onExit() override
+    {
+        std_msgs::String rosmsg;
+        rosmsg.data = msg_;
+        publisherClient_->publish(rosmsg);
+    }
+};
+
+} // namespace sm_dance_bot
