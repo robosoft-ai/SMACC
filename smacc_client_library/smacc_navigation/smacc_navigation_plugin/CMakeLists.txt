@@ -4,7 +4,7 @@ project(smacc_navigation_plugin)
 find_package(catkin REQUIRED smacc pluginlib smacc_planner_switcher)
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(yaml-cpp REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -50,6 +50,7 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
+ ${YAML_CPP_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
@@ -61,6 +62,7 @@ include_directories(
 
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
+   ${YAML_CPP_LIBRARIES}
 )
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
