@@ -51,9 +51,9 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
-  <depend>smacc_navigation_plugin</depend>
-  <depend>smacc_odom_tracker</depend>
-  <depend>smacc_planner_switcher</depend>
+  <depend>move_base_z_client_plugin</depend>
+  <depend>odom_tracker</depend>
+  <depend>planner_switcher</depend>
   <depend>smacc_interface_components</depend>
   <depend>smacc_action_client_generic</depend>
   <depend>all_events_go</depend>

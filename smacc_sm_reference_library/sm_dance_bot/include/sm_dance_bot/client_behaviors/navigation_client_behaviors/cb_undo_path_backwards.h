@@ -1,8 +1,8 @@
 #pragma once
 
 #include <smacc/smacc_client_behavior.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
-#include <smacc_odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <odom_tracker/odom_tracker.h>
 #include <nav_msgs/Path.h>
 
 namespace sm_dance_bot
@@ -13,7 +13,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 
   smacc::ClMoveBaseZ *moveBaseClient_;
 
-  smacc_odom_tracker::OdomTracker *odomTracker_;
+  odom_tracker::OdomTracker *odomTracker_;
 
   virtual void onEntry() override
   {
@@ -23,7 +23,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
     nav_msgs::Path forwardpath = this->odomTracker_->getPath();
     //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
 
-    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
+    this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
 
     smacc::ClMoveBaseZ::Goal goal;
     if (forwardpath.poses.size() > 0)

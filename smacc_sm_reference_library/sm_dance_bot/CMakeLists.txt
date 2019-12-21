@@ -7,7 +7,7 @@ project(sm_dance_bot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp smacc_navigation_plugin smacc_odom_tracker smacc_planner_switcher smacc_interface_components smacc_action_client_generic tf all_events_go event_countdown ros_timer_client conditional)
+find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker planner_switcher smacc_interface_components smacc_action_client_generic tf all_events_go event_countdown ros_timer_client conditional)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

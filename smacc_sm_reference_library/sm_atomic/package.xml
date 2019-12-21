@@ -51,7 +51,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
-  <depend>smacc_navigation_plugin</depend>
+  <depend>move_base_z_client_plugin</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

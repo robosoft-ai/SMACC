@@ -1,5 +1,5 @@
 #include <smacc/smacc.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace sm_viewer_sim
 {

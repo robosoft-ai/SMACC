@@ -1,8 +1,8 @@
 #pragma once
 
 #include <smacc/smacc_client_behavior.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
-#include <smacc_planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <planner_switcher/planner_switcher.h>
 
 #include <boost/optional.hpp>
 #include <tf/transform_listener.h>

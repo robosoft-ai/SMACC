@@ -3,7 +3,7 @@
 
 #include <smacc/client_bases/smacc_action_client_base.h>
 #include <move_base_msgs/MoveBaseAction.h>
-#include <smacc_planner_switcher/planner_switcher.h>
+#include <planner_switcher/planner_switcher.h>
 
 namespace sm_three_some
 {

@@ -3,9 +3,9 @@
 #include <thread>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
-#include <smacc_odom_tracker/odom_tracker.h>
-#include <smacc_planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <odom_tracker/odom_tracker.h>
+#include <planner_switcher/planner_switcher.h>
 
 namespace sm_dance_bot
 {
@@ -21,7 +21,7 @@ public:
 
     smacc::ClMoveBaseZ *moveBaseClient_;
 
-    smacc_odom_tracker::OdomTracker *odomTracker_;
+    odom_tracker::OdomTracker *odomTracker_;
 
     CbNavigateForward(float forwardDistance)
     {
@@ -91,7 +91,7 @@ public:
         currentPoseMsg.header.stamp = ros::Time::now();
         tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
         this->odomTracker_->setStartPoint(currentPoseMsg);
-        this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
         moveBaseClient_->plannerSwitcher_->setForwardPlanner();
 
@@ -100,7 +100,7 @@ public:
 
     virtual void onExit() override
     {
-        this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::IDLE);
+        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::IDLE);
     }
 };
 } // namespace sm_dance_bot

@@ -1,7 +1,7 @@
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <smacc_navigation_plugin/move_base_action_client.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 // ORTHOGONALS
 #include <sm_atomic/orthogonals/or_navigation.h>

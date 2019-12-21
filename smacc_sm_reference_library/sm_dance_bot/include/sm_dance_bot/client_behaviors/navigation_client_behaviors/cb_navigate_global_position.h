@@ -3,9 +3,9 @@
 #include <smacc/smacc_client_behavior.h>
 #include <boost/optional.hpp>
 #include <geometry_msgs/Point.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
-#include <smacc_odom_tracker/odom_tracker.h>
-#include <smacc_planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <odom_tracker/odom_tracker.h>
+#include <planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
 namespace sm_dance_bot
@@ -41,7 +41,7 @@ public:
     ROS_INFO("Component requirements completed");
 
     moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
-    this->odomTracker_->setWorkingMode(smacc_odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart();
   }
@@ -94,6 +94,6 @@ private:
   // this resource can be used from any method in this state
   smacc::ClMoveBaseZ *moveBaseClient_;
 
-  smacc_odom_tracker::OdomTracker *odomTracker_;
+  odom_tracker::OdomTracker *odomTracker_;
 };
 } // namespace sm_dance_bot

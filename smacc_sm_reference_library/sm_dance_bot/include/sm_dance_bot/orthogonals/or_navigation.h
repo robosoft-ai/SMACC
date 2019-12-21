@@ -1,8 +1,8 @@
 #pragma once
 
 #include <smacc/smacc_orthogonal.h>
-#include <smacc_navigation_plugin/move_base_action_client.h>
-#include <smacc_odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <odom_tracker/odom_tracker.h>
 
 namespace sm_dance_bot
 {
@@ -21,7 +21,7 @@ public:
         movebaseClient->name_ = "move_base";
         movebaseClient->initialize();
 
-        smacc_odom_tracker::OdomTracker *odomtracker;
+        odom_tracker::OdomTracker *odomtracker;
         this->requiresComponent(odomtracker);
         odomtracker->initialize("/");
 
