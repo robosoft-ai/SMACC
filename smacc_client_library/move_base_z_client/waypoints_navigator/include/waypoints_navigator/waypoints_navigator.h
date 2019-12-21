@@ -33,7 +33,7 @@ public:
 
   WaypointNavigator();
 
-  virtual void initialize(ISmaccComponent *owner) override
+  virtual void initialize(ISmaccClient *owner) override
   {
     client_ = dynamic_cast<ClMoveBaseZ*>(owner);
   }

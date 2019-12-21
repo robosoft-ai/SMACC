@@ -36,7 +36,7 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    this->requiresComponent(odomTracker_);
+    auto* odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
 
     ROS_INFO("Component requirements completed");
 
@@ -93,7 +93,5 @@ private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).
   // this resource can be used from any method in this state
   smacc::ClMoveBaseZ *moveBaseClient_;
-
-  odom_tracker::OdomTracker *odomTracker_;
 };
 } // namespace sm_dance_bot

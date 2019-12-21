@@ -24,98 +24,94 @@
 namespace odom_tracker
 {
 
-enum class WorkingMode : uint8_t {
+enum class WorkingMode : uint8_t
+{
     RECORD_PATH_FORWARD = 0,
     CLEAR_PATH_BACKWARD = 1,
     IDLE = 2
 };
 
 /// This class track the required distance of the cord based on the external localization system
-class OdomTracker: public smacc::ISmaccComponent
+class OdomTracker : public smacc::ISmaccComponent
 {
-    public:      
-        OdomTracker();
+public:
 
-        /// Must be called at the begining of the execution
-        // by default, the component start in record_forward mode and publishing the
-        // current path
-        void initialize(std::string nodeName);
+    // by default, the component start in record_forward mode and publishing the
+    // current path
+    OdomTracker(std::string nodeName);
 
-        
-        // threadsafe
-        /// odom callback: Updates the path - this must be called periodically for each odometry message. 
-        // The odom parameters is the main input of this tracker
-        virtual void processOdometryMessage(const nav_msgs::Odometry& odom);     
+    // threadsafe
+    /// odom callback: Updates the path - this must be called periodically for each odometry message.
+    // The odom parameters is the main input of this tracker
+    virtual void processOdometryMessage(const nav_msgs::Odometry &odom);
 
-        // ------ CONTROL COMMANDS ---------------------
-        // threadsafe
-        void setWorkingMode(WorkingMode workingMode);
+    // ------ CONTROL COMMANDS ---------------------
+    // threadsafe
+    void setWorkingMode(WorkingMode workingMode);
 
-        // threadsafe
-        void setPublishMessages(bool value);
+    // threadsafe
+    void setPublishMessages(bool value);
 
-        // threadsafe        
-        void pushPath();
-        
-        // threadsafe
-        void popPath();
+    // threadsafe
+    void pushPath();
 
-        // threadsafe
-        void clearPath();
+    // threadsafe
+    void popPath();
 
-        // threadsafe
-        void setStartPoint(const geometry_msgs::PoseStamped& pose);
-        
-        // threadsafe
-        nav_msgs::Path getPath();
+    // threadsafe
+    void clearPath();
 
-    protected:
+    // threadsafe
+    void setStartPoint(const geometry_msgs::PoseStamped &pose);
 
-        virtual void rtPublishPaths(ros::Time timestamp); 
+    // threadsafe
+    nav_msgs::Path getPath();
 
-        // this is called when a new odom message is received in forward mode
-        virtual bool updateForward(const nav_msgs::Odometry& odom);
+protected:
+    virtual void rtPublishPaths(ros::Time timestamp);
 
-        // this is called when a new odom message is received in backwards mode
-        virtual bool updateBackward(const nav_msgs::Odometry& odom);
-        
-        // -------------- OUTPUTS ---------------------
-        std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
+    // this is called when a new odom message is received in forward mode
+    virtual bool updateForward(const nav_msgs::Odometry &odom);
 
-        // --------------- INPUTS ------------------------
-        // optional, this class can be used directly calling the odomProcessing method
-        // without any subscriber
-        ros::Subscriber odomSub_;
+    // this is called when a new odom message is received in backwards mode
+    virtual bool updateBackward(const nav_msgs::Odometry &odom);
 
-        // -------------- PARAMETERS ----------------------
-        /// How much distance there is between two points of the path
-        double minPointDistanceForwardThresh_;
+    // -------------- OUTPUTS ---------------------
+    std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
 
-        /// Meters
-        double minPointDistanceBackwardThresh_;
+    // --------------- INPUTS ------------------------
+    // optional, this class can be used directly calling the odomProcessing method
+    // without any subscriber
+    ros::Subscriber odomSub_;
 
-        /// rads
-        double minPointAngularDistanceForwardThresh_;
+    // -------------- PARAMETERS ----------------------
+    /// How much distance there is between two points of the path
+    double minPointDistanceForwardThresh_;
 
-        /// rads
-        double minPointAngularDistanceBackwardThresh_;
+    /// Meters
+    double minPointDistanceBackwardThresh_;
 
+    /// rads
+    double minPointAngularDistanceForwardThresh_;
 
-        // --------------- STATE ---------------
-        // default true
-        bool publishMessages;
+    /// rads
+    double minPointAngularDistanceBackwardThresh_;
 
-        /// Processed path for the mouth of the reel
-        nav_msgs::Path baseTrajectory_;
+    // --------------- STATE ---------------
+    // default true
+    bool publishMessages;
 
-        WorkingMode workingMode_;
+    /// Processed path for the mouth of the reel
+    nav_msgs::Path baseTrajectory_;
 
-        std::vector<nav_msgs::Path> pathStack_;
+    WorkingMode workingMode_;
 
-        // subscribes to topic on init if true
-        bool subscribeToOdometryTopic_;
+    std::vector<nav_msgs::Path> pathStack_;
 
-        std::mutex m_mutex_;
+    // subscribes to topic on init if true
+    bool subscribeToOdometryTopic_;
+
+    std::mutex m_mutex_;
 };
 
 /**
@@ -123,12 +119,12 @@ class OdomTracker: public smacc::ISmaccComponent
 * p2pDistance()
 ******************************************************************************************************************
 */
-    inline double p2pDistance(const geometry_msgs::Point&p1, const geometry_msgs::Point&p2)
-    {
-        double dx = (p1.x - p2.x);
-        double dy = (p1.y - p2.y);
-        double dz = (p2.z - p2.z);
-        double dist = sqrt(dx*dx + dy*dy+dz*dz);
-        return dist;
-    }
+inline double p2pDistance(const geometry_msgs::Point &p1, const geometry_msgs::Point &p2)
+{
+    double dx = (p1.x - p2.x);
+    double dy = (p1.y - p2.y);
+    double dz = (p2.z - p2.z);
+    double dist = sqrt(dx * dx + dy * dy + dz * dz);
+    return dist;
 }
+} // namespace odom_tracker

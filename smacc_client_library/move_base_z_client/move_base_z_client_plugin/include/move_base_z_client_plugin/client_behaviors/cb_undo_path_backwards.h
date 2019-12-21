@@ -13,12 +13,10 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 
   smacc::ClMoveBaseZ *moveBaseClient_;
 
-  odom_tracker::OdomTracker *odomTracker_;
-
   virtual void onEntry() override
   {
     this->requiresClient(moveBaseClient_);
-    this->requiresComponent(odomTracker_);
+    auto* odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
 
     nav_msgs::Path forwardpath = this->odomTracker_->getPath();
     //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);

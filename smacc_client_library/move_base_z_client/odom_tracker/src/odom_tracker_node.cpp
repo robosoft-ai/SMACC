@@ -15,92 +15,92 @@ using namespace odom_tracker;
 class OdomTrackerActionServer
 {
 public:
-  std::shared_ptr<Server> as_ ;
+  std::shared_ptr<Server> as_;
   OdomTracker odomTracker;
 
-OdomTrackerActionServer()
-{
-}
+  OdomTrackerActionServer()
+      : odomTracker("move_base")
+  {
+  }
 
-
-/**
+  /**
 ******************************************************************************************************************
 * execute()
 ******************************************************************************************************************
 */
-void execute(const odom_tracker::OdomTrackerGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
-{
-  try
+  void execute(const odom_tracker::OdomTrackerGoalConstPtr &goal) // Note: "Action" is not appended to DoDishes here
   {
-    switch(goal->command)
+    try
     {
-      case OdomTrackerGoal::RECORD_FORWARD_PATH: 
+      switch (goal->command)
+      {
+      case OdomTrackerGoal::RECORD_FORWARD_PATH:
         odomTracker.setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
-      break;
+        break;
 
       case OdomTrackerGoal::CLEAR_PATH_BACKWARDS:
         odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH_BACKWARD);
-      break;
+        break;
 
       case OdomTrackerGoal::IDLE:
         odomTracker.setWorkingMode(WorkingMode::IDLE);
-      break;
+        break;
 
       case OdomTrackerGoal::START_BROADCAST_PATH:
         odomTracker.setPublishMessages(true);
-      break;
+        break;
 
       case OdomTrackerGoal::STOP_BROADCAST_PATH:
         odomTracker.setPublishMessages(false);
-      break;
+        break;
 
       case OdomTrackerGoal::PUSH_PATH:
         odomTracker.pushPath();
-      break;
+        break;
 
       case OdomTrackerGoal::POP_PATH:
         odomTracker.popPath();
-      break;
+        break;
 
       default:
 
-      ROS_ERROR("Odom Tracker Node - Action Server execute error: incorrect command - %d", goal->command);
+        ROS_ERROR("Odom Tracker Node - Action Server execute error: incorrect command - %d", goal->command);
+        as_->setAborted();
+      }
+
+      // never reach succeded because were are interested in keeping the feedback alive
+      as_->setSucceeded();
+    }
+    catch (std::exception &ex)
+    {
+      ROS_ERROR("Odom Tracker Node - Action Server execute error: %s", ex.what());
       as_->setAborted();
     }
-
-    // never reach succeded because were are interested in keeping the feedback alive
-    as_->setSucceeded();
   }
-  catch(std::exception& ex)
-  {
-    ROS_ERROR("Odom Tracker Node - Action Server execute error: %s", ex.what());
-    as_->setAborted();
-  }
-}
 
-/**
+  /**
 ******************************************************************************************************************
 * run()
 ******************************************************************************************************************
 */
-void run()
-{
-  ros::NodeHandle n;
-  ROS_INFO("Creating odom tracker action server");
+  void run()
+  {
+    ros::NodeHandle n;
+    ROS_INFO("Creating odom tracker action server");
 
-  as_ = std::make_shared<Server>(n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this,  _1), false);
-  ROS_INFO("Starting OdomTracker Action Server");
+    as_ = std::make_shared<Server>(n, "odom_tracker", boost::bind(&OdomTrackerActionServer::execute, this, _1), false);
+    ROS_INFO("Starting OdomTracker Action Server");
 
-  as_->start();
+    as_->start();
 
-  ros::spin();
-}
+    ros::spin();
+  }
 };
 
-int main(int argc, char**argv)
+int main(int argc, char **argv)
 {
-    ros::init(argc,argv,"odom_tracker_node");
-    OdomTrackerActionServer as;
+  ros::init(argc, argv, "odom_tracker_node");
+  OdomTrackerActionServer as;
 
-    as.run();
+  as.run();
 }

@@ -62,13 +62,13 @@ void ISmaccState::requiresComponent(SmaccComponentType *&storage)
 //-------------------------------------------------------------------------------------------------------
 
 template <typename SmaccClientType>
-void ISmaccState::requiresClient(SmaccClientType *&storage, bool verbose)
+void ISmaccState::requiresClient(SmaccClientType *&storage)
 {
     storage = nullptr;
     auto &orthogonals = this->getStateMachine().getOrthogonals();
     for (auto &ortho : orthogonals)
     {
-        ortho.second->requiresClient(storage, verbose);
+        ortho.second->requiresClient(storage);
         if (storage != nullptr)
             return;
     }

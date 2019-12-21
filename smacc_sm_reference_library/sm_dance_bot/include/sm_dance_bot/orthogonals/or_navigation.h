@@ -17,11 +17,15 @@ public:
         movebaseClient->name_ = "move_base";
         movebaseClient->initialize();
 
-        auto odomtracker = movebaseClient->createComponent<odom_tracker::OdomTracker>();
-        odomtracker->initialize("/");
-
+        // create odom tracker
+        movebaseClient->createComponent<odom_tracker::OdomTracker>("/");
+        
+        // create waypoints navigator component
         auto waypointsNavigator_ = movebaseClient->createComponent<smacc::WaypointNavigator>();
         waypointsNavigator_->configureEventSourceTypes<OrNavigation, smacc::ClMoveBaseZ>();
+
+        //odomtracker->initialize("/");
+        //this->createComponent<OrNavigation, smacc::WaypointNavigator, >(movebaseClient);
     }
 };
 } // namespace sm_dance_bot

@@ -122,9 +122,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     this->requiresClient(move_base);
 
     auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
-
-    //this->requiresComponent(waypointsNavigator);
-
+    
+    // if it is the first time and the waypoints navigator is not configured
     if (waypointsNavigator->getWaypoints().size() == 0)
     {
       std::vector<Pose2D> waypoints3d =
@@ -138,9 +137,9 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
       waypointsNavigator->setWaypoints(waypoints3d);
     }
 
-    //this->configure<OrNavigation, CbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
-
+    //move_base->getComponent<WaypointNavigator>().sendNextGoal();
     waypointsNavigator->sendNextGoal();
+   
 
     ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
 

@@ -20,13 +20,13 @@ void SmaccClientBehavior::postEvent(const EventType &ev)
 }
 
 template <typename SmaccClientType>
-void SmaccClientBehavior::requiresClient(SmaccClientType *&storage, bool verbose)
+void SmaccClientBehavior::requiresClient(SmaccClientType *&storage)
 {
-    currentOrthogonal->requiresClient(storage, verbose);
+    currentOrthogonal->requiresClient(storage);
 }
 
 template <typename SmaccComponentType>
-void SmaccClientBehavior::requiresComponent(SmaccComponentType *&storage, bool verbose)
+void SmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
 {
     if (stateMachine == nullptr)
     {
@@ -34,7 +34,7 @@ void SmaccClientBehavior::requiresComponent(SmaccComponentType *&storage, bool v
     }
     else
     {
-        stateMachine->requiresComponent(storage, verbose);
+        stateMachine->requiresComponent(storage);
     }
 }
 

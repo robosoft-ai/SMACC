@@ -21,8 +21,6 @@ public:
 
     smacc::ClMoveBaseZ *moveBaseClient_;
 
-    odom_tracker::OdomTracker *odomTracker_;
-
     CbNavigateForward(float forwardDistance)
     {
         this->forwardDistance = forwardDistance;
@@ -49,7 +47,7 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-        this->requiresComponent(odomTracker_);
+        auto odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
 
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);

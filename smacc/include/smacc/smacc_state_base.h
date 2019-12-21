@@ -42,9 +42,9 @@ public:
   }
 
   template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *&storage, bool verbose = false)
+  void requiresComponent(SmaccComponentType *&storage)
   {
-    base_type::outermost_context().requiresComponent(storage, verbose);
+    base_type::outermost_context().requiresComponent(storage);
   }
 
   virtual ISmaccStateMachine &getStateMachine()

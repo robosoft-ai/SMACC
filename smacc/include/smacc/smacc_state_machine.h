@@ -52,7 +52,7 @@ public:
     const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const;
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
+    void requiresComponent(SmaccComponentType *&storage);
 
     template <typename EventType>
     void postEvent(EventType *ev);
@@ -151,9 +151,6 @@ protected:
 
 private:
     std::recursive_mutex m_mutex_;
-
-    // components
-    std::map<std::string, smacc::ISmaccComponent *> plugins_;
 
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;

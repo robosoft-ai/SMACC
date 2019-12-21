@@ -8,6 +8,9 @@
 #include <smacc/common.h>
 namespace smacc
 {
+
+class ISmaccClient;
+
 class ISmaccComponent
 {
 public:
@@ -15,7 +18,7 @@ public:
 
     virtual ~ISmaccComponent();
 
-    virtual void initialize(ISmaccComponent* owner);
+    virtual void initialize(ISmaccClient *owner);
 
     // Assigns the owner of this resource to the given state machine parameter object
     void setStateMachine(ISmaccStateMachine *stateMachine);
@@ -33,7 +36,7 @@ protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 
-    ISmaccComponent* owner_;
+    ISmaccClient *owner_;
 
     template <typename TDerived, typename TObjectTag>
     void configureEventSourceTypes() {}

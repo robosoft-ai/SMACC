@@ -21,7 +21,7 @@ public:
 
     smacc::ClMoveBaseZ *moveBaseClient_;
 
-    odom_tracker::OdomTracker *odomTracker_;
+    odom_tracker::OdomTracker* odomTracker_;
 
     CbNavigateForward(float forwardDistance)
     {
@@ -49,7 +49,8 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-        this->requiresComponent(odomTracker_);
+
+        odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
 
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
@@ -84,14 +85,14 @@ public:
 
         ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
         ros::Duration(10).sleep();
-        this->odomTracker_->clearPath();
+        odomTracker_->clearPath();
 
         geometry_msgs::PoseStamped currentPoseMsg;
         currentPoseMsg.header.frame_id = "/odom";
         currentPoseMsg.header.stamp = ros::Time::now();
         tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
-        this->odomTracker_->setStartPoint(currentPoseMsg);
-        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+        odomTracker_->setStartPoint(currentPoseMsg);
+        odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
         moveBaseClient_->plannerSwitcher_->setForwardPlanner();
 

@@ -17,7 +17,7 @@ ISmaccComponent::ISmaccComponent()
 {
 }
 
-void ISmaccComponent::initialize(ISmaccComponent *owner)
+void ISmaccComponent::initialize(ISmaccClient *owner)
 {
     owner_ = owner;
 }

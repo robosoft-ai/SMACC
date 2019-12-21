@@ -34,7 +34,7 @@ public:
   void requiresComponent(SmaccComponentType *&storage);
 
   template <typename SmaccClientType>
-  void requiresClient(SmaccClientType *&storage, bool verbose = false);
+  void requiresClient(SmaccClientType *&storage);
 
   template <typename T>
   bool getGlobalSMData(std::string name, T &ret);

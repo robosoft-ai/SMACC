@@ -7,6 +7,7 @@
 
 #include <smacc/common.h>
 #include <smacc/component.h>
+#include <typeinfo>
 
 namespace smacc
 {
@@ -33,14 +34,15 @@ public:
     template <typename TComponent>
     TComponent *getComponent();
 
-    template <typename TComponent>
-    TComponent *createComponent();
+    template <typename SmaccComponentType, typename... TArgs>
+    SmaccComponentType *createComponent(TArgs... targs);
 
 protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 
-    std::vector<ISmaccComponent *> components_;
+    // components
+    std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
 private:
     template <typename TDerived, typename TObjectTag>

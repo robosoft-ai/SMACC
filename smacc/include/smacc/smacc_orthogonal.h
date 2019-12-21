@@ -22,10 +22,10 @@ public:
     std::shared_ptr<TClient> createClient(TArgs... args);
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
+    void requiresComponent(SmaccComponentType *&storage);
 
     template <typename SmaccClientType>
-    void requiresClient(SmaccClientType *&storage, bool verbose = false);
+    void requiresClient(SmaccClientType *&storage);
 
     inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &getClients()
     {

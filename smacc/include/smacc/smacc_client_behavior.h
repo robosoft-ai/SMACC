@@ -33,10 +33,10 @@ public:
     void postEvent(const EventType &ev);
 
     template <typename SmaccClientType>
-    void requiresClient(SmaccClientType *&storage, bool verbose = false);
+    void requiresClient(SmaccClientType *&storage);
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
+    void requiresComponent(SmaccComponentType *&storage);
 
 private:
     template <typename TDerived, typename TObjectTag>

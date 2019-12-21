@@ -76,32 +76,44 @@ void ISmaccStateMachine::createOrthogonal()
 
 //-------------------------------------------------------------------------------------------------------
 template <typename SmaccComponentType>
-void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage, bool verbose)
+void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
 {
-    ROS_INFO("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+    ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-    std::string pluginkey = demangledTypeName<SmaccComponentType>();
-    SmaccComponentType *ret;
-
-    auto it = plugins_.find(pluginkey);
-
-    if (it == plugins_.end())
+    for(Orthogonal* ortho: this->orthogonals_)
     {
-        ROS_INFO("%s smacc component is required. Creating a new instance.", pluginkey.c_str());
-
-        ret = new SmaccComponentType();
-        ret->setStateMachine(this);
-        plugins_[pluginkey] = static_cast<smacc::ISmaccComponent *>(ret);
-        ROS_INFO("%s resource is required. Done.", pluginkey.c_str());
-    }
-    else
-    {
-        ROS_INFO("%s resource is required. Found resource in cache.", pluginkey.c_str());
-        ret = dynamic_cast<SmaccComponentType *>(it->second);
+        for(auto& client: ortho->getClients())
+        {
+            storage = client->getComponent<SmaccComponentType>();
+            if(storage==nullptr)
+            {
+                return;
+            }
+        }
     }
 
-    storage = ret;
+    // std::string componentkey = demangledTypeName<SmaccComponentType>();
+    // SmaccComponentType *ret;
+
+    // auto it = components_.find(componentkey);
+
+    // if (it == components_.end())
+    // {
+    //     ROS_DEBUG("%s smacc component is required. Creating a new instance.", componentkey.c_str());
+
+    //     ret = new SmaccComponentType();
+    //     ret->setStateMachine(this);
+    //     components_[componentkey] = static_cast<smacc::ISmaccComponent *>(ret);
+    //     ROS_DEBUG("%s resource is required. Done.", componentkey.c_str());
+    // }
+    // else
+    // {
+    //     ROS_DEBUG("%s resource is required. Found resource in cache.", componentkey.c_str());
+    //     ret = dynamic_cast<SmaccComponentType *>(it->second);
+    // }
+
+    // storage = ret;
 }
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
