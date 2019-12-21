@@ -178,7 +178,7 @@ public:
         std::function<void(std_msgs::UInt16)> postEventKeyPress;
 
         template <typename TDerived, typename TObjectTag>
-        void assignToOrthogonal()
+        void configureEventSourceTypes()
         {
                 postEventKeyPress = [=](auto unicode_keychar) {
                         char character = (char)unicode_keychar.data;

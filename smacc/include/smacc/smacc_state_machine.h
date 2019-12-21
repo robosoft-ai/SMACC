@@ -52,7 +52,7 @@ public:
     const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const;
 
     template <typename SmaccComponentType>
-    void requiresComponent(SmaccComponentType *&storage, bool verbose);
+    void requiresComponent(SmaccComponentType *&storage, bool verbose = false);
 
     template <typename EventType>
     void postEvent(EventType *ev);
@@ -104,9 +104,9 @@ public:
     template <typename StateType>
     void notifyOnStateExit(StateType *state);
 
-    inline unsigned long getCurrentStateCounter()const{return this->stateSeqCounter_;}
+    inline unsigned long getCurrentStateCounter() const { return this->stateSeqCounter_; }
 
-    inline ISmaccState* getCurrentState()const{return this->currentState_;}
+    inline ISmaccState *getCurrentState() const { return this->currentState_; }
 
 protected:
     void onInitializing(std::string smshortname);

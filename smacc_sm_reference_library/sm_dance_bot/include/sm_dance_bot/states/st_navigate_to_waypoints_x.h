@@ -46,7 +46,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   {
     static_configure<OrTool, CbToolStart>();
     static_configure<OrObstaclePerception, CbLidarSensor>();
-    
+
     // example for temperature sensor
 
     //std::function<bool(EvTopicMessage<CbConditionClTemperatureSensor> *)> temperatureWarningCondition = ([](EvTopicMessage<CbConditionClTemperatureSensor> *ev) {
@@ -121,7 +121,11 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     ClMoveBaseZ *move_base;
     this->requiresClient(move_base);
 
-    if (move_base->waypointsNavigator_->getWaypoints().size() == 0)
+    auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
+
+    //this->requiresComponent(waypointsNavigator);
+
+    if (waypointsNavigator->getWaypoints().size() == 0)
     {
       std::vector<Pose2D> waypoints3d =
           {
@@ -131,14 +135,14 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
               {2.0, -8.58, 0},
               {-10.0, 14.5, 0}};
 
-      move_base->waypointsNavigator_->setWaypoints(waypoints3d);
+      waypointsNavigator->setWaypoints(waypoints3d);
     }
 
     //this->configure<OrNavigation, CbNavigateGlobalPosition>(target.x_, target.y_, target.yaw_);
 
-    move_base->waypointsNavigator_->sendNextGoal();
+    waypointsNavigator->sendNextGoal();
 
-    ROS_INFO("current iteration waypoints x: %ld", move_base->waypointsNavigator_->getCurrentWaypointIndex());
+    ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
 
     // x, y, yaw (orientation)
 
@@ -157,52 +161,52 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   // sc::result navigateState()
   // {
-    // switch (currentIteration)
-    // {
-    // case 1:
-    // {
-    //   ROS_INFO("transition to ss1");
-    //   auto ev1 = new EvWaypoint1<StNavigateToWaypointsX>();
-    //   this->postEvent(ev1);
-    // }
-    // break;
-    //   //return transit<SS1::SsRadialPattern1>();
-    // case 2:
-    // {
-    //   ROS_INFO("transition to ss2");
-    //   auto ev2 = new EvWaypoint2<StNavigateToWaypointsX>();
-    //   this->postEvent(ev2);
-    // }
-    // break;
-    //   //return transit<SS2::SsRadialPattern2>();
-    // case 3:
-    // {
-    //   ROS_INFO("transition to ss3");
-    //   auto ev3 = new EvWaypoint3<StNavigateToWaypointsX>();
-    //   this->postEvent(ev3);
-    // }
-    // break;
-    // case 4:
-    // {
-    //   ROS_INFO("transition to ss4");
-    //   auto ev4 = new EvWaypoint4<StNavigateToWaypointsX>();
-    //   this->postEvent(ev4);
-    // }
-    // break;
-    // case 5:
-    // {
-    //   ROS_INFO("transition to ss5");
-    //   auto ev5 = new EvWaypoint5<StNavigateToWaypointsX>();
-    //   this->postEvent(ev5);
-    // }
-    // break;
-    //   //return transit<SS3::SsRadialPattern3>();
-    // default:
-    //   ROS_INFO("error in transition");
-    //   break;
-    // }
+  // switch (currentIteration)
+  // {
+  // case 1:
+  // {
+  //   ROS_INFO("transition to ss1");
+  //   auto ev1 = new EvWaypoint1<StNavigateToWaypointsX>();
+  //   this->postEvent(ev1);
+  // }
+  // break;
+  //   //return transit<SS1::SsRadialPattern1>();
+  // case 2:
+  // {
+  //   ROS_INFO("transition to ss2");
+  //   auto ev2 = new EvWaypoint2<StNavigateToWaypointsX>();
+  //   this->postEvent(ev2);
+  // }
+  // break;
+  //   //return transit<SS2::SsRadialPattern2>();
+  // case 3:
+  // {
+  //   ROS_INFO("transition to ss3");
+  //   auto ev3 = new EvWaypoint3<StNavigateToWaypointsX>();
+  //   this->postEvent(ev3);
+  // }
+  // break;
+  // case 4:
+  // {
+  //   ROS_INFO("transition to ss4");
+  //   auto ev4 = new EvWaypoint4<StNavigateToWaypointsX>();
+  //   this->postEvent(ev4);
+  // }
+  // break;
+  // case 5:
+  // {
+  //   ROS_INFO("transition to ss5");
+  //   auto ev5 = new EvWaypoint5<StNavigateToWaypointsX>();
+  //   this->postEvent(ev5);
+  // }
+  // break;
+  //   //return transit<SS3::SsRadialPattern3>();
+  // default:
+  //   ROS_INFO("error in transition");
+  //   break;
+  // }
 
-    // return forward_event();
+  // return forward_event();
   // }
 
   // sc::result react(const EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation> &ev)

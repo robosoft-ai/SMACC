@@ -5,8 +5,6 @@
  ******************************************************************************************************************/
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <pluginlib/class_list_macros.h>
-#include <move_base_z_client_plugin/waypoints_navigator_component.h>
-#include <move_base_z_client_plugin/impl/move_base_z_client_plugin_impl.h>
 
 namespace smacc
 {
@@ -14,7 +12,6 @@ namespace smacc
 ClMoveBaseZ::ClMoveBaseZ()
 {
     //ROS_INFO("Smacc Move Base Action Client");
-    waypointsNavigator_ = std::make_shared<smacc::WaypointNavigator>();
 }
 
 std::string ClMoveBaseZ::getName() const

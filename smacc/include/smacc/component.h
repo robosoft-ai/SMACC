@@ -15,10 +15,10 @@ public:
 
     virtual ~ISmaccComponent();
 
-    virtual void initialize();
+    virtual void initialize(ISmaccComponent* owner);
 
-    // Assigns the owner of this resource to the given state machine parameter object 
-    void setStateMachine(ISmaccStateMachine* stateMachine);
+    // Assigns the owner of this resource to the given state machine parameter object
+    void setStateMachine(ISmaccStateMachine *stateMachine);
 
     // Returns a custom identifier defined by the specific plugin implementation
     virtual std::string getName() const;
@@ -26,9 +26,18 @@ public:
     template <typename EventType>
     void postEvent(const EventType &ev);
 
+    template <typename EventType>
+    void postEvent();
+
 protected:
     // A reference to the state machine object that owns this resource
-    ISmaccStateMachine* stateMachine_;
-    
+    ISmaccStateMachine *stateMachine_;
+
+    ISmaccComponent* owner_;
+
+    template <typename TDerived, typename TObjectTag>
+    void configureEventSourceTypes() {}
+
+    friend class Orthogonal;
 };
-}
+} // namespace smacc

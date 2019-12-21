@@ -14,7 +14,7 @@ std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
     auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
-    client->template assignToOrthogonal<TClient, TObjectTag>();
+    client->template configureEventSourceTypes<TClient, TObjectTag>();
     clients_.push_back(client);
     return client;
 }

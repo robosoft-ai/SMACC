@@ -35,9 +35,9 @@ public:
   std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
 
   template <typename TDerived, typename TObjectTag>
-  void assignToOrthogonal()
+  void configureEventSourceTypes()
   {
-    SmaccSubscriberClient<MessageType>::template assignToOrthogonal<TDerived, TObjectTag>();
+    SmaccSubscriberClient<MessageType>::template configureEventSourceTypes<TDerived, TObjectTag>();
 
     this->postTimeoutMessageEvent = [=](auto &timerdata) {
       auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();

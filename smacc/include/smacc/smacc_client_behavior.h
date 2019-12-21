@@ -40,7 +40,7 @@ public:
 
 private:
     template <typename TDerived, typename TObjectTag>
-    void assignToOrthogonal();
+    void configureEventSourceTypes();
 
     friend class ISmaccState;
 };

@@ -31,7 +31,7 @@ public:
   std::function<void()> deferedEventPropagation;
 
   template <typename TDerived, typename TObjectTag>
-  void assignToOrthogonal()
+  void configureEventSourceTypes()
   {
     deferedEventPropagation = [=]() {
       // just propagate the client events from this client behavior source.

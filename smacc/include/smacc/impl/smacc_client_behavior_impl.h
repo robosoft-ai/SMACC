@@ -39,6 +39,6 @@ void SmaccClientBehavior::requiresComponent(SmaccComponentType *&storage, bool v
 }
 
 template <typename TDerived, typename TObjectTag>
-void SmaccClientBehavior::assignToOrthogonal() {}
+void SmaccClientBehavior::configureEventSourceTypes() {}
 
 } // namespace smacc

@@ -3,7 +3,7 @@
 
 #include <smacc/smacc.h>
 #include <geometry_msgs/Pose.h>
-#include <move_base_z_client_plugin/waypoints_event_dispatcher.h>
+#include <waypoints_navigator/waypoints_event_dispatcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace smacc
@@ -33,8 +33,10 @@ public:
 
   WaypointNavigator();
 
-  template <typename TDerived, typename TObjectTag>
-  void assignToOrthogonal(ClMoveBaseZ *client);
+  virtual void initialize(ISmaccComponent *owner) override
+  {
+    client_ = dynamic_cast<ClMoveBaseZ*>(owner);
+  }
 
   void insertWaypoint(int index, geometry_msgs::Pose &newpose);
 
@@ -51,6 +53,12 @@ public:
   const std::vector<geometry_msgs::Pose> &getWaypoints() const;
 
   long getCurrentWaypointIndex() const;
+
+  template <typename TDerived, typename TObjectTag>
+  void configureEventSourceTypes()
+  {
+    waypointsEventDispatcher.initialize<TDerived, TObjectTag>(client_);
+  }
 
 private:
   void onGoalReached(ClMoveBaseZ::ResultConstPtr &res);

@@ -3,9 +3,6 @@ project(move_base_z_client_plugin)
 
 find_package(catkin REQUIRED smacc pluginlib planner_switcher)
 
-## System dependencies are found with CMake's conventions
-find_package(yaml-cpp REQUIRED)
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -50,19 +47,15 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
- ${YAML_CPP_INCLUDE_DIR}
 )
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
    src/move_base_z_client_plugin.cpp
-   src/waypoints_event_dispatcher.cpp
-   src/waypoints_navigator_component.cpp
  )
 
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
-   ${YAML_CPP_LIBRARIES}
 )
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

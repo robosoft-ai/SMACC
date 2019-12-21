@@ -26,7 +26,7 @@ public:
         std::function<void(char)> postEventKeyPress;
 
         template <typename TDerived, typename TObjectTag>
-        void assignToOrthogonal()
+        void configureEventSourceTypes()
         {
                 postEventKeyPress = [=](char character) {
                         if (character == 'a')

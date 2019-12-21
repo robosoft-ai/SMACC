@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sm_dance_bot)
+project(waypoints_navigator)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,10 +7,11 @@ project(sm_dance_bot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker planner_switcher waypoints_navigator smacc_interface_components smacc_action_client_generic tf all_events_go event_countdown ros_timer_client conditional)
+find_package(catkin REQUIRED roscpp move_base_z_client_plugin)
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+## System dependencies are found with CMake's conventions
+find_package(yaml-cpp REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -100,7 +101,7 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES sm_dance_bot
+  LIBRARIES waypoints_navigator
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -108,7 +109,6 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-
 set(CMAKE_CXX_STANDARD 14)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
@@ -117,27 +117,45 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
+ ${YAML_CPP_INCLUDE_DIR}
 )
 
-add_executable(${PROJECT_NAME} src/sm_dance_bot.cpp)
+## Declare a C++ library
+ add_library(${PROJECT_NAME}
+   src/waypoints_event_dispatcher.cpp
+   src/waypoints_navigator.cpp
+ )
 
-## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
- )
-
- add_executable(temperature_sensor_node test/temperature_sensor_node/src/temperature_sensor_node.cpp)
- target_link_libraries(temperature_sensor_node
-   ${catkin_LIBRARIES}
- )
-
- add_executable(tool_action_server_node test/tool_action_server/src/tool_action_server_node.cpp)
-
- target_link_libraries(
-   tool_action_server_node
-   ${catkin_LIBRARIES}
+   ${YAML_CPP_LIBRARIES}
 )
 
+
+## Add cmake target dependencies of the library
+## as an example, code may need to be generated before libraries
+## either from message generation or dynamic reconfigure
+# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+## Declare a C++ executable
+## With catkin_make all packages are built within a single CMake context
+## The recommended prefix ensures that target names across packages don't collide
+# add_executable(${PROJECT_NAME}_node src/waypoints_navigator_node.cpp)
+
+## Rename C++ executable without prefix
+## The above recommended prefix causes long target names, the following renames the
+## target back to the shorter version for ease of user use
+## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
+# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+
+## Add cmake target dependencies of the executable
+## same as for the library above
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+
+## Specify libraries to link a library or executable target against
+# target_link_libraries(${PROJECT_NAME}_node
+#   ${catkin_LIBRARIES}
+# )
 
 #############
 ## Install ##
@@ -148,26 +166,16 @@ target_link_libraries(${PROJECT_NAME}
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-install(PROGRAMS
-   test/service_node_3/src/service_node_3.py
-   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+# install(PROGRAMS
+#   scripts/my_python_script
+#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+# )
 
-## Mark executables for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS 
-  ${PROJECT_NAME}
-   temperature_sensor_node
-   tool_action_server_node
-   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-## Mark libraries for installation
-## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
- install(TARGETS ${PROJECT_NAME} temperature_sensor_node
+## Mark executables and/or libraries for installation
+install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
 ## Mark cpp header files for installation
@@ -177,33 +185,19 @@ install(TARGETS
    PATTERN ".svn" EXCLUDE
  )
 
-install(FILES
-    launch/sm_dance_bot.launch
-    launch/ridgeback_simulation.launch
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
-)
-
-install(FILES
-    config/backward_local_planner.yaml
-    config/forward_local_planner.yaml
-    config/navigation.rviz
-    config/radial_motion_sm_config.yaml
-    config/rosconsole.config
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
-)
-
-install(FILES
-    urdf/empty.xacro
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
-)
-
+## Mark other files for installation (e.g. launch and bag files, etc.)
+# install(FILES
+#   # myfile1
+#   # myfile2
+#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+# )
 
 #############
 ## Testing ##
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_dance_bot.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_waypoints_navigator.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

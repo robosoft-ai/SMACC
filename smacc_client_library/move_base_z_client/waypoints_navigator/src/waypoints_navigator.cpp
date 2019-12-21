@@ -1,5 +1,5 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <move_base_z_client_plugin/waypoints_navigator_component.h>
+#include <waypoints_navigator/waypoints_navigator.h>
 
 #include <fstream>
 #include <ros/ros.h>

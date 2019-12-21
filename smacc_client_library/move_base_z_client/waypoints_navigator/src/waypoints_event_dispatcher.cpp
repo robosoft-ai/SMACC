@@ -1,4 +1,4 @@
-#include <move_base_z_client_plugin/waypoints_event_dispatcher.h>
+#include <waypoints_navigator/waypoints_event_dispatcher.h>
 
 namespace smacc
 {

@@ -61,7 +61,7 @@ public:
   std::function<void(const MessageType &)> postInitialMessageEvent;
 
   template <typename TDerived, typename TObjectTag>
-  void assignToOrthogonal()
+  void configureEventSourceTypes()
   {
     this->postMessageEvent = [=](auto msg) {
       auto event = new EvTopicMessage<TDerived, TObjectTag>();

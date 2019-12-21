@@ -12,17 +12,17 @@ ISmaccComponent::~ISmaccComponent()
 {
 }
 
-
 ISmaccComponent::ISmaccComponent()
+    : owner_(nullptr)
 {
 }
 
-void ISmaccComponent::initialize()
+void ISmaccComponent::initialize(ISmaccComponent *owner)
 {
-
+    owner_ = owner;
 }
 
-void ISmaccComponent::setStateMachine(ISmaccStateMachine* stateMachine)
+void ISmaccComponent::setStateMachine(ISmaccStateMachine *stateMachine)
 {
     stateMachine_ = stateMachine;
 }
@@ -32,4 +32,4 @@ std::string ISmaccComponent::getName() const
     std::string keyname = demangleSymbol(typeid(*this).name());
     return keyname;
 }
-}
+} // namespace smacc
