@@ -1550,7 +1550,7 @@ struct EvWaypoint256 : sc::event<EvWaypoint256<TSource, TObjectTag>>
 
 class ClMoveBaseZ;
 
-#define WAYPOINTS_EVENTCOUNT 256
+#define WAYPOINTS_EVENTCOUNT 257
 
 class WaypointEventDispatcher
 {

@@ -1,6 +1,7 @@
 #pragma once
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_client.h>
+#include <cassert>
 
 namespace smacc
 {
@@ -27,10 +28,18 @@ class EventFactory
 template <typename TObjectTag, typename TClient, typename... TArgs>
 std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
 {
+    static_assert(std::is_base_of<Orthogonal, TObjectTag>::value, "The object Tag must be the orthogonal type where the client was created");
+    if(typeid(*this) != typeid(TObjectTag))
+    {
+        ROS_ERROR_STREAM("Error creating client. The object Tag must be the type of the orthogonal where the client was created:" << demangleType(typeid(*this)) << ". The object creation was skipped and a nullptr was returned");
+        return nullptr;
+    }
+    
     ROS_INFO("[%s] creates a client of type '%s' and object tag '%s'",
              demangleType(typeid(*this)).c_str(),
              demangledTypeName<TClient>().c_str(),
              demangledTypeName<TObjectTag>().c_str());
+
     auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
@@ -63,8 +72,6 @@ void Orthogonal::requiresClient(SmaccClientType *&storage)
         if (storage != nullptr)
             return;
     }
-
-    ROS_ERROR("[Client requirement] Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault in some posterior code.", demangleSymbol<SmaccClientType>().c_str());
 }
 
 }; // namespace smacc

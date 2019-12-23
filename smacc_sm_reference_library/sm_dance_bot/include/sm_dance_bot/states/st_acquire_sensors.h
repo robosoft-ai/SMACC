@@ -46,10 +46,5 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       // luall->enablesOn<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionClTemperatureSensor, OrClTemperatureSensor>>();
       // luall->throwsEvent<EvAll<LuAllEventsGo, Unit1>>();
    }
-
-   void onInitialize()
-   {
-      
-   }
 };
 } // namespace sm_dance_bot

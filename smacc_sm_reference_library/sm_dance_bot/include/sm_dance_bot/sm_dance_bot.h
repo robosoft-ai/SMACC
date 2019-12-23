@@ -121,9 +121,6 @@ struct SmDanceBot
         this->setGlobalSMData("counter_1", counter_1);
         this->setGlobalSMData("rt_ready_flag", rt_ready_flag);
 
-        //this->createOrthogonal<MoveBaseActionClient, Robot1>();
-        //this->createOrthogonal<MoveBaseActionClient, Robot2>();
-        
         this->createOrthogonal<OrNavigation>();
         this->createOrthogonal<OrObstaclePerception>();
         this->createOrthogonal<OrTool>();

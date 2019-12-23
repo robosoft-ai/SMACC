@@ -24,11 +24,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   };
 
   typedef mpl::list<
-      // Expected event
-      // sc::custom_reaction<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>>,
-
-      //smacc::transition<EvWaypoint1, sm_dance_bot::SS1::SsRadialPattern1>,
-
+      
       smacc::transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS1::SsRadialPattern1, TRANSITION_1>,
       smacc::transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS2::SsRadialPattern2, TRANSITION_2>,
       smacc::transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, sm_dance_bot::SS3::SsRadialPattern3, TRANSITION_3>,
@@ -118,104 +114,26 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
     //ROS_INFO("current iteration waypoints x: %d", currentIteration);
 
-    ClMoveBaseZ *move_base;
+    ClMoveBaseZ* move_base;
     this->requiresClient(move_base);
 
     auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
-    
+
     // if it is the first time and the waypoints navigator is not configured
     if (waypointsNavigator->getWaypoints().size() == 0)
     {
-      std::vector<Pose2D> waypoints3d =
-          {
-              {3.0, -2.0, 0},
-              {-5.5, 3.0, 0},
-              {-11.0, -5.0, 0},
-              {2.0, -8.58, 0},
-              {-10.0, 14.5, 0}};
-
-      waypointsNavigator->setWaypoints(waypoints3d);
+      std::string planfilepath;
+      ros::NodeHandle nh("~");
+      if (nh.getParam("/sm_dance_bot/waypoints_plan", planfilepath))
+      {
+        waypointsNavigator->loadWayPointsFromFile(planfilepath);
+      }
     }
 
     //move_base->getComponent<WaypointNavigator>().sendNextGoal();
     waypointsNavigator->sendNextGoal();
-   
-
     ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
-
-    // x, y, yaw (orientation)
-
-    // if (currentIteration > waypoints.size())
-    // {
-    //   ROS_FATAL("[WaypointsX] Out of range of waypoint list. Cannot go to waypoint %d.", this->currentIteration);
-    //   this->throwFinishEvent();
-    // }
-    // else
-    // {
-    //   auto &target = waypoints[currentIteration];
-
-    //   ROS_INFO("[NavigateWaypointsX] navigating to %lf %lf yaw: %lf", target.x_, target.y_, target.yaw_);
-    // }
   }
-
-  // sc::result navigateState()
-  // {
-  // switch (currentIteration)
-  // {
-  // case 1:
-  // {
-  //   ROS_INFO("transition to ss1");
-  //   auto ev1 = new EvWaypoint1<StNavigateToWaypointsX>();
-  //   this->postEvent(ev1);
-  // }
-  // break;
-  //   //return transit<SS1::SsRadialPattern1>();
-  // case 2:
-  // {
-  //   ROS_INFO("transition to ss2");
-  //   auto ev2 = new EvWaypoint2<StNavigateToWaypointsX>();
-  //   this->postEvent(ev2);
-  // }
-  // break;
-  //   //return transit<SS2::SsRadialPattern2>();
-  // case 3:
-  // {
-  //   ROS_INFO("transition to ss3");
-  //   auto ev3 = new EvWaypoint3<StNavigateToWaypointsX>();
-  //   this->postEvent(ev3);
-  // }
-  // break;
-  // case 4:
-  // {
-  //   ROS_INFO("transition to ss4");
-  //   auto ev4 = new EvWaypoint4<StNavigateToWaypointsX>();
-  //   this->postEvent(ev4);
-  // }
-  // break;
-  // case 5:
-  // {
-  //   ROS_INFO("transition to ss5");
-  //   auto ev5 = new EvWaypoint5<StNavigateToWaypointsX>();
-  //   this->postEvent(ev5);
-  // }
-  // break;
-  //   //return transit<SS3::SsRadialPattern3>();
-  // default:
-  //   ROS_INFO("error in transition");
-  //   break;
-  // }
-
-  // return forward_event();
-  // }
-
-  // sc::result react(const EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation> &ev)
-  // {
-  //   ROS_INFO("Waypoints X reaction");
-
-  //   currentIteration++;
-  //   this->setGlobalSMData("navigation_x_iteration", currentIteration);
-  //   return navigateState();
-  // }
 };
 
 } // namespace sm_dance_bot

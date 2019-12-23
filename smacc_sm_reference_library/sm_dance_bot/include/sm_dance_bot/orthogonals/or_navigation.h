@@ -22,10 +22,7 @@ public:
         
         // create waypoints navigator component
         auto waypointsNavigator_ = movebaseClient->createComponent<smacc::WaypointNavigator>();
-        waypointsNavigator_->configureEventSourceTypes<OrNavigation, smacc::ClMoveBaseZ>();
-
-        //odomtracker->initialize("/");
-        //this->createComponent<OrNavigation, smacc::WaypointNavigator, >(movebaseClient);
+        waypointsNavigator_->configureEventSourceTypes<smacc::ClMoveBaseZ, OrNavigation>();
     }
 };
 } // namespace sm_dance_bot
