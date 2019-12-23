@@ -25,7 +25,7 @@ public:
 
         std::function<void(char)> postEventKeyPress;
 
-        template <typename TDerived, typename TObjectTag>
+        template <typename TObjectTag, typename TDerived>
         void configureEventSourceTypes()
         {
                 postEventKeyPress = [=](char character) {

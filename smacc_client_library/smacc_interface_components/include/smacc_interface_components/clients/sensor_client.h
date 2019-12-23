@@ -34,10 +34,10 @@ public:
 
   std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
 
-  template <typename TDerived, typename TObjectTag>
+  template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
   {
-    SmaccSubscriberClient<MessageType>::template configureEventSourceTypes<TDerived, TObjectTag>();
+    SmaccSubscriberClient<MessageType>::template configureEventSourceTypes<TObjectTag, TDerived>();
 
     this->postTimeoutMessageEvent = [=](auto &timerdata) {
       auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();

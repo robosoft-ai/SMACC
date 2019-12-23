@@ -45,7 +45,7 @@ protected:
     std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
 private:
-    template <typename TDerived, typename TObjectTag>
+    template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes() {}
 
     friend class Orthogonal;

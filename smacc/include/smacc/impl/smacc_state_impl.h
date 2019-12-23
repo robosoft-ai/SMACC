@@ -44,7 +44,7 @@ void ISmaccState::configure(Args &&... args)
     if (this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
     {
         auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
-        clientBehavior->template configureEventSourceTypes<TBehavior, TOrthogonal>();
+        clientBehavior->template configureEventSourceTypes<TOrthogonal, TBehavior>();
         orthogonal->addClientBehavior(clientBehavior);
     }
     else

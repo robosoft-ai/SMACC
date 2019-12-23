@@ -184,8 +184,8 @@ install(FILES
 )
 
 install(FILES
-    config/backward_local_planner.yaml
-    config/forward_local_planner.yaml
+    config/move_base_client/backward_local_planner.yaml
+    config/move_base_client/forward_local_planner.yaml
     config/navigation.rviz
     config/radial_motion_sm_config.yaml
     config/rosconsole.config

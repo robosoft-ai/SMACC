@@ -38,7 +38,7 @@ void SmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
     }
 }
 
-template <typename TDerived, typename TObjectTag>
+template <typename TObjectTag, typename TDerived>
 void SmaccClientBehavior::configureEventSourceTypes() {}
 
 } // namespace smacc

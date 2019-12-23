@@ -38,7 +38,7 @@ protected:
 
     ISmaccClient *owner_;
 
-    template <typename TDerived, typename TObjectTag>
+    template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes() {}
 
     friend class Orthogonal;

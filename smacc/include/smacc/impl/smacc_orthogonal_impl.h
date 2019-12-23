@@ -13,7 +13,7 @@ class IEventFactory
     }
 };
 
-template <typename TDerived, typename TObjectTag>
+template <typename TObjectTag, typename TDerived>
 class EventFactory
 {
     std::function<void()> postEvent;
@@ -43,7 +43,7 @@ std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
     auto client = std::make_shared<TClient>(args...);
     client->setStateMachine(stateMachine_);
 
-    client->template configureEventSourceTypes<TClient, TObjectTag>();
+    client->template configureEventSourceTypes<TObjectTag, TClient>();
     EventFactory<TClient, TObjectTag> eventfactory;
 
     clients_.push_back(client);

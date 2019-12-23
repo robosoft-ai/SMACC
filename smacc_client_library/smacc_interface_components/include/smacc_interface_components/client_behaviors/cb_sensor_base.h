@@ -30,7 +30,7 @@ public:
 
   std::function<void()> deferedEventPropagation;
 
-  template <typename TDerived, typename TObjectTag>
+  template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
   {
     deferedEventPropagation = [=]() {

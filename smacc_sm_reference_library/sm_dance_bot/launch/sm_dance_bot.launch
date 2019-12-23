@@ -30,9 +30,9 @@
     <!--  setup smacc planners configuration  -->
     <group ns="move_base">
         <!-- backward local planner -->  
-        <rosparam file="$(find sm_dance_bot)/config/backward_local_planner.yaml" command="load" />
+        <rosparam file="$(find sm_dance_bot)/config/move_base_client/backward_local_planner.yaml" command="load" />
         <!-- forward local planner -->  
-        <rosparam file="$(find sm_dance_bot)/config/forward_local_planner.yaml" command="load" />
+        <rosparam file="$(find sm_dance_bot)/config/move_base_client/forward_local_planner.yaml" command="load" />
     </group>
 
     <!-- load state machine parameters -->

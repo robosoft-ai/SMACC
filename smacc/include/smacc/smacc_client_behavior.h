@@ -39,7 +39,7 @@ public:
     void requiresComponent(SmaccComponentType *&storage);
 
 private:
-    template <typename TDerived, typename TObjectTag>
+    template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes();
 
     friend class ISmaccState;

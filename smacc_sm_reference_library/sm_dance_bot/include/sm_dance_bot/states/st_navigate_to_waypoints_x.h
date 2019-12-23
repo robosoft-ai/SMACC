@@ -50,14 +50,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     this->requiresClient(move_base);
 
     auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
-
     loadWaypointsFirstTime(waypointsNavigator);
 
     waypointsNavigator->sendNextGoal();
     ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
   }
 
-  void loadWaypointsFirstTime(WaypointNavigator *navigator)
+  void loadWaypointsFirstTime(WaypointNavigator *waypointsNavigator)
   {
     // if it is the first time and the waypoints navigator is not configured
     if (waypointsNavigator->getWaypoints().size() == 0)

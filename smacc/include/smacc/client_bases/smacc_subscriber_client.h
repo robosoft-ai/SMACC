@@ -60,7 +60,7 @@ public:
   std::function<void(const MessageType &)> postMessageEvent;
   std::function<void(const MessageType &)> postInitialMessageEvent;
 
-  template <typename TDerived, typename TObjectTag>
+  template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
   {
     this->postMessageEvent = [=](auto msg) {

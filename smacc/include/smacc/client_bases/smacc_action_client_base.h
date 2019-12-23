@@ -81,7 +81,7 @@ public:
         this->postEvent(ev);
     }
 
-    template <typename TDerived, typename TObjectTag>
+    template < typename TObjectTag, typename TDerived>
     void configureEventSourceTypes()
     {
         // we create here all the event factory functions capturing the TObjectTag

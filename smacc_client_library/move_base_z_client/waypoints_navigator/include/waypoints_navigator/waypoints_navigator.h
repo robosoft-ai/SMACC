@@ -54,7 +54,7 @@ public:
 
   long getCurrentWaypointIndex() const;
 
-  template <typename TDerived, typename TObjectTag>
+  template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
   {
     waypointsEventDispatcher.initialize<TDerived, TObjectTag>(client_);
