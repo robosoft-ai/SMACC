@@ -11,7 +11,17 @@ public:
   virtual void onEntry() override;
   virtual void onExit() override;
 
+  template <typename TObjectTag, typename TDerived>
+  void configureEventSourceTypes()
+  {
+    this->postTimerEvent_ = [=]() {
+      this->template postEvent<EvTimer<TDerived, TObjectTag>>();
+    };
+  }
+
 private:
   ClRosTimer *timerClient_;
+  std::function<void()> postTimerEvent_;
+  boost::signals2::scoped_connection c_;
 };
 } // namespace ros_timer_client

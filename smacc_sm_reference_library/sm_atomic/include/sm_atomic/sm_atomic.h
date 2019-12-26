@@ -1,13 +1,14 @@
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <ros_timer_client/cl_ros_timer.h>
 
 // ORTHOGONALS
-#include <sm_atomic/orthogonals/or_navigation.h>
+#include <sm_atomic/orthogonals/or_timer.h>
 
 //CLIENT BEHAVIORS
-#include <sm_atomic/client_behaviors/cb_state_1.h>
+#include <ros_timer_client/client_behaviors/cb_timer_repeat_countdown.h>
+#include <ros_timer_client/client_behaviors/cb_timer_single_countdown.h>
 
 using namespace boost;
 
@@ -27,7 +28,7 @@ struct SmAtomicStateMachine
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<OrNavigation>();
+        this->createOrthogonal<OrTimer>();
     }
 };
 

@@ -81,12 +81,12 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
     ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-    for(Orthogonal* ortho: this->orthogonals_)
+    for (Orthogonal *ortho : this->orthogonals_)
     {
-        for(auto& client: ortho->getClients())
+        for (auto &client : ortho->getClients())
         {
             storage = client->getComponent<SmaccComponentType>();
-            if(storage==nullptr)
+            if (storage == nullptr)
             {
                 return;
             }
@@ -125,17 +125,21 @@ void ISmaccStateMachine::postEvent(EventType *ev)
     // we reach this place. Now, we propagate the events to all the state logic units to generate
     // some more events
 
+    ROS_DEBUG_STREAM("[PostEvent entry point] " << demangleSymbol<EventType>());
     auto currentstate = currentState_;
     if (currentstate != nullptr)
     {
-        ROS_DEBUG_STREAM("EVENT: " << demangleSymbol<EventType>());
-        for (auto &lu : currentstate->getLogicUnits())
-        {
-            lu->notifyEvent(ev);
-        }
+        propagateEventToLogicUnits(currentstate, ev);
     }
 
     this->signalDetector_->postEvent(ev);
+}
+
+template <typename EventType>
+void ISmaccStateMachine::postEvent()
+{
+    auto *ev = new EventType();
+    this->postEvent(ev);
 }
 
 template <typename T>
@@ -219,9 +223,8 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
 
     boost::signals2::connection connection = signal.connect([=](auto msg) { return (object->*callback)(msg); });
 
-    if(std::is_base_of<ISmaccComponent, TSmaccObjectType>::value)
+    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value)
     {
-
     }
     else // state life-time objects
     {
@@ -303,5 +306,22 @@ void ISmaccStateMachine::notifyOnStateExit(StateType *state)
     this->stateCallbackConnections.clear();
 
     currentState_ = nullptr;
+}
+
+//-------------------------------------------------------------------------------------------------------
+template <typename EventType>
+void ISmaccStateMachine::propagateEventToLogicUnits(ISmaccState *st, EventType *ev)
+{
+    ROS_DEBUG("PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(), st->getClassName().c_str());
+    for (auto &lu : st->getLogicUnits())
+    {
+        lu->notifyEvent(ev);
+    }
+
+    auto *pst = st->getParentState();
+    if (pst != nullptr)
+    {
+        propagateEventToLogicUnits(pst, ev);
+    }
 }
 } // namespace smacc

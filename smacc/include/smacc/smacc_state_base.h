@@ -18,6 +18,8 @@ class SmaccState : public sc::simple_state<
 public:
   typedef Context TContext;
 
+  bool finishStateThrown;
+
   //////////////////////////////////////////////////////////////////////////
   struct my_context
   {
@@ -28,44 +30,27 @@ public:
     typename base_type::context_ptr_type pContext_;
   };
 
-  template <typename T>
-  bool getGlobalSMData(std::string name, T &ret)
-  {
-    return base_type::outermost_context().getGlobalSMData(name, ret);
-  }
-
-  // Store globally in this state machine. (By value parameter )
-  template <typename T>
-  void setGlobalSMData(std::string name, T value)
-  {
-    base_type::outermost_context().setGlobalSMData(name, value);
-  }
-
-  template <typename SmaccComponentType>
-  void requiresComponent(SmaccComponentType *&storage)
-  {
-    base_type::outermost_context().requiresComponent(storage);
-  }
-
-  virtual ISmaccStateMachine &getStateMachine()
-  {
-    return base_type::outermost_context();
-  }
-
-  bool finishStateThrown;
   SmaccState() = delete;
+
+  virtual ISmaccState *getParentState()
+  {
+    //auto* ctx = dynamic_cast<ISmaccState*>(this->template context<Context *>());
+
+    return parentState_;
+  }
 
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
-    finishStateThrown = false;
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
     this->set_context(ctx.pContext_);
 
-    this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
+    // storing a reference to the parent state
+    auto &ps = this->template context<Context>();
+    parentState_ = dynamic_cast<ISmaccState *>(&ps);
+    finishStateThrown = false;
 
-    //template< class Target >
-    //Target state_cast() const;
+    this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
 
@@ -85,16 +70,16 @@ public:
 
     // before dynamic onInitialize, we execute the onDefinition behavior configurations
     {
-      ROS_INFO("-- STATIC STATE DESCRIPTION --");
+      ROS_DEBUG("-- STATIC STATE DESCRIPTION --");
 
-      // for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
-      // {
-      //   ROS_INFO_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
-      //   for (auto &bhinfo : stateBehaviorsVector.second)
-      //   {
-      //     ROS_INFO_STREAM(" - client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
-      //   }
-      // }
+      for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
+      {
+        ROS_DEBUG_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
+        for (auto &bhinfo : stateBehaviorsVector.second)
+        {
+          ROS_DEBUG_STREAM(" - client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+        }
+      }
 
       const std::type_info *tindex = &(typeid(MostDerived));
       auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
@@ -224,6 +209,30 @@ public:
       SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<StateBehaviorInfoEntry>();
 
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
+  }
+
+  template <typename T>
+  bool getGlobalSMData(std::string name, T &ret)
+  {
+    return base_type::outermost_context().getGlobalSMData(name, ret);
+  }
+
+  // Store globally in this state machine. (By value parameter )
+  template <typename T>
+  void setGlobalSMData(std::string name, T value)
+  {
+    base_type::outermost_context().setGlobalSMData(name, value);
+  }
+
+  template <typename SmaccComponentType>
+  void requiresComponent(SmaccComponentType *&storage)
+  {
+    base_type::outermost_context().requiresComponent(storage);
+  }
+
+  virtual ISmaccStateMachine &getStateMachine()
+  {
+    return base_type::outermost_context();
   }
 
   template <typename TTransition>

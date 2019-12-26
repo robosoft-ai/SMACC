@@ -57,6 +57,9 @@ public:
     template <typename EventType>
     void postEvent(EventType *ev);
 
+    template <typename EventType>
+    void postEvent();
+
     void getTransitionLogHistory();
 
     template <typename T>
@@ -165,6 +168,9 @@ private:
     unsigned long stateSeqCounter_;
 
     friend class ISmaccState;
+
+    template <typename EventType>
+    void propagateEventToLogicUnits(ISmaccState *st, EventType *ev);
 
 public:
     std::shared_ptr<SmaccStateMachineInfo> info_;

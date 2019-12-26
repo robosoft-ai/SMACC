@@ -35,8 +35,11 @@ public:
 
 //forward declaration for the superstate
 using SS = SS1::Ss1;
+
 #include <sm_three_some/superstate_routines/ss_superstate_1/ssr_1.h>
 #include <sm_three_some/superstate_routines/ss_superstate_1/ssr_2.h>
 #include <sm_three_some/superstate_routines/ss_superstate_1/ssr_3.h>
+
 } // namespace SS1
 } // namespace sm_three_some
+

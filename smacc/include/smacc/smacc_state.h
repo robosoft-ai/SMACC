@@ -11,19 +11,9 @@ namespace smacc
 class ISmaccState
 {
 public:
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool getParam(std::string param_name, T &param_storage);
-
-  // Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  void setParam(std::string param_name, T param_val);
-
-  //Delegates to ROS param access with the current NodeHandle
-  template <typename T>
-  bool param(std::string param_name, T &param_val, const T &default_val) const;
-
   virtual ISmaccStateMachine &getStateMachine() = 0;
+
+  inline ISmaccState *getParentState() { return parentState_; };
 
   virtual std::string getClassName();
 
@@ -58,9 +48,28 @@ public:
 
   inline std::vector<std::shared_ptr<LogicUnit>> &getLogicUnits() { return logicUnits_; }
 
-  ros::NodeHandle nh;
+  // Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  bool getParam(std::string param_name, T &param_storage);
+
+  // Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  void setParam(std::string param_name, T param_val);
+
+  //Delegates to ROS param access with the current NodeHandle
+  template <typename T>
+  bool param(std::string param_name, T &param_val, const T &default_val) const;
+
+  inline ros::NodeHandle &getROSNode()
+  {
+    return nh;
+  }
 
 protected:
   std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
+
+  ros::NodeHandle nh;
+
+  ISmaccState *parentState_;
 };
 } // namespace smacc

@@ -29,9 +29,9 @@ typedef std::allocator<void> SmaccAllocator;
 
 template <class T>
 auto optionalNodeHandle(boost::intrusive_ptr<T> &obj)
-    -> decltype(obj->nh)
+    -> ros::NodeHandle
 {
-    return obj->nh;
+    return obj->getROSNode();
 }
 
 template <class T>

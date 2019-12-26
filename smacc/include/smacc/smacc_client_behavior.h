@@ -32,6 +32,9 @@ public:
     template <typename EventType>
     void postEvent(const EventType &ev);
 
+    template <typename EventType>
+    void postEvent();
+
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage);
 

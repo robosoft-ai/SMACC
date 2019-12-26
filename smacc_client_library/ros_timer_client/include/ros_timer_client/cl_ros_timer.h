@@ -6,8 +6,8 @@
 
 namespace ros_timer_client
 {
-template <typename TSource>
-struct EvTimer : sc::event<EvTimer<TSource>>
+template <typename TSource, typename TObjectTag>
+struct EvTimer : sc::event<EvTimer<TSource, TObjectTag>>
 {
     /*
     ClRosTimer *sender;
@@ -24,14 +24,32 @@ struct EvTimer : sc::event<EvTimer<TSource>>
 class ClRosTimer : public smacc::ISmaccClient
 {
 public:
-    boost::signals2::signal<void(EvTimer<ClRosTimer> *)> onTimerTick;
-    boost::signals2::scoped_connection c_;
+    template <typename T>
+    boost::signals2::connection onTimerTick(void (T::*callback)(), T *object)
+    {
+        return stateMachine_->createSignalConnection(onTimerTick_, callback, object);
+    }
+
+    template <typename TFunc>
+    boost::signals2::connection onTimerTick(TFunc callback)
+    {
+        std::function<void()> callback1 = callback;
+        return stateMachine_->createSignalConnection(onTimerTick_, callback1);
+    }
 
     ClRosTimer(ros::Duration duration, bool oneshot = false);
 
     virtual ~ClRosTimer();
 
     virtual void initialize();
+
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes()
+    {
+        this->postTimerEvent_ = [=]() {
+            this->postEvent<EvTimer<ClRosTimer, TObjectTag>>();
+        };
+    }
 
 protected:
     ros::NodeHandle nh_;
@@ -41,5 +59,7 @@ protected:
     bool oneshot;
 
     void timerCallback(const ros::TimerEvent &timedata);
+    std::function<void()> postTimerEvent_;
+    smacc::SmaccSignal<void()> onTimerTick_;
 };
 } // namespace ros_timer_client

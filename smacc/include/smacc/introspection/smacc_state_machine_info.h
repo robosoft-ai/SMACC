@@ -158,7 +158,7 @@ void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<Sma
     {
         transitionTag = demangleSymbol<Tag>();
         transitionType = getTransitionType<Tag>();
-        ROS_ERROR_STREAM("TRANSITION TYPE:" << transitionType);
+        ROS_DEBUG_STREAM("TRANSITION TYPE:" << transitionType);
     }
     else
     {
@@ -211,7 +211,7 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(transitionTypeInfo->templateParameters.front());
 
     EventLabel<EvType>(transitionInfo.eventInfo->label);
-    ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
+    ROS_DEBUG_STREAM("LABEL: " << transitionInfo.eventInfo->label);
 
     transitions_.push_back(transitionInfo);
 }
@@ -440,7 +440,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 
     auto childState = this->stateMachine_->createState<StateType>(realparentState);
 
-    ROS_ERROR_STREAM("Real parent state> " << demangleSymbol<typename StateType::TContext>());
+    ROS_WARN_STREAM("Real parent state> " << demangleSymbol<typename StateType::TContext>());
 
     /*auto contextInfo = smacc::TypeInfo::getTypeInfoFromType<InitialStateType>();
     auto parentState2= getState<InitialStateType::TContext>();

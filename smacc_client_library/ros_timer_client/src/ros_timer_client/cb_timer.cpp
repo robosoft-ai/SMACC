@@ -6,16 +6,13 @@ void CbTimer::onEntry()
 {
     this->requiresClient(timerClient_);
 
-    timerClient_->onTimerTick.connect(
-        [&](auto *ev) {
-            auto ev2 = new EvTimer<CbTimer>();
-            this->postEvent(ev2);
+    timerClient_->onTimerTick(
+        [=]() {
+            this->postTimerEvent_();
         });
-
-    //this->propagatesEvents<EvTimer<SmaccTimer>>(timerClient_);
 }
 
 void CbTimer::onExit()
 {
 }
-} // namespace sm_dance_bot
+} // namespace ros_timer_client

@@ -14,8 +14,7 @@ void ISmaccClient::postEvent(const EventType &ev)
 template <typename EventType>
 void ISmaccClient::postEvent()
 {
-    auto *ev = new EventType();
-    stateMachine_->postEvent(ev);
+    stateMachine_->postEvent<EventType>();
 }
 
 template <typename TComponent>

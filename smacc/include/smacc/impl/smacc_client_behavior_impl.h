@@ -19,6 +19,19 @@ void SmaccClientBehavior::postEvent(const EventType &ev)
     }
 }
 
+template <typename EventType>
+void SmaccClientBehavior::postEvent()
+{
+    if (stateMachine == nullptr)
+    {
+        ROS_ERROR("The client behavior cannot post events before being assigned to an orthogonal. Ignoring post event call.");
+    }
+    else
+    {
+        stateMachine->template postEvent<EventType>();
+    }
+}
+
 template <typename SmaccClientType>
 void SmaccClientBehavior::requiresClient(SmaccClientType *&storage)
 {

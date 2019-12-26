@@ -13,18 +13,6 @@ class IEventFactory
     }
 };
 
-template <typename TObjectTag, typename TDerived>
-class EventFactory
-{
-    std::function<void()> postEvent;
-
-    template <typename TComponent>
-    void onComponentAdded(TComponent *t)
-    {
-        t->configureEventSourceTypes(this);
-    }
-};
-
 template <typename TObjectTag, typename TClient, typename... TArgs>
 std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
 {
@@ -44,7 +32,6 @@ std::shared_ptr<TClient> Orthogonal::createClient(TArgs... args)
     client->setStateMachine(stateMachine_);
 
     client->template configureEventSourceTypes<TObjectTag, TClient>();
-    EventFactory<TClient, TObjectTag> eventfactory;
 
     clients_.push_back(client);
     return client;

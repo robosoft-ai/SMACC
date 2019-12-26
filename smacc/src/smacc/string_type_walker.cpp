@@ -225,22 +225,22 @@ smacc::TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
                       return a.first <= b.first;
                   });
 
-        ROS_ERROR_STREAM("------------------");
-        ROS_ERROR_STREAM("CREATING TYPE:" << t->getFullName());
+        ROS_DEBUG_STREAM("------------------");
+        ROS_DEBUG_STREAM("CREATING TYPE:" << t->getFullName());
 
         for (auto &item : unorderedTemplateParameters)
         {
-            ROS_ERROR_STREAM(" - template paramter: " << item.second->getFullName());
+            ROS_DEBUG_STREAM(" - template paramter: " << item.second->getFullName());
             t->templateParameters.push_back(item.second);
         }
-        ROS_ERROR_STREAM("------------------");
+        ROS_DEBUG_STREAM("------------------");
     }
 
-    ROS_ERROR_STREAM("ADDING TYPE TO DATABASE: "<< inputtext);
-    ROS_ERROR_STREAM("Current Database");
+    ROS_DEBUG_STREAM("ADDING TYPE TO DATABASE: "<< inputtext);
+    ROS_DEBUG_STREAM("Current Database");
     for(auto& en : typeInfoDatabase)
     {
-        ROS_ERROR_STREAM("- " << en.first);
+        ROS_DEBUG_STREAM("- " << en.first);
     }
 
     typeInfoDatabase[originalinputtext] = roottype;

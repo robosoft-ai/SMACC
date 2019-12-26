@@ -21,10 +21,8 @@ void ClRosTimer::initialize()
 
 void ClRosTimer::timerCallback(const ros::TimerEvent &timedata)
 {
-    //auto *event = new EvTimer<ClRosTimer>(this, timedata);
-    auto *event = new EvTimer<ClRosTimer>();
-    this->postEvent(event);
-    onTimerTick(event);
+    this->onTimerTick_();
+    postTimerEvent_();
 }
 
 } // namespace ros_timer_client
