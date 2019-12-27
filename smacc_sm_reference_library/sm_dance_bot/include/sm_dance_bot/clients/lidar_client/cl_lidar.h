@@ -6,6 +6,8 @@
 
 namespace sm_dance_bot
 {
+namespace lidar_client
+{
 
 class ClLaserSensor : public smacc::SensorClient<sensor_msgs::LaserScan>
 {
@@ -14,4 +16,5 @@ public:
     {
     }
 };
+} // namespace lidar_client
 } // namespace sm_dance_bot

@@ -9,6 +9,8 @@
 #include <tf/tf.h>
 namespace sm_dance_bot
 {
+namespace move_base_z_client
+{
 class CbRotate : public smacc::SmaccClientBehavior
 {
 public:
@@ -80,4 +82,5 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 };
+} // namespace move_base_z_client
 } // namespace sm_dance_bot

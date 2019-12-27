@@ -1,16 +1,18 @@
 #pragma once
 
-#include <sm_dance_bot/clients/cl_updatable_publisher.h>
+#include <sm_dance_bot/clients/updatable_publisher_client/cl_updatable_publisher.h>
 #include <smacc/smacc_client_behavior.h>
 #include <std_msgs/String.h>
 
 namespace sm_dance_bot
 {
+namespace updatable_publisher_client
+{
 class CbUpdatableStringPublisher : public smacc::SmaccClientBehavior,
                                    public smacc::ISmaccUpdatable
 {
 public:
-    sm_dance_bot::ClUpdatableStringPublisher *publisherClient_;
+    ClUpdatableStringPublisher *publisherClient_;
     CbUpdatableStringPublisher()
     {
     }
@@ -23,7 +25,6 @@ public:
 
     virtual void onExit() override
     {
-        
     }
 
     virtual void update()
@@ -31,5 +32,5 @@ public:
         ROS_INFO("[CbUpdatableStringPublisher] update here!");
     }
 };
-
+} // namespace updatable_publisher_client
 } // namespace sm_dance_bot

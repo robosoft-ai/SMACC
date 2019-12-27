@@ -56,11 +56,11 @@ public:
 
 //forward declaration for the superstate
 using SS = SsFPattern1;
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_rotate_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_return_1.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_rotate_2.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_forward_2.h>
-#include <sm_dance_bot/superstate_routines/f_pattern/ssr_fpattern_loop_start.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_1.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_1.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_return_1.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_2.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_2.h>
+#include <sm_dance_bot/states/f_pattern/ssr_fpattern_loop_start.h>
 } // namespace SS4
 }

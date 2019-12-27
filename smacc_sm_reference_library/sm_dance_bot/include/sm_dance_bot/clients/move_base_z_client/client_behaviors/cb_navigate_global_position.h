@@ -10,6 +10,8 @@
 
 namespace sm_dance_bot
 {
+namespace move_base_z_client
+{
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
 public:
@@ -36,7 +38,7 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    auto* odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
+    auto *odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
 
     ROS_INFO("Component requirements completed");
 
@@ -94,4 +96,5 @@ private:
   // this resource can be used from any method in this state
   smacc::ClMoveBaseZ *moveBaseClient_;
 };
+} // namespace move_base_z_client
 } // namespace sm_dance_bot

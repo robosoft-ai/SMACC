@@ -7,6 +7,8 @@
 
 namespace sm_dance_bot
 {
+namespace move_base_z_client
+{
 class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 {
   tf::TransformListener listener;
@@ -16,7 +18,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
   virtual void onEntry() override
   {
     this->requiresClient(moveBaseClient_);
-    auto* odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
+    auto *odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
 
     nav_msgs::Path forwardpath = odomTracker->getPath();
     //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
@@ -32,4 +34,5 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
     }
   }
 };
+} // namespace move_base_z_client
 } // namespace sm_dance_bot

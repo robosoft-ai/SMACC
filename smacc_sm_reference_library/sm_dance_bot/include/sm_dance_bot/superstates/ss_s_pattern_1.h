@@ -60,15 +60,15 @@ public:
 //forward declaration for the superstate
 using SS = SsSPattern1;
 
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_1.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_1.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_2.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_2.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_3.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_3.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_rotate_4.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_forward_4.h>
-#include <sm_dance_bot/superstate_routines/s_pattern/ssr_spattern_loop_start.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_1.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_1.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_2.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_2.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_3.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_3.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_4.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_4.h>
+#include <sm_dance_bot/states/s_pattern/ssr_spattern_loop_start.h>
 
 } // namespace SS5
 } // namespace sm_dance_bot

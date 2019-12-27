@@ -4,27 +4,37 @@
 
 // CLIENT BEHAVIORS
 #include <ros_timer_client/client_behaviors/cb_ros_timer.h>
+
 #include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
 
-#include <sm_dance_bot/client_behaviors/navigation_client_behaviors/cb_rotate.h>
-#include <sm_dance_bot/client_behaviors/navigation_client_behaviors/cb_undo_path_backwards.h>
-#include <sm_dance_bot/client_behaviors/navigation_client_behaviors/cb_navigate_global_position.h>
-#include <sm_dance_bot/client_behaviors/navigation_client_behaviors/cb_navigate_forward.h>
-#include <sm_dance_bot/client_behaviors/navigation_client_behaviors/cb_navigate_backward.h>
+#include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_rotate.h>
+#include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_undo_path_backwards.h>
+#include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_navigate_global_position.h>
+#include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_navigate_forward.h>
+#include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_navigate_backward.h>
 
-#include <sm_dance_bot/client_behaviors/tool_client_behaviors/cb_tool_start.h>
-#include <sm_dance_bot/client_behaviors/tool_client_behaviors/cb_tool_stop.h>
+#include <sm_dance_bot/clients/tool_client/client_behaviors/cb_tool_start.h>
+#include <sm_dance_bot/clients/tool_client/client_behaviors/cb_tool_stop.h>
 
-#include <sm_dance_bot/client_behaviors/lidar_sensor_client_behaviors/cb_lidar_sensor.h>
-#include <sm_dance_bot/client_behaviors/temperature_sensor_client_behaviors/cb_custom_condition_temperature_sensor.h>
-#include <sm_dance_bot/client_behaviors/publisher_client_behaviors/cb_string_publisher.h>
-#include <sm_dance_bot/client_behaviors/service3_client_behaviors/cb_service3.h>
-#include <sm_dance_bot/client_behaviors/updatable_publisher_client_behaviors/cb_updatable_publisher.h>
+#include <sm_dance_bot/clients/lidar_client/client_behaviors/cb_lidar_sensor.h>
+#include <sm_dance_bot/clients/temperature_sensor_client/client_behaviors/cb_custom_condition_temperature_sensor.h>
+
+#include <sm_dance_bot/clients/string_publisher_client/client_behaviors/cb_string_publisher.h>
+#include <sm_dance_bot/clients/service3_client/client_behaviors/cb_service3.h>
+#include <sm_dance_bot/clients/updatable_publisher_client/client_behaviors/cb_updatable_publisher.h>
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
 #include <event_countdown/event_countdown.h>
 #include <conditional/lu_conditional.h>
+
+using namespace sm_dance_bot::lidar_client;
+using namespace sm_dance_bot::move_base_z_client;
+using namespace sm_dance_bot::service3_client;
+using namespace sm_dance_bot::string_publisher_client;
+using namespace sm_dance_bot::temperature_sensor_client;
+using namespace sm_dance_bot::tool_client;
+using namespace sm_dance_bot::updatable_publisher_client;
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>
@@ -124,7 +134,7 @@ struct SmDanceBot
         this->createOrthogonal<OrNavigation>();
         this->createOrthogonal<OrObstaclePerception>();
         this->createOrthogonal<OrTool>();
-        this->createOrthogonal<OrClTemperatureSensor>();
+        this->createOrthogonal<OrTemperatureSensor>();
         this->createOrthogonal<OrStringPublisher>();
         this->createOrthogonal<OrService3>();
         this->createOrthogonal<OrTimer>();

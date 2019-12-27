@@ -5,6 +5,8 @@
 
 namespace sm_dance_bot
 {
+namespace tool_client
+{
 class CbToolStop : public smacc::SmaccClientBehavior
 {
 public:
@@ -24,4 +26,5 @@ public:
     //ROS_INFO("Entering ToolClientBehavior");
   }
 };
+} // namespace tool_client
 } // namespace sm_dance_bot

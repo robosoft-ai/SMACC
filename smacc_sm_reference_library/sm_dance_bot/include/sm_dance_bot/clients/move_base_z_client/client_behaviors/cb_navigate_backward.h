@@ -9,26 +9,32 @@
 
 namespace sm_dance_bot
 {
-class CbNavigateForward : public smacc::SmaccClientBehavior
+namespace move_base_z_client
+{
+class CbNavigateBackwards : public smacc::SmaccClientBehavior
 {
 public:
-    boost::optional<float> forwardDistance;
+    boost::optional<float> backwardDistance;
 
     // just a stub to show how to use parameterless constructor
-    boost::optional<float> forwardSpeed;
+    boost::optional<float> backwardSpeed;
 
     tf::TransformListener listener;
 
     smacc::ClMoveBaseZ *moveBaseClient_;
+    odom_tracker::OdomTracker *odomTracker_;
 
-    odom_tracker::OdomTracker* odomTracker_;
-
-    CbNavigateForward(float forwardDistance)
+    CbNavigateBackwards(float backwardDistance)
     {
-        this->forwardDistance = forwardDistance;
+        if (backwardDistance < 0)
+        {
+            ROS_ERROR("cb backward: distance must be greater or equal than 0");
+            this->backwardDistance = 0;
+        }
+        this->backwardDistance = backwardDistance;
     }
 
-    CbNavigateForward()
+    CbNavigateBackwards()
     {
     }
 
@@ -37,20 +43,18 @@ public:
         // straight motion distance
         double dist;
 
-        if (!forwardDistance)
+        if (!backwardDistance)
         {
             this->currentState->param("straight_motion_distance", dist, 3.5);
         }
         else
         {
-            dist = *forwardDistance;
+            dist = *backwardDistance;
         }
 
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-
-        odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
 
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
@@ -74,7 +78,7 @@ public:
 
         tf::Transform forwardDeltaTransform;
         forwardDeltaTransform.setIdentity();
-        forwardDeltaTransform.setOrigin(tf::Vector3(dist, 0, 0));
+        forwardDeltaTransform.setOrigin(tf::Vector3(-dist, 0, 0));
 
         tf::Transform targetPose = currentPose * forwardDeltaTransform;
 
@@ -85,16 +89,18 @@ public:
 
         ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
         ros::Duration(10).sleep();
-        odomTracker_->clearPath();
 
         geometry_msgs::PoseStamped currentPoseMsg;
         currentPoseMsg.header.frame_id = "/odom";
         currentPoseMsg.header.stamp = ros::Time::now();
         tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
-        odomTracker_->setStartPoint(currentPoseMsg);
-        odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
 
-        moveBaseClient_->plannerSwitcher_->setForwardPlanner();
+        odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
+        this->odomTracker_->clearPath();
+        this->odomTracker_->setStartPoint(currentPoseMsg);
+        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+
+        moveBaseClient_->plannerSwitcher_->setBackwardPlanner();
 
         moveBaseClient_->sendGoal(goal);
     }
@@ -104,4 +110,5 @@ public:
         this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::IDLE);
     }
 };
+} // namespace move_base_z_client
 } // namespace sm_dance_bot

@@ -5,6 +5,8 @@
 
 namespace sm_dance_bot
 {
+namespace string_publisher_client
+{
 class ClStringPublisher : public smacc::SmaccPublisherClient<std_msgs::String>
 {
 public:
@@ -12,4 +14,5 @@ public:
     {
     }
 };
-} // namespace dance_bot
+} // namespace string_publisher_client
+} // namespace sm_dance_bot

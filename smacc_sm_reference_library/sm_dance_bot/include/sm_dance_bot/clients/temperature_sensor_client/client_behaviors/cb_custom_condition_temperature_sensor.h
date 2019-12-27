@@ -1,20 +1,22 @@
 
 #pragma once
 #include <sensor_msgs/Temperature.h>
-#include <sm_dance_bot/clients/cl_temperature_sensor.h>
+#include <sm_dance_bot/clients/temperature_sensor_client/cl_temperature_sensor.h>
 #include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
 
 namespace sm_dance_bot
+{
+namespace temperature_sensor_client
 {
 struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 {
 };
 
 //--------------------------------------------------------------------------------------
-class CbConditionClTemperatureSensor : public smacc::SensorTopic<ClTemperatureSensor>
+class CbConditionTemperatureSensor : public smacc::SensorTopic<ClTemperatureSensor>
 {
 public:
-  CbConditionClTemperatureSensor()
+  CbConditionTemperatureSensor()
   {
   }
   virtual void onMessageCallback(const sensor_msgs::Temperature &msg) override
@@ -26,4 +28,5 @@ public:
     }
   }
 };
+} // namespace temperature_sensor_client
 } // namespace sm_dance_bot
