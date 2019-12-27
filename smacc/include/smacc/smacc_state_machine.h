@@ -47,7 +47,7 @@ public:
     virtual void EStop();
 
     template <typename TOrthogonal>
-    bool getOrthogonal(std::shared_ptr<TOrthogonal> &storage);
+    TOrthogonal* getOrthogonal();
 
     const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const;
 

@@ -9,19 +9,21 @@ CbTimerRepeatCountdown::CbTimerRepeatCountdown(unsigned long triggerTickCount)
 {
 }
 
+void CbTimerRepeatCountdown::onClientTimerTickCallback()
+{
+    tickCounter_++;
+
+    if (tickCounter_ % tickTriggerCount_ == 0)
+    {
+        onTimerTick_();
+        postCountDownEvent_();
+    }
+}
+
 void CbTimerRepeatCountdown::onEntry()
 {
     this->requiresClient(timerClient_);
-
-    timerClient_->onTimerTick(
-        [=]() {
-            tickCounter_++;
-
-            if (tickCounter_ % tickTriggerCount_ == 0)
-            {
-                postCountDownEvent_();
-            }
-        });
+    timerClient_->onTimerTick(&CbTimerRepeatCountdown::onClientTimerTickCallback, this);
 }
 
 void CbTimerRepeatCountdown::onExit()

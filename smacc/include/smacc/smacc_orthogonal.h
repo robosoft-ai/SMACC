@@ -37,6 +37,21 @@ public:
         return this->clientBehaviors_;
     }
 
+    template <typename TClientBehavior>
+    TClientBehavior *getClientBehavior()
+    {
+        for (auto &cb : this->clientBehaviors_)
+        {
+            auto *ret = dynamic_cast<TClientBehavior *>(cb.get());
+            if (ret != nullptr)
+            {
+                return ret;
+            }
+        }
+
+        return nullptr;
+    }
+
 private:
     virtual void onInitialize();
 

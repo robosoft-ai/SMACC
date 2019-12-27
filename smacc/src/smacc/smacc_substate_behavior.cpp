@@ -4,7 +4,7 @@ namespace smacc
 {
 SmaccClientBehavior::SmaccClientBehavior()
 {
-    stateMachine = nullptr;
+    stateMachine_ = nullptr;
     currentState = nullptr;
 }
 

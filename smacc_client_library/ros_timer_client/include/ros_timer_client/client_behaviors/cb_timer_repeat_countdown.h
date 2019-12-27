@@ -22,11 +22,19 @@ public:
         };
     }
 
+    template <typename T>
+    boost::signals2::connection onTimerTick(void (T::*callback)(), T *object)
+    {
+        return stateMachine_->createSignalConnection(onTimerTick_, callback, object);
+    }
+
 private:
     unsigned long tickCounter_;
     unsigned long tickTriggerCount_;
 
     ClRosTimer *timerClient_;
     std::function<void()> postCountDownEvent_;
+    smacc::SmaccSignal<void()> onTimerTick_;
+    void onClientTimerTickCallback();
 };
 } // namespace ros_timer_client

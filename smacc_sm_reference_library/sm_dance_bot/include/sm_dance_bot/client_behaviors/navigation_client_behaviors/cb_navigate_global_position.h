@@ -57,7 +57,7 @@ public:
 
     // store the start pose on the state machine storage so that it can
     // be referenced from other states (for example return to radial start)
-    this->stateMachine->setGlobalSMData("radial_start_pose", goal.target_pose);
+    this->stateMachine_->setGlobalSMData("radial_start_pose", goal.target_pose);
 
     moveBaseClient_->sendGoal(goal);
   }

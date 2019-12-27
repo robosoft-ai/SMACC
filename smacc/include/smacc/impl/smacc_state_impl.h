@@ -40,8 +40,8 @@ void ISmaccState::configure(Args &&... args)
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
 
-    std::shared_ptr<TOrthogonal> orthogonal;
-    if (this->getStateMachine().getOrthogonal<TOrthogonal>(orthogonal))
+    TOrthogonal *orthogonal = this->getStateMachine().getOrthogonal<TOrthogonal>();
+    if (orthogonal != nullptr)
     {
         auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
         clientBehavior->template configureEventSourceTypes<TOrthogonal, TBehavior>();

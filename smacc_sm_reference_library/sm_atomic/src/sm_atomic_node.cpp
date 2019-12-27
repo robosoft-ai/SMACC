@@ -3,8 +3,8 @@
 //--------------------------------------------------------------------
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "tutorial");
+    ros::init(argc, argv, "sm_atomic");
     ros::NodeHandle nh;
 
-    smacc::run<sm_atomic::SmAtomicStateMachine>();
+    smacc::run<sm_atomic::SmAtomic>();
 }

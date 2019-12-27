@@ -12,7 +12,7 @@ public:
     // return true to destroy the object and false to keep it alive
 
     // a reference to the owner state machine
-    ISmaccStateMachine *stateMachine;
+    ISmaccStateMachine *stateMachine_;
 
     // a reference to the state where the client behavior is being executed
     ISmaccState *currentState;
