@@ -9,11 +9,11 @@ class OrKeyboard : public smacc::Orthogonal
 public:
     virtual void onInitialize() override
     {
-        auto ClKeyboard = this->createClient<OrKeyboard, sm_three_some::ClKeyboard>();
-        ClKeyboard->topicName = "/keyboard_unicode";
+        auto clKeyboard = this->createClient<OrKeyboard, ClKeyboard>();
+        clKeyboard->topicName = "/keyboard_unicode";
 
         //ClKeyboard.queueSize = 1;
-        ClKeyboard->initialize();
+        clKeyboard->initialize();
     }
 };
 } // namespace sm_three_some

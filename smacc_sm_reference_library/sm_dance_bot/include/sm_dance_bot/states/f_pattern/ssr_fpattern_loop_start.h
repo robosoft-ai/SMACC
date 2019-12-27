@@ -1,8 +1,13 @@
-struct SsrFPatternStartLoop : smacc::SmaccState<SsrFPatternStartLoop, SS>
+namespace fpattern_substates
 {
-  using SmaccState::SmaccState;
+template <typename SS>
+struct SsrFPatternStartLoop : smacc::SmaccState<SsrFPatternStartLoop<SS>, SS>
+{
+  typedef SmaccState<SsrFPatternStartLoop<SS>, SS> TSsr;
+  using TSsr::SmaccState;
+  using TSsr::context_type;
 
-  typedef smacc::transition<EvLoopContinue<SsrFPatternStartLoop>, SsrFPatternRotate1, CONTINUELOOP> reactions;
+  typedef smacc::transition<EvLoopContinue<SsrFPatternStartLoop<SS>>, SsrFPatternRotate1<SS>, CONTINUELOOP> reactions;
 
   static void onDefinition()
   {
@@ -10,12 +15,13 @@ struct SsrFPatternStartLoop : smacc::SmaccState<SsrFPatternStartLoop, SS>
   
   bool loopCondition()
   {
-    auto &superstate = this->context<SS>();
+    auto &superstate = TSsr::template context<SS>();
     return ++superstate.iteration_count < SS::total_iterations();
   }
 
   void onEntry()
   {
-    throwLoopEventFromCondition(&SsrFPatternStartLoop::loopCondition);
+    TSsr::throwLoopEventFromCondition(&SsrFPatternStartLoop<SS>::loopCondition);
   }
 };
+}

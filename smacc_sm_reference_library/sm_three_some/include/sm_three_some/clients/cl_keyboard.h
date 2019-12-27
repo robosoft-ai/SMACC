@@ -12,6 +12,8 @@
 
 namespace sm_three_some
 {
+namespace keyboard_client
+{
 
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
 template <typename TSource, typename TObjectTag>
@@ -177,7 +179,7 @@ public:
 
         std::function<void(std_msgs::UInt16)> postEventKeyPress;
 
-        template < typename TObjectTag, typename TDerived>
+        template <typename TObjectTag, typename TDerived>
         void configureEventSourceTypes()
         {
                 postEventKeyPress = [=](auto unicode_keychar) {
@@ -256,4 +258,5 @@ public:
 private:
         bool initialized_;
 };
+} // namespace keyboard_client
 } // namespace sm_three_some

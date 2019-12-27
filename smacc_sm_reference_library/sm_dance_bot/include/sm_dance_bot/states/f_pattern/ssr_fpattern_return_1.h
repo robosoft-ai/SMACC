@@ -1,16 +1,22 @@
-struct SsrFPatternReturn1 : smacc::SmaccState<SsrFPatternReturn1, SS>
+namespace fpattern_substates
 {
-  using SmaccState::SmaccState;
+template <typename SS>
+struct SsrFPatternReturn1 : smacc::SmaccState<SsrFPatternReturn1<SS>, SS>
+{
+  typedef SmaccState<SsrFPatternReturn1<SS>, SS> TSsr;
+  using TSsr::SmaccState;
+  using TSsr::context_type;
 
-  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternRotate2> reactions;
+  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternRotate2<SS>> reactions;
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbUndoPathBackwards>();
-    static_configure<OrTool, CbToolStart>();
+    TSsr::template static_configure<OrNavigation, CbUndoPathBackwards>();
+    TSsr::template static_configure<OrTool, CbToolStart>();
   }
 
   void onInitialize()
   {
   }
 };
+}

@@ -3,6 +3,8 @@
 #include <smacc/smacc_client_behavior.h>
 namespace sm_three_some
 {
+namespace client_1
+{
 class CbBehavior1 : public smacc::SmaccClientBehavior
 {
 public:
@@ -13,4 +15,5 @@ public:
     {
     }
 };
+} // namespace client_1
 } // namespace sm_three_some

@@ -7,8 +7,11 @@
 
 namespace sm_three_some
 {
+namespace client_2
+{
 class ClClient2 : public smacc::SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
 };
+} // namespace client_2
 
 } // namespace sm_three_some

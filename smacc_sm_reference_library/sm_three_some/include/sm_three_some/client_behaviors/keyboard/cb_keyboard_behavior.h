@@ -7,6 +7,8 @@
 
 namespace sm_three_some
 {
+namespace keyboard_client
+{
 class CbKeyboard : public smacc::SmaccClientBehavior
 {
 public:
@@ -97,5 +99,5 @@ public:
                 this->postEvent(event);
         }
 };
-
+} // namespace keyboard_client
 } // namespace sm_three_some

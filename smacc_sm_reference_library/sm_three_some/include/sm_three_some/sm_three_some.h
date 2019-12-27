@@ -6,6 +6,10 @@
 #include <sm_three_some/clients/cl_client_2.h>
 #include <sm_three_some/clients/cl_keyboard.h>
 
+using namespace sm_three_some::client_1;
+using namespace sm_three_some::client_2;
+using namespace sm_three_some::keyboard_client;
+
 // ORTHOGONALS
 #include <sm_three_some/orthogonals/or_orthogonal_1.h>
 #include <sm_three_some/orthogonals/or_orthogonal_2.h>

@@ -1,8 +1,13 @@
-struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
+namespace fpattern_substates
 {
-  using SmaccState::SmaccState;
+template <typename SS>
+struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2<SS>, SS>
+{
+  typedef SmaccState<SsrFPatternForward2<SS>, SS> TSsr;
+  using TSsr::SmaccState;
+  using TSsr::context_type;
 
-  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternStartLoop> reactions;
+  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternStartLoop<SS>> reactions;
 
   static void onDefinition()
   {
@@ -10,10 +15,11 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2, SS>
   
   void onInitialize()
   {
-    auto &superstate = this->context<SS>();
+    auto &superstate = TSsr::template context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
 
-    this->configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
-    this->configure<OrTool, CbToolStop>();
+    TSsr::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
+    TSsr::template configure<OrTool, CbToolStop>();
   }
 };
+}

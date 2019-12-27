@@ -4,6 +4,8 @@
 
 namespace sm_three_some
 {
+namespace client_2
+{
 class CbBehavior2b : public smacc::SmaccClientBehavior
 {
 public:
@@ -12,4 +14,5 @@ public:
     {
     }
 };
+} // namespace client_2
 } // namespace sm_three_some

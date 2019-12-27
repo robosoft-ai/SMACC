@@ -1,8 +1,13 @@
-struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1, SS>
+namespace fpattern_substates
 {
-  using SmaccState::SmaccState;
-
-  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternForward1> reactions;
+template <typename SS>
+struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1<SS>, SS>
+{
+  typedef SmaccState<SsrFPatternRotate1<SS>, SS> TSsr;
+  using TSsr::SmaccState;
+  using TSsr::context_type;
+  
+  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternForward1<SS>> reactions;
 
   static void onDefinition()
   {
@@ -12,8 +17,8 @@ struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1, SS>
     else
       angle = -90;
 
-    static_configure<OrNavigation, CbRotate>(angle);
-    static_configure<OrTool, CbToolStop>();
+     TSsr::template static_configure<OrNavigation, CbRotate>(angle);
+     TSsr::template static_configure<OrTool, CbToolStop>();
   }
 
   void onInitialize()
@@ -21,3 +26,4 @@ struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1, SS>
     
   }
 };
+}

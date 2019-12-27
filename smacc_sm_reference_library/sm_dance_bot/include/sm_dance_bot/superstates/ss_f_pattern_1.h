@@ -1,17 +1,7 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot
+namespace fpattern_substates
 {
-namespace SS4
-{
-
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
-class SsrFPatternRotate1;
-class SsrFPatternForward1;
-class SsrFPatternReturn1;
-class SsrFPatternRotate2;
-class SsrFPatternForward2;
-class SsrFPatternStartLoop;
 
 enum class TDirection
 {
@@ -19,14 +9,41 @@ enum class TDirection
     RIGHT
 };
 
-struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, SsrFPatternStartLoop>
+//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
+template <typename SS>
+class SsrFPatternRotate1;
+
+template <typename SS>
+class SsrFPatternForward1;
+
+template <typename SS>
+class SsrFPatternReturn1;
+
+template <typename SS>
+class SsrFPatternRotate2;
+
+template <typename SS>
+class SsrFPatternForward2;
+
+template <typename SS>
+class SsrFPatternStartLoop;
+} // namespace fpattern_substates
+
+namespace sm_dance_bot
+{
+namespace SS4
+{
+
+using namespace fpattern_substates;
+
+struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, SsrFPatternStartLoop<SsFPattern1>>
 {
 public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
         // Expected event
-        smacc::transition<EvLoopEnd<SsrFPatternStartLoop>, StNavigateForward2, ENDLOOP>//,
+        smacc::transition<EvLoopEnd<SsrFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
@@ -55,12 +72,13 @@ public:
 }; // namespace SS4
 
 //forward declaration for the superstate
-using SS = SsFPattern1;
+
+} // namespace SS4
+} // namespace sm_dance_bot
+
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_1.h>
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_1.h>
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_return_1.h>
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_2.h>
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_2.h>
 #include <sm_dance_bot/states/f_pattern/ssr_fpattern_loop_start.h>
-} // namespace SS4
-}
