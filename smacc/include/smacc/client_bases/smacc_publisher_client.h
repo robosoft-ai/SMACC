@@ -5,7 +5,7 @@
 
 namespace smacc
 {
-template <typename MessageType>
+
 class SmaccPublisherClient : public smacc::ISmaccClient
 {
 public:
@@ -22,6 +22,13 @@ public:
     pub_.shutdown();
   }
 
+  template <typename MessageType>
+  void configureMessageType()
+  {
+    ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
+    pub_ = nh_.advertise<MessageType>(*topicName, *queueSize);
+  }
+
   virtual void initialize() override
   {
     if (!initialized_)
@@ -35,13 +42,13 @@ public:
       }
       else
       {
-        ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
-        pub_ = nh_.advertise<MessageType>(*topicName, *queueSize);
+
         this->initialized_ = true;
       }
     }
   }
 
+  template <typename MessageType>
   void publish(const MessageType &msg)
   {
     pub_.publish(msg);

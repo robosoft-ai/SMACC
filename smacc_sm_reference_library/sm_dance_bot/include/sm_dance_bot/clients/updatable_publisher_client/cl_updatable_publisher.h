@@ -5,13 +5,14 @@
 
 namespace sm_dance_bot
 {
-class ClUpdatableStringPublisher : public smacc::SmaccPublisherClient<std_msgs::String>,
-                              public smacc::ISmaccUpdatable
+class ClUpdatableStringPublisher : public smacc::SmaccPublisherClient,
+                                   public smacc::ISmaccUpdatable
 {
 public:
-    ClUpdatableStringPublisher() 
-            : smacc::SmaccPublisherClient<std_msgs::String>()
+    ClUpdatableStringPublisher()
+        : smacc::SmaccPublisherClient()
     {
+        this->configureMessageType<std_msgs::String>();
     }
 
     virtual void update()

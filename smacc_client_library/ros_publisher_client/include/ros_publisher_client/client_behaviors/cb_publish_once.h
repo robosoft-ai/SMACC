@@ -5,6 +5,7 @@
 
 namespace ros_publisher_client
 {
+template <typename RosMsgType>
 class CbPublishOnce : public smacc::SmaccClientBehavior
 {
 public:

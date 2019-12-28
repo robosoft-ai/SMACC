@@ -5,10 +5,17 @@
 
 namespace ros_publisher_client
 {
+
 class CbDefaultPublishLoop : public smacc::SmaccClientBehavior,
                              public smacc::ISmaccUpdatable
 {
 public:
+    template <typename RosMsgType>
+    void SetLoopMessage(RosMsgType& msg)
+    {
+
+    }
+
     void onEntry()
     {
     }

@@ -2,6 +2,7 @@
 
 #include <ros_publisher_client/cl_ros_publisher.h>
 #include <smacc/smacc_orthogonal.h>
+#include <std_msgs/String.h>
 
 namespace sm_three_some
 {
