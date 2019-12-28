@@ -1,9 +1,11 @@
 #pragma once
 
-#include <sm_three_some/clients/cl_keyboard.h>
+#include <sm_three_some/clients/keyboard_client/cl_keyboard.h>
 #include <smacc/smacc_orthogonal.h>
 namespace sm_three_some
 {
+using namespace sm_three_some::keyboard_client;
+
 class OrKeyboard : public smacc::Orthogonal
 {
 public:

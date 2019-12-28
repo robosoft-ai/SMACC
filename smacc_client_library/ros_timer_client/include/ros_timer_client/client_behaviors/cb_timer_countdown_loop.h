@@ -6,10 +6,10 @@
 namespace ros_timer_client
 {
 
-class CbTimerRepeatCountdown : public smacc::SmaccClientBehavior
+class CbTimerCountdownLoop : public smacc::SmaccClientBehavior
 {
 public:
-    CbTimerRepeatCountdown(unsigned long triggerTickCount);
+    CbTimerCountdownLoop(unsigned long triggerTickCount);
 
     virtual void onEntry() override;
     virtual void onExit() override;

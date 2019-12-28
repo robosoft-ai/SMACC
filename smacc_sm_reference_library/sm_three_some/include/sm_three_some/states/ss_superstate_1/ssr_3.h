@@ -5,21 +5,22 @@ struct Ssr3 : smacc::SmaccState<Ssr3, SS>
   typedef mpl::list<
       //smacc::transition<EvTopicMessage<CbBehavior1b>, Ssr1>,
 
-      smacc::transition<EvKeyPressP<CbKeyboard, OrKeyboard>, Ssr2>,
-      smacc::transition<EvKeyPressN<CbKeyboard, OrKeyboard>, Ssr1>>
+      smacc::transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr2>,
+      smacc::transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr1>>
       reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()
   {
-    static_configure<OrOrthogonal1, CbBehavior1b>();
-    static_configure<OrOrthogonal2, CbBehavior2b>();
-    static_configure<OrKeyboard, CbKeyboard>();
+    static_configure<OrTimer, CbTimer>();
+    static_configure<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    static_configure<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   //-------------------------------------------------------------------------------
   void onInitialize()
   {
-    //this->OnEventReceived<EvKeyPressN<CbKeyboard>>(onNextKey);
+    //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);
   }
 };

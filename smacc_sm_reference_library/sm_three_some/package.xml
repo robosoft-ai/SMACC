@@ -54,7 +54,7 @@
   <depend>smacc_action_client_generic</depend>
   <depend>all_events_go</depend>  
   <depend>std_msgs</depend>
-  <depend>planner_switcher</depend>
+  <depend>ros_timer_client</depend>
   
 
   <!-- The export tag contains other, unspecified, tags -->

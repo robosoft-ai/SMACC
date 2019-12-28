@@ -123,8 +123,8 @@ include_directories(
  add_library(${PROJECT_NAME}
    src/${PROJECT_NAME}/timer_client.cpp
    src/${PROJECT_NAME}/cb_timer.cpp
-   src/${PROJECT_NAME}/cb_timer_repeat_countdown.cpp
-   src/${PROJECT_NAME}/cb_timer_single_countdown.cpp
+   src/${PROJECT_NAME}/cb_timer_countdown_loop.cpp
+   src/${PROJECT_NAME}/cb_timer_countdown_once.cpp
  )
 
  target_link_libraries(${PROJECT_NAME}

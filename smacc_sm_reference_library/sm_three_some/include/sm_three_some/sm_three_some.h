@@ -2,26 +2,31 @@
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <sm_three_some/clients/cl_client_1.h>
-#include <sm_three_some/clients/cl_client_2.h>
-#include <sm_three_some/clients/cl_keyboard.h>
-
-using namespace sm_three_some::client_1;
-using namespace sm_three_some::client_2;
-using namespace sm_three_some::keyboard_client;
+#include <ros_timer_client/cl_ros_timer.h>
+#include <sm_three_some/clients/keyboard_client/cl_keyboard.h>
 
 // ORTHOGONALS
-#include <sm_three_some/orthogonals/or_orthogonal_1.h>
-#include <sm_three_some/orthogonals/or_orthogonal_2.h>
-#include <sm_three_some/orthogonals/or_keyboard_orthogonal.h>
+#include <sm_three_some/orthogonals/or_timer.h>
+#include <sm_three_some/orthogonals/or_updatable_publisher.h>
+#include <sm_three_some/orthogonals/or_subscriber.h>
+#include <sm_three_some/orthogonals/or_keyboard.h>
+
+using namespace ros_timer_client;
+using namespace sm_three_some::subscriber_client;
+using namespace sm_three_some::updatable_publisher_client;
+using namespace sm_three_some::keyboard_client;
 
 //CLIENT BEHAVIORS
-#include <sm_three_some/client_behaviors/client_1/client_behavior_1.h>
-#include <sm_three_some/client_behaviors/client_1/client_behavior_1b.h>
-#include <sm_three_some/client_behaviors/client_2/client_behavior_2.h>
-#include <sm_three_some/client_behaviors/client_2/client_behavior_2b.h>
-#include <sm_three_some/client_behaviors/keyboard/cb_keyboard_behavior.h>
+#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_default_publish_loop.h>
+#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_muted_behavior.h>
+#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_publish_once.h>
 
+#include <sm_three_some/clients/subscriber_client/client_behaviors/cb_default_subscriber_behavior.h>
+#include <sm_three_some/clients/subscriber_client/client_behaviors/cb_watchdog_subscriber_behavior.h>
+
+#include <sm_three_some/clients/keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
+
+#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
@@ -41,20 +46,27 @@ class StState1; // first state specially needs a forward declaration
 class StState2;
 class StState3;
 
+class MsThreeSomeRunMode;
+class MsThreeSomeExceptionMode;
+
 // STATE MACHINE
 struct SmThreeSome
-    : public smacc::SmaccStateMachineBase<SmThreeSome, StState1>
+    : public smacc::SmaccStateMachineBase<SmThreeSome, MsThreeSomeRunMode>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<OrOrthogonal1>();
-        this->createOrthogonal<OrOrthogonal2>();
+        this->createOrthogonal<OrTimer>();
+        this->createOrthogonal<OrUpdatablePublisher>();
         this->createOrthogonal<OrKeyboard>();
     }
 };
 } // namespace sm_three_some
+
+// MODE STATES
+#include <sm_three_some/mode_states/ms_three_some_run_mode.h>
+#include <sm_three_some/mode_states/ms_three_some_exception_mode.h>
 
 //STATES
 #include <sm_three_some/states/st_state_1.h>

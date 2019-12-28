@@ -7,8 +7,8 @@
 #include <sm_atomic/orthogonals/or_timer.h>
 
 //CLIENT BEHAVIORS
-#include <ros_timer_client/client_behaviors/cb_timer_repeat_countdown.h>
-#include <ros_timer_client/client_behaviors/cb_timer_single_countdown.h>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 using namespace boost;
 

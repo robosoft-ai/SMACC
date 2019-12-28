@@ -1,11 +1,12 @@
 
 #pragma once
-#include <smacc/smacc_client_behavior.h>
+#include <sm_three_some/clients/subscriber_client/cl_subscriber.h>
+
 namespace sm_three_some
 {
-namespace client_1
+namespace subscriber_client
 {
-class CbBehavior1 : public smacc::SmaccClientBehavior
+class CbDefaultSubscriberBehavior : public smacc::SmaccClientBehavior
 {
 public:
     typedef std_msgs::UInt16 TMessageType;
@@ -15,5 +16,5 @@ public:
     {
     }
 };
-} // namespace client_1
+} // namespace subscriber_client
 } // namespace sm_three_some

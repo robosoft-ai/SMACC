@@ -9,7 +9,7 @@ class Ssr1;
 class Ssr2;
 class Ssr3;
 
-struct Ss1 : smacc::SmaccState<Ss1, SmThreeSome, Ssr1>
+struct Ss1 : smacc::SmaccState<Ss1, MsThreeSomeRunMode, Ssr1>
 {
 public:
     using SmaccState::SmaccState;
