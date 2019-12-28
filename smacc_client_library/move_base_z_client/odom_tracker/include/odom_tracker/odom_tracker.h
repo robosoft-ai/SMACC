@@ -21,6 +21,8 @@
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
+namespace move_base_z_client
+{
 namespace odom_tracker
 {
 
@@ -35,7 +37,6 @@ enum class WorkingMode : uint8_t
 class OdomTracker : public smacc::ISmaccComponent
 {
 public:
-
     // by default, the component start in record_forward mode and publishing the
     // current path
     OdomTracker(std::string nodeName);
@@ -128,3 +129,4 @@ inline double p2pDistance(const geometry_msgs::Point &p1, const geometry_msgs::P
     return dist;
 }
 } // namespace odom_tracker
+} // namespace move_base_z_client

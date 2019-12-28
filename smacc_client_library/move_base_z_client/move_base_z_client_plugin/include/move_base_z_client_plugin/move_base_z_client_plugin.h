@@ -11,18 +11,18 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <planner_switcher/planner_switcher.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 class WaypointNavigator;
 
-class ClMoveBaseZ : public SmaccActionClientBase<move_base_msgs::MoveBaseAction>
+class ClMoveBaseZ : public smacc::SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 
 public:
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction>::ResultConstPtr ResultConstPtr;
 
-    std::shared_ptr<planner_switcher::PlannerSwitcher> plannerSwitcher_;
+    std::shared_ptr<move_base_z_client::PlannerSwitcher> plannerSwitcher_;
 
     ClMoveBaseZ();
 

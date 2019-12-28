@@ -5,6 +5,8 @@
  ******************************************************************************************************************/
 #include <odom_tracker/odom_tracker.h>
 
+namespace move_base_z_client
+{
 namespace odom_tracker
 {
 
@@ -264,3 +266,4 @@ void OdomTracker::processOdometryMessage(const nav_msgs::Odometry &odom)
     //ROS_INFO("odom_tracker m_mutex release");
 }
 } // namespace odom_tracker
+}

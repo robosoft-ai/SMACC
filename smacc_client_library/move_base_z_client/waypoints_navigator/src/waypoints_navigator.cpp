@@ -6,7 +6,7 @@
 #include <yaml-cpp/yaml.h>
 #include <tf/transform_datatypes.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 WaypointNavigator::WaypointNavigator()
     : currentWaypoint_(0),
@@ -27,7 +27,7 @@ void WaypointNavigator::sendNextGoal()
   {
     auto &next = waypoints_[currentWaypoint_];
 
-    smacc::ClMoveBaseZ::Goal goal;
+    ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
     goal.target_pose.pose = next;

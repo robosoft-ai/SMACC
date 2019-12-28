@@ -9,8 +9,8 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
-      smacc::transition<EvActionPreempted<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>>
+      smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
+      smacc::transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>>
       reactions;
 
   using SmaccState::SmaccState;

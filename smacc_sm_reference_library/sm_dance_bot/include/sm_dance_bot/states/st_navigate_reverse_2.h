@@ -7,11 +7,11 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, MsDanceBotRunM
 
    typedef mpl::list<
        // Expected event
-       smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
+       smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
 
        // Error events
        //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-       smacc::transition<EvActionAborted<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+       smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
        reactions;
 
    static void onDefinition()

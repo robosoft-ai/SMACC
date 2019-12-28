@@ -11,12 +11,15 @@
 #include <tf/transform_listener.h>
 #include <tf2_ros/buffer.h>
 
-
 typedef double meter;
 typedef double rad;
 
-namespace forward_local_planner {
-class ForwardLocalPlanner : public nav_core::BaseLocalPlanner {
+namespace move_base_z_client
+{
+namespace forward_local_planner
+{
+class ForwardLocalPlanner : public nav_core::BaseLocalPlanner
+{
 
 public:
     ForwardLocalPlanner();
@@ -28,7 +31,7 @@ public:
    * @param cmd_vel Will be filled with the velocity command to be passed to the robot base
    * @return True if a valid velocity command was found, false otherwise
    */
-    virtual bool computeVelocityCommands(geometry_msgs::Twist& cmd_vel) override;
+    virtual bool computeVelocityCommands(geometry_msgs::Twist &cmd_vel) override;
 
     /**
    * @brief  Check if the goal pose has been achieved by the local planner
@@ -41,7 +44,7 @@ public:
    * @param plan The plan to pass to the local planner
    * @return True if the plan was updated successfully, false otherwise
    */
-    virtual bool setPlan(const std::vector<geometry_msgs::PoseStamped>& plan) override;
+    virtual bool setPlan(const std::vector<geometry_msgs::PoseStamped> &plan) override;
 
     /**
    * @brief  Constructs the local planner
@@ -49,17 +52,16 @@ public:
    * @param tf A pointer to a transform listener
    * @param costmap_ros The cost map to use for assigning costs to local plans
    */
-    void initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmapRos_);
+    void initialize(std::string name, tf::TransformListener *tf, costmap_2d::Costmap2DROS *costmapRos_);
 
-    void initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmapRos) ;
+    void initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmapRos);
 
     void initialize();
-    
-private:
 
+private:
     void publishGoalMarker(double x, double y, double phi);
 
-    costmap_2d::Costmap2DROS* costmapRos_;
+    costmap_2d::Costmap2DROS *costmapRos_;
 
     ros::Publisher goalMarkerPublisher_;
 
@@ -68,14 +70,14 @@ private:
     double k_betta_;
     bool goalReached_;
 
-    const double alpha_offset_= 0;
+    const double alpha_offset_ = 0;
     const double betta_offset_ = 0;
 
     meter carrot_distance_;
     rad carrot_angular_distance_;
 
     double yaw_goal_tolerance_; // radians
-    double xy_goal_tolerance_; // meters
+    double xy_goal_tolerance_;  // meters
 
     double max_angular_z_speed_;
     double max_linear_x_speed_;
@@ -85,4 +87,5 @@ private:
 
     std::vector<geometry_msgs::PoseStamped> plan_;
 };
-}
+} // namespace forward_local_planner
+} // namespace move_base_z_client

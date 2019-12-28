@@ -5,25 +5,25 @@
 #include <odom_tracker/odom_tracker.h>
 #include <nav_msgs/Path.h>
 
-namespace sm_dance_bot
+namespace move_base_z_client
 {
 class CbUndoPathBackwards : public smacc::SmaccClientBehavior
 {
   tf::TransformListener listener;
 
-  smacc::ClMoveBaseZ *moveBaseClient_;
+  move_base_z_client::ClMoveBaseZ *moveBaseClient_;
 
   virtual void onEntry() override
   {
     this->requiresClient(moveBaseClient_);
-    auto* odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
+    auto *odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
 
     nav_msgs::Path forwardpath = this->odomTracker_->getPath();
     //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
 
     this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::CLEAR_PATH_BACKWARD);
 
-    smacc::ClMoveBaseZ::Goal goal;
+    ClMoveBaseZ::Goal goal;
     if (forwardpath.poses.size() > 0)
     {
       goal.target_pose = forwardpath.poses.front();
@@ -32,4 +32,4 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
     }
   }
 };
-} // namespace sm_dance_bot
+} // namespace move_base_z_client

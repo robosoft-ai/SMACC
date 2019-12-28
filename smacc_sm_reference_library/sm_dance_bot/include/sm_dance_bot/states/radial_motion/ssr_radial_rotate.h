@@ -3,8 +3,8 @@ struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-              smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrRadialEndPoint, SUCCESS>,
-              smacc::transition<EvActionAborted<smacc::ClMoveBaseZ, OrNavigation>, SsrRadialLoopStart, ABORT>
+              smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrRadialEndPoint, SUCCESS>,
+              smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrRadialLoopStart, ABORT>
               > reactions;
 
   static void onDefinition()

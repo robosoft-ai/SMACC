@@ -12,7 +12,7 @@
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
 
-namespace planner_switcher
+namespace move_base_z_client
 {
 class PlannerSwitcher
 {

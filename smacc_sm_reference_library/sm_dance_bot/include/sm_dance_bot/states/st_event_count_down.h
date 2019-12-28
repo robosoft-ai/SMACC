@@ -21,7 +21,7 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
         static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
 
-        //static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<smacc::ClMoveBaseZ>>>(100);
+        //static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
     }
 };
 }

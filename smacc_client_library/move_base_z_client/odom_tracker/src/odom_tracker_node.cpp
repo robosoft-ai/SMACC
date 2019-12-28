@@ -11,6 +11,7 @@
 typedef actionlib::SimpleActionServer<odom_tracker::OdomTrackerAction> Server;
 
 using namespace odom_tracker;
+using namespace move_base_z_client::odom_tracker;
 
 class OdomTrackerActionServer
 {
@@ -28,7 +29,7 @@ public:
 * execute()
 ******************************************************************************************************************
 */
-  void execute(const odom_tracker::OdomTrackerGoalConstPtr &goal) // Note: "Action" is not appended to DoDishes here
+  void execute(const OdomTrackerGoalConstPtr &goal) // Note: "Action" is not appended to DoDishes here
   {
     try
     {

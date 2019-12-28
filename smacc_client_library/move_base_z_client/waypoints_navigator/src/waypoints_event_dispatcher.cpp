@@ -1,6 +1,6 @@
 #include <waypoints_navigator/waypoints_event_dispatcher.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 void WaypointEventDispatcher::postWaypointEvent(int index)
 {

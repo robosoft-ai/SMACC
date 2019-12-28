@@ -7,7 +7,7 @@
 #include <odom_tracker/odom_tracker.h>
 #include <planner_switcher/planner_switcher.h>
 
-namespace sm_dance_bot
+namespace move_base_z_client
 {
 class CbNavigateBackwards : public smacc::SmaccClientBehavior
 {
@@ -19,7 +19,7 @@ public:
 
     tf::TransformListener listener;
 
-    smacc::ClMoveBaseZ *moveBaseClient_;
+    move_base_z_client::ClMoveBaseZ *moveBaseClient_;
 
     CbNavigateBackwards(float backwardDistance)
     {
@@ -52,7 +52,7 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-        auto odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
+        auto odomTracker_ = this->getComponent<OdomTracker>();
         
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
@@ -80,7 +80,7 @@ public:
 
         tf::Transform targetPose = currentPose * forwardDeltaTransform;
 
-        smacc::ClMoveBaseZ::Goal goal;
+        ClMoveBaseZ::Goal goal;
         goal.target_pose.header.frame_id = "/odom";
         goal.target_pose.header.stamp = ros::Time::now();
         tf::poseTFToMsg(targetPose, goal.target_pose.pose);
@@ -94,7 +94,7 @@ public:
         currentPoseMsg.header.stamp = ros::Time::now();
         tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
         this->odomTracker_->setStartPoint(currentPoseMsg);
-        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+        this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
         moveBaseClient_->plannerSwitcher_->setBackwardPlanner();
 
@@ -103,7 +103,7 @@ public:
 
     virtual void onExit() override
     {
-        this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::IDLE);
+        this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
     }
 };
 } // namespace sm_dance_bot

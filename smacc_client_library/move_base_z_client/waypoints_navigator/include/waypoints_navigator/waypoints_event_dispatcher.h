@@ -3,7 +3,7 @@
 #include <smacc/smacc.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 
 template <typename TSource, typename TObjectTag>
@@ -1833,4 +1833,4 @@ void WaypointEventDispatcher::initialize(ClMoveBaseZ *client)
     configurePostEvWaypoint<EvWaypoint256<TDerived, TObjectTag>>(postWaypointFn, client, 256);
 }
 
-} // namespace smacc
+} // namespace move_base_z_client

@@ -7,7 +7,7 @@ struct SsrFPatternRotate1 : smacc::SmaccState<SsrFPatternRotate1<SS>, SS>
   using TSsr::SmaccState;
   using TSsr::context_type;
   
-  typedef smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, SsrFPatternForward1<SS>> reactions;
+  typedef smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrFPatternForward1<SS>> reactions;
 
   static void onDefinition()
   {

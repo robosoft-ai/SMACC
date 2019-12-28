@@ -6,7 +6,7 @@
 #include <waypoints_navigator/waypoints_event_dispatcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 class ClMoveBaseZ;
 
@@ -24,7 +24,7 @@ struct Pose2D
   double yaw_;
 };
 
-class WaypointNavigator : public ISmaccComponent
+class WaypointNavigator : public smacc::ISmaccComponent
 {
 public:
   WaypointEventDispatcher waypointsEventDispatcher;
@@ -33,7 +33,7 @@ public:
 
   WaypointNavigator();
 
-  virtual void initialize(ISmaccClient *owner) override
+  virtual void initialize(smacc::ISmaccClient *owner) override
   {
     client_ = dynamic_cast<ClMoveBaseZ*>(owner);
   }

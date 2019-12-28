@@ -8,7 +8,7 @@
 #include <planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
-namespace sm_dance_bot
+namespace move_base_z_client
 {
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
@@ -36,12 +36,12 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    auto* odomTracker_ = this->getComponent<odom_tracker::OdomTracker>();
+    auto* odomTracker_ = this->getComponent<OdomTracker>();
 
     ROS_INFO("Component requirements completed");
 
     moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
-    this->odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart();
   }
@@ -50,7 +50,7 @@ public:
   void goToRadialStart()
   {
     ROS_INFO("Sending Goal to MoveBase");
-    smacc::ClMoveBaseZ::Goal goal;
+    ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
     readStartPoseFromParameterServer(goal);
@@ -62,7 +62,7 @@ public:
     moveBaseClient_->sendGoal(goal);
   }
 
-  void readStartPoseFromParameterServer(smacc::ClMoveBaseZ::Goal &goal)
+  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal)
   {
     if (!initialPoint)
     {
@@ -92,6 +92,6 @@ public:
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).
   // this resource can be used from any method in this state
-  smacc::ClMoveBaseZ *moveBaseClient_;
+  move_base_z_client::ClMoveBaseZ *moveBaseClient_;
 };
 } // namespace sm_dance_bot

@@ -126,7 +126,7 @@ include_directories(
 
 add_library(${PROJECT_NAME}
   src/forward_global_planner.cpp
-  src/reel_path_tools.cpp
+  src/path_tools.cpp
 )
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

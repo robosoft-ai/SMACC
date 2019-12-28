@@ -13,27 +13,31 @@
 #include <ros/ros.h>
 #include <backward_global_planner/command.h>
 
-namespace backward_global_planner {
-class BackwardGlobalPlanner : public nav_core::BaseGlobalPlanner {
+namespace move_base_z_client
+{
+namespace backward_global_planner
+{
+class BackwardGlobalPlanner : public nav_core::BaseGlobalPlanner
+{
 public:
     BackwardGlobalPlanner();
 
     virtual ~BackwardGlobalPlanner();
 
-    bool makePlan(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
+    bool makePlan(const geometry_msgs::PoseStamped &start,
+                  const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
 
-    bool makePlan(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan,
-        double& cost);
+    bool makePlan(const geometry_msgs::PoseStamped &start,
+                  const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan,
+                  double &cost);
 
-    virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
+    virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
+                                           const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
 
-    virtual bool createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped& start,
-        const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan);
+    virtual bool createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped &start,
+                                                              const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
 
-    virtual void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros_) override;
+    virtual void initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_) override;
 
 private:
     ros::NodeHandle nh_;
@@ -47,18 +51,19 @@ private:
     nav_msgs::Path lastForwardPathMsg_;
 
     /// stored but almost not used
-    costmap_2d::Costmap2DROS* costmap_ros_;
+    costmap_2d::Costmap2DROS *costmap_ros_;
 
-    void onForwardTrailMsg(const nav_msgs::Path::ConstPtr& trailMessage);
+    void onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage);
 
-    void publishGoalMarker(const geometry_msgs::Pose& pose, double r, double g, double b);
+    void publishGoalMarker(const geometry_msgs::Pose &pose, double r, double g, double b);
 
     ros::ServiceServer cmd_server_;
 
-    bool commandServiceCall(backward_global_planner::command::Request  &req, backward_global_planner::command::Response  &res);
-    
+    bool commandServiceCall(::backward_global_planner::command::Request &req, ::backward_global_planner::command::Response &res);
+
     double skip_straight_motion_distance_; //meters
-    
+
     double puresSpinningRadStep_; // rads
 };
-}
+} // namespace backward_global_planner
+} // namespace move_base_z_client

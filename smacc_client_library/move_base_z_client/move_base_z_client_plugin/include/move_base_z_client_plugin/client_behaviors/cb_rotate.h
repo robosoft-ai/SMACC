@@ -7,14 +7,14 @@
 #include <boost/optional.hpp>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
-namespace sm_dance_bot
+namespace move_base_z_client
 {
 class CbRotate : public smacc::SmaccClientBehavior
 {
 public:
     tf::TransformListener listener;
 
-    smacc::ClMoveBaseZ *moveBaseClient_;
+    move_base_z_client::ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> rotateDegree;
 
@@ -66,7 +66,7 @@ public:
             }
         }
 
-        smacc::ClMoveBaseZ::Goal goal;
+        ClMoveBaseZ::Goal goal;
         goal.target_pose.header.frame_id = "/odom";
         goal.target_pose.header.stamp = ros::Time::now();
 

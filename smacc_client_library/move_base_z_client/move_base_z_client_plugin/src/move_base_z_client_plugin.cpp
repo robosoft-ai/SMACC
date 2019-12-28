@@ -6,7 +6,7 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <pluginlib/class_list_macros.h>
 
-namespace smacc
+namespace move_base_z_client
 {
 
 ClMoveBaseZ::ClMoveBaseZ()
@@ -21,7 +21,7 @@ std::string ClMoveBaseZ::getName() const
 
 void ClMoveBaseZ::initialize()
 {
-    plannerSwitcher_ = std::make_shared<planner_switcher::PlannerSwitcher>(*(this->name_));
+    plannerSwitcher_ = std::make_shared<move_base_z_client::PlannerSwitcher>(*(this->name_));
     SmaccActionClientBase<move_base_msgs::MoveBaseAction>::initialize();
 }
 
@@ -30,4 +30,4 @@ ClMoveBaseZ::~ClMoveBaseZ()
 }
 } // namespace smacc
 
-PLUGINLIB_EXPORT_CLASS(smacc::ClMoveBaseZ, smacc::ISmaccClient)
+PLUGINLIB_EXPORT_CLASS(move_base_z_client::ClMoveBaseZ, smacc::ISmaccClient)

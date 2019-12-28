@@ -5,9 +5,11 @@
 #include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(move_base_z_client::backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace backward_local_planner 
+namespace move_base_z_client
+{
+namespace backward_local_planner
 {
 
 /**
@@ -29,10 +31,10 @@ BackwardLocalPlanner::~BackwardLocalPlanner()
 {
 }
 
-void  BackwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer* tf, costmap_2d::Costmap2DROS* costmap_ros) 
+void BackwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros)
 {
-   this->costmapRos_ = costmap_ros;
-   this->initialize();
+    this->costmapRos_ = costmap_ros;
+    this->initialize();
 }
 
 void BackwardLocalPlanner::initialize()
@@ -41,23 +43,23 @@ void BackwardLocalPlanner::initialize()
     k_alpha_ = 0.5;
     k_betta_ = -1.0; // set to zero means that orientation is not important
     carrot_angular_distance_ = 0.5;
-    
+
     f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
     paramServer_.setCallback(f);
     this->currentPoseIndex_ = 0;
-    
+
     ros::NodeHandle nh("~/BackwardLocalPlanner");
     nh.param("pure_spinning_straight_line_mode", pureSpinningMode_, true);
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
-    nh.param("k_rho", k_rho_,k_rho_);
+    nh.param("k_rho", k_rho_, k_rho_);
     nh.param("carrot_distance", carrot_distance_, carrot_distance_);
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
-    
+
     nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
     nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
-    
-    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1); 
+
+    goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);
 }
 
 /**
@@ -65,10 +67,10 @@ void BackwardLocalPlanner::initialize()
 * initialize()
 ******************************************************************************************************************
 */
-void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* tf, costmap_2d::Costmap2DROS* costmap_ros)
+void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener *tf, costmap_2d::Costmap2DROS *costmap_ros)
 {
-   this->costmapRos_ = costmap_ros;
-   this->initialize();
+    this->costmapRos_ = costmap_ros;
+    this->initialize();
 }
 
 /**
@@ -76,16 +78,16 @@ void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener* t
 * createCarrotGoal()
 ******************************************************************************************************************
 */
-bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
+bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose> &tfpose)
 {
     bool ok = false;
-    bool pureSpinning=false;
+    bool pureSpinning = false;
 
     double angle = tf::getYaw(tfpose.getRotation());
 
-    if(!pureSpinningMode_)
+    if (!pureSpinningMode_)
     {
-        if(currentPoseIndex_<=1)
+        if (currentPoseIndex_ <= 1)
         {
             double angle = tf::getYaw(tfpose.getRotation());
 
@@ -109,8 +111,8 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
                     mindist = dist;
                 }
             }*/
-            
-            auto& closestPose = backwardsPlanPath_[1];
+
+            auto &closestPose = backwardsPlanPath_[1];
             tf::Quaternion q;
             tf::quaternionMsgToTF(closestPose.pose.orientation, q);
             double pangle = tf::getYaw(q);
@@ -118,33 +120,33 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
 
             ROS_WARN("pure spinning stage, angle: %lf threshold: %lf", angular_error, carrot_angular_distance_);
 
-            if(fabs(angular_error) >= carrot_angular_distance_)
+            if (fabs(angular_error) >= carrot_angular_distance_)
             {
                 ok = true;
                 currentPoseIndex_ = 1;
-                pureSpinning=true;
-                initialPureSpinningStage_=true;
+                pureSpinning = true;
+                initialPureSpinningStage_ = true;
             }
             else
             {
                 ok = true;
                 currentPoseIndex_++;
-                initialPureSpinningStage_=false;
-                pureSpinning=false;
+                initialPureSpinningStage_ = false;
+                pureSpinning = false;
                 //exit(0);
             }
         }
     }
-    
-    if(!pureSpinning)
+
+    if (!pureSpinning)
     {
-        pureSpinning  = false;
+        pureSpinning = false;
 
         // iterate the point from the current position and backward until reaching a new goal point in the path
-        for (; !ok && currentPoseIndex_ < backwardsPlanPath_.size(); currentPoseIndex_++) 
+        for (; !ok && currentPoseIndex_ < backwardsPlanPath_.size(); currentPoseIndex_++)
         {
-            auto& pose = backwardsPlanPath_[currentPoseIndex_];
-            const geometry_msgs::Point& p = pose.pose.position;
+            auto &pose = backwardsPlanPath_[currentPoseIndex_];
+            const geometry_msgs::Point &p = pose.pose.position;
             tf::Quaternion q;
             tf::quaternionMsgToTF(pose.pose.orientation, q);
 
@@ -157,7 +159,7 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
             double angular_error = angles::shortest_angular_distance(pangle + alpha_offset_, angle);
 
             // target pose found
-            if (dist >= carrot_distance_ ) 
+            if (dist >= carrot_distance_)
             {
                 ok = true;
                 ROS_INFO("target dist: %lf / %lf", dist, carrot_distance_);
@@ -167,14 +169,14 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
         }
     }
 
-    if (currentPoseIndex_ >= backwardsPlanPath_.size()) 
+    if (currentPoseIndex_ >= backwardsPlanPath_.size())
     {
-        currentPoseIndex_ = backwardsPlanPath_.size() -1;
+        currentPoseIndex_ = backwardsPlanPath_.size() - 1;
         ok = true;
     }
-    
+
     ROS_INFO("current index: %d", currentPoseIndex_);
-    
+
     return pureSpinning;
 }
 
@@ -183,19 +185,19 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose>& tfpose)
 * defaultBackwardCmd()
 ******************************************************************************************************************
 */
-void BackwardLocalPlanner::defaultBackwardCmd(const tf::Stamped<tf::Pose>& tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist& cmd_vel)
+void BackwardLocalPlanner::defaultBackwardCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist &cmd_vel)
 {
     cmd_vel.linear.x = vetta;
     cmd_vel.angular.z = gamma;
 
-    auto& finalgoal = backwardsPlanPath_.back();
+    auto &finalgoal = backwardsPlanPath_.back();
     double gdx = finalgoal.pose.position.x - tfpose.getOrigin().x();
     double gdy = finalgoal.pose.position.y - tfpose.getOrigin().y();
-    double goaldist = sqrt(gdx*gdx + gdy*gdy);
+    double goaldist = sqrt(gdx * gdx + gdy * gdy);
 
-    if(goaldist < this->xy_goal_tolerance_ && alpha_error < this->yaw_goal_tolerance_) // 5cm
+    if (goaldist < this->xy_goal_tolerance_ && alpha_error < this->yaw_goal_tolerance_) // 5cm
     {
-        goalReached_=true;
+        goalReached_ = true;
         backwardsPlanPath_.clear();
     }
 }
@@ -204,7 +206,7 @@ void BackwardLocalPlanner::defaultBackwardCmd(const tf::Stamped<tf::Pose>& tfpos
 * pureSpinningCmd()
 ******************************************************************************************************************
 */
-void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, double vetta, double gamma, double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist& cmd_vel)
+void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist &cmd_vel)
 {
     if (rho_error > 0.02)
     {
@@ -214,13 +216,13 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
     else if (fabs(betta_error) >= 0.01)
     {
         vetta = 0;
-        gamma = k_betta_*betta_error;
+        gamma = k_betta_ * betta_error;
     }
-    else if (currentPoseIndex_  >= backwardsPlanPath_.size() - 1)
+    else if (currentPoseIndex_ >= backwardsPlanPath_.size() - 1)
     {
         vetta = 0;
         gamma = 0;
-        goalReached_=true;
+        goalReached_ = true;
         ROS_INFO_STREAM("BACKWARD LOCAL PLANNER END: rhoerror: " << rho_error);
     }
 
@@ -229,8 +231,8 @@ void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose>& tfpose, 
 }
 
 // MELODIC
-#if ROS_VERSION_MINIMUM(1,13,0) 
-tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)
+#if ROS_VERSION_MINIMUM(1, 13, 0)
+tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS *costmapRos)
 {
     geometry_msgs::PoseStamped paux;
     costmapRos->getRobotPose(paux);
@@ -240,7 +242,7 @@ tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS* costmapRos)
 }
 #else
 // INDIGO AND PREVIOUS
-tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos) 
+tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS *costmapRos)
 {
     tf::Stamped<tf::Pose> tfpose;
     costmapRos->getRobotPose(tfpose);
@@ -254,10 +256,10 @@ tf::Stamped<tf::Pose> optionalRobotPose( costmap_2d::Costmap2DROS* costmapRos)
 * computeVelocityCommands()
 ******************************************************************************************************************
 */
-bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel)
+bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 {
     ROS_DEBUG("LOCAL PLANNER LOOP");
-    
+
     geometry_msgs::PoseStamped paux;
     tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
@@ -265,9 +267,9 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 
     bool initialPureSpinningDefaultMovement = createCarrotGoal(tfpose);
 
-    const geometry_msgs::PoseStamped& goalpose = backwardsPlanPath_[currentPoseIndex_];
+    const geometry_msgs::PoseStamped &goalpose = backwardsPlanPath_[currentPoseIndex_];
     ROS_INFO_STREAM("goal pose current index: " << goalpose);
-    const geometry_msgs::Point& goalposition = goalpose.pose.position;
+    const geometry_msgs::Point &goalposition = goalpose.pose.position;
 
     tf::Quaternion goalQ;
     tf::quaternionMsgToTF(goalpose.pose.orientation, goalQ);
@@ -295,55 +297,52 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 
     if (pureSpinningMode_)
     {
-        this->pureSpinningCmd(tfpose,vetta,gamma, alpha_error, betta_error,  rho_error, cmd_vel);
+        this->pureSpinningCmd(tfpose, vetta, gamma, alpha_error, betta_error, rho_error, cmd_vel);
     }
     else
     {
         // this is recomendable to start the initial motion looking to the goal
 
         ROS_WARN("pure spinning: %d", initialPureSpinningDefaultMovement);
-        if(initialPureSpinningDefaultMovement)
+        if (initialPureSpinningDefaultMovement)
         {
             vetta = 0;
         }
 
-
-        this->defaultBackwardCmd(tfpose, vetta,gamma, alpha_error, cmd_vel);
+        this->defaultBackwardCmd(tfpose, vetta, gamma, alpha_error, cmd_vel);
     }
 
-
- 
     if (cmd_vel.linear.x > max_linear_x_speed_)
     {
         cmd_vel.linear.x = max_linear_x_speed_;
     }
-    else if(cmd_vel.linear.x < -max_linear_x_speed_)
+    else if (cmd_vel.linear.x < -max_linear_x_speed_)
     {
         cmd_vel.linear.x = -max_linear_x_speed_;
     }
 
-    if(cmd_vel.angular.z > max_angular_z_speed_)
+    if (cmd_vel.angular.z > max_angular_z_speed_)
     {
         cmd_vel.angular.z = max_angular_z_speed_;
     }
-    else if(cmd_vel.angular.z < -max_angular_z_speed_)
+    else if (cmd_vel.angular.z < -max_angular_z_speed_)
     {
-        cmd_vel.angular.z = - max_angular_z_speed_;
+        cmd_vel.angular.z = -max_angular_z_speed_;
     }
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);
 
-    ROS_INFO_STREAM("local planner," << std::endl 
-                                      << " pureSpiningMode: "<< pureSpinningMode_ <<std::endl
-                                      << " theta: " << theta << std::endl
-                                      << " betta: " << theta << std::endl
-                                      << " err_x: " << dx << std::endl
-                                      << " err_y:" << dy << std::endl
-                                      << " rho_error:" << rho_error << std::endl
-                                      << " alpha_error:" << alpha_error << std::endl
-                                      << " betta_error:" << betta_error << std::endl
-                                      << " vetta:" << vetta << std::endl
-                                      << " gamma:" << gamma);
+    ROS_INFO_STREAM("local planner," << std::endl
+                                     << " pureSpiningMode: " << pureSpinningMode_ << std::endl
+                                     << " theta: " << theta << std::endl
+                                     << " betta: " << theta << std::endl
+                                     << " err_x: " << dx << std::endl
+                                     << " err_y:" << dy << std::endl
+                                     << " rho_error:" << rho_error << std::endl
+                                     << " alpha_error:" << alpha_error << std::endl
+                                     << " betta_error:" << betta_error << std::endl
+                                     << " vetta:" << vetta << std::endl
+                                     << " gamma:" << gamma);
 
     //cmd_vel.linear.x=0;
     //cmd_vel.angular.z = 0;
@@ -356,7 +355,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist& cmd_vel
 * reconfigCB()
 ******************************************************************************************************************
 */
-void BackwardLocalPlanner::reconfigCB(backward_local_planner::BackwardLocalPlannerConfig& config, uint32_t level)
+void BackwardLocalPlanner::reconfigCB(::backward_local_planner::BackwardLocalPlannerConfig &config, uint32_t level)
 {
     ROS_INFO("Backward planner reconfigure Request");
     k_alpha_ = config.k_alpha;
@@ -385,9 +384,9 @@ bool BackwardLocalPlanner::isGoalReached()
 * setPlan()
 ******************************************************************************************************************
 */
-bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>& plan)
+bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped> &plan)
 {
-    initialPureSpinningStage_=true;
+    initialPureSpinningStage_ = true;
     goalReached_ = false;
     backwardsPlanPath_ = plan;
     /*
@@ -411,13 +410,13 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
     marker.header.frame_id = "/odom";
-    marker.header.stamp = ros::Time::now ();
+    marker.header.stamp = ros::Time::now();
 
     marker.ns = "my_namespace2";
     marker.id = 0;
     marker.type = visualization_msgs::Marker::ARROW;
     marker.action = visualization_msgs::Marker::ADD;
-    
+
     marker.scale.x = 0.05;
     marker.scale.y = 0.15;
     marker.scale.z = 0.05;
@@ -427,7 +426,7 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     marker.color.g = 0;
     marker.color.b = 0;
 
-    geometry_msgs::Point start,end;
+    geometry_msgs::Point start, end;
     start.x = x;
     start.y = y;
 
@@ -442,4 +441,5 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 
     goalMarkerPublisher_.publish(ma);
 }
-}
+} // namespace backward_local_planner
+} // namespace move_base_z_client

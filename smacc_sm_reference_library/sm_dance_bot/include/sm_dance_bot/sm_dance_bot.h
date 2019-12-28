@@ -7,6 +7,9 @@
 
 #include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
 
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+using namespace move_base_z_client;
+
 #include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_rotate.h>
 #include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_undo_path_backwards.h>
 #include <sm_dance_bot/clients/move_base_z_client/client_behaviors/cb_navigate_global_position.h>
@@ -22,6 +25,8 @@
 #include <sm_dance_bot/clients/string_publisher_client/client_behaviors/cb_string_publisher.h>
 #include <sm_dance_bot/clients/service3_client/client_behaviors/cb_service3.h>
 #include <sm_dance_bot/clients/updatable_publisher_client/client_behaviors/cb_updatable_publisher.h>
+
+
 
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>

@@ -7,11 +7,11 @@ struct StRotateDegrees1 : smacc::SmaccState<StRotateDegrees1, MsDanceBotRunMode>
 
   typedef mpl::list<
       // Expected event
-      smacc::transition<EvActionSucceeded<smacc::ClMoveBaseZ, OrNavigation>, StNavigateForward1>,
+      smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateForward1>,
 
       // Error events
       //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::transition<EvActionAborted<smacc::ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+      smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()
