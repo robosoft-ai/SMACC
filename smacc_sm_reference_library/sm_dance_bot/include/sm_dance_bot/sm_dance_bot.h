@@ -39,7 +39,7 @@ using namespace sm_dance_bot::service3_client;
 using namespace sm_dance_bot::string_publisher_client;
 using namespace sm_dance_bot::temperature_sensor_client;
 using namespace sm_dance_bot::tool_client;
-using namespace sm_dance_bot::updatable_publisher_client;
+using namespace sm_dance_bot::ros_publisher_client;
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>

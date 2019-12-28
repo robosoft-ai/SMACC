@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>sm_dance_bot</name>
-  <version>0.0.1</version>
-  <description>The dance_bot package</description>
+  <name>ros_publisher_client</name>
+  <version>0.0.0</version>
+  <description>The ros_publisher_client package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/dance_bot</url> -->
+  <!-- <url type="website">http://wiki.ros.org/ros_publisher_client</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -51,24 +51,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
-  
-  <depend>move_base_z_client_plugin</depend>
-  <depend>odom_tracker</depend>
-  <depend>planner_switcher</depend>
-  <depend>waypoints_navigator</depend>
-
-  <depend>smacc_interface_components</depend>
-  <depend>smacc_action_client_generic</depend>
-
-  <depend>all_events_go</depend>
-  <depend>event_countdown</depend>
-  <depend>conditional</depend>
-  <depend>ros_timer_client</depend>
-
-  <depend>ridgeback_gazebo</depend>
-  <depend>ridgeback_navigation</depend>
-  
-  <depend>tf</depend>¡
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

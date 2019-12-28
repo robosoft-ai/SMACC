@@ -12,14 +12,15 @@
 #include <sm_three_some/orthogonals/or_keyboard.h>
 
 using namespace ros_timer_client;
+using namespace ros_publisher_client;
+
 using namespace sm_three_some::subscriber_client;
-using namespace sm_three_some::updatable_publisher_client;
 using namespace sm_three_some::keyboard_client;
 
 //CLIENT BEHAVIORS
-#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_default_publish_loop.h>
-#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_muted_behavior.h>
-#include <sm_three_some/clients/updatable_publisher_client/client_behaviors/cb_publish_once.h>
+#include <ros_publisher_client/client_behaviors/cb_default_publish_loop.h>
+#include <ros_publisher_client/client_behaviors/cb_muted_behavior.h>
+#include <ros_publisher_client/client_behaviors/cb_publish_once.h>
 
 #include <sm_three_some/clients/subscriber_client/client_behaviors/cb_default_subscriber_behavior.h>
 #include <sm_three_some/clients/subscriber_client/client_behaviors/cb_watchdog_subscriber_behavior.h>

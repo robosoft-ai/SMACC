@@ -55,6 +55,7 @@
   <depend>all_events_go</depend>  
   <depend>std_msgs</depend>
   <depend>ros_timer_client</depend>
+  <depend>ros_publisher_client</depend>
   
 
   <!-- The export tag contains other, unspecified, tags -->

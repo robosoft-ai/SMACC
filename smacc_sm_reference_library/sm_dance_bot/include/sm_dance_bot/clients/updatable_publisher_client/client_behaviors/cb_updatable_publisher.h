@@ -6,7 +6,7 @@
 
 namespace sm_dance_bot
 {
-namespace updatable_publisher_client
+namespace ros_publisher_client
 {
 class CbUpdatableStringPublisher : public smacc::SmaccClientBehavior,
                                    public smacc::ISmaccUpdatable
@@ -32,5 +32,5 @@ public:
         ROS_INFO("[CbUpdatableStringPublisher] update here!");
     }
 };
-} // namespace updatable_publisher_client
+} // namespace ros_publisher_client
 } // namespace sm_dance_bot
