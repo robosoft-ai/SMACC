@@ -103,7 +103,7 @@ void run()
   ros::NodeHandle n;
   ROS_INFO("Creating tool action server");
 
-  as_ = std::make_shared<Server>(n, "tool_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
+  as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
   ROS_INFO("Starting Tool Action Server");
 
   stateMarkerPublisher_ = n.advertise<visualization_msgs::MarkerArray>("tool_markers", 1); 

@@ -47,7 +47,7 @@ using namespace sm_dance_bot::cl_led;
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>
 #include <sm_dance_bot/orthogonals/or_obstacle_perception.h>
-#include <sm_dance_bot/orthogonals/or_tool.h>
+#include <sm_dance_bot/orthogonals/or_led.h>
 #include <sm_dance_bot/orthogonals/or_temperature_sensor.h>
 #include <sm_dance_bot/orthogonals/or_string_publisher.h>
 #include <sm_dance_bot/orthogonals/or_service3.h>

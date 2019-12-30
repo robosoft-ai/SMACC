@@ -10,7 +10,7 @@ public:
     virtual void onInitialize() override
     {
         auto actionclient = this->createClient<OrLED, cl_led::ClLED>();
-        actionclient->name_ = "tool_action_server";
+        actionclient->name_ = "led_action_server";
         actionclient->initialize();
     }
 };

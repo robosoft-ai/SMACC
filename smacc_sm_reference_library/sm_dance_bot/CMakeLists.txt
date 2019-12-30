@@ -134,7 +134,7 @@ target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
  )
 
- add_executable(led_action_server_node test/tool_action_server/src/led_action_server_node.cpp)
+ add_executable(led_action_server_node test/led_action_server/src/led_action_server_node.cpp)
 
  target_link_libraries(
    led_action_server_node
