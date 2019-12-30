@@ -17,7 +17,7 @@ struct StNavigateReverse2 : smacc::SmaccState<StNavigateReverse2, MsDanceBotRunM
    static void onDefinition()
    {
       static_configure<OrNavigation, CbNavigateBackwards>(2);
-      static_configure<OrTool, CbToolStop>();
+      static_configure<OrLED, CbLEDOff>();
       static_configure<OrObstaclePerception, CbLidarSensor>();
    }
 

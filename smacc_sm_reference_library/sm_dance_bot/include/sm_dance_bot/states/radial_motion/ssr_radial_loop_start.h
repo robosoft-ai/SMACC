@@ -1,3 +1,7 @@
+namespace sm_dance_bot
+{
+namespace radial_motion
+{
 struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
@@ -5,7 +9,6 @@ struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
 
   static void onDefinition()
   {
-
   }
 
   void onInitialize()
@@ -27,3 +30,5 @@ struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
   }
 };
 
+} // namespace radial_motion
+} // namespace sm_dance_bot

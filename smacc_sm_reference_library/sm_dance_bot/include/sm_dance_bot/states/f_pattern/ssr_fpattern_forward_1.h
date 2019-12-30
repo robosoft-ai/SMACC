@@ -1,4 +1,6 @@
 
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 template <typename SS>
@@ -13,7 +15,7 @@ struct SsrFPatternForward1 : public smacc::SmaccState<SsrFPatternForward1<SS>, S
   static void onDefinition()
   {
      TSsr::template static_configure<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
-     TSsr::template static_configure<OrTool, CbToolStart>();
+     TSsr::template static_configure<OrLED, CbLEDOn>();
   }
 
   void onInitialize()
@@ -22,4 +24,5 @@ struct SsrFPatternForward1 : public smacc::SmaccState<SsrFPatternForward1<SS>, S
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
   }
 };
+}
 }

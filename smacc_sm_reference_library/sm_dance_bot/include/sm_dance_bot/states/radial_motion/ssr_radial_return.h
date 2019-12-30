@@ -1,3 +1,7 @@
+namespace sm_dance_bot
+{
+namespace radial_motion
+{
 struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
 {
   typedef mpl::list<
@@ -10,10 +14,12 @@ struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS>
   static void onDefinition()
   {
     static_configure<OrNavigation, CbUndoPathBackwards>();
-    static_configure<OrTool, CbToolStop>();
+    static_configure<OrLED, CbLEDOff>();
   }
 
   void onInitialize()
   {
   }
 };
+}
+}

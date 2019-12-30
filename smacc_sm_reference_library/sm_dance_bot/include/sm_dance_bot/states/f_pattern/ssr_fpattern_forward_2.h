@@ -1,3 +1,5 @@
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 template <typename SS>
@@ -19,7 +21,8 @@ struct SsrFPatternForward2 : smacc::SmaccState<SsrFPatternForward2<SS>, SS>
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
 
     TSsr::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
-    TSsr::template configure<OrTool, CbToolStop>();
+    TSsr::template configure<OrLED, CbLEDOff>();
   }
 };
+}
 }

@@ -1,12 +1,14 @@
+namespace sm_dance_bot
+{
+namespace s_pattern
+{
 struct SsrSPatternLoopStart : smacc::SmaccState<SsrSPatternLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  typedef mpl::list<smacc::transition<EvLoopContinue<SsrSPatternLoopStart>, SsrSPatternRotate1, CONTINUELOOP>
-                    > reactions;
+  typedef mpl::list<smacc::transition<EvLoopContinue<SsrSPatternLoopStart>, SsrSPatternRotate1, CONTINUELOOP>> reactions;
 
   static void onDefinition()
   {
-
   }
 
   void onInitialize()
@@ -25,3 +27,5 @@ struct SsrSPatternLoopStart : smacc::SmaccState<SsrSPatternLoopStart, SS>
   }
 };
 
+} // namespace s_pattern
+} // namespace sm_dance_bot

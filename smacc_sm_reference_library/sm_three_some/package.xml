@@ -51,7 +51,6 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>smacc</depend>
   <depend>smacc_interface_components</depend>
-  <depend>smacc_action_client_generic</depend>
   <depend>all_events_go</depend>  
   <depend>std_msgs</depend>
   <depend>ros_timer_client</depend>

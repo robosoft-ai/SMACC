@@ -5,6 +5,10 @@ namespace sm_dance_bot
 namespace SS5
 {
 
+namespace sm_dance_bot
+{
+namespace s_pattern
+{
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
 class SsrSPatternRotate1;
 class SsrSPatternForward1;
@@ -15,12 +19,16 @@ class SsrSPatternForward3;
 class SsrSPatternRotate4;
 class SsrSPatternForward4;
 class SsrSPatternLoopStart;
+} // namespace s_pattern
+} // namespace sm_dance_bot
 
 enum class TDirection
 {
     LEFT,
     RIGHT
 };
+
+using namespace sm_dance_bot::s_pattern;
 
 struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, SsrSPatternLoopStart>
 {

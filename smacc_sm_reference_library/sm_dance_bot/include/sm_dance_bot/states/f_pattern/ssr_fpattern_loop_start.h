@@ -1,3 +1,5 @@
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 template <typename SS>
@@ -24,4 +26,5 @@ struct SsrFPatternStartLoop : smacc::SmaccState<SsrFPatternStartLoop<SS>, SS>
     TSsr::throwLoopEventFromCondition(&SsrFPatternStartLoop<SS>::loopCondition);
   }
 };
+}
 }

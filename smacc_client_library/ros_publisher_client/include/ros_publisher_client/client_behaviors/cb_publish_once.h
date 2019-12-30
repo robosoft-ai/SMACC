@@ -8,8 +8,39 @@ namespace ros_publisher_client
 template <typename RosMsgType>
 class CbPublishOnce : public smacc::SmaccClientBehavior
 {
+private:
+    std::function<void()> deferedPublishFn;
+    ClRosPublisher *client_;
+
 public:
-    void onEntry()
+    CbPublishOnce()
+        : deferedPublishFn(nullptr)
+    {
+    }
+
+    template <typename TMessage>
+    CbPublishOnce(const TMessage &data)
+    {
+        this->setMessage(data);
+    }
+
+    template <typename TMessage>
+    void setMessage(const TMessage &data)
+    {
+        deferedPublishFn = [=]() {
+            client_->publish(data);
+        };
+    }
+
+    virtual void onEntry() override
+    {
+        this->requiresClient(client_);
+
+        if (deferedPublishFn != nullptr)
+            deferedPublishFn();
+    }
+
+    virtual void onExit() override
     {
     }
 };

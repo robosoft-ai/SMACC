@@ -1,3 +1,5 @@
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 template <typename SS>
@@ -18,7 +20,7 @@ struct SsrFPatternRotate2 : smacc::SmaccState<SsrFPatternRotate2<SS>, SS>
       angle = 90;
 
     TSsr::template static_configure<OrNavigation, CbRotate>(angle);
-    TSsr::template static_configure<OrTool, CbToolStop>();
+    TSsr::template static_configure<OrLED, CbLEDOff>();
   }
 
   void onInitialize()
@@ -26,3 +28,4 @@ struct SsrFPatternRotate2 : smacc::SmaccState<SsrFPatternRotate2<SS>, SS>
   }
 };
 } // namespace fpattern_substates
+}

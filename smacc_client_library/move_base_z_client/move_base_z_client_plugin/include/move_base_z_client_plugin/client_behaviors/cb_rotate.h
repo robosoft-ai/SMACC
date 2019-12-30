@@ -14,7 +14,7 @@ class CbRotate : public smacc::SmaccClientBehavior
 public:
     tf::TransformListener listener;
 
-    move_base_z_client::ClMoveBaseZ *moveBaseClient_;
+    ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> rotateDegree;
 
@@ -80,4 +80,4 @@ public:
         moveBaseClient_->sendGoal(goal);
     }
 };
-} // namespace sm_dance_bot
+} // namespace move_base_z_client

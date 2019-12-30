@@ -7,7 +7,7 @@ project(sm_dance_bot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker planner_switcher waypoints_navigator smacc_interface_components smacc_action_client_generic tf all_events_go event_countdown ros_timer_client conditional)
+find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker planner_switcher waypoints_navigator smacc_interface_components tf all_events_go event_countdown ros_timer_client conditional ros_publisher_client actionlib actionlib_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -56,18 +56,15 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin odom_tracker
 #   Service2.srv
 # )
 
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
+add_action_files(
+   FILES
+   LEDControl.action
+)
 
-## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+   DEPENDENCIES
+   actionlib_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -119,7 +116,10 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} src/sm_dance_bot.cpp)
+add_executable(${PROJECT_NAME} 
+              src/sm_dance_bot.cpp
+              src/clients/cl_led/cl_led.cpp)
+
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}

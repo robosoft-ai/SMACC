@@ -1,6 +1,6 @@
 namespace sm_three_some
 {
-struct StState3 : smacc::SmaccState<StState3, MsThreeSomeRunMode>
+struct StState3 : smacc::SmaccState<StState3, MsRun>
 {
     using SmaccState::SmaccState;
 

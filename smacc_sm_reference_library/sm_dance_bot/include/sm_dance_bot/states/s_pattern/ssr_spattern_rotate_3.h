@@ -1,3 +1,7 @@
+namespace sm_dance_bot
+{
+namespace s_pattern
+{
 struct SsrSPatternRotate3 : smacc::SmaccState<SsrSPatternRotate3, SS>
 {
     using SmaccState::SmaccState;
@@ -22,6 +26,8 @@ struct SsrSPatternRotate3 : smacc::SmaccState<SsrSPatternRotate3, SS>
             angle = 90;
 
         this->configure<OrNavigation, CbRotate>(angle);
-        this->configure<OrTool, CbToolStop>();
+        this->configure<OrLED, CbLEDOff>();
     }
 };
+} // namespace s_pattern
+} // namespace sm_dance_bot

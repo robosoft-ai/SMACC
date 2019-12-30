@@ -18,7 +18,7 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
   static void onDefinition()
   {
     static_configure<OrNavigation, CbNavigateForward>(1);
-    static_configure<OrTool, CbToolStop>();
+    static_configure<OrLED, CbLEDOff>();
     static_configure<OrObstaclePerception, CbLidarSensor>();
   }
 

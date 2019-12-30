@@ -12,5 +12,17 @@ public:
     ClRosPublisher()
     {
     }
+
+    template <typename MessageType>
+    void configure(std::string topicName)
+    {
+        SmaccPublisherClient::configure<MessageType>(topicName);
+    }
+
+    template <typename MessageType>
+    void publish(const MessageType &msg)
+    {
+        SmaccPublisherClient::publish(msg);
+    }
 };
 } // namespace ros_publisher_client

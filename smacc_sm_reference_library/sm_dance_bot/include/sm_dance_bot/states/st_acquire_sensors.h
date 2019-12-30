@@ -36,7 +36,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       static_configure<OrStringPublisher, CbStringPublisher>("Hello World!");
       static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
       static_configure<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-      static_configure<OrUpdatablePublisher, CbUpdatableStringPublisher>();
+      static_configure<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
       static_createLogicUnit<LuAllEventsGo,
                              EvAll<LuAllEventsGo, Unit1>,

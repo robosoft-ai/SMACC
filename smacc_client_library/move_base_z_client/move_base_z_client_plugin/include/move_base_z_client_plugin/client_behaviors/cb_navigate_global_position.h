@@ -10,6 +10,9 @@
 
 namespace move_base_z_client
 {
+
+using namespace ::move_base_z_client::odom_tracker;
+
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
 public:
@@ -36,12 +39,12 @@ public:
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    auto* odomTracker_ = this->getComponent<OdomTracker>();
+    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
     ROS_INFO("Component requirements completed");
 
     moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
-    this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart();
   }
@@ -57,7 +60,7 @@ public:
 
     // store the start pose on the state machine storage so that it can
     // be referenced from other states (for example return to radial start)
-    this->stateMachine->setGlobalSMData("radial_start_pose", goal.target_pose);
+    this->stateMachine_->setGlobalSMData("radial_start_pose", goal.target_pose);
 
     moveBaseClient_->sendGoal(goal);
   }
@@ -92,6 +95,6 @@ public:
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).
   // this resource can be used from any method in this state
-  move_base_z_client::ClMoveBaseZ *moveBaseClient_;
+  ClMoveBaseZ *moveBaseClient_;
 };
-} // namespace sm_dance_bot
+} // namespace move_base_z_client

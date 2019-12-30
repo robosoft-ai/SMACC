@@ -1,5 +1,7 @@
 #include <smacc/smacc.h>
 
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 
@@ -28,6 +30,7 @@ class SsrFPatternForward2;
 template <typename SS>
 class SsrFPatternStartLoop;
 } // namespace fpattern_substates
+} // namespace sm_dance_bot
 
 namespace sm_dance_bot
 {

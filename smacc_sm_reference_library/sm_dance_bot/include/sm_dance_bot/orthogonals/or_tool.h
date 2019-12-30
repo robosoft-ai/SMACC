@@ -1,15 +1,15 @@
 #pragma once
 #include <smacc/smacc_orthogonal.h>
-#include <smacc_action_client_generic/smacc_tool_plugin.h>
+#include <sm_dance_bot/clients/cl_led/cl_led.h>
 
 namespace sm_dance_bot
 {
-class OrTool : public smacc::Orthogonal
+class OrLED : public smacc::Orthogonal
 {
 public:
     virtual void onInitialize() override
     {
-        auto actionclient = this->createClient<OrTool, smacc::SmaccToolActionClient>();
+        auto actionclient = this->createClient<OrLED, cl_led::ClLED>();
         actionclient->name_ = "tool_action_server";
         actionclient->initialize();
     }

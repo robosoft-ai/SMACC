@@ -51,15 +51,17 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
+  <depend>actionlib</depend>
+  <depend>actionlib_msgs</depend>
   
-  <depend>move_base_z_client_plugin</depend>
+  <depend>move_base_z_client_plugin</depend>  
   <depend>odom_tracker</depend>
   <depend>planner_switcher</depend>
   <depend>waypoints_navigator</depend>
 
+  <depend>ros_publisher_client</depend>
   <depend>smacc_interface_components</depend>
-  <depend>smacc_action_client_generic</depend>
-
+  
   <depend>all_events_go</depend>
   <depend>event_countdown</depend>
   <depend>conditional</depend>

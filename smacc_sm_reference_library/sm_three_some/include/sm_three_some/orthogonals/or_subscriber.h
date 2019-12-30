@@ -1,11 +1,11 @@
 #pragma once
 
-#include <sm_three_some/clients/subscriber_client/cl_subscriber.h>
+#include <sm_three_some/clients/cl_subscriber/cl_subscriber.h>
 #include <smacc/smacc_orthogonal.h>
 
 namespace sm_three_some
 {
-using namespace sm_three_some::subscriber_client;
+using namespace sm_three_some::cl_subscriber;
 
 class OrSubscriber : public smacc::Orthogonal
 {

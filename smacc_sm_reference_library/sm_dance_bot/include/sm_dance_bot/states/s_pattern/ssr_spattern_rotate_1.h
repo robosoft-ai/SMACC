@@ -1,12 +1,15 @@
+namespace sm_dance_bot
+{
+namespace s_pattern
+{
 struct SsrSPatternRotate1 : smacc::SmaccState<SsrSPatternRotate1, SS>
 {
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-                    smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward1>,
-                    smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternLoopStart>
-                    >
-                    reactions;
+        smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward1>,
+        smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternLoopStart>>
+        reactions;
 
     static void onDefinition()
     {
@@ -26,7 +29,9 @@ struct SsrSPatternRotate1 : smacc::SmaccState<SsrSPatternRotate1, SS>
                 angle = -90;
 
             this->configure<OrNavigation, CbRotate>(angle);
-            this->configure<OrTool, CbToolStop>();
+            this->configure<OrLED, CbLEDOff>();
         }
     }
 };
+} // namespace s_pattern
+} // namespace sm_dance_bot

@@ -9,18 +9,42 @@ namespace ros_publisher_client
 class CbDefaultPublishLoop : public smacc::SmaccClientBehavior,
                              public smacc::ISmaccUpdatable
 {
-public:
-    template <typename RosMsgType>
-    void SetLoopMessage(RosMsgType& msg)
-    {
+private:
+    std::function<void()> deferedPublishFn;
+    ClRosPublisher *client_;
 
+public:
+    CbDefaultPublishLoop()
+        : deferedPublishFn(nullptr)
+    {
     }
 
-    void onEntry()
+    template <typename TMessage>
+    CbDefaultPublishLoop(const TMessage &data)
     {
+        this->setMessage(data);
+    }
+
+    template <typename TMessage>
+    void setMessage(const TMessage &data)
+    {
+        deferedPublishFn = [=]() {
+            client_->publish(data);
+        };
+    }
+
+    virtual void onEntry() override
+    {
+        this->requiresClient(client_);
     }
 
     virtual void update()
+    {
+        if (deferedPublishFn != nullptr)
+            deferedPublishFn();
+    }
+
+    virtual void onExit() override
     {
     }
 };

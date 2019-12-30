@@ -1,3 +1,5 @@
+namespace sm_dance_bot
+{
 namespace fpattern_substates
 {
 template <typename SS>
@@ -12,11 +14,12 @@ struct SsrFPatternReturn1 : smacc::SmaccState<SsrFPatternReturn1<SS>, SS>
   static void onDefinition()
   {
     TSsr::template static_configure<OrNavigation, CbUndoPathBackwards>();
-    TSsr::template static_configure<OrTool, CbToolStart>();
+    TSsr::template static_configure<OrLED, CbLEDOn>();
   }
 
   void onInitialize()
   {
   }
 };
+}
 }

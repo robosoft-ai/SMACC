@@ -55,7 +55,6 @@
   <depend>odom_tracker</depend>
   <depend>planner_switcher</depend>
   <depend>smacc_interface_components</depend>
-  <depend>smacc_action_client_generic</depend>
   <depend>all_events_go</depend>
   <depend>tf</depend>
   

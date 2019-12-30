@@ -9,24 +9,24 @@
 #include <dynamic_reconfigure/DoubleParameter.h>
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
-#include <smacc_action_client_generic/ToolControlAction.h>
-#include <smacc_action_client_generic/ToolControlActionResult.h>
-#include <smacc_action_client_generic/ToolControlResult.h>
+#include <sm_dance_bot/LEDControlAction.h>
+#include <sm_dance_bot/LEDControlActionResult.h>
+#include <sm_dance_bot/LEDControlResult.h>
 #include <memory>
 #include <visualization_msgs/MarkerArray.h>
 
-typedef actionlib::SimpleActionServer<smacc_action_client_generic::ToolControlAction> Server;
+typedef actionlib::SimpleActionServer<sm_dance_bot::LEDControlAction> Server;
 
 // This class describes a preemptable-on/off tool action server to be used from smacc
 // shows in rviz a sphere whoose color describe the current state (unknown, running, idle)
-class ToolActionServer
+class LEDActionServer
 {
 public:
   std::shared_ptr<Server> as_ ;
 
   ros::Publisher stateMarkerPublisher_;
 
-  smacc_action_client_generic::ToolControlGoal cmd;
+  sm_dance_bot::LEDControlGoal cmd;
 
   uint8_t currentState_;
 
@@ -35,9 +35,9 @@ public:
 * constructor()
 ******************************************************************************************************************
 */
-  ToolActionServer()
+  LEDActionServer()
   {
-    currentState_ =  smacc_action_client_generic::ToolControlResult::STATE_UNKNOWN;
+    currentState_ =  sm_dance_bot::LEDControlResult::STATE_UNKNOWN;
   }
 
 /**
@@ -47,7 +47,7 @@ public:
 */
 void publishFeedback()  // Note: "Action" is not appended to DoDishes here
 {
-    smacc_action_client_generic::ToolControlFeedback feedback_msg;
+    sm_dance_bot::LEDControlFeedback feedback_msg;
     
     as_->publishFeedback(feedback_msg);
 }
@@ -57,18 +57,18 @@ void publishFeedback()  // Note: "Action" is not appended to DoDishes here
 * execute()
 ******************************************************************************************************************
 */
-void execute(const smacc_action_client_generic::ToolControlGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
+void execute(const sm_dance_bot::LEDControlGoalConstPtr& goal)  // Note: "Action" is not appended to DoDishes here
 {
   ROS_INFO_STREAM("Tool action server request: "<< *goal);
   cmd = *goal;
 
-  if(goal->command == smacc_action_client_generic::ToolControlGoal::CMD_START)
+  if(goal->command == sm_dance_bot::LEDControlGoal::CMD_ON)
   {
-    currentState_ =  smacc_action_client_generic::ToolControlResult::STATE_RUNNING;
+    currentState_ =  sm_dance_bot::LEDControlResult::STATE_RUNNING;
   }
-  else  if (goal->command == smacc_action_client_generic::ToolControlGoal::CMD_STOP)
+  else  if (goal->command == sm_dance_bot::LEDControlGoal::CMD_OFF)
   {
-    currentState_ =  smacc_action_client_generic::ToolControlResult::STATE_IDLE;
+    currentState_ =  sm_dance_bot::LEDControlResult::STATE_IDLE;
   }
 
   // 10Hz internal loop
@@ -79,7 +79,7 @@ void execute(const smacc_action_client_generic::ToolControlGoalConstPtr& goal)  
     if(as_->isPreemptRequested())
     {
        // a new request is being executed, we will stop this one
-       ROS_WARN("ToolActionServer request preempted. Forgetting older request.");
+       ROS_WARN("LEDActionServer request preempted. Forgetting older request.");
        as_->setPreempted(); 
        return;
     }
@@ -103,7 +103,7 @@ void run()
   ros::NodeHandle n;
   ROS_INFO("Creating tool action server");
 
-  as_ = std::make_shared<Server>(n, "tool_action_server", boost::bind(&ToolActionServer::execute, this,  _1), false);
+  as_ = std::make_shared<Server>(n, "tool_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
   ROS_INFO("Starting Tool Action Server");
 
   stateMarkerPublisher_ = n.advertise<visualization_msgs::MarkerArray>("tool_markers", 1); 
@@ -135,14 +135,14 @@ void publishStateMarker()
 
     marker.color.a = 1;
 
-    if(currentState_ == smacc_action_client_generic::ToolControlResult::STATE_RUNNING)
+    if(currentState_ == sm_dance_bot::LEDControlResult::STATE_RUNNING)
     {
       // show green ball
       marker.color.r = 0;
       marker.color.g = 1;
       marker.color.b = 0;
     }
-    else if (currentState_ == smacc_action_client_generic::ToolControlResult::STATE_IDLE)
+    else if (currentState_ == sm_dance_bot::LEDControlResult::STATE_IDLE)
     {
       // show gray ball
       marker.color.r = 0.7;
@@ -177,8 +177,8 @@ void publishStateMarker()
 int main(int argc, char** argv)
 {
   ros::init(argc, argv, "tool_action_server_node");
-  ToolActionServer toolActionServer;
-  toolActionServer.run();
+  LEDActionServer LEDActionServer;
+  LEDActionServer.run();
 
   return 0;
 }

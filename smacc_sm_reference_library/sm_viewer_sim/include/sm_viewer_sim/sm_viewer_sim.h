@@ -23,6 +23,12 @@ struct St3;
 struct EvToDeep : sc::event<EvToDeep>
 {
 };
+
+struct EvFail : sc::event<EvFail>
+{
+};
+
+
 struct Ev1 : sc::event<Ev1>
 {
 };
@@ -30,9 +36,6 @@ struct Ev2 : sc::event<Ev2>
 {
 };
 struct Ev3 : sc::event<Ev3>
-{
-};
-struct EvFail : sc::event<EvFail>
 {
 };
 

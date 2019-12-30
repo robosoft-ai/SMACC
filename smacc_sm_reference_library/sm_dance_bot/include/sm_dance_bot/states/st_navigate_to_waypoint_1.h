@@ -17,7 +17,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
   static void onDefinition()
   {
     static_configure<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
-    static_configure<OrTool, CbToolStart>();
+    static_configure<OrLED, CbLEDOn>();
     static_configure<OrStringPublisher, CbStringPublisher>("All Done!");
     static_configure<OrObstaclePerception, CbLidarSensor>();
   }

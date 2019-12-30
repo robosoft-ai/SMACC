@@ -3,11 +3,20 @@ namespace sm_dance_bot
 {
 namespace SS1
 {
+
+namespace sm_dance_bot
+{
+namespace radial_motion
+{
 //forward declaration for initial ssr
 class SsrRadialRotate;
 class SsrRadialReturn;
 class SsrRadialEndPoint;
 class SsrRadialLoopStart;
+} // namespace radial_motion
+} // namespace sm_dance_bot
+
+using namespace sm_dance_bot::radial_motion;
 
 struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, SsrRadialLoopStart>
 {
@@ -52,4 +61,4 @@ using SS = SsRadialPattern1;
 #include <sm_dance_bot/states/radial_motion/ssr_radial_rotate.h>
 #include <sm_dance_bot/states/radial_motion/ssr_radial_loop_start.h>
 } // namespace SS1
-}
+} // namespace sm_dance_bot

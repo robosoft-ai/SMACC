@@ -9,6 +9,8 @@
 
 namespace move_base_z_client
 {
+using namespace ::move_base_z_client::odom_tracker;
+
 class CbNavigateBackwards : public smacc::SmaccClientBehavior
 {
 public:
@@ -19,7 +21,8 @@ public:
 
     tf::TransformListener listener;
 
-    move_base_z_client::ClMoveBaseZ *moveBaseClient_;
+    ClMoveBaseZ *moveBaseClient_;
+    OdomTracker *odomTracker_;
 
     CbNavigateBackwards(float backwardDistance)
     {
@@ -52,8 +55,7 @@ public:
         ROS_INFO_STREAM("Straight motion distance: " << dist);
 
         this->requiresClient(moveBaseClient_);
-        auto odomTracker_ = this->getComponent<OdomTracker>();
-        
+
         //this should work better with a coroutine and await
         ros::Rate rate(10.0);
         tf::StampedTransform currentPose;
@@ -93,6 +95,9 @@ public:
         currentPoseMsg.header.frame_id = "/odom";
         currentPoseMsg.header.stamp = ros::Time::now();
         tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
+
+        odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
+        this->odomTracker_->clearPath();
         this->odomTracker_->setStartPoint(currentPoseMsg);
         this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
@@ -106,4 +111,4 @@ public:
         this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
     }
 };
-} // namespace sm_dance_bot
+} // namespace move_base_z_client

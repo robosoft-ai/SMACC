@@ -1,4 +1,3 @@
-#pragma once
 namespace sm_three_some
 {
 namespace SS1
@@ -9,7 +8,7 @@ class Ssr1;
 class Ssr2;
 class Ssr3;
 
-struct Ss1 : smacc::SmaccState<Ss1, MsThreeSomeRunMode, Ssr1>
+struct Ss1 : smacc::SmaccState<Ss1, MsRun, Ssr1, sc::has_full_history>
 {
 public:
     using SmaccState::SmaccState;

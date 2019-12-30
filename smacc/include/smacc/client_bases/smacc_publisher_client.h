@@ -23,28 +23,23 @@ public:
   }
 
   template <typename MessageType>
-  void configureMessageType()
+  void configure(std::string topicName)
   {
-    ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
-    pub_ = nh_.advertise<MessageType>(*topicName, *queueSize);
-  }
-
-  virtual void initialize() override
-  {
+    this->topicName = topicName;
     if (!initialized_)
     {
+      if (!this->topicName)
+      {
+        ROS_ERROR("topic publisher with no topic name set. Skipping advertising.");
+        return;
+      }
       if (!queueSize)
         queueSize = 1;
 
-      if (!topicName)
-      {
-        ROS_ERROR("topic publisher with no topic name set. Skipping advertising.");
-      }
-      else
-      {
+            ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
+      pub_ = nh_.advertise<MessageType>(*(this->topicName), *queueSize);
 
-        this->initialized_ = true;
-      }
+      this->initialized_ = true;
     }
   }
 
