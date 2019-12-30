@@ -126,17 +126,23 @@ target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
  )
 
+ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
+
+
  add_executable(temperature_sensor_node test/temperature_sensor_node/src/temperature_sensor_node.cpp)
  target_link_libraries(temperature_sensor_node
    ${catkin_LIBRARIES}
  )
 
- add_executable(tool_action_server_node test/tool_action_server/src/tool_action_server_node.cpp)
+ add_executable(led_action_server_node test/tool_action_server/src/led_action_server_node.cpp)
 
  target_link_libraries(
-   tool_action_server_node
+   led_action_server_node
    ${catkin_LIBRARIES}
 )
+
+add_dependencies(led_action_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
+
 
 
 #############
@@ -158,7 +164,7 @@ install(PROGRAMS
 install(TARGETS 
   ${PROJECT_NAME}
    temperature_sensor_node
-   tool_action_server_node
+   led_action_server_node
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

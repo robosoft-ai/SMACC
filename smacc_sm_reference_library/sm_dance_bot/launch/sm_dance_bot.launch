@@ -49,7 +49,7 @@
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_dance_bot)/config/navigation.rviz"
     if="$(arg show_rviz)"/>
 
-    <node pkg="sm_dance_bot" type="tool_action_server_node" name="tool_action_server_node" launch-prefix="$(arg server_nodes_xterms)"/>
+    <node pkg="sm_dance_bot" type="led_action_server_node" name="led_action_server_node" launch-prefix="$(arg server_nodes_xterms)"/>
     <node pkg="sm_dance_bot" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)"/>
     <node pkg="sm_dance_bot" type="service_node_3.py" name="service_server_node" launch-prefix="$(arg server_nodes_xterms)"/>
 

@@ -89,7 +89,6 @@ public:
 
         ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
         ros::Duration(10).sleep();
-        this->odomTracker_->clearPath();
 
         geometry_msgs::PoseStamped currentPoseMsg;
         currentPoseMsg.header.frame_id = "/odom";

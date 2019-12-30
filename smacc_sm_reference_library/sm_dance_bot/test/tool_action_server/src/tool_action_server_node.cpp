@@ -176,7 +176,7 @@ void publishStateMarker()
 */
 int main(int argc, char** argv)
 {
-  ros::init(argc, argv, "tool_action_server_node");
+  ros::init(argc, argv, "led_action_server_node");
   LEDActionServer LEDActionServer;
   LEDActionServer.run();
 
