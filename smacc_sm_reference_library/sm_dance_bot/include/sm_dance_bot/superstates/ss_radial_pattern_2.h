@@ -29,7 +29,7 @@ public:
     typedef mpl::list<
 
         // Expected event
-        smacc::transition<EvLoopEnd<SsrRadialLoopStart>, StNavigateReverse1, ENDLOOP>//,
+        smacc::transition<EvLoopEnd<SsrRadialLoopStart>, StNavigateReverse1, ENDLOOP> //,
 
         // Error events
         //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
@@ -47,8 +47,8 @@ public:
     }
 
     int iteration_count = 0;
-    static constexpr int total_iterations() { return 3; }
-    static constexpr float ray_angle_increment_degree() { return 90; }
+    static constexpr int total_iterations() { return 20; }
+    static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
     static constexpr float ray_length_meters() { return 3; }
 };
 
@@ -59,4 +59,4 @@ using SS = SsRadialPattern2;
 #include <sm_dance_bot/states/radial_motion/ssr_radial_rotate.h>
 #include <sm_dance_bot/states/radial_motion/ssr_radial_loop_start.h>
 } // namespace SS2
-}
+} // namespace sm_dance_bot
