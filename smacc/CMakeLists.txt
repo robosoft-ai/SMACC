@@ -111,11 +111,14 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
+add_executable(${PROJECT_NAME}-test test/type_info_unit_test.cpp)
+target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES} ${PROJECT_NAME} gtest)
+
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_smacc.cpp)
-# if(TARGET ${PROJECT_NAME}-test)
-#   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
-# endif()
+#catkin_add_gtest(${PROJECT_NAME}-test test/type_info_unit_test.cpp)
+#if(TARGET ${PROJECT_NAME}-test)
+#   target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES} ${PROJECT_NAME})
+#endif()
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)

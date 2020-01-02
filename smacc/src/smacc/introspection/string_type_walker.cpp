@@ -154,6 +154,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
             {
                 boost::trim(token);
                 basetypes.push_back(token);
+                //std::cout << "base type: " << token << std::endl;
             }
 
             for (auto &b : basetypes)
@@ -185,15 +186,17 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     //std::cout << "---------- TYPES -------" << std::endl;
     std::vector<TypeInfo::Ptr> types;
-    for (auto &t : typesdict)
+    
+    for (auto t : typesdict)
     {
+        //auto t = *it;
         auto &tkey = t.first;
         auto &tval = t.second;
         auto finaltype = replace_back(tval, typesdict);
         auto tinfo = std::make_shared<TypeInfo>(tkey, tval, finaltype);
         types.push_back(tinfo);
 
-        //std::cout << tinfo->toString() << std::endl;
+        //std::cout << "replacing back: " << finaltype << std::endl;
     }
 
     TypeInfo::Ptr roottype = nullptr;
@@ -206,19 +209,61 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         }
     }
 
-    for (auto &t : types)
+    std::sort(types.begin(), types.end(),[](auto& a, auto& b)
     {
+        return a->getFullName().size() > b->getFullName().size();
+    });
+
+    /*
+    std::cout<<"types order:" << std::endl;
+    for(auto t: types)
+    {
+        std::cout<< t->codedtype << std::endl;
+    }
+    std::cout<<"---------" << std::endl;
+
+    std::cout<<"types order:" << std::endl;
+    for(auto t: types)
+    {
+        std::cout<< t->finaltype << std::endl;
+    }
+    std::cout<<"---------" << std::endl;
+    */
+
+    for (auto t: types)
+    {
+        //auto t = types[it1];
         std::vector<std::pair<int, TypeInfo::Ptr>> unorderedTemplateParameters;
-        for (auto &t2 : types)
+
+        auto codedtypecopy = t->codedtype;
+        //std::cout << "original typestr: " << codedtypecopy << std::endl;
+
+        size_t startindex = codedtypecopy.find("<");
+        size_t endindex = codedtypecopy.find(">");
+        if (startindex != std::string::npos)
         {
+            codedtypecopy = codedtypecopy.substr(startindex + 1, endindex - startindex - 1);
+        }
+        //std::cout << "original typestr: " << codedtypecopy << std::endl;
+
+        for (auto &t2 : types)
+        //for (auto it2= types.size() -1; it2 >=0; it2--)
+        {
+            //std::cout << it2 << std::endl;
+            //auto t2 = types[it2];
+            //std::cout << t2->getFullName() << std::endl;
             if (t == t2)
                 continue;
 
-            auto index = t->codedtype.find(t2->tkey);
+            auto index = codedtypecopy.find(t2->tkey);
             if (index != std::string::npos)
             {
-                auto pair = std::make_pair(index, t2);
+                //auto pair = std::make_pair(index, t2);
+                auto pair = std::make_pair(0, t2);
+                //std::cout << "matches: " << t2->tkey <<std::endl;
                 unorderedTemplateParameters.push_back(pair);
+                replace(codedtypecopy,t2->tkey,""); // consume token
+                //std::cout << "codedtypecopy: " << codedtypecopy << std::endl;
             }
         }
 

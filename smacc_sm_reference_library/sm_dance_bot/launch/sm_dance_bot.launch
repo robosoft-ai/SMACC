@@ -36,7 +36,7 @@
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_dance_bot)/config/radial_motion_states_sm_config.yaml"/>
+    <rosparam command="load" file="$(find sm_dance_bot)/config/radial_motion_sm_config.yaml"/>
     
     <!-- state machine node -->
     <node pkg="sm_dance_bot" 
