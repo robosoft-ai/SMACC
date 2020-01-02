@@ -7,17 +7,17 @@ namespace SS3
 
 namespace sm_dance_bot
 {
-namespace radial_motion
+namespace radial_motion_states
 {
 //forward declaration for initial ssr
 class SsrRadialRotate;
 class SsrRadialReturn;
 class SsrRadialEndPoint;
 class SsrRadialLoopStart;
-} // namespace radial_motion
+} // namespace radial_motion_states
 } // namespace sm_dance_bot
 
-using namespace sm_dance_bot::radial_motion;
+using namespace sm_dance_bot::radial_motion_states;
 
 struct SsRadialPattern3 : smacc::SmaccState<SsRadialPattern3, MsDanceBotRunMode, SsrRadialLoopStart>
 {
@@ -53,9 +53,9 @@ public:
 
 //forward declaration for the superstate
 using SS = SsRadialPattern3;
-#include <sm_dance_bot/states/radial_motion/ssr_radial_end_point.h>
-#include <sm_dance_bot/states/radial_motion/ssr_radial_return.h>
-#include <sm_dance_bot/states/radial_motion/ssr_radial_rotate.h>
-#include <sm_dance_bot/states/radial_motion/ssr_radial_loop_start.h>
+#include <sm_dance_bot/states/radial_motion_states/ssr_radial_end_point.h>
+#include <sm_dance_bot/states/radial_motion_states/ssr_radial_return.h>
+#include <sm_dance_bot/states/radial_motion_states/ssr_radial_rotate.h>
+#include <sm_dance_bot/states/radial_motion_states/ssr_radial_loop_start.h>
 } // namespace SS3
 } // namespace sm_dance_bot

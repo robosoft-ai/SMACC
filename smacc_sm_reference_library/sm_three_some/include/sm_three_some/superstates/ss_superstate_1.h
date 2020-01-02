@@ -3,10 +3,15 @@ namespace sm_three_some
 namespace SS1
 {
 
+namespace ss1_states
+{
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
 class Ssr1;
 class Ssr2;
 class Ssr3;
+} // namespace ss1_states
+
+using namespace ss1_states;
 
 struct Ss1 : smacc::SmaccState<Ss1, MsRun, Ssr1, sc::has_full_history>
 {
@@ -41,4 +46,3 @@ using SS = SS1::Ss1;
 
 } // namespace SS1
 } // namespace sm_three_some
-

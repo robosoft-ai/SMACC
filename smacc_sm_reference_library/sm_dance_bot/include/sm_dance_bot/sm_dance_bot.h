@@ -31,18 +31,20 @@ using namespace move_base_z_client;
 
 #include <ros_publisher_client/cl_ros_publisher.h>
 
+using namespace sm_dance_bot::cl_lidar;
+using namespace sm_dance_bot::cl_service3;
+using namespace sm_dance_bot::cl_string_publisher;
+using namespace sm_dance_bot::cl_temperature_sensor;
+using namespace sm_dance_bot::cl_led;
+//using namespace sm_dance_bot::cl_move_base_z;
+//using namespace sm_dance_bot::cl_updatable_publisher;
+
 //LOGIC UNITS
 #include <all_events_go/lu_all_events_go.h>
 #include <event_countdown/event_countdown.h>
 #include <conditional/lu_conditional.h>
 
-using namespace sm_dance_bot::cl_lidar;
-//using namespace sm_dance_bot::cl_move_base_z;
-using namespace sm_dance_bot::cl_service3;
-using namespace sm_dance_bot::cl_string_publisher;
-using namespace sm_dance_bot::cl_temperature_sensor;
-using namespace sm_dance_bot::cl_led;
-//using namespace sm_dance_bot::cl_updatable_publisher;
+using namespace smacc::logic_units;
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>
@@ -115,6 +117,7 @@ struct EvGlobalError : sc::event<EvGlobalError>
 using namespace sm_dance_bot;
 using namespace ros_timer_client;
 using namespace smacc;
+
 
 namespace sm_dance_bot
 {

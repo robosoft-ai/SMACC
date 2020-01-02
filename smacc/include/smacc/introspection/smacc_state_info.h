@@ -5,6 +5,8 @@
 
 namespace smacc
 {
+namespace introspection
+{
 
 struct StateBehaviorInfoEntry
 {
@@ -16,7 +18,7 @@ struct StateBehaviorInfoEntry
 //---------------------------------------------
 struct SmaccEventInfo
 {
-    SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType);
+    SmaccEventInfo(std::shared_ptr<TypeInfo> eventType);
 
     std::string getEventTypeName();
 
@@ -26,7 +28,7 @@ struct SmaccEventInfo
 
     std::string label;
 
-    std::shared_ptr<smacc::TypeInfo> eventType;
+    std::shared_ptr<TypeInfo> eventType;
 
 private:
 };
@@ -44,9 +46,9 @@ struct SmaccTransitionInfo
 
     std::string transitionTag;
     std::string transitionType;
-    std::shared_ptr<smacc::SmaccEventInfo> eventInfo;
+    std::shared_ptr<SmaccEventInfo> eventInfo;
 
-    smacc::TypeInfo::Ptr transitionTypeInfo;
+    TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
 struct SmaccLogicUnitInfo
@@ -55,8 +57,8 @@ struct SmaccLogicUnitInfo
     std::function<void(smacc::ISmaccState *)> factoryFunction;
 
     const std::type_info *logicUnitType;
-    std::shared_ptr<smacc::TypeInfo> objectTagType;
-    std::vector<std::shared_ptr<smacc::SmaccEventInfo>> sourceEventTypes;
+    std::shared_ptr<TypeInfo> objectTagType;
+    std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
 };
 
 enum class SmaccStateType
@@ -101,7 +103,7 @@ public:
     std::shared_ptr<SmaccStateInfo> createChildState();
 
     template <typename EvType>
-    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history, smacc::TypeInfo::Ptr transitionTypeInfo);
+    void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history, TypeInfo::Ptr transitionTypeInfo);
 
     // template <typename EvSource, template <typename> typename EvType>
     // void declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history);
@@ -110,4 +112,5 @@ public:
 
     std::string getDemangledFullName() const;
 };
+}
 }

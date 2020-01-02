@@ -6,6 +6,7 @@
 
 namespace smacc
 {
+
 template <typename TSource, typename TObjectTag>
 struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectTag>>
 {
@@ -34,6 +35,9 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TObjectTag>>
 
   typename TSource::TMessageType msgData;
 };
+
+namespace client_bases
+{
 
 template <typename MessageType>
 class SmaccSubscriberClient : public smacc::ISmaccClient
@@ -120,4 +124,5 @@ private:
     onMessageReceived(msg);
   }
 };
+} // namespace client_bases
 } // namespace smacc

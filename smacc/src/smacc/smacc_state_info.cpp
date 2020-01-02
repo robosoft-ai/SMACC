@@ -64,7 +64,7 @@ std::string SmaccStateInfo::getDemangledFullName() const
     return demangleSymbol(this->fullStateName.c_str());
 }
 //---------------------------------------------
-SmaccEventInfo::SmaccEventInfo(std::shared_ptr<smacc::TypeInfo> eventType)
+SmaccEventInfo::SmaccEventInfo(std::shared_ptr<TypeInfo> eventType)
 {
     ROS_INFO_STREAM("CREATING EVENT INFO: " << eventType->getFullName());
 

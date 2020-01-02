@@ -36,7 +36,7 @@ namespace smacc
 
 struct IActionResult
 {
-  smacc::ISmaccActionClient *client;
+  smacc::client_bases::ISmaccActionClient *client;
   actionlib::SimpleClientGoalState getResultState() const;
 };
 

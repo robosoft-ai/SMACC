@@ -4,6 +4,8 @@
 
 namespace smacc
 {
+namespace logic_units
+{
 void LuAllEventsGo::onInitialized()
 {
     for (auto type : eventTypes)
@@ -34,4 +36,5 @@ bool LuAllEventsGo::triggers()
     ROS_INFO("LU ALL TRIGGERED");
     return true;
 }
-}
+} // namespace logic_units
+} // namespace smacc

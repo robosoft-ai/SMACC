@@ -1,3 +1,5 @@
+namespace ss1_states
+{
 struct Ssr3 : smacc::SmaccState<Ssr3, SS>
 {
   using SmaccState::SmaccState;
@@ -24,3 +26,4 @@ struct Ssr3 : smacc::SmaccState<Ssr3, SS>
     //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);
   }
 };
+}

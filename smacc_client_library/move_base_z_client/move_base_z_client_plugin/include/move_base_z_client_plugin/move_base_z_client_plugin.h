@@ -15,7 +15,7 @@ namespace move_base_z_client
 {
 class WaypointNavigator;
 
-class ClMoveBaseZ : public smacc::SmaccActionClientBase<move_base_msgs::MoveBaseAction>
+class ClMoveBaseZ : public smacc::client_bases::SmaccActionClientBase<move_base_msgs::MoveBaseAction>
 {
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction> Base;
 

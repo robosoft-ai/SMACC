@@ -7,11 +7,11 @@ namespace sm_dance_bot
 {
 namespace cl_string_publisher
 {
-class ClStringPublisher : public smacc::SmaccPublisherClient
+class ClStringPublisher : public smacc::client_bases::SmaccPublisherClient
 {
 public:
     ClStringPublisher(std::string topicName)
-        : smacc::SmaccPublisherClient()
+        : smacc::client_bases::SmaccPublisherClient()
     {
         this->configure<std_msgs::String>(topicName);
     }

@@ -12,31 +12,34 @@
 
 namespace smacc
 {
-using namespace actionlib;
-
-// This class interface shows the basic set of methods that
-// a SMACC "resource" or "plugin" Action Client has
-class ISmaccActionClient : public ISmaccClient
+namespace client_bases
 {
-public:
-    ISmaccActionClient();
+    using namespace actionlib;
 
-    // The destructor. This is called when the object is not
-    // referenced anymore by its owner
-    virtual ~ISmaccActionClient();
-
-    // Gets the ros path of the action...
-    inline std::string getNamespace() const
+    // This class interface shows the basic set of methods that
+    // a SMACC "resource" or "plugin" Action Client has
+    class ISmaccActionClient : public ISmaccClient
     {
-        return name_;
-    }
+    public:
+        ISmaccActionClient();
 
-    virtual void cancelGoal() = 0;
+        // The destructor. This is called when the object is not
+        // referenced anymore by its owner
+        virtual ~ISmaccActionClient();
 
-    virtual SimpleClientGoalState getState() = 0;
+        // Gets the ros path of the action...
+        inline std::string getNamespace() const
+        {
+            return name_;
+        }
 
-protected:
-    // The ros path where the action server is located
-    std::string name_;
-};
+        virtual void cancelGoal() = 0;
+
+        virtual SimpleClientGoalState getState() = 0;
+
+    protected:
+        // The ros path where the action server is located
+        std::string name_;
+    };
+} // namespace smacc
 } // namespace smacc

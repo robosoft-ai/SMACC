@@ -2,7 +2,7 @@
 
 namespace sm_dance_bot
 {
-namespace fpattern_substates
+namespace f_pattern_states
 {
 
 enum class TDirection
@@ -29,7 +29,7 @@ class SsrFPatternForward2;
 
 template <typename SS>
 class SsrFPatternStartLoop;
-} // namespace fpattern_substates
+} // namespace f_pattern_states
 } // namespace sm_dance_bot
 
 namespace sm_dance_bot
@@ -37,7 +37,7 @@ namespace sm_dance_bot
 namespace SS4
 {
 
-using namespace fpattern_substates;
+using namespace f_pattern_states;
 
 struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, SsrFPatternStartLoop<SsFPattern1>>
 {
@@ -79,9 +79,9 @@ public:
 } // namespace SS4
 } // namespace sm_dance_bot
 
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_1.h>
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_1.h>
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_return_1.h>
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_rotate_2.h>
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_forward_2.h>
-#include <sm_dance_bot/states/f_pattern/ssr_fpattern_loop_start.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_rotate_1.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_forward_1.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_return_1.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_rotate_2.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_forward_2.h>
+#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_loop_start.h>

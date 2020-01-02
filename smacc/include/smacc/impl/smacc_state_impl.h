@@ -2,13 +2,14 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_client_behavior.h>
-#include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/logic_unit.h>
 #include <smacc/introspection/string_type_walker.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_state_machine.h>
 
 namespace smacc
 {
+using namespace smacc::introspection;
 //-------------------------------------------------------------------------------------------------------
 // Delegates to ROS param access with the current NodeHandle
 template <typename T>
@@ -125,21 +126,12 @@ void ISmaccState::postEvent(const EventType &ev)
 template <typename TransitionType>
 void ISmaccState::notifyTransition()
 {
-    auto transitionType = smacc::TypeInfo::getTypeInfoFromType<TransitionType>();
+    auto transitionType = TypeInfo::getTypeInfoFromType<TransitionType>();
     this->notifyTransitionFromTransitionTypeInfo(transitionType);
-}
-
-//-------------------------------------------------------------------------------------------------------
-template <typename TEv>
-void LogicUnit::declarePostEvent(typelist<TEv>)
-{
-    this->postEventFn = [this]() {
-        ROS_INFO_STREAM("[Logic Unit Base] postingfn posting event: " << demangleSymbol<TEv>());
-        auto *ev = new TEv();
-        this->ownerState->getStateMachine().postEvent(ev);
-    };
 }
 
 //-------------------------------------------------------------------------------------------------------------------
 
 } // namespace smacc
+
+#include <smacc/impl/smacc_logic_unit_impl.h>

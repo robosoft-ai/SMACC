@@ -5,30 +5,28 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/common.h>
-#include <smacc/introspection/introspection.h>
-#include <smacc/smacc_state.h>
-#include <smacc/smacc_updatable.h>
-#include <smacc/logic_units/logic_unit_base.h>
-#include <smacc/smacc_signal.h>
-
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
 
-#include <smacc_msgs/SmaccStatus.h>
+#include <smacc/common.h>
+#include <smacc/introspection/introspection.h>
+#include <smacc/introspection/smacc_state_machine_info.h>
+#include <smacc/smacc_updatable.h>
+#include <smacc/smacc_signal.h>
+
 #include <smacc_msgs/SmaccStateMachine.h>
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
-
+#include <smacc_msgs/SmaccStatus.h>
 #include <smacc_msgs/SmaccGetTransitionHistory.h>
+
+#include <smacc/smacc_state.h>
+#include <smacc/logic_unit.h>
 
 namespace smacc
 {
 
-class SmaccStateMachineInfo;
-class SmaccStateInfo;
-class Orthogonal;
-class ISmaccState;
+using namespace smacc::introspection;
 
 // This class describes the concept of Smacc State Machine in an abastract way.
 // The SmaccStateMachineBase inherits from this state machine and from
@@ -47,7 +45,7 @@ public:
     virtual void EStop();
 
     template <typename TOrthogonal>
-    TOrthogonal* getOrthogonal();
+    TOrthogonal *getOrthogonal();
 
     const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &getOrthogonals() const;
 
@@ -77,7 +75,7 @@ public:
 
     void state_machine_visualization(const ros::TimerEvent &);
 
-    inline std::shared_ptr<smacc::SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
+    inline std::shared_ptr<SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
 
     void publishTransition(SmaccTransitionInfo &transitionInfo);
 
@@ -145,7 +143,7 @@ protected:
     // this currentState_ is null. This may change in the future.
     ISmaccState *currentState_;
 
-    std::shared_ptr<smacc::SmaccStateInfo> currentStateInfo_;
+    std::shared_ptr<SmaccStateInfo> currentStateInfo_;
 
     smacc_msgs::SmaccStatus status_msg_;
 

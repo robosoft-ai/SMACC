@@ -1,6 +1,6 @@
 #pragma once
 #include <smacc/common.h>
-#include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/logic_unit.h>
 #include <map>
 #include <typeinfo>
 #include <boost/statechart/event.hpp>

@@ -11,6 +11,7 @@
 #include <smacc_msgs/SmaccTransitionLogEntry.h>
 namespace smacc
 {
+using namespace smacc::introspection;
 ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
     : private_nh_("~"), currentState_(nullptr), stateSeqCounter_(0)
 {
@@ -74,7 +75,7 @@ void ISmaccStateMachine::updateStatusMessage()
         if (this->runMode_ == SMRunMode::DEBUG)
         {
             status_msg_.current_states.clear();
-            std::list<smacc::SmaccStateInfo::Ptr> ancestorList;
+            std::list<SmaccStateInfo::Ptr> ancestorList;
             currentStateInfo_->getAncestors(ancestorList);
 
             for (auto &ancestor : ancestorList)

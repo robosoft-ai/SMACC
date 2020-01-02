@@ -1,8 +1,10 @@
-#include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/logic_unit.h>
 #include <ros/ros.h>
 
 namespace smacc
 {
+    namespace logic_units
+    {
 LogicUnit::LogicUnit()
 {
 }
@@ -24,4 +26,5 @@ void LogicUnit::update()
     }
 }
 
+    }
 } // namespace smacc

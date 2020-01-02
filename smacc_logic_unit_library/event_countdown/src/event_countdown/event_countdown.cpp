@@ -5,6 +5,8 @@
 
 namespace smacc
 {
+namespace logic_units
+{
 LuEventCountdown::LuEventCountdown(int eventCount)
     : eventCount_(eventCount)
 {
@@ -21,7 +23,7 @@ void LuEventCountdown::onInitialized()
 void LuEventCountdown::onEventNotified(const std::type_info *eventType)
 {
     eventCount_--;
-    ROS_INFO_STREAM("LU COUNTDOWN ("<< eventCount_ <<") RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    ROS_INFO_STREAM("LU COUNTDOWN (" << eventCount_ << ") RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
 
     // ROS_INFO_STREAM("LU ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
     // triggeredEvents[eventType] = true;
@@ -34,16 +36,15 @@ void LuEventCountdown::onEventNotified(const std::type_info *eventType)
 
 bool LuEventCountdown::triggers()
 {
-    if( eventCount_ == 0)
+    if (eventCount_ == 0)
     {
-        ROS_INFO_STREAM("LU COUNTDOWN ("<< eventCount_ <<") TRIGGERS!" );
+        ROS_INFO_STREAM("LU COUNTDOWN (" << eventCount_ << ") TRIGGERS!");
         return true;
     }
     else
     {
         return false;
     }
-    
 
     // ROS_INFO("LU All TRIGGERS?");
     // for (auto &entry : triggeredEvents)
@@ -55,4 +56,5 @@ bool LuEventCountdown::triggers()
     // return true;
 }
 
+} // namespace logic_units
 } // namespace smacc

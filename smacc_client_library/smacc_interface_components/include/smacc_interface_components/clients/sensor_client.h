@@ -17,16 +17,18 @@ struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TObjectT
   ros::TimerEvent timerData;
 };
 
+using namespace smacc::client_bases;
+
 //---------------------------------------------------------------
 template <typename MessageType>
-class SensorClient : public SmaccSubscriberClient<MessageType>
+class SensorClient : public smacc::client_bases::SmaccSubscriberClient<MessageType>
 {
 public:
   typedef MessageType TMessageType;
   boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
 
   SensorClient()
-      : SmaccSubscriberClient<MessageType>()
+      : smacc::client_bases::SmaccSubscriberClient<MessageType>()
   {
     ROS_INFO("CbLidarSensor constructor");
     initialized_ = false;

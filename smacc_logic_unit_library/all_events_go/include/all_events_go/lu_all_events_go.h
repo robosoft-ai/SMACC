@@ -1,6 +1,6 @@
 #pragma once
 #include <smacc/common.h>
-#include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/logic_unit.h>
 #include <map>
 #include <typeinfo>
 #include <boost/statechart/event.hpp>
@@ -8,6 +8,8 @@
 namespace smacc
 {
 
+namespace logic_units
+{
 template <typename TSource, typename TObjectTag = empty_object_tag>
 struct EvAll : sc::event<EvAll<TSource, TObjectTag>>
 {
@@ -26,4 +28,5 @@ public:
     virtual void onEventNotified(const std::type_info *eventType) override;
     virtual bool triggers() override;
 };
+} // namespace logic_units
 } // namespace smacc

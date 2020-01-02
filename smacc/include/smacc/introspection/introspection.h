@@ -21,6 +21,8 @@ namespace sc = boost::statechart;
 
 namespace smacc
 {
+namespace introspection
+{
 using namespace boost;
 
 void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::SmaccTransition &transitionMsg);
@@ -243,7 +245,7 @@ static std::string getTransitionType()
 // static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
 // {
 //     auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
-//     auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+//     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<T>(evinfo->label);
 //     luinfo.sourceEventTypes.push_back(evinfo);
 //     ROS_INFO_STREAM("event: " << sourceType->getFullName());
@@ -255,7 +257,7 @@ static std::string getTransitionType()
 // static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TEvHead, TEvArgs...>)
 // {
 //     auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(TEvHead));
-//     auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+//     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<TEvHead>(evinfo->label);
 //     luinfo.sourceEventTypes.push_back(evinfo);
 //     ROS_INFO_STREAM("event: " << sourceType->getFullName());
@@ -263,6 +265,6 @@ static std::string getTransitionType()
 //     walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
 // }
 
+} // namespace introspection
 } // namespace smacc
-
 #include <smacc/introspection/smacc_state_machine_info.h>

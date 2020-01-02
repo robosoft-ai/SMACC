@@ -8,7 +8,7 @@ std::string ISmaccState::getClassName()
     return demangleSymbol(typeid(*this).name());
 }
 
-void ISmaccState::notifyTransitionFromTransitionTypeInfo(smacc::TypeInfo::Ptr &transitionType)
+void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transitionType)
 {
     ROS_INFO_STREAM("NOTIFY TRANSITION: " << transitionType->getFullName());
 

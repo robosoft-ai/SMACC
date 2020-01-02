@@ -6,7 +6,7 @@ namespace sm_dance_bot
 {
 namespace cl_service3
 {
-class ClService3 : public smacc::SmaccServiceClient<std_srvs::SetBool>
+class ClService3 : public smacc::client_bases::SmaccServiceClient<std_srvs::SetBool>
 {
 public:
   ClService3()

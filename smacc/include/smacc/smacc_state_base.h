@@ -1,6 +1,6 @@
 #pragma once
 #include <smacc/smacc_state.h>
-#include <smacc/logic_units/logic_unit_base.h>
+#include <smacc/logic_unit.h>
 
 namespace smacc
 {
@@ -248,7 +248,7 @@ public:
     void operator()(T)
     {
       auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
-      auto evinfo = std::make_shared<smacc::SmaccEventInfo>(sourceType);
+      auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
       EventLabel<T>(evinfo->label);
       luInfo_.sourceEventTypes.push_back(evinfo);
       ROS_INFO_STREAM("event: " << sourceType->getFullName());

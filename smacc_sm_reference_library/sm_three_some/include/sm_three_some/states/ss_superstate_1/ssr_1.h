@@ -1,3 +1,5 @@
+namespace ss1_states
+{
 struct Ssr1 : smacc::SmaccState<Ssr1, SS>
 {
 public:
@@ -29,3 +31,4 @@ public:
     throwLoopEventFromCondition(&Ssr1::loopWhileCondition);
   }
 };
+}

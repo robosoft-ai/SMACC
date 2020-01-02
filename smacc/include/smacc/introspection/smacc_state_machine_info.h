@@ -11,6 +11,8 @@
 
 namespace smacc
 {
+namespace introspection
+{
 
 class SmaccStateMachineInfo : public std::enable_shared_from_this<SmaccStateMachineInfo>
 {
@@ -135,7 +137,7 @@ processTransitions(std::shared_ptr<SmaccStateInfo> &sourceState)
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    auto transitionTypeInfo = smacc::TypeInfo::getTypeInfoFromType<smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag>>();
+    auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<smacc::transition<Ev, boost::statechart::deep_history<Dst>, Tag>>();
     smacc::transition<Ev, Dst, Tag> *mock;
     processTransitionAux(mock, sourceState, true, transitionTypeInfo);
 }
@@ -143,12 +145,12 @@ void processTransition(smacc::transition<Ev, boost::statechart::deep_history<Dst
 template <typename Ev, typename Dst, typename Tag>
 void processTransition(smacc::transition<Ev, Dst, Tag> *t, std::shared_ptr<SmaccStateInfo> &sourceState)
 {
-    auto transitionTypeInfo = smacc::TypeInfo::getTypeInfoFromType<smacc::transition<Ev, Dst, Tag>>();
+    auto transitionTypeInfo = TypeInfo::getTypeInfoFromType<smacc::transition<Ev, Dst, Tag>>();
     processTransitionAux(t, sourceState, false, transitionTypeInfo);
 }
 
 template <typename Ev, typename Dst, typename Tag>
-void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history, smacc::TypeInfo::Ptr &transitionTypeInfo)
+void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<SmaccStateInfo> &sourceState, bool history, TypeInfo::Ptr &transitionTypeInfo)
 {
     ROS_INFO("State %s Walker transition: %s", sourceState->toShortName().c_str(), demangleSymbol(typeid(Ev).name()).c_str());
     std::string transitionTag;
@@ -190,7 +192,7 @@ void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<Sma
 
 //---------------------------------------------
 template <typename EvType>
-void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history, smacc::TypeInfo::Ptr transitionTypeInfo)
+void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState, std::string transitionTag, std::string transitionType, bool history, TypeInfo::Ptr transitionTypeInfo)
 {
     auto evtype = demangledTypeName<EvType>();
 
@@ -234,7 +236,7 @@ void SmaccStateInfo::declareTransition(std::shared_ptr<SmaccStateInfo> &dstState
 
 //     transitionInfo.transitionType = transitionType;
 
-//     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(smacc::TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
+//     transitionInfo.eventInfo = std::make_shared<SmaccEventInfo>(TypeInfo::getTypeInfoFromString(demangleSymbol(typeid(EvType<TevSource>).name())));
 
 //     EventLabel<EvType<TevSource>>(transitionInfo.eventInfo->label);
 //     ROS_ERROR_STREAM("LABEL: " << transitionInfo.eventInfo->label);
@@ -442,7 +444,7 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 
     ROS_WARN_STREAM("Real parent state> " << demangleSymbol<typename StateType::TContext>());
 
-    /*auto contextInfo = smacc::TypeInfo::getTypeInfoFromType<InitialStateType>();
+    /*auto contextInfo = TypeInfo::getTypeInfoFromType<InitialStateType>();
     auto parentState2= getState<InitialStateType::TContext>();
     parentState2->createChildState<InitialStateType>();*/
 
@@ -454,4 +456,5 @@ std::shared_ptr<SmaccStateInfo> SmaccStateInfo::createChildState()
 
     return childState;
 }
+} // namespace introspection
 } // namespace smacc

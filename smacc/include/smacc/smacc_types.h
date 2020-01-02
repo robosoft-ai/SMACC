@@ -12,11 +12,19 @@ class ISmaccComponent;
 class SmaccClientBehavior;
 class SignalDetector;
 
+class LogicUnit;
+
+namespace client_bases
+{
 class ISmaccActionClient;
 class ISmaccSubscriber;
+} // namespace client_bases
+
+namespace introspection
+{
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
-class LogicUnit;
+} // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----
 

@@ -6,7 +6,7 @@
 namespace ros_publisher_client
 {
 
-class ClRosPublisher : public smacc::SmaccPublisherClient
+class ClRosPublisher : public smacc::client_bases::SmaccPublisherClient
 {
 public:
     ClRosPublisher()

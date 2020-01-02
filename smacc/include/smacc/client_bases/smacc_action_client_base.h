@@ -7,6 +7,8 @@
 
 namespace smacc
 {
+namespace client_bases
+{
 using namespace boost::signals2;
 
 template <typename ActionType>
@@ -81,7 +83,7 @@ public:
         this->postEvent(ev);
     }
 
-    template < typename TObjectTag, typename TDerived>
+    template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes()
     {
         // we create here all the event factory functions capturing the TObjectTag
@@ -224,4 +226,6 @@ protected:
         }
     }
 };
+} // namespace client_bases
+
 } // namespace smacc

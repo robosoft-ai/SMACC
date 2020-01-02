@@ -5,7 +5,7 @@
 
 // CLIENTS
 #include <ros_timer_client/cl_ros_timer.h>
-#include <sm_three_some/clients/cl_keyboard/cl_keyboard.h>
+#include <keyboard_client/cl_keyboard.h>
 
 // ORTHOGONALS
 #include <sm_three_some/orthogonals/or_timer.h>
@@ -15,9 +15,9 @@
 
 using namespace ros_timer_client;
 using namespace ros_publisher_client;
+using namespace keyboard_client;
 
 using namespace sm_three_some::cl_subscriber;
-using namespace sm_three_some::cl_keyboard;
 
 //CLIENT BEHAVIORS
 #include <ros_publisher_client/client_behaviors/cb_default_publish_loop.h>
@@ -27,7 +27,7 @@ using namespace sm_three_some::cl_keyboard;
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_default_subscriber_behavior.h>
 #include <sm_three_some/clients/cl_subscriber/client_behaviors/cb_watchdog_subscriber_behavior.h>
 
-#include <sm_three_some/clients/cl_keyboard/client_behaviors/cb_default_keyboard_behavior.h>
+#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
 
 #include <ros_timer_client/client_behaviors/cb_ros_timer.h>
 
@@ -35,6 +35,7 @@ using namespace sm_three_some::cl_keyboard;
 #include <all_events_go/lu_all_events_go.h>
 
 using namespace smacc;
+using namespace smacc::logic_units;
 
 namespace sm_three_some
 {

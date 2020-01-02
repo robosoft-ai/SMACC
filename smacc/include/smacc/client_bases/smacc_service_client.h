@@ -5,6 +5,8 @@
 
 namespace smacc
 {
+namespace client_bases
+{
 template <typename ServiceType>
 class SmaccServiceClient : public smacc::ISmaccClient
 {
@@ -44,4 +46,5 @@ protected:
     ros::ServiceClient client_;
     bool initialized_;
 };
+} // namespace client_bases
 } // namespace smacc

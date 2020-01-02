@@ -8,12 +8,14 @@
 
 namespace smacc
 {
+namespace introspection
+{
 class TypeInfo
 {
 public:
-    typedef std::shared_ptr<smacc::TypeInfo> Ptr;
+    typedef std::shared_ptr<TypeInfo> Ptr;
 
-    std::vector<smacc::TypeInfo::Ptr> templateParameters;
+    std::vector<Ptr> templateParameters;
 
     TypeInfo(std::string tkey, std::string codedtype, std::string finaltype)
     {
@@ -33,16 +35,16 @@ public:
         return this->finaltype.substr(0, index);
     }
 
-    static smacc::TypeInfo::Ptr getTypeInfoFromString(std::string inputtext);
-    static smacc::TypeInfo::Ptr getTypeInfoFromTypeid(const std::type_info &tid);
+    static TypeInfo::Ptr getTypeInfoFromString(std::string inputtext);
+    static TypeInfo::Ptr getTypeInfoFromTypeid(const std::type_info &tid);
 
     template <typename T>
-    static smacc::TypeInfo::Ptr getTypeInfoFromType()
+    static TypeInfo::Ptr getTypeInfoFromType()
     {
         return TypeInfo::getTypeInfoFromTypeid(typeid(T));
     }
 
-    const std::string& getFullName()
+    const std::string &getFullName()
     {
         return this->finaltype;
     }
@@ -54,4 +56,5 @@ private:
     std::string codedtype;
     std::string finaltype;
 };
+} // namespace introspection
 } // namespace smacc

@@ -7,6 +7,8 @@
 
 namespace smacc
 {
+    namespace client_bases
+    {
 using namespace actionlib;
 
  
@@ -17,4 +19,6 @@ ISmaccActionClient::ISmaccActionClient()
 ISmaccActionClient::~ISmaccActionClient()
 {
 }
+}
+
 }

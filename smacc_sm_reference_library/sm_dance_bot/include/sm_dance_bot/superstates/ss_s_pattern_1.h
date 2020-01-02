@@ -7,7 +7,7 @@ namespace SS5
 
 namespace sm_dance_bot
 {
-namespace s_pattern
+namespace s_pattern_states
 {
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
 class SsrSPatternRotate1;
@@ -19,7 +19,7 @@ class SsrSPatternForward3;
 class SsrSPatternRotate4;
 class SsrSPatternForward4;
 class SsrSPatternLoopStart;
-} // namespace s_pattern
+} // namespace s_pattern_states
 } // namespace sm_dance_bot
 
 enum class TDirection
@@ -28,7 +28,7 @@ enum class TDirection
     RIGHT
 };
 
-using namespace sm_dance_bot::s_pattern;
+using namespace sm_dance_bot::s_pattern_states;
 
 struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, SsrSPatternLoopStart>
 {
@@ -68,15 +68,15 @@ public:
 //forward declaration for the superstate
 using SS = SsSPattern1;
 
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_1.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_1.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_2.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_2.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_3.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_3.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_rotate_4.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_forward_4.h>
-#include <sm_dance_bot/states/s_pattern/ssr_spattern_loop_start.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_1.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_1.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_2.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_2.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_3.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_3.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_4.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_4.h>
+#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_loop_start.h>
 
 } // namespace SS5
 } // namespace sm_dance_bot

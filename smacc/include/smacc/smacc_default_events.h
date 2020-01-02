@@ -8,10 +8,11 @@
 namespace smacc
 {
 
+using namespace smacc::introspection;
 template <typename ActionFeedback, typename TObjectTag>
 struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TObjectTag>>
 {
-  smacc::ISmaccActionClient *client;
+  smacc::client_bases::ISmaccActionClient *client;
   ActionFeedback feedbackMessage;
   //boost::any feedbackMessage;
 };

@@ -5,7 +5,8 @@
 
 namespace smacc
 {
-
+namespace client_bases
+{
 class SmaccPublisherClient : public smacc::ISmaccClient
 {
 public:
@@ -36,7 +37,7 @@ public:
       if (!queueSize)
         queueSize = 1;
 
-            ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
+      ROS_INFO_STREAM("[" << this->getName() << "] Client Publisher to topic: " << topicName);
       pub_ = nh_.advertise<MessageType>(*(this->topicName), *queueSize);
 
       this->initialized_ = true;
@@ -56,4 +57,5 @@ protected:
 private:
   bool initialized_;
 };
+} // namespace client_bases
 } // namespace smacc
