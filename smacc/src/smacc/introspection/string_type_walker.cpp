@@ -69,6 +69,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     int typecount = 0;
     std::string originalinputtext = inputtext;
     std::map<std::string, std::string> typesdict;
+    std::map<std::string, std::string> typesdict_content;
 
     while (!ok)
     {
@@ -136,9 +137,9 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     //             allbasetypes.add(b)
 
     std::set<std::string> allbasetypes;
-    for (auto &tkey : typesdict)
+    for (auto &typeentry : typesdict)
     {
-        auto flat = tkey.second;
+        auto flat = typeentry.second;
         //std::cout << flat << std::endl;
 
         size_t startindex = flat.find("<");
@@ -146,18 +147,20 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         if (startindex != std::string::npos)
         {
             flat = flat.substr(startindex + 1, endindex - startindex - 1);
-            std::vector<std::string> basetypes;
+            //std::cout << typeentry.first <<":" << flat << std::endl;
+            typesdict_content[typeentry.first] = flat;
+            std::vector<std::string> localbasetypes;
 
             std::istringstream iss(flat);
             std::string token;
             while (std::getline(iss, token, ','))
             {
                 boost::trim(token);
-                basetypes.push_back(token);
+                localbasetypes.push_back(token);
                 //std::cout << "base type: " << token << std::endl;
             }
 
-            for (auto &b : basetypes)
+            for (auto &b : localbasetypes)
             {
                 size_t found = b.find("$");
 
@@ -171,6 +174,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         // for b in allbasetypes:
         // typesdict[b] = b
 
+        //refresh
         for (auto &b : allbasetypes)
         {
             typesdict[b] = b;
@@ -186,7 +190,8 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     //std::cout << "---------- TYPES -------" << std::endl;
     std::vector<TypeInfo::Ptr> types;
-    
+    std::vector<std::string> tokens;
+
     for (auto t : typesdict)
     {
         //auto t = *it;
@@ -195,6 +200,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         auto finaltype = replace_back(tval, typesdict);
         auto tinfo = std::make_shared<TypeInfo>(tkey, tval, finaltype);
         types.push_back(tinfo);
+        tokens.push_back(tkey);
 
         //std::cout << "replacing back: " << finaltype << std::endl;
     }
@@ -209,10 +215,10 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
         }
     }
 
-    std::sort(types.begin(), types.end(),[](auto& a, auto& b)
-    {
-        return a->getFullName().size() > b->getFullName().size();
-    });
+    // std::sort(types.begin(), types.end(),[](auto& a, auto& b)
+    // {
+    //     return a->getFullName().size() > b->getFullName().size();
+    // });
 
     /*
     std::cout<<"types order:" << std::endl;
@@ -230,20 +236,32 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     std::cout<<"---------" << std::endl;
     */
 
-    for (auto t: types)
+    
+    for (int i=0; i< types.size();i++)
     {
+        auto t= types[i];
+        auto ttoken = tokens[i];
+
         //auto t = types[it1];
         std::vector<std::pair<int, TypeInfo::Ptr>> unorderedTemplateParameters;
 
-        auto codedtypecopy = t->codedtype;
+        
         //std::cout << "original typestr: " << codedtypecopy << std::endl;
 
-        size_t startindex = codedtypecopy.find("<");
-        size_t endindex = codedtypecopy.find(">");
-        if (startindex != std::string::npos)
-        {
-            codedtypecopy = codedtypecopy.substr(startindex + 1, endindex - startindex - 1);
-        }
+        //auto codedtypecopy = t->codedtype;
+        auto codedtypecopy = typesdict_content[ttoken];
+
+        // std::cout << "original typestr: " << codedtypecopy << std::endl;
+        // std::cout << "original token: " << ttoken << std::endl;
+        // std::cout << "original typestr: " << typesdict_content[ttoken] << std::endl;
+
+        // size_t startindex = codedtypecopy.find("<");
+        // size_t endindex = codedtypecopy.find(">");
+
+        // if (startindex != std::string::npos)
+        // {
+        //     codedtypecopy = codedtypecopy.substr(startindex + 1, endindex - startindex - 1);
+        // }
         //std::cout << "original typestr: " << codedtypecopy << std::endl;
 
         for (auto &t2 : types)

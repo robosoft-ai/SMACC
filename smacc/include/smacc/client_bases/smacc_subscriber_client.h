@@ -58,11 +58,23 @@ public:
     sub_.shutdown();
   }
 
-  boost::signals2::signal<void(const MessageType &)> onFirstMessageReceived;
-  boost::signals2::signal<void(const MessageType &)> onMessageReceived;
+  SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
+  SmaccSignal<void(const MessageType &)> onMessageReceived_;
 
   std::function<void(const MessageType &)> postMessageEvent;
   std::function<void(const MessageType &)> postInitialMessageEvent;
+
+  template <typename T>
+  boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), T *object)
+  {
+      return stateMachine_->createSignalConnection(onMessageReceived_, callback, object);
+  }
+
+  template <typename T>
+  boost::signals2::connection onFirstMessageReceived(void (T::*callback)(const MessageType &), T *object)
+  {
+      return stateMachine_->createSignalConnection(onFirstMessageReceived_, callback, object);
+  }
 
   template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
@@ -116,12 +128,12 @@ private:
     if (firstMessage_)
     {
       postInitialMessageEvent(msg);
-      this->onFirstMessageReceived(msg);
+      onFirstMessageReceived_(msg);
       firstMessage_ = false;
     }
 
     postMessageEvent(msg);
-    onMessageReceived(msg);
+    onMessageReceived_(msg);
   }
 };
 } // namespace client_bases

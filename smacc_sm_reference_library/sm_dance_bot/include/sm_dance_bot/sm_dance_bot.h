@@ -133,8 +133,6 @@ struct SmDanceBot
     typedef mpl::bool_<false> deep_history;
     typedef mpl::bool_<false> inherited_deep_history;
 
-    typedef smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode> base;
-
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
     virtual void onInitialize() override

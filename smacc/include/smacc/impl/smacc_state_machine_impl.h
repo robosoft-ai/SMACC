@@ -4,6 +4,8 @@
 
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_orthogonal.h>
+#include <smacc/smacc_client.h>
+
 #include <smacc/smacc_signal_detector.h>
 #include <smacc/introspection/introspection.h>
 #include <smacc_msgs/SmaccStatus.h>
@@ -252,7 +254,11 @@ struct Bind<2>
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
 boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value 
+                || std::is_base_of<ISmaccClient, TSmaccObjectType>::value 
+                || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value 
+                || std::is_base_of<LogicUnit, TSmaccObjectType>::value 
+                || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
 
     typedef decltype(callback) ft;
     Bind<boost::function_types::function_arity<ft>::value> binder;

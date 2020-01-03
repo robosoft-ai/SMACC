@@ -13,10 +13,6 @@ public:
 
   ClientType *sensor_;
 
-  boost::signals2::scoped_connection c1_;
-  boost::signals2::scoped_connection c2_;
-  boost::signals2::scoped_connection c3_;
-
   SensorTopic()
   {
     sensor_ = nullptr;
@@ -35,24 +31,22 @@ public:
   {
     deferedEventPropagation = [=]() {
       // just propagate the client events from this client behavior source.
-      c1_ = sensor_->onMessageReceived.connect(
-          [this](auto &msg) {
-            auto *ev2 = new EvTopicMessage<TDerived, TObjectTag>();
-            this->postEvent(ev2);
-          });
-
-      c2_ = sensor_->onFirstMessageReceived.connect(
-          [this](auto &msg) {
-            auto event = new EvTopicInitialMessage<TDerived, TObjectTag>();
-            this->postEvent(event);
-          });
-
-      c3_ = sensor_->onMessageTimeout.connect(
-          [this](auto &msg) {
-            auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();
-            this->postEvent(event);
-          });
+      sensor_->onMessageReceived(&SensorTopic<ClientType>::propagateEvent<EvTopicMessage<TDerived, TObjectTag>>, this);
+      sensor_->onFirstMessageReceived(&SensorTopic<ClientType>::propagateEvent<EvTopicInitialMessage<TDerived, TObjectTag>>, this);
+      sensor_->onMessageTimeout(&SensorTopic<ClientType>::propagateEvent2<EvTopicMessageTimeout<TDerived, TObjectTag>>, this);
     };
+  }
+
+  template <typename EvType>
+  void propagateEvent(const TMessageType &msg)
+  {
+    this->postEvent<EvType>();
+  }
+
+  template <typename EvType>
+  void propagateEvent2(const ros::TimerEvent &tdata)
+  {
+    this->postEvent<EvType>();
   }
 
   virtual void onEntry() override

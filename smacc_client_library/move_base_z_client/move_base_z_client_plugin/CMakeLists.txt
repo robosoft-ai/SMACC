@@ -31,7 +31,7 @@ find_package(catkin REQUIRED smacc pluginlib planner_switcher)
 catkin_package(
    INCLUDE_DIRS include
    LIBRARIES move_base_z_client_plugin
-   CATKIN_DEPENDS smacc planner_switcher
+   CATKIN_DEPENDS smacc planner_switcher tf
    #DEPENDS smacc
 )
 

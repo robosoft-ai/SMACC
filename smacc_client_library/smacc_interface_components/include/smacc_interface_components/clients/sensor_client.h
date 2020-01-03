@@ -25,13 +25,19 @@ class SensorClient : public smacc::client_bases::SmaccSubscriberClient<MessageTy
 {
 public:
   typedef MessageType TMessageType;
-  boost::signals2::signal<void(const MessageType &)> onMessageTimeout;
+  SmaccSignal<void(const ros::TimerEvent &)> onMessageTimeout_;
 
   SensorClient()
       : smacc::client_bases::SmaccSubscriberClient<MessageType>()
   {
     ROS_INFO("CbLidarSensor constructor");
     initialized_ = false;
+  }
+
+  template <typename T>
+  boost::signals2::connection onMessageTimeout(void (T::*callback)(const ros::TimerEvent &), T *object)
+  {
+    return this->stateMachine_->createSignalConnection(onMessageTimeout_, callback, object);
   }
 
   std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
@@ -42,6 +48,8 @@ public:
     SmaccSubscriberClient<MessageType>::template configureEventSourceTypes<TObjectTag, TDerived>();
 
     this->postTimeoutMessageEvent = [=](auto &timerdata) {
+      onMessageTimeout_(timerdata);
+
       auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();
       event->timerData = timerdata;
       this->postEvent(event);
@@ -54,12 +62,7 @@ public:
     {
       SmaccSubscriberClient<MessageType>::initialize();
 
-      this->onMessageReceived.connect(
-          [this](auto msg) {
-            //reseting the timer
-            this->timeoutTimer_.stop();
-            this->timeoutTimer_.start();
-          });
+      this->onMessageReceived(&SensorClient<MessageType>::resetTimer, this);
 
       if (timeout_)
       {
@@ -76,6 +79,14 @@ public:
   }
 
   boost::optional<ros::Duration> timeout_;
+
+protected:
+  void resetTimer(const MessageType &msg)
+  {
+    //reseting the timer
+    this->timeoutTimer_.stop();
+    this->timeoutTimer_.start();
+  }
 
 private:
   ros::Timer timeoutTimer_;
