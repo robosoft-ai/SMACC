@@ -17,7 +17,7 @@ public:
     // a reference to the state where the client behavior is being executed
     ISmaccState *currentState;
 
-    smacc::Orthogonal *currentOrthogonal;
+    smacc::IOrthogonal *currentOrthogonal;
 
     SmaccClientBehavior();
 

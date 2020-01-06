@@ -1,3 +1,5 @@
+namespace sm_three_some
+{
 namespace ss1_states
 {
 struct Ssr2 : smacc::SmaccState<Ssr2, SS>
@@ -25,4 +27,5 @@ struct Ssr2 : smacc::SmaccState<Ssr2, SS>
   {
   }
 };
+}
 }

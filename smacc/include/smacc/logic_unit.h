@@ -99,7 +99,7 @@ public:
     virtual bool triggers() = 0;
 
     template <typename TEv>
-    void declarePostEvent(typelist<TEv>);
+    void declarePostEvent(smacc::introspection::typelist<TEv>);
 };
 
 } // namespace smacc

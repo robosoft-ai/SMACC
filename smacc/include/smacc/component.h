@@ -32,15 +32,15 @@ public:
     template <typename EventType>
     void postEvent();
 
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes() {}
+
 protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 
     ISmaccClient *owner_;
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes() {}
-
-    friend class Orthogonal;
+    friend class IOrthogonal;
 };
 } // namespace smacc

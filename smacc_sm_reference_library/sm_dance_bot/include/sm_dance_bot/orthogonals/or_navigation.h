@@ -10,12 +10,12 @@ namespace sm_dance_bot
 {
 using namespace move_base_z_client;
 
-class OrNavigation : public smacc::Orthogonal
+class OrNavigation : public smacc::Orthogonal<OrNavigation>
 {
 public:
     virtual void onInitialize() override
     {
-        auto movebaseClient = this->createClient<OrNavigation, ClMoveBaseZ>();
+        auto movebaseClient = this->createClient<ClMoveBaseZ>();
         movebaseClient->name_ = "move_base";
         movebaseClient->initialize();
 
@@ -23,8 +23,7 @@ public:
         movebaseClient->createComponent<OdomTracker>("/");
 
         // create waypoints navigator component
-        auto waypointsNavigator_ = movebaseClient->createComponent<WaypointNavigator>();
-        waypointsNavigator_->configureEventSourceTypes<OrNavigation, ClMoveBaseZ>();
+        movebaseClient->createComponent<WaypointNavigator>();
     }
 };
 } // namespace sm_dance_bot

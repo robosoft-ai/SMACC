@@ -34,14 +34,11 @@ typedef boost::statechart::processor_container<boost::statechart::fifo_scheduler
 namespace smacc
 {
 
-struct IActionResult
+namespace utils
 {
-  smacc::client_bases::ISmaccActionClient *client;
-  actionlib::SimpleClientGoalState getResultState() const;
-};
-
 // demangles the type name to be used as a node handle path
 std::string cleanShortTypeName(const std::type_info &tinfo);
+} // namespace utils
 
 enum class SMRunMode
 {

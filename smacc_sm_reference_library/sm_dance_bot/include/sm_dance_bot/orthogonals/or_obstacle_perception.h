@@ -5,12 +5,12 @@
 
 namespace sm_dance_bot
 {
-class OrObstaclePerception : public smacc::Orthogonal
+class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
 {
 public:
     virtual void onInitialize() override
     {
-        auto lidarClient = this->createClient<OrObstaclePerception, ClLaserSensor>();
+        auto lidarClient = this->createClient<ClLaserSensor>();
 
         lidarClient->topicName = "/front/scan";
         //lidarClient->queueSize = "/front/scan";

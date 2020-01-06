@@ -62,7 +62,7 @@ void ISmaccStateMachine::createOrthogonal()
     if (orthogonals_.count(orthogonalkey) == 0)
     {
         auto ret = std::make_shared<TOrthogonal>();
-        orthogonals_[orthogonalkey] = dynamic_pointer_cast<smacc::Orthogonal>(ret);
+        orthogonals_[orthogonalkey] = dynamic_pointer_cast<smacc::IOrthogonal>(ret);
 
         ret->setStateMachine(this);
 
@@ -89,9 +89,9 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
     ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-    for (Orthogonal *ortho : this->orthogonals_)
+    for (auto *ortho : this->orthogonals_)
     {
-        for (auto &client : ortho->getClients())
+        for (ISmaccClient *client : ortho->getClients())
         {
             storage = client->getComponent<SmaccComponentType>();
             if (storage == nullptr)
@@ -224,6 +224,8 @@ void ISmaccStateMachine::mapBehavior()
     }
 }
 
+namespace utils
+{
 template <int arity>
 struct Bind
 {
@@ -251,14 +253,22 @@ struct Bind<2>
     }
 };
 
+template <>
+struct Bind<3>
+{
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+    boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+    {
+        return signal.connect([=](auto a1, auto a2) { return (object->*callback)(a1, a2); });
+    }
+};
+} // namespace utils
+using namespace smacc::utils;
+
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
 boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value 
-                || std::is_base_of<ISmaccClient, TSmaccObjectType>::value 
-                || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value 
-                || std::is_base_of<LogicUnit, TSmaccObjectType>::value 
-                || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<ISmaccClient, TSmaccObjectType>::value || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value || std::is_base_of<LogicUnit, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
 
     typedef decltype(callback) ft;
     Bind<boost::function_types::function_arity<ft>::value> binder;

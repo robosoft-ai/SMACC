@@ -2,10 +2,11 @@
 
 namespace sm_viewer_sim
 {
+using namespace smacc::default_transition_tags;
 struct St1 : SmaccState<St1, MsRunMode>
 {
-    typedef mpl::list<smacc::transition<Ev1, St2, smacc::SUCCESS>,
-                      smacc::transition<EvFail, MsRecoveryMode, smacc::ABORT>>
+    typedef mpl::list<smacc::transition<Ev1, St2, SUCCESS>,
+                      smacc::transition<EvFail, MsRecoveryMode, ABORT>>
         reactions;
     using SmaccState::SmaccState;
     void onEntry()
@@ -14,4 +15,4 @@ struct St1 : SmaccState<St1, MsRunMode>
         delayedPostEvent<Ev1>(this, 7);
     }
 };
-}
+} // namespace sm_viewer_sim

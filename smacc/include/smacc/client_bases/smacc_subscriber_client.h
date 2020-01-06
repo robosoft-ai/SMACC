@@ -7,35 +7,6 @@
 namespace smacc
 {
 
-template <typename TSource, typename TObjectTag>
-struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectTag>>
-{
-  //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
-  static std::string getEventLabel()
-  {
-    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
-
-    std::string label = typeinfo->getNonTemplatetypename();
-    return label;
-  }
-
-  typename TSource::TMessageType msgData;
-};
-
-template <typename TSource, typename TObjectTag>
-struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TObjectTag>>
-{
-  static std::string getEventLabel()
-  {
-    auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
-
-    std::string label = typeinfo->getNonTemplatetypename();
-    return label;
-  }
-
-  typename TSource::TMessageType msgData;
-};
-
 namespace client_bases
 {
 
@@ -67,13 +38,13 @@ public:
   template <typename T>
   boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), T *object)
   {
-      return stateMachine_->createSignalConnection(onMessageReceived_, callback, object);
+    return stateMachine_->createSignalConnection(onMessageReceived_, callback, object);
   }
 
   template <typename T>
   boost::signals2::connection onFirstMessageReceived(void (T::*callback)(const MessageType &), T *object)
   {
-      return stateMachine_->createSignalConnection(onFirstMessageReceived_, callback, object);
+    return stateMachine_->createSignalConnection(onFirstMessageReceived_, callback, object);
   }
 
   template <typename TObjectTag, typename TDerived>

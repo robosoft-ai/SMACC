@@ -156,7 +156,7 @@ void processTransitionAux(smacc::transition<Ev, Dst, Tag> *, std::shared_ptr<Sma
     std::string transitionTag;
     std::string transitionType;
 
-    if (typeid(Tag) != typeid(smacc::default_transition_name))
+    if (typeid(Tag) != typeid(default_transition_name))
     {
         transitionTag = demangleSymbol<Tag>();
         transitionType = getTransitionType<Tag>();

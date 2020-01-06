@@ -3,13 +3,13 @@
 
 namespace sm_atomic
 {
-class OrTimer : public smacc::Orthogonal
+class OrTimer : public smacc::Orthogonal<OrTimer>
 {
 public:
     virtual void onInitialize() override
     {
-        auto client = this->createClient<OrTimer, ros_timer_client::ClRosTimer>(ros::Duration(1));
+        auto client = this->createClient<ros_timer_client::ClRosTimer>(ros::Duration(1));
         client->initialize();
     }
 };
-}
+} // namespace sm_atomic

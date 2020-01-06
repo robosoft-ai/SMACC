@@ -28,10 +28,8 @@ class SmaccStateInfo;
 
 // ----TAGS FOR TRANSITIONS -----
 
-// all transitions are by default labeled with this structname
-struct default_object_tag
+namespace default_transition_tags
 {
-};
 
 // you can also use these other labels in order to have
 // a better code readability and also to improve the visual representation
@@ -60,13 +58,14 @@ struct ENDLOOP
 {
 };
 
-struct default_transition_name : smacc::SUCCESS
+struct default_transition_name : SUCCESS
 {
 };
+} // namespace default_transition_tags
 
 template <class Event,
           class Destination,
-          typename Tag = default_transition_name,
+          typename Tag = default_transition_tags::default_transition_name,
           class TransitionContext = boost::statechart::detail::no_context<Event>,
           void (TransitionContext::*pTransitionAction)(const Event &) =
               &boost::statechart::detail::no_context<Event>::no_function>

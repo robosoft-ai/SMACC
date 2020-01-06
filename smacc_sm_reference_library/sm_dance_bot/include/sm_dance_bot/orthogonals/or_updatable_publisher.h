@@ -5,12 +5,12 @@
 
 namespace sm_dance_bot
 {
-class OrUpdatablePublisher : public smacc::Orthogonal
+class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {
 public:
     virtual void onInitialize() override
     {
-        auto publisherClient_ = this->createClient<OrUpdatablePublisher, ros_publisher_client::ClRosPublisher>();
+        auto publisherClient_ = this->createClient<ros_publisher_client::ClRosPublisher>();
         publisherClient_->configure<std_msgs::String>("/updatable_string_publisher_out");
     }
 };

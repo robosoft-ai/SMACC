@@ -6,6 +6,8 @@ namespace smacc
 {
 namespace logic_units
 {
+
+using namespace smacc::introspection;
 void LuAllEventsGo::onInitialized()
 {
     for (auto type : eventTypes)

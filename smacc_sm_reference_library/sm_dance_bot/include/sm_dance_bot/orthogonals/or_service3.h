@@ -5,12 +5,12 @@
 
 namespace sm_dance_bot
 {
-class OrService3 : public smacc::Orthogonal
+class OrService3 : public smacc::Orthogonal<OrService3>
 {
 public:
     virtual void onInitialize() override
     {
-        auto serviceClient = this->createClient<OrService3, ClService3>();
+        auto serviceClient = this->createClient<ClService3>();
         serviceClient->serviceName_ = "/service_node3";
         serviceClient->initialize();
     }

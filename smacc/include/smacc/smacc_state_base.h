@@ -4,6 +4,9 @@
 
 namespace smacc
 {
+using namespace smacc::introspection;
+using namespace smacc::default_events;
+
 template <class MostDerived,
           class Context,
           class InnerInitial = mpl::list<>,
@@ -57,10 +60,10 @@ public:
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
     {
-      contextNh = ros::NodeHandle(cleanShortTypeName(typeid(Context)));
+      contextNh = ros::NodeHandle(smacc::utils::cleanShortTypeName(typeid(Context)));
     }
 
-    std::string classname = cleanShortTypeName(typeid(MostDerived));
+    std::string classname = smacc::utils::cleanShortTypeName(typeid(MostDerived));
 
     this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
 
@@ -136,7 +139,7 @@ public:
 
   std::string getShortName()
   {
-    return cleanShortTypeName(typeid(MostDerived));
+    return smacc::utils::cleanShortTypeName(typeid(MostDerived));
   }
 
   virtual ~SmaccState()

@@ -9,7 +9,7 @@ namespace smacc
 {
 namespace client_bases
 {
-using namespace boost::signals2;
+using namespace smacc::default_events;
 
 template <typename ActionType>
 class SmaccActionClientBase : public ISmaccActionClient
@@ -77,7 +77,7 @@ public:
     void postResultEvent(ResultConstPtr result)
     {
         auto *ev = new EvType();
-        ev->client = this;
+        //ev->client = this;
         ev->resultMessage = *result;
         ROS_INFO("Posting EVENT %s", demangleSymbol(typeid(ev).name()).c_str());
         this->postEvent(ev);

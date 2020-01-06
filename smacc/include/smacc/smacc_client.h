@@ -34,8 +34,8 @@ public:
     template <typename TComponent>
     TComponent *getComponent();
 
-    template <typename SmaccComponentType, typename... TArgs>
-    SmaccComponentType *createComponent(TArgs... targs);
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes() {}
 
 protected:
     // A reference to the state machine object that owns this resource
@@ -45,9 +45,6 @@ protected:
     std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
 private:
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes() {}
-
-    friend class Orthogonal;
+    friend class IOrthogonal;
 };
 } // namespace smacc

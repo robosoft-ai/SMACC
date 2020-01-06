@@ -7,6 +7,7 @@ namespace smacc
 {
 namespace logic_units
 {
+using namespace smacc::introspection;
 LuEventCountdown::LuEventCountdown(int eventCount)
     : eventCount_(eventCount)
 {

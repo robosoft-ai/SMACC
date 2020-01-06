@@ -58,7 +58,7 @@ void ISmaccStateMachine::EStop()
 {
 }
 
-const std::map<std::string, std::shared_ptr<smacc::Orthogonal>> &ISmaccStateMachine::getOrthogonals() const
+const std::map<std::string, std::shared_ptr<smacc::IOrthogonal>> &ISmaccStateMachine::getOrthogonals() const
 {
     return this->orthogonals_;
 }

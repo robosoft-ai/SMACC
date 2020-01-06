@@ -24,6 +24,7 @@ namespace smacc
 namespace introspection
 {
 using namespace boost;
+using namespace smacc::default_transition_tags;
 
 void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::SmaccTransition &transitionMsg);
 

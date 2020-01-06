@@ -4,12 +4,12 @@
 #include <smacc/smacc_orthogonal.h>
 namespace sm_dance_bot
 {
-class OrStringPublisher : public smacc::Orthogonal
+class OrStringPublisher : public smacc::Orthogonal<OrStringPublisher>
 {
 public:
     virtual void onInitialize() override
     {
-        this->createClient<OrStringPublisher, ClStringPublisher>("/string_publisher_out");
+        this->createClient<ClStringPublisher>("/string_publisher_out");
     }
 };
 } // namespace sm_dance_bot

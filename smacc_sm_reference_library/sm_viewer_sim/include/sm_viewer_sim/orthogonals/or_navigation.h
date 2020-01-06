@@ -5,12 +5,12 @@ namespace sm_viewer_sim
 {
 using namespace move_base_z_client;
 
-class OrNavigation : public smacc::Orthogonal
+class OrNavigation : public smacc::Orthogonal<OrNavigation>
 {
 public:
     virtual void onInitialize() override
     {
-        auto client = this->createClient<OrNavigation, ClMoveBaseZ>();
+        auto client = this->createClient<ClMoveBaseZ>();
         client->name_ = "move_base";
         client->initialize();
     }

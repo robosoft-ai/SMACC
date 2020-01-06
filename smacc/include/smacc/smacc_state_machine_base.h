@@ -51,7 +51,7 @@ public:
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");
-        auto shortname = cleanShortTypeName(typeid(DerivedStateMachine));
+        auto shortname = smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
         this->onInitializing(shortname);
 
         ROS_INFO("Introspecting state machine via typeWalker");

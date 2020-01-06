@@ -7,7 +7,8 @@
 
 namespace smacc
 {
-
+namespace logic_units
+{
 template <typename TSource, typename TObjectTag = empty_object_tag>
 struct EvTrue : sc::event<EvTrue<TSource, TObjectTag>>
 {
@@ -24,9 +25,8 @@ public:
     template <typename TEv>
     LuConditional(std::function<bool(TEv *)> conditionalFunction)
     {
-        std::function<void(TEv*)> callback= 
-            [=](TEv* ev)
-            {
+        std::function<void(TEv *)> callback =
+            [=](TEv *ev) {
                 bool condition = conditionalFunction(ev);
                 this->conditionFlag = condition;
             };
@@ -38,4 +38,5 @@ public:
 
     virtual bool triggers() override;
 };
+} // namespace logic_units
 } // namespace smacc

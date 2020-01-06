@@ -8,12 +8,12 @@ namespace sm_three_some
 {
 using namespace ros_publisher_client;
 
-class OrUpdatablePublisher : public smacc::Orthogonal
+class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {
 public:
     virtual void onInitialize() override
     {
-        auto ros_publisher_client = this->createClient<OrUpdatablePublisher, ClRosPublisher>();
+        auto ros_publisher_client = this->createClient<ClRosPublisher>();
         ros_publisher_client->initialize();
     }
 };

@@ -5,12 +5,12 @@
 namespace sm_three_some
 {
 
-class OrKeyboard : public smacc::Orthogonal
+class OrKeyboard : public smacc::Orthogonal<OrKeyboard>
 {
 public:
     virtual void onInitialize() override
     {
-        auto clKeyboard = this->createClient<OrKeyboard, keyboard_client::ClKeyboard>();
+        auto clKeyboard = this->createClient<keyboard_client::ClKeyboard>();
         
         //ClKeyboard.queueSize = 1;
         clKeyboard->initialize();

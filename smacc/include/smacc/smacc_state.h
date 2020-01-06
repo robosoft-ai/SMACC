@@ -44,7 +44,7 @@ public:
   void notifyTransition();
 
   // used for transition logging
-  void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<TypeInfo> &transitionTypeInfo);
+  void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::introspection::TypeInfo> &transitionTypeInfo);
 
   inline std::vector<std::shared_ptr<LogicUnit>> &getLogicUnits() { return logicUnits_; }
 

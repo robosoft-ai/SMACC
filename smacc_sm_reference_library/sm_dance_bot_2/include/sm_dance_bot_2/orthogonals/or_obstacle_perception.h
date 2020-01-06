@@ -6,15 +6,15 @@
 
 namespace sm_dance_bot_2
 {
-  using namespace sm_dance_bot_2::cl_lidar;
+using namespace sm_dance_bot_2::cl_lidar;
 
-class OrObstaclePerception : public smacc::Orthogonal
+class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
 {
 public:
   virtual void onInitialize() override
   {
     auto lidarClient =
-        this->createClient<OrObstaclePerception,ClLaserSensor>("/front/scan", ros::Duration(10));
+        this->createClient<ClLaserSensor>("/front/scan", ros::Duration(10));
 
     lidarClient->initialize();
 

@@ -4,13 +4,13 @@
 
 namespace smacc
 {
-void Orthogonal::setStateMachine(ISmaccStateMachine *value)
+void IOrthogonal::setStateMachine(ISmaccStateMachine *value)
 {
     this->stateMachine_ = value;
     this->onInitialize();
 }
 
-void Orthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
+void IOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
 {
     if (clBehavior != nullptr)
     {
@@ -26,16 +26,16 @@ void Orthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> c
     }
 }
 
-void Orthogonal::onInitialize()
+void IOrthogonal::onInitialize()
 {
 }
 
-std::string Orthogonal::getName() const
+std::string IOrthogonal::getName() const
 {
     return demangleSymbol(typeid(*this).name());
 }
 
-void Orthogonal::onEntry()
+void IOrthogonal::onEntry()
 {
     if (clientBehaviors_.size() > 0)
     {
@@ -54,7 +54,7 @@ void Orthogonal::onEntry()
     }
 }
 
-void Orthogonal::onExit()
+void IOrthogonal::onExit()
 {
     if (clientBehaviors_.size() > 0)
     {

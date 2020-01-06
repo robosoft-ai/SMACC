@@ -5,7 +5,7 @@
 namespace smacc
 {
 
-class Orthogonal
+class IOrthogonal
 {
 public:
     void setStateMachine(ISmaccStateMachine *value);
@@ -17,9 +17,6 @@ public:
     void onExit();
 
     virtual std::string getName() const;
-
-    template <typename TObjectTag, typename TClient, typename... TArgs>
-    std::shared_ptr<TClient> createClient(TArgs... args);
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
@@ -38,21 +35,9 @@ public:
     }
 
     template <typename TClientBehavior>
-    TClientBehavior *getClientBehavior()
-    {
-        for (auto &cb : this->clientBehaviors_)
-        {
-            auto *ret = dynamic_cast<TClientBehavior *>(cb.get());
-            if (ret != nullptr)
-            {
-                return ret;
-            }
-        }
+    TClientBehavior *getClientBehavior();
 
-        return nullptr;
-    }
-
-private:
+protected:
     virtual void onInitialize();
 
     ISmaccStateMachine *stateMachine_;
@@ -61,5 +46,6 @@ private:
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 };
+
 
 } // namespace smacc

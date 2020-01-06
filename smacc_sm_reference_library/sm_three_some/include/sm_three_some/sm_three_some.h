@@ -36,6 +36,7 @@ using namespace sm_three_some::cl_subscriber;
 
 using namespace smacc;
 using namespace smacc::logic_units;
+using namespace smacc::default_events;
 
 namespace sm_three_some
 {
@@ -43,7 +44,7 @@ namespace sm_three_some
 namespace SS1
 {
 class Ss1;
-}
+} // namespace SS1
 
 //STATES
 class StState1; // first state specially needs a forward declaration
