@@ -9,7 +9,7 @@ namespace smacc
 {
 namespace logic_units
 {
-template <typename TSource, typename TObjectTag = empty_object_tag>
+template <typename TSource, typename TObjectTag = EmptyObjectTag>
 struct EvConditionalTrue : sc::event<EvConditionalTrue<TSource, TObjectTag>>
 {
 };

@@ -10,7 +10,7 @@ namespace smacc
 
 namespace logic_units
 {
-template <typename TSource, typename TObjectTag = empty_object_tag>
+template <typename TSource, typename TObjectTag = EmptyObjectTag>
 struct EvCountdownEnd : sc::event<EvCountdownEnd<TSource, TObjectTag>>
 {
 };

@@ -12,9 +12,12 @@ namespace smacc
 {
 class ISmaccState;
 
-struct empty_object_tag
+namespace logic_units
+{
+struct EmptyObjectTag
 {
 };
+} // namespace logic_units
 
 class LogicUnit
 {
