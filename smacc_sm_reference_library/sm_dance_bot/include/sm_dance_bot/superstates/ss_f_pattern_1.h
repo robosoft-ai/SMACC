@@ -46,11 +46,11 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::transition<EvLoopEnd<SsrFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
+        smacc::Transition<EvLoopEnd<SsrFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
 
         // Error events
-        //smacc::transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
         >
         reactions;
 

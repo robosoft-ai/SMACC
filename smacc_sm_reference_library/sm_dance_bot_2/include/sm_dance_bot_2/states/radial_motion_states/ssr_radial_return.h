@@ -3,9 +3,9 @@ namespace radial_motion_states {
 
 struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS> {
   typedef mpl::list<
-      smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,
+      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,
                         SsrRadialLoopStart, SUCCESS>,
-      smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,
+      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,
                         SsrRadialEndPoint, ABORT>>
       reactions;
 

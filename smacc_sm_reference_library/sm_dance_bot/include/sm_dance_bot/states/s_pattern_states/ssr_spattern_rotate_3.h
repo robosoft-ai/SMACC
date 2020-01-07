@@ -6,8 +6,8 @@ struct SsrSPatternRotate3 : smacc::SmaccState<SsrSPatternRotate3, SS>
 {
     using SmaccState::SmaccState;
 
-    typedef mpl::list<smacc::transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward3>,
-                      smacc::transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternForward2>>
+    typedef mpl::list<smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward3>,
+                      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternForward2>>
         reactions;
 
     static void onDefinition()

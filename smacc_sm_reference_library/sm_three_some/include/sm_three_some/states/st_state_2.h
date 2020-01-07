@@ -5,11 +5,11 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<EvAllGo<LuAllEventsGo>, StState3>,
+        smacc::Transition<EvAllGo<LuAllEventsGo>, StState3>,
 
         // Keyboard events
-        smacc::transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
-        smacc::transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>>
+        smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
+        smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>>
         reactions;
 
     static void onDefinition()

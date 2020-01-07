@@ -6,12 +6,12 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
 
     typedef mpl::list<
         // Expected transition
-        smacc::transition<smacc::EvTopicMessage<ClSubscriber, OrTimer>, StState2>,
+        smacc::Transition<smacc::EvTopicMessage<ClSubscriber, OrTimer>, StState2>,
 
         // Keyboard events
-        smacc::transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-        smacc::transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
-        smacc::transition<EvFail, MsRecover, smacc::ABORT>>
+        smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+        smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
+        smacc::Transition<EvFail, MsRecover, smacc::ABORT>>
         reactions;
 
     static void onDefinition()

@@ -69,6 +69,6 @@ template <class Event,
           class TransitionContext = boost::statechart::detail::no_context<Event>,
           void (TransitionContext::*pTransitionAction)(const Event &) =
               &boost::statechart::detail::no_context<Event>::no_function>
-class transition;
+class Transition;
 
 } // namespace smacc

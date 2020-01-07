@@ -11,7 +11,7 @@ template <class Event,
           typename Tag,
           class TransitionContext,
           void (TransitionContext::*pTransitionAction)(const Event &)>
-class transition
+class Transition
 {
 public:
   typedef Tag TRANSITION_TAG;
@@ -24,7 +24,7 @@ private:
     static boost::statechart::result react_without_action(State &stt)
     {
       ROS_DEBUG("Smacc Transition: REACT WITHOUT ACTION");
-      typedef smacc::transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
+      typedef smacc::Transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
 
       stt.template notifyTransition<Transtype>();
       return stt.template transit<Destination>();
@@ -33,7 +33,7 @@ private:
     static boost::statechart::result react_with_action(State &stt, const Event &evt)
     {
       ROS_DEBUG("Smacc Transition: REACT WITH ACTION AND EVENT");
-      typedef smacc::transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
+      typedef smacc::Transition<Event, Destination, Tag, TransitionContext, pTransitionAction> Transtype;
       stt.template notifyTransition<Transtype>();
       return stt.template transit<Destination>(pTransitionAction, evt);
     }

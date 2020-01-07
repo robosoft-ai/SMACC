@@ -7,10 +7,10 @@ struct Ssr2 : smacc::SmaccState<Ssr2, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      smacc::transition<EvTimer<CbTimer, OrTimer>, Ssr3>,
+      smacc::Transition<EvTimer<CbTimer, OrTimer>, Ssr3>,
 
-      smacc::transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr3>,
-      smacc::transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr1>>
+      smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr3>,
+      smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr1>>
       reactions;
 
   //-------------------------------------------------------------------------------

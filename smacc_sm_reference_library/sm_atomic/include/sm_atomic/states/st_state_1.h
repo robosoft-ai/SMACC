@@ -7,7 +7,7 @@ using namespace ros_timer_client;
 struct State1
     : smacc::SmaccState<State1, SmAtomic>
 {
-    typedef mpl::list<smacc::transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>> reactions;
+    typedef mpl::list<smacc::Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>> reactions;
 
     using SmaccState::SmaccState;
 

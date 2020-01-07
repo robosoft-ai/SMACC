@@ -9,7 +9,7 @@ struct SsrFPatternStartLoop : smacc::SmaccState<SsrFPatternStartLoop<SS>, SS>
   using TSsr::SmaccState;
   using TSsr::context_type;
 
-  typedef smacc::transition<EvLoopContinue<SsrFPatternStartLoop<SS>>, SsrFPatternRotate1<SS>, CONTINUELOOP> reactions;
+  typedef smacc::Transition<EvLoopContinue<SsrFPatternStartLoop<SS>>, SsrFPatternRotate1<SS>, CONTINUELOOP> reactions;
 
   static void onDefinition()
   {

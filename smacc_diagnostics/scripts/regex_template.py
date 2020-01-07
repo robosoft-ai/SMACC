@@ -89,7 +89,7 @@ def getRootTypeInfo(inputtext):
 
     return roottype
     
-inputtext = "smacc::transition<Ev1<LidarSensor<sensor_msgs::LaserScan, std::allocator<none>>, EVTAG>, State1, TAG>"
+inputtext = "smacc::Transition<Ev1<LidarSensor<sensor_msgs::LaserScan, std::allocator<none>>, EVTAG>, State1, TAG>"
 roottypeinfo = getRootTypeInfo(inputtext)
 
 print types

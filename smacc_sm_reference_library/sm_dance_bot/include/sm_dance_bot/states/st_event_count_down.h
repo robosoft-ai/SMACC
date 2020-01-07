@@ -7,9 +7,9 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
     typedef mpl::list<
         // Expected event
-        transition<EvCountdownEnd<LuEventCountdown>, StNavigateToWaypointsX>,
+        Transition<EvCountdownEnd<LuEventCountdown>, StNavigateToWaypointsX>,
 
-        smacc::transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
+        smacc::Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
         reactions;
 
     static void onDefinition()
