@@ -24,7 +24,7 @@
 
 #---------- SMACC CLIENT LIBRARY -----------------------
 cd smacc_client_library/
-for TARGET_PKG in smacc_action_client_generic smacc_interface_components smacc_sensors 
+for TARGET_PKG in smacc_action_client_generic multirole_sensor_client smacc_sensors 
 do
 build_package $TARGET_PKG
 done

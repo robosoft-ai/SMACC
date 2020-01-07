@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sm_dance_bot/clients/cl_lidar/cl_lidar.h>
 
@@ -8,7 +8,7 @@ namespace sm_dance_bot_2
 {
 namespace cl_lidar
 {
-struct CbLidarSensor : smacc::SensorTopic<ClLaserSensor>
+struct CbLidarSensor : multirole_sensor_client::SmaccSubscriberClient<ClLaserSensor>
 {
 public:
   CbLidarSensor()
@@ -19,7 +19,7 @@ public:
   virtual void onEntry() override
   {
     ROS_INFO("CbLidarSensor onEntry");
-    smacc::SensorTopic<ClLaserSensor>::onEntry();
+    multirole_sensor_client::SmaccSubscriberClient<ClLaserSensor>::onEntry();
   }
 
   virtual void onMessageCallback(const sensor_msgs::LaserScan &msg) override

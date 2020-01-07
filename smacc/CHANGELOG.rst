@@ -49,7 +49,7 @@ Forthcoming
 * many core fixes and refactorings, substate behavior destroying, dance_bot keyboard separated in two files, topic sensor separated in two files too for the client and the substate behavior
 * progressing on keyboard
 * introducing the client concept and moving smacc topic subscriber to the smacc 'core' package
-* SensorClient and TopicSubscriber
+* ClMultiroleSensor and TopicSubscriber
 * detaching substatebehaviors from compnent and renaming class refactoring
 * making smacc_viewer run and also refactoring smacc_state_info headers
 * Merge branch 'master' of https://github.com/reelrbtx/SMACC

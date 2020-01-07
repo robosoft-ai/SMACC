@@ -1,19 +1,19 @@
 #pragma once
 
 #include <smacc/smacc_client_behavior.h>
-#include <smacc_interface_components/clients/sensor_client.h>
+#include <multirole_sensor_client/cl_multirole_sensor.h>
 
-namespace smacc
+namespace multirole_sensor_client
 {
 template <typename ClientType>
-class SensorTopic : public smacc::SmaccClientBehavior
+class CbDefaultMultiRoleSensorBehavior : public smacc::SmaccClientBehavior
 {
 public:
   typedef typename ClientType::TMessageType TMessageType;
 
   ClientType *sensor_;
 
-  SensorTopic()
+  CbDefaultMultiRoleSensorBehavior()
   {
     sensor_ = nullptr;
   }
@@ -31,9 +31,9 @@ public:
   {
     deferedEventPropagation = [=]() {
       // just propagate the client events from this client behavior source.
-      sensor_->onMessageReceived(&SensorTopic<ClientType>::propagateEvent<EvTopicMessage<TDerived, TObjectTag>>, this);
-      sensor_->onFirstMessageReceived(&SensorTopic<ClientType>::propagateEvent<EvTopicInitialMessage<TDerived, TObjectTag>>, this);
-      sensor_->onMessageTimeout(&SensorTopic<ClientType>::propagateEvent2<EvTopicMessageTimeout<TDerived, TObjectTag>>, this);
+      sensor_->onMessageReceived(&CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent<EvTopicMessage<TDerived, TObjectTag>>, this);
+      sensor_->onFirstMessageReceived(&CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent<EvTopicInitialMessage<TDerived, TObjectTag>>, this);
+      sensor_->onMessageTimeout(&CbDefaultMultiRoleSensorBehavior<ClientType>::propagateEvent2<EvTopicMessageTimeout<TDerived, TObjectTag>>, this);
     };
   }
 
@@ -51,7 +51,7 @@ public:
 
   virtual void onEntry() override
   {
-    ROS_INFO("SensorTopic onEntry. Requires client of type '%s'", demangleSymbol<ClientType>().c_str());
+    ROS_INFO("CbDefaultMultiRoleSensorBehavior onEntry. Requires client of type '%s'", demangleSymbol<ClientType>().c_str());
 
     this->requiresClient(sensor_);
 
@@ -62,7 +62,7 @@ public:
     else
     {
       deferedEventPropagation();
-      ROS_INFO("SensorTopic onEntry. sensor initialize");
+      ROS_INFO("CbDefaultMultiRoleSensorBehavior onEntry. sensor initialize");
       sensor_->initialize();
     }
   }

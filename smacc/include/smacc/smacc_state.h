@@ -60,6 +60,9 @@ public:
   template <typename T>
   bool param(std::string param_name, T &param_val, const T &default_val) const;
 
+  template <typename TOrthogonal>
+  TOrthogonal* getOrthogonal();
+
   inline ros::NodeHandle &getROSNode()
   {
     return nh;

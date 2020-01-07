@@ -40,8 +40,7 @@ public:
         reactions;
 
     static constexpr int total_iterations() { return 20; }
-    static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
-    static constexpr float ray_length_meters() { return 3; }
+    static constexpr float ray_angle_increment_degree() { return 360.0 / (float)total_iterations(); }
 
     int iteration_count = 0;
 

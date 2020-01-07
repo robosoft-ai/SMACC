@@ -1,6 +1,6 @@
 #pragma once
 
-#include <smacc_interface_components/clients/sensor_client.h>
+#include <multirole_sensor_client/cl_multirole_sensor.h>
 #include <std_msgs/String.h>
 #include <sensor_msgs/Temperature.h>
 
@@ -8,7 +8,7 @@ namespace sm_dance_bot
 {
 namespace cl_temperature_sensor
 {
-class ClTemperatureSensor : public smacc::SensorClient<sensor_msgs::Temperature>
+class ClTemperatureSensor : public multirole_sensor_client::ClMultiroleSensor<sensor_msgs::Temperature>
 {
 public:
     ClTemperatureSensor()

@@ -2,7 +2,7 @@
 
 #include <smacc/smacc_orthogonal.h>
 #include <sensor_msgs/Temperature.h>
-#include <smacc_interface_components/clients/sensor_client.h>
+#include <multirole_sensor_client/cl_multirole_sensor.h>
 #include <sm_dance_bot/clients/cl_temperature_sensor/cl_temperature_sensor.h>
 
 namespace sm_dance_bot

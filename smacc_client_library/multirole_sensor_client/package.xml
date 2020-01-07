@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>smacc_interface_components</name>
+  <name>multirole_sensor_client</name>
   <version>0.0.1</version>
-  <description>The smacc_interface_components package</description>
+  <description>The multirole_sensor_client package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/smacc_interface_components</url> -->
+  <!-- <url type="website">http://wiki.ros.org/multirole_sensor_client</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

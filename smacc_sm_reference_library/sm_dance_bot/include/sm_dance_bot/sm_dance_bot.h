@@ -5,7 +5,7 @@
 // CLIENT BEHAVIORS
 #include <ros_timer_client/client_behaviors/cb_ros_timer.h>
 
-#include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>

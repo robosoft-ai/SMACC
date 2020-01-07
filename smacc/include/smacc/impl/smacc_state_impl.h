@@ -41,7 +41,7 @@ void ISmaccState::configure(Args &&... args)
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
 
-    TOrthogonal *orthogonal = this->getStateMachine().getOrthogonal<TOrthogonal>();
+    TOrthogonal *orthogonal = this->getOrthogonal<TOrthogonal>();
     if (orthogonal != nullptr)
     {
         auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
@@ -102,6 +102,12 @@ std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
     lu->declarePostEvent(typelist<TTriggerEvent>());
     logicUnits_.push_back(lu);
     return lu;
+}
+
+template <typename TOrthogonal>
+TOrthogonal* ISmaccState::getOrthogonal()
+{
+    return this->getStateMachine().getOrthogonal<TOrthogonal>();
 }
 
 // template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>

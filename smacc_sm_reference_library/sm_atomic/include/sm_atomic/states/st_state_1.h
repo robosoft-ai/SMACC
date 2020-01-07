@@ -28,15 +28,15 @@ struct State1
 
 
         // getting reference to the repeat countdown behavior
-        auto* cbrepeat = this->getStateMachine().getOrthogonal<OrTimer>()
-                               ->getClientBehavior<CbTimerCountdownLoop>();
+        auto* cbrepeat = this->getOrthogonal<OrTimer>()
+                              ->getClientBehavior<CbTimerCountdownLoop>();
 
         // subscribe to the repeat countdown behavior callback
         cbrepeat->onTimerTick(&State1::onRepeatBehaviorTickCallback, this);
 
         // getting reference to the single countdown behavior
-        auto* cbsingle = this->getStateMachine().getOrthogonal<OrTimer>()
-                               ->getClientBehavior<CbTimerCountdownOnce>();
+        auto* cbsingle = this->getOrthogonal<OrTimer>()
+                             ->getClientBehavior<CbTimerCountdownOnce>();
 
         // subscribe to the single countdown behavior callback
         cbsingle->onTimerTick(&State1::onSingleBehaviorTickCallback, this);

@@ -8,8 +8,9 @@
 #include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
 
-namespace smacc
+namespace multirole_sensor_client
 {
+using namespace smacc;
 
 template <typename TSource, typename TObjectTag>
 struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TObjectTag>>
@@ -21,13 +22,13 @@ using namespace smacc::client_bases;
 
 //---------------------------------------------------------------
 template <typename MessageType>
-class SensorClient : public smacc::client_bases::SmaccSubscriberClient<MessageType>
+class ClMultiroleSensor : public smacc::client_bases::SmaccSubscriberClient<MessageType>
 {
 public:
   typedef MessageType TMessageType;
   SmaccSignal<void(const ros::TimerEvent &)> onMessageTimeout_;
 
-  SensorClient()
+  ClMultiroleSensor()
       : smacc::client_bases::SmaccSubscriberClient<MessageType>()
   {
     ROS_INFO("CbLidarSensor constructor");
@@ -62,11 +63,11 @@ public:
     {
       SmaccSubscriberClient<MessageType>::initialize();
 
-      this->onMessageReceived(&SensorClient<MessageType>::resetTimer, this);
+      this->onMessageReceived(&ClMultiroleSensor<MessageType>::resetTimer, this);
 
       if (timeout_)
       {
-        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&SensorClient<MessageType>::timeoutCallback, this, _1));
+        timeoutTimer_ = this->nh_.createTimer(*timeout_, boost::bind(&ClMultiroleSensor<MessageType>::timeoutCallback, this, _1));
         timeoutTimer_.start();
       }
       else
@@ -97,4 +98,4 @@ private:
     postTimeoutMessageEvent(timerdata);
   }
 };
-} // namespace smacc
+} // namespace multirole_sensor_client

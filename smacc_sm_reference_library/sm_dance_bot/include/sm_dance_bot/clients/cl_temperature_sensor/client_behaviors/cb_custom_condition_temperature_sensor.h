@@ -2,7 +2,7 @@
 #pragma once
 #include <sensor_msgs/Temperature.h>
 #include <sm_dance_bot/clients/cl_temperature_sensor/cl_temperature_sensor.h>
-#include <smacc_interface_components/client_behaviors/cb_sensor_base.h>
+#include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
 
 namespace sm_dance_bot
 {
@@ -13,7 +13,7 @@ struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 };
 
 //--------------------------------------------------------------------------------------
-class CbConditionTemperatureSensor : public smacc::SensorTopic<ClTemperatureSensor>
+class CbConditionTemperatureSensor : public multirole_sensor_client::CbDefaultMultiRoleSensorBehavior<ClTemperatureSensor>
 {
 public:
   CbConditionTemperatureSensor()

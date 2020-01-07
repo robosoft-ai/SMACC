@@ -60,7 +60,7 @@
   <depend>waypoints_navigator</depend>
 
   <depend>ros_publisher_client</depend>
-  <depend>smacc_interface_components</depend>
+  <depend>multirole_sensor_client</depend>
   
   <depend>all_events_go</depend>
   <depend>event_countdown</depend>

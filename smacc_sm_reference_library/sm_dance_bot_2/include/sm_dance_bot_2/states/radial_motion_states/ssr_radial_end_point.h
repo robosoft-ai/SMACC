@@ -14,7 +14,6 @@ struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
 
   static void onDefinition()
   {
-    ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
     static_configure<OrNavigation, CbNavigateForward>();
   }
 
@@ -25,22 +24,10 @@ struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
 
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
-    auto forwardBehavior = this->getStateMachine()
-                               .getOrthogonal<OrNavigation>()
+    auto forwardBehavior = this->getOrthogonal<OrNavigation>()
                                ->getClientBehavior<CbNavigateForward>();
 
-    double forwarddist = 10;
-
-    if (lidarData->forwardObstacleDistance == std::numeric_limits<float>::infinity() || lidarData->forwardObstacleDistance != lidarData->forwardObstacleDistance) // check not is a nan (sensor max dist)
-    {
-      ROS_INFO("Distance to forward obstacle is not a number, setting default value to: %lf", forwarddist);
-    }
-    else
-    {
-      forwarddist = lidarData->forwardObstacleDistance - 0.8 /*meters*/;
-    }
-
-    forwardBehavior->forwardDistance = forwarddist;
+        forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
   }
 };
 } // namespace radial_motion_states

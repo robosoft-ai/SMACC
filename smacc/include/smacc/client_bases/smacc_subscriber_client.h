@@ -29,8 +29,8 @@ public:
     sub_.shutdown();
   }
 
-  SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
-  SmaccSignal<void(const MessageType &)> onMessageReceived_;
+  smacc::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
+  smacc::SmaccSignal<void(const MessageType &)> onMessageReceived_;
 
   std::function<void(const MessageType &)> postMessageEvent;
   std::function<void(const MessageType &)> postInitialMessageEvent;
