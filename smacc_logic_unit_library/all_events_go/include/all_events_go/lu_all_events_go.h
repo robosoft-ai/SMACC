@@ -11,7 +11,7 @@ namespace smacc
 namespace logic_units
 {
 template <typename TSource, typename TObjectTag = empty_object_tag>
-struct EvAll : sc::event<EvAll<TSource, TObjectTag>>
+struct EvAllGo : sc::event<EvAllGo<TSource, TObjectTag>>
 {
 };
 

@@ -23,10 +23,10 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    typedef mpl::list<
        // Expected event
-       //transition<EvAll<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
-       transition<EvAll<LuAllEventsGo, Unit1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
+       //transition<EvAllGo<LuAllEventsGo, Unit1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
+       transition<EvAllGo<LuAllEventsGo, Unit1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
 
-       //smacc::transition<EvAll2<LuAl2>, StateDestiny2>,
+       //smacc::transition<EvAllGo2<LuAl2>, StateDestiny2>,
        smacc::transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
        reactions;
 
@@ -39,12 +39,12 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       static_configure<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
       static_createLogicUnit<LuAllEventsGo,
-                             EvAll<LuAllEventsGo, Unit1>,
+                             EvAllGo<LuAllEventsGo, Unit1>,
                              mpl::list<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>>();
 
       // auto luall = static_createLogicUnit<LuAllEventsGo>();
       // luall->enablesOn<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-      // luall->throwsEvent<EvAll<LuAllEventsGo, Unit1>>();
+      // luall->throwsEvent<EvAllGo<LuAllEventsGo, Unit1>>();
    }
 };
 } // namespace sm_dance_bot

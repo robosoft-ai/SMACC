@@ -5,7 +5,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::transition<EvAll<LuAllEventsGo>, StState3>,
+        smacc::transition<EvAllGo<LuAllEventsGo>, StState3>,
 
         // Keyboard events
         smacc::transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
@@ -20,7 +20,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
 
         static_createLogicUnit<LuAllEventsGo,
-                               EvAll<LuAllEventsGo>,
+                               EvAllGo<LuAllEventsGo>,
                                mpl::list<EvTimer<CbTimer, OrTimer>,
                                          EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>>();
     }

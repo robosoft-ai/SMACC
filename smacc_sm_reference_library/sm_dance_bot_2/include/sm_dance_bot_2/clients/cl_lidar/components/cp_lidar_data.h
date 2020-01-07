@@ -27,7 +27,6 @@ public:
     /*if the distance is infinity or nan, use max range distance*/
     if (fwdist == std::numeric_limits<float>::infinity() || fwdist != fwdist)
     {
-      
       this->forwardObstacleDistance = scanmsg.range_max - security_distance /*meters*/;
       ROS_INFO("Distance to forward obstacle is not a number, setting default value to: %lf", scanmsg.range_max);
     }
