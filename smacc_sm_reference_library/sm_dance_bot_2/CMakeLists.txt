@@ -7,7 +7,7 @@ project(sm_dance_bot_2)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc move_base_z_client_plugin odom_tracker multirole_sensor_client)
+find_package(catkin REQUIRED smacc move_base_z_client_plugin odom_tracker multirole_sensor_client waypoints_navigator)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system  )
@@ -190,6 +190,14 @@ install(FILES
    # myfile2
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
+
+ install(FILES
+   config/move_base_client/waypoints_plan.yaml
+   # myfile2
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/move_base_client
+ )
+
+ 
 
 #############
 ## Testing ##

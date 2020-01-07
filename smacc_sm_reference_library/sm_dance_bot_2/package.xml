@@ -52,6 +52,7 @@
   <depend>smacc</depend>
   <depend>move_base_z_client_plugin</depend>
   <depend>odom_tracker</depend>
+  <depend>waypoints_navigator</depend>
   <depend>multirole_sensor_client</depend>
 
   <!-- The export tag contains other, unspecified, tags -->

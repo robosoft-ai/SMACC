@@ -23,7 +23,21 @@ public:
         movebaseClient->createComponent<OdomTracker>("/");
 
         // create waypoints navigator component
-        movebaseClient->createComponent<WaypointNavigator>();
+        auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
+
+        loadWaypointsFromYaml(waypointsNavigator);
+    }
+
+    void loadWaypointsFromYaml(WaypointNavigator *waypointsNavigator)
+    {
+        // if it is the first time and the waypoints navigator is not configured
+
+        std::string planfilepath;
+        ros::NodeHandle nh("~");
+        if (nh.getParam("/sm_dance_bot/waypoints_plan", planfilepath))
+        {
+            waypointsNavigator->loadWayPointsFromFile(planfilepath);
+        }
     }
 };
 } // namespace sm_dance_bot

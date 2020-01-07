@@ -23,6 +23,8 @@ using namespace smacc;
 namespace sm_dance_bot_2
 {
 
+class StNavigateToWaypointsX;
+
 namespace SS1
 {
 class SsRadialPattern1;
@@ -32,7 +34,7 @@ class SsRadialPattern1;
 /// techniques
 ///  for the development of state machines
 struct SmDanceBot2
-    : public smacc::SmaccStateMachineBase<SmDanceBot2, SS1::SsRadialPattern1>
+    : public smacc::SmaccStateMachineBase<SmDanceBot2, StNavigateToWaypointsX>
 {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -47,3 +49,4 @@ struct SmDanceBot2
 
 // SUPERSTATES
 #include <sm_dance_bot_2/superstates/ss_radial_pattern_1.h>
+#include <sm_dance_bot_2/states/st_navigate_to_waypoints_x.h>

@@ -15,7 +15,7 @@ class SsrRadialReturn;
 class SsrRadialEndPoint;
 class SsrRadialLoopStart;
 } // namespace radial_motion_states
-} // namespace sm_dance_bot
+} // namespace sm_dance_bot_2
 
 using namespace sm_dance_bot_2::radial_motion_states;
 
@@ -25,17 +25,8 @@ public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-
         // Expected event
-        //smacc::Transition<EvLoopEnd<SsrRadialLoopStart>, StRotateDegrees1, ENDLOOP>
-        // Keyboard event
-        //smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior>, StRotateDegrees1>,
-        //smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior>, StNavigateToWaypointsX>,
-
-        // Error events
-        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
-        >
+        smacc::Transition<EvLoopEnd<SsrRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
 
         reactions;
 
@@ -61,4 +52,4 @@ using SS = SsRadialPattern1;
 #include <sm_dance_bot_2/states/radial_motion_states/ssr_radial_rotate.h>
 #include <sm_dance_bot_2/states/radial_motion_states/ssr_radial_loop_start.h>
 } // namespace SS1
-} // namespace sm_dance_bot
+} // namespace sm_dance_bot_2
