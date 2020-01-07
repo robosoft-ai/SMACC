@@ -192,6 +192,10 @@ install(FILES
 install(FILES
     config/move_base_client/backward_local_planner.yaml
     config/move_base_client/forward_local_planner.yaml
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/move_base_client
+)
+
+install(FILES
     config/navigation.rviz
     config/radial_motion_sm_config.yaml
     config/rosconsole.config
