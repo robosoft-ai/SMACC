@@ -4,13 +4,12 @@
 #include <boost/optional.hpp>
 #include <geometry_msgs/Point.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <odom_tracker/odom_tracker.h>
-#include <planner_switcher/planner_switcher.h>
+#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
 namespace move_base_z_client
 {
-
 using namespace ::move_base_z_client::odom_tracker;
 
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
@@ -19,78 +18,20 @@ public:
   boost::optional<geometry_msgs::Point> initialPoint;
   boost::optional<float> initialYaw;
 
-  CbNavigateGlobalPosition()
-  {
-  }
+  CbNavigateGlobalPosition();
 
-  CbNavigateGlobalPosition(float x, float y, float yaw)
-  {
-    auto p = geometry_msgs::Point();
-    p.x = x;
-    p.y = y;
-    initialPoint = p;
-    initialYaw = yaw;
-  }
+  CbNavigateGlobalPosition(float x, float y, float yaw);
 
-  virtual void onEntry()
-  {
-    ROS_INFO("Entering Navigate Global position");
-
-    // this substate will need access to the "MoveBase" resource or plugin. In this line
-    // you get the reference to this resource.
-    this->requiresClient(moveBaseClient_);
-    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
-
-    ROS_INFO("Component requirements completed");
-
-    moveBaseClient_->plannerSwitcher_->setDefaultPlanners();
-    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
-
-    goToRadialStart();
-  }
+  virtual void onEntry();
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToRadialStart()
-  {
-    ROS_INFO("Sending Goal to MoveBase");
-    ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
-    goal.target_pose.header.stamp = ros::Time::now();
-    readStartPoseFromParameterServer(goal);
+  void goToRadialStart();
 
-    // store the start pose on the state machine storage so that it can
-    // be referenced from other states (for example return to radial start)
-    this->stateMachine_->setGlobalSMData("radial_start_pose", goal.target_pose);
-
-    moveBaseClient_->sendGoal(goal);
-  }
-
-  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal)
-  {
-    if (!initialPoint)
-    {
-      this->currentState->getParam("start_position_x", goal.target_pose.pose.position.x);
-      this->currentState->getParam("start_position_y", goal.target_pose.pose.position.y);
-      double yaw;
-      this->currentState->getParam("start_position_yaw", yaw);
-
-      goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
-    }
-    else
-    {
-      goal.target_pose.pose.position = *initialPoint;
-      goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(*initialYaw);
-    }
-
-    ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);
-  }
+  void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
 
   // This is the substate destructor. This code will be executed when the
   // workflow exits from this substate (that is according to statechart the moment when this object is destroyed)
-  virtual void onExit() override
-  {
-    ROS_INFO("Exiting move goal Action Client");
-  }
+  virtual void onExit() override;
 
 private:
   // keeps the reference to the move_base resorce or plugin (to connect to the move_base action server).

@@ -9,7 +9,7 @@
 #include <smacc/client_bases/smacc_action_client_base.h>
 
 #include <move_base_msgs/MoveBaseAction.h>
-#include <planner_switcher/planner_switcher.h>
+#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace move_base_z_client
 {
@@ -21,8 +21,6 @@ class ClMoveBaseZ : public smacc::client_bases::SmaccActionClientBase<move_base_
 
 public:
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction>::ResultConstPtr ResultConstPtr;
-
-    std::shared_ptr<move_base_z_client::PlannerSwitcher> plannerSwitcher_;
 
     ClMoveBaseZ();
 

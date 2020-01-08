@@ -13,12 +13,17 @@ struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbRotate>(SS::ray_angle_increment_degree());
+    static_configure<OrNavigation, CbAbsoluteRotate>();
     static_configure<OrLED, CbLEDOff>();
   }
 
   void onInitialize()
   {
+    auto cbAbsRotate = this->getOrthogonal<OrNavigation>()
+                           ->getClientBehavior<CbAbsoluteRotate>();
+
+    auto &superstate = this->context<SS>();
+    cbAbsRotate->absoluteGoalAngleDegree = superstate.iteration_count * SS::ray_angle_increment_degree();
   }
 };
 } // namespace radial_motion_states

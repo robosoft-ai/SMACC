@@ -26,8 +26,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   {
   };
 
-  typedef mpl::list
-    <
+  typedef mpl::list<
       smacc::Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
       smacc::Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_2>,
       smacc::Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
@@ -46,28 +45,16 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
   void onInitialize()
   {
+  }
+
+  void onEntry()
+  {
     ClMoveBaseZ *move_base;
     this->requiresClient(move_base);
 
     auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
-    loadWaypointsFirstTime(waypointsNavigator);
-
     waypointsNavigator->sendNextGoal();
     ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
-  }
-
-  void loadWaypointsFirstTime(WaypointNavigator *waypointsNavigator)
-  {
-    // if it is the first time and the waypoints navigator is not configured
-    if (waypointsNavigator->getWaypoints().size() == 0)
-    {
-      std::string planfilepath;
-      ros::NodeHandle nh("~");
-      if (nh.getParam("/sm_dance_bot_2/waypoints_plan", planfilepath))
-      {
-        waypointsNavigator->loadWayPointsFromFile(planfilepath);
-      }
-    }
   }
 };
 

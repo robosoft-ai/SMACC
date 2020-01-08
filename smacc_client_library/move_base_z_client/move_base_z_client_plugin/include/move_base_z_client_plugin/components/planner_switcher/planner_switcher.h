@@ -6,6 +6,8 @@
 #pragma once
 
 #include <smacc/client_bases/smacc_action_client.h>
+#include <smacc/component.h>
+
 #include <ros/ros.h>
 #include <functional>
 #include <dynamic_reconfigure/DoubleParameter.h>
@@ -14,7 +16,7 @@
 
 namespace move_base_z_client
 {
-class PlannerSwitcher
+class PlannerSwitcher: public smacc::ISmaccComponent
 {
 public:
   PlannerSwitcher(std::string nodeHandleName);

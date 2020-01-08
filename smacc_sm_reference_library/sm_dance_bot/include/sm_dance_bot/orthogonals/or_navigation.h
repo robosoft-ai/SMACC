@@ -3,8 +3,8 @@
 #include <smacc/smacc_orthogonal.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
-#include <odom_tracker/odom_tracker.h>
-#include <waypoints_navigator/waypoints_navigator.h>
+#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include   <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 
 namespace sm_dance_bot
 {
@@ -15,16 +15,19 @@ class OrNavigation : public smacc::Orthogonal<OrNavigation>
 public:
     virtual void onInitialize() override
     {
+        auto node_namespace = "move_base";
         auto movebaseClient = this->createClient<ClMoveBaseZ>();
-        movebaseClient->name_ = "move_base";
+        movebaseClient->name_ = node_namespace;
         movebaseClient->initialize();
 
+        // create planner switcher
+        movebaseClient->createComponent<PlannerSwitcher>(node_namespace);    
+
         // create odom tracker
-        movebaseClient->createComponent<OdomTracker>("/");
+        movebaseClient->createComponent<OdomTracker>("/");       
 
         // create waypoints navigator component
         auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
-
         loadWaypointsFromYaml(waypointsNavigator);
     }
 

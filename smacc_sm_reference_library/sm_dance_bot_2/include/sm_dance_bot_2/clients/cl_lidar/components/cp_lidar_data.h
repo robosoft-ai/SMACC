@@ -22,7 +22,7 @@ public:
     this->lastMessage_ = scanmsg;
     auto fwdist = scanmsg.ranges[scanmsg.ranges.size() / 2] /*meter*/;
 
-    float security_distance = 0.5; //meters
+    float security_distance = 0.9; //meters
 
     /*if the distance is infinity or nan, use max range distance*/
     if (fwdist == std::numeric_limits<float>::infinity() || fwdist != fwdist)

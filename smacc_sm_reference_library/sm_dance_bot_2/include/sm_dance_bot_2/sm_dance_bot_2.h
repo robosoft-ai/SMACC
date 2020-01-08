@@ -13,7 +13,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
 
-#include <sm_dance_bot_2/clients/move_base_z/client_behaviors/cb_absolute_rotate.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
 
 using namespace move_base_z_client;
 

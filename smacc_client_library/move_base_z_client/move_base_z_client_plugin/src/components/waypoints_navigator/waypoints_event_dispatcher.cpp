@@ -1,4 +1,4 @@
-#include <waypoints_navigator/waypoints_event_dispatcher.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.h>
 
 namespace move_base_z_client
 {

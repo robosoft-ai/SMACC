@@ -7,7 +7,7 @@ project(sm_dance_bot_2)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc move_base_z_client_plugin odom_tracker multirole_sensor_client waypoints_navigator)
+find_package(catkin REQUIRED smacc move_base_z_client_plugin multirole_sensor_client)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system  )

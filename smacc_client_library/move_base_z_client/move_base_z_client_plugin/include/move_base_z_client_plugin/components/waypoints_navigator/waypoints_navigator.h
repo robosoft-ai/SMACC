@@ -3,7 +3,7 @@
 
 #include <smacc/smacc.h>
 #include <geometry_msgs/Pose.h>
-#include <waypoints_navigator/waypoints_event_dispatcher.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace move_base_z_client

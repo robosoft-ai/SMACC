@@ -1,5 +1,6 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <waypoints_navigator/waypoints_navigator.h>
+#include   <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 #include <fstream>
 #include <ros/ros.h>
@@ -31,6 +32,12 @@ void WaypointNavigator::sendNextGoal()
     goal.target_pose.header.frame_id = "/odom";
     goal.target_pose.header.stamp = ros::Time::now();
     goal.target_pose.pose = next;
+
+    auto plannerSwitcher = client_->getComponent<PlannerSwitcher>();
+    plannerSwitcher->setDefaultPlanners();
+
+    ros::spinOnce();
+    ros::Duration(5).sleep();
 
     this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
     client_->sendGoal(goal);
@@ -140,4 +147,4 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     ROS_WARN_STREAM("Couldn't find any waypoints in the provided yaml file.");
   }
 }
-} // namespace smacc
+} // namespace move_base_z_client

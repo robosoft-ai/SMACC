@@ -21,7 +21,6 @@ std::string ClMoveBaseZ::getName() const
 
 void ClMoveBaseZ::initialize()
 {
-    plannerSwitcher_ = std::make_shared<move_base_z_client::PlannerSwitcher>(*(this->name_));
     SmaccActionClientBase<move_base_msgs::MoveBaseAction>::initialize();
 }
 

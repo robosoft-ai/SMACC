@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(move_base_z_client_plugin)
 
-find_package(catkin REQUIRED smacc pluginlib planner_switcher)
-
+find_package(catkin REQUIRED smacc pluginlib tf)
+find_package(yaml-cpp REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -13,6 +13,17 @@ find_package(catkin REQUIRED smacc pluginlib planner_switcher)
 ## Declare ROS messages, services and actions ##
 ################################################
 
+
+add_action_files(
+   FILES
+   OdomTracker.action
+)
+
+## Generate added messages and services with any dependencies listed here
+generate_messages(
+   DEPENDENCIES
+   actionlib_msgs
+ )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -30,9 +41,9 @@ find_package(catkin REQUIRED smacc pluginlib planner_switcher)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES move_base_z_client_plugin
-   CATKIN_DEPENDS smacc planner_switcher tf
-   #DEPENDS smacc
+   LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors
+   CATKIN_DEPENDS smacc tf
+   DEPENDS yaml-cpp
 )
 
 ###########
@@ -60,6 +71,60 @@ target_link_libraries(${PROJECT_NAME}
 
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+#----------------------------------
+
+include_directories(
+ include
+ ${catkin_INCLUDE_DIRS}
+)
+#----------------------------------
+## Declare a C++ library
+add_library(odom_tracker
+   src/components/odom_tracker/odom_tracker.cpp
+)
+
+target_link_libraries(odom_tracker
+   ${catkin_LIBRARIES})
+#----------------------------------
+add_library(planner_switcher
+   src/components/planner_switcher/planner_switcher.cpp
+)
+
+target_link_libraries(planner_switcher
+   ${catkin_LIBRARIES})
+
+#----------------------------------
+file(GLOB_RECURSE SRC_FILES "src/client_behaviors/*.cpp") # opcionalmente GLOB
+
+add_library(move_base_z_client_behaviors
+   ${SRC_FILES}
+)
+
+target_link_libraries(move_base_z_client_behaviors
+   ${catkin_LIBRARIES}
+   odom_tracker
+   planner_switcher)
+
+#----------------------------------
+include_directories(
+ include
+ ${catkin_INCLUDE_DIRS}
+ ${YAML_CPP_INCLUDE_DIR}
+)
+
+## Declare a C++ library
+ add_library(waypoints_navigator
+   src/components/waypoints_navigator/waypoints_event_dispatcher.cpp
+   src/components/waypoints_navigator/waypoints_navigator.cpp
+ )
+
+target_link_libraries(waypoints_navigator
+   ${catkin_LIBRARIES}
+   ${YAML_CPP_LIBRARIES}
+   planner_switcher
+   move_base_z_client_plugin
+)
+
 #############
 ## Install ##
 #############
@@ -75,7 +140,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 # )
 
 ## Mark executables and/or libraries for installation
- install(TARGETS ${PROJECT_NAME}
+ install(TARGETS ${PROJECT_NAME} odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

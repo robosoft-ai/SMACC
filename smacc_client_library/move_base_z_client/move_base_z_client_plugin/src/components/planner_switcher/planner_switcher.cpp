@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <planner_switcher/planner_switcher.h>
+#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace move_base_z_client
 {

@@ -10,18 +10,18 @@
 
 namespace move_base_z_client
 {
-class CbRotate : public smacc::SmaccClientBehavior
+class CbAbsoluteRotate : public smacc::SmaccClientBehavior
 {
 public:
     tf::TransformListener listener;
 
     ClMoveBaseZ *moveBaseClient_;
 
-    boost::optional<float> rotateDegree;
+    boost::optional<float> absoluteGoalAngleDegree;
 
-    CbRotate();
+    CbAbsoluteRotate();
 
-    CbRotate(float rotate_degree);
+    CbAbsoluteRotate(float absoluteGoalAngleDegree);
 
     virtual void onEntry() override;
 };
