@@ -6,8 +6,8 @@
     </include>
 
     <node pkg="move_base" type="move_base" respawn="true" name="move_base" launch-prefix="xterm -hold -e ">
-        <rosparam file="$(find ridgeback_navigation)/params/costmap_common_params.yaml" command="load" ns="global_costmap" />
-        <rosparam file="$(find ridgeback_navigation)/params/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find sm_dance_bot)/config/move_base_client/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find sm_dance_bot)/config/move_base_client/costmap_common_params.yaml" command="load" ns="local_costmap" />
 
         <rosparam file="$(find ridgeback_navigation)/params/odom_nav_params/global_costmap_params.yaml" command="load" />
         <rosparam file="$(find ridgeback_navigation)/params/odom_nav_params/local_costmap_params.yaml" command="load" />

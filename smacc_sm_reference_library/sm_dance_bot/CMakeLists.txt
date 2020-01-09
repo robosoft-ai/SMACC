@@ -193,6 +193,7 @@ install(FILES
     config/move_base_client/backward_local_planner.yaml
     config/move_base_client/forward_local_planner.yaml
     config/move_base_client/waypoints_plan.yaml
+    config/move_base_client/costmap_common_params.yaml
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/move_base_client
 )
 

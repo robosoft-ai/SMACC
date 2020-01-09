@@ -5,6 +5,7 @@ struct SsrRadialReturn : smacc::SmaccState<SsrRadialReturn, SS> {
   typedef mpl::list<
       smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,
                         SsrRadialLoopStart, SUCCESS>,
+                        
       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,
                         SsrRadialEndPoint, ABORT>>
       reactions;

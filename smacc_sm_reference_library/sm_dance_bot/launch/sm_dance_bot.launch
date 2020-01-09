@@ -38,6 +38,7 @@
     <!-- load state machine parameters -->
     <rosparam command="load" file="$(find sm_dance_bot)/config/radial_motion_sm_config.yaml"/>
     
+    
     <!-- state machine node -->
     <node pkg="sm_dance_bot" 
           type="sm_dance_bot" name="sm_dance_bot" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">

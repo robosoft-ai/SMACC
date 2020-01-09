@@ -38,9 +38,15 @@ public:
 
         std::string planfilepath;
         ros::NodeHandle nh("~");
-        if (nh.getParam("/sm_dance_bot_2/waypoints_plan", planfilepath))
+        std::string filePathParam = "/sm_dance_bot_2/waypoints_plan";
+        if (nh.getParam(filePathParam, planfilepath))
         {
+            ROS_INFO("Loading waypoints from file %s", planfilepath.c_str());
             waypointsNavigator->loadWayPointsFromFile(planfilepath);
+        }
+        else
+        {
+            ROS_ERROR("waypoints file is not properly set in the parameter '%s' ", filePathParam.c_str());
         }
     }
 };

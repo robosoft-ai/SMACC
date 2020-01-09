@@ -11,6 +11,7 @@
 namespace smacc
 {
 class ISmaccState;
+class ISMaccStateMachine;
 
 namespace logic_units
 {
@@ -47,21 +48,33 @@ public:
     };
 
     template <typename TEventList>
-    void initialize(ISmaccState *ownerState, TEventList *)
-    {
-        this->ownerState = ownerState;
+    void initialize(ISmaccState *ownerState, TEventList *);
 
-        using boost::mpl::_1;
-        using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
-        AddTEventType<TEventList> op(this);
-        boost::mpl::for_each<wrappedList>(op);
+    virtual void onEventNotified(const std::type_info *eventType);
 
-        this->onInitialized();
-    }
+    template <typename T, typename TClass>
+    void createEventCallback(void (TClass::*callback)(T *), TClass *object);
+
+    template <typename T>
+    void createEventCallback(std::function<void(T *)> callback);
+
+    void update();
+
+    virtual bool triggers() = 0;
+
+    template <typename TEv>
+    void declareInputEvent();
+
+    template <typename TEv>
+    void declarePostEvent(smacc::introspection::typelist<TEv>);
+
+private:
+    friend ISmaccStateMachine;
 
     template <typename TEvent>
     void notifyEvent(TEvent *ev)
     {
+        //the state machine uses this method to notify this logic unit some event happened.
         auto tid = &(typeid(TEvent));
         if (std::find(eventTypes.begin(), eventTypes.end(), tid) != eventTypes.end())
         {
@@ -74,35 +87,6 @@ public:
             }
         }
     }
-
-    virtual void onEventNotified(const std::type_info *eventType);
-
-    template <typename T, typename TClass>
-    void createEventCallback(void (TClass::*callback)(T *), TClass *object)
-    {
-        const auto *eventtype = &typeid(T);
-        this->eventCallbacks_[eventtype] = [=](void *msg) {
-            T *evptr = (T *)msg;
-            (object->*callback)(evptr);
-        };
-    }
-
-    template <typename T>
-    void createEventCallback(std::function<void(T *)> callback)
-    {
-        const auto *eventtype = &typeid(T);
-        this->eventCallbacks_[eventtype] = [=](void *msg) {
-            T *evptr = (T *)msg;
-            callback(evptr);
-        };
-    }
-
-    void update();
-
-    virtual bool triggers() = 0;
-
-    template <typename TEv>
-    void declarePostEvent(smacc::introspection::typelist<TEv>);
 };
 
 } // namespace smacc

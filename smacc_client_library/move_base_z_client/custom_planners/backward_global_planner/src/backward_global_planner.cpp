@@ -234,21 +234,23 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose, 1.0, 0, 1.0);
 
+    if (plan.size() <= 1)
+    {
+        // if the backward plan is too much small, we create one artificial path
+        // with two poses (the current pose) so that we do not reject the plan request        
+        plan.clear();
+        plan.push_back(start);
+        plan.push_back(start);
+        ROS_INFO("Artificial backward plan on current pose.");
+    }
+
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
     planMsg.header.frame_id = "/odom";
     planPub_.publish(planMsg);
 
     // this was previously set to size() <= 1, but a plan with a single point is also a valid plan (the goal)
-    if (plan.size() <= 1)
-    {
-        ROS_INFO("cannot create backward plan");
-        return false;
-    }
-    else
-    {
-        return true;
-    }
+    return true;
 }
 
 /**

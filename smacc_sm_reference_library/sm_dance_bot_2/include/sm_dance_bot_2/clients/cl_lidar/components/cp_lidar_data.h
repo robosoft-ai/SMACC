@@ -28,7 +28,7 @@ public:
     if (fwdist == std::numeric_limits<float>::infinity() || fwdist != fwdist)
     {
       this->forwardObstacleDistance = scanmsg.range_max - security_distance /*meters*/;
-      ROS_INFO("Distance to forward obstacle is not a number, setting default value to: %lf", scanmsg.range_max);
+      ROS_INFO_THROTTLE(1.0, "[CpLidarSensorData] Distance to forward obstacle is not a number, setting default value to: %lf", scanmsg.range_max);
     }
     else
     {

@@ -1,37 +1,37 @@
 waypoints:
-    - position:
-        x: 3.0
-        y: -2.0
-        z: 0.0
-      orientation:
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
-    - position:
-        x: 2.0
-        y: -8.58
-        z: 0.0
-      orientation:
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
-    - position:
-        x: -10.0
-        y: 14.5
-        z: 0.0
-      orientation:
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
-    - position:
-        x: 0.0
-        y: 0.0
-        z: 0.0
-      orientation:
-        x: 0.0
-        y: 0.0
-        z: 0.0
-        w: 1.0
+   - position:
+       x: 3.0
+       y: -2.0
+       z: 0.0
+     orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+   - position:
+       x: 2.0
+       y: -8.58
+       z: 0.0
+     orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+   - position:
+       x: -10.0
+       y: 14.5
+       z: 0.0
+     orientation:
+       x: 0.0
+       y: 0.0
+       z: 0.0
+       w: 1.0
+    # - position:
+    #     x: 0.0
+    #     y: 0.0
+    #     z: 0.0
+    #   orientation:
+    #     x: 0.0
+    #     y: 0.0
+    #     z: 0.0
+    #     w: 1.0
