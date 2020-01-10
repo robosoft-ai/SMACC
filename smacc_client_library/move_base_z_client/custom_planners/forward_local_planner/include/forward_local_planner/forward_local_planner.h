@@ -10,6 +10,7 @@
 #include <tf/tf.h>
 #include <tf/transform_listener.h>
 #include <tf2_ros/buffer.h>
+#include <Eigen/Eigen>
 
 typedef double meter;
 typedef double rad;
@@ -82,10 +83,17 @@ private:
     double max_angular_z_speed_;
     double max_linear_x_speed_;
 
+    void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
+    Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);
+
     // references the current point inside the backwardsPlanPath were the robot is located
     int currentPoseIndex_;
 
     std::vector<geometry_msgs::PoseStamped> plan_;
+
+    bool waiting_;
+    ros::Duration waitingTimeout_;
+    ros::Time waitingStamp_;
 };
 } // namespace forward_local_planner
 } // namespace move_base_z_client

@@ -15,6 +15,7 @@ void LogicUnit::declarePostEvent(smacc::introspection::typelist<TEv>)
 template <typename TEv>
 void LogicUnit::declareInputEvent()
 {
+    this->eventTypes.push_back(&typeid(TEv));
 }
 
 template <typename TEventList>

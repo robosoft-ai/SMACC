@@ -247,6 +247,29 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
     planMsg.header.frame_id = "/odom";
+
+        // check plan rejection
+    bool acceptedGlobalPlan = true;
+
+    // static const unsigned char NO_INFORMATION = 255;
+    // static const unsigned char LETHAL_OBSTACLE = 254;
+    // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
+    // static const unsigned char FREE_SPACE = 0;
+
+    costmap_2d::Costmap2D *costmap2d = this->costmap_ros_->getCostmap();
+    for (auto &p : plan)
+    {
+        unsigned int mx, my;
+        costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
+        auto cost = costmap2d->getCost(mx, my);
+
+        if (cost >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
+        {
+            acceptedGlobalPlan = false;
+            break;
+        }
+    }
+    
     planPub_.publish(planMsg);
 
     // this was previously set to size() <= 1, but a plan with a single point is also a valid plan (the goal)

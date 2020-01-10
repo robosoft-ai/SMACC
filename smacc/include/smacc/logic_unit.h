@@ -43,7 +43,7 @@ public:
         template <typename T>
         void operator()(T)
         {
-            owner_->eventTypes.push_back(&typeid(T));
+            owner_->declareInputEvent<T>();
         }
     };
 
@@ -52,14 +52,17 @@ public:
 
     virtual void onEventNotified(const std::type_info *eventType);
 
+    // type based event callback
     template <typename T, typename TClass>
     void createEventCallback(void (TClass::*callback)(T *), TClass *object);
 
+    // type based event callback
     template <typename T>
     void createEventCallback(std::function<void(T *)> callback);
 
     void update();
 
+    //must returns true when the output event is triggered
     virtual bool triggers() = 0;
 
     template <typename TEv>

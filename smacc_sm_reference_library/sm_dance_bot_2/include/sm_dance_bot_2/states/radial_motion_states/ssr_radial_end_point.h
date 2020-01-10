@@ -9,7 +9,7 @@ struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
 
   typedef mpl::list<
       smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrRadialReturn, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrRadialRotate, ABORT>>
+      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrRadialReturn, ABORT>>
       reactions;
 
   static void onDefinition()

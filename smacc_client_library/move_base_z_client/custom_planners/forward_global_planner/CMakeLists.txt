@@ -9,15 +9,18 @@ project(forward_global_planner)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   costmap_2d
-  dynamic_reconfigure
   geometry_msgs
+  nav_core
   nav_msgs
   roscpp
+  std_msgs
   tf
+  dynamic_reconfigure
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+# find_package(Boost REQUIRED COMPONENTS Eigen3)
+
 set(CMAKE_CXX_STANDARD 14)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 

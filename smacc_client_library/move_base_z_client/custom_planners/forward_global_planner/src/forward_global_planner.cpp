@@ -27,11 +27,12 @@ ForwardGlobalPlanner::ForwardGlobalPlanner()
     puresSpinningRadStep_ = 1000;         // rads
 }
 
-void ForwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_)
+void ForwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros)
 {
     planPub_ = nh_.advertise<nav_msgs::Path>("global_plan", 1);
     skip_straight_motion_distance_ = 0.2; //meters
     puresSpinningRadStep_ = 1000;         // rads
+    this->costmap_ros_ = costmap_ros;
 }
 
 bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
@@ -80,10 +81,39 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     planMsg.poses = plan;
     planMsg.header.stamp = ros::Time::now();
     planMsg.header.frame_id = "/odom";
-    planPub_.publish(planMsg);
-    //ROS_INFO_STREAM("global forward plan: " << planMsg);
 
-    return true;
+    // check plan rejection
+    bool acceptedGlobalPlan = true;
+
+    // static const unsigned char NO_INFORMATION = 255;
+    // static const unsigned char LETHAL_OBSTACLE = 254;
+    // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
+    // static const unsigned char FREE_SPACE = 0;
+
+    costmap_2d::Costmap2D *costmap2d = this->costmap_ros_->getCostmap();
+    for (auto &p : plan)
+    {
+        unsigned int mx, my;
+        costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
+        auto cost = costmap2d->getCost(mx, my);
+
+        if (cost >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
+        {
+            acceptedGlobalPlan = false;
+            break;
+        }
+    }
+
+    if (acceptedGlobalPlan)
+    {
+        planPub_.publish(planMsg);
+        //ROS_INFO_STREAM("global forward plan: " << planMsg);
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 }; // namespace forward_global_planner

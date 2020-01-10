@@ -347,7 +347,94 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     //cmd_vel.linear.x=0;
     //cmd_vel.angular.z = 0;
 
-    return true;
+    tf::Stamped<tf::Pose> global_pose;
+    costmapRos_->getRobotPose(global_pose);
+
+    auto *costmap2d = costmapRos_->getCostmap();
+    auto yaw = tf::getYaw(global_pose.getRotation());
+
+    auto &pos = global_pose.getOrigin();
+
+    Eigen::Vector3f currentpose(pos.x(), pos.y(), yaw);
+    Eigen::Vector3f currentvel(cmd_vel.linear.x, cmd_vel.linear.y, cmd_vel.angular.z);
+    std::vector<Eigen::Vector3f> trajectory;
+    this->generateTrajectory(currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/, 0.05 /*seconds*/, trajectory);
+
+    // check plan rejection
+    bool aceptedplan = true;
+
+    unsigned int mx, my;
+    if (backwardsPlanPath_.size() > 0)
+    {
+        auto &finalgoalpose = backwardsPlanPath_.back();
+
+        int i = 0;
+        // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
+        for (auto &p : trajectory)
+        {
+            float dx = p[0] - finalgoalpose.pose.position.x;
+            float dy = p[1] - finalgoalpose.pose.position.y;
+
+            float dst = sqrt(dx * dx + dy * dy);
+            if (dst < xy_goal_tolerance_)
+            {
+                //  ROS_INFO("trajectory checking skipped, goal reached");
+                break;
+            }
+
+            costmap2d->worldToMap(p[0], p[1], mx, my);
+            unsigned int cost = costmap2d->getCost(mx, my);
+
+            // ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
+            // ROS_INFO_STREAM("cost: " << cost);
+
+            // static const unsigned char NO_INFORMATION = 255;
+            // static const unsigned char LETHAL_OBSTACLE = 254;
+            // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
+            // static const unsigned char FREE_SPACE = 0;
+
+            if (costmap2d->getCost(mx, my) >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
+            {
+                aceptedplan = false;
+                // ROS_WARN("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED");
+                break;
+            }
+            i++;
+        }
+    }
+    else
+    {
+        return false;
+    }
+
+    if (aceptedplan)
+    {
+        waiting_ = false;
+        return true;
+    }
+    else
+    {
+        // stop and wait
+        cmd_vel.linear.x = 0;
+        cmd_vel.angular.z = 0;
+
+        if (waiting_ == false)
+        {
+            waiting_ = true;
+            waitingStamp_ = ros::Time::now();
+        }
+        else
+        {
+            auto waitingduration = ros::Time::now() - waitingStamp_;
+
+            if (waitingduration > this->waitingTimeout_)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 /**
@@ -399,6 +486,77 @@ bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>
     ROS_WARN_STREAM("Backward Local Planner - plan path - " << ss.str());
     */
     return true;
+}
+
+void BackwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxanglediff, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj)
+{
+    //simulate the trajectory and check for collisions, updating costs along the way
+    bool end = false;
+    float time = 0;
+    Eigen::Vector3f currentpos = pos;
+    int i = 0;
+    while (!end)
+    {
+        //add the point to the trajectory so we can draw it later if we want
+        //traj.addPoint(pos[0], pos[1], pos[2]);
+
+        // if (continued_acceleration_) {
+        //   //calculate velocities
+        //   loop_vel = computeNewVelocities(sample_target_vel, loop_vel, limits_->getAccLimits(), dt);
+        //   //ROS_WARN_NAMED("Generator", "Flag: %d, Loop_Vel %f, %f, %f", continued_acceleration_, loop_vel[0], loop_vel[1], loop_vel[2]);
+        // }
+
+        auto loop_vel = vel;
+        //update the position of the robot using the velocities passed in
+        auto newpos = computeNewPositions(currentpos, loop_vel, dt);
+
+        auto dx = newpos[0] - currentpos[0];
+        auto dy = newpos[1] - currentpos[1];
+        float dist, angledist;
+
+        //ROS_INFO("traj point %d", i);
+        dist = sqrt(dx * dx + dy * dy);
+        if (dist > maxdist)
+        {
+            end = true;
+            //ROS_INFO("dist break: %f", dist);
+        }
+        else
+        {
+            // ouble from, double to
+            angledist = angles::shortest_angular_distance(currentpos[2], newpos[2]);
+            if (angledist > maxanglediff)
+            {
+                end = true;
+                //ROS_INFO("angle dist break: %f", angledist);
+            }
+            else
+            {
+                outtraj.push_back(newpos);
+
+                time += dt;
+                if (time > maxtime)
+                {
+                    end = true;
+                    //ROS_INFO("time break: %f", time);
+                }
+
+                //ROS_INFO("dist: %f, angledist: %f, time: %f", dist, angledist, time);
+            }
+        }
+
+        currentpos = newpos;
+        i++;
+    } // end for simulation steps
+}
+
+Eigen::Vector3f BackwardLocalPlanner::computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt)
+{
+    Eigen::Vector3f new_pos = Eigen::Vector3f::Zero();
+    new_pos[0] = pos[0] + (vel[0] * cos(pos[2]) + vel[1] * cos(M_PI_2 + pos[2])) * dt;
+    new_pos[1] = pos[1] + (vel[0] * sin(pos[2]) + vel[1] * sin(M_PI_2 + pos[2])) * dt;
+    new_pos[2] = pos[2] + vel[2] * dt;
+    return new_pos;
 }
 
 /**

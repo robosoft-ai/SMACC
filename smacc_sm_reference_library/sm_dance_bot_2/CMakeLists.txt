@@ -187,9 +187,14 @@ install(TARGETS ${PROJECT_NAME}_node
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
    launch/sm_dance_bot_2.launch
+   
    # myfile2
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
+
+install(FILES
+  config/sm_dance_bot_2.yaml
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/)
 
  install(FILES
    config/move_base_client/waypoints_plan.yaml

@@ -26,7 +26,7 @@ struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
                            ->getClientBehavior<CbAbsoluteRotate>();
 
     auto& superstate = this->context<SS>();
-    cbAbsRotate->absoluteGoalAngleDegree = superstate.iteration_count * SS::ray_angle_increment_degree();
+    cbAbsRotate->absoluteGoalAngleDegree = superstate.iteration_count * superstate.ray_angle_increment_degree();
   }
 };
 } // namespace radial_motion_states
