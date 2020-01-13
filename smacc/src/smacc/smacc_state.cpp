@@ -27,12 +27,14 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transiti
                 return;
             }
         }
+
         // debug information if not found
-        ROS_WARN_STREAM("Transition happened, but there is not any transitioninfo match available");
+        ROS_ERROR_STREAM("Transition happened, but there is not any transitioninfo match available to publish transition: " << transitionType->getFullName());
+
         for (auto &transition : currstateinfo->transitions_)
         {
             std::string transitionCandidateName = transition.transitionTypeInfo->getFullName();
-            ROS_WARN_STREAM("candidate transition: " << transitionCandidateName);
+            ROS_ERROR_STREAM("candidate transition: " << transitionCandidateName);
         }
     }
     else

@@ -37,6 +37,8 @@ public:
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes() {}
 
+    virtual smacc::introspection::TypeInfo::Ptr getType();
+
 protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;

@@ -16,10 +16,8 @@
     cd ..
     DEBIANFILE=find . | grep `echo "$TARGET_PKG | sed "s/_/-/g"`
     echo $DEBIANFILE
-   sudo gdebi  $DEBIANFILE
+   #sudo gdebi  $DEBIANFILE
 }  
-
-
 
 
 #---------- SMACC CLIENT LIBRARY -----------------------

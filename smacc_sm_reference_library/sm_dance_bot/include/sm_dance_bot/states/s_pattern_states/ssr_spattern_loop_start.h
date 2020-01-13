@@ -18,12 +18,12 @@ struct SsrSPatternLoopStart : smacc::SmaccState<SsrSPatternLoopStart, SS>
   bool loopCondition()
   {
     auto &superstate = this->context<SS>();
-    return ++superstate.iteration_count == superstate.total_iterations();
+    return superstate.iteration_count++ < superstate.total_iterations();
   }
 
   void onEntry()
   {
-    throwLoopEventFromCondition(&SsrSPatternLoopStart::loopCondition);
+    checkWhileLoopConditionAndThrowEvent(&SsrSPatternLoopStart::loopCondition);
   }
 };
 

@@ -56,11 +56,12 @@ public:
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
-
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
     {
-      contextNh = ros::NodeHandle(smacc::utils::cleanShortTypeName(typeid(Context)));
+      auto nhname = smacc::utils::cleanShortTypeName(typeid(Context));
+      ROS_INFO("Creating ros NodeHandle for this state: %s", nhname.c_str());
+      contextNh = ros::NodeHandle(nhname);
     }
 
     std::string classname = smacc::utils::cleanShortTypeName(typeid(MostDerived));
@@ -250,7 +251,7 @@ public:
     template <typename T>
     void operator()(T)
     {
-      auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
+      auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
       auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
       EventLabel<T>(evinfo->label);
       luInfo_.sourceEventTypes.push_back(evinfo);
@@ -333,7 +334,7 @@ public:
     SmaccStateInfo::logicUnitsInfo[tindex].push_back(luinfo);
   }
 */
-  void throwLoopEventFromCondition(bool (MostDerived::*conditionFn)())
+  void checkWhileLoopConditionAndThrowEvent(bool (MostDerived::*conditionFn)())
   {
     auto *thisobject = static_cast<MostDerived *>(this);
     auto condition = boost::bind(conditionFn, thisobject);

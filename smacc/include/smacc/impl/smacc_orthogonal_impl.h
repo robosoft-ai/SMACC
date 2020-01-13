@@ -84,6 +84,11 @@ public:
 
         return ret.get();
     }
+
+    virtual smacc::introspection::TypeInfo::Ptr getType() override
+    {
+        return smacc::introspection::TypeInfo::getTypeInfoFromType<TClient>();
+    }
 };
 
 template <typename TOrthogonal>
@@ -102,7 +107,7 @@ public:
 
         ROS_INFO("[%s] creates a client of type '%s' and object tag '%s'",
                  demangleType(typeid(*this)).c_str(),
-                 demangledTypeName<TClient>().c_str(),
+                 demangledTypeName<TClient>().c_str(),                                                                              
                  demangledTypeName<TOrthogonal>().c_str());
 
         auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
@@ -110,6 +115,7 @@ public:
 
         client->template configureEventSourceTypes<TOrthogonal, TClient>();
 
+        // it is stored the client (not the client handler)
         clients_.push_back(client);
         return client;
     }

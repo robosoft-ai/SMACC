@@ -26,7 +26,7 @@ struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS>
   void onEntry()
   {
     ROS_INFO("LOOP START ON ENTRY");
-    throwLoopEventFromCondition(&SsrRadialLoopStart::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&SsrRadialLoopStart::loopWhileCondition);
   }
 };
 

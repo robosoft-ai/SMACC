@@ -30,7 +30,7 @@ public:
   void onEntry()
   {
     ROS_INFO("LOOP START ON ENTRY");
-    throwLoopEventFromCondition(&Ssr1::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&Ssr1::loopWhileCondition);
   }
 };
 }

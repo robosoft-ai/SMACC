@@ -12,13 +12,18 @@ namespace utils
 {
 std::string cleanShortTypeName(const std::type_info &tinfo)
 {
-    std::string fullclassname = demangleSymbol(tinfo.name());
+    auto typeinfo= TypeInfo::getFromStdTypeInfo(tinfo);
+    auto nontemplatedfullclasname = typeinfo->getNonTemplatedTypeName();
+
+    
     //ROS_INFO("State full classname: %s", fullclassname.c_str());
 
     std::vector<std::string> strs;
-    boost::split(strs, fullclassname, boost::is_any_of("::"));
+    boost::split(strs, nontemplatedfullclasname, boost::is_any_of("::"));
     std::string classname = strs.back();
     //ROS_INFO("State classname: %s", classname.c_str());
+
+    
     return classname;
 }
 } // namespace utils

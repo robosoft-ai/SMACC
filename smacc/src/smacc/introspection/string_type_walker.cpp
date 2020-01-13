@@ -53,7 +53,7 @@ std::string replace_back(std::string roottype, std::map<std::string, std::string
 
 std::map<std::string, TypeInfo::Ptr> TypeInfo::typeInfoDatabase;
 
-TypeInfo::Ptr TypeInfo::getTypeInfoFromTypeid(const std::type_info &tid)
+TypeInfo::Ptr TypeInfo::getFromStdTypeInfo(const std::type_info &tid)
 {
     return TypeInfo::getTypeInfoFromString(demangleSymbol(tid.name()));
 }

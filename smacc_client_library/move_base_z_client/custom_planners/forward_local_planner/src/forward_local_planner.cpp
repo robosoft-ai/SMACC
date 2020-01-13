@@ -409,24 +409,6 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     bool aceptedplan = true;
 
     unsigned int mx, my;
-    // std::stringstream ss;
-    // if (trajectory.size() > 0)
-    // {
-    //     costmap2d->worldToMap(trajectory[0][0], trajectory[0][1], mx, my);
-    //     int window = 50 ;
-    //     for (int cx = std::max(0, (int)mx - window); cx < std::min((int)mx + window, (int)costmap2d->getSizeInCellsX()); cx++)
-    //     {
-    //         for (int cy = std::max(0, (int)my - window); cy < std::min((int)my + window, (int)costmap2d->getSizeInCellsY()); cy++)
-    //         {
-    //             unsigned int cost = costmap2d->getCost(cx, cy);
-    //             cost = cost / 30;
-    //             ss << cost;
-    //         }
-    //         ss << std::endl;
-    //     }
-    // }
-
-    // ROS_INFO(ss.str().c_str());
 
     int i = 0;
     // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);

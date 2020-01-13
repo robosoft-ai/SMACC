@@ -15,6 +15,17 @@ class TypeInfo
 public:
     typedef std::shared_ptr<TypeInfo> Ptr;
 
+    //---- FACTORY STATIC METHODS -----------
+    static TypeInfo::Ptr getTypeInfoFromString(std::string inputtext);
+    static TypeInfo::Ptr getFromStdTypeInfo(const std::type_info &tid);
+
+    template <typename T>
+    static TypeInfo::Ptr getTypeInfoFromType()
+    {
+        return TypeInfo::getFromStdTypeInfo(typeid(T));
+    }
+    //---------------------------------------
+
     std::vector<Ptr> templateParameters;
 
     TypeInfo(std::string tkey, std::string codedtype, std::string finaltype)
@@ -29,20 +40,13 @@ public:
         return this->tkey + ":" + this->finaltype;
     }
 
-    std::string getNonTemplatetypename()
+    std::string getNonTemplatedTypeName()
     {
         auto index = this->finaltype.find("<");
         return this->finaltype.substr(0, index);
     }
 
-    static TypeInfo::Ptr getTypeInfoFromString(std::string inputtext);
-    static TypeInfo::Ptr getTypeInfoFromTypeid(const std::type_info &tid);
-
-    template <typename T>
-    static TypeInfo::Ptr getTypeInfoFromType()
-    {
-        return TypeInfo::getTypeInfoFromTypeid(typeid(T));
-    }
+    
 
     const std::string &getFullName()
     {

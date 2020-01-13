@@ -108,8 +108,8 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             {
                 for (auto& client : clients)
                 {
-                    auto clientTid = &(typeid(*client));
-                    auto clientName = demangleSymbol(clientTid->name());
+                    auto clientTid = client->getType();
+                    auto clientName = clientTid->getNonTemplatedTypeName();
                     orthogonalMsg.client_names.push_back(clientName);
                     ss << "          - client: " << clientName << std::endl;
                 }

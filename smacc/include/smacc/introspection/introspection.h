@@ -245,7 +245,7 @@ static std::string getTransitionType()
 // template <typename T>
 // static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
 // {
-//     auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(T));
+//     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<T>(evinfo->label);
 //     luinfo.sourceEventTypes.push_back(evinfo);
@@ -257,7 +257,7 @@ static std::string getTransitionType()
 // template <typename TEvHead, typename... TEvArgs>
 // static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TEvHead, TEvArgs...>)
 // {
-//     auto sourceType = TypeInfo::getTypeInfoFromTypeid(typeid(TEvHead));
+//     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(TEvHead));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<TEvHead>(evinfo->label);
 //     luinfo.sourceEventTypes.push_back(evinfo);

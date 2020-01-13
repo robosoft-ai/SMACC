@@ -5,7 +5,6 @@ namespace smacc
 {
 ISmaccClient::ISmaccClient()
 {
-    
 }
 
 ISmaccClient::~ISmaccClient()
@@ -22,8 +21,13 @@ std::string ISmaccClient::getName() const
     return keyname;
 }
 
-void ISmaccClient::setStateMachine(ISmaccStateMachine* stateMachine)
+void ISmaccClient::setStateMachine(ISmaccStateMachine *stateMachine)
 {
     stateMachine_ = stateMachine;
 }
+
+smacc::introspection::TypeInfo::Ptr ISmaccClient::getType()
+{
+    return smacc::introspection::TypeInfo::getFromStdTypeInfo(typeid(*this));
 }
+} // namespace smacc

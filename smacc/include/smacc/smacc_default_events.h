@@ -165,7 +165,7 @@ struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectT
   {
     auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
 
-    std::string label = typeinfo->getNonTemplatetypename();
+    std::string label = typeinfo->getNonTemplatedTypeName();
     return label;
   }
 
@@ -179,7 +179,7 @@ struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TObjectTag>>
   {
     auto typeinfo = TypeInfo::getTypeInfoFromType<typename TSource::TMessageType>();
 
-    std::string label = typeinfo->getNonTemplatetypename();
+    std::string label = typeinfo->getNonTemplatedTypeName();
     return label;
   }
 
