@@ -111,8 +111,8 @@ install(DIRECTORY include/${PROJECT_NAME}/
 ## Testing ##
 #############
 
-add_executable(${PROJECT_NAME}-test test/type_info_unit_test.cpp)
-target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES} ${PROJECT_NAME} gtest)
+#add_executable(${PROJECT_NAME}-test test/type_info_unit_test.cpp)
+#target_link_libraries(${PROJECT_NAME}-test ${catkin_LIBRARIES} ${PROJECT_NAME} gtest)
 
 ## Add gtest based cpp test target and link libraries
 #catkin_add_gtest(${PROJECT_NAME}-test test/type_info_unit_test.cpp)

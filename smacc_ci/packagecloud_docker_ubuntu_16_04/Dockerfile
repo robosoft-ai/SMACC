@@ -25,5 +25,5 @@ RUN apt-get -y install ruby-dev
 RUN gem install rake
 
 RUN gem install package_cloud
-
-ENTRYPOINT bash
+ADD token_file.json /root/.packagecloud
+ENTRYPOINT ["/bin/bash"]
