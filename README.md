@@ -16,23 +16,20 @@
 
 # <img src="http://smacc.ninja/wp-content/uploads/2019/07/SMACC-Logo-Pixelate-4-copy.png" width="30" align="left"/> SMACC
 
-SMACC is an event-driven, asynchronous, behavioral state machine library for real-time ROS (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner [UML State Charts](http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/md_stadm.htm) (AKA state machines). SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
+SMACC is an event-driven, asynchronous, behavioral state machine library for real-time ROS (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner. 
 
-Probably the greatest strength of SMACC is that the state machines you can develop with it are strictly based on the UML Standard. This means that you have access to a clear and thoroughly studied and known approach to describe State Machines. This may be especially important in industrial environments.
+SMACC is inspired by the [SMACH ROS package](http://wiki.ros.org/smach) and it is built on top of [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
-The following image shows one example of a state machine built using the UML standard and shows many of the concepts that can be implemented using SMACC:
-<p align="center">
-<img src="http://sce.uhcl.edu/helm/rationalunifiedprocess/process/modguide/images/md_state1.gif" width="450" align="center"/>
-</p>
+Probably the greatest strength of SMACC is that it offers out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library))  that you can use, test, hack, and customize to quickly get your application up and running, while also knowing that the library supports advanced functionalities that are practically universal among actual working robots.
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It is a c++ ros package that can be imported from any end-user application package.
- *   ***C++ language:*** Until now, ROS has lacked a library to develop task-level state machines in C++. Many libraries in robotics are developed in C++ so this may help during the integration of different libraries. In industrial development contexts C++ is often over Python, so this tool may be a good choice.
- *  ***Static State Machine Checking:*** SMACC inherits this from the Boost Statechart library. This helps the developer to check the consistence of the state machine at compile time (instead of runtime). In other words, it helps you to check if your state machine is well written.
+ *   ***Written in C++:*** Until now, ROS has lacked a library to develop task-level state machines in C++. Although libraries have been developed in scripting languages such as python, these are unsuitable for real-world industrial evironments where real-time requirements are demanded.
+ *  ***Static State Machine Checking:*** SMACC inherits this from the Boost Statechart library which helps the developer to check the consistency of the state machine at compile time (instead of runtime).
  * ***Component based architecture:*** SMACC has built-in funcionality provided inside SMACC Components that can be dynamically imported at runtime and stored in the local machine. The states only access those components they are concerned with. This enables the SMACC based application to extend or improve the runtime behavior of the system.
 
-## Canonical SMACC applications
-The canonical SMACC applications are mobile robots (that may optionally have manipulators) that have to navigate around the environment and use one or more onboard tools. One example of this would be the PR2 Robot, working in a factory, navigating to some shelves with parcels, fetching them with a 6-axis arm and manipulator, and then navigating to some delivery point. Other examples would include mobile robots that must perform a systematic navigation on a designated area while operating one or more tools, such as a vacuum or angle grinder. In order to accomplish this, SMACC provides an array navigation planners that can greatly simplifiy this task (see more on section ROS Integration).
+## SMACC applications
+From it's inception, SMACC was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place. 
 
 ## ROS Integration
 
