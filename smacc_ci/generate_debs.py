@@ -182,6 +182,7 @@ if __name__ == "__main__":
     parser.add_argument('-smacc_src_folder', help="smacc workspace folder", default = "src/SMACC")
     parser.add_argument('-smacc_viewer_src_folder', help="relative smacc src folder", default= "src/SMACC_Viewer")
     parser.add_argument('-repo_owner', help="Repo owner", default= "pibgeus")
+    parser.add_argument('-token', help="Repo token", default= "")
     parser.add_argument('-help', help="Help command")
 
     argcomplete.autocomplete(parser)
@@ -194,6 +195,15 @@ if __name__ == "__main__":
     relative_smacc_viewer_folder = args.smacc_viewer_src_folder #"src/SMACC_Viewer"
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
+    print("CREATING TOKEN FILE FOR PACKAGE CLOUD:")
+    packagecloud_token_filepath = os.path.join(homefolder,".packagecloud")
+    import sys
+    homefolder = os.getenv("HOME")
+
+    outfile=open(packagecloud_token_filepath,"w")
+    outfile.write('{"token":"%s"}'%args.token)
+    outfile.close()
+    
     create_and_push_smacc_debians()
     create_and_push_smacc_viewer_debians()
 

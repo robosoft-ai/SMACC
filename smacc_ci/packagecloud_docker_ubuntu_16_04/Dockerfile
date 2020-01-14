@@ -36,7 +36,6 @@ WORKDIR /root
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
 
-
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------
 #ADD token_file.json /root/.packagecloud
@@ -48,4 +47,4 @@ RUN echo "token: $PACKAGE_CLOUD_TOKEN"
 
 #ENTRYPOINT ["/bin/bash"]
 WORKDIR /root
-ENTRYPOINT ["cd /bash -c 'source devel/setup.bash; src/smacc_ci/generate_debs.py -smacc_src_folder src/SMACC -smacc_viewer_src_folder src/SMACC_Viewer']
+ENTRYPOINT ["cd /bash -c 'source devel/setup.bash; src/smacc_ci/generate_debs.py -smacc_src_folder src/SMACC -smacc_viewer_src_folder src/SMACC_Viewer -token $PACKAGE_CLOUD_TOKEN -repo_owner $PACKAGE_CLOUD_USER']
