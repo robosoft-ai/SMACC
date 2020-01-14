@@ -5,7 +5,7 @@ services:
 env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
-    AFTER_SCRIPT=./gh-pages.sh
+    AFTER_SCRIPT=./gh-pages.sh; smacc_ci/packagecloud_docker_ubuntu_16_04/run.sh $PACKAGE_CLOUD_USER -$PACKAGE_CLOUD_TOKEN
     VERBOSE_OUTPUT=false
     #CATKIN_CONFIG=--no-install
   matrix:

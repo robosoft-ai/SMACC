@@ -18,18 +18,34 @@ RUN apt-get update
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
 RUN echo "downloading smacc repo"
-RUN git clone https://github.com/reelrbtx/SMACC.git /root/src
-RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
-RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
+RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
+RUN git clone https://github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer
 
+RUN apt-get install -y python-argcomplete python-bloom dh-make
+
+# INSTALL PACKAGE CLOUD SOFTWARE
+# --------------------------------------------------------------
 RUN apt-get -y install ruby-dev nano
 RUN gem install rake
 RUN gem install package_cloud
 
-RUN apt-get install -y python-argcomplete python-bloom dh-make
+WORKDIR /root
 
-ADD token_file.json /root/.packagecloud
+# BUILD SMACC AND SMACC_VIEWER
+# -----------------------------------------------------------------
+RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
+RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
+
+
+# BUILD DEBIAN FILES
+# ------------------------------------------------------------------------
+#ADD token_file.json /root/.packagecloud
 RUN echo "yaml file:/root/src/smacc_ci/rosdep.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
 RUN rosdep update
 
-ENTRYPOINT ["/bin/bash"]
+RUN echo "user: $PACKAGE_CLOUD_USER"
+RUN echo "token: $PACKAGE_CLOUD_TOKEN"
+
+#ENTRYPOINT ["/bin/bash"]
+WORKDIR /root
+ENTRYPOINT ["cd /bash -c 'source devel/setup.bash; src/smacc_ci/generate_debs.py -smacc_src_folder src/SMACC -smacc_viewer_src_folder src/SMACC_Viewer']
