@@ -52,6 +52,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
     doxygen smacc_ci/Doxyfile
 
     echo "moving result files to branch directory..."
+    stat /tmp/doc
+    stat /tmp/doc/$TRAVIS_BRANCH
     ls /tmp
     mv /tmp/html /tmp/doc/$TRAVIS_BRANCH
     mv /tmp/latex /tmp/doc/$TRAVIS_BRANCH
