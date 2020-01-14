@@ -4,14 +4,17 @@ GITHUB_USER=reelrobotics
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK
-#TRAVIS_BRANCH=master
-#TRAVIS_REPO_SLUG=smacc
-#GITHUB_TOKEN=
-#CATKIN_WORKSPACE_ROOT=`pwd`/../..
+GITHUB_USER=pabloinigoblasco
+TRAVIS_BRANCH=master
+TRAVIS_REPO_SLUG=smacc
+GITHUB_TOKEN=8f612550ed359620ea014df5bbb0b180b15fc8d6
+CATKIN_WORKSPACE_ROOT=`pwd`/../..
 # ----------- TRAVIS --------------------------
 # industrial_ci catkin workspace
-CATKIN_WORKSPACE_ROOT=/root/target_ws 
+#CATKIN_WORKSPACE_ROOT=/root/target_ws 
 #---------------------------------------
+#REPO_URL=github.com/reelrbtx/smacc
+DOC_REPO_URL=github.com/reelrbtx/SMACC_Documentation.git
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
@@ -23,7 +26,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     #find / | grep SMACC
     
-    apt-get install -y git
+    #apt-get install -y git
 
     source $CATKIN_WORKSPACE_ROOT/install/setup.bash
     #source /root/catkin_ws/install/setup.bash
@@ -33,7 +36,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     # This generates a `web` directory containing the website.
     echo "cloning gh-pages"
-    git clone https://pabloinigoblasco:$GITHUB_TOKEN@github.com/reelrbtx/smacc --branch gh-pages /tmp/doc
+    git clone https://pabloinigoblasco:$GITHUB_TOKEN@$REPO_URL --branch gh-pages /tmp/doc
 
     echo "removing specific branch folder from repo clone.."
     cd /tmp/doc
@@ -75,7 +78,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -v https://$GITHUB_USER:$GITHUB_TOKEN@github.com/reelrbtx/smacc gh-pages > pushout.txt
+    git push -f -v https://$GITHUB_USER:$GITHUB_TOKEN@$REPO_URL gh-pages > pushout.txt
     cat pushout.txt
 
     # going back to travis build dir
