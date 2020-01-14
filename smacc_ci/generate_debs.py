@@ -1,3 +1,5 @@
+#/bin/python
+
 import rospkg
 import subprocess
 import os
@@ -5,24 +7,7 @@ import time
 import shutil
 import re
 
-# === requirements for the build machine ==
-# sudo apt-get install ruby-dev rake
-# sudo gem update --system
-# sudo gem install package_cloud
-# == OR ==
-# curl -s https://packagecloud.io/install/repositories/fdio/tutorial/script.deb.sh | sudo bash
-
-# ==== CONFIGURATION PARAMETERS =========
-repo_owner = "pibgeus"
-relative_smacc_folder = "src/SMACC"
-relative_smacc_viewer_folder = "src/SMACC_Viewer"
-workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
-# =========================================
-
-rospack = rospkg.RosPack()
-packages = rospack.list()
-packagesl = list(packages)
-
+#src/smacc_ci/generate_debs.py -smacc_src_folder src -smacc_viewer_src_folder src
 
 def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu_version, ros_distro, already_visited):
     print("-----------------------")
@@ -173,5 +158,44 @@ def create_and_push_smacc_viewer_debians():
 
 
 if __name__ == "__main__":
+    # === requirements for the build machine ==
+    # sudo apt-get install ruby-dev rake
+    # sudo gem update --system
+    # sudo gem install package_cloud
+    # == OR ==
+    # curl -s https://packagecloud.io/install/repositories/fdio/tutorial/script.deb.sh | sudo bash
+
+    import argparse
+    import argcomplete
+
+    # ==== CONFIGURATION PARAMETERS =========
+    repo_owner = "pibgeus"
+    
+    # =========================================
+
+    rospack = rospkg.RosPack()
+    packages = rospack.list()
+    packagesl = list(packages)
+
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-smacc_src_folder', help="smacc workspace folder", default = "src/SMACC")
+    parser.add_argument('-smacc_viewer_src_folder', help="relative smacc src folder", default= "src/SMACC_Viewer")
+    parser.add_argument('-repo_owner', help="Repo owner", default= "pibgeus")
+    parser.add_argument('-help', help="Help command")
+
+    argcomplete.autocomplete(parser)
+
+    args = parser.parse_args()
+    if hasattr(args,'help'):
+        parser.print_help()
+        
+    relative_smacc_folder = args.smacc_src_folder               #"src/SMACC"
+    relative_smacc_viewer_folder = args.smacc_viewer_src_folder #"src/SMACC_Viewer"
+    workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
+
     create_and_push_smacc_debians()
     create_and_push_smacc_viewer_debians()
+
+
+

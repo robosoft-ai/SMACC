@@ -17,13 +17,19 @@ RUN apt-get update
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
+RUN echo "downloading smacc repo"
 RUN git clone https://github.com/reelrbtx/SMACC.git /root/src
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
 
-RUN apt-get -y install ruby-dev
+RUN apt-get -y install ruby-dev nano
 RUN gem install rake
-
 RUN gem install package_cloud
+
+RUN apt-get install -y python-argcomplete python-bloom dh-make
+
 ADD token_file.json /root/.packagecloud
+RUN echo "yaml file:/root/src/smacc_ci/rosdep.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
+RUN rosdep update
+
 ENTRYPOINT ["/bin/bash"]
