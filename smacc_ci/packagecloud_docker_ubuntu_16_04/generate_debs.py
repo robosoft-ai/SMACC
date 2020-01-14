@@ -73,12 +73,12 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
     return debianfilename
 
 
-def iterate_debian_generation(workspace_source_folder, package_names, identified_install_packages):
+def iterate_debian_generation(workspace_source_folder, package_names, identified_install_packages,osversion, rosversion):
     os.chdir(workspace_source_folder)
     debianfiles = []
     for pname in package_names:
         debianfiles.append(build_deb_package(workspace_source_folder,
-                                             pname, identified_install_packages[pname], "xenial", "kinetic", debianfiles))
+                                             pname, identified_install_packages[pname], osversion, rosversion, debianfiles))
     return debianfiles
 
 
@@ -96,17 +96,17 @@ def get_identified_packages(workspace_folder):
     return identified_install_packages
 
 
-def push_debian_files(repo_owner, reponame, debianfiles):
+def push_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
     for debf in debianfiles:
         print("pushing debfile")
         push_debian_task = subprocess.Popen(
-            "package_cloud push " + repo_owner+"/"+reponame+" " + debf, shell=True)
+            "package_cloud push " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + debf, shell=True)
         push_debian_task.wait()
 
 # ------------------------ SMACC PACKAGES -----------------------
 
 
-def create_and_push_smacc_debians():
+def create_and_push_smacc_debians(osname, osversion, rosversion):
     workspace_source_folder = os.path.join(
         workspace_folder, relative_smacc_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
@@ -125,36 +125,37 @@ def create_and_push_smacc_debians():
         'multirole_sensor_client',
         'ros_publisher_client',
         'ros_timer_client',
-        'sm_dance_bot',
-        'sm_dance_bot_2',
-        'sm_viewer_sim',
-        'sm_three_some']
+#        'sm_dance_bot',
+#        'sm_dance_bot_2',
+#        'sm_viewer_sim',
+#        'sm_three_some'
+]
 
     smacc_debian_files = iterate_debian_generation(
-        workspace_source_folder, smacc_manual_order_packages, identified_install_packages)
+        workspace_source_folder, smacc_manual_order_packages, identified_install_packages, osversion, rosversion)
 
     create_repo_task = subprocess.Popen(
         "package_cloud repository create smacc", shell=True)
     create_repo_task.wait()
 
     # ----- PUSHING TO SMACC --------------
-    push_debian_files(repo_owner, "smacc", smacc_debian_files)
+    push_debian_files(repo_owner, "smacc",  osname, osversion, smacc_debian_files)
 
 
-def create_and_push_smacc_viewer_debians():
+def create_and_push_smacc_viewer_debians(osname, osversion, rosversion):
     workspace_source_folder = os.path.join(
         workspace_folder, relative_smacc_viewer_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
     smacc_viewer_manual_order_packages = ["smacc_viewer"]
     smacc_viewer_debian_files = iterate_debian_generation(
-        workspace_source_folder, smacc_viewer_manual_order_packages, identified_install_packages)
+        workspace_source_folder, smacc_viewer_manual_order_packages, identified_install_packages, osversion, rosversion)
 
     create_repo_task = subprocess.Popen(
         "package_cloud repository create smacc_viewer", shell=True)
     create_repo_task.wait()
 
     # ----- PUSHING TO SMACC VIEWER--------------
-    push_debian_files(repo_owner, "smacc_viewer", smacc_viewer_debian_files)
+    push_debian_files(repo_owner, "smacc_viewer", osname, osversion, smacc_viewer_debian_files)
 
 
 if __name__ == "__main__":
@@ -195,17 +196,18 @@ if __name__ == "__main__":
     relative_smacc_viewer_folder = args.smacc_viewer_src_folder #"src/SMACC_Viewer"
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
+    repo_owner = args.repo_owner
+
     print("CREATING TOKEN FILE FOR PACKAGE CLOUD:")
-    packagecloud_token_filepath = os.path.join(homefolder,".packagecloud")
-    import sys
     homefolder = os.getenv("HOME")
+    packagecloud_token_filepath = os.path.join(homefolder,".packagecloud")   
 
     outfile=open(packagecloud_token_filepath,"w")
     outfile.write('{"token":"%s"}'%args.token)
     outfile.close()
     
-    create_and_push_smacc_debians()
-    create_and_push_smacc_viewer_debians()
+    create_and_push_smacc_debians("ubuntu", "xenial", "kinetic")
+    create_and_push_smacc_viewer_debians("ubuntu", "xenial", "kinetic")
 
 
 

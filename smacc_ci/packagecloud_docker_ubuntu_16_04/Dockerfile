@@ -45,6 +45,7 @@ RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_V
 
 WORKDIR /root
 
+RUN echo "regen"
 # BUILD SMACC AND SMACC_VIEWER
 # -----------------------------------------------------------------
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
@@ -52,10 +53,11 @@ RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
 
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------
-#ADD token_file.json /root/.packagecloud
-RUN echo "yaml file:/root/src/smacc_ci/rosdep.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
+
+RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
 RUN rosdep update
 
-#ENTRYPOINT ["/bin/bash"]
+ADD generate_debs.py /root/src/SMACC/smacc_ci/packagecloud_docker_ubuntu_16_04/generate_debs.py
+
 WORKDIR /root
-RUN bash -c 'source devel/setup.bash; src/smacc_ci/generate_debs.py -smacc_src_folder src/SMACC -smacc_viewer_src_folder src/SMACC_Viewer -token $PACKAGE_CLOUD_TOKEN -repo_owner $PACKAGE_CLOUD_USER'
+RUN bash -c 'source devel/setup.bash; python src/SMACC/smacc_ci/packagecloud_docker_ubuntu_16_04/generate_debs.py -smacc_src_folder src/SMACC -smacc_viewer_src_folder src/SMACC_Viewer -token $PACKAGE_CLOUD_TOKEN -repo_owner $PACKAGE_CLOUD_USER'
