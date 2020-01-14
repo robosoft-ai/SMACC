@@ -1,20 +1,20 @@
 #!/bin/bash
 
 GITHUB_USER=reelrobotics
+CATKIN_WORKSPACE_ROOT=/root/target_ws 
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK
-GITHUB_USER=pabloinigoblasco
-TRAVIS_BRANCH=master
-TRAVIS_REPO_SLUG=smacc
-GITHUB_TOKEN=8f612550ed359620ea014df5bbb0b180b15fc8d6
-CATKIN_WORKSPACE_ROOT=`pwd`/../..
+#GITHUB_USER=
+#TRAVIS_BRANCH=master
+#TRAVIS_REPO_SLUG=smacc
+#GITHUB_TOKEN=
+#CATKIN_WORKSPACE_ROOT=`pwd`/../..
 # ----------- TRAVIS --------------------------
 # industrial_ci catkin workspace
 #CATKIN_WORKSPACE_ROOT=/root/target_ws 
 #---------------------------------------
-#REPO_URL=github.com/reelrbtx/smacc
-DOC_REPO_URL=github.com/reelrbtx/SMACC_Documentation.git
+REPO_URL=github.com/reelrbtx/SMACC_Documentation.git
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
@@ -49,7 +49,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     ls
     
     echo "executing doxygen command"
-    doxygen Doxyfile
+    doxygen smacc_ci/Doxyfile
 
     echo "moving result files to branch directory..."
     ls /tmp

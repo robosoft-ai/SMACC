@@ -5,7 +5,7 @@ services:
 env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
-    AFTER_SCRIPT=./gh-pages.sh; smacc_ci/packagecloud_docker_ubuntu_16_04/run.sh $PACKAGE_CLOUD_USER -$PACKAGE_CLOUD_TOKEN
+    AFTER_SCRIPT=smacc_ci/gh-pages.sh; smacc_ci/packagecloud_docker_ubuntu_16_04/build.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN
     VERBOSE_OUTPUT=false
     #CATKIN_CONFIG=--no-install
   matrix:
@@ -13,7 +13,7 @@ env:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get install -y graphviz ghostscript # these packages is for documentation generation
+  - sudo apt-get install -y graphviz ghostscript git # these packages is for documentation generation
   
 install:
   - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
