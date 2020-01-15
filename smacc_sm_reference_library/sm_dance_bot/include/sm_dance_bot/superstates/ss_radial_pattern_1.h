@@ -9,16 +9,16 @@ namespace sm_dance_bot
 namespace radial_motion_states
 {
 //forward declaration for initial ssr
-class SsrRadialRotate;
-class SsrRadialReturn;
-class SsrRadialEndPoint;
-class SsrRadialLoopStart;
+class StiRadialRotate;
+class StiRadialReturn;
+class StiRadialEndPoint;
+class StiRadialLoopStart;
 } // namespace radial_motion_states
 } // namespace sm_dance_bot
 
 using namespace sm_dance_bot::radial_motion_states;
 
-struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, SsrRadialLoopStart>
+struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;
@@ -26,7 +26,7 @@ public:
     typedef mpl::list<
 
         // Expected event
-        smacc::Transition<EvLoopEnd<SsrRadialLoopStart>, StRotateDegrees1, ENDLOOP>
+        smacc::Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
         // Keyboard event
         //smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior>, StRotateDegrees1>,
         //smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior>, StNavigateToWaypointsX>,
@@ -56,9 +56,9 @@ public:
 //forward declaration for the superstate
 using SS = SsRadialPattern1;
 
-#include <sm_dance_bot/states/radial_motion_states/ssr_radial_end_point.h>
-#include <sm_dance_bot/states/radial_motion_states/ssr_radial_return.h>
-#include <sm_dance_bot/states/radial_motion_states/ssr_radial_rotate.h>
-#include <sm_dance_bot/states/radial_motion_states/ssr_radial_loop_start.h>
+#include <sm_dance_bot/states/radial_motion_states/sti_radial_end_point.h>
+#include <sm_dance_bot/states/radial_motion_states/sti_radial_return.h>
+#include <sm_dance_bot/states/radial_motion_states/sti_radial_rotate.h>
+#include <sm_dance_bot/states/radial_motion_states/sti_radial_loop_start.h>
 } // namespace SS1
 } // namespace sm_dance_bot
