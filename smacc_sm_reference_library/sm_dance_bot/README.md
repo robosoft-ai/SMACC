@@ -1,8 +1,8 @@
-<img src="https://github.com/reelrbtx/SMACC_Documentation/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/sm_dance_bot(12-30-19).svg" width="950" align="center" border="10"/>
+<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/sm_dance_bot(12-30-19).svg" width="950" align="center" border="10"/>
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
-<a href="https://reelrbtx.github.io/SMACC/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
+<a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
 
 <h2>Operating Instructions</h2>
 After you build, remember to source the proper devel folder...
