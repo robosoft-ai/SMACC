@@ -1,8 +1,5 @@
 #!/bin/bash
 
-echo "DEBIAN FILES GENERATION"
-smacc_ci/packagecloud_docker_ubuntu_16_04/build.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN
-
 GITHUB_USER=reelrobotics
 CATKIN_WORKSPACE_ROOT=/root/target_ws 
 
