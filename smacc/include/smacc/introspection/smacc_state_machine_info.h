@@ -7,7 +7,7 @@
 #include <smacc_msgs/SmaccState.h>
 #include <smacc_msgs/SmaccTransition.h>
 #include <smacc_msgs/SmaccOrthogonal.h>
-#include <smacc_msgs/SmaccLogicUnit.h>
+#include <smacc_msgs/SmaccStateBehavior.h>
 
 namespace smacc
 {

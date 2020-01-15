@@ -59,7 +59,7 @@ file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
 add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})
 
 # sources
-file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp" "src/smacc/introspection/*.cpp" "src/smacc/logic_units/*.cpp") # opcionalmente GLOB
+file(GLOB_RECURSE SRC_FILES "src/smacc/*.cpp" "src/smacc/introspection/*.cpp" "src/smacc/state_behaviors/*.cpp") # opcionalmente GLOB
 
 add_library(${PROJECT_NAME} ${SRC_FILES})
 

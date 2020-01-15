@@ -1,19 +1,19 @@
 
 #include <smacc/common.h>
-#include <event_countdown/event_countdown.h>
+#include <event_countdown/sb_event_countdown.h>
 #include <memory>
 
 namespace smacc
 {
-namespace logic_units
+namespace state_behaviors
 {
 using namespace smacc::introspection;
-LuEventCountdown::LuEventCountdown(int eventCount)
+SbEventCountdown::SbEventCountdown(int eventCount)
     : eventCount_(eventCount)
 {
 }
 
-void LuEventCountdown::onInitialized()
+void SbEventCountdown::onInitialized()
 {
     for (auto type : eventTypes)
     {
@@ -21,12 +21,12 @@ void LuEventCountdown::onInitialized()
     }
 }
 
-void LuEventCountdown::onEventNotified(const std::type_info *eventType)
+void SbEventCountdown::onEventNotified(const std::type_info *eventType)
 {
     eventCount_--;
-    ROS_INFO_STREAM("LU COUNTDOWN (" << eventCount_ << ") RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    ROS_INFO_STREAM("SB COUNTDOWN (" << eventCount_ << ") RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
 
-    // ROS_INFO_STREAM("LU ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    // ROS_INFO_STREAM("SB ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
     // triggeredEvents[eventType] = true;
 
     // for (auto &entry : triggeredEvents)
@@ -35,11 +35,11 @@ void LuEventCountdown::onEventNotified(const std::type_info *eventType)
     // }
 }
 
-bool LuEventCountdown::triggers()
+bool SbEventCountdown::triggers()
 {
     if (eventCount_ == 0)
     {
-        ROS_INFO_STREAM("LU COUNTDOWN (" << eventCount_ << ") TRIGGERS!");
+        ROS_INFO_STREAM("SB COUNTDOWN (" << eventCount_ << ") TRIGGERS!");
         return true;
     }
     else
@@ -47,15 +47,15 @@ bool LuEventCountdown::triggers()
         return false;
     }
 
-    // ROS_INFO("LU All TRIGGERS?");
+    // ROS_INFO("SB All TRIGGERS?");
     // for (auto &entry : triggeredEvents)
     // {
     //     if (!entry.second)
     //         return false;
     // }
-    // ROS_INFO("LU ALL TRIGGERED");
+    // ROS_INFO("SB ALL TRIGGERED");
     // return true;
 }
 
-} // namespace logic_units
+} // namespace state_behaviors
 } // namespace smacc

@@ -31,11 +31,11 @@ using namespace sm_three_some::cl_subscriber;
 
 #include <ros_timer_client/client_behaviors/cb_ros_timer.h>
 
-//LOGIC UNITS
-#include <all_events_go/lu_all_events_go.h>
+//STATE BEHAVIORS
+#include <all_events_go/sb_all_events_go.h>
 
 using namespace smacc;
-using namespace smacc::logic_units;
+using namespace smacc::state_behaviors;
 using namespace smacc::default_events;
 
 namespace sm_three_some

@@ -1,14 +1,14 @@
 
-#include <all_events_go/lu_all_events_go.h>
+#include <all_events_go/sb_all_events_go.h>
 #include <smacc/common.h>
 
 namespace smacc
 {
-namespace logic_units
+namespace state_behaviors
 {
 
 using namespace smacc::introspection;
-void LuAllEventsGo::onInitialized()
+void SbAllEventsGo::onInitialized()
 {
     for (auto type : eventTypes)
     {
@@ -16,9 +16,9 @@ void LuAllEventsGo::onInitialized()
     }
 }
 
-void LuAllEventsGo::onEventNotified(const std::type_info *eventType)
+void SbAllEventsGo::onEventNotified(const std::type_info *eventType)
 {
-    ROS_INFO_STREAM("LU ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
+    ROS_INFO_STREAM("SB ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
     triggeredEvents[eventType] = true;
 
     for (auto &entry : triggeredEvents)
@@ -27,16 +27,16 @@ void LuAllEventsGo::onEventNotified(const std::type_info *eventType)
     }
 }
 
-bool LuAllEventsGo::triggers()
+bool SbAllEventsGo::triggers()
 {
-    ROS_INFO("LU All TRIGGERS?");
+    ROS_INFO("SB All TRIGGERS?");
     for (auto &entry : triggeredEvents)
     {
         if (!entry.second)
             return false;
     }
-    ROS_INFO("LU ALL TRIGGERED");
+    ROS_INFO("SB ALL TRIGGERED");
     return true;
 }
-} // namespace logic_units
+} // namespace state_behaviors
 } // namespace smacc

@@ -40,12 +40,12 @@ using namespace sm_dance_bot::cl_led;
 //using namespace sm_dance_bot::cl_move_base_z;
 //using namespace sm_dance_bot::cl_updatable_publisher;
 
-//LOGIC UNITS
-#include <all_events_go/lu_all_events_go.h>
-#include <event_countdown/event_countdown.h>
-#include <conditional/lu_conditional.h>
+//STATE BEHAVIORS
+#include <all_events_go/sb_all_events_go.h>
+#include <event_countdown/sb_event_countdown.h>
+#include <conditional/sb_conditional.h>
 
-using namespace smacc::logic_units;
+using namespace smacc::state_behaviors;
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>

@@ -121,24 +121,24 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             stateMsg.orthogonals.push_back(orthogonalMsg);
         }
 
-        ss << " Logic units:" << std::endl;
-        if (SmaccStateInfo::logicUnitsInfo.count(statetid) > 0)
+        ss << " State behaviors:" << std::endl;
+        if (SmaccStateInfo::stateBehaviorsInfo.count(statetid) > 0)
         {
             int k = 0;
-            for (auto &luinfo : SmaccStateInfo::logicUnitsInfo[statetid])
+            for (auto &sbinfo : SmaccStateInfo::stateBehaviorsInfo[statetid])
             {
-                smacc_msgs::SmaccLogicUnit logicUnitMsg;
-                logicUnitMsg.index = k++;
-                logicUnitMsg.type_name = demangleSymbol(luinfo.logicUnitType->name());
+                smacc_msgs::SmaccStateBehavior stateBehaviorMsg;
+                stateBehaviorMsg.index = k++;
+                stateBehaviorMsg.type_name = demangleSymbol(sbinfo.stateBehaviorType->name());
 
-                ss << " - logic unit: " << logicUnitMsg.type_name << std::endl;
-                if (luinfo.objectTagType != nullptr)
+                ss << " - state behavior: " << stateBehaviorMsg.type_name << std::endl;
+                if (sbinfo.objectTagType != nullptr)
                 {
-                    logicUnitMsg.object_tag = luinfo.objectTagType->getFullName();
-                    ss << "        - object tag: " << logicUnitMsg.object_tag << std::endl;
+                    stateBehaviorMsg.object_tag = sbinfo.objectTagType->getFullName();
+                    ss << "        - object tag: " << stateBehaviorMsg.object_tag << std::endl;
                 }
 
-                for (auto &tev : luinfo.sourceEventTypes)
+                for (auto &tev : sbinfo.sourceEventTypes)
                 {
                     // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
                     auto eventTypeName = tev->getEventTypeName();
@@ -156,15 +156,15 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
                     event.label = tev->label;
                     ss << "                 - event label: " << event.label << std::endl;
 
-                    logicUnitMsg.event_sources.push_back(event);
+                    stateBehaviorMsg.event_sources.push_back(event);
                 }
 
-                stateMsg.logic_units.push_back(logicUnitMsg);
+                stateMsg.state_behaviors.push_back(stateBehaviorMsg);
             }
         }
         else
         {
-            ss << "- NO LOGIC UNITS - " << std::endl;
+            ss << "- NO STATE BEHAVIORS - " << std::endl;
         }
 
         ROS_INFO_STREAM(ss.str());
