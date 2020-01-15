@@ -23,6 +23,13 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
                                EvAllGo<LuAllEventsGo>,
                                mpl::list<EvTimer<CbTimer, OrTimer>,
                                          EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>>();
+
+        /*auto lu = static_createLogicUnit<LuAllEventsGo>();
+
+        lu->subscribesEvent<EvTimer<CbTimer, OrTimer>>();
+        lu->subscribesEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
+
+        lu->publishesEvent<EvAllGo<LuAllEventsGo>>();*/
     }
 
     void onInitialize()

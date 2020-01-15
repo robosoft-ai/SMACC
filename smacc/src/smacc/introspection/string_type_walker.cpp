@@ -276,8 +276,8 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
             auto index = codedtypecopy.find(t2->tkey);
             if (index != std::string::npos)
             {
-                //auto pair = std::make_pair(index, t2);
-                auto pair = std::make_pair(0, t2);
+                auto pair = std::make_pair(index, t2); // this line is important for the order of templates
+                //auto pair = std::make_pair(0, t2);
                 //std::cout << "matches: " << t2->tkey <<std::endl;
                 unorderedTemplateParameters.push_back(pair);
                 replace(codedtypecopy,t2->tkey,""); // consume token

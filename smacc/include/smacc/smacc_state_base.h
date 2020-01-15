@@ -254,9 +254,15 @@ public:
       auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
       auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
       EventLabel<T>(evinfo->label);
+
       luInfo_.sourceEventTypes.push_back(evinfo);
-      ROS_INFO_STREAM("event: " << sourceType->getFullName());
-      ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
+      ROS_INFO_STREAM("logic unit input event: " << sourceType->getFullName());
+      ROS_INFO_STREAM("- event parameters: " << sourceType->templateParameters.size());
+      for(auto& tp: evinfo->eventType->templateParameters)
+      {
+        ROS_INFO_STREAM("- " << tp->getFullName());
+      }
+
     }
   };
 

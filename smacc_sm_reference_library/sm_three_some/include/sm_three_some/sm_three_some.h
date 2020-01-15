@@ -73,6 +73,7 @@ struct SmThreeSome
         this->createOrthogonal<OrTimer>();
         this->createOrthogonal<OrUpdatablePublisher>();
         this->createOrthogonal<OrKeyboard>();
+        this->createOrthogonal<OrSubscriber>();
     }
 };
 } // namespace sm_three_some
