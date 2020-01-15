@@ -2,13 +2,13 @@ namespace sm_dance_bot
 {
 namespace radial_motion_states
 {
-struct SsrRadialEndPoint : smacc::SmaccState<SsrRadialEndPoint, SS>
+struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrRadialReturn, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrRadialRotate, ABORT>>
+      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
+      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>>
       reactions;
 
   static void onDefinition()

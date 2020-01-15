@@ -2,12 +2,12 @@ namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
-struct SsrSPatternRotate4 : smacc::SmaccState<SsrSPatternRotate4, SS>
+struct StiSPatternRotate4 : smacc::SmaccState<StiSPatternRotate4, SS>
 {
     using SmaccState::SmaccState;
 
-    typedef mpl::list<smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward4>,
-                      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternForward3>>
+    typedef mpl::list<smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward4>,
+                      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>>
         reactions;
 
     static void onDefinition()

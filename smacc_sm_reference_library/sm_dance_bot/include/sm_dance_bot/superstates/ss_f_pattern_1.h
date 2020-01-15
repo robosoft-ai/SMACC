@@ -13,22 +13,22 @@ enum class TDirection
 
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
 template <typename SS>
-class SsrFPatternRotate1;
+class StiFPatternRotate1;
 
 template <typename SS>
-class SsrFPatternForward1;
+class StiFPatternForward1;
 
 template <typename SS>
-class SsrFPatternReturn1;
+class StiFPatternReturn1;
 
 template <typename SS>
-class SsrFPatternRotate2;
+class StiFPatternRotate2;
 
 template <typename SS>
-class SsrFPatternForward2;
+class StiFPatternForward2;
 
 template <typename SS>
-class SsrFPatternStartLoop;
+class StiFPatternStartLoop;
 } // namespace f_pattern_states
 } // namespace sm_dance_bot
 
@@ -39,14 +39,14 @@ namespace SS4
 
 using namespace f_pattern_states;
 
-struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, SsrFPatternStartLoop<SsFPattern1>>
+struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, StiFPatternStartLoop<SsFPattern1>>
 {
 public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<SsrFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
+        smacc::Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
 
         // Error events
         //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
@@ -79,9 +79,9 @@ public:
 } // namespace SS4
 } // namespace sm_dance_bot
 
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_rotate_1.h>
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_forward_1.h>
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_return_1.h>
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_rotate_2.h>
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_forward_2.h>
-#include <sm_dance_bot/states/f_pattern_states/ssr_fpattern_loop_start.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_1.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_1.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_return_1.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_rotate_2.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_forward_2.h>
+#include <sm_dance_bot/states/f_pattern_states/sti_fpattern_loop_start.h>

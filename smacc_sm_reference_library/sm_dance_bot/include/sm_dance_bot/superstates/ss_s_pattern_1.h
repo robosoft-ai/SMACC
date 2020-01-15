@@ -10,15 +10,15 @@ namespace sm_dance_bot
 namespace s_pattern_states
 {
 //HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
-class SsrSPatternRotate1;
-class SsrSPatternForward1;
-class SsrSPatternRotate2;
-class SsrSPatternForward2;
-class SsrSPatternRotate3;
-class SsrSPatternForward3;
-class SsrSPatternRotate4;
-class SsrSPatternForward4;
-class SsrSPatternLoopStart;
+class StiSPatternRotate1;
+class StiSPatternForward1;
+class StiSPatternRotate2;
+class StiSPatternForward2;
+class StiSPatternRotate3;
+class StiSPatternForward3;
+class StiSPatternRotate4;
+class StiSPatternForward4;
+class StiSPatternLoopStart;
 } // namespace s_pattern_states
 } // namespace sm_dance_bot
 
@@ -30,14 +30,14 @@ enum class TDirection
 
 using namespace sm_dance_bot::s_pattern_states;
 
-struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, SsrSPatternLoopStart>
+struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatternLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<SsrSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
+        smacc::Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
 
         // Error events
         //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
@@ -68,15 +68,15 @@ public:
 //forward declaration for the superstate
 using SS = SsSPattern1;
 
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_1.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_1.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_2.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_2.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_3.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_3.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_rotate_4.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_forward_4.h>
-#include <sm_dance_bot/states/s_pattern_states/ssr_spattern_loop_start.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_1.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_1.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_2.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_2.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_3.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_3.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_4.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_4.h>
+#include <sm_dance_bot/states/s_pattern_states/sti_spattern_loop_start.h>
 
 } // namespace SS5
 } // namespace sm_dance_bot

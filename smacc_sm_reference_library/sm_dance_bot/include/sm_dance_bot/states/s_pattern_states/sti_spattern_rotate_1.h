@@ -2,13 +2,13 @@ namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
-struct SsrSPatternRotate1 : smacc::SmaccState<SsrSPatternRotate1, SS>
+struct StiSPatternRotate1 : smacc::SmaccState<StiSPatternRotate1, SS>
 {
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SsrSPatternForward1>,
-        smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, SsrSPatternLoopStart>>
+        smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward1>,
+        smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternLoopStart>>
         reactions;
 
     static void onDefinition()
@@ -18,7 +18,7 @@ struct SsrSPatternRotate1 : smacc::SmaccState<SsrSPatternRotate1, SS>
     void onInitialize()
     {
         auto &superstate = this->context<SS>();
-        ROS_INFO("[SsrSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
+        ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
 
         if (superstate.iteration_count < SS::total_iterations())
         {

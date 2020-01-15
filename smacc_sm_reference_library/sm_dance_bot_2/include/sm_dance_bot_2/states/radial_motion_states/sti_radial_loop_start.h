@@ -1,9 +1,9 @@
 namespace sm_dance_bot_2 {
 namespace radial_motion_states {
 
-struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS> {
+struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
   using SmaccState::SmaccState;
-  typedef smacc::Transition<EvLoopContinue<SsrRadialLoopStart>, SsrRadialRotate,
+  typedef smacc::Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,
                             CONTINUELOOP>
       reactions;
 
@@ -21,7 +21,7 @@ struct SsrRadialLoopStart : smacc::SmaccState<SsrRadialLoopStart, SS> {
 
   void onEntry() {
     ROS_INFO("LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&SsrRadialLoopStart::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&StiRadialLoopStart::loopWhileCondition);
   }
 };
 

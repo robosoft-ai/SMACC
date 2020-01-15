@@ -2,10 +2,10 @@ namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
-struct SsrSPatternLoopStart : smacc::SmaccState<SsrSPatternLoopStart, SS>
+struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  typedef mpl::list<smacc::Transition<EvLoopContinue<SsrSPatternLoopStart>, SsrSPatternRotate1, CONTINUELOOP>> reactions;
+  typedef mpl::list<smacc::Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>> reactions;
 
   static void onDefinition()
   {
@@ -23,7 +23,7 @@ struct SsrSPatternLoopStart : smacc::SmaccState<SsrSPatternLoopStart, SS>
 
   void onEntry()
   {
-    checkWhileLoopConditionAndThrowEvent(&SsrSPatternLoopStart::loopCondition);
+    checkWhileLoopConditionAndThrowEvent(&StiSPatternLoopStart::loopCondition);
   }
 };
 

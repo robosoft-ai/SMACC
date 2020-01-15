@@ -2,15 +2,15 @@ namespace sm_three_some
 {
 namespace ss1_states
 {
-struct Ssr3 : smacc::SmaccState<Ssr3, SS>
+struct StiState2 : smacc::SmaccState<StiState2, SS>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      //smacc::Transition<EvTopicMessage<CbBehavior1b>, Ssr1>,
+      smacc::Transition<EvTimer<CbTimer, OrTimer>, StiState3>,
 
-      smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr2>,
-      smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, Ssr1>>
+      smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3>,
+      smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
       reactions;
 
   //-------------------------------------------------------------------------------
@@ -25,7 +25,6 @@ struct Ssr3 : smacc::SmaccState<Ssr3, SS>
   //-------------------------------------------------------------------------------
   void onInitialize()
   {
-    //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);
   }
 };
 }

@@ -2,12 +2,12 @@ namespace sm_three_some
 {
 namespace ss1_states
 {
-struct Ssr1 : smacc::SmaccState<Ssr1, SS>
+struct StiState1 : smacc::SmaccState<StiState1, SS>
 {
 public:
   using SmaccState::SmaccState;
 
-  typedef smacc::Transition<EvLoopContinue<Ssr1>, Ssr2, CONTINUELOOP> reactions;
+  typedef smacc::Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()
@@ -30,7 +30,7 @@ public:
   void onEntry()
   {
     ROS_INFO("LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&Ssr1::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&StiState1::loopWhileCondition);
   }
 };
 }

@@ -4,15 +4,15 @@ namespace radial_motion_states
 {
 using namespace ::sm_dance_bot_2;
 
-struct SsrRadialRotate : smacc::SmaccState<SsrRadialRotate, SS>
+struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
 {
   using SmaccState::SmaccState;
 
   typedef mpl::list<
       smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,
-                        SsrRadialEndPoint, SUCCESS>,
+                        StiRadialEndPoint, SUCCESS>,
       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,
-                        SsrRadialLoopStart, ABORT>>
+                        StiRadialLoopStart, ABORT>>
       reactions;
 
   static void onDefinition()
