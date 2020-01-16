@@ -19,6 +19,5 @@ install:
   - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
   - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
 script:
-  - bash -c 'cd smacc_ci/packagecloud_docker_ubuntu_16_04/; ./build.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
   - .industrial_ci/travis.sh
-  
+  - bash -c 'cd smacc_ci/packagecloud_docker_ubuntu_16_04/; ./build.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'

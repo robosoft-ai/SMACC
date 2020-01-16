@@ -51,12 +51,12 @@ struct SmaccTransitionInfo
     TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
-struct SmaccLogicUnitInfo
+struct SmaccStateBehaviorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
 
-    const std::type_info *logicUnitType;
+    const std::type_info *stateBehaviorType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
 };
@@ -75,7 +75,7 @@ public:
     typedef std::shared_ptr<SmaccStateInfo> Ptr;
 
     static std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> staticBehaviorInfo;
-    static std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> logicUnitsInfo;
+    static std::map<const std::type_info *, std::vector<SmaccStateBehaviorInfo>> stateBehaviorsInfo;
 
     int stateIndex_;
     std::string fullStateName;

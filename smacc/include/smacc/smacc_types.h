@@ -12,7 +12,7 @@ class ISmaccComponent;
 class SmaccClientBehavior;
 class SignalDetector;
 
-class LogicUnit;
+class StateBehavior;
 
 namespace client_bases
 {

@@ -13,14 +13,14 @@ namespace smacc
 class ISmaccState;
 class ISMaccStateMachine;
 
-namespace logic_units
+namespace state_behaviors
 {
 struct EmptyObjectTag
 {
 };
-} // namespace logic_units
+} // namespace state_behaviors
 
-class LogicUnit
+class StateBehavior
 {
 public:
     ISmaccState *ownerState;
@@ -28,15 +28,15 @@ public:
     std::vector<const std::type_info *> eventTypes;
     std::map<const std::type_info *, std::function<void(void *)>> eventCallbacks_;
 
-    LogicUnit();
+    StateBehavior();
 
     virtual void onInitialized();
 
     template <typename TEventList>
     struct AddTEventType
     {
-        LogicUnit *owner_;
-        AddTEventType(LogicUnit *owner) : owner_(owner)
+        StateBehavior *owner_;
+        AddTEventType(StateBehavior *owner) : owner_(owner)
         {
         }
 
@@ -77,7 +77,7 @@ private:
     template <typename TEvent>
     void notifyEvent(TEvent *ev)
     {
-        //the state machine uses this method to notify this logic unit some event happened.
+        //the state machine uses this method to notify this state behavior some event happened.
         auto tid = &(typeid(TEvent));
         if (std::find(eventTypes.begin(), eventTypes.end(), tid) != eventTypes.end())
         {

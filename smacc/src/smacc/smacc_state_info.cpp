@@ -7,7 +7,7 @@ namespace smacc
 using namespace smacc::introspection;
 
 std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> SmaccStateInfo::staticBehaviorInfo;
-std::map<const std::type_info *, std::vector<SmaccLogicUnitInfo>> SmaccStateInfo::logicUnitsInfo;
+std::map<const std::type_info *, std::vector<SmaccStateBehaviorInfo>> SmaccStateInfo::stateBehaviorsInfo;
 
 SmaccStateInfo::SmaccStateInfo(const std::type_info *tid, std::shared_ptr<SmaccStateInfo> parentState, std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo)
 {

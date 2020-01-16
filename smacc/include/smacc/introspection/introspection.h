@@ -243,27 +243,27 @@ static std::string getTransitionType()
 
 // // BASE CASE
 // template <typename T>
-// static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<T>)
+// static void walkStateBehaviorsSources(SmaccStateBehaviorInfo &sbinfo, typelist<T>)
 // {
 //     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<T>(evinfo->label);
-//     luinfo.sourceEventTypes.push_back(evinfo);
+//     sbinfo.sourceEventTypes.push_back(evinfo);
 //     ROS_INFO_STREAM("event: " << sourceType->getFullName());
 //     ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
 // }
 
 // // RECURSIVE CASE
 // template <typename TEvHead, typename... TEvArgs>
-// static void walkLogicUnitSources(SmaccLogicUnitInfo &luinfo, typelist<TEvHead, TEvArgs...>)
+// static void walkStateBehaviorsSources(SmaccStateBehaviorInfo &sbinfo, typelist<TEvHead, TEvArgs...>)
 // {
 //     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(TEvHead));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
 //     EventLabel<TEvHead>(evinfo->label);
-//     luinfo.sourceEventTypes.push_back(evinfo);
+//     sbinfo.sourceEventTypes.push_back(evinfo);
 //     ROS_INFO_STREAM("event: " << sourceType->getFullName());
 //     ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
-//     walkLogicUnitSources(luinfo, typelist<TEvArgs...>());
+//     walkStateBehaviorsSources(sbinfo, typelist<TEvArgs...>());
 // }
 
 } // namespace introspection

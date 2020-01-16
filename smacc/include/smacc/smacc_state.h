@@ -33,8 +33,8 @@ public:
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
-  template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
-  std::shared_ptr<TLUnit> createLogicUnit(TEvArgs... args);
+  template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+  std::shared_ptr<TStateBehavior> createStateBehavior(TEvArgs... args);
 
   template <typename EventType>
   void postEvent(const EventType &ev);
@@ -46,7 +46,7 @@ public:
   // used for transition logging
   void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::introspection::TypeInfo> &transitionTypeInfo);
 
-  inline std::vector<std::shared_ptr<LogicUnit>> &getLogicUnits() { return logicUnits_; }
+  inline std::vector<std::shared_ptr<StateBehavior>> &getStateBehaviors() { return stateBehaviors_; }
 
   // Delegates to ROS param access with the current NodeHandle
   template <typename T>
@@ -69,7 +69,7 @@ public:
   }
 
 protected:
-  std::vector<std::shared_ptr<LogicUnit>> logicUnits_;
+  std::vector<std::shared_ptr<StateBehavior>> stateBehaviors_;
 
   ros::NodeHandle nh;
 

@@ -21,7 +21,7 @@
 #include <smacc_msgs/SmaccGetTransitionHistory.h>
 
 #include <smacc/smacc_state.h>
-#include <smacc/logic_unit.h>
+#include <smacc/smacc_state_behavior.h>
 
 namespace smacc
 {
@@ -168,7 +168,7 @@ private:
     friend class ISmaccState;
 
     template <typename EventType>
-    void propagateEventToLogicUnits(ISmaccState *st, EventType *ev);
+    void propagateEventToStateBehaviors(ISmaccState *st, EventType *ev);
 
 public:
     std::shared_ptr<SmaccStateMachineInfo> info_;

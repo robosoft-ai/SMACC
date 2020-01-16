@@ -1,25 +1,25 @@
-#include <smacc/logic_unit.h>
+#include <smacc/smacc_state_behavior.h>
 
 namespace smacc
 {
 template <typename TEv>
-void LogicUnit::declarePostEvent(smacc::introspection::typelist<TEv>)
+void StateBehavior::declarePostEvent(smacc::introspection::typelist<TEv>)
 {
     this->postEventFn = [this]() {
-        ROS_INFO_STREAM("[Logic Unit Base] postingfn posting event: " << demangleSymbol<TEv>());
+        ROS_INFO_STREAM("[State Behavior Base] postingfn posting event: " << demangleSymbol<TEv>());
         auto *ev = new TEv();
         this->ownerState->getStateMachine().postEvent(ev);
     };
 }
 
 template <typename TEv>
-void LogicUnit::declareInputEvent()
+void StateBehavior::declareInputEvent()
 {
     this->eventTypes.push_back(&typeid(TEv));
 }
 
 template <typename TEventList>
-void LogicUnit::initialize(ISmaccState *ownerState, TEventList *)
+void StateBehavior::initialize(ISmaccState *ownerState, TEventList *)
 {
     this->ownerState = ownerState;
 
@@ -32,7 +32,7 @@ void LogicUnit::initialize(ISmaccState *ownerState, TEventList *)
 }
 
 template <typename T, typename TClass>
-void LogicUnit::createEventCallback(void (TClass::*callback)(T *), TClass *object)
+void StateBehavior::createEventCallback(void (TClass::*callback)(T *), TClass *object)
 {
     const auto *eventtype = &typeid(T);
     this->eventCallbacks_[eventtype] = [=](void *msg) {
@@ -42,7 +42,7 @@ void LogicUnit::createEventCallback(void (TClass::*callback)(T *), TClass *objec
 }
 
 template <typename T>
-void LogicUnit::createEventCallback(std::function<void(T *)> callback)
+void StateBehavior::createEventCallback(std::function<void(T *)> callback)
 {
     const auto *eventtype = &typeid(T);
     this->eventCallbacks_[eventtype] = [=](void *msg) {

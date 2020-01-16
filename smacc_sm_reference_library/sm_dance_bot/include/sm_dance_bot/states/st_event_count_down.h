@@ -7,7 +7,7 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
     typedef mpl::list<
         // Expected event
-        Transition<EvCountdownEnd<LuEventCountdown>, StNavigateToWaypointsX>,
+        Transition<EvCountdownEnd<SbEventCountdown>, StNavigateToWaypointsX>,
 
         smacc::Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
         reactions;
@@ -19,9 +19,9 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         //   static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
         //   static_configure<OrService3, CbService3>(Service3Command::SERVICE3_ON);
 
-        static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
+        static_createStateBehavior<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
 
-        //static_createLogicUnit<LuEventCountdown, EvCountdownEnd<LuEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
+        //static_createStateBehavior<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
     }
 };
 }

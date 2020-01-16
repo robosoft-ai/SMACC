@@ -2,7 +2,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_client_behavior.h>
-#include <smacc/logic_unit.h>
+#include <smacc/smacc_state_behavior.h>
 #include <smacc/introspection/string_type_walker.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_state_machine.h>
@@ -93,15 +93,15 @@ void ISmaccState::setGlobalSMData(std::string name, T value)
 }
 //-------------------------------------------------------------------------------------------------------
 
-template <typename TLUnit, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
-std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
+template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
 {
-    auto lu = std::make_shared<TLUnit>(args...);
+    auto sb = std::make_shared<TStateBehavior>(args...);
     TEventList *mock;
-    lu->initialize(this, mock);
-    lu->declarePostEvent(typelist<TTriggerEvent>());
-    logicUnits_.push_back(lu);
-    return lu;
+    sb->initialize(this, mock);
+    sb->declarePostEvent(typelist<TTriggerEvent>());
+    stateBehaviors_.push_back(sb);
+    return sb;
 }
 
 template <typename TOrthogonal>
@@ -110,15 +110,15 @@ TOrthogonal* ISmaccState::getOrthogonal()
     return this->getStateMachine().getOrthogonal<TOrthogonal>();
 }
 
-// template <typename TLUnit, typename TTriggerEvent, typename... TEvArgs>
-// std::shared_ptr<TLUnit> ISmaccState::createLogicUnit(TEvArgs... args)
+// template <typename TStateBehavior, typename TTriggerEvent, typename... TEvArgs>
+// std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
 // {
-//     auto lu = std::make_shared<TLUnit>(std::forward(args...));
-//     lu->initialize(this, typelist<TEvArgs...>());
-//     lu->declarePostEvent(typelist<TTriggerEvent>());
-//     logicUnits_.push_back(lu);
+//     auto sb = std::make_shared<TStateBehavior>(std::forward(args...));
+//     sb->initialize(this, typelist<TEvArgs...>());
+//     sb->declarePostEvent(typelist<TTriggerEvent>());
+//     stateBehaviors_.push_back(sb);
 
-//     return lu;
+//     return sb;
 // }
 //-------------------------------------------------------------------------------------------------------
 
@@ -140,4 +140,4 @@ void ISmaccState::notifyTransition()
 
 } // namespace smacc
 
-#include <smacc/impl/smacc_logic_unit_impl.h>
+#include <smacc/impl/smacc_state_behavior_impl.h>
