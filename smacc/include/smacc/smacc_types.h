@@ -24,6 +24,7 @@ namespace introspection
 {
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
+class StateBehaviorHandler;
 } // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----

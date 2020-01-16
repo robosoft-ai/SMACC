@@ -1,6 +1,8 @@
 
+#pragma once
 #include <memory>
 #include <functional>
+#include <vector>
 #include <smacc/smacc_types.h>
 
 namespace smacc
@@ -51,6 +53,30 @@ struct SmaccTransitionInfo
     TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
+
+struct CallbackFunctor
+{
+    std::function<void(std::shared_ptr<smacc::StateBehavior>)> fn;
+};
+
+class StateBehaviorHandler
+{
+private:
+    std::vector <CallbackFunctor> callbacks_;
+
+public:
+    void configureStateBehavior(std::shared_ptr<smacc::StateBehavior> sb);
+
+    template <typename TEv>
+    void addInputEvent();
+
+    template <typename TEv>
+    void setOutputEvent();
+
+};
+
+//---------------------------------------------
+
 struct SmaccStateBehaviorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
@@ -59,6 +85,7 @@ struct SmaccStateBehaviorInfo
     const std::type_info *stateBehaviorType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
+    std::shared_ptr<StateBehaviorHandler> sbh;
 };
 
 enum class SmaccStateType
@@ -112,5 +139,5 @@ public:
 
     std::string getDemangledFullName() const;
 };
-}
-}
+} // namespace introspection
+} // namespace smacc

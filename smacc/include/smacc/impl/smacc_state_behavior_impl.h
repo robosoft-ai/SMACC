@@ -1,9 +1,11 @@
+#pragma once
 #include <smacc/smacc_state_behavior.h>
+#include <smacc/introspection/introspection.h>
 
 namespace smacc
 {
 template <typename TEv>
-void StateBehavior::declarePostEvent(smacc::introspection::typelist<TEv>)
+void StateBehavior::setOutputEvent()
 {
     this->postEventFn = [this]() {
         ROS_INFO_STREAM("[State Behavior Base] postingfn posting event: " << demangleSymbol<TEv>());
@@ -13,22 +15,9 @@ void StateBehavior::declarePostEvent(smacc::introspection::typelist<TEv>)
 }
 
 template <typename TEv>
-void StateBehavior::declareInputEvent()
+void StateBehavior::addInputEvent()
 {
     this->eventTypes.push_back(&typeid(TEv));
-}
-
-template <typename TEventList>
-void StateBehavior::initialize(ISmaccState *ownerState, TEventList *)
-{
-    this->ownerState = ownerState;
-
-    using boost::mpl::_1;
-    using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
-    AddTEventType<TEventList> op(this);
-    boost::mpl::for_each<wrappedList>(op);
-
-    this->onInitialized();
 }
 
 template <typename T, typename TClass>
@@ -50,5 +39,31 @@ void StateBehavior::createEventCallback(std::function<void(T *)> callback)
         callback(evptr);
     };
 }
+
+namespace introspection
+{
+
+template <typename TEv>
+void StateBehaviorHandler::addInputEvent()
+{
+    CallbackFunctor functor;
+    functor.fn = [](std::shared_ptr<smacc::StateBehavior> sb) {
+        sb->addInputEvent<TEv>();
+    };
+
+    this->callbacks_.push_back(functor);
+}
+
+template <typename TEv>
+void StateBehaviorHandler::setOutputEvent()
+{
+    CallbackFunctor functor;
+    functor.fn = [](std::shared_ptr<smacc::StateBehavior> sb) {
+        sb->setOutputEvent<TEv>();
+    };
+
+    this->callbacks_.push_back(functor);
+}
+} // namespace introspection
 
 } // namespace smacc

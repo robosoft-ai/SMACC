@@ -93,13 +93,23 @@ void ISmaccState::setGlobalSMData(std::string name, T value)
 }
 //-------------------------------------------------------------------------------------------------------
 
+template <typename TStateBehavior, typename... TEvArgs>
+std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
+{
+    auto sb = std::make_shared<TStateBehavior>(args...);
+    //sb->initialize(this, mock);
+    //sb->setOutputEvent(typelist<TTriggerEvent>());
+    stateBehaviors_.push_back(sb);
+    return sb;
+}
+
 template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
 std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
 {
     auto sb = std::make_shared<TStateBehavior>(args...);
     TEventList *mock;
     sb->initialize(this, mock);
-    sb->declarePostEvent(typelist<TTriggerEvent>());
+    sb->template setOutputEvent<TTriggerEvent>();
     stateBehaviors_.push_back(sb);
     return sb;
 }
@@ -115,7 +125,7 @@ TOrthogonal* ISmaccState::getOrthogonal()
 // {
 //     auto sb = std::make_shared<TStateBehavior>(std::forward(args...));
 //     sb->initialize(this, typelist<TEvArgs...>());
-//     sb->declarePostEvent(typelist<TTriggerEvent>());
+//     sb->setOutputEvent(typelist<TTriggerEvent>());
 //     stateBehaviors_.push_back(sb);
 
 //     return sb;

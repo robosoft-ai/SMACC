@@ -32,23 +32,22 @@ public:
 
     virtual void onInitialized();
 
-    template <typename TEventList>
-    struct AddTEventType
-    {
-        StateBehavior *owner_;
-        AddTEventType(StateBehavior *owner) : owner_(owner)
-        {
-        }
+    // template <typename TEventList>
+    // struct AddTEventType
+    // {
+    //     StateBehavior *owner_;
+    //     AddTEventType(StateBehavior *owner) : owner_(owner)
+    //     {
+    //     }
 
-        template <typename T>
-        void operator()(T)
-        {
-            owner_->declareInputEvent<T>();
-        }
-    };
+    //     template <typename T>
+    //     void operator()(T)
+    //     {
+    //         owner_->addInputEvent<T>();
+    //     }
+    // };
 
-    template <typename TEventList>
-    void initialize(ISmaccState *ownerState, TEventList *);
+    
 
     virtual void onEventNotified(const std::type_info *eventType);
 
@@ -66,10 +65,13 @@ public:
     virtual bool triggers() = 0;
 
     template <typename TEv>
-    void declareInputEvent();
+    void addInputEvent();
 
     template <typename TEv>
-    void declarePostEvent(smacc::introspection::typelist<TEv>);
+    void setOutputEvent();
+
+    //TDerived
+    void initialize(ISmaccState *ownerState);
 
 private:
     friend ISmaccStateMachine;

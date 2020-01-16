@@ -36,6 +36,9 @@ public:
   template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
   std::shared_ptr<TStateBehavior> createStateBehavior(TEvArgs... args);
 
+  template <typename TStateBehavior, typename... TEvArgs>
+  std::shared_ptr<TStateBehavior> createStateBehavior(TEvArgs... args);
+
   template <typename EventType>
   void postEvent(const EventType &ev);
 

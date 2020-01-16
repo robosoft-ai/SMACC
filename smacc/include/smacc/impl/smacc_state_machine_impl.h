@@ -262,6 +262,16 @@ struct Bind<3>
         return signal.connect([=](auto a1, auto a2) { return (object->*callback)(a1, a2); });
     }
 };
+
+template <>
+struct Bind<4>
+{
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+    boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+    {
+        return signal.connect([=](auto a1, auto a2, auto a3) { return (object->*callback)(a1, a2, a3); });
+    }
+};
 } // namespace utils
 using namespace smacc::utils;
 
