@@ -55,9 +55,9 @@ public:
         reactions;
 
     // superstate parameters
-    static constexpr float ray_lenght_meters() { return 2; }
+    static constexpr float ray_lenght_meters() { return 3.25; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
-    static constexpr int total_iterations() { return 3; }
+    static constexpr int total_iterations() { return 15; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
     // superstate state variables
