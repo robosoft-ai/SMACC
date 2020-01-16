@@ -9,8 +9,8 @@ waypoints:
         z: 0.0
         w: 1.0
     - position:
-        x: -5.5
-        y: 3.0
+        x: -5.75
+        y: 3.5
         z: 0.0
       orientation:
         x: 0.0
@@ -18,8 +18,8 @@ waypoints:
         z: 0.0
         w: 1.0     
     - position:
-        x: -11.0
-        y: -5.0
+        x: -10.25
+        y: -4.25
         z: 0.0
       orientation:
         x: 0.0
@@ -37,7 +37,7 @@ waypoints:
         w: 1.0
     - position:
         x: -10.0
-        y: 14.5
+        y: 13.5
         z: 0.0
       orientation:
         x: 0.0
