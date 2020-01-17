@@ -32,11 +32,11 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    static void onDefinition()
    {
-      static_configure<OrObstaclePerception, CbLidarSensor>();
-      static_configure<OrStringPublisher, CbStringPublisher>("Hello World!");
-      static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
-      static_configure<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-      static_configure<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
+      configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+      configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
+      configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
+      configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
+      configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
       static_createStateBehavior<SbAllEventsGo,
                              EvAllGo<SbAllEventsGo, SBehav1>,

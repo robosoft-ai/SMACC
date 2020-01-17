@@ -14,7 +14,7 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbNavigateForward>();
+    configure_orthogonal<OrNavigation, CbNavigateForward>();
   }
 
   void onInitialize()

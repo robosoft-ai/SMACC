@@ -12,8 +12,8 @@ struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
 
   static void onDefinition()
   {
-    static_configure<OrLED, CbLEDOn>();
-    static_configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    configure_orthogonal<OrLED, CbLEDOn>();
+    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
   }
 
   void onInitialize()

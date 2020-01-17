@@ -16,9 +16,9 @@ struct StRotateDegrees4 : smacc::SmaccState<StRotateDegrees4, MsDanceBotRunMode>
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbRotate>(/*30*/ -180);
-    static_configure<OrLED, CbLEDOff>();
-    static_configure<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbRotate>(/*30*/ -180);
+    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()

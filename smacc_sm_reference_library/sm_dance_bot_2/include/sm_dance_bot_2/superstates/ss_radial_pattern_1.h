@@ -45,7 +45,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<OrObstaclePerception, CbLidarSensor>();
+        //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
     void onInitialize()

@@ -16,10 +16,10 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
 
     static void onDefinition()
     {
-        static_configure<OrTimer, CbTimer>();   
-        static_configure<OrSubscriber, CbWatchdogSubscriberBehavior>();
-        static_configure<OrUpdatablePublisher, CbDefaultPublishLoop>();
-        static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
+        configure_orthogonal<OrTimer, CbTimer>();   
+        configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+        configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+        configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
     void onInitialize()

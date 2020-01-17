@@ -49,7 +49,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<OrObstaclePerception, CbLidarSensor>();
+        //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
     static constexpr float pitch1_lenght_meters() { return 0.6; }

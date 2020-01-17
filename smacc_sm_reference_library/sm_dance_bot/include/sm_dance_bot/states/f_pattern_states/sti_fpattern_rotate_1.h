@@ -19,8 +19,8 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
     else
       angle = -90;
 
-     TSti::template static_configure<OrNavigation, CbRotate>(angle);
-     TSti::template static_configure<OrLED, CbLEDOff>();
+     TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
+     TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void onInitialize()

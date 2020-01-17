@@ -40,8 +40,8 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   static void onDefinition()
   {
-    static_configure<OrLED, CbLEDOn>();
-    static_configure<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrLED, CbLEDOn>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()

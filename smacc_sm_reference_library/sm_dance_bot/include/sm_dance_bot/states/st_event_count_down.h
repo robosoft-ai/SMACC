@@ -14,10 +14,10 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
     static void onDefinition()
     {
-        //   static_configure<OrObstaclePerception, CbLidarSensor>();
-        //   static_configure<OrStringPublisher, CbStringPublisher>("Hello World!");
-        //   static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
-        //   static_configure<OrService3, CbService3>(Service3Command::SERVICE3_ON);
+        //   configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+        //   configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
+        //   configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
+        //   configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
 
         static_createStateBehavior<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);
 
