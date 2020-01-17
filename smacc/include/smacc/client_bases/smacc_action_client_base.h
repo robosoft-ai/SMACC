@@ -143,13 +143,13 @@ public:
     template <typename T>
     boost::signals2::connection onRejected(void (T::*callback)(ResultConstPtr &), T *object)
     {
-        return stateMachine_->createSignalConnection(onRejected, callback, object);
+        return stateMachine_->createSignalConnection(onRejected_, callback, object);
     }
 
     template <typename T>
     boost::signals2::connection onRejected(std::function<void(ResultConstPtr &)> callback)
     {
-        return stateMachine_->createSignalConnection(onRejected, callback);
+        return stateMachine_->createSignalConnection(onRejected_, callback);
     }
 
     virtual void cancelGoal() override
