@@ -61,7 +61,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
 
         const std::type_info *statetid = state->tid_;
 
-        std::map<const std::type_info *, std::vector<smacc::StateBehaviorInfoEntry *>> smaccBehaviorInfoMappingByOrthogonalType;
+        std::map<const std::type_info *, std::vector<smacc::ClientBehaviorInfoEntry *>> smaccBehaviorInfoMappingByOrthogonalType;
 
         ss << " Orthogonals:" << std::endl;
         if (SmaccStateInfo::staticBehaviorInfo.count(statetid) > 0)
@@ -70,7 +70,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             {
                 if (smaccBehaviorInfoMappingByOrthogonalType.count(bhinfo.orthogonalType) == 0)
                 {
-                    smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType] = std::vector<smacc::StateBehaviorInfoEntry *>();
+                    smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType] = std::vector<smacc::ClientBehaviorInfoEntry *>();
                 }
 
                 smaccBehaviorInfoMappingByOrthogonalType[bhinfo.orthogonalType].push_back(&bhinfo);
@@ -129,16 +129,16 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             {
                 smacc_msgs::SmaccStateBehavior stateBehaviorMsg;
                 stateBehaviorMsg.index = k++;
-                stateBehaviorMsg.type_name = demangleSymbol(sbinfo.stateBehaviorType->name());
+                stateBehaviorMsg.type_name = demangleSymbol(sbinfo->stateBehaviorType->name());
 
                 ss << " - state behavior: " << stateBehaviorMsg.type_name << std::endl;
-                if (sbinfo.objectTagType != nullptr)
+                if (sbinfo->objectTagType != nullptr)
                 {
-                    stateBehaviorMsg.object_tag = sbinfo.objectTagType->getFullName();
+                    stateBehaviorMsg.object_tag = sbinfo->objectTagType->getFullName();
                     ss << "        - object tag: " << stateBehaviorMsg.object_tag << std::endl;
                 }
 
-                for (auto &tev : sbinfo.sourceEventTypes)
+                for (auto &tev : sbinfo->sourceEventTypes)
                 {
                     // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
                     auto eventTypeName = tev->getEventTypeName();

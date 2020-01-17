@@ -13,13 +13,15 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
 
   static void onDefinition()
   {
+    double offset = 7; // for a better behaving
     float angle = 0;
     if (SS::direction() == TDirection::LEFT)
-      angle = -90;
+      angle = -90 - offset;
     else
-      angle = 90;
+      angle = 90 + offset;
 
-    TSti::template static_configure<OrNavigation, CbRotate>(angle);
+    //TSti::template static_configure<OrNavigation, CbRotate>(angle);
+    TSti::template static_configure<OrNavigation, CbAbsoluteRotate>(0 + offset); // absolute horizontal
     TSti::template static_configure<OrLED, CbLEDOff>();
   }
 

@@ -3,8 +3,8 @@
 #include <smacc/smacc_orthogonal.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
-#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include   <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 
 namespace sm_dance_bot
 {
@@ -21,14 +21,17 @@ public:
         movebaseClient->initialize();
 
         // create planner switcher
-        movebaseClient->createComponent<PlannerSwitcher>(node_namespace);    
+        movebaseClient->createComponent<PlannerSwitcher>(node_namespace);
 
         // create odom tracker
-        movebaseClient->createComponent<OdomTracker>("/");       
+        movebaseClient->createComponent<OdomTracker>("/");
 
         // create waypoints navigator component
         auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
         loadWaypointsFromYaml(waypointsNavigator);
+
+        // change this to skip some points of the yaml file, default = 0
+        waypointsNavigator->currentWaypoint_ = 3;
     }
 
     void loadWaypointsFromYaml(WaypointNavigator *waypointsNavigator)

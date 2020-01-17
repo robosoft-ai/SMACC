@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <smacc/smacc_state_behavior.h>
 #include <smacc/introspection/introspection.h>
@@ -47,18 +53,26 @@ template <typename TEv>
 void StateBehaviorHandler::addInputEvent()
 {
     CallbackFunctor functor;
-    functor.fn = [](std::shared_ptr<smacc::StateBehavior> sb) {
+    functor.fn = [=](std::shared_ptr<smacc::StateBehavior> sb) {
+        ROS_INFO("[%s] State Behavior adding input event: %s", demangleType(sbInfo_->stateBehaviorType).c_str(), demangledTypeName<TEv>().c_str());
         sb->addInputEvent<TEv>();
     };
 
     this->callbacks_.push_back(functor);
+
+    auto evtype = TypeInfo::getFromStdTypeInfo(typeid(TEv));
+    auto evinfo = std::make_shared<SmaccEventInfo>(evtype);
+    EventLabel<TEv>(evinfo->label);
+
+    sbInfo_->sourceEventTypes.push_back(evinfo);
 }
 
 template <typename TEv>
 void StateBehaviorHandler::setOutputEvent()
 {
     CallbackFunctor functor;
-    functor.fn = [](std::shared_ptr<smacc::StateBehavior> sb) {
+    functor.fn = [=](std::shared_ptr<smacc::StateBehavior> sb) {
+        ROS_INFO("[%s] State Behavior setting output event: %s", demangleType(sbInfo_->stateBehaviorType).c_str(), demangledTypeName<TEv>().c_str());
         sb->setOutputEvent<TEv>();
     };
 

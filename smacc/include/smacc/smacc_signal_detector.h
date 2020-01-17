@@ -40,12 +40,11 @@ public:
     }
 
 private:
-
     ISmaccStateMachine *smaccStateMachine_;
 
-    std::vector<ISmaccUpdatable*> updatableClients_;
+    std::vector<ISmaccUpdatable *> updatableClients_;
 
-    std::vector<ISmaccUpdatable*> updatableClientBehaviors_;
+    std::vector<ISmaccUpdatable *> updatableClientBehaviors_;
 
     std::atomic<unsigned long> lastState_;
 

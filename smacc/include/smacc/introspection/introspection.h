@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 
 #pragma once
 
@@ -76,6 +81,11 @@ template <class T>
 inline std::string demangledTypeName()
 {
     return demangleSymbol(typeid(T).name());
+}
+
+inline std::string demangleType(const std::type_info* tinfo)
+{
+    return demangleSymbol(tinfo->name());
 }
 
 inline std::string demangleType(const std::type_info &tinfo)

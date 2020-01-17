@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <boost/statechart/transition.hpp>
@@ -25,6 +31,7 @@ namespace introspection
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
 class StateBehaviorHandler;
+class SmaccStateBehaviorInfo;
 } // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----

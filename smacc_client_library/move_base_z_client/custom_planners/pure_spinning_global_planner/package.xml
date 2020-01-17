@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<package format="2">
+  <name>pure_spinning_global_planner</name>
+  <version>0.0.1</version>
+  <description>The pure_spinning_global_planner package</description>
+
+  <!-- One maintainer tag required, multiple allowed, one person per tag -->
+  <!-- Example:  -->
+  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
+  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
+
+
+  <!-- One license tag required, multiple allowed, one license per tag -->
+  <!-- Commonly used license strings: -->
+  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
+  <license>TODO</license>
+
+
+  <depend>roscpp</depend>
+  <depend>nav_core</depend>
+  <depend>costmap_2d</depend>
+  <depend>tf</depend>
+  <depend>nav_msgs</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>geometry_msgs</depend>
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- <nav_core plugin="${prefix}/psgp_plugin.xml" /> -->
+    <rosdoc config="rosdoc.yaml" />
+  </export>
+</package>

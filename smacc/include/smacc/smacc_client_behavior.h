@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <smacc/common.h>
 
@@ -8,9 +14,6 @@ class ISmaccState;
 class SmaccClientBehavior
 {
 public:
-    // hapens when
-    // return true to destroy the object and false to keep it alive
-
     // a reference to the owner state machine
     ISmaccStateMachine *stateMachine_;
 

@@ -28,7 +28,7 @@ struct StiSPatternRotate1 : smacc::SmaccState<StiSPatternRotate1, SS>
             else
                 angle = -90;
 
-            this->configure<OrNavigation, CbRotate>(angle);
+            this->configure<OrNavigation, CbAbsoluteRotate>(angle);
             this->configure<OrLED, CbLEDOff>();
         }
     }

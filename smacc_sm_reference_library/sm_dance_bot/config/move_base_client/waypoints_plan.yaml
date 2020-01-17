@@ -28,7 +28,8 @@ waypoints:
         w: 1.0
     - position:
         x: 2.0
-        y: -8.58
+        y: -8.58   # north west corner of the room
+        #y: -12.35 # south west corner of the room
         z: 0.0
       orientation:
         x: 0.0
@@ -37,7 +38,7 @@ waypoints:
         w: 1.0
     - position:
         x: -10.0
-        y: 13.5
+        y: 12.5
         z: 0.0
       orientation:
         x: 0.0

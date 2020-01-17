@@ -1,3 +1,8 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 
 #pragma once
 #include <memory>
@@ -10,7 +15,7 @@ namespace smacc
 namespace introspection
 {
 
-struct StateBehaviorInfoEntry
+struct ClientBehaviorInfoEntry
 {
     std::function<void(smacc::ISmaccState *)> factoryFunction;
     const std::type_info *behaviorType;
@@ -73,6 +78,8 @@ public:
     template <typename TEv>
     void setOutputEvent();
 
+    std::shared_ptr<smacc::introspection::SmaccStateBehaviorInfo> sbInfo_;
+
 };
 
 //---------------------------------------------
@@ -101,8 +108,8 @@ class SmaccStateInfo : public std::enable_shared_from_this<SmaccStateInfo>
 public:
     typedef std::shared_ptr<SmaccStateInfo> Ptr;
 
-    static std::map<const std::type_info *, std::vector<StateBehaviorInfoEntry>> staticBehaviorInfo;
-    static std::map<const std::type_info *, std::vector<SmaccStateBehaviorInfo>> stateBehaviorsInfo;
+    static std::map<const std::type_info *, std::vector<ClientBehaviorInfoEntry>> staticBehaviorInfo;
+    static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccStateBehaviorInfo>>> stateBehaviorsInfo;
 
     int stateIndex_;
     std::string fullStateName;

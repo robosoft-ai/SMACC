@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <boost/signals2/signal.hpp>
@@ -18,6 +24,5 @@ template <typename Signature,
           typename Mutex = boost::signals2::mutex>
 class SmaccSignal : public boost::signals2::signal<Signature, Combiner, Group, GroupCompare, SlotFunction, ExtendedSlotFunction, Mutex>
 {
-   
 };
 } // namespace smacc

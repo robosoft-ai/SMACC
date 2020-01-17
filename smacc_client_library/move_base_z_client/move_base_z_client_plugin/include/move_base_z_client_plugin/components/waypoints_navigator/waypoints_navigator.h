@@ -1,4 +1,9 @@
 
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
 #pragma once
 
 #include <smacc/smacc.h>
@@ -35,7 +40,7 @@ public:
 
   virtual void initialize(smacc::ISmaccClient *owner) override
   {
-    client_ = dynamic_cast<ClMoveBaseZ*>(owner);
+    client_ = dynamic_cast<ClMoveBaseZ *>(owner);
   }
 
   void insertWaypoint(int index, geometry_msgs::Pose &newpose);
@@ -60,13 +65,13 @@ public:
     waypointsEventDispatcher.initialize<TDerived, TObjectTag>(client_);
   }
 
+  int currentWaypoint_;
+
 private:
   void onGoalReached(ClMoveBaseZ::ResultConstPtr &res);
 
   std::vector<geometry_msgs::Pose> waypoints_;
 
   boost::signals2::connection succeddedConnection_;
-
-  int currentWaypoint_;
 };
-} // namespace smacc
+} // namespace move_base_z_client

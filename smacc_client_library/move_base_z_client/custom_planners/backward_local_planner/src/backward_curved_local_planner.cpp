@@ -60,6 +60,7 @@ void BackwardLocalPlanner::initialize()
     nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
 
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);
+    waitingTimeout_ = ros::Duration(10);
 }
 
 /**
@@ -404,6 +405,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     }
     else
     {
+        ROS_WARN("[Abort local]Backwards global plan size: %ld", backwardsPlanPath_.size());
         return false;
     }
 
@@ -422,6 +424,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
         {
             waiting_ = true;
             waitingStamp_ = ros::Time::now();
+            ROS_WARN("[Not accepted local plan] starting countdown");
         }
         else
         {
@@ -429,6 +432,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
 
             if (waitingduration > this->waitingTimeout_)
             {
+                ROS_WARN("[Abort local] timeout! duration %lf/%f", waitingduration.toSec(), waitingTimeout_.toSec());
                 return false;
             }
         }
@@ -454,6 +458,8 @@ void BackwardLocalPlanner::reconfigCB(::backward_local_planner::BackwardLocalPla
 
     carrot_distance_ = config.carrot_distance;
     carrot_angular_distance_ = config.carrot_angular_distance;
+    xy_goal_tolerance_ = config.xy_goal_tolerance;
+    
 }
 
 /**
@@ -476,6 +482,7 @@ bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>
     initialPureSpinningStage_ = true;
     goalReached_ = false;
     backwardsPlanPath_ = plan;
+
     /*
     std::stringstream ss;
 

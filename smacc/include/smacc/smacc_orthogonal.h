@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <smacc/common.h>
 #include <utility>
@@ -46,6 +52,5 @@ protected:
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 };
-
 
 } // namespace smacc

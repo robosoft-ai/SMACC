@@ -9,7 +9,6 @@
 #include <smacc/smacc_state_base.h>
 #include <smacc/smacc_state_machine.h>
 
-
 namespace smacc
 {
 
@@ -47,7 +46,7 @@ public:
         ISmaccStateMachine::EStop();
         this->terminate();
     }
-    
+
     virtual void initiate_impl() override
     {
         ROS_INFO("initiate_impl");

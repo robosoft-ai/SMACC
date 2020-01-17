@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_behavior.h>
@@ -66,6 +72,7 @@ public:
 
     std::string classname = smacc::utils::cleanShortTypeName(typeid(MostDerived));
 
+    // TODO: make this static to build the parameter tree at startup
     this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
 
     ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
@@ -74,7 +81,7 @@ public:
 
     // before dynamic onInitialize, we execute the onDefinition behavior configurations
     {
-      ROS_DEBUG("-- STATIC STATE DESCRIPTION --");
+      ROS_INFO("-- STATIC STATE DESCRIPTION --");
 
       for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
       {
@@ -97,8 +104,8 @@ public:
 
       for (auto &sb : staticDefinedStateBehaviors)
       {
-        ROS_INFO_STREAM("- Creating static state behavior: " << demangleSymbol(sb.stateBehaviorType->name()));
-        sb.factoryFunction(this);
+        ROS_INFO_STREAM("- Creating static state behavior: " << demangleSymbol(sb->stateBehaviorType->name()));
+        sb->factoryFunction(this);
       }
 
       ROS_INFO("---- END STATIC DESCRIPTION");
@@ -223,7 +230,7 @@ public:
 
     ROS_INFO_STREAM("Orthogonal " << strorthogonal << " -> " << strbehavior);
 
-    StateBehaviorInfoEntry bhinfo;
+    ClientBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = [=](ISmaccState *state) {
       //auto bh = std::make_shared<TBehavior>(args...);
       state->configure<TOrthogonal, TBehavior>(args...);
@@ -234,7 +241,7 @@ public:
 
     const std::type_info *tindex = &(typeid(MostDerived));
     if (!SmaccStateInfo::staticBehaviorInfo.count(tindex))
-      SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<StateBehaviorInfoEntry>();
+      SmaccStateInfo::staticBehaviorInfo[tindex] = std::vector<ClientBehaviorInfoEntry>();
 
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
   }
@@ -244,15 +251,17 @@ public:
   {
     auto sbh = std::make_shared<smacc::introspection::StateBehaviorHandler>();
 
-    SmaccStateBehaviorInfo sbinfo;
-    sbinfo.stateBehaviorType = &typeid(TStateBehavior);
-    sbinfo.sbh = sbh;
+    auto sbinfo = std::make_shared<SmaccStateBehaviorInfo>();
+    sbinfo->stateBehaviorType = &typeid(TStateBehavior);
+    sbinfo->sbh = sbh;
+    sbh->sbInfo_ = sbinfo;
 
-    const std::type_info *tindex = &(typeid(MostDerived));
+    const std::type_info *tindex = &(typeid(MostDerived)); // get identifier of the current state
+
     if (!SmaccStateInfo::stateBehaviorsInfo.count(tindex))
-      SmaccStateInfo::stateBehaviorsInfo[tindex] = std::vector<SmaccStateBehaviorInfo>();
+      SmaccStateInfo::stateBehaviorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateBehaviorInfo>>();
 
-    sbinfo.factoryFunction = [&, sbh, args...](ISmaccState *state) {
+    sbinfo->factoryFunction = [&, sbh, args...](ISmaccState *state) {
       auto sb = state->createStateBehavior<TStateBehavior>(args...);
       sbh->configureStateBehavior(sb);
       sb->initialize(state);

@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <functional>
@@ -48,7 +54,6 @@ public:
     // };
 
     
-
     virtual void onEventNotified(const std::type_info *eventType);
 
     // type based event callback
