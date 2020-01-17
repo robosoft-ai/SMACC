@@ -7,10 +7,10 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      //smacc::Transition<EvTopicMessage<CbBehavior1b>, StiState1>,
+      //Transition<EvTopicMessage<CbBehavior1b>, StiState1>,
 
-      smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2>,
-      smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
       reactions;
 
   //-------------------------------------------------------------------------------

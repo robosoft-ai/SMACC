@@ -37,11 +37,11 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
+        Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
 
         // Error events
-        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
 
         // Internal events
         >

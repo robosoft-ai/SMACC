@@ -11,6 +11,7 @@
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 using namespace boost;
+using namespace smacc;
 
 namespace sm_atomic
 {

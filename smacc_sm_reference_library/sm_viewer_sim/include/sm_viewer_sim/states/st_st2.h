@@ -5,8 +5,9 @@ namespace sm_viewer_sim
 struct St2 : smacc::SmaccState<St2, MsRunMode>
 {
     static int counter;
-    typedef mpl::list<smacc::Transition<Ev2, St3, smacc::SUCCESS>,
-                      smacc::Transition<EvFail, MsRecoveryMode, smacc::ABORT>>
+    typedef mpl::list<
+        Transition<Ev2, St3, smacc::SUCCESS>,
+        Transition<EvFail, MsRecoveryMode, smacc::ABORT>>
         reactions;
 
     using SmaccState::SmaccState;

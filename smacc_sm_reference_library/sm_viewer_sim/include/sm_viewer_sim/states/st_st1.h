@@ -5,9 +5,11 @@ namespace sm_viewer_sim
 using namespace smacc::default_transition_tags;
 struct St1 : SmaccState<St1, MsRunMode>
 {
-    typedef mpl::list<smacc::Transition<Ev1, St2, SUCCESS>,
-                      smacc::Transition<EvFail, MsRecoveryMode, ABORT>>
+    typedef mpl::list<
+        Transition<Ev1, St2, SUCCESS>,
+        Transition<EvFail, MsRecoveryMode, ABORT>>
         reactions;
+    
     using SmaccState::SmaccState;
     void onEntry()
     {

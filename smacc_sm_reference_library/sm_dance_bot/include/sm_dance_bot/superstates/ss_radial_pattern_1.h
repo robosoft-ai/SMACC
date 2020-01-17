@@ -26,14 +26,14 @@ public:
     typedef mpl::list<
 
         // Expected event
-        smacc::Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
+        Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
         // Keyboard event
-        //smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior>, StRotateDegrees1>,
-        //smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior>, StNavigateToWaypointsX>,
+        //Transition<EvKeyPressN<CbDefaultKeyboardBehavior>, StRotateDegrees1>,
+        //Transition<EvKeyPressP<CbDefaultKeyboardBehavior>, StNavigateToWaypointsX>,
 
         // Error events
-        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
         >
 
         reactions;

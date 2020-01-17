@@ -26,8 +26,8 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
        //Transition<EvAllGo<SbAllEventsGo, SBehav1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
        Transition<EvAllGo<SbAllEventsGo, SBehav1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
 
-       //smacc::Transition<EvAllGo2<LuAl2>, StateDestiny2>,
-       smacc::Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
+       //Transition<EvAllGo2<LuAl2>, StateDestiny2>,
+       Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
        reactions;
 
    static void onDefinition()

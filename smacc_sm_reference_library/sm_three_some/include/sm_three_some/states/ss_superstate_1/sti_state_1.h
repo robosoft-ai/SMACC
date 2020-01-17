@@ -7,7 +7,7 @@ struct StiState1 : smacc::SmaccState<StiState1, SS>
 public:
   using SmaccState::SmaccState;
 
-  typedef smacc::Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> reactions;
+  typedef Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()

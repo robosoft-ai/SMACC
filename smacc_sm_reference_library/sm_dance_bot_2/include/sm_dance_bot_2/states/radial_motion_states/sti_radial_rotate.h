@@ -9,10 +9,8 @@ struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,
-                        StiRadialEndPoint, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,
-                        StiRadialLoopStart, ABORT>>
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>,StiRadialEndPoint, SUCCESS>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>,StiRadialLoopStart, ABORT>>
       reactions;
 
   static void onDefinition()

@@ -26,8 +26,7 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
-
+        Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
         reactions;
 
     int total_iterations()

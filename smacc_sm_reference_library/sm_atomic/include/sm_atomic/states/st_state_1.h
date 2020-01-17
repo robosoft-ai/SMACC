@@ -3,11 +3,14 @@
 namespace sm_atomic
 {
 using namespace ros_timer_client;
-
-struct State1
-    : smacc::SmaccState<State1, SmAtomic>
-{
-    typedef mpl::list<smacc::Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>> reactions;
+using namespace smacc::default_transition_tags;
+struct State1 : smacc::SmaccState<State1, SmAtomic>
+    {
+    
+    
+    typedef mpl::list<
+        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>> 
+        reactions;
 
     using SmaccState::SmaccState;
 
