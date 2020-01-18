@@ -37,11 +37,11 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
+        Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
 
         // Error events
-        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
 
         // Internal events
         >
@@ -49,7 +49,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<OrObstaclePerception, CbLidarSensor>();
+        //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
     static constexpr float pitch1_lenght_meters() { return 0.6; }

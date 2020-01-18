@@ -5,19 +5,19 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        smacc::Transition<EvAllGo<SbAllEventsGo>, StState3>,
+        Transition<EvAllGo<SbAllEventsGo>, StState3>,
 
         // Keyboard events
-        smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
-        smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>>
+        Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
+        Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>>
         reactions;
 
     static void onDefinition()
     {
-        static_configure<OrTimer, CbTimer>();
-        static_configure<OrSubscriber, CbWatchdogSubscriberBehavior>();
-        static_configure<OrUpdatablePublisher, CbDefaultPublishLoop>();
-        static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
+        configure_orthogonal<OrTimer, CbTimer>();
+        configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+        configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+        configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
         // static_createStateBehavior<SbAllEventsGo,
         //                        EvAllGo<SbAllEventsGo>,

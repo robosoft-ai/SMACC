@@ -7,19 +7,19 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
 
   typedef mpl::list<
       // Expected event
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>,
 
       // Error events
       //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
-    static_configure<OrLED, CbLEDOn>();
-    static_configure<OrStringPublisher, CbStringPublisher>("All Done!");
-    static_configure<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
+    configure_orthogonal<OrLED, CbLEDOn>();
+    configure_orthogonal<OrStringPublisher, CbStringPublisher>("All Done!");
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()

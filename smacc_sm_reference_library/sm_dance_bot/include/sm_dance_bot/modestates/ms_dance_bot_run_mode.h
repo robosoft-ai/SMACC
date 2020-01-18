@@ -6,6 +6,6 @@ class MsDanceBotRunMode : public smacc::SmaccState<MsDanceBotRunMode, SmDanceBot
 public:
    using SmaccState::SmaccState;
 
-   typedef smacc::Transition<EvGlobalError, MsDanceBotRecoveryMode> reactions;
+   typedef Transition<EvGlobalError, MsDanceBotRecoveryMode> reactions;
 };
 }

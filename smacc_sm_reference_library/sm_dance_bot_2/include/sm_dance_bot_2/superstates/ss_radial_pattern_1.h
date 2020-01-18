@@ -26,8 +26,7 @@ public:
 
     typedef mpl::list<
         // Expected event
-        smacc::Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
-
+        Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
         reactions;
 
     int total_iterations()
@@ -46,7 +45,7 @@ public:
 
     static void onDefinition()
     {
-        //static_configure<OrObstaclePerception, CbLidarSensor>();
+        //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
     void onInitialize()

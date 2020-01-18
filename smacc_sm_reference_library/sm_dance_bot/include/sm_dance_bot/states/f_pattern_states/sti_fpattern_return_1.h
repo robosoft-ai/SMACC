@@ -13,8 +13,8 @@ struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
 
   static void onDefinition()
   {
-    TSti::template static_configure<OrNavigation, CbUndoPathBackwards>();
-    TSti::template static_configure<OrLED, CbLEDOn>();
+    TSti::template configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void onInitialize()

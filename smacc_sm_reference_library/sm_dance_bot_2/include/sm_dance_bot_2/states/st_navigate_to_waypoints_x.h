@@ -27,20 +27,20 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
   };
 
   typedef mpl::list<
-      smacc::Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
-      smacc::Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_2>,
-      smacc::Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
+      Transition<EvWaypoint0<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_1>,
+      Transition<EvWaypoint1<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_2>,
+      Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS1::SsRadialPattern1, TRANSITION_3>,
 
       // Error events
-      //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+      //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   //int currentIteration;
 
   static void onDefinition()
   {
-    //static_configure<OrObstaclePerception, CbLidarSensor>();
+    //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()

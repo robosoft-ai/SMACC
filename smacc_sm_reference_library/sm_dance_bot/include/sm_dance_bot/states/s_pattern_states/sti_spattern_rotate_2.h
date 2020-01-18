@@ -18,8 +18,8 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
         else
             angle = 90;
 
-        static_configure<OrNavigation, CbRotate>(angle);
-        static_configure<OrLED, CbLEDOff>();
+        configure_orthogonal<OrNavigation, CbRotate>(angle);
+        configure_orthogonal<OrLED, CbLEDOff>();
     }
 
     void onInitialize()

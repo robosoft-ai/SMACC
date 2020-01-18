@@ -26,17 +26,17 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
        //Transition<EvAllGo<SbAllEventsGo, SBehav1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
        Transition<EvAllGo<SbAllEventsGo, SBehav1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
 
-       //smacc::Transition<EvAllGo2<LuAl2>, StateDestiny2>,
-       smacc::Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
+       //Transition<EvAllGo2<LuAl2>, StateDestiny2>,
+       Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
        reactions;
 
    static void onDefinition()
    {
-      static_configure<OrObstaclePerception, CbLidarSensor>();
-      static_configure<OrStringPublisher, CbStringPublisher>("Hello World!");
-      static_configure<OrTemperatureSensor, CbConditionTemperatureSensor>();
-      static_configure<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-      static_configure<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
+      configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+      configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
+      configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
+      configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
+      configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
       // static_createStateBehavior<SbAllEventsGo,
       //                            EvAllGo<SbAllEventsGo, SBehav1>,

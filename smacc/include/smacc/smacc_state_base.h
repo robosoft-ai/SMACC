@@ -223,7 +223,7 @@ public:
   }
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>
-  static void static_configure(Args &&... args)
+  static void configure_orthogonal(Args &&... args)
   {
     auto strorthogonal = demangleSymbol(typeid(TOrthogonal).name());
     auto strbehavior = demangleSymbol(typeid(TBehavior).name());

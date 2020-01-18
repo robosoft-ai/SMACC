@@ -6,20 +6,20 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
 
     typedef mpl::list<
         // Expected transition
-        smacc::Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StState2>,
+        Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StState2>,
 
         // Keyboard events
-        smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-        smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
-        smacc::Transition<EvFail, MsRecover, smacc::ABORT>>
+        Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+        Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
+        Transition<EvFail, MsRecover, smacc::ABORT>>
         reactions;
 
     static void onDefinition()
     {
-        static_configure<OrTimer, CbTimer>();   
-        static_configure<OrSubscriber, CbWatchdogSubscriberBehavior>();
-        static_configure<OrUpdatablePublisher, CbDefaultPublishLoop>();
-        static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
+        configure_orthogonal<OrTimer, CbTimer>();   
+        configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+        configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+        configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
     void onInitialize()

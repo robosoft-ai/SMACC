@@ -14,8 +14,8 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
 
   static void onDefinition()
   {
-     TSti::template static_configure<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
-     TSti::template static_configure<OrLED, CbLEDOn>();
+     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
+     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void onInitialize()

@@ -8,18 +8,18 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
       Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees2>,
 
       // Error events
-      //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
-      smacc::Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>>
+      //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
+      Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>>
       reactions;
 
   using SmaccState::SmaccState;
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbNavigateForward>(1);
-    static_configure<OrLED, CbLEDOff>();
-    static_configure<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbNavigateForward>(1);
+    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   void onInitialize()
@@ -28,10 +28,10 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
     this->requiresClient(move_base_action_client);
 
     // we careful with the lifetime of the callbac, us a scoped connection if is not forever
-    move_base_action_client->onSucceeded(&StNavigateForward1::onActionClientSucceded, this);
+    move_base_action_client->onSucceeded(&StNavigateForward1::onActionClientSucceeded, this);
   }
 
-  void onActionClientSucceded(ClMoveBaseZ::ResultConstPtr &msg)
+  void onActionClientSucceeded(ClMoveBaseZ::ResultConstPtr &msg)
   {
     ROS_INFO_STREAM(" [Callback SmaccSignal] Success Detected from StAquireSensors (connected to client signal), result data: " << *msg);
   }

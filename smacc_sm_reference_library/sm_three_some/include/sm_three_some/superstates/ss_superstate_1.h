@@ -22,10 +22,10 @@ public:
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        // smacc::Transition<EvSuperstateFinish<StiState3>, StState1>
+        // Transition<EvSuperstateFinish<StiState3>, StState1>
 
         // Keyboard events
-        smacc::Transition<EvLoopEnd<StiState1>, StState1>>
+        Transition<EvLoopEnd<StiState1>, StState1>>
         reactions;
 
     static constexpr int total_iterations() { return 3; }

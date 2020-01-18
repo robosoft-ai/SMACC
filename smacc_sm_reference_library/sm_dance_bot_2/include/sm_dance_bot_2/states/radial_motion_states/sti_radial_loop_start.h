@@ -3,8 +3,7 @@ namespace radial_motion_states {
 
 struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
   using SmaccState::SmaccState;
-  typedef smacc::Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,
-                            CONTINUELOOP>
+  typedef Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,CONTINUELOOP>
       reactions;
 
   static void onDefinition() {}

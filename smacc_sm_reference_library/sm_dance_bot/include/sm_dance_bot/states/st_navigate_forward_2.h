@@ -5,20 +5,20 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 {
   typedef mpl::list<
       // Expected event
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees5>,
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees5>,
 
       // Error events
-      //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
+      //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
   using SmaccState::SmaccState;
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbNavigateForward>(1);
-    static_configure<OrLED, CbLEDOff>();
-    static_configure<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbNavigateForward>(1);
+    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
   // Key N -> next state

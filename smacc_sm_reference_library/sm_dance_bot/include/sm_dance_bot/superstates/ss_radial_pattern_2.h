@@ -29,17 +29,17 @@ public:
     typedef mpl::list<
 
         // Expected event
-        smacc::Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP> //,
+        Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP> //,
 
         // Error events
-        //smacc::Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
+        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
         >
         reactions;
 
     static void onDefinition()
     {
-        //static_configure<OrObstaclePerception, CbLidarSensor>();
+        //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
     void onInitialize()

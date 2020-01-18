@@ -13,8 +13,8 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbUndoPathBackwards>();
-    static_configure<OrLED, CbLEDOff>();
+    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+    configure_orthogonal<OrLED, CbLEDOff>();
   }
 
   void onInitialize()

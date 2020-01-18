@@ -8,13 +8,13 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialReturn, ABORT>>
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialReturn, ABORT>>
       reactions;
 
   static void onDefinition()
   {
-    static_configure<OrNavigation, CbNavigateForward>();
+    configure_orthogonal<OrNavigation, CbNavigateForward>();
   }
 
   void onInitialize()

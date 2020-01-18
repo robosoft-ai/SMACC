@@ -7,19 +7,19 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
   using SmaccState::SmaccState;
 
   typedef mpl::list<
-      smacc::Transition<EvTimer<CbTimer, OrTimer>, StiState3>,
+      Transition<EvTimer<CbTimer, OrTimer>, StiState3>,
 
-      smacc::Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3>,
-      smacc::Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
       reactions;
 
   //-------------------------------------------------------------------------------
   static void onDefinition()
   {
-    static_configure<OrTimer, CbTimer>();
-    static_configure<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    static_configure<OrUpdatablePublisher, CbDefaultPublishLoop>();
-    static_configure<OrKeyboard, CbDefaultKeyboardBehavior>();
+    configure_orthogonal<OrTimer, CbTimer>();
+    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   //-------------------------------------------------------------------------------
