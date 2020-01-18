@@ -31,8 +31,9 @@ public:
 
     int total_iterations()
     {
-        int rays;
-        this->param("rays_count", rays, 5);
+        int rays = 5; // default value
+        this->getParam("rays_count", rays);
+        
         return rays;
     }
     

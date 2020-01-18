@@ -195,6 +195,8 @@ install(FILES
     config/move_base_client/waypoints_plan.yaml
     config/move_base_client/costmap_common_params.yaml
     config/move_base_client/base_local_planner_params.yaml
+    config/move_base_client/global_costmap_params.yaml
+    config/move_base_client/local_costmap_params.yaml
 
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/move_base_client
 )

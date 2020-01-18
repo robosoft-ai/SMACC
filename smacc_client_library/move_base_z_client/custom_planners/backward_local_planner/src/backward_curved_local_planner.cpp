@@ -333,17 +333,17 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
 
     publishGoalMarker(goalposition.x, goalposition.y, betta);
 
-    ROS_INFO_STREAM("local planner," << std::endl
-                                     << " pureSpiningMode: " << pureSpinningMode_ << std::endl
-                                     << " theta: " << theta << std::endl
-                                     << " betta: " << theta << std::endl
-                                     << " err_x: " << dx << std::endl
-                                     << " err_y:" << dy << std::endl
-                                     << " rho_error:" << rho_error << std::endl
-                                     << " alpha_error:" << alpha_error << std::endl
-                                     << " betta_error:" << betta_error << std::endl
-                                     << " vetta:" << vetta << std::endl
-                                     << " gamma:" << gamma);
+    ROS_DEBUG_STREAM("local planner," << std::endl
+                                      << " pureSpiningMode: " << pureSpinningMode_ << std::endl
+                                      << " theta: " << theta << std::endl
+                                      << " betta: " << theta << std::endl
+                                      << " err_x: " << dx << std::endl
+                                      << " err_y:" << dy << std::endl
+                                      << " rho_error:" << rho_error << std::endl
+                                      << " alpha_error:" << alpha_error << std::endl
+                                      << " betta_error:" << betta_error << std::endl
+                                      << " vetta:" << vetta << std::endl
+                                      << " gamma:" << gamma);
 
     //cmd_vel.linear.x=0;
     //cmd_vel.angular.z = 0;
@@ -365,10 +365,11 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     bool aceptedplan = true;
 
     unsigned int mx, my;
+    
     if (backwardsPlanPath_.size() > 0)
     {
         auto &finalgoalpose = backwardsPlanPath_.back();
-
+        
         int i = 0;
         // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
         for (auto &p : trajectory)
@@ -377,17 +378,17 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
             float dy = p[1] - finalgoalpose.pose.position.y;
 
             float dst = sqrt(dx * dx + dy * dy);
-            if (dst < xy_goal_tolerance_)
+            if (dst < xy_goal_tolerance_ )
             {
-                //  ROS_INFO("trajectory checking skipped, goal reached");
+                ROS_INFO("trajectory checking skipped, goal reached");
                 break;
             }
 
             costmap2d->worldToMap(p[0], p[1], mx, my);
             unsigned int cost = costmap2d->getCost(mx, my);
 
-            // ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
-            // ROS_INFO_STREAM("cost: " << cost);
+            ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
+            ROS_INFO_STREAM("cost: " << cost);
 
             // static const unsigned char NO_INFORMATION = 255;
             // static const unsigned char LETHAL_OBSTACLE = 254;
@@ -397,7 +398,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
             if (costmap2d->getCost(mx, my) >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
             {
                 aceptedplan = false;
-                // ROS_WARN("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED");
+                ROS_WARN_STREAM ("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point " << i<<"/" << trajectory.size() << std::endl << p[0] << ", " << p[1]);
                 break;
             }
             i++;
@@ -405,7 +406,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     }
     else
     {
-        ROS_WARN("[Abort local]Backwards global plan size: %ld", backwardsPlanPath_.size());
+        ROS_WARN("[Abort local] Backwards global plan size: %ld", backwardsPlanPath_.size());
         return false;
     }
 
@@ -459,7 +460,6 @@ void BackwardLocalPlanner::reconfigCB(::backward_local_planner::BackwardLocalPla
     carrot_distance_ = config.carrot_distance;
     carrot_angular_distance_ = config.carrot_angular_distance;
     xy_goal_tolerance_ = config.xy_goal_tolerance;
-    
 }
 
 /**
