@@ -1,11 +1,10 @@
 SmDanceBot2:
-    SsRadialPattern1:
-      rays_count: 20
-      SsrRadialLoopStart: {} #substate 1
-      SsrRadialRotate: {} #substate 2
-      SsrRadialEndPoint: {} #substate 3
-      SsrRadialReturn: {} #substate 4
-      
-
-    StNavigateToWaypointsX: {}
+    states:
+      SsRadialPattern1:
+        rays_count: 20
+        SsrRadialLoopStart: {} #substate 1
+        SsrRadialRotate: {} #substate 2
+        SsrRadialEndPoint: {} #substate 3
+        SsrRadialReturn: {} #substate 4
+      StNavigateToWaypointsX: {}
   

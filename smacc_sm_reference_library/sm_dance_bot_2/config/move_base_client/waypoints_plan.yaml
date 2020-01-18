@@ -1,4 +1,5 @@
 waypoints:
+   # POINT 1
    - position:
        x: 3.0
        y: -2.0
@@ -8,6 +9,7 @@ waypoints:
        y: 0.0
        z: 0.0
        w: 1.0
+   # POINT 2
    - position:
        x: 2.0
        y: -8.58
@@ -17,6 +19,7 @@ waypoints:
        y: 0.0
        z: 0.0
        w: 1.0
+   # POINT 3
    - position:
        x: -10.0
        y: 14.5

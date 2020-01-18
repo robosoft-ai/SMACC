@@ -18,7 +18,7 @@ struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
   {
     auto &superstate = this->context<SS>();
 
-    this->configure<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
+    this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
     this->configure<OrLED, CbLEDOn>();
   }
 };

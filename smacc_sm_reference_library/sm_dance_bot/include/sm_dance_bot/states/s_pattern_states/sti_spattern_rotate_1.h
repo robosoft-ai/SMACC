@@ -22,13 +22,26 @@ struct StiSPatternRotate1 : smacc::SmaccState<StiSPatternRotate1, SS>
 
         if (superstate.iteration_count < SS::total_iterations())
         {
-            float angle = 0;
-            if (superstate.direction() == TDirection::LEFT)
-                angle = 90;
-            else
-                angle = -90;
+            // float angle = 0;
+            // if (superstate.direction() == TDirection::LEFT)
+            //     angle = 90;
+            // else
+            //     angle = -90;
+            //this->configure<OrNavigation, CbRotate>(angle);
 
-            this->configure<OrNavigation, CbAbsoluteRotate>(angle);
+
+            float offset = 7;
+            if (superstate.direction() == TDirection::RIGHT)
+            {
+                // - offset because we are looking to the north and we have to turn clockwise
+                this->configure<OrNavigation, CbAbsoluteRotate>(0 - offset);
+            }
+            else 
+            {
+                // - offset because we are looking to the south and we have to turn counter-clockwise
+                this->configure<OrNavigation, CbAbsoluteRotate>(180 + offset);
+            }
+
             this->configure<OrLED, CbLEDOff>();
         }
     }

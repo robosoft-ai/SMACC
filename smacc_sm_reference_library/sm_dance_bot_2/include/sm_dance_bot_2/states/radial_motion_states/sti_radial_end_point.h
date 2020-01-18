@@ -27,7 +27,7 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
     auto forwardBehavior = this->getOrthogonal<OrNavigation>()
                                ->getClientBehavior<CbNavigateForward>();
 
-        forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
+    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
   }
 };
 } // namespace radial_motion_states

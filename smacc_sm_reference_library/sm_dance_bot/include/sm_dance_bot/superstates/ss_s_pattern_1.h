@@ -53,8 +53,8 @@ public:
     }
 
     static constexpr float pitch1_lenght_meters() { return 0.6; }
-    static constexpr float pitch2_lenght_meters() { return 3.2; }
-    static constexpr int total_iterations() { return 3; }
+    static constexpr float pitch2_lenght_meters() { return 2.0; }
+    static constexpr int total_iterations() { return 5; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
     int iteration_count;

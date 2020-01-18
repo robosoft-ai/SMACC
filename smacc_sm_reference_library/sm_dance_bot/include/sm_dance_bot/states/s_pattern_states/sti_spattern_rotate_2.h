@@ -12,11 +12,12 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
 
     static void onDefinition()
     {
+        float offset = 7;
         float angle = 0;
         if (SS::direction() == TDirection::LEFT)
-            angle = -90;
+            angle = 90 + offset ;
         else
-            angle = 90;
+            angle = -90 - offset;
 
         configure_orthogonal<OrNavigation, CbRotate>(angle);
         configure_orthogonal<OrLED, CbLEDOff>();
