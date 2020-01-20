@@ -77,5 +77,7 @@ protected:
   ros::NodeHandle nh;
 
   ISmaccState *parentState_;
+
+  std::shared_ptr<smacc::introspection::SmaccStateInfo> stateInfo_;
 };
 } // namespace smacc

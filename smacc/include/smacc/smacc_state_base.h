@@ -54,13 +54,15 @@ public:
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
     this->set_context(ctx.pContext_);
 
+    this->stateInfo_ = getStateInfo();
+
     // storing a reference to the parent state
     auto &ps = this->template context<Context>();
     parentState_ = dynamic_cast<ISmaccState *>(&ps);
     finishStateThrown = false;
 
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
-
+    
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
@@ -125,19 +127,20 @@ public:
 
   InnerInitial *smacc_inner_type;
 
-  std::string getFullPathName()
+  smacc::introspection::SmaccStateInfo::Ptr getStateInfo()
   {
     auto smInfo = this->getStateMachine().info_;
 
     auto key = typeid(MostDerived).name();
     if (smInfo->states.count(key))
     {
-      return smInfo->states[key]->getFullPath();
+      return smInfo->states[key];
     }
     else
     {
-      return "UnknownFullPath";
+      return nullptr;
     }
+
   }
 
   std::string getFullName()
@@ -273,100 +276,6 @@ public:
     return sbh;
   }
 
-  //   template <typename TTransition>
-  // struct AddStateBehaviorEventType
-  // {
-  //   AddStateBehaviorEventType(SmaccStateBehaviorInfo &sbinfo)
-  //       : luInfo_(sbinfo)
-  //   {
-  //   }
-
-  //   SmaccStateBehaviorInfo &luInfo_;
-  //   template <typename T>
-  //   void operator()(T)
-  //   {
-  //     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
-  //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
-  //     EventLabel<T>(evinfo->label);
-
-  //     luInfo_.sourceEventTypes.push_back(evinfo);
-  //     ROS_INFO_STREAM("state behavior input event: " << sourceType->getFullName());
-  //     ROS_INFO_STREAM("- event parameters: " << sourceType->templateParameters.size());
-  //     for (auto &tp : evinfo->eventType->templateParameters)
-  //     {
-  //       ROS_INFO_STREAM("- " << tp->getFullName());
-  //     }
-  //   }
-  // };
-
-  // template <typename TEventList>
-  // static void iterateStateBehaviorEventTypes(SmaccStateBehaviorInfo &sbinfo)
-  // {
-  //   using boost::mpl::_1;
-  //   using wrappedList = typename boost::mpl::transform<TEventList, _1>::type;
-  //   AddStateBehaviorEventType<wrappedList> op(sbinfo);
-  //   boost::mpl::for_each<wrappedList>(op);
-  // }
-
-  // template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TUArgs>
-  // static std::shared_ptr<StateBehaviorHandler> static_createStateBehavior(TUArgs... args)
-  // {
-  //   std::string eventtypename = typeid(TTriggerEvent).name();
-  //   auto eventType = TypeInfo::getTypeInfoFromString(eventtypename);
-
-  //   if (eventType->templateParameters.size() > 1)
-  //   {
-  //     sbinfo.objectTagType = eventType->templateParameters[1];
-  //   }
-  //   else
-  //   {
-  //     sbinfo.objectTagType = nullptr;
-  //   }
-  //   //---------------------
-  //   auto sbh = static_createStateBehavior<TStateBehavior>(args...);
-  //   iterateStateBehaviorEventTypes<TEventList>(sbinfo);
-
-  //   sbinfo.factoryFunction = [&, sbh, args...](ISmaccState *state) {
-  //     auto sb = state->createStateBehavior<TStateBehavior, TTriggerEvent, TEventList>(args...);
-  //     sbh->configureStateBehavior(sb);
-  //     return sb;
-  //   };
-
-  //   return sbh;
-  // }
-
-  /*template <typename TStateBehavior, typename TTriggerEvent, typename... TEvArgs>
-  static void static_createStateBehavior()
-  {
-    SmaccStateBehaviorInfo sbinfo;
-
-    sbinfo.stateBehaviorType = &typeid(TStateBehavior);
-
-    std::string eventtypename = typeid(TTriggerEvent).name();
-    auto eventType = TypeInfo::getTypeInfoFromString(eventtypename);
-
-    if (eventType->templateParameters.size() > 1)
-    {
-      sbinfo.objectTagType = eventType->templateParameters[1];
-    }
-    else
-    {
-      sbinfo.objectTagType = nullptr;
-    }
-
-    walkStateBehaviorsSources(sbinfo, typelist<TEvArgs...>());
-
-    sbinfo.factoryFunction = [&](ISmaccState *state) {
-      state->createStateBehavior<TStateBehavior, TTriggerEvent, TEvArgs...>();
-    };
-
-    const std::type_info *tindex = &(typeid(MostDerived));
-    if (!SmaccStateInfo::stateBehaviorsInfo.count(tindex))
-      SmaccStateInfo::stateBehaviorsInfo[tindex] = std::vector<SmaccStateBehaviorInfo>();
-
-    SmaccStateInfo::stateBehaviorsInfo[tindex].push_back(sbinfo);
-  }
-*/
   void checkWhileLoopConditionAndThrowEvent(bool (MostDerived::*conditionFn)())
   {
     auto *thisobject = static_cast<MostDerived *>(this);

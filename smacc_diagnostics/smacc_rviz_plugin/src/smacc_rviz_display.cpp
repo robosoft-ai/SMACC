@@ -93,11 +93,13 @@ SmaccRvizDisplay::SmaccRvizDisplay()
 
   void SmaccRvizDisplay::subscribe()
   {
+      current_state_->setValue(QString(""));
       sub_ = nh_.subscribe<smacc_msgs::SmaccStatus>(topic_property_->getTopic().toStdString(), 1, &SmaccRvizDisplay::processMessage , this);
   }
 
   void SmaccRvizDisplay::unsubscribe()
   {
+    current_state_->setValue(QString(""));
     sub_.shutdown();
 
   }
@@ -114,6 +116,7 @@ SmaccRvizDisplay::SmaccRvizDisplay()
 void SmaccRvizDisplay::onInitialize()
 {
   //MFDClass::onInitialize();
+  current_state_->setValue(QString(""));
 }
 
 SmaccRvizDisplay::~SmaccRvizDisplay()
@@ -125,6 +128,7 @@ void SmaccRvizDisplay::reset()
 {
   //MFDClass::reset();
   //visuals_.clear();
+  current_state_->setValue(QString(""));
 }
 
 void SmaccRvizDisplay::updateCurrentState()

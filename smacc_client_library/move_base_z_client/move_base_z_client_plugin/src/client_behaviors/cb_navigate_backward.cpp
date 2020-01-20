@@ -54,7 +54,7 @@ void CbNavigateBackwards::onEntry()
         }
         catch (tf::TransformException ex)
         {
-            ROS_ERROR("%s", ex.what());
+            ROS_INFO("[CbNavigateBackward] Waiting transform: %s", ex.what());
             ros::Duration(1.0).sleep();
         }
     }

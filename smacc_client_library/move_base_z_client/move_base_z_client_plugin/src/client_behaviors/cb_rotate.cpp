@@ -46,7 +46,7 @@ void CbRotate::onEntry()
         }
         catch (tf::TransformException ex)
         {
-            ROS_ERROR("%s", ex.what());
+            ROS_INFO("[CbRotate] Waiting transform: %s", ex.what());
             ros::Duration(1.0).sleep();
         }
     }
