@@ -62,7 +62,7 @@ public:
     finishStateThrown = false;
 
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
-    
+
     ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
@@ -140,7 +140,6 @@ public:
     {
       return nullptr;
     }
-
   }
 
   std::string getFullName()
@@ -153,7 +152,7 @@ public:
     return smacc::utils::cleanShortTypeName(typeid(MostDerived));
   }
 
-  virtual ~SmaccState()
+  void exit()
   {
     try
     {
@@ -169,6 +168,9 @@ public:
     {
     }
     this->getStateMachine().unlockStateMachine("state exit");
+  }
+  virtual ~SmaccState()
+  {
   }
 
   void throwFinishEvent()

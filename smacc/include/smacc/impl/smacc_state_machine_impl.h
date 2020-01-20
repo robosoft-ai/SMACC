@@ -295,7 +295,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
     }
     else // state life-time objects
     {
-        ROS_WARN("[StateMachine] life-time constrained smacc signal subscription created");
+        ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s", demangledTypeName<TSmaccObjectType>().c_str());
         stateCallbackConnections.push_back(connection);
     }
     return connection;
