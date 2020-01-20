@@ -1,6 +1,6 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include   <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 #include <fstream>
 #include <ros/ros.h>
@@ -100,51 +100,59 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     throw std::string("Waypoints file not found");
   }
 
-#ifdef HAVE_NEW_YAMLCPP
-  YAML::Node node = YAML::Load(ifs);
-#else
-  YAML::Parser parser(ifs);
-  parser.GetNextDocument(node);
-#endif
-
-#ifdef HAVE_NEW_YAMLCPP
-  const YAML::Node &wp_node_tmp = node["waypoints"];
-  const YAML::Node *wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
-#else
-  const YAML::Node *wp_node = node.FindValue("waypoints");
-#endif
-
-  if (wp_node != NULL)
+  try
   {
-    for (unsigned int i = 0; i < wp_node->size(); ++i)
+
+#ifdef HAVE_NEW_YAMLCPP
+    YAML::Node node = YAML::Load(ifs);
+#else
+    YAML::Parser parser(ifs);
+    parser.GetNextDocument(node);
+#endif
+
+#ifdef HAVE_NEW_YAMLCPP
+    const YAML::Node &wp_node_tmp = node["waypoints"];
+    const YAML::Node *wp_node = wp_node_tmp ? &wp_node_tmp : NULL;
+#else
+    const YAML::Node *wp_node = node.FindValue("waypoints");
+#endif
+
+    if (wp_node != NULL)
     {
-      // Parse waypoint entries on YAML
-      geometry_msgs::Pose wp;
-
-      try
+      for (unsigned int i = 0; i < wp_node->size(); ++i)
       {
-        // (*wp_node)[i]["name"] >> wp.name;
-        // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
-        wp.position.x = (*wp_node)[i]["position"]["x"].as<double>();
-        wp.position.y = (*wp_node)[i]["position"]["y"].as<double>();
-        wp.position.z = (*wp_node)[i]["position"]["z"].as<double>();
-        wp.orientation.x = (*wp_node)[i]["orientation"]["x"].as<double>();
-        wp.orientation.y = (*wp_node)[i]["orientation"]["y"].as<double>();
-        wp.orientation.z = (*wp_node)[i]["orientation"]["z"].as<double>();
-        wp.orientation.w = (*wp_node)[i]["orientation"]["w"].as<double>();
+        // Parse waypoint entries on YAML
+        geometry_msgs::Pose wp;
 
-        this->waypoints_.push_back(wp);
+        try
+        {
+          // (*wp_node)[i]["name"] >> wp.name;
+          // (*wp_node)[i]["frame_id"] >> wp.header.frame_id;
+          wp.position.x = (*wp_node)[i]["position"]["x"].as<double>();
+          wp.position.y = (*wp_node)[i]["position"]["y"].as<double>();
+          wp.position.z = (*wp_node)[i]["position"]["z"].as<double>();
+          wp.orientation.x = (*wp_node)[i]["orientation"]["x"].as<double>();
+          wp.orientation.y = (*wp_node)[i]["orientation"]["y"].as<double>();
+          wp.orientation.z = (*wp_node)[i]["orientation"]["z"].as<double>();
+          wp.orientation.w = (*wp_node)[i]["orientation"]["w"].as<double>();
+
+          this->waypoints_.push_back(wp);
+        }
+        catch (...)
+        {
+          ROS_ERROR("parsing waypoint file, syntax error in point %d", i);
+        }
       }
-      catch (...)
-      {
-        ROS_ERROR("parsing waypoint file, syntax error in point %d", i);
-      }
+      ROS_INFO_STREAM("Parsed " << this->waypoints_.size() << " waypoints.");
     }
-    ROS_INFO_STREAM("Parsed " << this->waypoints_.size() << " waypoints.");
+    else
+    {
+      ROS_WARN_STREAM("Couldn't find any waypoints in the provided yaml file.");
+    }
   }
-  else
+  catch (const YAML::ParserException &ex)
   {
-    ROS_WARN_STREAM("Couldn't find any waypoints in the provided yaml file.");
+    ROS_ERROR_STREAM("Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
 } // namespace move_base_z_client
