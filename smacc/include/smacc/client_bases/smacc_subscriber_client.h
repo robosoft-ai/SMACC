@@ -44,13 +44,13 @@ public:
   template <typename T>
   boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), T *object)
   {
-    return stateMachine_->createSignalConnection(onMessageReceived_, callback, object);
+    return this->getStateMachine()->createSignalConnection(onMessageReceived_, callback, object);
   }
 
   template <typename T>
   boost::signals2::connection onFirstMessageReceived(void (T::*callback)(const MessageType &), T *object)
   {
-    return stateMachine_->createSignalConnection(onFirstMessageReceived_, callback, object);
+    return this->getStateMachine()->createSignalConnection(onFirstMessageReceived_, callback, object);
   }
 
   template <typename TObjectTag, typename TDerived>

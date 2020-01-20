@@ -47,7 +47,7 @@ void CbNavigateGlobalPosition::goToRadialStart()
 
     // store the start pose on the state machine storage so that it can
     // be referenced from other states (for example return to radial start)
-    this->stateMachine_->setGlobalSMData("radial_start_pose", goal.target_pose);
+    this->getStateMachine()->setGlobalSMData("radial_start_pose", goal.target_pose);
 
     moveBaseClient_->sendGoal(goal);
 }
@@ -56,10 +56,10 @@ void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goa
 {
     if (!initialPoint)
     {
-        this->currentState->getParam("start_position_x", goal.target_pose.pose.position.x);
-        this->currentState->getParam("start_position_y", goal.target_pose.pose.position.y);
+        this->getCurrentState()->getParam("start_position_x", goal.target_pose.pose.position.x);
+        this->getCurrentState()->getParam("start_position_y", goal.target_pose.pose.position.y);
         double yaw;
-        this->currentState->getParam("start_position_yaw", yaw);
+        this->getCurrentState()->getParam("start_position_yaw", yaw);
 
         goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
     }

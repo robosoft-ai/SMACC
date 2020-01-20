@@ -50,6 +50,31 @@ TClientBehavior *IOrthogonal::getClientBehavior()
     return nullptr;
 }
 
+inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &IOrthogonal::getClients()
+{
+    return clients_;
+}
+
+inline const std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> &IOrthogonal::getClientBehaviors() const
+{
+    return this->clientBehaviors_;
+}
+
+template <typename T>
+void IOrthogonal::setGlobalSMData(std::string name, T value)
+{
+    this->getStateMachine()->setGlobalSMData(name, value);
+}
+
+template <typename T>
+bool IOrthogonal::getGlobalSMData(std::string name, T &ret)
+{
+    return this->getStateMachine()->getGlobalSMData(name, ret);
+}
+
+//inline
+ISmaccStateMachine *IOrthogonal::getStateMachine() { return this->stateMachine_; }
+
 template <typename TOrthogonal, typename TClient>
 class ClientHandler : public TClient
 {
@@ -75,7 +100,7 @@ public:
 
             ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
             ret->initialize(this);
-            ret->setStateMachine(this->stateMachine_);
+            ret->setStateMachine(this->getStateMachine());
 
             this->components_[componentkey] = ret; //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
             ROS_DEBUG("%s resource is required. Done.", tname.c_str());
@@ -113,11 +138,11 @@ public:
 
         ROS_INFO("[%s] creates a client of type '%s' and object tag '%s'",
                  demangleType(typeid(*this)).c_str(),
-                 demangledTypeName<TClient>().c_str(),                                                                              
+                 demangledTypeName<TClient>().c_str(),
                  demangledTypeName<TOrthogonal>().c_str());
 
         auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
-        client->setStateMachine(stateMachine_);
+        client->setStateMachine(getStateMachine());
 
         client->template configureEventSourceTypes<TOrthogonal, TClient>();
 

@@ -38,7 +38,7 @@ public:
   template <typename T>
   boost::signals2::connection onMessageTimeout(void (T::*callback)(const ros::TimerEvent &), T *object)
   {
-    return this->stateMachine_->createSignalConnection(onMessageTimeout_, callback, object);
+    return this->getStateMachine()->createSignalConnection(onMessageTimeout_, callback, object);
   }
 
   std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;

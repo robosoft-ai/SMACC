@@ -39,14 +39,16 @@ public:
 
     virtual smacc::introspection::TypeInfo::Ptr getType();
 
-protected:
-    // A reference to the state machine object that owns this resource
-    ISmaccStateMachine *stateMachine_;
+    inline ISmaccStateMachine* getStateMachine();
 
+protected:
     // components
     std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
 private:
+    // A reference to the state machine object that owns this resource
+    ISmaccStateMachine *stateMachine_;
+
     friend class IOrthogonal;
 };
 } // namespace smacc

@@ -17,7 +17,7 @@ void CbRotate::onEntry()
 
     if (!rotateDegree)
     {
-        this->currentState->param("angle_increment_degree", angle_increment_degree, 45.0);
+        this->getCurrentState()->param("angle_increment_degree", angle_increment_degree, 45.0);
     }
     else
     {

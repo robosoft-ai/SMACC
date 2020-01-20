@@ -25,7 +25,7 @@ public:
     template <typename T>
     boost::signals2::connection onTimerTick(void (T::*callback)(), T *object)
     {
-        return stateMachine_->createSignalConnection(onTimerTick_, callback, object);
+        return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
     }
 
 private:

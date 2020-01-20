@@ -37,6 +37,18 @@ void SmaccClientBehavior::postEvent()
     }
 }
 
+//inline
+ISmaccStateMachine *SmaccClientBehavior::getStateMachine()
+{
+    return this->stateMachine_;
+}
+
+//inline
+ISmaccState *SmaccClientBehavior::getCurrentState()
+{
+    return this->currentState;
+}
+
 template <typename SmaccClientType>
 void SmaccClientBehavior::requiresClient(SmaccClientType *&storage)
 {

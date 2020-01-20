@@ -37,4 +37,10 @@ TComponent *ISmaccClient::getComponent()
 
     return nullptr;
 }
+
+//inline
+ISmaccStateMachine *ISmaccClient::getStateMachine()
+{
+    return this->stateMachine_;
+}
 } // namespace smacc

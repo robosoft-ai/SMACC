@@ -14,17 +14,11 @@ class ISmaccState;
 class SmaccClientBehavior
 {
 public:
-    // a reference to the owner state machine
-    ISmaccStateMachine *stateMachine_;
-
-    // a reference to the state where the client behavior is being executed
-    ISmaccState *currentState;
-
-    smacc::IOrthogonal *currentOrthogonal;
-
     SmaccClientBehavior();
 
     virtual ~SmaccClientBehavior();
+
+    inline ISmaccStateMachine* getStateMachine();
 
     std::string getName() const;
 
@@ -44,11 +38,22 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
 
+    inline ISmaccState * getCurrentState();
+
 private:
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes();
 
+    // a reference to the owner state machine
+    ISmaccStateMachine *stateMachine_;
+
+    // a reference to the state where the client behavior is being executed
+    ISmaccState *currentState;
+
+    smacc::IOrthogonal *currentOrthogonal;
+
     friend class ISmaccState;
+    friend class IOrthogonal;
 };
 } // namespace smacc
 

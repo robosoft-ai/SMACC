@@ -18,7 +18,7 @@ void CbAbsoluteRotate::onEntry()
 
     if (!this->absoluteGoalAngleDegree)
     {
-        this->currentState->param("goal_angle", goal_angle, 45.0);
+        this->getCurrentState()->param("goal_angle", goal_angle, 45.0);
     }
     else
     {

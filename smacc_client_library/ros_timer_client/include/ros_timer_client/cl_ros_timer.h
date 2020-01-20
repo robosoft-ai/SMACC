@@ -24,24 +24,24 @@ struct EvTimer : sc::event<EvTimer<TSource, TObjectTag>>
 class ClRosTimer : public smacc::ISmaccClient
 {
 public:
+    ClRosTimer(ros::Duration duration, bool oneshot = false);
+
+    virtual ~ClRosTimer();
+
+    virtual void initialize();
+
     template <typename T>
     boost::signals2::connection onTimerTick(void (T::*callback)(), T *object)
     {
-        return stateMachine_->createSignalConnection(onTimerTick_, callback, object);
+        return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
     }
 
     template <typename TFunc>
     boost::signals2::connection onTimerTick(TFunc callback)
     {
         std::function<void()> callback1 = callback;
-        return stateMachine_->createSignalConnection(onTimerTick_, callback1);
+        return this->getStateMachine()->createSignalConnection(onTimerTick_, callback1);
     }
-
-    ClRosTimer(ros::Duration duration, bool oneshot = false);
-
-    virtual ~ClRosTimer();
-
-    virtual void initialize();
 
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes()

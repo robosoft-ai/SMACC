@@ -20,7 +20,7 @@ void CbNavigateForward::onEntry()
 
     if (!forwardDistance)
     {
-        this->currentState->param("straight_motion_distance", dist, 3.5);
+        this->getCurrentState()->param("straight_motion_distance", dist, 3.5);
     }
     else
     {
