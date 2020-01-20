@@ -146,7 +146,7 @@ def create_and_push_smacc_viewer_debians(osname, osversion, rosversion):
     workspace_source_folder = os.path.join(
         workspace_folder, relative_smacc_viewer_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
-    smacc_viewer_manual_order_packages = ["smacc_viewer"]
+    smacc_viewer_manual_order_packages = ["smacc_viewer", "smacc_msgs"]
     smacc_viewer_debian_files = iterate_debian_generation(
         workspace_source_folder, smacc_viewer_manual_order_packages, identified_install_packages, osversion, rosversion)
 
