@@ -2,7 +2,7 @@
 
 namespace smacc
 {
-namespace state_behaviors
+namespace state_reactors
 {
 SbConditional::~SbConditional()
 {
@@ -12,5 +12,5 @@ bool SbConditional::triggers()
 {
     return this->conditionFlag;
 }
-} // namespace state_behaviors
+} // namespace state_reactors
 } // namespace smacc

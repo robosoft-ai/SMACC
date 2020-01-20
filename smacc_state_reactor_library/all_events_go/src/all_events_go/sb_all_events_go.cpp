@@ -4,7 +4,7 @@
 
 namespace smacc
 {
-namespace state_behaviors
+namespace state_reactors
 {
 
 using namespace smacc::introspection;
@@ -38,5 +38,5 @@ bool SbAllEventsGo::triggers()
     ROS_INFO("SB ALL TRIGGERED");
     return true;
 }
-} // namespace state_behaviors
+} // namespace state_reactors
 } // namespace smacc

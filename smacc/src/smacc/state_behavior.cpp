@@ -1,40 +1,40 @@
-#include <smacc/smacc_state_behavior.h>
+#include <smacc/smacc_state_reactor.h>
 #include <ros/ros.h>
 
 namespace smacc
 {
 
-StateBehavior::StateBehavior()
+StateReactor::StateReactor()
 {
 }
 
-void StateBehavior::initialize(smacc::ISmaccState *ownerState)
+void StateReactor::initialize(smacc::ISmaccState *ownerState)
 {
     this->ownerState = ownerState;
 
     this->onInitialized();
 }
 
-void StateBehavior::onInitialized()
+void StateReactor::onInitialized()
 {
 }
 
-void StateBehavior::onEventNotified(const std::type_info *eventType)
+void StateReactor::onEventNotified(const std::type_info *eventType)
 {
 }
 
-void StateBehavior::update()
+void StateReactor::update()
 {
     if (this->triggers())
     {
-        ROS_INFO("State behavior base REALLY TRIGGERS!!");
+        ROS_INFO("State reactor base REALLY TRIGGERS!!");
         this->postEventFn();
     }
 }
 
 namespace introspection
 {
-void StateBehaviorHandler::configureStateBehavior(std::shared_ptr<smacc::StateBehavior> sb)
+void StateReactorHandler::configureStateReactor(std::shared_ptr<smacc::StateReactor> sb)
 {
     for (auto callback : this->callbacks_)
     {

@@ -19,17 +19,17 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
-        // static_createStateBehavior<SbAllEventsGo,
+        // static_createStateReactor<SbAllEventsGo,
         //                        EvAllGo<SbAllEventsGo>,
         //                        mpl::list<EvTimer<CbTimer, OrTimer>,
         //                                  EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>>();
 
-        auto sbAll = static_createStateBehavior<SbAllEventsGo>();
+        auto sbAll = static_createStateReactor<SbAllEventsGo>();
         sbAll->addInputEvent<EvTimer<CbTimer, OrTimer>>();
         sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
         sbAll->setOutputEvent<EvAllGo<SbAllEventsGo>>();
 
-        /*auto sb = static_createStateBehavior<SbAllEventsGo>();
+        /*auto sb = static_createStateReactor<SbAllEventsGo>();
 
         sb->subscribesEvent<EvTimer<CbTimer, OrTimer>>();
         sb->subscribesEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();

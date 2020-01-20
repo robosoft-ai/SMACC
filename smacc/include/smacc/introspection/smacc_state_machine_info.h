@@ -13,7 +13,7 @@
 #include <smacc_msgs/SmaccState.h>
 #include <smacc_msgs/SmaccTransition.h>
 #include <smacc_msgs/SmaccOrthogonal.h>
-#include <smacc_msgs/SmaccStateBehavior.h>
+#include <smacc_msgs/SmaccStateReactor.h>
 
 namespace smacc
 {

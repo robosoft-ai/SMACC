@@ -8,7 +8,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_client_behavior.h>
-#include <smacc/smacc_state_behavior.h>
+#include <smacc/smacc_state_reactor.h>
 #include <smacc/introspection/string_type_walker.h>
 #include <smacc/smacc_client_behavior.h>
 #include <smacc/smacc_state_machine.h>
@@ -99,24 +99,24 @@ void ISmaccState::setGlobalSMData(std::string name, T value)
 }
 //-------------------------------------------------------------------------------------------------------
 
-template <typename TStateBehavior, typename... TEvArgs>
-std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
+template <typename TStateReactor, typename... TEvArgs>
+std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
 {
-    auto sb = std::make_shared<TStateBehavior>(args...);
+    auto sb = std::make_shared<TStateReactor>(args...);
     //sb->initialize(this, mock);
     //sb->setOutputEvent(typelist<TTriggerEvent>());
-    stateBehaviors_.push_back(sb);
+    stateReactors_.push_back(sb);
     return sb;
 }
 
-template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
-std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
+template <typename TStateReactor, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
 {
-    auto sb = std::make_shared<TStateBehavior>(args...);
+    auto sb = std::make_shared<TStateReactor>(args...);
     TEventList *mock;
     sb->initialize(this, mock);
     sb->template setOutputEvent<TTriggerEvent>();
-    stateBehaviors_.push_back(sb);
+    stateReactors_.push_back(sb);
     return sb;
 }
 
@@ -126,13 +126,13 @@ TOrthogonal* ISmaccState::getOrthogonal()
     return this->getStateMachine().getOrthogonal<TOrthogonal>();
 }
 
-// template <typename TStateBehavior, typename TTriggerEvent, typename... TEvArgs>
-// std::shared_ptr<TStateBehavior> ISmaccState::createStateBehavior(TEvArgs... args)
+// template <typename TStateReactor, typename TTriggerEvent, typename... TEvArgs>
+// std::shared_ptr<TStateReactor> ISmaccState::createStateReactor(TEvArgs... args)
 // {
-//     auto sb = std::make_shared<TStateBehavior>(std::forward(args...));
+//     auto sb = std::make_shared<TStateReactor>(std::forward(args...));
 //     sb->initialize(this, typelist<TEvArgs...>());
 //     sb->setOutputEvent(typelist<TTriggerEvent>());
-//     stateBehaviors_.push_back(sb);
+//     stateReactors_.push_back(sb);
 
 //     return sb;
 // }
@@ -156,4 +156,4 @@ void ISmaccState::notifyTransition()
 
 } // namespace smacc
 
-#include <smacc/impl/smacc_state_behavior_impl.h>
+#include <smacc/impl/smacc_state_reactor_impl.h>

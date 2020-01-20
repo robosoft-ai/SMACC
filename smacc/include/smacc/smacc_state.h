@@ -33,11 +33,11 @@ public:
   template <typename T>
   void setGlobalSMData(std::string name, T value);
 
-  template <typename TStateBehavior, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
-  std::shared_ptr<TStateBehavior> createStateBehavior(TEvArgs... args);
+  template <typename TStateReactor, typename TTriggerEvent, typename TEventList, typename... TEvArgs>
+  std::shared_ptr<TStateReactor> createStateReactor(TEvArgs... args);
 
-  template <typename TStateBehavior, typename... TEvArgs>
-  std::shared_ptr<TStateBehavior> createStateBehavior(TEvArgs... args);
+  template <typename TStateReactor, typename... TEvArgs>
+  std::shared_ptr<TStateReactor> createStateReactor(TEvArgs... args);
 
   template <typename EventType>
   void postEvent(const EventType &ev);
@@ -49,7 +49,7 @@ public:
   // used for transition logging
   void notifyTransitionFromTransitionTypeInfo(std::shared_ptr<smacc::introspection::TypeInfo> &transitionTypeInfo);
 
-  inline std::vector<std::shared_ptr<StateBehavior>> &getStateBehaviors() { return stateBehaviors_; }
+  inline std::vector<std::shared_ptr<StateReactor>> &getStateReactors() { return stateReactors_; }
 
   // Delegates to ROS param access with the current NodeHandle
   template <typename T>
@@ -72,7 +72,7 @@ public:
   }
 
 protected:
-  std::vector<std::shared_ptr<StateBehavior>> stateBehaviors_;
+  std::vector<std::shared_ptr<StateReactor>> stateReactors_;
 
   ros::NodeHandle nh;
 

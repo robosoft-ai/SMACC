@@ -14,7 +14,7 @@ void IOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> 
 {
     if (clBehavior != nullptr)
     {
-        ROS_INFO("Setting Ortho %s State behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+        ROS_INFO("Setting Ortho %s State reactor: %s", this->getName().c_str(), clBehavior->getName().c_str());
         clBehavior->stateMachine_ = this->stateMachine_;
         clBehavior->currentOrthogonal = this;
 

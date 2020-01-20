@@ -4,5 +4,5 @@ string[] children_states
 int8 level
 smacc_msgs/SmaccTransition[] transitions
 smacc_msgs/SmaccOrthogonal[] orthogonals
-smacc_msgs/SmaccStateBehavior[] state_behaviors
+smacc_msgs/SmaccStateReactor[] state_reactors
 

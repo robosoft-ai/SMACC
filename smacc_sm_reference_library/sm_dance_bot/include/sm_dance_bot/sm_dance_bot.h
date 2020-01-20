@@ -40,12 +40,12 @@ using namespace sm_dance_bot::cl_led;
 //using namespace sm_dance_bot::cl_move_base_z;
 //using namespace sm_dance_bot::cl_updatable_publisher;
 
-//STATE BEHAVIORS
+//STATE REACTORS
 #include <all_events_go/sb_all_events_go.h>
 #include <event_countdown/sb_event_countdown.h>
 #include <conditional/sb_conditional.h>
 
-using namespace smacc::state_behaviors;
+using namespace smacc::state_reactors;
 
 // ORTHOGONALS
 #include <sm_dance_bot/orthogonals/or_navigation.h>

@@ -121,21 +121,21 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
             stateMsg.orthogonals.push_back(orthogonalMsg);
         }
 
-        ss << " State behaviors:" << std::endl;
-        if (SmaccStateInfo::stateBehaviorsInfo.count(statetid) > 0)
+        ss << " State reactors:" << std::endl;
+        if (SmaccStateInfo::stateReactorsInfo.count(statetid) > 0)
         {
             int k = 0;
-            for (auto &sbinfo : SmaccStateInfo::stateBehaviorsInfo[statetid])
+            for (auto &sbinfo : SmaccStateInfo::stateReactorsInfo[statetid])
             {
-                smacc_msgs::SmaccStateBehavior stateBehaviorMsg;
-                stateBehaviorMsg.index = k++;
-                stateBehaviorMsg.type_name = demangleSymbol(sbinfo->stateBehaviorType->name());
+                smacc_msgs::SmaccStateReactor stateReactorMsg;
+                stateReactorMsg.index = k++;
+                stateReactorMsg.type_name = demangleSymbol(sbinfo->stateReactorType->name());
 
-                ss << " - state behavior: " << stateBehaviorMsg.type_name << std::endl;
+                ss << " - state reactor: " << stateReactorMsg.type_name << std::endl;
                 if (sbinfo->objectTagType != nullptr)
                 {
-                    stateBehaviorMsg.object_tag = sbinfo->objectTagType->getFullName();
-                    ss << "        - object tag: " << stateBehaviorMsg.object_tag << std::endl;
+                    stateReactorMsg.object_tag = sbinfo->objectTagType->getFullName();
+                    ss << "        - object tag: " << stateReactorMsg.object_tag << std::endl;
                 }
 
                 for (auto &tev : sbinfo->sourceEventTypes)
@@ -156,15 +156,15 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
                     event.label = tev->label;
                     ss << "                 - event label: " << event.label << std::endl;
 
-                    stateBehaviorMsg.event_sources.push_back(event);
+                    stateReactorMsg.event_sources.push_back(event);
                 }
 
-                stateMsg.state_behaviors.push_back(stateBehaviorMsg);
+                stateMsg.state_reactors.push_back(stateReactorMsg);
             }
         }
         else
         {
-            ss << "- NO STATE BEHAVIORS - " << std::endl;
+            ss << "- NO STATE REACTORS - " << std::endl;
         }
 
         ROS_INFO_STREAM(ss.str());

@@ -61,16 +61,16 @@ struct SmaccTransitionInfo
 
 struct CallbackFunctor
 {
-    std::function<void(std::shared_ptr<smacc::StateBehavior>)> fn;
+    std::function<void(std::shared_ptr<smacc::StateReactor>)> fn;
 };
 
-class StateBehaviorHandler
+class StateReactorHandler
 {
 private:
     std::vector <CallbackFunctor> callbacks_;
 
 public:
-    void configureStateBehavior(std::shared_ptr<smacc::StateBehavior> sb);
+    void configureStateReactor(std::shared_ptr<smacc::StateReactor> sb);
 
     template <typename TEv>
     void addInputEvent();
@@ -78,21 +78,21 @@ public:
     template <typename TEv>
     void setOutputEvent();
 
-    std::shared_ptr<smacc::introspection::SmaccStateBehaviorInfo> sbInfo_;
+    std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> sbInfo_;
 
 };
 
 //---------------------------------------------
 
-struct SmaccStateBehaviorInfo
+struct SmaccStateReactorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
     std::function<void(smacc::ISmaccState *)> factoryFunction;
 
-    const std::type_info *stateBehaviorType;
+    const std::type_info *stateReactorType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
-    std::shared_ptr<StateBehaviorHandler> sbh;
+    std::shared_ptr<StateReactorHandler> sbh;
 };
 
 enum class SmaccStateType
@@ -109,7 +109,7 @@ public:
     typedef std::shared_ptr<SmaccStateInfo> Ptr;
 
     static std::map<const std::type_info *, std::vector<ClientBehaviorInfoEntry>> staticBehaviorInfo;
-    static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccStateBehaviorInfo>>> stateBehaviorsInfo;
+    static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccStateReactorInfo>>> stateReactorsInfo;
 
     int stateIndex_;
     std::string fullStateName;

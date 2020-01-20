@@ -18,7 +18,7 @@ class ISmaccComponent;
 class SmaccClientBehavior;
 class SignalDetector;
 
-class StateBehavior;
+class StateReactor;
 
 namespace client_bases
 {
@@ -30,8 +30,8 @@ namespace introspection
 {
 class SmaccStateMachineInfo;
 class SmaccStateInfo;
-class StateBehaviorHandler;
-class SmaccStateBehaviorInfo;
+class StateReactorHandler;
+class SmaccStateReactorInfo;
 } // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----

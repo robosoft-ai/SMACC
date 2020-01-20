@@ -19,10 +19,10 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         //   configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
         //   configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
 
-        //static_createStateBehavior<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
-        //static_createStateBehavior<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);        
+        //static_createStateReactor<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
+        //static_createStateReactor<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);        
         
-        auto sbCountdown = static_createStateBehavior<SbEventCountdown>(5);        
+        auto sbCountdown = static_createStateReactor<SbEventCountdown>(5);        
         sbCountdown->addInputEvent<EvTimer<ClRosTimer, OrTimer>>();
         sbCountdown->setOutputEvent<EvCountdownEnd<SbEventCountdown>>();
     }

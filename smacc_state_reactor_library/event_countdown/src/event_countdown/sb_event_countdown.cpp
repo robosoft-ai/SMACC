@@ -5,7 +5,7 @@
 
 namespace smacc
 {
-namespace state_behaviors
+namespace state_reactors
 {
 using namespace smacc::introspection;
 SbEventCountdown::SbEventCountdown(int eventCount)
@@ -57,5 +57,5 @@ bool SbEventCountdown::triggers()
     // return true;
 }
 
-} // namespace state_behaviors
+} // namespace state_reactors
 } // namespace smacc

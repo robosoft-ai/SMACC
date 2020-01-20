@@ -16,7 +16,7 @@ class IOrthogonal
 public:
     void setStateMachine(ISmaccStateMachine *value);
 
-    void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statebehavior);
+    void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statereactor);
 
     void onEntry();
 

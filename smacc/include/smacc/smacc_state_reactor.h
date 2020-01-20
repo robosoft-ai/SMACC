@@ -19,14 +19,14 @@ namespace smacc
 class ISmaccState;
 class ISMaccStateMachine;
 
-namespace state_behaviors
+namespace state_reactors
 {
 struct EmptyObjectTag
 {
 };
-} // namespace state_behaviors
+} // namespace state_reactors
 
-class StateBehavior
+class StateReactor
 {
 public:
     ISmaccState *ownerState;
@@ -34,15 +34,15 @@ public:
     std::vector<const std::type_info *> eventTypes;
     std::map<const std::type_info *, std::function<void(void *)>> eventCallbacks_;
 
-    StateBehavior();
+    StateReactor();
 
     virtual void onInitialized();
 
     // template <typename TEventList>
     // struct AddTEventType
     // {
-    //     StateBehavior *owner_;
-    //     AddTEventType(StateBehavior *owner) : owner_(owner)
+    //     StateReactor *owner_;
+    //     AddTEventType(StateReactor *owner) : owner_(owner)
     //     {
     //     }
 
@@ -84,7 +84,7 @@ private:
     template <typename TEvent>
     void notifyEvent(TEvent *ev)
     {
-        //the state machine uses this method to notify this state behavior some event happened.
+        //the state machine uses this method to notify this state reactor some event happened.
         auto tid = &(typeid(TEvent));
         if (std::find(eventTypes.begin(), eventTypes.end(), tid) != eventTypes.end())
         {

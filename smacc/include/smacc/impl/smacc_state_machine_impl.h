@@ -16,7 +16,7 @@
 #include <smacc/introspection/introspection.h>
 #include <smacc_msgs/SmaccStatus.h>
 #include <sstream>
-#include <smacc/smacc_state_behavior.h>
+#include <smacc/smacc_state_reactor.h>
 
 #include <boost/function_types/function_type.hpp>
 #include <boost/function_types/parameter_types.hpp>
@@ -136,14 +136,14 @@ void ISmaccStateMachine::postEvent(EventType *ev)
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     // when a postting event is requested by any component, client, or client behavior
-    // we reach this place. Now, we propagate the events to all the state state behaviors to generate
+    // we reach this place. Now, we propagate the events to all the state state reactors to generate
     // some more events
 
     ROS_DEBUG_STREAM("[PostEvent entry point] " << demangleSymbol<EventType>());
     auto currentstate = currentState_;
     if (currentstate != nullptr)
     {
-        propagateEventToStateBehaviors(currentstate, ev);
+        propagateEventToStateReactors(currentstate, ev);
     }
 
     this->signalDetector_->postEvent(ev);
@@ -216,7 +216,7 @@ void ISmaccStateMachine::mapBehavior()
 {
     std::string stateFieldName = demangleSymbol(typeid(StateField).name());
     std::string behaviorType = demangleSymbol(typeid(BehaviorType).name());
-    ROS_INFO("Mapping state field '%s' to stateBehavior '%s'", stateFieldName.c_str(), behaviorType.c_str());
+    ROS_INFO("Mapping state field '%s' to stateReactor '%s'", stateFieldName.c_str(), behaviorType.c_str());
     SmaccClientBehavior *globalreference;
     if (!this->getGlobalSMData(stateFieldName, globalreference))
     {
@@ -284,7 +284,7 @@ using namespace smacc::utils;
 template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
 boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
 {
-    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<ISmaccClient, TSmaccObjectType>::value || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value || std::is_base_of<StateBehavior, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value || std::is_base_of<ISmaccClient, TSmaccObjectType>::value || std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value || std::is_base_of<StateReactor, TSmaccObjectType>::value || std::is_base_of<ISmaccComponent, TSmaccObjectType>::value, "Only are accepted smacc types as subscribers for smacc signals");
 
     typedef decltype(callback) ft;
     Bind<boost::function_types::function_arity<ft>::value> binder;
@@ -377,10 +377,10 @@ void ISmaccStateMachine::notifyOnStateExit(StateType *state)
 
 //-------------------------------------------------------------------------------------------------------
 template <typename EventType>
-void ISmaccStateMachine::propagateEventToStateBehaviors(ISmaccState *st, EventType *ev)
+void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState *st, EventType *ev)
 {
     ROS_DEBUG("PROPAGATING EVENT [%s] TO LUs [%s]: ", demangleSymbol<EventType>().c_str(), st->getClassName().c_str());
-    for (auto &sb : st->getStateBehaviors())
+    for (auto &sb : st->getStateReactors())
     {
         sb->notifyEvent(ev);
     }
@@ -388,7 +388,7 @@ void ISmaccStateMachine::propagateEventToStateBehaviors(ISmaccState *st, EventTy
     auto *pst = st->getParentState();
     if (pst != nullptr)
     {
-        propagateEventToStateBehaviors(pst, ev);
+        propagateEventToStateReactors(pst, ev);
     }
 }
 } // namespace smacc

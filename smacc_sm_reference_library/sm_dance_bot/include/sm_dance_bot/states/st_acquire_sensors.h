@@ -38,17 +38,17 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
       configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
-      // static_createStateBehavior<SbAllEventsGo,
+      // static_createStateReactor<SbAllEventsGo,
       //                            EvAllGo<SbAllEventsGo, SBehav1>,
       //                            mpl::list<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>>();
 
-      auto sbAllSensorsReady = static_createStateBehavior<SbAllEventsGo>();
+      auto sbAllSensorsReady = static_createStateReactor<SbAllEventsGo>();
       sbAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
       sbAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
       sbAllSensorsReady->setOutputEvent<EvAllGo<SbAllEventsGo, SBehav1>>();
 
-      // auto sball = static_createStateBehavior<SbAllEventsGo>();
+      // auto sball = static_createStateReactor<SbAllEventsGo>();
       // sball->enablesOn<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
       // sball->throwsEvent<EvAllGo<SbAllEventsGo, SBehav1>>();
    }

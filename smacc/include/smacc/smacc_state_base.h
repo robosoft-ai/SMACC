@@ -6,7 +6,7 @@
 
 #pragma once
 #include <smacc/smacc_state.h>
-#include <smacc/smacc_state_behavior.h>
+#include <smacc/smacc_state_reactor.h>
 
 namespace smacc
 {
@@ -85,10 +85,10 @@ public:
     {
       ROS_INFO("-- STATIC STATE DESCRIPTION --");
 
-      for (const auto &stateBehaviorsVector : SmaccStateInfo::staticBehaviorInfo)
+      for (const auto &stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
       {
-        ROS_DEBUG_STREAM(" - state info: " << demangleSymbol(stateBehaviorsVector.first->name()));
-        for (auto &bhinfo : stateBehaviorsVector.second)
+        ROS_DEBUG_STREAM(" - state info: " << demangleSymbol(stateReactorsVector.first->name()));
+        for (auto &bhinfo : stateReactorsVector.second)
         {
           ROS_DEBUG_STREAM(" - client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
         }
@@ -96,7 +96,7 @@ public:
 
       const std::type_info *tindex = &(typeid(MostDerived));
       auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
-      auto &staticDefinedStateBehaviors = SmaccStateInfo::stateBehaviorsInfo[tindex];
+      auto &staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
 
       for (auto &bhinfo : staticDefinedBehaviors)
       {
@@ -104,9 +104,9 @@ public:
         bhinfo.factoryFunction(this);
       }
 
-      for (auto &sb : staticDefinedStateBehaviors)
+      for (auto &sb : staticDefinedStateReactors)
       {
-        ROS_INFO_STREAM("- Creating static state behavior: " << demangleSymbol(sb->stateBehaviorType->name()));
+        ROS_INFO_STREAM("- Creating static state reactor: " << demangleSymbol(sb->stateReactorType->name()));
         sb->factoryFunction(this);
       }
 
@@ -251,29 +251,29 @@ public:
     SmaccStateInfo::staticBehaviorInfo[tindex].push_back(bhinfo);
   }
 
-  template <typename TStateBehavior, typename... TUArgs>
-  static std::shared_ptr<smacc::introspection::StateBehaviorHandler> static_createStateBehavior(TUArgs... args)
+  template <typename TStateReactor, typename... TUArgs>
+  static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TUArgs... args)
   {
-    auto sbh = std::make_shared<smacc::introspection::StateBehaviorHandler>();
+    auto sbh = std::make_shared<smacc::introspection::StateReactorHandler>();
 
-    auto sbinfo = std::make_shared<SmaccStateBehaviorInfo>();
-    sbinfo->stateBehaviorType = &typeid(TStateBehavior);
+    auto sbinfo = std::make_shared<SmaccStateReactorInfo>();
+    sbinfo->stateReactorType = &typeid(TStateReactor);
     sbinfo->sbh = sbh;
     sbh->sbInfo_ = sbinfo;
 
     const std::type_info *tindex = &(typeid(MostDerived)); // get identifier of the current state
 
-    if (!SmaccStateInfo::stateBehaviorsInfo.count(tindex))
-      SmaccStateInfo::stateBehaviorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateBehaviorInfo>>();
+    if (!SmaccStateInfo::stateReactorsInfo.count(tindex))
+      SmaccStateInfo::stateReactorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
 
     sbinfo->factoryFunction = [&, sbh, args...](ISmaccState *state) {
-      auto sb = state->createStateBehavior<TStateBehavior>(args...);
-      sbh->configureStateBehavior(sb);
+      auto sb = state->createStateReactor<TStateReactor>(args...);
+      sbh->configureStateReactor(sb);
       sb->initialize(state);
       return sb;
     };
 
-    SmaccStateInfo::stateBehaviorsInfo[tindex].push_back(sbinfo);
+    SmaccStateInfo::stateReactorsInfo[tindex].push_back(sbinfo);
 
     return sbh;
   }

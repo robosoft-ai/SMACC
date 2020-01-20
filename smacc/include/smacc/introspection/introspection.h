@@ -253,7 +253,7 @@ static std::string getTransitionType()
 
 // // BASE CASE
 // template <typename T>
-// static void walkStateBehaviorsSources(SmaccStateBehaviorInfo &sbinfo, typelist<T>)
+// static void walkStateReactorsSources(SmaccStateReactorInfo &sbinfo, typelist<T>)
 // {
 //     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(T));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
@@ -265,7 +265,7 @@ static std::string getTransitionType()
 
 // // RECURSIVE CASE
 // template <typename TEvHead, typename... TEvArgs>
-// static void walkStateBehaviorsSources(SmaccStateBehaviorInfo &sbinfo, typelist<TEvHead, TEvArgs...>)
+// static void walkStateReactorsSources(SmaccStateReactorInfo &sbinfo, typelist<TEvHead, TEvArgs...>)
 // {
 //     auto sourceType = TypeInfo::getFromStdTypeInfo(typeid(TEvHead));
 //     auto evinfo = std::make_shared<SmaccEventInfo>(sourceType);
@@ -273,7 +273,7 @@ static std::string getTransitionType()
 //     sbinfo.sourceEventTypes.push_back(evinfo);
 //     ROS_INFO_STREAM("event: " << sourceType->getFullName());
 //     ROS_INFO_STREAM("event parameters: " << sourceType->templateParameters.size());
-//     walkStateBehaviorsSources(sbinfo, typelist<TEvArgs...>());
+//     walkStateReactorsSources(sbinfo, typelist<TEvArgs...>());
 // }
 
 } // namespace introspection
