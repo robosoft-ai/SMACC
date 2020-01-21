@@ -112,7 +112,8 @@ def get_identified_packages(workspace_folder):
     return identified_install_packages
 
 
-def package_io_push_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
+def package_io_push_debian_files(repo_owner, reponame,  osname, osversion, workspace_folder, debianfiles):
+    os.chdir(workspace_source_folder)
     for debf in debianfiles:
         print("pushing debfile")
         push_debian_task = subprocess.Popen(
@@ -216,17 +217,17 @@ if __name__ == "__main__":
         operating_system, os_version, ros_version)
     package_io_create_repository("smacc")
     package_io_push_debian_files(
-        repo_owner, "smacc",  operating_system, os_version, smacc_deb_files)
+        repo_owner, "smacc",  operating_system, os_version, relative_smacc_folder, smacc_deb_files)
 
     # ----- SMACC_VIEWER REPOSITORY ------------------
     smacc_viewer_debian_files = create_smacc_viwer_debians(
         operating_system, os_version, ros_version)
     package_io_create_repository("smacc_viewer")
     package_io_push_debian_files(
-        repo_owner, "smacc_viewer", operating_system, os_version, smacc_viewer_debian_files)
+        repo_owner, "smacc_viewer", operating_system, os_version, relative_smacc_viewer_folder, smacc_viewer_debian_files)
 
     # also upload smacc_msgs to smacc_viewer
     smacc_msgs_debianfile = [
         df for df in smacc_deb_files if "smacc_msgs" in df]
     package_io_push_debian_files(
-        repo_owner, "smacc_viewer", operating_system, os_version, smacc_msgs_debianfile)
+        repo_owner, "smacc_viewer", operating_system, os_version, relative_smacc_folder, smacc_msgs_debianfile)
