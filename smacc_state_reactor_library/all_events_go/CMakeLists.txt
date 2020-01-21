@@ -120,7 +120,7 @@ include
 
 ## Declare a C++ library
 add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/sb_all_events_go.cpp
+   src/${PROJECT_NAME}/sr_all_events_go.cpp
  )
 
 ## Add cmake target dependencies of the library

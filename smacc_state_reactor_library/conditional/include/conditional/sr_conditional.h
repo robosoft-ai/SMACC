@@ -15,7 +15,7 @@ struct EvConditionalTrue : sc::event<EvConditionalTrue<TSource, TObjectTag>>
 };
 
 //-----------------------------------------------------------------------
-class SbConditional : public StateReactor
+class SrConditional : public StateReactor
 {
 private:
     std::map<const std::type_info *, bool> triggeredEvents;
@@ -23,7 +23,7 @@ private:
 
 public:
     template <typename TEv>
-    SbConditional(std::function<bool(TEv *)> conditionalFunction)
+    SrConditional(std::function<bool(TEv *)> conditionalFunction)
     {
         std::function<void(TEv *)> callback =
             [=](TEv *ev) {
@@ -34,7 +34,7 @@ public:
         this->createEventCallback(callback);
     }
 
-    ~SbConditional();
+    ~SrConditional();
 
     virtual bool triggers() override;
 };

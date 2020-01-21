@@ -23,8 +23,8 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
    typedef mpl::list<
        // Expected event
-       //Transition<EvAllGo<SbAllEventsGo, SBehav1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
-       Transition<EvAllGo<SbAllEventsGo, SBehav1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
+       //Transition<EvAllGo<SrAllEventsGo, SBehav1>, StNavigateToWaypointsX, ON_SENSORS_AVAILABLE>,
+       Transition<EvAllGo<SrAllEventsGo, SBehav1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
 
        //Transition<EvAllGo2<LuAl2>, StateDestiny2>,
        Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
@@ -38,19 +38,19 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
       configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
-      // static_createStateReactor<SbAllEventsGo,
-      //                            EvAllGo<SbAllEventsGo, SBehav1>,
+      // static_createStateReactor<SrAllEventsGo,
+      //                            EvAllGo<SrAllEventsGo, SBehav1>,
       //                            mpl::list<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>>();
 
-      auto sbAllSensorsReady = static_createStateReactor<SbAllEventsGo>();
-      sbAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
-      sbAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
+      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();
+      srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
+      srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
-      sbAllSensorsReady->setOutputEvent<EvAllGo<SbAllEventsGo, SBehav1>>();
+      srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SBehav1>>();
 
-      // auto sball = static_createStateReactor<SbAllEventsGo>();
+      // auto sball = static_createStateReactor<SrAllEventsGo>();
       // sball->enablesOn<EvTopicMessage<CbLidarSensor, OrObstaclePerception>, EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-      // sball->throwsEvent<EvAllGo<SbAllEventsGo, SBehav1>>();
+      // sball->throwsEvent<EvAllGo<SrAllEventsGo, SBehav1>>();
    }
 };
 } // namespace sm_dance_bot

@@ -7,7 +7,7 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
 
     typedef mpl::list<
         // Expected event
-        Transition<EvCountdownEnd<SbEventCountdown>, StNavigateToWaypointsX>,
+        Transition<EvCountdownEnd<SrEventCountdown>, StNavigateToWaypointsX>,
 
         Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
         reactions;
@@ -19,12 +19,12 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         //   configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
         //   configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
 
-        //static_createStateReactor<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
-        //static_createStateReactor<SbEventCountdown, EvCountdownEnd<SbEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);        
+        //static_createStateReactor<SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvActionFeedback<ClMoveBaseZ>>>(100);
+        //static_createStateReactor<SrEventCountdown, EvCountdownEnd<SrEventCountdown>, mpl::list<EvTimer<ClRosTimer, OrTimer>>>(5);        
         
-        auto sbCountdown = static_createStateReactor<SbEventCountdown>(5);        
-        sbCountdown->addInputEvent<EvTimer<ClRosTimer, OrTimer>>();
-        sbCountdown->setOutputEvent<EvCountdownEnd<SbEventCountdown>>();
+        auto srCountdown = static_createStateReactor<SrEventCountdown>(5);        
+        srCountdown->addInputEvent<EvTimer<ClRosTimer, OrTimer>>();
+        srCountdown->setOutputEvent<EvCountdownEnd<SrEventCountdown>>();
     }
 };
 }

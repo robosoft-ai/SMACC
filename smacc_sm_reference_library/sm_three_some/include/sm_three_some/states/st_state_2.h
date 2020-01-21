@@ -5,7 +5,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
     using SmaccState::SmaccState;
 
     typedef mpl::list<
-        Transition<EvAllGo<SbAllEventsGo>, StState3>,
+        Transition<EvAllGo<SrAllEventsGo>, StState3>,
 
         // Keyboard events
         Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
@@ -19,22 +19,22 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
-        // static_createStateReactor<SbAllEventsGo,
-        //                        EvAllGo<SbAllEventsGo>,
+        // static_createStateReactor<SrAllEventsGo,
+        //                        EvAllGo<SrAllEventsGo>,
         //                        mpl::list<EvTimer<CbTimer, OrTimer>,
         //                                  EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>>();
 
-        auto sbAll = static_createStateReactor<SbAllEventsGo>();
+        auto sbAll = static_createStateReactor<SrAllEventsGo>();
         sbAll->addInputEvent<EvTimer<CbTimer, OrTimer>>();
         sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->setOutputEvent<EvAllGo<SbAllEventsGo>>();
+        sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
 
-        /*auto sb = static_createStateReactor<SbAllEventsGo>();
+        /*auto sb = static_createStateReactor<SrAllEventsGo>();
 
         sb->subscribesEvent<EvTimer<CbTimer, OrTimer>>();
         sb->subscribesEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
 
-        sb->publishesEvent<EvAllGo<SbAllEventsGo>>();*/
+        sb->publishesEvent<EvAllGo<SrAllEventsGo>>();*/
     }
 
     void onInitialize()

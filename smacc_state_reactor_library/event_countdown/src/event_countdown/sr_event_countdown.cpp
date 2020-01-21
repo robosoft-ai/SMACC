@@ -1,6 +1,6 @@
 
 #include <smacc/common.h>
-#include <event_countdown/sb_event_countdown.h>
+#include <event_countdown/sr_event_countdown.h>
 #include <memory>
 
 namespace smacc
@@ -8,12 +8,12 @@ namespace smacc
 namespace state_reactors
 {
 using namespace smacc::introspection;
-SbEventCountdown::SbEventCountdown(int eventCount)
+SrEventCountdown::SrEventCountdown(int eventCount)
     : eventCount_(eventCount)
 {
 }
 
-void SbEventCountdown::onInitialized()
+void SrEventCountdown::onInitialized()
 {
     for (auto type : eventTypes)
     {
@@ -21,7 +21,7 @@ void SbEventCountdown::onInitialized()
     }
 }
 
-void SbEventCountdown::onEventNotified(const std::type_info *eventType)
+void SrEventCountdown::onEventNotified(const std::type_info *eventType)
 {
     eventCount_--;
     ROS_INFO_STREAM("SB COUNTDOWN (" << eventCount_ << ") RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
@@ -35,7 +35,7 @@ void SbEventCountdown::onEventNotified(const std::type_info *eventType)
     // }
 }
 
-bool SbEventCountdown::triggers()
+bool SrEventCountdown::triggers()
 {
     if (eventCount_ == 0)
     {

@@ -120,7 +120,7 @@ include_directories(
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/sb_conditional.cpp
+   src/${PROJECT_NAME}/sr_conditional.cpp
  )
 
 ## Add cmake target dependencies of the library

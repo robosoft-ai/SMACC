@@ -15,12 +15,12 @@ struct EvAllGo : sc::event<EvAllGo<TSource, TObjectTag>>
 {
 };
 
-class SbAllEventsGo : public StateReactor
+class SrAllEventsGo : public StateReactor
 {
     std::map<const std::type_info *, bool> triggeredEvents;
 
 public:
-    SbAllEventsGo()
+    SrAllEventsGo()
     {
     }
 

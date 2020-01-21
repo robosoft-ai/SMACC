@@ -16,14 +16,14 @@ struct EvCountdownEnd : sc::event<EvCountdownEnd<TSource, TObjectTag>>
 };
 
 //-----------------------------------------------------------------------
-class SbEventCountdown : public StateReactor
+class SrEventCountdown : public StateReactor
 {
 private:
     std::map<const std::type_info *, bool> triggeredEvents;
     int eventCount_;
 
 public:
-    SbEventCountdown(int eventCount);
+    SrEventCountdown(int eventCount);
 
     virtual void onInitialized() override;
 

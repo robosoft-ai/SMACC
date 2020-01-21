@@ -120,8 +120,8 @@ include_directories(
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
-   #src/${PROJECT_NAME}/sb_event_countdown.cpp
-   src/event_countdown/sb_event_countdown.cpp
+   #src/${PROJECT_NAME}/sr_event_countdown.cpp
+   src/event_countdown/sr_event_countdown.cpp
  )
  
 

@@ -1,5 +1,5 @@
 
-#include <all_events_go/sb_all_events_go.h>
+#include <all_events_go/sr_all_events_go.h>
 #include <smacc/common.h>
 
 namespace smacc
@@ -8,7 +8,7 @@ namespace state_reactors
 {
 
 using namespace smacc::introspection;
-void SbAllEventsGo::onInitialized()
+void SrAllEventsGo::onInitialized()
 {
     for (auto type : eventTypes)
     {
@@ -16,7 +16,7 @@ void SbAllEventsGo::onInitialized()
     }
 }
 
-void SbAllEventsGo::onEventNotified(const std::type_info *eventType)
+void SrAllEventsGo::onEventNotified(const std::type_info *eventType)
 {
     ROS_INFO_STREAM("SB ALL RECEIVED EVENT OF TYPE:" << demangleSymbol(eventType->name()));
     triggeredEvents[eventType] = true;
@@ -27,7 +27,7 @@ void SbAllEventsGo::onEventNotified(const std::type_info *eventType)
     }
 }
 
-bool SbAllEventsGo::triggers()
+bool SrAllEventsGo::triggers()
 {
     ROS_INFO("SB All TRIGGERS?");
     for (auto &entry : triggeredEvents)
