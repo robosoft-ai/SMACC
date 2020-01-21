@@ -56,9 +56,9 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
             [os.path.join(root, f) for f in files]
 
     debianfiles = [f for f in thisfolderfiles if re.search(firstregexstr, f)]
-    print ("DETECTED DEBIAN FILES:")
+    print("DETECTED DEBIAN FILES:")
     print(debianfiles)
-    print ("VISITED DEBIAN FILES:")
+    print("VISITED DEBIAN FILES:")
     print(already_visited)
 
     debianfilename = [f for f in debianfiles if re.search(
@@ -214,15 +214,15 @@ if __name__ == "__main__":
     outfile.write('{"token":"%s"}' % args.token)
     outfile.close()
 
-    os = "ubuntu"
+    operating_system = "ubuntu"
     os_version = "xenial"
     ros_version = "kinetic"
 
     smacc_deb_files = create_and_push_smacc_debians(
-        os, os_version, ros_version)
+        operating_system, os_version, ros_version)
     smacc_viewer_files = create_and_push_smacc_viewer_debians(
-        os, os_version, ros_version)
+        operating_system, os_version, ros_version)
 
     # some cheating here, picking smacc_msgs from smacc and pushing also to smacc_viewer
-    push_debian_files(repo_owner, "smacc_viewer", os, os_version, [
+    push_debian_files(repo_owner, "smacc_viewer", operating_system, os_version, [
                       df for df in smacc_deb_files if "smacc_msgs" in df])
