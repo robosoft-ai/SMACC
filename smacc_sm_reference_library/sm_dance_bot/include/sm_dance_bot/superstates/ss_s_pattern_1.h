@@ -52,9 +52,9 @@ public:
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
-    static constexpr float pitch1_lenght_meters() { return 0.6; }
-    static constexpr float pitch2_lenght_meters() { return 2.0; }
-    static constexpr int total_iterations() { return 5; }
+    static constexpr float pitch1_lenght_meters() { return 0.75; }
+    static constexpr float pitch2_lenght_meters() { return 1.75; }
+    static constexpr int total_iterations() { return 11; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
     int iteration_count;
