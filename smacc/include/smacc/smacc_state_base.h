@@ -51,6 +51,10 @@ public:
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
+    static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value, "The context class must be a SmaccState or a SmaccStateMachine");
+
+    static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
+
     ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
     this->set_context(ctx.pContext_);
 

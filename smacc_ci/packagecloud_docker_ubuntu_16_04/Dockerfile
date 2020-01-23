@@ -46,7 +46,7 @@ RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_V
 
 WORKDIR /root
 
-RUN echo "regen"
+#RUN echo "regen"
 # BUILD SMACC AND SMACC_VIEWER
 # -----------------------------------------------------------------
 RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
