@@ -22,6 +22,8 @@ public:
 
     std::string getName() const;
 
+    virtual void runtimeConfigure();
+
     virtual void onEntry();
 
     virtual void onExit();

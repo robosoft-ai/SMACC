@@ -1,10 +1,5 @@
-# /bin/python
+#/bin/python
 
-# *****************************************************************************************************************
-# * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
-# * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
-# *
-# ******************************************************************************************************************/
 import rospkg
 import subprocess
 import os
@@ -12,8 +7,7 @@ import time
 import shutil
 import re
 
-# src/smacc_ci/generate_debs.py -smacc_src_folder src -smacc_viewer_src_folder src
-
+#src/smacc_ci/generate_debs.py -smacc_src_folder src -smacc_viewer_src_folder src
 
 def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu_version, ros_distro, already_visited):
     print("-----------------------")
@@ -61,9 +55,9 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
             [os.path.join(root, f) for f in files]
 
     debianfiles = [f for f in thisfolderfiles if re.search(firstregexstr, f)]
-    print("DETECTED DEBIAN FILES:")
+    print ("DETECTED DEBIAN FILES:")
     print(debianfiles)
-    print("VISITED DEBIAN FILES:")
+    print ("VISITED DEBIAN FILES:")
     print(already_visited)
 
     debianfilename = [f for f in debianfiles if re.search(
@@ -79,26 +73,17 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
     return debianfilename
 
 
-def iterate_debian_generation(sourcefolder, package_names, osversion, rosversion):
-    source_folder_in_workspace = os.path.join(sourcefolder)
-
-    identified_install_packages = get_identified_packages(workspace_folder)
-
-    os.chdir(source_folder_in_workspace)
+def iterate_debian_generation(workspace_source_folder, package_names, identified_install_packages,osversion, rosversion):
+    os.chdir(workspace_source_folder)
     debianfiles = []
     for pname in package_names:
-        debianfiles.append(build_deb_package(source_folder_in_workspace,
+        debianfiles.append(build_deb_package(workspace_source_folder,
                                              pname, identified_install_packages[pname], osversion, rosversion, debianfiles))
     return debianfiles
 
 
 def get_identified_packages(workspace_folder):
     identified_install_packages = {}
-
-    rospack = rospkg.RosPack()
-    packages = rospack.list()
-    packagesl = list(packages)
-
     exclude_with_words = ["ridgeback", "mecanum", "catkin"]
     for pname in packagesl:
         packpath = rospack.get_path(pname)
@@ -111,52 +96,69 @@ def get_identified_packages(workspace_folder):
     return identified_install_packages
 
 
-def package_io_push_debian_files(repo_owner, reponame,  osname, osversion, workspace_folder, debianfiles):
-    os.chdir(workspace_folder)
+def push_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
     for debf in debianfiles:
         print("pushing debfile")
         push_debian_task = subprocess.Popen(
-            "package_cloud push " + repo_owner+"/"+reponame+"/"+osname+"/" + osversion+" " + debf, shell=True)
+            "package_cloud push " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + debf, shell=True)
         push_debian_task.wait()
 
 # ------------------------ SMACC PACKAGES -----------------------
 
 
-def create_smacc_debians(osname, osversion, rosversion):
+def create_and_push_smacc_debians(osname, osversion, rosversion):
+    workspace_source_folder = os.path.join(
+        workspace_folder, relative_smacc_folder)
+    identified_install_packages = get_identified_packages(workspace_folder)
 
     smacc_manual_order_packages = [  # 'forward_global_planner',
         # 'backward_global_planner',
         # 'backward_local_planner',
         # 'forward_local_planner',
         'smacc_msgs',
-        'smacc',
-        'all_events_go',
-        'conditional',
-        'event_countdown',
-        'keyboard_client',
-        'move_base_z_client_plugin',
-        'multirole_sensor_client',
-        'ros_publisher_client',
-        'ros_timer_client',
-        #        'sm_dance_bot',
-        #        'sm_dance_bot_2',
-        #        'sm_viewer_sim',
-        #        'sm_three_some'
-    ]
+        # 'smacc',
+        # 'all_events_go',
+        # 'conditional',
+        # 'event_countdown',
+        # 'keyboard_client',
+        # 'move_base_z_client_plugin',
+        # 'multirole_sensor_client',
+        # 'ros_publisher_client',
+        # 'ros_timer_client',
+#        'sm_dance_bot',
+#        'sm_dance_bot_2',
+#        'sm_viewer_sim',
+#        'sm_three_some'
+]
 
-    return iterate_debian_generation(relative_smacc_folder, smacc_manual_order_packages, osversion, rosversion)
+    smacc_debian_files = iterate_debian_generation(
+        workspace_source_folder, smacc_manual_order_packages, identified_install_packages, osversion, rosversion)
 
-
-def package_io_create_repository(repository_name):
     create_repo_task = subprocess.Popen(
-        "package_cloud repository create %d" % repository_name, shell=True)
+        "package_cloud repository create smacc", shell=True)
     create_repo_task.wait()
 
+    # ----- PUSHING TO SMACC --------------
+    push_debian_files(repo_owner, "smacc",  osname, osversion, smacc_debian_files)
 
-def create_smacc_viwer_debians(osname, osversion, rosversion):
+    return smacc_debian_files
+
+
+def create_and_push_smacc_viewer_debians(osname, osversion, rosversion):
+    workspace_source_folder = os.path.join(
+        workspace_folder, relative_smacc_viewer_folder)
+    identified_install_packages = get_identified_packages(workspace_folder)
     smacc_viewer_manual_order_packages = ["smacc_viewer"]
     smacc_viewer_debian_files = iterate_debian_generation(
-        relative_smacc_viewer_folder, smacc_viewer_manual_order_packages, osversion, rosversion)
+        workspace_source_folder, smacc_viewer_manual_order_packages, identified_install_packages, osversion, rosversion)
+
+    create_repo_task = subprocess.Popen(
+        "package_cloud repository create smacc_viewer", shell=True)
+    create_repo_task.wait()
+
+    # ----- PUSHING TO SMACC VIEWER--------------
+    push_debian_files(repo_owner, "smacc_viewer", osname, osversion, smacc_viewer_debian_files)
+
     return smacc_viewer_debian_files
 
 
@@ -172,61 +174,51 @@ if __name__ == "__main__":
     import argcomplete
 
     # ==== CONFIGURATION PARAMETERS =========
-    # ------------ COMANDLINE PARAMETERS----------------------------------------------------
+    repo_owner = "pibgeus"
+    
+    # =========================================
+
+    rospack = rospkg.RosPack()
+    packages = rospack.list()
+    packagesl = list(packages)
+
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-smacc_src_folder',
-                        help="smacc workspace folder", default="src/SMACC")
-    parser.add_argument('-smacc_viewer_src_folder',
-                        help="relative smacc src folder", default="src/SMACC_Viewer")
-    parser.add_argument('-repo_owner', help="Repo owner",
-                        default="reelrbtx", required=True)
-    parser.add_argument('-token', help="Repo token", default="")
+    parser.add_argument('-smacc_src_folder', help="smacc workspace folder", default = "src/SMACC")
+    parser.add_argument('-smacc_viewer_src_folder', help="relative smacc src folder", default= "src/SMACC_Viewer")
+    parser.add_argument('-repo_owner', help="Repo owner", default= "pibgeus")
+    parser.add_argument('-token', help="Repo token", default= "")
     parser.add_argument('-help', help="Help command")
 
     argcomplete.autocomplete(parser)
 
     args = parser.parse_args()
-    if hasattr(args, 'help'):
+    if hasattr(args,'help'):
         parser.print_help()
-    # ----------------------------------------------------------------
-
-    relative_smacc_folder = args.smacc_src_folder  # "src/SMACC"
-    relative_smacc_viewer_folder = args.smacc_viewer_src_folder  # "src/SMACC_Viewer"
+        
+    relative_smacc_folder = args.smacc_src_folder               #"src/SMACC"
+    relative_smacc_viewer_folder = args.smacc_viewer_src_folder #"src/SMACC_Viewer"
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
     repo_owner = args.repo_owner
 
-    # -------  FIRST WE CREATE THE TOKEN IN THIS MACHINE USING THE GIVEN INPUT ----------
     print("CREATING TOKEN FILE FOR PACKAGE CLOUD:")
     homefolder = os.getenv("HOME")
-    packagecloud_token_filepath = os.path.join(homefolder, ".packagecloud")
+    packagecloud_token_filepath = os.path.join(homefolder,".packagecloud")   
 
-    outfile = open(packagecloud_token_filepath, "w")
-    outfile.write('{"token":"%s"}' % args.token)
+    outfile=open(packagecloud_token_filepath,"w")
+    outfile.write('{"token":"%s"}'%args.token)
     outfile.close()
-    # --------------------------------------------------------------------------------------
+    
+    
+    smacc_debians = create_and_push_smacc_debians("ubuntu", "xenial", "kinetic")
+    smacc_viewer_debians = create_and_push_smacc_viewer_debians("ubuntu", "xenial", "kinetic")
 
-    operating_system = "ubuntu"
-    os_version = "xenial"
-    ros_version = "kinetic"
+    print("SMACC DEBIANS: "+  str(smacc_debians))
+    print("SMACC VIEWER DEBIANS: "+  str(smacc_viewer_debians))
 
-    # ----- SMACC REPOSITORY ------------------
-    smacc_deb_files = create_smacc_debians(
-        operating_system, os_version, ros_version)
-    package_io_create_repository("smacc")
-    package_io_push_debian_files(
-        repo_owner, "smacc",  operating_system, os_version, relative_smacc_folder, smacc_deb_files)
-
-    # ----- SMACC_VIEWER REPOSITORY ------------------
-    smacc_viewer_debian_files = create_smacc_viwer_debians(
-        operating_system, os_version, ros_version)
-    package_io_create_repository("smacc_viewer")
-    package_io_push_debian_files(
-        repo_owner, "smacc_viewer", operating_system, os_version, relative_smacc_viewer_folder, smacc_viewer_debian_files)
-
-    # also upload smacc_msgs to smacc_viewer
-    smacc_msgs_debianfile = [
-        df for df in smacc_deb_files if "smacc_msgs" in df]
-    package_io_push_debian_files(
-        repo_owner, "smacc_viewer", operating_system, os_version, relative_smacc_folder, smacc_msgs_debianfile)
+    print("PUSHING SMACC_MSGS TO smacc_viewer repo")
+    extra_smacc_viewer = [df for df in smacc_debians if "smacc-msgs" in df ]
+    print(extra_smacc_viewer)
+    push_debian_files(repo_owner, "smacc_viewer",  "ubuntu", "xenial", extra_smacc_viewer)
+    

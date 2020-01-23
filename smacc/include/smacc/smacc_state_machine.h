@@ -97,6 +97,9 @@ public:
     void notifyOnStateEntryEnd(StateType *state);
 
     template <typename StateType>
+    void notifyOnRuntimeConfigured(StateType *state);
+
+    template <typename StateType>
     void notifyOnStateExit(StateType *state);
 
     inline unsigned long getCurrentStateCounter() const;

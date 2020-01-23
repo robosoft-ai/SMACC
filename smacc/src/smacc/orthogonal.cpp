@@ -35,6 +35,18 @@ std::string IOrthogonal::getName() const
     return demangleSymbol(typeid(*this).name());
 }
 
+void IOrthogonal::runtimeConfigure()
+{
+    for (auto &clBehavior : clientBehaviors_)
+        {
+            ROS_INFO("Orthogonal %s runtimeConfigure, current Behavior: %s",
+                     this->getName().c_str(),
+                     clBehavior->getName().c_str());
+
+            clBehavior->runtimeConfigure();
+        }
+}
+
 void IOrthogonal::onEntry()
 {
     if (clientBehaviors_.size() > 0)

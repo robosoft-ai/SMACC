@@ -113,7 +113,13 @@ public:
       ROS_INFO("---- END STATIC DESCRIPTION");
     }
 
+    ROS_INFO("State runtime configuration");
+
+    // first we runtime configure the state, where we create client behaviors
     static_cast<MostDerived *>(this)->runtimeConfiguration();
+
+    // then the orthogonals are internally configured
+    this->getStateMachine().notifyOnRuntimeConfigured(static_cast<MostDerived *>(this));
 
     //ROS_INFO("Not behavioral State");
     static_cast<MostDerived *>(this)->onEntry();
@@ -154,6 +160,7 @@ public:
 
   void exit()
   {
+    // this function is called by boot statechart
     try
     {
       this->requestLockStateMachine("state exit");
@@ -161,14 +168,19 @@ public:
       ROS_WARN_STREAM("exiting state: " << fullname);
       this->setParam("destroyed", true);
 
+      // first process orthogonals onexits
       this->getStateMachine().notifyOnStateExit(static_cast<MostDerived *>(this));
+
+      // then call exit state
       ROS_WARN_STREAM("state exit: " << fullname);
+      static_cast<MostDerived *>(this)->onExit();
     }
     catch (...)
     {
     }
     this->requestUnlockStateMachine("state exit");
   }
+
   virtual ~SmaccState()
   {
   }

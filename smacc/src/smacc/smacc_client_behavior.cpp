@@ -23,6 +23,11 @@ void SmaccClientBehavior::onEntry()
     ROS_INFO("SmaccClientBehavior %s onEntry", this->getName().c_str());
 }
 
+void SmaccClientBehavior::runtimeConfigure()
+{
+    ROS_INFO("SmaccClientBehavior %s runtimeConfigure", this->getName().c_str());
+}
+
 void SmaccClientBehavior::onExit()
 {
     ROS_INFO("SmaccClientBehavior %s onExit", this->getName().c_str());

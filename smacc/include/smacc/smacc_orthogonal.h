@@ -19,6 +19,8 @@ public:
 
     void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statereactor);
 
+    void runtimeConfigure();
+
     void onEntry();
 
     void onExit();

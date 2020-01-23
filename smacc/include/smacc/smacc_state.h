@@ -15,6 +15,11 @@ public:
 
   inline ISmaccState *getParentState() { return parentState_; };
 
+  inline ros::NodeHandle &getROSNode()
+  {
+    return nh;
+  }
+
   virtual std::string getClassName();
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>
@@ -65,11 +70,6 @@ public:
 
   template <typename TOrthogonal>
   TOrthogonal *getOrthogonal();
-
-  inline ros::NodeHandle &getROSNode()
-  {
-    return nh;
-  }
 
 protected:
   std::vector<std::shared_ptr<StateReactor>> stateReactors_;

@@ -355,6 +355,19 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
 }
 
 template <typename StateType>
+void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
+{
+    for (auto pair : this->orthogonals_)
+    {
+        ROS_INFO("ortho onruntime configure: %s", pair.second->getName().c_str());
+        auto &orthogonal = pair.second;
+        orthogonal->runtimeConfigure();
+    }
+
+    this->updateStatusMessage();
+}
+
+template <typename StateType>
 void ISmaccStateMachine::notifyOnStateExit(StateType *state)
 {
     ROS_INFO_STREAM("Notification State Exit: leaving state" << state);
