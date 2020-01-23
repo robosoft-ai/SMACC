@@ -6,9 +6,9 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
   typedef Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,CONTINUELOOP>
       reactions;
 
-  static void onDefinition() {}
+  static void staticConfigure() {}
 
-  void onInitialize() {}
+  void runtimeConfiguration() {}
 
   bool loopWhileCondition() {
     auto &superstate = this->context<SS>();

@@ -31,6 +31,7 @@ struct SmaccEventInfo
 
     std::string getEventSourceName();
 
+    // AKA orthogonal
     std::string getObjectTagName();
 
     std::string label;
@@ -55,7 +56,7 @@ struct SmaccTransitionInfo
     std::string transitionType;
     std::shared_ptr<SmaccEventInfo> eventInfo;
 
-    TypeInfo::Ptr transitionTypeInfo;
+    smacc::introspection::TypeInfo::Ptr transitionTypeInfo;
 };
 //---------------------------------------------
 
@@ -67,7 +68,7 @@ struct CallbackFunctor
 class StateReactorHandler
 {
 private:
-    std::vector <CallbackFunctor> callbacks_;
+    std::vector<CallbackFunctor> callbacks_;
 
 public:
     void configureStateReactor(std::shared_ptr<smacc::StateReactor> sb);
@@ -79,7 +80,6 @@ public:
     void setOutputEvent();
 
     std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> sbInfo_;
-
 };
 
 //---------------------------------------------
@@ -129,7 +129,7 @@ public:
 
     inline int depth() const { return depth_; }
 
-    void getAncestors(std::list<std::shared_ptr<SmaccStateInfo>> &ancestorsList);
+    void getAncestors(std::list<const SmaccStateInfo *> &ancestorsList) const;
 
     std::string getFullPath();
 

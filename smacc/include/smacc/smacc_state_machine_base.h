@@ -54,11 +54,9 @@ public:
         this->onInitializing(shortname);
 
         ROS_INFO("Introspecting state machine via typeWalker");
-        info_ = std::make_shared<SmaccStateMachineInfo>();
-        info_->buildStateMachineInfo<InitialStateType>();
+        this->buildStateMachineInfo<InitialStateType>();
 
         ROS_INFO("Initializing ROS communication mechanisms");
-        info_->assembleSMStructureMessage(this);
         this->onInitialized();
 
         ROS_INFO("Initializing state machine");

@@ -14,7 +14,7 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
       reactions;
 
   //-------------------------------------------------------------------------------
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimer>();
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
@@ -23,7 +23,7 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
   }
 
   //-------------------------------------------------------------------------------
-  void onInitialize()
+  void runtimeConfiguration()
   {
     //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);
   }

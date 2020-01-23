@@ -14,7 +14,7 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
         Transition<EvFail, MsRecover, smacc::ABORT>>
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimer>();   
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
@@ -22,7 +22,7 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
     }
 };

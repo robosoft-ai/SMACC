@@ -12,12 +12,12 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
       Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialReturn, ABORT>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     cl_lidar::ClLaserSensor *lidarClient;
     this->requiresClient(lidarClient);

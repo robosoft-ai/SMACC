@@ -12,7 +12,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>>
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimer>();
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
@@ -37,7 +37,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         sb->publishesEvent<EvAllGo<SrAllEventsGo>>();*/
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
     }
 };

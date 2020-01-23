@@ -338,7 +338,7 @@ std:
 
     stateSeqCounter_++;
     currentState_ = state;
-    currentStateInfo_ = info_->getState<StateType>();
+    currentStateInfo_ = stateMachineInfo_->getState<StateType>();
 }
 
 template <typename StateType>
@@ -391,4 +391,29 @@ void ISmaccStateMachine::propagateEventToStateReactors(ISmaccState *st, EventTyp
         propagateEventToStateReactors(pst, ev);
     }
 }
+
+template <typename InitialStateType>
+void ISmaccStateMachine::buildStateMachineInfo()
+{
+    this->stateMachineInfo_ = std::make_shared<SmaccStateMachineInfo>();
+    this->stateMachineInfo_->buildStateMachineInfo<InitialStateType>();
+    this->stateMachineInfo_->assembleSMStructureMessage(this);
+    this->checkStateMachineConsistence();
+}
+
+unsigned long ISmaccStateMachine::getCurrentStateCounter() const
+{
+    return this->stateSeqCounter_;
+}
+
+ISmaccState *ISmaccStateMachine::getCurrentState() const
+{
+    return this->currentState_;
+}
+
+const smacc::introspection::SmaccStateMachineInfo &ISmaccStateMachine::getStateMachineInfo()
+{
+    return *this->stateMachineInfo_;
+}
+
 } // namespace smacc

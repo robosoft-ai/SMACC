@@ -7,11 +7,11 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
   using SmaccState::SmaccState;
   typedef mpl::list<smacc::Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 

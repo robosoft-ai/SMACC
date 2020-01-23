@@ -14,7 +14,7 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
       reactions;
 
   //-------------------------------------------------------------------------------
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimer>();
     configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
@@ -23,7 +23,7 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
   }
 
   //-------------------------------------------------------------------------------
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

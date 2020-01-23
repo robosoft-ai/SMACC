@@ -9,11 +9,11 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS> {
 
   using SmaccState::SmaccState;
 
-  static void onDefinition() {
+  static void staticConfigure() {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
   }
 
-  void onInitialize() {}
+  void runtimeConfiguration() {}
 };
 }
 }

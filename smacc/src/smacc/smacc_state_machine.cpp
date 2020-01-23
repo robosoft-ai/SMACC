@@ -75,7 +75,7 @@ void ISmaccStateMachine::updateStatusMessage()
         if (this->runMode_ == SMRunMode::DEBUG)
         {
             status_msg_.current_states.clear();
-            std::list<SmaccStateInfo::Ptr> ancestorList;
+            std::list<const SmaccStateInfo *> ancestorList;
             currentStateInfo_->getAncestors(ancestorList);
 
             for (auto &ancestor : ancestorList)
@@ -98,7 +98,7 @@ void ISmaccStateMachine::updateStatusMessage()
     }
 }
 
-void ISmaccStateMachine::publishTransition(SmaccTransitionInfo &transitionInfo)
+void ISmaccStateMachine::publishTransition(const SmaccTransitionInfo &transitionInfo)
 {
     smacc_msgs::SmaccTransitionLogEntry transitionLogEntry;
     transitionLogEntry.timestamp = ros::Time::now();
@@ -143,7 +143,7 @@ void ISmaccStateMachine::state_machine_visualization(const ros::TimerEvent &)
     std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
     smacc_msgs::SmaccStateMachine state_machine_msg;
-    state_machine_msg.states = info_->stateMsgs;
+    state_machine_msg.states = stateMachineInfo_->stateMsgs;
     this->stateMachinePub_.publish(state_machine_msg);
 
     status_msg_.header.stamp = ros::Time::now();
@@ -165,6 +165,56 @@ void ISmaccStateMachine::unlockStateMachine(std::string msg)
 std::string ISmaccStateMachine::getStateMachineName()
 {
     return demangleSymbol(typeid(*this).name());
+}
+
+void ISmaccStateMachine::checkStateMachineConsistence()
+{
+    // transition from an orthogonal that doesn’t exist.
+    // transition from a source that doesn’t exist.
+
+    // std::stringstream errorbuffer;
+    // bool errorFound = false;
+
+    // for (auto &stentry : this->stateMachineInfo_->states)
+    // {
+    //     auto stinfo = stentry.second;
+
+    //     for (auto &transition : stinfo->transitions_)
+    //     {
+    //         auto evinfo = transition.eventInfo;
+    //         bool found = false;
+    //         for (auto &orthogonal : orthogonals_)
+    //         {
+    //             if (orthogonal.first == evinfo->getObjectTagName())
+    //             {
+    //                 found = true;
+    //                 break;
+    //             }
+    //         }
+
+    //         if (!found)
+    //         {
+    //             errorbuffer << "---------" << std::endl
+    //                         << "[Consistency Checking] Transition event refers not existing orthogonal." << std::endl
+    //                         << "State: " << demangleType(*stinfo->tid_) << std::endl
+    //                         << "Transition: " << transition.transitionTypeInfo->getFullName() << std::endl
+    //                         << "Orthogonal: " << evinfo->getObjectTagName() << std::endl
+    //                         << "---------" << std::endl;
+
+    //             errorFound = true;
+    //         }
+    //         //std::string getEventSourceName();
+    //         //std::string getObjectTagName();
+    //     }
+    // }
+
+    // if (errorFound)
+    // {
+    //     ROS_WARN_STREAM("== STATE MACHINE CONSISTENCY CHECK: ==" << std::endl
+    //                                                              << errorbuffer.str() << std::endl
+    //                                                              << "=================");
+    // }
+    // cb from a client that doesn’t exist – don’t worry about making clients dynamically.
 }
 
 } // namespace smacc

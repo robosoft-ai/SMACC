@@ -7,11 +7,11 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
   using SmaccState::SmaccState;
   typedef smacc::Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 

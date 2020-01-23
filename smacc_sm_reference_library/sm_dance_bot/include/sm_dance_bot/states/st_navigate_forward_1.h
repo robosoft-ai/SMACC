@@ -15,14 +15,14 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
 
   using SmaccState::SmaccState;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(1);
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     ClMoveBaseZ *move_base_action_client;
     this->requiresClient(move_base_action_client);

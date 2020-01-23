@@ -10,11 +10,11 @@ struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
                       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward2>>
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
         auto &superstate = this->context<SS>();
         ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());

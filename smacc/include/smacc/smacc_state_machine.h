@@ -77,7 +77,7 @@ public:
 
     inline std::shared_ptr<SmaccStateInfo> getCurrentStateInfo() { return currentStateInfo_; }
 
-    void publishTransition(SmaccTransitionInfo &transitionInfo);
+    void publishTransition(const SmaccTransitionInfo &transitionInfo);
 
     /// this function should be implemented by the user to create the orthogonals
     virtual void onInitialize();
@@ -90,12 +90,6 @@ public:
     template <typename TSmaccSignal, typename TMemberFunctionPrototype>
     boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
 
-    std::list<boost::signals2::connection> stateCallbackConnections;
-
-    void lockStateMachine(std::string msg);
-
-    void unlockStateMachine(std::string msg);
-
     template <typename StateType>
     void notifyOnStateEntryStart(StateType *state);
 
@@ -105,11 +99,18 @@ public:
     template <typename StateType>
     void notifyOnStateExit(StateType *state);
 
-    inline unsigned long getCurrentStateCounter() const { return this->stateSeqCounter_; }
+    inline unsigned long getCurrentStateCounter() const;
 
-    inline ISmaccState *getCurrentState() const { return this->currentState_; }
+    inline ISmaccState *getCurrentState() const;
+
+    inline const SmaccStateMachineInfo &getStateMachineInfo();
+
+    template <typename InitialStateType>
+    void buildStateMachineInfo();
 
 protected:
+    void checkStateMachineConsistence();
+
     void onInitializing(std::string smshortname);
 
     void onInitialized();
@@ -153,6 +154,8 @@ protected:
 private:
     std::recursive_mutex m_mutex_;
 
+    std::list<boost::signals2::connection> stateCallbackConnections;
+
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
 
@@ -166,12 +169,16 @@ private:
     unsigned long stateSeqCounter_;
 
     friend class ISmaccState;
+    friend class SignalDetector;
+
+    void lockStateMachine(std::string msg);
+
+    void unlockStateMachine(std::string msg);
 
     template <typename EventType>
     void propagateEventToStateReactors(ISmaccState *st, EventType *ev);
 
-public:
-    std::shared_ptr<SmaccStateMachineInfo> info_;
+    std::shared_ptr<SmaccStateMachineInfo> stateMachineInfo_;
 };
 } // namespace smacc
 

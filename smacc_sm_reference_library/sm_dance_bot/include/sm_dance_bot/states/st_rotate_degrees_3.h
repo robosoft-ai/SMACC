@@ -14,14 +14,14 @@ struct StRotateDegrees3 : smacc::SmaccState<StRotateDegrees3, MsDanceBotRunMode>
       Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbRotate>(/*30*/ 180);
     configure_orthogonal<OrLED, CbLEDOff>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

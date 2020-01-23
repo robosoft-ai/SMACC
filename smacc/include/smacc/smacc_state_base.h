@@ -81,7 +81,7 @@ public:
 
     this->setParam("created", true);
 
-    // before dynamic onInitialize, we execute the onDefinition behavior configurations
+    // before dynamic runtimeConfiguration, we execute the staticConfigure behavior configurations
     {
       ROS_INFO("-- STATIC STATE DESCRIPTION --");
 
@@ -113,7 +113,7 @@ public:
       ROS_INFO("---- END STATIC DESCRIPTION");
     }
 
-    static_cast<MostDerived *>(this)->onInitialize();
+    static_cast<MostDerived *>(this)->runtimeConfiguration();
 
     //ROS_INFO("Not behavioral State");
     static_cast<MostDerived *>(this)->onEntry();
@@ -127,14 +127,14 @@ public:
 
   InnerInitial *smacc_inner_type;
 
-  smacc::introspection::SmaccStateInfo::Ptr getStateInfo()
+  const smacc::introspection::SmaccStateInfo *getStateInfo()
   {
-    auto smInfo = this->getStateMachine().info_;
+    auto smInfo = this->getStateMachine().getStateMachineInfo();
 
     auto key = typeid(MostDerived).name();
-    if (smInfo->states.count(key))
+    if (smInfo.states.count(key))
     {
-      return smInfo->states[key];
+      return smInfo.states[key].get();
     }
     else
     {
@@ -156,7 +156,7 @@ public:
   {
     try
     {
-      this->getStateMachine().lockStateMachine("state exit");
+      this->requestLockStateMachine("state exit");
       auto fullname = demangleSymbol(typeid(MostDerived).name());
       ROS_WARN_STREAM("exiting state: " << fullname);
       this->setParam("destroyed", true);
@@ -167,7 +167,7 @@ public:
     catch (...)
     {
     }
-    this->getStateMachine().unlockStateMachine("state exit");
+    this->requestUnlockStateMachine("state exit");
   }
   virtual ~SmaccState()
   {
@@ -187,7 +187,7 @@ public:
 public:
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 

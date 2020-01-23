@@ -10,11 +10,11 @@ struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
                     smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate2>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     auto &superstate = this->context<SS>();
 

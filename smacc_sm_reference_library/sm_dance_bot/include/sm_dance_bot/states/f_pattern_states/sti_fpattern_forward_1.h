@@ -12,13 +12,13 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
 
   typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternReturn1<SS>> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
      TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
      TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     auto &superstate = TSti::template context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());

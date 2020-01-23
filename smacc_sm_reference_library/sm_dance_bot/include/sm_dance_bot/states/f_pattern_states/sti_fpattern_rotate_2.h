@@ -11,7 +11,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
 
   typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternForward2<SS>> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     double offset = 7; // for a better behaving
     float angle = 0;
@@ -25,7 +25,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
     TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

@@ -14,14 +14,14 @@ struct StNavigateReverse3 : smacc::SmaccState<StNavigateReverse3, MsDanceBotRunM
        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
        reactions;
 
-   static void onDefinition()
+   static void staticConfigure()
    {
       configure_orthogonal<OrNavigation, CbNavigateBackwards>(2);
       configure_orthogonal<OrLED, CbLEDOff>();
       configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
    }
 
-   void onInitialize()
+   void runtimeConfiguration()
    {
    }
 };

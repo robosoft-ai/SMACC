@@ -14,7 +14,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transiti
 
     //auto currstateinfo = this->getStateMachine().getCurrentStateInfo();
     auto currstateinfo = this->stateInfo_;
-    
+
     if (currstateinfo != nullptr)
     {
         //ROS_ERROR_STREAM("CURRENT STATE INFO: " << currstateinfo->fullStateName);
@@ -44,7 +44,7 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transiti
 
         ROS_ERROR("Ancestors candidates: ");
 
-        std::list<std::shared_ptr<SmaccStateInfo>> ancestors;
+        std::list<const SmaccStateInfo *> ancestors;
         stateinfo->getAncestors(ancestors);
 
         for (auto &ancestor : ancestors)
@@ -65,6 +65,15 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transiti
     {
         ROS_ERROR_STREAM("Transition happened, but current state was not set. Transition candidates:");
     }
+}
+
+void ISmaccState::requestLockStateMachine(std::string msg)
+{
+    this->getStateMachine().lockStateMachine(msg);
+}
+void ISmaccState::requestUnlockStateMachine(std::string msg)
+{
+    this->getStateMachine().unlockStateMachine(msg);
 }
 
 } // namespace smacc

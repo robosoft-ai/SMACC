@@ -11,14 +11,14 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

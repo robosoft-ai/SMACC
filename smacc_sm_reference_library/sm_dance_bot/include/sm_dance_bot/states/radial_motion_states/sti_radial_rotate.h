@@ -11,13 +11,13 @@ struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, ABORT>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     auto cbAbsRotate = this->getOrthogonal<OrNavigation>()
                            ->getClientBehavior<CbAbsoluteRotate>();

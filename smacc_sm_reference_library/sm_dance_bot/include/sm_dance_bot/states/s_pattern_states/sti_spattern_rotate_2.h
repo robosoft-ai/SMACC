@@ -10,7 +10,7 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
                       smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward1>>
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         float offset = 7;
         float angle = 0;
@@ -23,7 +23,7 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
         configure_orthogonal<OrLED, CbLEDOff>();
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
         auto &superstate = this->context<SS>();
         ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());

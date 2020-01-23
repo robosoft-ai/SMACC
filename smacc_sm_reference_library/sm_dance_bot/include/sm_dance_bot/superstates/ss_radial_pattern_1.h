@@ -44,12 +44,12 @@ public:
 
     int iteration_count = 0;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
     }
 };

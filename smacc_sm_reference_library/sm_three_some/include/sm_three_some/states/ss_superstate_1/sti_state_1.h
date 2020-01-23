@@ -10,12 +10,12 @@ public:
   typedef Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> reactions;
 
   //-------------------------------------------------------------------------------
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
 
   //-------------------------------------------------------------------------------
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 

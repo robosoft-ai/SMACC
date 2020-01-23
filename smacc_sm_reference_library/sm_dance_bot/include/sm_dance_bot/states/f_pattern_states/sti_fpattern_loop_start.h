@@ -11,7 +11,7 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   typedef smacc::Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
 

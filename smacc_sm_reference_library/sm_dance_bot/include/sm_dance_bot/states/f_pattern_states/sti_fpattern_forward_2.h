@@ -11,11 +11,11 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 
   typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>> reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
   }
   
-  void onInitialize()
+  void runtimeConfiguration()
   {
     auto &superstate = TSti::template context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());

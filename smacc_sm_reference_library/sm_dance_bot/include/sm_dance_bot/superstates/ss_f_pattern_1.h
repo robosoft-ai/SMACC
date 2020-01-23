@@ -63,12 +63,12 @@ public:
     // superstate state variables
     int iteration_count;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
         iteration_count = 0;
     }

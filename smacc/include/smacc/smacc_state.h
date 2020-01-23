@@ -64,7 +64,7 @@ public:
   bool param(std::string param_name, T &param_val, const T &default_val) const;
 
   template <typename TOrthogonal>
-  TOrthogonal* getOrthogonal();
+  TOrthogonal *getOrthogonal();
 
   inline ros::NodeHandle &getROSNode()
   {
@@ -78,6 +78,10 @@ protected:
 
   ISmaccState *parentState_;
 
-  std::shared_ptr<smacc::introspection::SmaccStateInfo> stateInfo_;
+  const smacc::introspection::SmaccStateInfo *stateInfo_;
+
+  void requestLockStateMachine(std::string msg);
+
+  void requestUnlockStateMachine(std::string msg);
 };
 } // namespace smacc

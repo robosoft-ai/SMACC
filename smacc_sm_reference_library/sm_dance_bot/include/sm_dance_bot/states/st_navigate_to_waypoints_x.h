@@ -38,13 +38,13 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
 
   //int currentIteration;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrLED, CbLEDOn>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     ClMoveBaseZ *move_base;
     this->requiresClient(move_base);

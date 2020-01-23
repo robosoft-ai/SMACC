@@ -10,13 +10,13 @@ struct StiSPatternForward3 : public smacc::SmaccState<StiSPatternForward3, SS>
                     smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate3>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

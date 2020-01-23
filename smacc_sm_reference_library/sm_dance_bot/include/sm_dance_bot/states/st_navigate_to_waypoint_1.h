@@ -14,7 +14,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
       Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
       reactions;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>(0, 0, 0);
     configure_orthogonal<OrLED, CbLEDOn>();
@@ -22,7 +22,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
     
   }

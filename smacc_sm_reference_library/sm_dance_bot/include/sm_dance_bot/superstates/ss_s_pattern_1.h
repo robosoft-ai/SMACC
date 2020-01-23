@@ -47,7 +47,7 @@ public:
         >
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
@@ -59,7 +59,7 @@ public:
 
     int iteration_count;
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
         this->iteration_count = 0;
     }

@@ -24,11 +24,11 @@ Forthcoming
 * recurrent pattern for sensors and substate behaviors
 * template recurrent pattern, string type walker, showing string for smacc viewer
 * adding transition file
-* moving behavior creation of sm_dance_bot to static onDefinition
+* moving behavior creation of sm_dance_bot to static staticConfigure
 * action client moving to event convention Ev<TSource>
 * logic units, better output of the state machine knowledge at the startup
 * StateTransition info structure
-* creating static onDefinition functionality
+* creating static staticConfigure functionality
 * removing obsolete state funcionality
 * broken build orthogonal fix
 * changes on architecture, orthogonal role, client role and component role changes, fixing all examples

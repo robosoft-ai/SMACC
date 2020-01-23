@@ -37,12 +37,12 @@ public:
         >
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
     }
 

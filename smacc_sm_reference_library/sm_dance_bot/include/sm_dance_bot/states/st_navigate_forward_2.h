@@ -14,7 +14,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 
   using SmaccState::SmaccState;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(1);
     configure_orthogonal<OrLED, CbLEDOff>();
@@ -22,7 +22,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
   }
 
   // Key N -> next state
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 };

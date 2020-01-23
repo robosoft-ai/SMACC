@@ -38,6 +38,7 @@ RUN gem install package_cloud
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
+RUN echo "regen"
 RUN echo "downloading smacc repo"
 RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"

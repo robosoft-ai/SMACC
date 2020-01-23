@@ -12,7 +12,7 @@ struct StEventCountDown : smacc::SmaccState<StEventCountDown, MsDanceBotRunMode>
         Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>>
         reactions;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
         //   configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
         //   configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");

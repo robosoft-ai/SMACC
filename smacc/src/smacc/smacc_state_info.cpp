@@ -19,9 +19,9 @@ SmaccStateInfo::SmaccStateInfo(const std::type_info *tid, std::shared_ptr<SmaccS
         depth_ = parentState->depth_ + 1;
 }
 
-void SmaccStateInfo::getAncestors(std::list<std::shared_ptr<SmaccStateInfo>> &ancestorsList)
+void SmaccStateInfo::getAncestors(std::list<const SmaccStateInfo*> &ancestorsList) const
 {
-    ancestorsList.push_front(shared_from_this());
+    ancestorsList.push_front(this);
     if (parentState_ != nullptr)
     {
         this->parentState_->getAncestors(ancestorsList);

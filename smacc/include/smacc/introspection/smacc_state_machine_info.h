@@ -321,7 +321,7 @@ void AddTransition::operator()(TTrans)
     processTransitions<type_t>(currentState_);
 }
 
-//------------------ onDefinition -----------------------------
+//------------------ staticConfigure -----------------------------
 
 // SFINAE test
 template <typename T>
@@ -332,7 +332,7 @@ private:
     typedef char NoType[2];
 
     template <typename C>
-    static YesType &test(decltype(&C::onDefinition));
+    static YesType &test(decltype(&C::staticConfigure));
     template <typename C>
     static NoType &test(...);
 
@@ -349,7 +349,7 @@ CallOnDefinition()
 {
     /* something when T has toString ... */
     ROS_INFO_STREAM("EXECUTING ONDEFINITION: " << demangleSymbol(typeid(T).name()));
-    T::onDefinition();
+    T::staticConfigure();
 }
 
 template <typename T>

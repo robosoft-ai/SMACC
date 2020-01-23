@@ -38,12 +38,12 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, SmDanc
 
   //int currentIteration;
 
-  static void onDefinition()
+  static void staticConfigure()
   {
     //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void onInitialize()
+  void runtimeConfiguration()
   {
   }
 

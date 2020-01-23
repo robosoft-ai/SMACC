@@ -31,11 +31,11 @@ public:
     static constexpr int total_iterations() { return 3; }
     int iteration_count = 0;
 
-    static void onDefinition()
+    static void staticConfigure()
     {
     }
 
-    void onInitialize()
+    void runtimeConfiguration()
     {
     }
 }; // namespace SS4
