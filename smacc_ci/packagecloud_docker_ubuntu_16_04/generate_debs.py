@@ -5,7 +5,6 @@
 # * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
 # *
 # ******************************************************************************************************************/
-
 import rospkg
 import subprocess
 import os
@@ -113,7 +112,7 @@ def get_identified_packages(workspace_folder):
 
 
 def package_io_push_debian_files(repo_owner, reponame,  osname, osversion, workspace_folder, debianfiles):
-    os.chdir(workspace_source_folder)
+    os.chdir(workspace_folder)
     for debf in debianfiles:
         print("pushing debfile")
         push_debian_task = subprocess.Popen(
