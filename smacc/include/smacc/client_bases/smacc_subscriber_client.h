@@ -30,6 +30,11 @@ public:
     initialized_ = false;
   }
 
+  SmaccSubscriberClient(std::string topicname)
+  {
+    topicName = topicname;
+  }
+
   virtual ~SmaccSubscriberClient()
   {
     sub_.shutdown();
