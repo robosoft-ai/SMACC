@@ -18,7 +18,7 @@ public:
 
     virtual ~SmaccClientBehavior();
 
-    inline ISmaccStateMachine* getStateMachine();
+    inline ISmaccStateMachine *getStateMachine();
 
     std::string getName() const;
 
@@ -40,7 +40,7 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
 
-    inline ISmaccState * getCurrentState();
+    inline ISmaccState *getCurrentState();
 
 private:
     template <typename TObjectTag, typename TDerived>

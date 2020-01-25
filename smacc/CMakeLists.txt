@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   pluginlib
   smacc_msgs
+  controller_manager_msgs
 )
 
 find_package(log4cxx)
@@ -37,7 +38,7 @@ find_package(log4cxx)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES smacc
-  CATKIN_DEPENDS actionlib roscpp smacc_msgs
+  CATKIN_DEPENDS actionlib roscpp smacc_msgs controller_manager_msgs
 #  DEPENDS system_lib
 )
 

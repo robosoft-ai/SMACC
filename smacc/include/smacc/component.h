@@ -6,6 +6,8 @@
 #pragma once
 
 #include <smacc/common.h>
+#include <boost/optional.hpp>
+
 namespace smacc
 {
 
@@ -38,6 +40,8 @@ public:
 protected:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
+
+    boost::optional<std::string> serviceName_;
 
     ISmaccClient *owner_;
 
