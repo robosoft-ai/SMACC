@@ -18,10 +18,7 @@ struct StiSPatternForward4 : public smacc::SmaccState<StiSPatternForward4, SS>
   {
     double extrasecurityMargin = 0.2;
     
-    this->configure<OrNavigation, CbNavigateForward>();
-    this->configure<OrLED, CbLEDOn>();
-
-     auto forwardBehavior = this->configure<OrNavigation, CbNavigateForward>();
+    auto forwardBehavior = this->configure<OrNavigation, CbNavigateForward>();
     this->configure<OrLED, CbLEDOn>();
 
     cl_lidar::ClLidarSensor *lidarClient;
