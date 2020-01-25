@@ -103,6 +103,13 @@ def push_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
             "package_cloud push " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + debf, shell=True)
         push_debian_task.wait()
 
+def remove_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
+    for debf in debianfiles:
+        print("yanking debfile")
+        push_debian_task = subprocess.Popen(
+            "package_cloud yank " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + debf, shell=True)
+        push_debian_task.wait()
+
 # ------------------------ SMACC PACKAGES -----------------------
 
 
@@ -139,6 +146,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
     create_repo_task.wait()
 
     # ----- PUSHING TO SMACC --------------
+    remove_debian_files(repo_owner, "smacc",  osname, osversion, smacc_debian_files)
     push_debian_files(repo_owner, "smacc",  osname, osversion, smacc_debian_files)
 
     return smacc_debian_files
@@ -157,6 +165,7 @@ def create_and_push_smacc_viewer_debians(osname, osversion, rosversion):
     create_repo_task.wait()
 
     # ----- PUSHING TO SMACC VIEWER--------------
+    remove_debian_files(repo_owner, "smacc_viewer",  osname, osversion, smacc_viewer_debian_files)
     push_debian_files(repo_owner, "smacc_viewer", osname, osversion, smacc_viewer_debian_files)
 
     return smacc_viewer_debian_files
@@ -210,9 +219,12 @@ if __name__ == "__main__":
     outfile.write('{"token":"%s"}'%args.token)
     outfile.close()
     
+    osname ="ubuntu"
+    osversion="xenial"
+    rosversion = "kinetic"
     
-    smacc_debians = create_and_push_smacc_debians("ubuntu", "xenial", "kinetic")
-    smacc_viewer_debians = create_and_push_smacc_viewer_debians("ubuntu", "xenial", "kinetic")
+    smacc_debians = create_and_push_smacc_debians(osname, osversion, rosversion)
+    smacc_viewer_debians = create_and_push_smacc_viewer_debians(osname, osversion, rosversion)
 
     print("SMACC DEBIANS: "+  str(smacc_debians))
     print("SMACC VIEWER DEBIANS: "+  str(smacc_viewer_debians))
@@ -220,5 +232,7 @@ if __name__ == "__main__":
     print("PUSHING SMACC_MSGS TO smacc_viewer repo")
     extra_smacc_viewer = [df for df in smacc_debians if "smacc-msgs" in df ]
     print(extra_smacc_viewer)
-    push_debian_files(repo_owner, "smacc_viewer",  "ubuntu", "xenial", extra_smacc_viewer)
+
+    remove_debian_files(repo_owner, "smacc_viewer",  osname, osversion, extra_smacc_viewer)
+    push_debian_files(repo_owner, "smacc_viewer",  osname, osversion, extra_smacc_viewer)
     
