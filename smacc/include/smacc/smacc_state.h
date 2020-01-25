@@ -23,7 +23,7 @@ public:
   virtual std::string getClassName();
 
   template <typename TOrthogonal, typename TBehavior, typename... Args>
-  void configure(Args &&... args);
+  std::shared_ptr<TBehavior> configure(Args &&... args);
 
   template <typename SmaccComponentType>
   void requiresComponent(SmaccComponentType *&storage);

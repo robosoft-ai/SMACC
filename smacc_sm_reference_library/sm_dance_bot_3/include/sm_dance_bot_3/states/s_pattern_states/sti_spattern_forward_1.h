@@ -16,7 +16,7 @@ struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
   }
 
-  void runtimeConfigure()
+  void runtimeConfiguration()
   {
   }
 };

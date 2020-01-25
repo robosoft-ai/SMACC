@@ -16,10 +16,15 @@ struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
 
   void runtimeConfigure()
   {
-    auto &superstate = this->context<SS>();
-
-    this->configure<OrNavigation, CbNavigateForward>(SS::pitch2_lenght_meters());
+    double extrasecurityMargin = 0.2;
+    auto forwardBehavior = this->configure<OrNavigation, CbNavigateForward>();
     this->configure<OrLED, CbLEDOn>();
+
+    cl_lidar::ClLidarSensor *lidarClient;
+    this->requiresClient(lidarClient);
+    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin /*extra security margin for easy dynamic implementation of dynamic-smotion*/;
   }
 };
 } // namespace s_pattern_states

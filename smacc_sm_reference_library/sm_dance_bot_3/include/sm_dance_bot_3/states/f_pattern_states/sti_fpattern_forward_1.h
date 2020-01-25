@@ -10,18 +10,27 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
   using TSti::SmaccState;
   using TSti::context_type;
 
+  using TSti::configure_orthogonal;
+
   typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternReturn1<SS>> reactions;
 
   static void staticConfigure()
   {
-     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_lenght_meters());
-     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
+    TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>();
+    TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void runtimeConfigure()
   {
-    auto &superstate = TSti::template context<SS>();
-    ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
+    cl_lidar::ClLidarSensor *lidarClient;
+    this->requiresClient(lidarClient);
+
+    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+    auto forwardBehavior = TSti::template getOrthogonal<OrNavigation>()
+                               ->template getClientBehavior<CbNavigateForward>();
+
+    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
   }
 };
 }

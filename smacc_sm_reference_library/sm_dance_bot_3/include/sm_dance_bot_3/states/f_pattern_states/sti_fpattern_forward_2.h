@@ -14,7 +14,7 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   static void staticConfigure()
   {
   }
-  
+
   void runtimeConfigure()
   {
     auto &superstate = TSti::template context<SS>();

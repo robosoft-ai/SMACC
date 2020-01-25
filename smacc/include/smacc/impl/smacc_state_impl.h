@@ -42,7 +42,7 @@ bool ISmaccState::param(std::string param_name, T &param_val, const T &default_v
 //-------------------------------------------------------------------------------------------------------
 
 template <typename TOrthogonal, typename TBehavior, typename... Args>
-void ISmaccState::configure(Args &&... args)
+std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
 {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
     ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
@@ -53,10 +53,12 @@ void ISmaccState::configure(Args &&... args)
         auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
         clientBehavior->template configureEventSourceTypes<TOrthogonal, TBehavior>();
         orthogonal->addClientBehavior(clientBehavior);
+        return clientBehavior;
     }
     else
     {
         ROS_ERROR("Skipping client behavior creation. Orthogonal did not exist.");
+        return nullptr;
     }
 }
 //-------------------------------------------------------------------------------------------------------
