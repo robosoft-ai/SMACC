@@ -108,7 +108,7 @@ def remove_debian_files(repo_owner, reponame,  osname, osversion, debianfiles):
         shortdebfile = debf.split("/")[-1]
         print("yanking debfile")
         push_debian_task = subprocess.Popen(
-            "package_cloud yank " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + shortdeffile, shell=True)
+            "package_cloud yank " + repo_owner+"/"+reponame+"/"+osname+"/"+ osversion+" " + shortdebfile, shell=True)
         push_debian_task.wait()
 
 # ------------------------ SMACC PACKAGES -----------------------
