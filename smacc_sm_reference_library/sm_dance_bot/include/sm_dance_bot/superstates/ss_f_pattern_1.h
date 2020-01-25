@@ -68,7 +68,7 @@ public:
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         iteration_count = 0;
     }

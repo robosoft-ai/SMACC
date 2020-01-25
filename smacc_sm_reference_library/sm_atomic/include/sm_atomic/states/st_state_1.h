@@ -18,7 +18,7 @@ struct State1 : smacc::SmaccState<State1, SmAtomic>
         configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10); // EvTimer triggers once at 10 client ticks
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         // get reference to the client
         ClRosTimer *client;

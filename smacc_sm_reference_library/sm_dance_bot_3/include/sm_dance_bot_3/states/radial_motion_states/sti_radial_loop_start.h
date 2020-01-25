@@ -11,7 +11,7 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
   {
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 

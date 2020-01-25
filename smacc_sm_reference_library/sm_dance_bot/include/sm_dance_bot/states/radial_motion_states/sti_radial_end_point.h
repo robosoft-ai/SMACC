@@ -18,7 +18,7 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

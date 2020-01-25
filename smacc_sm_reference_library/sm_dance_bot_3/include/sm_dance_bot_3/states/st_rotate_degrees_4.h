@@ -21,7 +21,7 @@ struct StRotateDegrees4 : smacc::SmaccState<StRotateDegrees4, MsDanceBotRunMode>
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

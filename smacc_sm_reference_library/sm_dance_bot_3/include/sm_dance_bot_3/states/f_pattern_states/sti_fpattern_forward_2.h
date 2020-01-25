@@ -15,7 +15,7 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   {
   }
   
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     auto &superstate = TSti::template context<SS>();
     ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());

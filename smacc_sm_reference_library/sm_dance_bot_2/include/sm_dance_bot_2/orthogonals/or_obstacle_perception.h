@@ -14,7 +14,7 @@ public:
   virtual void onInitialize() override
   {
     auto lidarClient =
-        this->createClient<ClLaserSensor>("/front/scan", ros::Duration(10));
+        this->createClient<ClLidarSensor>("/front/scan", ros::Duration(10));
 
     lidarClient->initialize();
 

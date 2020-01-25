@@ -1,6 +1,7 @@
 #pragma once
 
 #include <sm_dance_bot_3/clients/cl_lidar/cl_lidar.h>
+#include <sm_dance_bot_3/clients/cl_lidar/components/cp_lidar_data.h>
 #include <smacc/smacc_orthogonal.h>
 
 namespace sm_dance_bot_3
@@ -10,13 +11,12 @@ class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
 public:
     virtual void onInitialize() override
     {
-        auto lidarClient = this->createClient<ClLaserSensor>();
-
-        lidarClient->topicName = "/front/scan";
-        //lidarClient->queueSize = "/front/scan";
-        lidarClient->timeout_ = ros::Duration(10);
+        auto lidarClient =
+            this->createClient<ClLidarSensor>("/front/scan", ros::Duration(10));
 
         lidarClient->initialize();
+
+        lidarClient->createComponent<CpLidarSensorData>();
     }
 };
 }

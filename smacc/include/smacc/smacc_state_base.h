@@ -85,7 +85,7 @@ public:
 
     this->setParam("created", true);
 
-    // before dynamic runtimeConfiguration, we execute the staticConfigure behavior configurations
+    // before dynamic runtimeConfigure, we execute the staticConfigure behavior configurations
     {
       ROS_INFO("-- STATIC STATE DESCRIPTION --");
 
@@ -120,7 +120,7 @@ public:
     ROS_INFO("State runtime configuration");
 
     // first we runtime configure the state, where we create client behaviors
-    static_cast<MostDerived *>(this)->runtimeConfiguration();
+    static_cast<MostDerived *>(this)->runtimeConfigure();
 
     // then the orthogonals are internally configured
     this->getStateMachine().notifyOnRuntimeConfigured(static_cast<MostDerived *>(this));
@@ -203,7 +203,7 @@ public:
 public:
   // This method is static-polymorphic because of the curiously recurring template pattern. It
   // calls to the most derived class onEntry method if declared on smacc state construction
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 

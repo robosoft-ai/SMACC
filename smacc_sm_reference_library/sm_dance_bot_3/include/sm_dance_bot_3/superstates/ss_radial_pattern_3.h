@@ -45,7 +45,7 @@ public:
     static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
     static constexpr float ray_length_meters() { return 4; }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         iteration_count = 0;
     }

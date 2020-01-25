@@ -16,7 +16,7 @@ struct StiSPatternForward3 : public smacc::SmaccState<StiSPatternForward3, SS>
     configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

@@ -17,9 +17,9 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
     configure_orthogonal<OrNavigation, CbNavigateForward>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
-    cl_lidar::ClLaserSensor *lidarClient;
+    cl_lidar::ClLidarSensor *lidarClient;
     this->requiresClient(lidarClient);
 
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();

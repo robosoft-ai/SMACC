@@ -8,7 +8,7 @@ namespace sm_dance_bot_2
 {
 namespace cl_lidar
 {
-struct CbLidarSensor : multirole_sensor_client::SmaccSubscriberClient<ClLaserSensor>
+struct CbLidarSensor : multirole_sensor_client::SmaccSubscriberClient<ClLidarSensor>
 {
 public:
   CbLidarSensor()
@@ -19,7 +19,7 @@ public:
   virtual void onEntry() override
   {
     ROS_INFO("CbLidarSensor onEntry");
-    multirole_sensor_client::SmaccSubscriberClient<ClLaserSensor>::onEntry();
+    multirole_sensor_client::SmaccSubscriberClient<ClLidarSensor>::onEntry();
   }
 
   virtual void onMessageCallback(const sensor_msgs::LaserScan &msg) override

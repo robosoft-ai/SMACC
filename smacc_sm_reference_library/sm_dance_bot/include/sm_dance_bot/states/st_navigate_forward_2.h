@@ -22,7 +22,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
   }
 
   // Key N -> next state
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

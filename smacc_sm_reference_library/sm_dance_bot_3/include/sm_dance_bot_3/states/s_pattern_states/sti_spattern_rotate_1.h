@@ -15,7 +15,7 @@ struct StiSPatternRotate1 : smacc::SmaccState<StiSPatternRotate1, SS>
     {
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         auto &superstate = this->context<SS>();
         ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());

@@ -10,7 +10,7 @@ class OrObstaclePerception : public smacc::Orthogonal<OrObstaclePerception>
 public:
     virtual void onInitialize() override
     {
-        auto lidarClient = this->createClient<ClLaserSensor>();
+        auto lidarClient = this->createClient<ClLidarSensor>();
 
         lidarClient->topicName = "/front/scan";
         //lidarClient->queueSize = "/front/scan";

@@ -44,7 +44,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     ClMoveBaseZ *move_base;
     this->requiresClient(move_base);

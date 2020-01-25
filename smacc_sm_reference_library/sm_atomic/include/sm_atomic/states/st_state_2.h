@@ -6,7 +6,7 @@ struct State2
     : smacc::SmaccState<State2, SmAtomic>
 {
     using SmaccState::SmaccState;
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         ROS_INFO("Entering State2");
     }

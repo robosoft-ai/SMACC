@@ -8,7 +8,7 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
 
   static void staticConfigure() {}
 
-  void runtimeConfiguration() {}
+  void runtimeConfigure() {}
 
   bool loopWhileCondition() {
     auto &superstate = this->context<SS>();

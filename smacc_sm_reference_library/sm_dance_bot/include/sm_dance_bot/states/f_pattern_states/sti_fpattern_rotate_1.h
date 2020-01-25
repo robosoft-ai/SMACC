@@ -26,7 +26,7 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
      TSti::template configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     
   }

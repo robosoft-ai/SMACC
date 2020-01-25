@@ -9,10 +9,10 @@ namespace sm_dance_bot
 namespace cl_lidar
 {
 
-class ClLaserSensor : public multirole_sensor_client::ClMultiroleSensor<sensor_msgs::LaserScan>
+class ClLidarSensor : public multirole_sensor_client::ClMultiroleSensor<sensor_msgs::LaserScan>
 {
 public:
-    ClLaserSensor()
+    ClLidarSensor()
     {
     }
 };

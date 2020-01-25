@@ -37,7 +37,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         sb->publishesEvent<EvAllGo<SrAllEventsGo>>();*/
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
     }
 };

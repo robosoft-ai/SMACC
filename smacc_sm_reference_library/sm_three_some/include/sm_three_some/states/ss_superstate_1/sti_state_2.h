@@ -23,7 +23,7 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
   }
 
   //-------------------------------------------------------------------------------
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

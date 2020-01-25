@@ -14,7 +14,7 @@ struct StiSPatternForward4 : public smacc::SmaccState<StiSPatternForward4, SS>
   {
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     auto &superstate = this->context<SS>();
 

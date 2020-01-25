@@ -21,7 +21,7 @@ struct StNavigateReverse3 : smacc::SmaccState<StNavigateReverse3, MsDanceBotRunM
       configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
    }
 
-   void runtimeConfiguration()
+   void runtimeConfigure()
    {
    }
 };

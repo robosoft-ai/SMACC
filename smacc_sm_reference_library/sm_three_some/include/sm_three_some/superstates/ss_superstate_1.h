@@ -35,7 +35,7 @@ public:
     {
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
     }
 }; // namespace SS4

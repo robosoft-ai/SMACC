@@ -13,13 +13,21 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 
   static void staticConfigure()
   {
-    ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
-    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
+    configure_orthogonal<OrNavigation, CbNavigateForward>();
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
+    cl_lidar::ClLidarSensor *lidarClient;
+    this->requiresClient(lidarClient);
+
+    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+    auto forwardBehavior = this->getOrthogonal<OrNavigation>()
+                               ->getClientBehavior<CbNavigateForward>();
+
+    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
   }
 };
 } // namespace radial_motion_states

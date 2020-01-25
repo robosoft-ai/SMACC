@@ -17,7 +17,7 @@ struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     auto cbAbsRotate = this->getOrthogonal<OrNavigation>()
                            ->getClientBehavior<CbAbsoluteRotate>();

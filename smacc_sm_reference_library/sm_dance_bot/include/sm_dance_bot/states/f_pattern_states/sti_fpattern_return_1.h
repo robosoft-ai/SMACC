@@ -17,7 +17,7 @@ struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
     TSti::template configure_orthogonal<OrLED, CbLEDOn>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 };

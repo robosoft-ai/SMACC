@@ -59,7 +59,7 @@ public:
 
     int iteration_count;
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
         this->iteration_count = 0;
     }

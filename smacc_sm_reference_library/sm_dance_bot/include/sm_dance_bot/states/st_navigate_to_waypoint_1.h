@@ -22,7 +22,7 @@ struct StNavigateToWaypoint1 : smacc::SmaccState<StNavigateToWaypoint1, MsDanceB
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     
   }

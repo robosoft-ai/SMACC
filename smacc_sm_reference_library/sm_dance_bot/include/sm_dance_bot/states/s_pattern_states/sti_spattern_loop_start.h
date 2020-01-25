@@ -11,7 +11,7 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
   {
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 

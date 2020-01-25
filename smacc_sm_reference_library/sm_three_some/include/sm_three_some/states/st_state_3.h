@@ -20,7 +20,7 @@ struct StState3 : smacc::SmaccState<StState3, MsRun>
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
-    void runtimeConfiguration()
+    void runtimeConfigure()
     {
     }
 };

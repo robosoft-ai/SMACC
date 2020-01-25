@@ -23,7 +23,7 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
   }
 
   //-------------------------------------------------------------------------------
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);
   }

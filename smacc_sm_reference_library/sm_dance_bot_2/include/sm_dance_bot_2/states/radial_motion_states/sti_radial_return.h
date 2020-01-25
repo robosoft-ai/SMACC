@@ -13,7 +13,7 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS> {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
   }
 
-  void runtimeConfiguration() {}
+  void runtimeConfigure() {}
 };
 }
 }

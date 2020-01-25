@@ -15,7 +15,7 @@ public:
   }
 
   //-------------------------------------------------------------------------------
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
   }
 

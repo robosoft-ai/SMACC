@@ -22,7 +22,7 @@ struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunM
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
   }
 
-  void runtimeConfiguration()
+  void runtimeConfigure()
   {
     ClMoveBaseZ *move_base_action_client;
     this->requiresClient(move_base_action_client);
