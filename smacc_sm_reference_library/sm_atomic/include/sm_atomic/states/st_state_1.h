@@ -4,14 +4,21 @@ namespace sm_atomic
 {
 using namespace ros_timer_client;
 using namespace smacc::default_transition_tags;
+
+// STATE DECLARATION
 struct State1 : smacc::SmaccState<State1, SmAtomic>
 {
-    typedef mpl::list<
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>>
-        reactions;
-
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
+    typedef mpl::list<
+    
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>
+    
+    >reactions;
+
+    
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks

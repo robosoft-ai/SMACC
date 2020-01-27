@@ -2,12 +2,11 @@ namespace sm_three_some
 {
 namespace SS1
 {
-
 namespace sm_three_some
 {
 namespace ss1_states
 {
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
+//FORWARD DECLARATIONS OF ALL INNER STATES
 class StiState1;
 class StiState2;
 class StiState3;
@@ -16,21 +15,24 @@ class StiState3;
 
 using namespace sm_three_some::ss1_states;
 
+// STATE DECLARATION
 struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1, sc::has_full_history>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
-        // Transition<EvSuperstateFinish<StiState3>, StState1>
 
-        // Keyboard events
-        Transition<EvLoopEnd<StiState1>, StState1>>
-        reactions;
+    Transition<EvLoopEnd<StiState1>, StState1>
+    
+    >reactions;
 
+// STATE VARIABLES
     static constexpr int total_iterations() { return 3; }
     int iteration_count = 0;
 
+// STATE FUNCTIONS
     static void staticConfigure()
     {
     }

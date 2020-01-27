@@ -1,16 +1,29 @@
 namespace sm_dance_bot_2 {
 namespace radial_motion_states {
 
-struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
+// STATE DECLARATION
+struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> 
+{
   using SmaccState::SmaccState;
-  typedef Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,CONTINUELOOP>
-      reactions;
+  
+// TRANSITION TABLE
+  typedef mpl::list< 
+  
+  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate,CONTINUELOOP>
+  
+  >reactions;
 
-  static void staticConfigure() {}
+// STATE FUNCTIONS
+  static void staticConfigure() 
+  {
+  }
 
-  void runtimeConfigure() {}
+  void runtimeConfigure() 
+  {
+  }
 
-  bool loopWhileCondition() {
+  bool loopWhileCondition() 
+  {
     auto &superstate = this->context<SS>();
 
     ROS_INFO("Loop start, current iterations: %d, total iterations: %d",
@@ -18,11 +31,11 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS> {
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
-  void onEntry() {
+  void onEntry() 
+  {
     ROS_INFO("LOOP START ON ENTRY");
     checkWhileLoopConditionAndThrowEvent(&StiRadialLoopStart::loopWhileCondition);
   }
 };
-
 } // namespace radial_motion_states
 } // namespace sm_dance_bot

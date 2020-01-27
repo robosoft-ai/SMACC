@@ -12,7 +12,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 
 // TRANSITION TABLE
    typedef mpl::list<
-   
+
    Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
    Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>
    

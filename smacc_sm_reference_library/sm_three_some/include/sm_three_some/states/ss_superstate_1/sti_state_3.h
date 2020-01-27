@@ -2,18 +2,20 @@ namespace sm_three_some
 {
 namespace ss1_states
 {
+// STATE DECLARATION
 struct StiState3 : smacc::SmaccState<StiState3, SS>
 {
   using SmaccState::SmaccState;
 
+// TRANSITION TABLE
   typedef mpl::list<
-      //Transition<EvTopicMessage<CbBehavior1b>, StiState1>,
+    
+  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2>,
+  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>
+      
+  >reactions;
 
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState2>,
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1>>
-      reactions;
-
-  //-------------------------------------------------------------------------------
+ // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimer>();
@@ -22,7 +24,6 @@ struct StiState3 : smacc::SmaccState<StiState3, SS>
     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
-  //-------------------------------------------------------------------------------
   void runtimeConfigure()
   {
     //this->OnEventReceived<EvKeyPressN<CbDefaultKeyboardBehavior>>(onNextKey);

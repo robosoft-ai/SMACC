@@ -2,19 +2,24 @@ namespace sm_three_some
 {
 namespace ss1_states
 {
+// STATE DECLARATION
 struct StiState1 : smacc::SmaccState<StiState1, SS>
 {
 public:
   using SmaccState::SmaccState;
 
-  typedef Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> reactions;
+// TRANSITION TABLE
+  typedef mpl::list<
+  
+  Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> 
+  
+  >reactions;
 
-  //-------------------------------------------------------------------------------
+// STATE FUNCTIONS
   static void staticConfigure()
   {
   }
 
-  //-------------------------------------------------------------------------------
   void runtimeConfigure()
   {
   }

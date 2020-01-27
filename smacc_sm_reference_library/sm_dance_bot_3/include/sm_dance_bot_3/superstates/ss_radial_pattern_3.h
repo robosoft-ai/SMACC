@@ -1,22 +1,17 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot_3
-{
-namespace SS3
-{
+namespace sm_dance_bot_3 {
+namespace SS3 {
+namespace sm_dance_bot_3 {
+namespace radial_motion_states {
 
-namespace sm_dance_bot_3
-{
-namespace radial_motion_states
-{
-//forward declaration for initial ssr
+// FORWARD DECLARATION OF INNER STATES
 class StiRadialRotate;
 class StiRadialReturn;
 class StiRadialEndPoint;
 class StiRadialLoopStart;
 } // namespace radial_motion_states
 } // namespace sm_dance_bot_3
-
 using namespace sm_dance_bot_3::radial_motion_states;
 
 // STATE DECLARATION
@@ -50,7 +45,7 @@ public:
     }
 };
 
-//forward declaration for the superstate
+// FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsRadialPattern3;
 #include <sm_dance_bot_3/states/radial_motion_states/sti_radial_end_point.h>
 #include <sm_dance_bot_3/states/radial_motion_states/sti_radial_return.h>

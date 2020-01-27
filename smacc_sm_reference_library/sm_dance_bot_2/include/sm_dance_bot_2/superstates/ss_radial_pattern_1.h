@@ -1,34 +1,33 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot_2
-{
-namespace SS1
-{
+namespace sm_dance_bot_2 {
+namespace SS1 {
+namespace sm_dance_bot_2 {
+namespace radial_motion_states {
 
-namespace sm_dance_bot_2
-{
-namespace radial_motion_states
-{
-//forward declaration for initial sti
+//FORWARD DECLARATION OF INNER STATES
 class StiRadialRotate;
 class StiRadialReturn;
 class StiRadialEndPoint;
 class StiRadialLoopStart;
 } // namespace radial_motion_states
 } // namespace sm_dance_bot_2
-
 using namespace sm_dance_bot_2::radial_motion_states;
 
+// STATE DECLARATION
 struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, SmDanceBot2, StiRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
-        // Expected event
-        Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>>
-        reactions;
 
+    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>
+    
+    >reactions;
+
+// STATE VARIABLES
     int total_iterations()
     {
         int rays = 5; // default value
@@ -44,6 +43,7 @@ public:
 
     int iteration_count = 0;
 
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();

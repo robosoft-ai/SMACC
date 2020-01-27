@@ -1,14 +1,11 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot
-{
-namespace SS5
-{
-namespace sm_dance_bot
-{
-namespace s_pattern_states
-{
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL INNER STATES
+namespace sm_dance_bot {
+namespace SS5 {
+namespace sm_dance_bot {
+namespace s_pattern_states {
+
+// FORWARD DECLARATIONS OF INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
 class StiSPatternRotate2;
@@ -61,9 +58,8 @@ public:
     }
 };
 
-//forward declaration for the superstate
+// FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsSPattern1;
-
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_1.h>
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_1.h>
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_2.h>
@@ -73,6 +69,5 @@ using SS = SsSPattern1;
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_rotate_4.h>
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_forward_4.h>
 #include <sm_dance_bot/states/s_pattern_states/sti_spattern_loop_start.h>
-
 } // namespace SS5
 } // namespace sm_dance_bot

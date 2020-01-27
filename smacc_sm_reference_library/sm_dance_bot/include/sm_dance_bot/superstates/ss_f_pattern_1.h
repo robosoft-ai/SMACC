@@ -1,9 +1,7 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot
-{
-namespace f_pattern_states
-{
+namespace sm_dance_bot {
+namespace f_pattern_states {
 
 enum class TDirection
 {
@@ -11,32 +9,17 @@ enum class TDirection
     RIGHT
 };
 
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
-template <typename SS>
-class StiFPatternRotate1;
-
-template <typename SS>
-class StiFPatternForward1;
-
-template <typename SS>
-class StiFPatternReturn1;
-
-template <typename SS>
-class StiFPatternRotate2;
-
-template <typename SS>
-class StiFPatternForward2;
-
-template <typename SS>
-class StiFPatternStartLoop;
+// FORWARD DECLARATIONS OF INNER STATES
+template <typename SS> class StiFPatternRotate1;
+template <typename SS> class StiFPatternForward1;
+template <typename SS> class StiFPatternReturn1;
+template <typename SS> class StiFPatternRotate2;
+template <typename SS> class StiFPatternForward2;
+template <typename SS> class StiFPatternStartLoop;
 } // namespace f_pattern_states
 } // namespace sm_dance_bot
-
-namespace sm_dance_bot
-{
-namespace SS4
-{
-
+namespace sm_dance_bot {
+namespace SS4 {
 using namespace f_pattern_states;
 
 // STATE DECLARATION
@@ -52,6 +35,7 @@ public:
         
     >reactions;
 
+// STATE VARIABLES
     // superstate parameters
     static constexpr float ray_lenght_meters() { return 3.25; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
@@ -73,7 +57,7 @@ public:
     }
 }; // namespace SS4
 
-//forward declaration for the superstate
+// FORWARD DECLARATION FOR THE SUPERSTATE
 
 } // namespace SS4
 } // namespace sm_dance_bot
