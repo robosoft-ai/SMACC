@@ -1,6 +1,6 @@
 #include <battery_monitor_client/cl_battery_monitor.h>
 
-namespace batery_monitor_client
+namespace battery_monitor_client
 {
 
 ClBatteryMonitor::ClBatteryMonitor()
