@@ -45,6 +45,9 @@ protected:
     // components
     std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createComponent(TArgs... targs);
+
 private:
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;

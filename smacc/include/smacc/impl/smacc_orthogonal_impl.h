@@ -88,32 +88,7 @@ public:
     template <typename SmaccComponentType, typename... TArgs>
     SmaccComponentType *createComponent(TArgs... targs)
     {
-        const std::type_info *componentkey = &typeid(SmaccComponentType);
-        std::shared_ptr<SmaccComponentType> ret;
-
-        auto it = this->components_.find(componentkey);
-
-        if (it == this->components_.end())
-        {
-            auto tname = demangledTypeName<SmaccComponentType>();
-            ROS_DEBUG("%s smacc component is required. Creating a new instance.", tname.c_str());
-
-            ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
-            ret->initialize(this);
-            ret->setStateMachine(this->getStateMachine());
-
-            this->components_[componentkey] = ret; //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
-            ROS_DEBUG("%s resource is required. Done.", tname.c_str());
-        }
-        else
-        {
-            ROS_DEBUG("%s resource is required. Found resource in cache.", demangledTypeName<SmaccComponentType>().c_str());
-            ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
-        }
-
-        ret->template configureEventSourceTypes<TOrthogonal, TClient>();
-
-        return ret.get();
+        return ISmaccClient::createComponent<SmaccComponentType, TOrthogonal, TClient,  TArgs...>(targs...);
     }
 
     virtual smacc::introspection::TypeInfo::Ptr getType() override

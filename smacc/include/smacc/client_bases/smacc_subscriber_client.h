@@ -7,7 +7,6 @@
 #pragma once
 
 #include <smacc/smacc_client.h>
-#include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
 
 namespace smacc
@@ -15,6 +14,8 @@ namespace smacc
 
 namespace client_bases
 {
+
+using namespace smacc::default_events;
 
 template <typename MessageType>
 class SmaccSubscriberClient : public smacc::ISmaccClient
