@@ -4,19 +4,16 @@ namespace sm_dance_bot
 // STATE DECLARATION
 struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
-   // CUSTOM TRANSITION TAGS
-   struct ON_KEYBOARD : PREEMPT{};
-   struct ON_KEYBOARD2 : ABORT{};
-   struct ON_SENSORS_AVAILABLE : SUCCESS{};
-
-   struct SBehav1;
-   //----------------
    using SmaccState::SmaccState;
+
+// DECLARE CUSTOM OBJECT TAGS
+   struct ON_SENSORS_AVAILABLE : SUCCESS{};
+   struct SrAcquireSensors;
 
 // TRANSITION TABLE
    typedef mpl::list<
    
-   Transition<EvAllGo<SrAllEventsGo, SBehav1>, StEventCountDown, ON_SENSORS_AVAILABLE>,
+   Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
    Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>
    
    >reactions;
@@ -35,7 +32,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
       srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
-      srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SBehav1>>();
+      srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
    }
 };
 } // namespace sm_dance_bot
