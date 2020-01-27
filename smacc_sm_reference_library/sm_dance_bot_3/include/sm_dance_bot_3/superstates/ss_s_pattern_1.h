@@ -5,7 +5,7 @@ namespace SS5 {
 namespace sm_dance_bot_3 {
 namespace s_pattern_states {
     
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
+// FORWARD DECLARATION OF INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
 class StiSPatternRotate2;

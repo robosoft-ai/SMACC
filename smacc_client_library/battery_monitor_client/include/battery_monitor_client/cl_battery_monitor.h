@@ -11,7 +11,7 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace batery_monitor_client
+namespace battery_monitor_client
 {
 class ClBatteryMonitor : public smacc::client_bases::SmaccSubscriberClient<sensor_msgs::BatteryState>
 {
