@@ -1,20 +1,21 @@
 #include <smacc/smacc.h>
 namespace sm_dance_bot_3
 {
+// STATE DECLARATION
 struct StNavigateForward1 : smacc::SmaccState<StNavigateForward1, MsDanceBotRunMode>
 {
-  typedef mpl::list<
-      // Expected event
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees2>,
-
-      // Error events
-      //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
-      Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>>
-      reactions;
-
   using SmaccState::SmaccState;
 
+// TRANSITION TABLE
+  typedef mpl::list<
+    
+  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees2>,
+  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
+  Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
+  
+  >reactions;
+
+// STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbNavigateForward>(1);

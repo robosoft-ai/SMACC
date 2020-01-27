@@ -2,15 +2,20 @@ namespace sm_dance_bot_3
 {
 namespace radial_motion_states
 {
+// STATE DECLARATION
 struct StiRadialRotate : smacc::SmaccState<StiRadialRotate, SS>
 {
   using SmaccState::SmaccState;
 
+// TRANSITION TABLE
   typedef mpl::list<
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialEndPoint, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, ABORT>>
-      reactions;
+  
+  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialEndPoint, SUCCESS>,
+  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, ABORT>
+  
+  >reactions;
 
+// STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>();

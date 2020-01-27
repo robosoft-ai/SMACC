@@ -18,25 +18,18 @@ class StiRadialLoopStart;
 
 using namespace sm_dance_bot_3::radial_motion_states;
 
+// STATE DECLARATION
 struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
 
-        // Expected event
-        Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
-        // Keyboard event
-        //Transition<EvKeyPressN<CbDefaultKeyboardBehavior>, StRotateDegrees1>,
-        //Transition<EvKeyPressP<CbDefaultKeyboardBehavior>, StNavigateToWaypointsX>,
-
-        // Error events
-        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>>
-        >
-
-        reactions;
+    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees1, ENDLOOP>
+       
+    >reactions;
 
     static constexpr int total_iterations() { return 20; }
     static constexpr float ray_angle_increment_degree() { return 360.0 / total_iterations(); }
@@ -44,6 +37,7 @@ public:
 
     int iteration_count = 0;
 
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
