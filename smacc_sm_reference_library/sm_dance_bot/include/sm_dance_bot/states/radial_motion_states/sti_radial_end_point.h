@@ -2,15 +2,20 @@ namespace sm_dance_bot
 {
 namespace radial_motion_states
 {
+// STATE DECLARATION
 struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 {
   using SmaccState::SmaccState;
 
+// TRANSITION TABLE
   typedef mpl::list<
-      smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
-      smacc::Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>>
-      reactions;
+  
+  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
+  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>
+  
+  >reactions;
 
+// STATE FUNCTIONS
   static void staticConfigure()
   {
     ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());

@@ -43,7 +43,7 @@ waypoints:
     # POINT 4
   - position:
       x: -10.0
-      y: 14.2
+      y: 14.0
       z: 0.0
     orientation:
       x: 0.0

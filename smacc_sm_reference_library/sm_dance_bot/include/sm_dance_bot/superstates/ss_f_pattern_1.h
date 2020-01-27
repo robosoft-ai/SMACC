@@ -39,30 +39,29 @@ namespace SS4
 
 using namespace f_pattern_states;
 
+// STATE DECLARATION
 struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, StiFPatternStartLoop<SsFPattern1>>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
-        // Expected event
-        Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
-
-        // Error events
-        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
-        >
-        reactions;
+        
+    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateForward2, ENDLOOP> //,
+        
+    >reactions;
 
     // superstate parameters
     static constexpr float ray_lenght_meters() { return 3.25; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
-    static constexpr int total_iterations() { return 12; }
+    static constexpr int total_iterations() { return 14; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
     // superstate state variables
     int iteration_count;
 
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();

@@ -2,6 +2,7 @@ namespace sm_dance_bot
 {
 namespace f_pattern_states
 {
+// STATE DECLARATION
 template <typename SS>
 struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 {
@@ -9,8 +10,14 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   using TSti::SmaccState;
   using TSti::context_type;
 
-  typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>> reactions;
+// TRANSITION TABLE
+  typedef mpl::list<
+  
+  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>> 
+  
+  >reactions;
 
+// STATE FUNCTIONS
   static void staticConfigure()
   {
   }

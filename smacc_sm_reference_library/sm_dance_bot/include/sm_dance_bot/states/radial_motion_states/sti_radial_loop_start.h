@@ -2,11 +2,19 @@ namespace sm_dance_bot
 {
 namespace radial_motion_states
 {
+// STATE DECLARATION
 struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  typedef smacc::Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> reactions;
 
+// TRANSITION TABLE
+  typedef mpl::list<
+  
+  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> 
+  
+  >reactions;
+
+// STATE FUNCTIONS
   static void staticConfigure()
   {
   }
@@ -29,6 +37,5 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
     checkWhileLoopConditionAndThrowEvent(&StiRadialLoopStart::loopWhileCondition);
   }
 };
-
 } // namespace radial_motion_states
 } // namespace sm_dance_bot

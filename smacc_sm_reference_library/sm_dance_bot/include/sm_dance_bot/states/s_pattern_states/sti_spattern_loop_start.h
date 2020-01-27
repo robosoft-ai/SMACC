@@ -2,11 +2,19 @@ namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
+// STATE DECLARATION
 struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  typedef mpl::list<smacc::Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>> reactions;
 
+// TRANSITION TABLE
+  typedef mpl::list<
+  
+  Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
+  
+  >reactions;
+
+// STATE FUNCTIONS
   static void staticConfigure()
   {
   }
@@ -26,6 +34,5 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
     checkWhileLoopConditionAndThrowEvent(&StiSPatternLoopStart::loopCondition);
   }
 };
-
 } // namespace s_pattern_states
 } // namespace sm_dance_bot

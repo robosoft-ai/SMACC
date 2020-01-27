@@ -4,12 +4,11 @@ namespace sm_dance_bot
 {
 namespace SS5
 {
-
 namespace sm_dance_bot
 {
 namespace s_pattern_states
 {
-//HERE WE MAKE FORWARD DECLARATIONS OF ALL SUBSTATE ROUTINES
+//HERE WE MAKE FORWARD DECLARATIONS OF ALL INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
 class StiSPatternRotate2;
@@ -30,23 +29,20 @@ enum class TDirection
 
 using namespace sm_dance_bot::s_pattern_states;
 
+// STATE DECLARATION
 struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatternLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
-        // Expected event
-        Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP> //,
+    
+    Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP>
 
-        // Error events
-        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+    >reactions;
 
-        // Internal events
-        >
-        reactions;
-
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();

@@ -4,7 +4,6 @@ namespace sm_dance_bot
 {
 namespace SS3
 {
-
 namespace sm_dance_bot
 {
 namespace radial_motion_states
@@ -19,21 +18,20 @@ class StiRadialLoopStart;
 
 using namespace sm_dance_bot::radial_motion_states;
 
+// STATE DECLARATION
 struct SsRadialPattern3 : smacc::SmaccState<SsRadialPattern3, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public:
     using SmaccState::SmaccState;
 
+// TRANSITION TABLE
     typedef mpl::list<
-        // Expected event
-        Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP> //,
+        
+    Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
 
-        // Error events
-        //Transition<smacc::EvTopicMessageTimeout<CbLidarSensor>, StAcquireSensors>,
-        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
-        >
-        reactions;
+    >reactions;
 
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();

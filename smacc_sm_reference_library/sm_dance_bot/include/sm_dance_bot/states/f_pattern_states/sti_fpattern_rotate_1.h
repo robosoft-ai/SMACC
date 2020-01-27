@@ -2,6 +2,7 @@ namespace sm_dance_bot
 {
 namespace f_pattern_states
 {
+// STATE DECLARATION
 template <typename SS>
 struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
 {
@@ -9,8 +10,14 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
   using TSti::SmaccState;
   using TSti::context_type;
   
-  typedef smacc::Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternForward1<SS>> reactions;
+// TRANSITION TABLE
+  typedef mpl::list<
+  
+  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternForward1<SS>> 
+  
+  >reactions;
 
+// STATE FUNCTIONS
   static void staticConfigure()
   {
     float angle = 0;
@@ -28,7 +35,6 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
 
   void runtimeConfigure()
   {
-    
   }
 };
 }
