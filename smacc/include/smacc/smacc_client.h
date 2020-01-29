@@ -39,7 +39,10 @@ public:
 
     virtual smacc::introspection::TypeInfo::Ptr getType();
 
-    inline ISmaccStateMachine* getStateMachine();
+    inline ISmaccStateMachine *getStateMachine();
+
+    template <typename TSmaccSignal, typename T>
+    void connectSignal(TSmaccSignal& signal, void (T::*callback)(), T *object);
 
 protected:
     // components

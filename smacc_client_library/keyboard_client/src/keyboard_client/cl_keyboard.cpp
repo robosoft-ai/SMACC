@@ -6,7 +6,10 @@ ClKeyboard::ClKeyboard() {
   topicName = "/keyboard_unicode";
 }
 
-ClKeyboard::~ClKeyboard() {}
+ClKeyboard::~ClKeyboard() 
+{
+  
+}
 
 void ClKeyboard::initialize() {
 

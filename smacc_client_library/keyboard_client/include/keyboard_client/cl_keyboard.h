@@ -148,8 +148,14 @@ struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TObjectTag>>
 class ClKeyboard : public smacc::client_bases::SmaccSubscriberClient<std_msgs::UInt16>
 {
 public:
-        boost::signals2::signal<void(char keypress)> OnKeyPress;
-        boost::signals2::scoped_connection c_;
+        smacc::SmaccSignal<void(char keypress)> OnKeyPress_;
+
+        template <typename T>
+        void OnKeyPress(void (T::*callback)(char keypress), T *object)
+        {
+                //this->connectSignal(OnKeyPress_, callback, object);
+                this->getStateMachine()->createSignalConnection(OnKeyPress_, callback, object);
+        }
 
         ClKeyboard();
 
@@ -162,6 +168,9 @@ public:
         template <typename TObjectTag, typename TDerived>
         void configureEventSourceTypes()
         {
+                // call tothe base configuration to properly handling the message and initial message smacc events
+                smacc::client_bases::SmaccSubscriberClient<std_msgs::UInt16>::configureEventSourceTypes<TObjectTag, TDerived>();
+
                 postEventKeyPress = [=](auto unicode_keychar) {
                         char character = (char)unicode_keychar.data;
                         ROS_WARN("detected keyboard: %c", character);
@@ -218,7 +227,7 @@ public:
                                 this->postKeyEvent<EvKeyPressY<ClKeyboard, TObjectTag>>();
                         else if (character == 'z')
                                 this->postKeyEvent<EvKeyPressZ<ClKeyboard, TObjectTag>>();
-                        OnKeyPress(character); /*  */
+                        OnKeyPress_(character); /*  */
                 };
         }
 

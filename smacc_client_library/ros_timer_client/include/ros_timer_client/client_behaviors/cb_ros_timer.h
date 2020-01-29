@@ -19,6 +19,8 @@ public:
     };
   }
 
+  void onClientTimerTickCallback();
+
 private:
   ClRosTimer *timerClient_;
   std::function<void()> postTimerEvent_;

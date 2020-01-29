@@ -87,8 +87,8 @@ public:
     template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
     boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
 
-    template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-    boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+    // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
+    // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
 
     template <typename StateType>
     void notifyOnStateEntryStart(StateType *state);

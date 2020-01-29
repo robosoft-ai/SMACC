@@ -290,23 +290,34 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
     Bind<boost::function_types::function_arity<ft>::value> binder;
     boost::signals2::connection connection = binder.bindaux(signal, callback, object);
 
-    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value)
+    // long life-time objects
+    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value
+        ||std::is_base_of<ISmaccClient, TSmaccObjectType>::value
+        || std::is_base_of<IOrthogonal, TSmaccObjectType>::value
+        || std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
     {
     }
+    else if (   std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+                std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+                std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value)
+                {
+                    ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s", demangledTypeName<TSmaccObjectType>().c_str());
+        stateCallbackConnections.push_back(connection);
+                }
     else // state life-time objects
     {
-        ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s", demangledTypeName<TSmaccObjectType>().c_str());
-        stateCallbackConnections.push_back(connection);
+        ROS_WARN("[StateMachine] connecting signal to an unknown object with life-time unknown behavior. It might provoke an exception if the object is destroyed during the execution.");
     }
+
     return connection;
 }
 
-template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback)
-{
-    return signal.connect(callback);
-    // return signal;
-}
+// template <typename TSmaccSignal, typename TMemberFunctionPrototype>
+// boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback)
+// {
+//     return signal.connect(callback);
+//     // return signal;
+// }
 
 template <typename T>
 bool ISmaccStateMachine::getParam(std::string param_name, T &param_storage)

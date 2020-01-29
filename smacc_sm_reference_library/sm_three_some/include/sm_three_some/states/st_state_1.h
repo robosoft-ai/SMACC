@@ -28,5 +28,15 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     void runtimeConfigure()
     {
     }
+
+    void onEntry()
+    {
+        ROS_INFO("On Entry!");
+    }
+
+    void onExit()
+    {
+        ROS_INFO("On Exit!");
+    }
 };
 } // namespace sm_three_some

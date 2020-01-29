@@ -7,14 +7,15 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+      Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }

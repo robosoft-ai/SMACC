@@ -11,19 +11,13 @@ class CbDefaultKeyboardBehavior : public smacc::SmaccClientBehavior
 {
 public:
     ClKeyboard *ClKeyboard_;
-    boost::signals2::scoped_connection c_;
+    std::function<void(char)> postEventKeyPress;
 
     void onEntry()
     {
         this->requiresClient(ClKeyboard_);
-
-        c_ = this->ClKeyboard_->OnKeyPress.connect(
-            [this](char character) {
-                this->OnKeyPress(character);
-            });
+        this->ClKeyboard_->OnKeyPress(&CbDefaultKeyboardBehavior::OnKeyPress, this);
     }
-
-    std::function<void(char)> postEventKeyPress;
 
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes()

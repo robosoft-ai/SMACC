@@ -21,7 +21,10 @@ void ClRosTimer::initialize()
 
 void ClRosTimer::timerCallback(const ros::TimerEvent &timedata)
 {
-    this->onTimerTick_();
+    if (!onTimerTick_.empty())
+    {
+        this->onTimerTick_();
+    }
     postTimerEvent_();
 }
 

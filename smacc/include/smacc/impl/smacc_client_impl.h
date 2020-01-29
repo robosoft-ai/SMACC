@@ -74,4 +74,11 @@ SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
 
     return ret.get();
 }
+
+template <typename TSmaccSignal, typename T>
+void ISmaccClient::connectSignal(TSmaccSignal& signal, void (T::*callback)(), T *object)
+{
+    return this->getStateMachine()->createSignalConnection(signal, callback, object);
+}
+
 } // namespace smacc

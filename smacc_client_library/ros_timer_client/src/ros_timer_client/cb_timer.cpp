@@ -6,10 +6,12 @@ void CbTimer::onEntry()
 {
     this->requiresClient(timerClient_);
 
-    timerClient_->onTimerTick(
-        [=]() {
-            this->postTimerEvent_();
-        });
+    timerClient_->onTimerTick(&CbTimer::onClientTimerTickCallback, this);
+}
+
+void CbTimer::onClientTimerTickCallback()
+{
+    this->postTimerEvent_();
 }
 
 void CbTimer::onExit()

@@ -36,13 +36,6 @@ public:
         return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
     }
 
-    template <typename TFunc>
-    boost::signals2::connection onTimerTick(TFunc callback)
-    {
-        std::function<void()> callback1 = callback;
-        return this->getStateMachine()->createSignalConnection(onTimerTick_, callback1);
-    }
-
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes()
     {
