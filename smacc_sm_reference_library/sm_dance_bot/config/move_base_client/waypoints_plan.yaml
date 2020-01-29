@@ -42,8 +42,8 @@ waypoints:
       w: 1.0
     # POINT 4
   - position:
-      x: -10.0
-      y: 14.0
+      x: -10.5
+      y: 14.1
       z: 0.0
     orientation:
       x: 0.0
@@ -62,8 +62,8 @@ waypoints:
       w: 1.0
   #POINT 5
   - position:
-      x: 0.0
-      y: 0.0
+      x: 6.0
+      y: 8.0
       z: 0.0
     orientation:
       x: 0.0
