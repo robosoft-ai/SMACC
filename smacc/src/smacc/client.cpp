@@ -42,4 +42,5 @@ smacc::introspection::TypeInfo::Ptr ISmaccClient::getType()
 {
     return smacc::introspection::TypeInfo::getFromStdTypeInfo(typeid(*this));
 }
+
 } // namespace smacc
