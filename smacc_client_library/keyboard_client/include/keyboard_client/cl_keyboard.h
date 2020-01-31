@@ -237,8 +237,7 @@ public:
         void postKeyEvent()
         {
                 ROS_WARN("ClKeyboard ev: %s", smacc::demangleSymbol(typeid(TEv).name()).c_str());
-                auto event = new TEv();
-                this->postEvent(event);
+                this->postEvent<TEv>();
         }
 
 private:

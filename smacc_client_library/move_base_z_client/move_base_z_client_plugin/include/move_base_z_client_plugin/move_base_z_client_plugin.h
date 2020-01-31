@@ -9,7 +9,7 @@
 #include <smacc/client_bases/smacc_action_client_base.h>
 
 #include <move_base_msgs/MoveBaseAction.h>
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace move_base_z_client
 {
@@ -28,7 +28,7 @@ public:
 
     virtual void initialize() override;
 
-    virtual std::string getName() const override;    
+    virtual std::string getName() const override;
 };
 
 } // namespace smacc

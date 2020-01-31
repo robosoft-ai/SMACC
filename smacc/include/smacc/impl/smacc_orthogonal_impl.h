@@ -88,7 +88,7 @@ public:
     template <typename SmaccComponentType, typename... TArgs>
     SmaccComponentType *createComponent(TArgs... targs)
     {
-        return ISmaccClient::createComponent<SmaccComponentType, TOrthogonal, TClient,  TArgs...>(targs...);
+        return ISmaccClient::createComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(targs...);
     }
 
     virtual smacc::introspection::TypeInfo::Ptr getType() override
@@ -117,7 +117,7 @@ public:
                  demangledTypeName<TOrthogonal>().c_str());
 
         auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
-        this->assignClientToOrthogonal(client);
+        this->assignClientToOrthogonal(client.get());
 
         client->template configureEventSourceTypes<TOrthogonal, TClient>();
 
