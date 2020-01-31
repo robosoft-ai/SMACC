@@ -13,7 +13,7 @@ namespace smacc
 {
 
 template <typename SmaccClientType>
-void IOrthogonal::requiresClient(SmaccClientType *&storage)
+void ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
 {
     for (auto &client : clients_)
     {
@@ -24,7 +24,7 @@ void IOrthogonal::requiresClient(SmaccClientType *&storage)
 }
 
 template <typename SmaccComponentType>
-void IOrthogonal::requiresComponent(SmaccComponentType *&storage)
+void ISmaccOrthogonal::requiresComponent(SmaccComponentType *&storage)
 {
     if (stateMachine_ == nullptr)
     {
@@ -36,7 +36,7 @@ void IOrthogonal::requiresComponent(SmaccComponentType *&storage)
     }
 }
 template <typename TClientBehavior>
-TClientBehavior *IOrthogonal::getClientBehavior()
+TClientBehavior *ISmaccOrthogonal::getClientBehavior()
 {
     for (auto &cb : this->clientBehaviors_)
     {
@@ -50,30 +50,30 @@ TClientBehavior *IOrthogonal::getClientBehavior()
     return nullptr;
 }
 
-inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &IOrthogonal::getClients()
+inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &ISmaccOrthogonal::getClients()
 {
     return clients_;
 }
 
-inline const std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> &IOrthogonal::getClientBehaviors() const
+inline const std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> &ISmaccOrthogonal::getClientBehaviors() const
 {
     return this->clientBehaviors_;
 }
 
 template <typename T>
-void IOrthogonal::setGlobalSMData(std::string name, T value)
+void ISmaccOrthogonal::setGlobalSMData(std::string name, T value)
 {
     this->getStateMachine()->setGlobalSMData(name, value);
 }
 
 template <typename T>
-bool IOrthogonal::getGlobalSMData(std::string name, T &ret)
+bool ISmaccOrthogonal::getGlobalSMData(std::string name, T &ret)
 {
     return this->getStateMachine()->getGlobalSMData(name, ret);
 }
 
 //inline
-ISmaccStateMachine *IOrthogonal::getStateMachine() { return this->stateMachine_; }
+ISmaccStateMachine *ISmaccOrthogonal::getStateMachine() { return this->stateMachine_; }
 
 template <typename TOrthogonal, typename TClient>
 class ClientHandler : public TClient
@@ -98,13 +98,13 @@ public:
 };
 
 template <typename TOrthogonal>
-class Orthogonal : public IOrthogonal
+class Orthogonal : public ISmaccOrthogonal
 {
 public:
     template <typename TClient, typename... TArgs>
     std::shared_ptr<ClientHandler<TOrthogonal, TClient>> createClient(TArgs... args)
     {
-        //static_assert(std::is_base_of<IOrthogonal, TObjectTag>::value, "The object Tag must be the orthogonal type where the client was created");
+        //static_assert(std::is_base_of<ISmaccOrthogonal, TObjectTag>::value, "The object Tag must be the orthogonal type where the client was created");
         // if (typeid(*this) != typeid(TObjectTag))
         // {
         //     ROS_ERROR_STREAM("Error creating client. The object Tag must be the type of the orthogonal where the client was created:" << demangleType(typeid(*this)) << ". The object creation was skipped and a nullptr was returned");
@@ -117,7 +117,7 @@ public:
                  demangledTypeName<TOrthogonal>().c_str());
 
         auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
-        client->setStateMachine(getStateMachine());
+        this->assignClientToOrthogonal(client);
 
         client->template configureEventSourceTypes<TOrthogonal, TClient>();
 

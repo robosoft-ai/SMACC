@@ -45,6 +45,6 @@ protected:
 
     ISmaccClient *owner_;
 
-    friend class IOrthogonal;
+    friend class ISmaccOrthogonal;
 };
 } // namespace smacc

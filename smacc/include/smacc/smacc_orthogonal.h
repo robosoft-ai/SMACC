@@ -10,7 +10,7 @@
 
 namespace smacc
 {
-class IOrthogonal
+class ISmaccOrthogonal
 {
 public:
     void setStateMachine(ISmaccStateMachine *value);
@@ -46,8 +46,11 @@ public:
     template <typename TClientBehavior>
     TClientBehavior *getClientBehavior();
 
+
 protected:
     virtual void onInitialize();
+
+    void assignClientToOrthogonal(smacc::ISmaccClient* client);
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 

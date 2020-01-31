@@ -4,13 +4,13 @@
 
 namespace smacc
 {
-void IOrthogonal::setStateMachine(ISmaccStateMachine *value)
+void ISmaccOrthogonal::setStateMachine(ISmaccStateMachine *value)
 {
     this->stateMachine_ = value;
     this->onInitialize();
 }
 
-void IOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
+void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
 {
     if (clBehavior != nullptr)
     {
@@ -26,28 +26,34 @@ void IOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> 
     }
 }
 
-void IOrthogonal::onInitialize()
+void ISmaccOrthogonal::onInitialize()
 {
 }
 
-std::string IOrthogonal::getName() const
+std::string ISmaccOrthogonal::getName() const
 {
     return demangleSymbol(typeid(*this).name());
 }
 
-void IOrthogonal::runtimeConfigure()
+void ISmaccOrthogonal::runtimeConfigure()
 {
     for (auto &clBehavior : clientBehaviors_)
-        {
-            ROS_INFO("Orthogonal %s runtimeConfigure, current Behavior: %s",
-                     this->getName().c_str(),
-                     clBehavior->getName().c_str());
+    {
+        ROS_INFO("Orthogonal %s runtimeConfigure, current Behavior: %s",
+                 this->getName().c_str(),
+                 clBehavior->getName().c_str());
 
-            clBehavior->runtimeConfigure();
-        }
+        clBehavior->runtimeConfigure();
+    }
 }
 
-void IOrthogonal::onEntry()
+void ISmaccOrthogonal::assignClientToOrthogonal(smacc::ISmaccClient *client)
+{
+    client->setStateMachine(getStateMachine());
+    client->setOrthogonal(this);
+}
+
+void ISmaccOrthogonal::onEntry()
 {
     if (clientBehaviors_.size() > 0)
     {
@@ -66,7 +72,7 @@ void IOrthogonal::onEntry()
     }
 }
 
-void IOrthogonal::onExit()
+void ISmaccOrthogonal::onExit()
 {
     if (clientBehaviors_.size() > 0)
     {

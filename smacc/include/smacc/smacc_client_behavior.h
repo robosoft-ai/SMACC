@@ -52,10 +52,10 @@ private:
     // a reference to the state where the client behavior is being executed
     ISmaccState *currentState;
 
-    smacc::IOrthogonal *currentOrthogonal;
+    smacc::ISmaccOrthogonal *currentOrthogonal;
 
     friend class ISmaccState;
-    friend class IOrthogonal;
+    friend class ISmaccOrthogonal;
 };
 } // namespace smacc
 

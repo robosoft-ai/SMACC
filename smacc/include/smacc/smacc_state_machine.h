@@ -47,7 +47,7 @@ public:
     template <typename TOrthogonal>
     TOrthogonal *getOrthogonal();
 
-    const std::map<std::string, std::shared_ptr<smacc::IOrthogonal>> &getOrthogonals() const;
+    const std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> &getOrthogonals() const;
 
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
@@ -152,7 +152,7 @@ protected:
     smacc_msgs::SmaccStatus status_msg_;
 
     // orthogonals
-    std::map<std::string, std::shared_ptr<smacc::IOrthogonal>> orthogonals_;
+    std::map<std::string, std::shared_ptr<smacc::ISmaccOrthogonal>> orthogonals_;
 
 private:
     std::recursive_mutex m_mutex_;

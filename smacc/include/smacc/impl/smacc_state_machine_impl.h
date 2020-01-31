@@ -68,7 +68,7 @@ void ISmaccStateMachine::createOrthogonal()
     if (orthogonals_.count(orthogonalkey) == 0)
     {
         auto ret = std::make_shared<TOrthogonal>();
-        orthogonals_[orthogonalkey] = dynamic_pointer_cast<smacc::IOrthogonal>(ret);
+        orthogonals_[orthogonalkey] = dynamic_pointer_cast<smacc::ISmaccOrthogonal>(ret);
 
         ret->setStateMachine(this);
 
@@ -293,7 +293,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
     // long life-time objects
     if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value
         ||std::is_base_of<ISmaccClient, TSmaccObjectType>::value
-        || std::is_base_of<IOrthogonal, TSmaccObjectType>::value
+        || std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value
         || std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
     {
     }

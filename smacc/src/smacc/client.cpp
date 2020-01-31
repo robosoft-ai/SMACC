@@ -33,6 +33,11 @@ void ISmaccClient::setStateMachine(ISmaccStateMachine *stateMachine)
     stateMachine_ = stateMachine;
 }
 
+void ISmaccClient::setOrthogonal(ISmaccOrthogonal* orthogonal)
+{
+    orthogonal_ = orthogonal;
+}
+
 smacc::introspection::TypeInfo::Ptr ISmaccClient::getType()
 {
     return smacc::introspection::TypeInfo::getFromStdTypeInfo(typeid(*this));
