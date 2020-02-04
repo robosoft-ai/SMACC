@@ -1,18 +1,18 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StState1 : smacc::SmaccState<StState1, MsRun>
+struct StStopping : smacc::SmaccState<StStopping, MsRecover>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StState2>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStopped> //,
+    // Transition<EvFail, MsRecover, smacc::ABORT>
     
     >reactions;
 

@@ -1,22 +1,22 @@
 namespace sm_packML
 {
-namespace SS1
+namespace SS2
 {
 namespace sm_packML
 {
-namespace ss1_states
+namespace ss2_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiState1;
-class StiState2;
-class StiState3;
+class StiState4;
+class StiState5;
+class StiState6;
 } // namespace ss1_states
 } // namespace sm_packML
 
-using namespace sm_packML::ss1_states;
+using namespace sm_packML::ss2_states;
 
 // STATE DECLARATION
-struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1, sc::has_full_history>
+struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState4, sc::has_full_history>
 {
 public:
     using SmaccState::SmaccState;
@@ -24,7 +24,7 @@ public:
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiState1>, StIdle>
+    Transition<EvLoopEnd<StiState5>, StIdle>
     
     >reactions;
 
@@ -43,11 +43,11 @@ public:
 }; // namespace SS4
 
 //forward declaration for the superstate
-using SS = SS1::Ss1;
+using SS = SS2::Ss2;
 
-#include <sm_packML/states/ss_superstate_1/sti_state_1.h>
-#include <sm_packML/states/ss_superstate_1/sti_state_2.h>
-#include <sm_packML/states/ss_superstate_1/sti_state_3.h>
+#include <sm_packML/states/ss_superstate_2/sti_state_4.h>
+#include <sm_packML/states/ss_superstate_2/sti_state_5.h>
+#include <sm_packML/states/ss_superstate_2/sti_state_6.h>
 
 } // namespace SS1
 } // namespace sm_packML

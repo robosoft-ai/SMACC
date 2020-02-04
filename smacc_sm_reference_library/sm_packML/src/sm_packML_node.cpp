@@ -2,6 +2,6 @@
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "three_some");
-    smacc::run<sm_packML::SmThreesome>();
+    ros::init(argc, argv, "packML");
+    smacc::run<sm_packML::SmPackML>();
 }

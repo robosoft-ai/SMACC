@@ -1,17 +1,19 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StState2 : smacc::SmaccState<StState2, MsRun>
+struct StExecute : smacc::SmaccState<StExecute, MsRun>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
-   
-    Transition<EvAllGo<SrAllEventsGo>, StState3>,
+    
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StCompleting>,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, SS2::Ss2>
+
     
     >reactions;
 
@@ -22,12 +24,6 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
-
-        // Create State Reactor
-        auto sbAll = static_createStateReactor<SrAllEventsGo>();
-        sbAll->addInputEvent<EvTimer<CbTimer, OrTimer>>();
-        sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
     }
 
     void runtimeConfigure()
