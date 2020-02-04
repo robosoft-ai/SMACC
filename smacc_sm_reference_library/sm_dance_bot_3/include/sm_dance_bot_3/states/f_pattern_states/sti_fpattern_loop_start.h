@@ -10,22 +10,29 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
   using TSti::context_type;
   using TSti::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP> 
-  
-  >reactions;
 
-// STATE FUNCTIONS
+      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }
 
   bool loopCondition()
   {
-    auto &superstate = TSti::template context<SS>();
-    return superstate.iteration_count++ < superstate.total_iterations();
+    cl_lidar::ClLidarSensor *lidarClient;
+    this->requiresClient(lidarClient);
+
+    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+    auto horizontalDistance = lidarData->forwardObstacleDistance;
+
+    return horizontalDistance > 1.5 /*meters*/; // go ahead until 1.5m before the wall
   }
 
   void onEntry()

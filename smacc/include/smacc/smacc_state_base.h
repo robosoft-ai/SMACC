@@ -125,7 +125,6 @@ public:
     parentState_ = dynamic_cast<ISmaccState *>(&ps);
     finishStateThrown = false;
 
-
     this->contextNh = optionalNodeHandle(ctx.pContext_);
     ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
@@ -134,7 +133,6 @@ public:
       ROS_INFO("Creating ros NodeHandle for this state: %s", nhname.c_str());
       contextNh = ros::NodeHandle(nhname);
     }
-
   }
 
   typedef typename Context::inner_context_type context_type;
@@ -351,7 +349,7 @@ public:
       outermost_context_base_type &outermostContextBase)
   {
     auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
-    const inner_context_ptr_type pInnerContext( state);
+    const inner_context_ptr_type pInnerContext(state);
     state->smaccStart();
 
     outermostContextBase.add(pInnerContext);

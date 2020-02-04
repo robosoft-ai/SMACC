@@ -119,7 +119,6 @@ using namespace sm_dance_bot_3;
 using namespace ros_timer_client;
 using namespace smacc;
 
-
 namespace sm_dance_bot_3
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
@@ -172,8 +171,6 @@ struct SmDanceBot
 #include <sm_dance_bot_3/states/st_navigate_to_waypoints_x.h>
 
 #include <sm_dance_bot_3/states/st_rotate_degrees_6.h>
-#include <sm_dance_bot_3/states/st_rotate_degrees_5.h>
-#include <sm_dance_bot_3/states/st_navigate_forward_2.h>
 #include <sm_dance_bot_3/states/st_rotate_degrees_4.h>
 #include <sm_dance_bot_3/states/st_navigate_forward_1.h>
 #include <sm_dance_bot_3/states/st_navigate_to_waypoint_1.h>
