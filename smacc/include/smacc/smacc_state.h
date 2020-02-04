@@ -76,6 +76,8 @@ protected:
 
   ros::NodeHandle nh;
 
+  ros::NodeHandle contextNh;
+
   ISmaccState *parentState_;
 
   const smacc::introspection::SmaccStateInfo *stateInfo_;

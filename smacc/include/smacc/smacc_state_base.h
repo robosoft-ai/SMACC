@@ -48,33 +48,9 @@ public:
     return parentState_;
   }
 
-  // Constructor that initializes the state ros node handle
-  SmaccState(my_context ctx)
+  void smaccStart()
   {
-    static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value, "The context class must be a SmaccState or a SmaccStateMachine");
-
-    static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
-
-    ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
-    this->set_context(ctx.pContext_);
-
-    this->stateInfo_ = getStateInfo();
-
-    // storing a reference to the parent state
-    auto &ps = this->template context<Context>();
-    parentState_ = dynamic_cast<ISmaccState *>(&ps);
-    finishStateThrown = false;
-
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
-
-    ros::NodeHandle contextNh = optionalNodeHandle(ctx.pContext_);
-    ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
-    if (contextNh.getNamespace() == "/")
-    {
-      auto nhname = smacc::utils::cleanShortTypeName(typeid(Context));
-      ROS_INFO("Creating ros NodeHandle for this state: %s", nhname.c_str());
-      contextNh = ros::NodeHandle(nhname);
-    }
 
     std::string classname = smacc::utils::cleanShortTypeName(typeid(MostDerived));
 
@@ -130,6 +106,35 @@ public:
 
     // here orthogonals and client behaviors are entered OnEntry
     this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));
+  }
+
+  // Constructor that initializes the state ros node handle
+  SmaccState(my_context ctx)
+  {
+    static_assert(std::is_base_of<ISmaccState, Context>::value || std::is_base_of<ISmaccStateMachine, Context>::value, "The context class must be a SmaccState or a SmaccStateMachine");
+
+    static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
+
+    ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
+    this->set_context(ctx.pContext_);
+
+    this->stateInfo_ = getStateInfo();
+
+    // storing a reference to the parent state
+    auto &ps = this->template context<Context>();
+    parentState_ = dynamic_cast<ISmaccState *>(&ps);
+    finishStateThrown = false;
+
+
+    this->contextNh = optionalNodeHandle(ctx.pContext_);
+    ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
+    if (contextNh.getNamespace() == "/")
+    {
+      auto nhname = smacc::utils::cleanShortTypeName(typeid(Context));
+      ROS_INFO("Creating ros NodeHandle for this state: %s", nhname.c_str());
+      contextNh = ros::NodeHandle(nhname);
+    }
+
   }
 
   typedef typename Context::inner_context_type context_type;
@@ -345,12 +350,10 @@ public:
       const context_ptr_type &pContext,
       outermost_context_base_type &outermostContextBase)
   {
-    const inner_context_ptr_type pInnerContext(
+    auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
+    const inner_context_ptr_type pInnerContext( state);
+    state->smaccStart();
 
-        new MostDerived(
-            SmaccState<MostDerived, Context, InnerInitial, historyMode>::
-
-                my_context(pContext)));
     outermostContextBase.add(pInnerContext);
     return pInnerContext;
   }

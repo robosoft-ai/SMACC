@@ -73,7 +73,7 @@ void SignalDetector::findUpdatableBehaviors()
         auto &orthogonal = pair.second;
         auto &behaviors = orthogonal->getClientBehaviors();
 
-        for (auto& currentBehavior : behaviors)
+        for (auto &currentBehavior : behaviors)
         {
             ISmaccUpdatable *updatableClientBehavior = dynamic_cast<ISmaccUpdatable *>(currentBehavior.get());
 
@@ -142,7 +142,7 @@ void SignalDetector::pollOnce()
     try
     {
         smaccStateMachine_->lockStateMachine("update behaviors");
-
+        this->findUpdatableClients();
         ROS_DEBUG_STREAM("updatable clients: " << this->updatableClients_.size());
 
         if (this->updatableClients_.size())
