@@ -13,14 +13,31 @@ namespace smacc
 {
 
 template <typename SmaccClientType>
-void ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
+bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
 {
     for (auto &client : clients_)
     {
         storage = dynamic_cast<SmaccClientType *>(client.get());
         if (storage != nullptr)
-            return;
+            return true;
     }
+
+    ROS_WARN("Required client not found in current orthogonal. Searching in other orthogonals.");
+
+    for (auto &orthoentry : this->getStateMachine()->getOrthogonals())
+    {
+        for (auto &client : orthoentry.second->getClients())
+        {
+            storage = dynamic_cast<SmaccClientType *>(client.get());
+            if (storage != nullptr)
+            {
+                ROS_WARN("Required client found in other orthogonal.");
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 template <typename SmaccComponentType>

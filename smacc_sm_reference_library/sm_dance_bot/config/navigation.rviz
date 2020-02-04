@@ -8,6 +8,7 @@ Panels:
         - /Odometry1/Shape1
         - /TF1/Frames1
         - /SmaccRvizDisplay1
+        - /Path1
       Splitter Ratio: 0.38611111
     Tree Height: 770
   - Class: rviz/Selection
@@ -144,6 +145,20 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
+        reel_mount_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        reel_mouth_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        reel_wheel_link:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         right_side_cover_link:
           Alpha: 1
           Show Axes: false
@@ -182,9 +197,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 8.40779079e-45
+      Max Intensity: 8.32305102e-35
       Min Color: 0; 0; 0
-      Min Intensity: 8.40779079e-45
+      Min Intensity: 0
       Name: LaserScan
       Position Transformer: XYZ
       Queue Size: 10
@@ -350,7 +365,7 @@ Visualization Manager:
       Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
       Name: FW Goal
       Namespaces:
-        my_namespace2: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -358,7 +373,7 @@ Visualization Manager:
       Marker Topic: /move_base/BackwardLocalPlanner/goal_marker
       Name: BW Goal
       Namespaces:
-        my_namespace2: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -414,6 +429,8 @@ Visualization Manager:
           Value: true
         chassis_link:
           Value: false
+        coord_impact_point:
+          Value: true
         front_cover_link:
           Value: false
         front_laser:
@@ -444,6 +461,12 @@ Visualization Manager:
           Value: false
         rear_rocker_link:
           Value: false
+        reel_mount_link:
+          Value: true
+        reel_mouth_link:
+          Value: true
+        reel_wheel_link:
+          Value: true
         right_side_cover_link:
           Value: false
         top_link:
@@ -482,6 +505,12 @@ Visualization Manager:
                 {}
               rear_lights_link:
                 {}
+              reel_mount_link:
+                reel_mouth_link:
+                  coord_impact_point:
+                    {}
+                reel_wheel_link:
+                  {}
               right_side_cover_link:
                 {}
               top_link:
@@ -518,7 +547,7 @@ Visualization Manager:
       Marker Topic: /tool_markers
       Name: MarkerArray
       Namespaces:
-        tool_namespace: true
+        {}
       Queue Size: 1
       Value: true
     - Alpha: 0.699999988
@@ -542,10 +571,33 @@ Visualization Manager:
       Use Timestamp: false
       Value: false
     - Class: smacc_rviz_plugin/SmaccRvizDisplay
-      CurrentState: /sm_dance_bot::MsDanceBotRunMode/sm_dance_bot::SS4::SsFPattern1/sm_dance_bot::f_pattern_states::StiFPatternRotate2<sm_dance_bot::SS4::SsFPattern1>
+      CurrentState: ""
       Enabled: true
       Name: SmaccRvizDisplay
       Topic: /SmDanceBot/smacc/status
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 170; 0; 255
+      Enabled: true
+      Head Diameter: 0.300000012
+      Head Length: 0.200000003
+      Length: 0.300000012
+      Line Style: Lines
+      Line Width: 0.0299999993
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.0299999993
+      Shaft Diameter: 0.100000001
+      Shaft Length: 0.100000001
+      Topic: /reelrbtx_follow_controller/reel_mouth_path
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
@@ -581,11 +633,11 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.00999999978
-      Scale: 64.5413284
+      Scale: 135.866806
       Target Frame: base_link
       Value: TopDownOrtho (rviz)
-      X: 0.758971989
-      Y: 1.9551363
+      X: -0.249740466
+      Y: -0.25658837
     Saved: ~
 Window Geometry:
   Displays:
