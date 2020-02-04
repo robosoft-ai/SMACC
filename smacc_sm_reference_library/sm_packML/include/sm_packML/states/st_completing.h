@@ -8,11 +8,11 @@ struct StCompleting : smacc::SmaccState<StCompleting, MsRun>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StComplete>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StComplete>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StComplete> //,
+    // Transition<EvFail, MsRecover, smacc::ABORT>
     
     >reactions;
 

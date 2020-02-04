@@ -2,7 +2,7 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-class MsRecover : public smacc::SmaccState<MsRecover, SmPackML>
+class MsRecover : public smacc::SmaccState<MsRecover, SmPackML, StClearing>
 {
 public:
    using SmaccState::SmaccState;

@@ -8,9 +8,9 @@ struct StStarting : smacc::SmaccState<StStarting, MsRun>
 // TRANSITION TABLE
     typedef mpl::list<
    
-    Transition<EvAllGo<SrAllEventsGo>, StExecute>,
+    // Transition<EvAllGo<SrAllEventsGo>, StExecute>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle>,
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StExecute>
     
     >reactions;

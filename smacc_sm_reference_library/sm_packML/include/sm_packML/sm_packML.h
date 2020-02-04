@@ -46,6 +46,11 @@ namespace SS1
 class Ss1;
 } // namespace SS1
 
+namespace SS2
+{
+class Ss2;
+}
+
 //STATES
 class StIdle; // first state specially needs a forward declaration
 class StStarting;
@@ -116,3 +121,4 @@ struct SmPackML
 #include <sm_packML/states/st_stopped.h>
 
 #include <sm_packML/superstates/ss_superstate_1.h>
+#include <sm_packML/superstates/ss_superstate_2.h>

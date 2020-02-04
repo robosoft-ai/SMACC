@@ -1,7 +1,7 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StAborting : smacc::SmaccState<StAborting, MsRun>
+struct StAborting : smacc::SmaccState<StAborting, SmPackML>
 {
     using SmaccState::SmaccState;
 
