@@ -2,7 +2,7 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-class MsRecover : public smacc::SmaccState<MsRecover, SmThreesome>
+class MsRecover : public smacc::SmaccState<MsRecover, SmPackML>
 {
 public:
    using SmaccState::SmaccState;
@@ -10,7 +10,7 @@ public:
 // TRANSITION TABLE
    typedef mpl::list<
     
-   Transition<EvToDeep, sc::deep_history<StState1>, SUCCESS>
+   Transition<EvToDeep, sc::deep_history<StIdle>, SUCCESS>
    
    >reactions;
 };

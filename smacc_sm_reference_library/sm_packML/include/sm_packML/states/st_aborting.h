@@ -1,24 +1,25 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StState3 : smacc::SmaccState<StState3, MsRun>
+struct StAborting : smacc::SmaccState<StAborting, MsRun>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
-    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::Ss1>,
+        
+    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState2>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting>,
+    Transition<EvFail, MsRecover, smacc::ABORT>
     
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimer>();
+        configure_orthogonal<OrTimer, CbTimer>();   
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

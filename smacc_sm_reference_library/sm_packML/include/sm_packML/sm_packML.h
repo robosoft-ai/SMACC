@@ -47,9 +47,23 @@ class Ss1;
 } // namespace SS1
 
 //STATES
-class StState1; // first state specially needs a forward declaration
-class StState2;
-class StState3;
+class StIdle; // first state specially needs a forward declaration
+class StStarting;
+class StExecute;
+class StCompleting;
+class StComplete;
+class StResetting;
+class StUnholding;
+class StHeld;
+class StHolding;
+class StSuspending;
+class StSuspended;
+class StUnsuspending;
+class StAborting;
+class StAborted;
+class StClearing;
+class StStopping;
+class StStopped;
 
 class MsRun;
 class MsRecover;
@@ -63,8 +77,8 @@ struct EvFail : sc::event<EvFail>
 };
 
 // STATE MACHINE
-struct SmThreesome
-    : public smacc::SmaccStateMachineBase<SmThreesome, MsRun>
+struct SmPackML
+    : public smacc::SmaccStateMachineBase<SmPackML, MsRun>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -83,8 +97,22 @@ struct SmThreesome
 #include <sm_packML/mode_states/ms_recover.h>
 
 //STATES
-#include <sm_packML/states/st_state_1.h>
-#include <sm_packML/states/st_state_2.h>
-#include <sm_packML/states/st_state_3.h>
+#include <sm_packML/states/st_idle.h>
+#include <sm_packML/states/st_starting.h>
+#include <sm_packML/states/st_execute.h>
+#include <sm_packML/states/st_completing.h>
+#include <sm_packML/states/st_complete.h>
+#include <sm_packML/states/st_resetting.h>
+#include <sm_packML/states/st_unholding.h>
+#include <sm_packML/states/st_held.h>
+#include <sm_packML/states/st_holding.h>
+#include <sm_packML/states/st_suspending.h>
+#include <sm_packML/states/st_suspended.h>
+#include <sm_packML/states/st_unsuspending.h>
+#include <sm_packML/states/st_aborting.h>
+#include <sm_packML/states/st_aborted.h>
+#include <sm_packML/states/st_clearing.h>
+#include <sm_packML/states/st_stopping.h>
+#include <sm_packML/states/st_stopped.h>
 
 #include <sm_packML/superstates/ss_superstate_1.h>
