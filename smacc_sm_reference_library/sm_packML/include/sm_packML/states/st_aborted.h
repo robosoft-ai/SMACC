@@ -5,14 +5,17 @@ struct StAborted : smacc::SmaccState<StAborted, SmPackML>
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct CLEAR : SUCCESS{};
+
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StClearing, SUCCESS> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 

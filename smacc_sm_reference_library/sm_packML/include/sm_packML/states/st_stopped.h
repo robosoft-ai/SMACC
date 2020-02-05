@@ -1,9 +1,12 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StStopped : smacc::SmaccState<StStopped, MsRecover>
+struct StStopped : smacc::SmaccState<StStopped, MsStop>
 {
     using SmaccState::SmaccState;
+
+// DECLARE CUSTOM OBJECT TAGS
+    struct RESET : SUCCESS{};
 
 // TRANSITION TABLE
     typedef mpl::list<
@@ -11,8 +14,8 @@ struct StStopped : smacc::SmaccState<StStopped, MsRecover>
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StResetting> //,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StResetting, RESET> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 

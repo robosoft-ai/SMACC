@@ -5,14 +5,17 @@ struct StSuspended : smacc::SmaccState<StSuspended, MsRun>
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct UNSUSPEND : SUCCESS{};
+
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
+    // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUnsuspending, UNSUSPEND> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 

@@ -40,16 +40,6 @@ using namespace smacc::default_events;
 
 namespace sm_packML
 {
-//SUPERSTATES
-namespace SS1
-{
-class Ss1;
-} // namespace SS1
-
-namespace SS2
-{
-class Ss2;
-}
 
 //STATES
 class StIdle; // first state specially needs a forward declaration
@@ -71,13 +61,17 @@ class StStopping;
 class StStopped;
 
 class MsRun;
-class MsRecover;
+class MsStop;
 
 struct EvToDeep : sc::event<EvToDeep>
 {
 };
 
 struct EvFail : sc::event<EvFail>
+{
+};
+
+struct EvEStop : sc::event<EvEStop>
 {
 };
 
@@ -99,7 +93,7 @@ struct SmPackML
 
 // MODE STATES
 #include <sm_packML/mode_states/ms_run.h>
-#include <sm_packML/mode_states/ms_recover.h>
+#include <sm_packML/mode_states/ms_stop.h>
 
 //STATES
 #include <sm_packML/states/st_idle.h>
@@ -119,6 +113,3 @@ struct SmPackML
 #include <sm_packML/states/st_clearing.h>
 #include <sm_packML/states/st_stopping.h>
 #include <sm_packML/states/st_stopped.h>
-
-#include <sm_packML/superstates/ss_superstate_1.h>
-#include <sm_packML/superstates/ss_superstate_2.h>

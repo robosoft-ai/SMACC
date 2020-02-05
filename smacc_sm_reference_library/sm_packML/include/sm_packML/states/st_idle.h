@@ -5,14 +5,18 @@ struct StIdle : smacc::SmaccState<StIdle, MsRun>
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct START : SUCCESS{};
+    
+
 // TRANSITION TABLE
     typedef mpl::list<
         
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting> //,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting, START> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 
