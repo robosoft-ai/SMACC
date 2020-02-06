@@ -2,7 +2,7 @@
 namespace sm_calendar_week
 {
 // STATE DECLARATION
-class MsWeekend : public smacc::SmaccState<MsWeekend, SmCalendarWeek, StStopping>
+class MsWeekend : public smacc::SmaccState<MsWeekend, SmCalendarWeek, StSaturday>
 {
 public:
    using SmaccState::SmaccState;
@@ -10,7 +10,7 @@ public:
 // TRANSITION TABLE
  //  typedef mpl::list<
     
-  // Transition<EvToDeep, sc::deep_history<StIdle>, SUCCESS>
+  // Transition<EvToDeep, sc::deep_history<StFriday>, SUCCESS>
    
   // >reactions;
 };
