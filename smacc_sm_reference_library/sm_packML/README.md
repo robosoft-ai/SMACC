@@ -1,4 +1,6 @@
- <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users state machine projects.<br></br>
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_packML/docs/smacc_state_machine_20200205-104849.dot.svg" width="950" align="center" border="10"/> 
+
+<h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users state machine projects.<br></br>
  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a> 
  
