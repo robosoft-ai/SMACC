@@ -11,7 +11,7 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
   typedef mpl::list<
   
   Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>
+  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, ABORT>
   
   >reactions;
 
