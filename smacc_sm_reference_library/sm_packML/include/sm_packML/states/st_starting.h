@@ -11,7 +11,7 @@ struct StStarting : smacc::SmaccState<StStarting, MsRun>
     // Transition<EvAllGo<SrAllEventsGo>, StExecute>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StExecute>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StExecute, SUCCESS>
     
     >reactions;
 

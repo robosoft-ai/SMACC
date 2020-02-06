@@ -10,9 +10,9 @@ struct StResetting : smacc::SmaccState<StResetting, MsRun>
         
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle> //,
+    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle, SUCCESS> //,
     // Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStarting>,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 

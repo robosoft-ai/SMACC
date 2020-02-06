@@ -11,8 +11,8 @@ struct StCompleting : smacc::SmaccState<StCompleting, MsRun>
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StComplete>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StComplete> //,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StComplete, SUCCESS> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 

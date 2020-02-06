@@ -1,7 +1,7 @@
 namespace sm_packML
 {
 // STATE DECLARATION
-struct StStopping : smacc::SmaccState<StStopping, MsRecover>
+struct StStopping : smacc::SmaccState<StStopping, MsStop>
 {
     using SmaccState::SmaccState;
 
@@ -11,8 +11,8 @@ struct StStopping : smacc::SmaccState<StStopping, MsRecover>
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrTimer>, StStarting>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStopped> //,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StStopped, SUCCESS> //,
+    // Transition<EvFail, MsStop, smacc::ABORT>
     
     >reactions;
 
