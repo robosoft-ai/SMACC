@@ -41,7 +41,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors
+   LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch
    CATKIN_DEPENDS smacc tf
    DEPENDS yaml-cpp
 )
@@ -94,6 +94,14 @@ target_link_libraries(planner_switcher
    ${catkin_LIBRARIES})
 
 #----------------------------------
+add_library(costmap_switch
+   src/components/costmap_switch/cp_costmap_switch.cpp
+)
+
+target_link_libraries(costmap_switch
+   ${catkin_LIBRARIES})
+
+#----------------------------------
 file(GLOB_RECURSE SRC_FILES "src/client_behaviors/*.cpp") # opcionalmente GLOB
 
 add_library(move_base_z_client_behaviors
@@ -140,7 +148,7 @@ target_link_libraries(waypoints_navigator
 # )
 
 ## Mark executables and/or libraries for installation
- install(TARGETS ${PROJECT_NAME} odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors
+ install(TARGETS ${PROJECT_NAME} odom_tracker waypoints_navigator planner_switcher costmap_switch move_base_z_client_behaviors
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

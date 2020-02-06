@@ -1,0 +1,2 @@
+#!/bin/bash
+./build.sh pabloinigoblasco 3e8b20a64ee07909a7f2c2d23e476776e911430b pibgeus 8d39c5b27610801b6500707ed36ae5cb9220a37c9e63d5b4

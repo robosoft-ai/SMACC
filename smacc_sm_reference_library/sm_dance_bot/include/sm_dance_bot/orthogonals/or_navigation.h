@@ -15,13 +15,11 @@ class OrNavigation : public smacc::Orthogonal<OrNavigation>
 public:
     virtual void onInitialize() override
     {
-        auto node_namespace = "move_base";
         auto movebaseClient = this->createClient<ClMoveBaseZ>();
-        movebaseClient->name_ = node_namespace;
         movebaseClient->initialize();
 
         // create planner switcher
-        movebaseClient->createComponent<PlannerSwitcher>(node_namespace);
+        movebaseClient->createComponent<PlannerSwitcher>();
 
         // create odom tracker
         movebaseClient->createComponent<OdomTracker>("/");

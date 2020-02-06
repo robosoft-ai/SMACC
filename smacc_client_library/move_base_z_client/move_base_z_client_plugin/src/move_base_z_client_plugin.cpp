@@ -9,7 +9,8 @@
 namespace move_base_z_client
 {
 
-ClMoveBaseZ::ClMoveBaseZ()
+ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName)
+ : Base(moveBaseName)
 {
     //ROS_INFO("Smacc Move Base Action Client");
 }

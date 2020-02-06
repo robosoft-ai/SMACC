@@ -11,7 +11,7 @@ namespace sm_dance_bot
 namespace cl_led
 {
 
-ClLED::ClLED()
+ClLED::ClLED() : Base("led_action_server_node")
 {
 }
 
@@ -26,5 +26,4 @@ ClLED::~ClLED()
 } // namespace cl_led
 
 //PLUGINLIB_EXPORT_CLASS(cl_led::ClLED, smacc::ISmaccComponent)
-
 }

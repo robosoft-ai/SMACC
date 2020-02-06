@@ -3,14 +3,20 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace move_base_z_client
 {
 
-PlannerSwitcher::PlannerSwitcher(std::string nodeHandleName)
+PlannerSwitcher::PlannerSwitcher()
 {
-  ros::NodeHandle nh(nodeHandleName);
+}
+
+void PlannerSwitcher::initialize(smacc::ISmaccClient *owner)
+{
+  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner);
+  ros::NodeHandle nh(client_->name_);
   dynrecofSub_ = nh.subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1, boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
 }
 

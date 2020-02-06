@@ -19,9 +19,11 @@ namespace move_base_z_client
 class PlannerSwitcher: public smacc::ISmaccComponent
 {
 public:
-  PlannerSwitcher(std::string nodeHandleName);
+  PlannerSwitcher();
   void setBackwardPlanner();
   void setForwardPlanner();
+
+  virtual void initialize(smacc::ISmaccClient* owner) override;
 
   // sets ROS defaults local and global planners
   void setDefaultPlanners();

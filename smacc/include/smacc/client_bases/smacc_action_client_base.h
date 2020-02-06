@@ -30,8 +30,9 @@ public:
     typedef typename ActionClient::SimpleActiveCallback SimpleActiveCallback;
     typedef typename ActionClient::SimpleFeedbackCallback SimpleFeedbackCallback;
 
-    SmaccActionClientBase()
-        : ISmaccActionClient()
+    SmaccActionClientBase(std::string actionServerName)
+        : ISmaccActionClient(),
+          name_(actionServerName)
     {
     }
 
@@ -46,20 +47,11 @@ public:
     }
 
     /// rosnamespace path
-    boost::optional<std::string> name_;
+    std::string name_;
 
     virtual void initialize() override
     {
-        if (!name_)
-        {
-            name_ = demangleSymbol(typeid(*this).name());
-            std::vector<std::string> strs;
-            boost::split(strs, *name_, boost::is_any_of("::"));
-            std::string classname = strs.back();
-            name_ = classname;
-        }
-
-        client_ = std::make_shared<ActionClient>(*name_);
+        client_ = std::make_shared<ActionClient>(name_);
     }
 
     smacc::SmaccSignal<void(const ResultConstPtr &)> onSucceeded_;
@@ -171,7 +163,7 @@ public:
 
     void sendGoal(Goal &goal)
     {
-        ROS_INFO_STREAM("Sending goal to actionserver located in " << *(this->name_) << "\"");
+        ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ << "\"");
 
         if (!client_->isServerConnected())
         {

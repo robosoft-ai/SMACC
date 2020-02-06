@@ -22,7 +22,7 @@ class ClMoveBaseZ : public smacc::client_bases::SmaccActionClientBase<move_base_
 public:
     typedef SmaccActionClientBase<move_base_msgs::MoveBaseAction>::ResultConstPtr ResultConstPtr;
 
-    ClMoveBaseZ();
+    ClMoveBaseZ(std::string moveBaseName="/move_base");
 
     virtual ~ClMoveBaseZ();
 

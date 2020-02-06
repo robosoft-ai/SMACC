@@ -11,7 +11,6 @@ public:
     virtual void onInitialize() override
     {
         auto client = this->createClient<ClMoveBaseZ>();
-        client->name_ = "move_base";
         client->initialize();
     }
 };

@@ -58,9 +58,9 @@ SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
         ROS_DEBUG("%s smacc component is required. Creating a new instance.", tname.c_str());
 
         ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
-        ret->initialize(this);
         ret->setStateMachine(this->getStateMachine());
-
+        ret->initialize(this);
+        
         this->components_[componentkey] = ret; //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
         ROS_DEBUG("%s resource is required. Done.", tname.c_str());
     }

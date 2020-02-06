@@ -13,14 +13,15 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
 
   using TSti::configure_orthogonal;
 
-// TRANSITION TABLE
-  typedef mpl::list< 
-  
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternReturn1<SS>> 
-  
-  >reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
 
-// STATE FUNCTIONS
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternReturn1<SS>>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>();
@@ -38,6 +39,7 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
                                ->template getClientBehavior<CbNavigateForward>();
 
     forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
+    ROS_INFO("Going forward in F pattern, distance to wall: %lf", forwardBehavior->forwardDistance);
   }
 };
 }

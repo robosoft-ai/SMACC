@@ -9,7 +9,9 @@ namespace cl_led
 {
 class ClLED : public smacc::client_bases::SmaccActionClientBase<sm_dance_bot::LEDControlAction>
 {
+
 public:
+    typedef SmaccActionClientBase<sm_dance_bot::LEDControlAction> Base;
     // for any action client you develop you need to call the ros action client type definition macro
     ACTION_DEFINITION(sm_dance_bot::LEDControlAction);
 
