@@ -1,4 +1,4 @@
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_atomic/docs/sm_atomic(1-15-2020).dot.svg" width="950" align="center" border="10"/>
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_atomic/docs/smacc_state_machine_20200207-004740.dot.svg" width="950" align="center" border="10"/>
  
  <h2>Description</h2> A completely minimal state machine example.<br></br>
 <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__atomic.html">Doxygen Namespace & Class Reference</a>
