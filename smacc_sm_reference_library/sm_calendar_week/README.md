@@ -2,6 +2,8 @@
  
  <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users state machine projects.<br></br>
  
+ <a href="https://github.com/reelrbtx/SMACC/raw/master/smacc_sm_reference_library/sm_calendar_week/docs/smacc_state_machine_20200206-004026.dot.pdf"> Download PDF</a>
+ 
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a> 
  
  <h2>Build Instructions</h2>
