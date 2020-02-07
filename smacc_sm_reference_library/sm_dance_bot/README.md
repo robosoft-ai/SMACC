@@ -37,5 +37,12 @@ roslaunch sm_dance_bot sm_dance_bot.launch sm_xterm:=nice server_nodes_xterms:=n
 
 This launch command starts the process by hiding the xterminals for all the servers, the state machine, the smacc_viewer and the gazebo client.
 
+If you have the SMACC Viewer installed then type...
+
+```
+rosrun smacc_viewer smacc_viewer_node.py
+``` 
+
+If you don't have the SMACC Viewer installed, click <a href="http://smacc.ninja/smacc-viewer/">here</a> for instructions.
 
 

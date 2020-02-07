@@ -5,9 +5,6 @@ struct StWednesday : smacc::SmaccState<StWednesday, MsWorkweek>
 {
     using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-    struct RESET : SUCCESS{};
-
 // TRANSITION TABLE
     typedef mpl::list<
         
