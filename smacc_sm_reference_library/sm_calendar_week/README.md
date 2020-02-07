@@ -1,10 +1,7 @@
  <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_calendar_week/docs/smacc_state_machine_20200206-003738.dot.svg" width="950" align="center" border="10"/> 
-  <a href="https://github.com/reelrbtx/SMACC/raw/master/smacc_sm_reference_library/sm_calendar_week/docs/smacc_state_machine_20200206-004026.dot.pdf" style="text-align:right"> Download State Machine Diagram</a>
  
- <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users state machine projects.<br></br>
- 
-
- 
+ <h2>Description</h2> Another simple, but complete state machine example that uses the ros_timer_client & keyboard client to iterate through the states, which correspond to the days of the week. This example is another excellent starting point for new users state machine projects.<br></br>
+  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a> 
  
  <h2>Build Instructions</h2>
