@@ -28,4 +28,10 @@ And then run the launch file...
 roslaunch sm_atomic sm_atomic.launch
 ```
 
- 
+If you have the SMACC Viewer installed then type...
+
+```
+rosrun smacc_viewer smacc_viewer_node.py
+``` 
+
+If you don't have the SMACC Viewer installed click <a href="smacc.ninja/smacc-viewer/">here</a> for instructions.
