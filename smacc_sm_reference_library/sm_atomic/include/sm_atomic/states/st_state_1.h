@@ -13,7 +13,7 @@ struct State1 : smacc::SmaccState<State1, SmAtomic>
 // TRANSITION TABLE
     typedef mpl::list<
     
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
     
     >reactions;
 
@@ -22,7 +22,7 @@ struct State1 : smacc::SmaccState<State1, SmAtomic>
     static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10); // EvTimer triggers once at 10 client ticks
+        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
     }
 
     void runtimeConfigure()
