@@ -1,3 +1,4 @@
+ <h2>State Machine Diagram</h2>
  <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_atomic/docs/smacc_state_machine_20200207-004740.dot.svg" width="950" align="center" border="10"/>
  
  <h2>Description</h2> A completely minimal state machine example.<br></br>
@@ -27,7 +28,8 @@ And then run the launch file...
 ```
 roslaunch sm_atomic sm_atomic.launch
 ```
-
+ 
+ <h2>Viewer Instructions</h2>
 If you have the SMACC Viewer installed then type...
 
 ```
