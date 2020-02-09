@@ -29,7 +29,8 @@ using namespace sm_three_some::cl_subscriber;
 
 #include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
 
-#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
+//#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
+#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 //STATE REACTORS
 #include <all_events_go/sr_all_events_go.h>

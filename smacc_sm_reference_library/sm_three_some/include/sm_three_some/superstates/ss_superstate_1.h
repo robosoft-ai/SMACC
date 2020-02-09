@@ -24,12 +24,12 @@ public:
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiState1>, StState1>
+    Transition<EvLoopEnd<StiState1>, MsRun>
     
     >reactions;
 
 // STATE VARIABLES
-    static constexpr int total_iterations() { return 3; }
+    static constexpr int total_iterations() { return 5; }
     int iteration_count = 0;
 
 // STATE FUNCTIONS
