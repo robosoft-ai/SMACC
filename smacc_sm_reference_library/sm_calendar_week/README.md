@@ -1,3 +1,4 @@
+  <h2>State Machine Diagram</h2>
  <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_calendar_week/docs/smacc_state_machine_20200206-003738.dot.svg" width="950" align="center" border="10"/> 
  
  <h2>Description</h2> Another simple, but complete state machine example that uses the ros_timer_client & keyboard client to iterate through the states, which correspond to the days of the week. This example is another excellent starting point for new users state machine projects.<br></br>
@@ -30,6 +31,7 @@ And then run the launch file...
 roslaunch sm_calendar_week sm_calendar_week.launch
 ```
 
+ <h2>Viewer Instructions</h2>
 If you have the SMACC Viewer installed then type...
 
 ```
