@@ -32,7 +32,7 @@ waypoints:
   # POINT 3
   - position:
       x: 1.0
-      y: -8.75 # north west corner of the room
+      y: -9.33 # north west corner of the room
       #y: -12.35 # south west corner of the room
       z: 0.0
     orientation:

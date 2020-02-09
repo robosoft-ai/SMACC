@@ -20,7 +20,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
 // STATE FUNCTIONS
   static void staticConfigure()
   {
-    double offset = 10; // for a better behaving
+    double offset = 13.5; // for a better behaving
     float angle = 0;
     if (SS::direction() == TDirection::LEFT)
       angle = -90 - offset;
