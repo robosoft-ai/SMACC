@@ -1,4 +1,5 @@
-<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back(12-30-19).svg" width="950" align="center" border="10"/>
+ <h2>State Machine Diagram</h2>
+<img  src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back(12-30-19).svg" width="950" align="center" border="10"/>
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
@@ -37,6 +38,7 @@ roslaunch sm_dance_bot_strikes_back sm_dance_bot_strikes_back.launch sm_xterm:=n
 
 This launch command starts the process by hiding the xterminals for all the servers, the state machine, the smacc_viewer and the gazebo client.
 
+<h2>Viewer Instructions</h2>
 If you have the SMACC Viewer installed then type...
 
 ```
