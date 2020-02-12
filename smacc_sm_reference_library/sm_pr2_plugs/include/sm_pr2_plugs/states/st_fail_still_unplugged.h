@@ -1,14 +1,14 @@
 namespace sm_pr2_plugs{
 // STATE DECLARATION
-struct StThursday : smacc::SmaccState<StThursday, MsWorkweek>
+struct StFailStillUnplugged : smacc::SmaccState<StFailStillUnplugged, MsRecharge>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFriday, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFriday, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
     
     >reactions;
 
@@ -26,14 +26,14 @@ struct StThursday : smacc::SmaccState<StThursday, MsWorkweek>
         this->requiresClient(client);
 
         // subscribe to the timer client callback
-        client->onTimerTick(&StThursday::onTimerClientTickCallback, this);
+        client->onTimerTick(&StFailStillUnplugged::onTimerClientTickCallback, this);
 
         // getting reference to the single countdown behavior
         auto *cbsingle = this->getOrthogonal<OrTimer>()
                              ->getClientBehavior<CbTimerCountdownOnce>();
 
         // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StThursday::onSingleBehaviorTickCallback, this);
+        cbsingle->onTimerTick(&StFailStillUnplugged::onSingleBehaviorTickCallback, this);
     }
 
     void onTimerClientTickCallback()

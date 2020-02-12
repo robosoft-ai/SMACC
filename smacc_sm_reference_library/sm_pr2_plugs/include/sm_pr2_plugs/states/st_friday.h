@@ -1,6 +1,6 @@
 namespace sm_pr2_plugs{
 // STATE DECLARATION
-struct StFriday : smacc::SmaccState<StFriday, MsWorkweek>
+struct StFriday : smacc::SmaccState<StFriday, MsRecharge>
 {
     using SmaccState::SmaccState;
 

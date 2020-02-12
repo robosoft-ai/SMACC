@@ -28,15 +28,37 @@ using namespace smacc::default_events;
 namespace sm_pr2_plugs{
 
 //STATES
-class StFriday; // first state specially needs a forward declaration
-class StMonday;
-class StTuesday;
-class StWednesday;
-class StThursday;
+class StFriday;
+class StFriday1;
+class StFailTuckArms;
+class StFailUntuck;
+class StFailLowerSpine;
+class StSucceedFreeBase;
+class StSucceedTuck;
+class StStowPlug;
+class StPullBackFromWall;
+class StWiggleOut;
+class StClearLeftArm;
+class StCloseGripper;
+class StRecoverStowPlug;
+class StStowLeftArm;
+class StFailOpenGripper;
+class StPlugIn;
+class StFetchPlug;
+class StNavigate;
+class StGetOutletLocations;
+class StSafetyTuck;
+class StUntuckAtOutlet;
+class StGoalIsLocal;
+class StFailStillUnplugged;
+class StProcessRechargeCommand;
+class StNavigateToOutlet;
+class StUnplug;
+class StDetectOutlet;
 class StSaturday;
 class StSunday;
 
-class MsWorkweek;
+class MsRecharge;
 class MsWeekend;
 
 // struct EvToDeep : sc::event<EvToDeep>{};
@@ -46,7 +68,7 @@ class MsWeekend;
 // struct EvEStop : sc::event<EvEStop>{};
 
 // STATE MACHINE
-struct SmPR2Plugs    : public smacc::SmaccStateMachineBase<SmPR2Plugs, MsWorkweek>
+struct SmPR2Plugs    : public smacc::SmaccStateMachineBase<SmPR2Plugs, MsRecharge>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -60,14 +82,36 @@ struct SmPR2Plugs    : public smacc::SmaccStateMachineBase<SmPR2Plugs, MsWorkwee
 };
 } // namespace sm_pr2_plugs
 // MODE STATES
-#include <sm_pr2_plugs/mode_states/ms_workweek.h>
+#include <sm_pr2_plugs/mode_states/ms_recharge.h>
 #include <sm_pr2_plugs/mode_states/ms_weekend.h>
 
 //STATES
 #include <sm_pr2_plugs/states/st_friday.h>
-#include <sm_pr2_plugs/states/st_monday.h>
-#include <sm_pr2_plugs/states/st_tuesday.h>
-#include <sm_pr2_plugs/states/st_wednesday.h>
-#include <sm_pr2_plugs/states/st_thursday.h>
+#include <sm_pr2_plugs/states/st_friday1.h>
+#include <sm_pr2_plugs/states/st_fail_tuck_arms.h>
+#include <sm_pr2_plugs/states/st_fail_untuck.h>
+#include <sm_pr2_plugs/states/st_fail_lower_spine.h>
+#include <sm_pr2_plugs/states/st_succeed_free_base.h>
+#include <sm_pr2_plugs/states/st_succeed_tuck.h>
+#include <sm_pr2_plugs/states/st_stow_plug.h>
+#include <sm_pr2_plugs/states/st_pull_back_from_wall.h>
+#include <sm_pr2_plugs/states/st_wiggle_out.h>
+#include <sm_pr2_plugs/states/st_clear_left_arm.h>
+#include <sm_pr2_plugs/states/st_close_gripper.h>
+#include <sm_pr2_plugs/states/st_recover_stow_plug.h>
+#include <sm_pr2_plugs/states/st_stow_left_arm.h>
+#include <sm_pr2_plugs/states/st_fail_open_gripper.h>
+#include <sm_pr2_plugs/states/st_plug_in.h>
+#include <sm_pr2_plugs/states/st_fetch_plug.h>
+#include <sm_pr2_plugs/states/st_navigate.h>
+#include <sm_pr2_plugs/states/st_get_outlet_locations.h>
+#include <sm_pr2_plugs/states/st_safety_tuck.h>
+#include <sm_pr2_plugs/states/st_untuck_at_outlet.h>
+#include <sm_pr2_plugs/states/st_goal_is_local.h>
+#include <sm_pr2_plugs/states/st_fail_still_unplugged.h>
+#include <sm_pr2_plugs/states/st_process_recharge_command.h>
+#include <sm_pr2_plugs/states/st_navigate_to_outlet.h>
+#include <sm_pr2_plugs/states/st_unplug.h>
+#include <sm_pr2_plugs/states/st_detect_outlet.h>
 #include <sm_pr2_plugs/states/st_saturday.h>
 #include <sm_pr2_plugs/states/st_sunday.h>
