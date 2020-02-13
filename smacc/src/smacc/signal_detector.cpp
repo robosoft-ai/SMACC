@@ -56,6 +56,18 @@ void SignalDetector::findUpdatableClients()
                 ROS_DEBUG_STREAM("Adding updatable client: " << demangleType(typeid(updatableClient)));
                 this->updatableClients_.push_back(updatableClient);
             }
+
+            std::vector<std::shared_ptr<ISmaccComponent>> components;
+            client->getComponents(components);
+            for (auto &componententry : components)
+            {
+                auto updatableComponent = dynamic_cast<ISmaccUpdatable *>(componententry.get());
+                if (updatableComponent != nullptr)
+                {
+                    ROS_DEBUG_STREAM("Adding updatable component: " << demangleType(typeid(updatableComponent)));
+                    this->updatableClients_.push_back(updatableComponent);
+                }
+            }
         }
     }
 }

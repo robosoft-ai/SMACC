@@ -1,6 +1,8 @@
 
 namespace sm_dance_bot_3
 {
+#pragma once
+
 namespace f_pattern_states
 {
 // STATE DECLARATION

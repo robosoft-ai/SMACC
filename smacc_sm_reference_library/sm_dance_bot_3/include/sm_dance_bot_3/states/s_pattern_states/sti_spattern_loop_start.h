@@ -26,7 +26,17 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
   bool loopCondition()
   {
     auto &superstate = this->context<SS>();
-    return superstate.iteration_count++ < superstate.total_iterations();
+    if(superstate.iteration_count++ < superstate.total_iterations())
+    {
+      ROS_INFO("Spattern iteration finished, going to next iteration (%d)", superstate.iteration_count);
+      return true;
+    }
+    else
+    {
+      ROS_INFO("Spattern iteration finished, All iterations finished (%d)", superstate.iteration_count - 1);
+      return false;
+    }
+    
   }
 
   void onEntry()

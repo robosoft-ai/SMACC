@@ -1,3 +1,5 @@
+#pragma once
+
 namespace sm_dance_bot_3
 {
 namespace f_pattern_states
@@ -12,10 +14,7 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
-
-      >
+      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>>
       reactions;
 
   // STATE FUNCTIONS
