@@ -3,7 +3,7 @@
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
-<a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
+<a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot__strikes__back.html">Doxygen Namespace & Class Reference</a>
 
 <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
