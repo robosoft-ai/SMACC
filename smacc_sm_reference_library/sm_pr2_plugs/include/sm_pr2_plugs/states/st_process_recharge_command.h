@@ -5,11 +5,15 @@ struct StProcessRechargeCommand : smacc::SmaccState<StProcessRechargeCommand, Ms
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct TRUE : SUCCESS{};
+    struct FALSE : ABORT{};
+
 // TRANSITION TABLE
     typedef mpl::list<
    
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateToOutlet, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StNavigateToOutlet, PREEMPT>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StNavigateToOutlet, TRUE>,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StUnplug, FALSE>
     
     >reactions;
 

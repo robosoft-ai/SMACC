@@ -1,14 +1,14 @@
 namespace sm_pr2_plugs{
 // STATE DECLARATION
-struct StFailUntuck : smacc::SmaccState<StFailUntuck, MsRecharge>
+struct StFailUntuck : smacc::SmaccState<StFailUntuck, MsUnplug>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    // Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFetchPlug, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFailLowerSpine, SUCCESS>
     
     >reactions;
 

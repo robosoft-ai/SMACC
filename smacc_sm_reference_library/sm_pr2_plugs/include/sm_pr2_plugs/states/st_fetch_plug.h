@@ -7,8 +7,8 @@ struct StFetchPlug : smacc::SmaccState<StFetchPlug, MsRecharge>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFailOpenGripper, ABORT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StPlugIn, SUCCESS>
     
     >reactions;
 

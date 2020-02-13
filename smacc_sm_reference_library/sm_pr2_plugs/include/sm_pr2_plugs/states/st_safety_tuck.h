@@ -7,8 +7,8 @@ struct StSafetyTuck : smacc::SmaccState<StSafetyTuck, MsRecharge>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StSafetyTuck, ABORT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StGetOutletLocations, SUCCESS>
     
     >reactions;
 

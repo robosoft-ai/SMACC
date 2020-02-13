@@ -7,8 +7,8 @@ struct StStowLeftArm : smacc::SmaccState<StStowLeftArm, MsRecharge>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFetchPlug, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFetchPlug, SUCCESS>
     
     >reactions;
 

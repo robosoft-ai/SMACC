@@ -1,14 +1,14 @@
 namespace sm_pr2_plugs{
 // STATE DECLARATION
-struct StPullBackFromWall : smacc::SmaccState<StPullBackFromWall, MsRecharge>
+struct StPullBackFromWall : smacc::SmaccState<StPullBackFromWall, MsUnplug>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StWiggleOut, ABORT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StStowPlug, SUCCESS>
     
     >reactions;
 

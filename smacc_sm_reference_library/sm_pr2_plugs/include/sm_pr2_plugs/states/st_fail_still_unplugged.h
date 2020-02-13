@@ -4,11 +4,14 @@ struct StFailStillUnplugged : smacc::SmaccState<StFailStillUnplugged, MsRecharge
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct DONE : SUCCESS{};
+
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFetchPlug, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFailLowerSpine, SUCCESS>
     
     >reactions;
 

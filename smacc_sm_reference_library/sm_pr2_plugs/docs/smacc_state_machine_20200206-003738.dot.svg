@@ -122,7 +122,7 @@
 </g>
 <g id="clust34" class="cluster"><title>cluster_5</title>
 <path fill="white" stroke="black" d="M2910.53,-406C2910.53,-406 3558.99,-406 3558.99,-406 3564.99,-406 3570.99,-412 3570.99,-418 3570.99,-418 3570.99,-667 3570.99,-667 3570.99,-673 3564.99,-679 3558.99,-679 3558.99,-679 2910.53,-679 2910.53,-679 2904.53,-679 2898.53,-673 2898.53,-667 2898.53,-667 2898.53,-418 2898.53,-418 2898.53,-412 2904.53,-406 2910.53,-406"/>
-<text text-anchor="middle" x="3113.03" y="-647" font-family="calibri" font-size="35.00">sm_pr2_plugs::StFriday</text>
+<text text-anchor="middle" x="3113.03" y="-647" font-family="calibri" font-size="35.00">sm_pr2_plugs::StCloseGripper</text>
 </g>
 <g id="clust35" class="cluster"><title>cluster_orthogonals_block_5</title>
 <polygon fill="none" stroke="white" points="2918.53,-440 2918.53,-624 3289.3,-624 3289.3,-440 2918.53,-440"/>
@@ -146,7 +146,7 @@
 </g>
 <g id="clust41" class="cluster"><title>cluster_6</title>
 <path fill="white" stroke="black" d="M3606.22,-30C3606.22,-30 5227.53,-30 5227.53,-30 5233.53,-30 5239.53,-36 5239.53,-42 5239.53,-42 5239.53,-370 5239.53,-370 5239.53,-376 5233.53,-382 5227.53,-382 5227.53,-382 3606.22,-382 3606.22,-382 3600.22,-382 3594.22,-376 3594.22,-370 3594.22,-370 3594.22,-42 3594.22,-42 3594.22,-36 3600.22,-30 3606.22,-30"/>
-<text text-anchor="middle" x="3839.22" y="-350" font-family="calibri" font-size="35.00">sm_pr2_plugs::MsWeekend</text>
+<text text-anchor="middle" x="3839.22" y="-350" font-family="calibri" font-size="35.00">sm_pr2_plugs::StFetchPlug</text>
 </g>
 <g id="clust42" class="cluster"><title>cluster_orthogonals_block_6</title>
 </g>

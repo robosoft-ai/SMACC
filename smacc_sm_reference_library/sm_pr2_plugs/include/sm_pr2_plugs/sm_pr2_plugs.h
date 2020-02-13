@@ -28,8 +28,6 @@ using namespace smacc::default_events;
 namespace sm_pr2_plugs{
 
 //STATES
-class StFriday;
-class StFriday1;
 class StFailTuckArms;
 class StFailUntuck;
 class StFailLowerSpine;
@@ -55,11 +53,9 @@ class StProcessRechargeCommand;
 class StNavigateToOutlet;
 class StUnplug;
 class StDetectOutlet;
-class StSaturday;
-class StSunday;
 
 class MsRecharge;
-class MsWeekend;
+class MsUnplug;
 
 // struct EvToDeep : sc::event<EvToDeep>{};
 
@@ -83,11 +79,9 @@ struct SmPR2Plugs    : public smacc::SmaccStateMachineBase<SmPR2Plugs, MsRecharg
 } // namespace sm_pr2_plugs
 // MODE STATES
 #include <sm_pr2_plugs/mode_states/ms_recharge.h>
-#include <sm_pr2_plugs/mode_states/ms_weekend.h>
+#include <sm_pr2_plugs/mode_states/ms_unplug.h>
 
 //STATES
-#include <sm_pr2_plugs/states/st_friday.h>
-#include <sm_pr2_plugs/states/st_friday1.h>
 #include <sm_pr2_plugs/states/st_fail_tuck_arms.h>
 #include <sm_pr2_plugs/states/st_fail_untuck.h>
 #include <sm_pr2_plugs/states/st_fail_lower_spine.h>
@@ -113,5 +107,3 @@ struct SmPR2Plugs    : public smacc::SmaccStateMachineBase<SmPR2Plugs, MsRecharg
 #include <sm_pr2_plugs/states/st_navigate_to_outlet.h>
 #include <sm_pr2_plugs/states/st_unplug.h>
 #include <sm_pr2_plugs/states/st_detect_outlet.h>
-#include <sm_pr2_plugs/states/st_saturday.h>
-#include <sm_pr2_plugs/states/st_sunday.h>

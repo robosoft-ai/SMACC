@@ -7,8 +7,8 @@ struct StDetectOutlet : smacc::SmaccState<StDetectOutlet, MsRecharge>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFriday, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFriday, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StFailStillUnplugged, ABORT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StFetchPlug, SUCCESS>
     
     >reactions;
 

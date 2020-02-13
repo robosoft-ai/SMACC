@@ -4,11 +4,15 @@ struct StGoalIsLocal : smacc::SmaccState<StGoalIsLocal, MsRecharge>
 {
     using SmaccState::SmaccState;
 
+// DECLARE CUSTOM OBJECT TAGS
+    struct TRUE : SUCCESS{};
+    struct FALSE : ABORT{};
+
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StSafetyTuck, FALSE>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StUntuckAtOutlet, TRUE>
     
     >reactions;
 

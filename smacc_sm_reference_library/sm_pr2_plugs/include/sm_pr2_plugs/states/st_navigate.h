@@ -7,8 +7,7 @@ struct StNavigate : smacc::SmaccState<StNavigate, MsRecharge>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StUntuckAtOutlet, SUCCESS>
     
     >reactions;
 
