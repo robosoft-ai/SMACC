@@ -1,5 +1,3 @@
-#pragma once
-
 namespace sm_dance_bot_strikes_back
 {
 namespace f_pattern_states

@@ -167,6 +167,8 @@ struct SmDanceBotStrikesBack
 //STATES
 #include <sm_dance_bot_strikes_back/states/st_acquire_sensors.h>
 #include <sm_dance_bot_strikes_back/states/st_event_count_down.h>
+#include <sm_dance_bot_strikes_back/states/st_fpattern_prealignment.h>
+#include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.h>
 
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.h>
 

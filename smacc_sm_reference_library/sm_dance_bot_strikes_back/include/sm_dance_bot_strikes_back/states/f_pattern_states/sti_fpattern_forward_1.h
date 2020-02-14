@@ -1,8 +1,6 @@
 
 namespace sm_dance_bot_strikes_back
 {
-#pragma once
-
 namespace f_pattern_states
 {
 // STATE DECLARATION

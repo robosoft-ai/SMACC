@@ -1,10 +1,14 @@
 #include <smacc/smacc.h>
 
-namespace sm_dance_bot_strikes_back {
-namespace SS5 {
-namespace sm_dance_bot_strikes_back {
-namespace s_pattern_states {
-    
+namespace sm_dance_bot_strikes_back
+{
+namespace SS5
+{
+namespace sm_dance_bot_strikes_back
+{
+namespace s_pattern_states
+{
+
 // FORWARD DECLARATION OF INNER STATES
 class StiSPatternRotate1;
 class StiSPatternForward1;
@@ -32,14 +36,15 @@ struct SsSPattern1 : smacc::SmaccState<SsSPattern1, MsDanceBotRunMode, StiSPatte
 public:
     using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+    // TRANSITION TABLE
     typedef mpl::list<
-        
-    Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToWaypointsX, ENDLOOP> 
 
-    >reactions;
+        Transition<EvLoopEnd<StiSPatternLoopStart>, StNavigateToWaypointsX, ENDLOOP>
 
-// STATE FUNCTIONS
+        >
+        reactions;
+
+    // STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
@@ -49,12 +54,27 @@ public:
     static constexpr float pitch2_lenght_meters() { return 1.75; }
     static constexpr int total_iterations() { return 11; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
+    double initialStateAngle;
 
     int iteration_count;
 
     void runtimeConfigure()
     {
         this->iteration_count = 0;
+
+        move_base_z_client::ClMoveBaseZ *robot;
+        this->requiresClient(robot);
+
+        if (robot != nullptr)
+        {
+            auto pose = robot->getComponent<move_base_z_client::Pose>()->get();
+            this->initialStateAngle = angles::to_degrees(angles::normalize_angle(tf::getYaw(pose.orientation)));
+            ROS_INFO("Initial angle for F pattern: %lf", initialStateAngle);
+        }
+        else
+        {
+            ROS_ERROR("robot pose not found to plan the FPattern motion");
+        }
     }
 };
 

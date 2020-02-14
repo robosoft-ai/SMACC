@@ -1,4 +1,3 @@
-#pragma once
 #include <angles/angles.h>
 namespace sm_dance_bot_strikes_back
 {
@@ -17,7 +16,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
 
 // TRANSITION TABLE
 
-      mpl::list<
+      typedef mpl::list<
       Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternForward1<SS>>
       >
       reactions;

@@ -7,31 +7,39 @@ struct StiSPatternForward4 : public smacc::SmaccState<StiSPatternForward4, SS>
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternLoopStart>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate4>
-  
-  >reactions;
 
-// STATE FUNCTIONS
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternLoopStart>,
+      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate4>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
+    configure_orthogonal<OrNavigation, CbNavigateForward>();
+    configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void runtimeConfigure()
   {
+    auto &superstate = this->context<SS>();
     double extrasecurityMargin = 0.2;
-    
-    auto forwardBehavior = this->configure<OrNavigation, CbNavigateForward>();
-    this->configure<OrLED, CbLEDOn>();
+
+    auto forwardBehavior = this->getOrthogonal<OrNavigation>()
+                               ->getClientBehavior<CbNavigateForward>();
 
     cl_lidar::ClLidarSensor *lidarClient;
     this->requiresClient(lidarClient);
     auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
 
-    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin /*extra security margin for easy dynamic implementation of dynamic-smotion*/;
+    if (!std::isnan(lidarData->forwardObstacleDistance))
+      forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin; /*extra security margin for easy dynamic implementation of dynamic-smotion*/
+
+    else
+      forwardBehavior->forwardDistance = superstate.pitch2_lenght_meters();
   }
 };
 } // namespace s_pattern_states

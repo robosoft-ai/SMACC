@@ -7,17 +7,17 @@ struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
 {
     using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+    // TRANSITION TABLE
     typedef mpl::list<
-    
-    Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>,
-    Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward2>
-    
-    >reactions;
+        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>,
+        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward2>>
+        reactions;
 
-// STATE FUNCTIONS
+    // STATE FUNCTIONS
     static void staticConfigure()
     {
+        configure_orthogonal<OrNavigation, CbAbsoluteRotate>();
+        configure_orthogonal<OrLED, CbLEDOff>();
     }
 
     void runtimeConfigure()
@@ -25,15 +25,20 @@ struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
         auto &superstate = this->context<SS>();
         ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
 
-        float offset = 7;
-        float angle = 0;
-        if (superstate.direction() == TDirection::LEFT)
-            angle = -90 - offset;
-        else
-            angle = +90 + offset;
+        float offset = 13.5;
+        auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
 
-        this->configure<OrNavigation, CbRotate>(angle);
-        this->configure<OrLED, CbLEDOff>();
+
+        if (superstate.direction() == TDirection::RIGHT)
+        {
+            // - offset because we are looking to the north and we have to turn clockwise
+            absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle + offset;
+        }
+        else
+        {
+            // - offset because we are looking to the south and we have to turn counter-clockwise
+            absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle - offset;
+        }
     }
 };
 } // namespace s_pattern_states
