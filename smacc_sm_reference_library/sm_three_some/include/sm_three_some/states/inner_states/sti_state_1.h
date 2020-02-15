@@ -1,6 +1,6 @@
 namespace sm_three_some
 {
-namespace ss1_states
+namespace inner_states
 {
 // STATE DECLARATION
 struct StiState1 : smacc::SmaccState<StiState1, SS>

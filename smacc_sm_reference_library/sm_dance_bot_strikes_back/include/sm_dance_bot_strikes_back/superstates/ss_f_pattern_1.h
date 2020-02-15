@@ -52,6 +52,7 @@ public:
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
     double initialStateAngle = 0;
+    double offset;
 
     // STATE FUNCTIONS
     static void staticConfigure()
@@ -61,6 +62,7 @@ public:
 
     void runtimeConfigure()
     {
+        this->offset = 13.5;//13.5;
         move_base_z_client::ClMoveBaseZ *robot;
         this->requiresClient(robot);
 
@@ -68,7 +70,7 @@ public:
         {
             auto pose = robot->getComponent<move_base_z_client::Pose>()->get();
             this->initialStateAngle = angles::to_degrees(angles::normalize_angle(tf::getYaw(pose.orientation)));
-            ROS_INFO("Initial angle for F pattern: %lf", initialStateAngle);
+            ROS_INFO("Initial angle for F pattern: %lf degrees", initialStateAngle);
         }
         else
         {

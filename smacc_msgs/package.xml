@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <package format="2">
   <name>smacc_msgs</name>
   <version>0.0.1</version>
@@ -7,10 +7,12 @@
     interfaces for smacc.
   </description>
 
-  <maintainer email="gm130s@gmail.com">Isaac I. Y. Saito</maintainer>
+
   <license>BSD</license>
 
-  <author>Jonathan Bohren</author>
+  <author>Brett Aldrich</author>
+  <author>Pablo Iñigo Blasco</author>
+  <maintainer email="pibgeus@gmail.com">Pablo Iñigo Blasco</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -23,7 +25,6 @@
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <rosdoc config="rosdoc.yaml"/>
+    <rosdoc config="rosdoc.yaml" />
   </export>
 </package>
-

@@ -1,6 +1,6 @@
 namespace sm_three_some
 {
-namespace SS1
+namespace SS2
 {
 namespace sm_three_some
 {
@@ -16,7 +16,7 @@ class StiState3;
 using namespace sm_three_some::inner_states;
 
 // STATE DECLARATION
-struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1, sc::has_full_history>
+struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState1, sc::has_full_history>
 {
 public:
     using SmaccState::SmaccState;
@@ -24,7 +24,7 @@ public:
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiState1>, SS2::Ss2>
+    Transition<EvLoopEnd<StiState1>, StState4>
     
     >reactions;
 
@@ -43,7 +43,7 @@ public:
 }; // namespace SS4
 
 //forward declaration for the superstate
-using SS = SS1::Ss1;
+using SS = SS2::Ss2;
 
 #include <sm_three_some/states/inner_states/sti_state_1.h>
 #include <sm_three_some/states/inner_states/sti_state_2.h>

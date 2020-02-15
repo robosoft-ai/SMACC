@@ -37,7 +37,7 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
     auto initialStateAngle = superstate.initialStateAngle;
 
     float angle = 0;
-    double offset = 7; // for a better behaving
+    double offset = 0; // for a better behaving
 
     if (SS::direction() == TDirection::LEFT)
       angle = -offset;
@@ -46,7 +46,7 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
 
     auto absoluteRotateBehavior = TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
 
-    absoluteRotateBehavior->absoluteGoalAngleDegree = initialStateAngle;
+    absoluteRotateBehavior->absoluteGoalAngleDegree = initialStateAngle + angle;
     ROS_INFO("Fpattern, rotate to: %lf", absoluteRotateBehavior->absoluteGoalAngleDegree);
   }
 };

@@ -40,6 +40,12 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
+
+    #orientation:
+    #  x: 0.0
+    #  y: 0.0
+    #  z: -0.3007058
+    #  w: 0.953717
     # POINT 4
   - position:
       x: -8.0 #-10.0

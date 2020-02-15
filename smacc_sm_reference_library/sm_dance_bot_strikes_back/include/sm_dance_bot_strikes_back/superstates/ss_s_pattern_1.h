@@ -60,6 +60,7 @@ public:
 
     void runtimeConfigure()
     {
+        
         this->iteration_count = 0;
 
         move_base_z_client::ClMoveBaseZ *robot;
