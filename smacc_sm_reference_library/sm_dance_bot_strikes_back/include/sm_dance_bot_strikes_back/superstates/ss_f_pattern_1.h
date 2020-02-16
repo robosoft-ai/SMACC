@@ -62,7 +62,7 @@ public:
 
     void runtimeConfigure()
     {
-        this->offset = 13.5;//13.5;
+        this->offset = 0;//13.5;
         move_base_z_client::ClMoveBaseZ *robot;
         this->requiresClient(robot);
 

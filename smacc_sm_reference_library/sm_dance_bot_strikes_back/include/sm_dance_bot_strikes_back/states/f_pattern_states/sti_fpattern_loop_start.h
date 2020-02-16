@@ -29,7 +29,7 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
     auto horizontalDistance = lidarData->forwardObstacleDistance;
 
-    return horizontalDistance > 1 /*meters*/; // go ahead until 1.5m before the wall
+    return horizontalDistance > 0.5 /*meters*/; // go ahead until 1.5m before the wall
   }
 
   void onEntry()

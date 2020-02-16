@@ -33,7 +33,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
   {
     auto &superstate = TSti::template context<SS>();
 
-    auto initialStateAngle = 13.5;//superstate.initialStateAngle;
+    auto initialStateAngle = 0;//superstate.initialStateAngle;
     double offset = superstate.offset; // for a better behaving
     float angle = 0;
     if (SS::direction() == TDirection::LEFT)

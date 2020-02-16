@@ -29,7 +29,7 @@ struct StiSPatternRotate2 : smacc::SmaccState<StiSPatternRotate2, SS>
         auto &superstate = this->context<SS>();
         ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
 
-        float offset = 0;
+        float offset = 5;
         auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
 
 
