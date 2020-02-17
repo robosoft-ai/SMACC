@@ -47,7 +47,7 @@ public:
 
     // STATE VARIABLES
     // superstate parameters
-    static constexpr float ray_lenght_meters() { return 3.75; }
+    static constexpr float ray_lenght_meters() { return 4; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
