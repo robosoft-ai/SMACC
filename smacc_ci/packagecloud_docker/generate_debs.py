@@ -50,9 +50,9 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
 
     # improve this regex
 
-    firstregexstr = '.*ros-' + ros_distro + '-.*deb'
+    firstregexstr = '.*ros-' + ros_distro + '-.*\.deb'
     regexstr = '.*ros-' + ros_distro + '-' + \
-        package_name.replace("_", "-")+".*deb"
+        package_name.replace("_", "-")+".*\.deb"
     print("Finding deb package: " + str(regexstr))
 
     thisfolderfiles = []
