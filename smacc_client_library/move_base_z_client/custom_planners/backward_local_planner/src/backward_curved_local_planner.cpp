@@ -349,7 +349,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     //cmd_vel.angular.z = 0;
 
     tf::Stamped<tf::Pose> global_pose;
-    costmapRos_->getRobotPose(global_pose);
+    tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
 
     auto *costmap2d = costmapRos_->getCostmap();
     auto yaw = tf::getYaw(global_pose.getRotation());
