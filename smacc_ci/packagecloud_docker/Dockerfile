@@ -60,8 +60,8 @@ WORKDIR /root
 #RUN echo "regen"
 # BUILD SMACC AND SMACC_VIEWER
 # -----------------------------------------------------------------
-RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
-RUN bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
+RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
+RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin build"
 
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------

@@ -392,8 +392,9 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     //integrate trajectory and check collision
 
-    tf::Stamped<tf::Pose> global_pose;
-    costmapRos_->getRobotPose(global_pose);
+    tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
+    
+    //->getRobotPose(global_pose);
 
     auto *costmap2d = costmapRos_->getCostmap();
     auto yaw = tf::getYaw(global_pose.getRotation());
