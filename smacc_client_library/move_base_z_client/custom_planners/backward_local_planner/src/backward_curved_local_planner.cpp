@@ -346,9 +346,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
                                       << " gamma:" << gamma);
 
     //cmd_vel.linear.x=0;
-    //cmd_vel.angular.z = 0;
-
-    tf::Stamped<tf::Pose> global_pose;
+    //cmd_vel.angular.z = 0;    
     tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
 
     auto *costmap2d = costmapRos_->getCostmap();
