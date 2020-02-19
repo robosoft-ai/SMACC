@@ -16,7 +16,7 @@
   <build_depend>smacc</build_depend>
   <exec_depend>smacc</exec_depend>
   <depend>tf</depend>
-  <depend>yaml-cpp</depend>
+  <!-- <depend>yaml-cpp</depend> -->
 
   <export>
       <smacc plugin="${prefix}/smacc_plugin.xml" />
