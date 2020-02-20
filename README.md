@@ -38,17 +38,6 @@ From it's inception, SMACC was written to support the programming of multi-compo
 * ***ROS Navigation built-in funcionality***. SMACC extends the ROS navigation stack in a high level way. It provides specialized navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and straight motions. Implements some mechanism to perform motions recording the path and undoing them later.
 These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
 
-## Repository Packages
-
-This repository contains several ROS packages:
-
- * **smacc_core**: The core smacc library. It works as a template-based c++  header library.
-
- * **smacc_navigation**: a set of ros packages with some "Smacc Components" that ease the creation of high level navigation applications. The provided components remotelly control the move_base. These components helps in the creation of complex motion strategies (changing planners, recording and undoing paths, etc.)
-
- * **smacc_state_machine_templates**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
-
-
 ## Future Work
  * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
  * code generation based on uml diagrams
