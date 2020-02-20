@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <package format="2">
   <name>smacc</name>
   <version>0.0.1</version>
@@ -14,26 +14,22 @@
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
-  <build_depend>actionlib</build_depend>
-  <build_depend>std_msgs</build_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>message_generation</build_depend>
-  <build_depend>actionlib_msgs</build_depend>
-  <build_depend>pluginlib</build_depend>
-  <build_depend>move_base_msgs</build_depend>
 
-  <build_export_depend>actionlib</build_export_depend>
-  <build_export_depend>roscpp</build_export_depend>
-  <build_export_depend>pluginlib</build_export_depend>
+  <depend>smacc_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>actionlib_msgs</depend>
+  <depend>controller_manager_msgs</depend>
   
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>actionlib_msgs</exec_depend>
-  <exec_depend>actionlib</exec_depend>
-  <exec_depend>roscpp</exec_depend>
+
+  <depend>roscpp</depend>
+  <depend>actionlib</depend>
+  <depend>ros_control</depend>
+  <depend>pluginlib</depend>
+
+  <depend>log4cxx</depend>
+
+  <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
-  <exec_depend>pluginlib</exec_depend>
-  <exec_depend>move_base_msgs</exec_depend>
 
   <export>
     <rosdoc config="rosdoc.yaml" />

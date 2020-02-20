@@ -1,0 +1,8 @@
+<library path="libforward_local_planner">
+  <class name="forward_local_planner/ForwardLocalPlanner" type="move_base_z_client::forward_local_planner::ForwardLocalPlanner" base_class_type="nav_core::BaseLocalPlanner">
+    <description>
+    </description>
+  </class>
+</library>
+
+

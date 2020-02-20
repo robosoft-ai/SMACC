@@ -1,0 +1,15 @@
+GLOBAL TRANSITION RULES
+---------------------------------
+
+For all states, superstates, If any sensor is lost, transition back to st_acquire_sensors.
+
+For all states, If the Navigation Orthogonal is aborted, transition to st_navigate_to_waypoints_x.
+
+
+For all states, superstates, but not ssrs, If Keyboard Orthogonal = N, transition to next success state.
+
+For all states, superstates, but not ssrs, If Keyboard Orthogonal = P, transition to previous state.
+
+For all states, If Navigation Orthogonal is prempted, transition to previous state.
+
+
