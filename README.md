@@ -67,32 +67,12 @@ SMACC State Machines are boost::statechart AsynchronousStateMachines that can wo
 # Tutorial
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
 
-## Code a minimal SMACC StateMachine
-In this initial example we will implement a simple state machine with a single state state that executes something at state entry and at state exit. That state machine is described in the following image:
+## Getting Started
+The easiest way to get started is by selecting one of the state machines in our reference library, and then hacking it to meet your needs.
 
-<p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/simpleStateMachine.png" width="450"/>
-</p>
+Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
 
-SMACC StateMachines and SmaccStates are based on the c++ [Curiously recurring template pattern](https://en.wikipedia.org/wiki/Curiously_recurring_template_pattern) so that the syntax may be strange for some developers but you will notice that it is very easy to follow. The advantage of using this kind of c++ pattern is that the definition of the state machine is correctly written.
-
-The following chunk of code shows the minimal SMACC State machine you can create:
-```cpp
-#include <smacc/smacc_state_machine_base.h>
-
-struct SimpleStateMachine
-    : public SmaccStateMachineBase<SimpleStateMachine,ToolSimpleState>
-{
-  using SmaccState::SmaccState;
-  void onEntry()
-  {
-  }
-};
-```
-
-Every SMACC State Machine must inherit from SmaccStateMachineBase. The first template parameter is the derived class type (SimpleStateMachine itself) according to the curiosuly recurring template pattern, and the second template parameter (ToolSimpleState) would be the class name of the initial Smacc State
-
-## Code a simple SMACC State
+## Anatomy of a simple SMACC State
 
 For the previous state machine, this would be the initial SMACC State. It also follows the Curiously recurrent template pattern. However, for Smacc states, the second template parameters is the so called "Context", for this simple case, the context is the StateMachine type itself. However, that could also be other State (in a nexted-substate case) or an orthogonal line.
 
@@ -118,56 +98,6 @@ int main(int argc, char **argv) {
 }
 ```
 According to the UML statchart standard, things happens essencially when the system enters in the state, when the system exits the state and when some event is triggered. The two first ones are shown in this example. The c++ Constructor code is the place you have to write your "entry code", the destructor is the place you have to write your "exit code". The constructor parameter (my_context) is a reference to the context object (in this case the state machine). This kind of constructor may be verebosy, but is required to implement the rest of SMACC tasks and always follows the same pattern.
-
-## Creating/accessing to SmaccComponents
-
-Accessing to SMACC componets resources is one of the most important capabilities that SMACC provides. This example shows how to access to these resources form states.
-
-For example, in this case we will asume we are in a state that controls the navigation of the vehicle, and it needs to access to the Ros Navigation Stack Action client and navigate to some position in the environment.
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/shared_resource.png" width="450"/>
-</p>
-
-The code would be the following:
-
-```cpp
-struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
-{
-
-public:
-  // This is the smacc component (it basically is a wrapper of the ROS Action Client for move base), please check the SMACC
-  // code to see how to implement your own action client
-  smacc::SmaccMoveBaseActionClient *moveBaseClient_;
-
-  using SmaccState::SmaccState;
-  void onEntry()
-  {
-    ROS_INFO("Entering Navigate");
-
-    // this substate will need access to the "MoveBase" resource or plugin. In this line
-    // you get the reference to this resource.
-    this->requiresComponent(moveBaseClient_);
-    goToEndPoint();
-  }
-
-  // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToEndPoint() {
-    geometry_msgs::PoseStamped radialStartPose = createInitialPose();
-
-    smacc::SmaccMoveBaseActionClient::Goal goal;
-    goal.target_pose.header.stamp = ros::Time::now();
-
-    goal.target_pose = radialStartPose;
-    goal.target_pose.pose.position.x = 10;
-    goal.target_pose.pose.position.y = 10;
-    goal.target_pose.pose.orientation =
-        tf::createQuaternionMsgFromRollPitchYaw(0, 0, M_PI);
-
-    moveBaseClient_->sendGoal(goal);
-  }
-};
-```
 
 
 ## Simple State Transition on Action Result Event
@@ -206,63 +136,6 @@ struct ExecuteToolState : SmaccState<ExecuteToolState, SimpleStateMachine>
     {
     }
 };
-```
-
-## Add custom code on Action Result Events
-
-In the following example, we want to add some code to the transition between the source state "Navigate" and the
-destination state "ExecuteToolState". This code may be any desired custom code (for example some transition guard).
-This code is located in the react method
-
-<p align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/custom_reaction.png" width="450"/>
-</p>
-
-The following would be the code for this state machine:
-
-```cpp
-struct Navigate : SmaccState<Navigate, SimpleStateMachine> 
-{
-public:
-
-  // With this line we specify that we are going to react to any EvActionResult event
-  // generated by SMACC when the action server provides a response to our request
-  typedef mpl::list<sc::custom_reaction<EvActionResult<SmaccMoveBaseActionClient::Result>>> reactions;
-  using SmaccState::SmaccState;
-  void onEntry()
-  {
-   [...]
-  }
-
-  // auxiliary function that defines the motion that is requested to the move_base action server
-  void goToEndPoint() {
-   [...]
-
-  sc::result react(const EvActionResult<SmaccMoveBaseActionClient::Result> &ev)
-  {
-      // we only will react when the result is succeeded
-      if (ev.getResult() == actionlib::SimpleClientGoalState::SUCCEEDED)
-      {
-        // ev.resultMessage provides access to the move_base action server result structure
-
-        ROS_INFO("Received event to movebase: %s",ev.getResult().toString().c_str());
-        return transit<ExecuteToolState>();
-      }
-      else
-      {
-        return forward_event(); // do nothing, the default behavior if you do not specify any return value
-      } 
-  }
-};
-
-struct ExecuteToolState : SmaccState<ExecuteToolState, SimpleStateMachine> 
-{
-    using SmaccState::SmaccState;
-    void onEntry()
-    {
-    }
-};
-
 ```
 
 ## Adding ROS Parameters to Smacc States
