@@ -6,10 +6,13 @@
 #pragma once
 
 #include <smacc/common.h>
-#include <smacc/smacc_state_machine.h>
+#include <boost/optional.hpp>
 
 namespace smacc
 {
+
+class ISmaccClient;
+
 class ISmaccComponent
 {
 public:
@@ -17,18 +20,31 @@ public:
 
     virtual ~ISmaccComponent();
 
-    // it is called just after the component is created by the State Machine
-    virtual void init(ros::NodeHandle& nh);
+    virtual void initialize(ISmaccClient *owner);
 
-    // assings the owner of this resource to the given state machine parameter object 
-    void setStateMachine(ISmaccStateMachine* stateMachine);
+    // Assigns the owner of this resource to the given state machine parameter object
+    void setStateMachine(ISmaccStateMachine *stateMachine);
 
-    // returns a custom identifier defined by the specific plugin implementation
+    // Returns a custom identifier defined by the specific plugin implementation
     virtual std::string getName() const;
 
+    template <typename EventType>
+    void postEvent(const EventType &ev);
+
+    template <typename EventType>
+    void postEvent();
+
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes() {}
+
 protected:
-    // a reference to the state machine object that owns this resource
-    ISmaccStateMachine* stateMachine_;
-    
+    // A reference to the state machine object that owns this resource
+    ISmaccStateMachine *stateMachine_;
+
+    boost::optional<std::string> serviceName_;
+
+    ISmaccClient *owner_;
+
+    friend class ISmaccOrthogonal;
 };
-}
+} // namespace smacc

@@ -5,18 +5,30 @@ services:
 env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
-    AFTER_SCRIPT=./gh-pages.sh
-    CATKIN_CONFIG=--no-install
+    AFTER_SCRIPT=smacc_ci/gh-pages.sh
+    VERBOSE_OUTPUT=false
+    #CATKIN_CONFIG=--no-install
   matrix:
     - ROS_DISTRO="melodic" NOT_TEST_BUILD=true
 
-install:
-  - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
-  - git clone --depth 1 https://github.com/ros-perception/slam_gmapping.git gmapping
-  - git clone --depth 1 https://github.com/ros-visualization/interactive_marker_twist_server.git
-  - git clone --depth 1 https://github.com/clearpathrobotics/LMS1xx.git --branch melodic_devel
-  - git clone --depth 1 https://github.com/ros-perception/openslam_gmapping.git
-  - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
-  - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y graphviz ghostscript git # these packages is for documentation generation
+  
+#install:
+#<<<<<<< HEAD
+#  - git clone --depth 1 https://github.com/ridgeback/ridgeback.git ridgeback
+#  - git clone --depth 1 https://github.com/ros-perception/slam_gmapping.git gmapping
+#  - git clone --depth 1 https://github.com/ros-visualization/interactive_marker_twist_server.git
+#  - git clone --depth 1 https://github.com/clearpathrobotics/LMS1xx.git --branch melodic_devel
+#  - git clone --depth 1 https://github.com/ros-perception/openslam_gmapping.git
+#  - git clone --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci
+#  - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
 script:
   - .industrial_ci/travis.sh
+  - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
+  - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
+  - .industrial_ci/travis.sh
+#  - bash -c 'cd smacc_ci/packagecloud_docker/; ./build_ubuntu_16_04_kinetic.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
+  - bash -c 'cd smacc_ci/packagecloud_docker/; ./build_ubuntu_18_04_melodic.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
+

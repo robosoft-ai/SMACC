@@ -1,9 +1,0 @@
-# backwards configuration, the robot will move backwards
-ForwardLocalPlanner:
-    k_rho: -0.3
-    k_alpha: -0.8
-    k_betta: 0.0
-    carrot_distance: 0.005 #meters
-    carrot_angular_distance: 4 # no constraint, max 3.1416
-    xy_goal_tolerance: 0.03
-    yaw_goal_tolerance: 0.157

@@ -1,6 +1,0 @@
-<library path="lib/libbackward_global_planner">
-  <class name="backward_global_planner/BackwardGlobalPlanner" type="backward_global_planner::BackwardGlobalPlanner" base_class_type="nav_core::BaseGlobalPlanner">
-    <description>
-    </description>
-  </class>
-</library>
