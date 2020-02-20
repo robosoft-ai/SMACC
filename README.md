@@ -48,7 +48,6 @@ This repository contains several ROS packages:
 
  * **smacc_state_machine_templates**: shows a complete sample application developed with SMACC that can be reused as a canonical example of a mobile robot moving around and interacting with a custom onboard tool.
 
- * **smacc_interface_components**: template project that shows how an on/off tool onboard the mobile robot could be used following the SMACC methodology.
 
 ## Future Work
  * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
@@ -84,26 +83,6 @@ SMACC State Machines are boost::statechart AsynchronousStateMachines that can wo
 <p align="center">
 <img src="http://smacc.ninja/wp-content/uploads/2018/09/SMACC-Node-Map-2-2-1.jpg"  width="450" align="center"/>
 </p>
-
-## Executing the Radial Motion Example
-This is a complete sample of a state machine that controls the motion of a simulated ridgeback mobile robot in gazebo.
-
-This example shows how smacc::Navigation components can be used to create some systematic motion based on an state machine. The robot performs a motion pattern that plots a "Start" on the plane. The state machine in the motion is combined with the usage of some external tool "for example ground painter" that is only active on forward motions.
-
-```
-export RIDGEBACK_URDF_EXTRAS=$(rospack find radial_motion_example)/urdf/empty.xacro
-
-roslaunch radial_motion_example radial_motion.launch
-```
-<p align="center">
-<div style="float:left" align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/radial_motion_example.png" width="400"/>
-</div>
-<div style="float:left" align="center">
-<img src="https://raw.githubusercontent.com/brettpac/SMACC/master/documentation/radial_motion_example_statechart.png" width="400"/>
-</div>
-</p>
-
 
 # Tutorial
 SMACC states inherits from boost::statechart:State so that you can learn the full potential of SMACC states also diving in the statechart documentation. However, the following examples briefly show how you create define SMACC states and how you would usually use them.
