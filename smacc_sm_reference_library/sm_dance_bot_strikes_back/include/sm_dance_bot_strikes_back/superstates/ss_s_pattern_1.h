@@ -52,7 +52,7 @@ public:
 
     static constexpr float pitch1_lenght_meters() { return 0.6; }
     static constexpr float pitch2_lenght_meters() { return 1.75; }
-    static constexpr int total_iterations() { return 13; }
+    static constexpr int total_iterations() { return 12; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
     double initialStateAngle;
 
