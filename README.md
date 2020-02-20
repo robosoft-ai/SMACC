@@ -43,15 +43,6 @@ These can be very useful in some industrial applications where the knowledge or 
  * code generation based on uml diagrams
  * improving backwards planners for non linear paths
  
-## Shared Resources and Shared variables
-
-* ***Shared Action Client Resources*** Action servers in SMACC play an important role because all low-level funcionality must be located on them. In order to interact with these Action Servers SMACC provide an easy way to create shared ActionClients that can be accessed from any State. SMACC is in charge of eficently handle all the requests and send the resulting events from action servers (result messages, feedback messages, etc) to the "subscribed states" in form of statechart events. (See more about his in section internal architecture)
-
-* ***Shared Variables*** UML statecharts basically define the high level behavior of a system. However, in practice the real state of the system may be much more complex (mesurement, environment numerical information, etc.). States usually have to share information (or comunicate to each other). In order to do that, SMACC implements a  simple but effective dictionary-based mechanism to share information (structs, objects, simple variables or pointers). (See below in tutorials: shared variable)
-<p align="center">
-<img src="https://github.com//brettpac/SMACC/blob/master/documentation/shared_resources.png?raw=true"  width="450" align="center"/>
-</p>
-
 ## Development methodology
 SMACC also defines a development methodology where State Machine nodes only contain the task-level logic, that is, the high level behavior of the robot system in some specific application.
 
