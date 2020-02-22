@@ -19,7 +19,6 @@ SMACC is an event-driven, asynchronous, behavioral state machine library for rea
 
 SMACC is inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
-Probably the greatest strength of SMACC is that it offers out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library))  that you can use, test, hack, and customize to quickly get your application up and running, while also knowing that the library supports advanced functionalities that are practically universal among actual working robots.
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It supports ROS topics, services and actions, right out of the box.
@@ -37,6 +36,7 @@ From it's inception, SMACC was written to support the programming of multi-compo
 <p align="center">
 <img src="https://github.com/reelrbtx/SMACC/blob/master/documentation/SMACC-Containers-3.jpg"  width="450" align="center"/>
 </p>
+ 
  
 ## Getting Started
 The easiest way to get started is by selecting one of the state machines in our [reference library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library), and then hacking it to meet your needs.
