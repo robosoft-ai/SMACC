@@ -62,20 +62,9 @@ namespace sm_dance_bot_strikes_back
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StEventCountDown;
-class StRotateDegrees4;
-class StNavigateForward1;
-class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
-class StRotateDegrees2;
-class StRotateDegrees1;
-class StNavigateReverse2;
-class StRotateDegrees3;
-class StNavigateReverse1;
-class StNavigateForward2;
-class StRotateDegrees5;
-class StNavigateReverse3;
-class StRotateDegrees6;
-class StNavigateReverse3;
+class StFpatternPrealignment;
+class StSpatternPrealignment;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -171,13 +160,3 @@ struct SmDanceBotStrikesBack
 #include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.h>
 
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.h>
-
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_4.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_forward_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoint_1.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_3.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_3.h>
