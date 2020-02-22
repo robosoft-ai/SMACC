@@ -1,5 +1,5 @@
  <h2>State Machine Diagram</h2>
-<img src="https://github.com/reelrbtx/SMACC/smacc_sm_reference_library/sm_dance_bot/docs/smacc_state_machine_20200222-125051.dot.svg" width="950" align="center" border="10"/>
+<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/smacc_state_machine_20200222-125051.dot.svg" width="950" align="center" border="10"/>
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
