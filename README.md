@@ -34,13 +34,6 @@ From it's inception, SMACC was written to support the programming of multi-compo
 <p align="center">
 <img src="https://github.com/reelrbtx/SMACC/blob/master/documentation/SMACC-Containers-3.jpg"  width="450" align="center"/>
 </p>
-
-## ROS Integration
-
-* ***Intensive use of ROS Action***. SMACC translates Action server events (Result callbacks, Feedback callbacks, etc.) into statechart events. To learn more about this, check the sections Shared Resources and SMACC Architecture.
-* ***Powerful access to ROS Parameters***. Each SMACC state automatically creates a ros::NodeHandle automatically named according to the SMACC state hierarchy (see more in section Usage Examples - Ros parameters)
-* ***ROS Navigation built-in funcionality***. SMACC extends the ROS navigation stack in a high level way. It provides specialized navigation planners (for the ROS Navigation Stack) that navigate only using pure spinning motions and straight motions. Implements some mechanism to perform motions recording the path and undoing them later.
-These can be very useful in some industrial applications where the knowledge or certainty on the environment is higher (ros planners are focused on cluttered and dynamic environments).
  
 ## Internal Architecture
 SMACC State Machines are boost::statechart AsynchronousStateMachines that can work in a multi-threaded application. In SMACC State Machines are two main components that work concurrently in two different threads:
@@ -57,7 +50,3 @@ The easiest way to get started is by selecting one of the state machines in our 
 
 Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
 
-## Future Work
- * undoing paths chunks by state (store the different chunks of the path according to its state in a stack)
- * code generation based on uml diagrams
- * improving backwards planners for non linear paths
