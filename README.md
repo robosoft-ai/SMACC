@@ -17,7 +17,7 @@
 
 SMACC is an event-driven, asynchronous, behavioral state machine library for real-time ROS (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner. 
 
-SMACC is inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
+SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 
 ## Features
@@ -27,7 +27,7 @@ SMACC is inspired by Harel's statecharts and the [SMACH ROS package](http://wiki
  *  ***Static State Machine Checking:*** One of the features that SMACC inherits from Boost Statechart is that you get compile time validation checking. This benefits developers in that the amount of runtime testing necessary to ship quality software that is both stable and safe is dramatically reduced. Our philosophy is "Wherever possible, let the compiler do it".
  *  ***State Machine Reference Library:*** With a constantly growing library of out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library)) guaranteed to compile and run, you can jumpstart your development efforts by choosing a reference machine that is closest to your needs, and then customize and extend to meet the specific requirements of your robotic application. All the while knowing that the library supports advanced functionalities that are practically universal among actual working robots.
  *  ***SMACC Client Library:*** SMACC also features a constantly growing library of [clients](https://github.com/reelrbtx/SMACC/tree/master/smacc_client_library) that support ROS Action Servers, Service Servers and other nodes right out-of-the box. The clients within the SMACC Client library have been built utilizing a component based architecture that allows for developer to build powerful clients of their own. Current clients of note include MoveBaseZ, a full featured Action Client built to integrate with the ROS Navigation stack, the ros_timer_client, the multi_role_sensor_client, and a keyboard_client used extensively for state machine drafting & debugging.
-  *  ***SMACC Viewer:*** The SMACC library works out of the box with the [SMACC Viewer](https://www.youtube.com/watch?v=WVt4M_teA5I). This allows developers to visualize and runtime debug the state machines they are working on. The SMACC Viewer is closed source, but is free and can be [installed](http://smacc.ninja/smacc-viewer/) via apt-get.
+  *  ***SMACC Viewer:*** The SMACC library works out of the box with the SMACC Viewer. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC Viewer is closed source, but is free and can be [installed](http://smacc.ninja/smacc-viewer/) via apt-get. To view the SMACC Viewer in action, click [here](https://www.youtube.com/watch?v=WVt4M_teA5I) and be sure to set the youtube video to 720p HD.
   
  
 ## SMACC applications
@@ -56,3 +56,5 @@ If you want to get started with ROS Navigation and exploring the orthogonal read
 Operating instructions can be found in each reference state machines readme file.
 Happy Coding.
 
+## Support
+If you are interested in getting involved or need a little support, feel free to contact us by emailing brett@reelrobotix.com
