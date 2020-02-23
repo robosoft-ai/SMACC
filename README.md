@@ -44,9 +44,13 @@ The easiest way to get started is by selecting one of the state machines in our 
 Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
 
 If you are looking for a minimal example, we recommend [sm_atomic](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_atomic).
+
 If you are looking for a slightly more complicated, but still very simple example, try [sm_calendar_week](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_calendar_week).
+
 If you are looking for a minimal example but with a looping superstate, try [sm_three_some](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_three_some).
+
 If you want to get started with the ROS Navigation stack right away, try [sm_dance_bot](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_dance_bot).
+
 If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_dance_bot_strikes_back).
 
 Operating instructions can be found in each reference state machines readme file.
