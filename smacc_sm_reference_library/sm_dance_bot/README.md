@@ -5,6 +5,8 @@
 
 <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
 
+To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=9iyX_x05d3Q&t=7s">here</a>.
+
 <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
 
