@@ -1,5 +1,5 @@
   <h2>State Machine Diagram</h2>
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_pr2_plugs/docs/smacc_state_machine_20200222-181448.dot.svg" width="950" align="center" border="10"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_viewer_sim/docs/smacc_state_machine_20200222-181448.dot.svg" width="950" align="center" border="10"/> 
  
 
 <h2>Description</h2> A state machine example used for testing and debugging the SMACC viewer. Not recommended for normal SMACC users.<br></br>
