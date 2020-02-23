@@ -29,7 +29,7 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
  *  ***SMACC Client Library:*** SMACC also features a constantly growing library of [clients](https://github.com/reelrbtx/SMACC/tree/master/smacc_client_library) that support ROS Action Servers, Service Servers and other nodes right out-of-the box. The clients within the SMACC Client library have been built utilizing a component based architecture that allows for developer to build powerful clients of their own. Current clients of note include MoveBaseZ, a full featured Action Client built to integrate with the ROS Navigation stack, the ros_timer_client, the multi_role_sensor_client, and a keyboard_client used extensively for state machine drafting & debugging.
   *  ***SMACC Viewer:*** The SMACC library works out of the box with the SMACC Viewer. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC Viewer is closed source, but is free and can be [installed](http://smacc.ninja/smacc-viewer/) via apt-get. 
  
-To view the SMACC Viewer in action, click [here](https://www.youtube.com/watch?v=WVt4M_teA5I) and [here](https://www.youtube.com/watch?v=fdy37WvC4FQ). Be sure to set the youtube video to 720p HD.
+ To view the SMACC Viewer in action, click [here](https://www.youtube.com/watch?v=WVt4M_teA5I) and [here](https://www.youtube.com/watch?v=fdy37WvC4FQ). Be sure to set the youtube video to 720p HD.
 
  
 ## SMACC applications
@@ -45,6 +45,7 @@ The easiest way to get started is by selecting one of the state machines in our 
 
 Each state machine in the reference library comes with it's own README.md file, which contains the appropriate operating instructions, so that all you have to do is simply copy & paste some commands into your terminal.
 
+
 If you are looking for a minimal example, we recommend [sm_atomic](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_atomic).
 
 If you are looking for a slightly more complicated, but still very simple example, try [sm_calendar_week](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_calendar_week).
@@ -54,6 +55,7 @@ If you are looking for a minimal example but with a looping superstate, try [sm_
 If you want to get started with the ROS Navigation stack right away, try [sm_dance_bot](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_dance_bot).
 
 If you want to get started with ROS Navigation and exploring the orthogonal read-write cycle, then try [sm_dance_bot_strikes_back](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library/sm_dance_bot_strikes_back).
+
 
 Operating instructions can be found in each reference state machines readme file.
 Happy Coding.
