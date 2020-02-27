@@ -10,6 +10,19 @@
 
 namespace smacc
 {
+
+template <typename EventType>
+void StateReactor::postEvent(const EventType &ev)
+{
+    this->ownerState->postEvent(ev);
+}
+
+template <typename EventType>
+void StateReactor::postEvent()
+{
+    this->ownerState->postEvent<EventType>();
+}
+
 template <typename TEv>
 void StateReactor::setOutputEvent()
 {
@@ -54,7 +67,7 @@ void StateReactorHandler::addInputEvent()
 {
     CallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sb) {
-        ROS_INFO("[%s] State Reactor adding input event: %s", demangleType(sbInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
+        ROS_INFO("[%s] State Reactor adding input event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
         sb->addInputEvent<TEv>();
     };
 
@@ -64,7 +77,7 @@ void StateReactorHandler::addInputEvent()
     auto evinfo = std::make_shared<SmaccEventInfo>(evtype);
     EventLabel<TEv>(evinfo->label);
 
-    sbInfo_->sourceEventTypes.push_back(evinfo);
+    srInfo_->sourceEventTypes.push_back(evinfo);
 }
 
 template <typename TEv>
@@ -72,7 +85,7 @@ void StateReactorHandler::setOutputEvent()
 {
     CallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sb) {
-        ROS_INFO("[%s] State Reactor setting output event: %s", demangleType(sbInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
+        ROS_INFO("[%s] State Reactor setting output event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
         sb->setOutputEvent<TEv>();
     };
 

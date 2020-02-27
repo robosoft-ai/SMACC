@@ -23,6 +23,11 @@ void StateReactor::onEventNotified(const std::type_info *eventType)
 {
 }
 
+void StateReactor::onEntry()
+{
+
+}
+
 void StateReactor::update()
 {
     if (this->triggers())

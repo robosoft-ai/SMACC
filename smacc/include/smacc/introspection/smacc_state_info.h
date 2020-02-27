@@ -71,7 +71,7 @@ private:
     std::vector<CallbackFunctor> callbacks_;
 
 public:
-    void configureStateReactor(std::shared_ptr<smacc::StateReactor> sb);
+    void configureStateReactor(std::shared_ptr<smacc::StateReactor> sr);
 
     template <typename TEv>
     void addInputEvent();
@@ -79,7 +79,7 @@ public:
     template <typename TEv>
     void setOutputEvent();
 
-    std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> sbInfo_;
+    std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> srInfo_;
 };
 
 //---------------------------------------------
@@ -92,7 +92,7 @@ struct SmaccStateReactorInfo
     const std::type_info *stateReactorType;
     std::shared_ptr<TypeInfo> objectTagType;
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
-    std::shared_ptr<StateReactorHandler> sbh;
+    std::shared_ptr<StateReactorHandler> srh;
 };
 
 enum class SmaccStateType

@@ -49,6 +49,7 @@ void SignalDetector::findUpdatableClients()
 
         for (auto &client : clients)
         {
+            // updatable client components
             auto updatableClient = dynamic_cast<ISmaccUpdatable *>(client.get());
 
             if (updatableClient != nullptr)
@@ -57,6 +58,7 @@ void SignalDetector::findUpdatableClients()
                 this->updatableClients_.push_back(updatableClient);
             }
 
+            // updatable client components
             std::vector<std::shared_ptr<ISmaccComponent>> components;
             client->getComponents(components);
             for (auto &componententry : components)
@@ -77,9 +79,9 @@ void SignalDetector::findUpdatableClients()
 * findUpdatableClientBehaviors()
 ******************************************************************************************************************
 */
-void SignalDetector::findUpdatableBehaviors()
+void SignalDetector::findUpdatableStateElements(ISmaccState *currentState)
 {
-    this->updatableClientBehaviors_.clear();
+    this->updatableStateElements_.clear();
     for (auto pair : this->smaccStateMachine_->getOrthogonals())
     {
         auto &orthogonal = pair.second;
@@ -92,8 +94,25 @@ void SignalDetector::findUpdatableBehaviors()
             if (updatableClientBehavior != nullptr)
             {
                 ROS_DEBUG_STREAM("Adding updatable behavior: " << demangleType(typeid(updatableClientBehavior)));
-                this->updatableClientBehaviors_.push_back(updatableClientBehavior);
+                this->updatableStateElements_.push_back(updatableClientBehavior);
             }
+        }
+    }
+
+    auto updatableState = dynamic_cast<ISmaccUpdatable *>(currentState);
+    if (updatableState != nullptr)
+    {
+        this->updatableStateElements_.push_back(updatableState);
+    }
+
+    auto statereactors = currentState->getStateReactors();
+    for (auto &sr : statereactors)
+    {
+        ISmaccUpdatable *updatableStateReactor = dynamic_cast<ISmaccUpdatable *>(sr.get());
+        if (updatableStateReactor != nullptr)
+        {
+            ROS_DEBUG_STREAM("Adding updatable stateReactorr: " << demangleType(typeid(updatableStateReactor)));
+            this->updatableStateElements_.push_back(updatableStateReactor);
         }
     }
 }
@@ -147,6 +166,7 @@ void SignalDetector::pollOnce()
 {
     if (smaccStateMachine_ == nullptr)
     {
+        // skip if the state machine is not properly initialized yet
         ROS_DEBUG("[PollOnce] update but state machine is not yet set.");
         return;
     }
@@ -170,7 +190,8 @@ void SignalDetector::pollOnce()
 
         ROS_DEBUG_STREAM("[PollOnce] update behaviors. checking current state");
 
-        if (smaccStateMachine_->getCurrentState() != nullptr)
+        auto currentState = smaccStateMachine_->getCurrentState();
+        if (currentState != nullptr)
         {
             ROS_DEBUG_STREAM("[PollOnce] current state: " << currentStateIndex);
             ROS_DEBUG_STREAM("[PollOnce] last state: " << this->lastState_);
@@ -182,14 +203,14 @@ void SignalDetector::pollOnce()
                     ROS_DEBUG_STREAM("[PollOnce] detected new state, refreshing updatable client behavior table");
                     // we are in a new state, refresh the updatable client behaviors table
                     this->lastState_ = currentStateIndex;
-                    this->findUpdatableBehaviors();
+                    this->findUpdatableStateElements(currentState);
                 }
 
-                ROS_DEBUG_STREAM("updatable client_behaviors: " << this->updatableClientBehaviors_.size());
-                for (auto *updatableBehavior : this->updatableClientBehaviors_)
+                ROS_DEBUG_STREAM("updatable state elements: " << this->updatableStateElements_.size());
+                for (auto *udpatableStateElement : this->updatableStateElements_)
                 {
-                    ROS_DEBUG_STREAM("pollOnce update client behavior call: " << demangleType(typeid(*updatableBehavior)));
-                    updatableBehavior->update();
+                    ROS_DEBUG_STREAM("pollOnce update client behavior call: " << demangleType(typeid(*udpatableStateElement)));
+                    udpatableStateElement->update();
                 }
             }
         }
@@ -227,4 +248,4 @@ void SignalDetector::pollingLoop()
         r.sleep();
     }
 }
-} // namespace smacc
+}

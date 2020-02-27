@@ -291,19 +291,16 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
     boost::signals2::connection connection = binder.bindaux(signal, callback, object);
 
     // long life-time objects
-    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value
-        ||std::is_base_of<ISmaccClient, TSmaccObjectType>::value
-        || std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value
-        || std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
+    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value || std::is_base_of<ISmaccClient, TSmaccObjectType>::value || std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value || std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
     {
     }
-    else if (   std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
-                std::is_base_of<StateReactor, TSmaccObjectType>::value ||
-                std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value)
-                {
-                    ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s", demangledTypeName<TSmaccObjectType>().c_str());
+    else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+             std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+             std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value)
+    {
+        ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s", demangledTypeName<TSmaccObjectType>().c_str());
         stateCallbackConnections.push_back(connection);
-                }
+    }
     else // state life-time objects
     {
         ROS_WARN("[StateMachine] connecting signal to an unknown object with life-time unknown behavior. It might provoke an exception if the object is destroyed during the execution.");
@@ -360,6 +357,12 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
         ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
         auto &orthogonal = pair.second;
         orthogonal->onEntry();
+    }
+
+    for (auto &sr : this -> currentState_->getStateReactors())
+    {
+        ROS_INFO("state reactor onEntry: %s", smacc::demangleSymbol(typeid(*sr).name()).c_str());
+        sr->onEntry();
     }
 
     this->updateStatusMessage();
