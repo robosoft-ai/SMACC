@@ -5,9 +5,9 @@
 #include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace backward_local_planner
 {
@@ -605,4 +605,4 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     goalMarkerPublisher_.publish(ma);
 }
 } // namespace backward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

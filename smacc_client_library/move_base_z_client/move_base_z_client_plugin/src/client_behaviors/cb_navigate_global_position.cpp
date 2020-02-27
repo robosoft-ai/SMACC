@@ -1,9 +1,9 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 CbNavigateGlobalPosition::CbNavigateGlobalPosition()
 {
@@ -79,4 +79,4 @@ void CbNavigateGlobalPosition::onExit()
     ROS_INFO("Exiting move goal Action Client");
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -12,7 +12,7 @@
 #include <tf/transform_listener.h>
 #include <tf/transform_datatypes.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
 {

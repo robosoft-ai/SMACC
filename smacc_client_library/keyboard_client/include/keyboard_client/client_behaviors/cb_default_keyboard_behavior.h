@@ -5,7 +5,7 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace keyboard_client
+namespace cl_keyboard
 {
 class CbDefaultKeyboardBehavior : public smacc::SmaccClientBehavior
 {
@@ -91,4 +91,4 @@ public:
         this->postEvent(event);
     }
 };
-} // namespace keyboard_client
+} // namespace cl_keyboard

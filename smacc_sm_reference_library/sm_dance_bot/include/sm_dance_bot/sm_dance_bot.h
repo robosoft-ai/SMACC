@@ -15,7 +15,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
 
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_on.h>
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_off.h>

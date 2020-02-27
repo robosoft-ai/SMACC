@@ -13,9 +13,9 @@
 #include <base_local_planner/simple_trajectory_generator.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace forward_local_planner
 {
@@ -497,4 +497,4 @@ bool ForwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped> 
     return true;
 }
 } // namespace forward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

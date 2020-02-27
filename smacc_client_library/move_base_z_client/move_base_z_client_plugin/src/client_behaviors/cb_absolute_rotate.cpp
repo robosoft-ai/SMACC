@@ -1,7 +1,7 @@
 
 #include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 CbAbsoluteRotate::CbAbsoluteRotate()
 {
@@ -65,4 +65,4 @@ void CbAbsoluteRotate::onEntry()
     ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);
     moveBaseClient_->sendGoal(goal);
 }
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -63,12 +63,12 @@ public:
         
         this->iteration_count = 0;
 
-        move_base_z_client::ClMoveBaseZ *robot;
+        cl_move_base_z::ClMoveBaseZ *robot;
         this->requiresClient(robot);
 
         if (robot != nullptr)
         {
-            auto pose = robot->getComponent<move_base_z_client::Pose>()->get();
+            auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
             this->initialStateAngle = angles::to_degrees(angles::normalize_angle(tf::getYaw(pose.orientation)));
             ROS_INFO("Initial angle for F pattern: %lf", initialStateAngle);
         }

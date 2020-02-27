@@ -12,7 +12,7 @@
 #include <sm_calendar_week/orthogonals/or_keyboard.h>
 
 using namespace ros_timer_client;
-using namespace keyboard_client;
+using namespace cl_keyboard;
 
 //CLIENT BEHAVIORS
 #include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>

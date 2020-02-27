@@ -9,7 +9,7 @@
 #include <nav_msgs/Path.h>
 #include <ros/ros.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace forward_global_planner
 {
@@ -40,4 +40,4 @@ private:
     double puresSpinningRadStep_; // rads
 };
 } // namespace forward_global_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

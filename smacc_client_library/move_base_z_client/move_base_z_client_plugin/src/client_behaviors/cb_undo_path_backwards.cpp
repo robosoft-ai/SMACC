@@ -1,8 +1,8 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 void CbUndoPathBackwards::onEntry()
 {
@@ -24,4 +24,4 @@ void CbUndoPathBackwards::onEntry()
         moveBaseClient_->sendGoal(goal);
     }
 }
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -6,7 +6,7 @@
 
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
 Pose::Pose(std::string targetFrame, std::string referenceFrame)

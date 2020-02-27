@@ -1,6 +1,6 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 CbRotate::CbRotate()
 {
@@ -65,4 +65,4 @@ void CbRotate::onEntry()
     moveBaseClient_->sendGoal(goal);
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z
