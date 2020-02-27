@@ -13,7 +13,7 @@
 #include <ros/ros.h>
 #include <backward_global_planner/command.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace backward_global_planner
 {
@@ -66,4 +66,4 @@ private:
     double puresSpinningRadStep_; // rads
 };
 } // namespace backward_global_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

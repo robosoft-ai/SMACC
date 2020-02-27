@@ -15,7 +15,7 @@
 
 using namespace ros_timer_client;
 using namespace ros_publisher_client;
-using namespace keyboard_client;
+using namespace cl_keyboard;
 
 using namespace sm_three_some::cl_subscriber;
 

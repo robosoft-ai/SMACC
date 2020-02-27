@@ -11,7 +11,7 @@
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_event_dispatcher.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class ClMoveBaseZ;
 
@@ -74,4 +74,4 @@ private:
 
   boost::signals2::connection succeddedConnection_;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

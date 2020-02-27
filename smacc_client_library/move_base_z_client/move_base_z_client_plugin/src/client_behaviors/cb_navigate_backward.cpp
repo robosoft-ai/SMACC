@@ -3,9 +3,9 @@
 #include <tf/tf.h>
 
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 CbNavigateBackwards::CbNavigateBackwards(float backwardDistance)
 {
@@ -94,4 +94,4 @@ void CbNavigateBackwards::onExit()
     this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -10,7 +10,7 @@
 
 #include <std_msgs/UInt16.h>
 
-namespace keyboard_client
+namespace cl_keyboard
 {
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
 template <typename TSource, typename TObjectTag>

@@ -8,7 +8,7 @@
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
 geometry_msgs::PoseStamped makePureSpinningSubPlan(const geometry_msgs::PoseStamped &start, double dstRads, std::vector<geometry_msgs::PoseStamped> &plan, double puresSpinningRadStep = 1000);
@@ -18,4 +18,4 @@ geometry_msgs::PoseStamped makePureStraightSubPlan(const geometry_msgs::PoseStam
                                                    double lenght,
                                                    std::vector<geometry_msgs::PoseStamped> &plan);
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

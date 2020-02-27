@@ -13,7 +13,7 @@
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class CbRotate : public smacc::SmaccClientBehavior
 {
@@ -30,4 +30,4 @@ public:
 
     virtual void onEntry() override;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

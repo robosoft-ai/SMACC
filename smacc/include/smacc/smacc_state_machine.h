@@ -38,11 +38,11 @@ public:
 
     virtual ~ISmaccStateMachine();
 
-    virtual void Reset();
+    virtual void reset();
 
-    virtual void Stop();
+    virtual void stop();
 
-    virtual void EStop();
+    virtual void eStop();
 
     template <typename TOrthogonal>
     TOrthogonal *getOrthogonal();
