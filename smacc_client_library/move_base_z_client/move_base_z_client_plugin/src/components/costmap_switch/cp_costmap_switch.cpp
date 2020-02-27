@@ -44,7 +44,7 @@ std::string CostmapSwitch::getStandardCostmapName(StandardLayers layertype)
 
 bool CostmapSwitch::exists(std::string layerName)
 {
-    if (!exists(layerName))
+    if (!CostmapSwitch::costmapProxies.count(layerName))
         return false;
 
     costmapProxies[layerName]->setCostmapEnabled(true);
