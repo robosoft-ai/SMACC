@@ -36,7 +36,7 @@
 
 #include <smacc/client_base_components/cp_topic_subscriber.h>
 
-namespace microstrain_mips_client
+namespace cl_microstrain_mips_client
 {
 using namespace microstrain_mips;
 

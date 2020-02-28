@@ -116,7 +116,7 @@ struct EvGlobalError : sc::event<EvGlobalError>
 } // namespace sm_dance_bot
 
 using namespace sm_dance_bot;
-using namespace ros_timer_client;
+using namespace cl_ros_timer_client;
 using namespace smacc;
 
 

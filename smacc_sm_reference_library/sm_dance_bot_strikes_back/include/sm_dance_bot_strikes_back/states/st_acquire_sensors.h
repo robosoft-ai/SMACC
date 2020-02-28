@@ -25,7 +25,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrStringPublisher, CbStringPublisher>("Hello World!");
       configure_orthogonal<OrTemperatureSensor, CbConditionTemperatureSensor>();
       configure_orthogonal<OrService3, CbService3>(Service3Command::SERVICE3_ON);
-      configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
+      configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher_client::CbDefaultPublishLoop>();
 
       // Create State Reactor
       auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();

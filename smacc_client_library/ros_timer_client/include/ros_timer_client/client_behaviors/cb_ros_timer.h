@@ -3,7 +3,7 @@
 #include <smacc/smacc.h>
 #include <ros_timer_client/cl_ros_timer.h>
 
-namespace ros_timer_client
+namespace cl_ros_timer_client
 {
 class CbTimer : public smacc::SmaccClientBehavior
 {
@@ -26,4 +26,4 @@ private:
   std::function<void()> postTimerEvent_;
   boost::signals2::scoped_connection c_;
 };
-} // namespace ros_timer_client
+} // namespace cl_ros_timer_client

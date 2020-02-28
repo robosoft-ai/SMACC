@@ -3,7 +3,7 @@
 
 #include <smacc/client_bases/smacc_publisher_client.h>
 
-namespace ros_publisher_client
+namespace cl_ros_publisher_client
 {
 
 class ClRosPublisher : public smacc::client_bases::SmaccPublisherClient
@@ -25,4 +25,4 @@ public:
         SmaccPublisherClient::publish(msg);
     }
 };
-} // namespace ros_publisher_client
+} // namespace cl_ros_publisher_client

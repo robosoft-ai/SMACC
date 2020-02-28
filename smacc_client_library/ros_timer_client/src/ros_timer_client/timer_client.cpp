@@ -1,6 +1,6 @@
 #include <ros_timer_client/cl_ros_timer.h>
 
-namespace ros_timer_client
+namespace cl_ros_timer_client
 {
 
 ClRosTimer::ClRosTimer(ros::Duration duration, bool oneshot)
@@ -28,4 +28,4 @@ void ClRosTimer::timerCallback(const ros::TimerEvent &timedata)
     postTimerEvent_();
 }
 
-} // namespace ros_timer_client
+} // namespace cl_ros_timer_client

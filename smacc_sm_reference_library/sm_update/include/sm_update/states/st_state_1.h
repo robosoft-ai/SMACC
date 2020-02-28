@@ -2,7 +2,7 @@
 
 namespace sm_update
 {
-using namespace ros_timer_client;
+using namespace cl_ros_timer_client;
 using namespace smacc::default_transition_tags;
 
 // STATE DECLARATION

@@ -13,7 +13,7 @@ struct EvCustomTemperatureAlert : sc::event<EvCustomTemperatureAlert>
 };
 
 //--------------------------------------------------------------------------------------
-class CbConditionTemperatureSensor : public multirole_sensor_client::CbDefaultMultiRoleSensorBehavior<ClTemperatureSensor>
+class CbConditionTemperatureSensor : public cl_multirole_sensor_client::CbDefaultMultiRoleSensorBehavior<ClTemperatureSensor>
 {
 public:
   CbConditionTemperatureSensor()

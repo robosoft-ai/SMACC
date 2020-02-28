@@ -4,7 +4,7 @@
 #include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
 
-namespace ros_timer_client
+namespace cl_ros_timer_client
 {
 template <typename TSource, typename TObjectTag>
 struct EvTimer : sc::event<EvTimer<TSource, TObjectTag>>
@@ -55,4 +55,4 @@ protected:
     std::function<void()> postTimerEvent_;
     smacc::SmaccSignal<void()> onTimerTick_;
 };
-} // namespace ros_timer_client
+} // namespace cl_ros_timer_client

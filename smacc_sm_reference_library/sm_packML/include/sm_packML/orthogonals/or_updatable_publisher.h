@@ -6,7 +6,7 @@
 
 namespace sm_packML
 {
-using namespace ros_publisher_client;
+using namespace cl_ros_publisher_client;
 
 class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {

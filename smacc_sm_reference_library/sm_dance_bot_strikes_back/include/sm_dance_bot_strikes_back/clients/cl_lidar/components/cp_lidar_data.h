@@ -15,7 +15,7 @@ public:
 
   virtual void initialize(smacc::ISmaccClient *owner) override
   {
-    auto client_ = dynamic_cast<multirole_sensor_client::SmaccSubscriberClient<sensor_msgs::LaserScan> *>(owner);
+    auto client_ = dynamic_cast<smacc::client_bases::SmaccSubscriberClient<sensor_msgs::LaserScan> *>(owner);
     client_->onMessageReceived(&CpLidarSensorData::MessageCallbackStoreDistanceToWall, this);
   }
 

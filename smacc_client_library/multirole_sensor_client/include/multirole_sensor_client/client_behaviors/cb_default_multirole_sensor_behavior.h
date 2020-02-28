@@ -3,7 +3,7 @@
 #include <smacc/smacc_client_behavior.h>
 #include <multirole_sensor_client/cl_multirole_sensor.h>
 
-namespace multirole_sensor_client
+namespace cl_multirole_sensor_client
 {
 template <typename ClientType>
 class CbDefaultMultiRoleSensorBehavior : public smacc::SmaccClientBehavior

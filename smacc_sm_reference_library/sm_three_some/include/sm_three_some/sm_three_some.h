@@ -13,8 +13,8 @@
 #include <sm_three_some/orthogonals/or_subscriber.h>
 #include <sm_three_some/orthogonals/or_keyboard.h>
 
-using namespace ros_timer_client;
-using namespace ros_publisher_client;
+using namespace cl_ros_timer_client;
+using namespace cl_ros_publisher_client;
 using namespace cl_keyboard;
 
 using namespace sm_three_some::cl_subscriber;

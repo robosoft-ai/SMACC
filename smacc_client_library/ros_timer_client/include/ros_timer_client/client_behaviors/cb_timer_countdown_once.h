@@ -3,7 +3,7 @@
 #include <smacc/smacc.h>
 #include <ros_timer_client/cl_ros_timer.h>
 
-namespace ros_timer_client
+namespace cl_ros_timer_client
 {
 class CbTimerCountdownOnce : public smacc::SmaccClientBehavior
 {
@@ -36,4 +36,4 @@ private:
     smacc::SmaccSignal<void()> onTimerTick_;
     void onClientTimerTickCallback();
 };
-} // namespace ros_timer_client
+} // namespace cl_ros_timer_client
