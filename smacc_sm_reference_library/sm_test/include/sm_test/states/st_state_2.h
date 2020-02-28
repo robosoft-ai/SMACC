@@ -3,51 +3,28 @@
 namespace sm_test
 {
 // STATE DECLARATION
+
+extern int counter;
+
 struct State2 : smacc::SmaccState<State2, SmTest>
 {
     using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+    // TRANSITION TABLE
     typedef mpl::list<
-    
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
-    
-    >reactions;
 
-    
-// STATE FUNCTIONS   
+        Transition<AutomaticTransitionEvent, State1, SUCCESS>>
+        reactions;
+
+    // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
     }
 
-    void runtimeConfigure()
+    void onEntry()
     {
-        ROS_INFO("Entering State2");
-
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&State2::onTimerClientTickCallback, this);
-
-         // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&State2::onSingleBehaviorTickCallback, this);
-    }
-       
-    void onTimerClientTickCallback()
-    {
-        ROS_INFO("timer client tick!");
-    }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
+        counter++;
+        this->postEvent<AutomaticTransitionEvent>();
     }
 };
 }

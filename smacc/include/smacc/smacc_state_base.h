@@ -115,7 +115,7 @@ public:
       this->requestLockStateMachine("state exit");
       auto fullname = demangleSymbol(typeid(MostDerived).name());
       ROS_WARN_STREAM("exiting state: " << fullname);
-      this->setParam("destroyed", true);
+      //this->setParam("destroyed", true);
 
       // first process orthogonals onexits
       this->getStateMachine().notifyOnStateExit(static_cast<MostDerived *>(this));

@@ -16,6 +16,14 @@ using namespace smacc;
 namespace sm_test
 {
 
+struct AutomaticTransitionEvent: sc::event<AutomaticTransitionEvent>
+{
+
+};
+
+static int counter = 0;
+ros::Time startTime;
+
 //STATE
 class State1;
 class State2;
@@ -29,7 +37,7 @@ struct SmTest
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<OrTimer>();
+        startTime=ros::Time::now();
     }
 };
 
