@@ -1,6 +1,6 @@
 #include <move_base_z_client_plugin/components/costmap_switch/cp_costmap_switch.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
 std::array<std::string, 4>
@@ -24,7 +24,7 @@ CostmapSwitch::CostmapSwitch()
 
 void CostmapSwitch::initialize(smacc::ISmaccClient *owner)
 {
-    this->owner_ = dynamic_cast<move_base_z_client::ClMoveBaseZ *>(owner);
+    this->owner_ = dynamic_cast<cl_move_base_z::ClMoveBaseZ *>(owner);
 
     if (this->owner_ == nullptr)
     {
@@ -44,8 +44,12 @@ std::string CostmapSwitch::getStandardCostmapName(StandardLayers layertype)
 
 bool CostmapSwitch::exists(std::string layerName)
 {
+<<<<<<< HEAD
     if (!this->costmapProxies.count(layerName))
     {
+=======
+    if (!CostmapSwitch::costmapProxies.count(layerName))
+>>>>>>> 8789b6c9c0789a1ed6faa6b8a7e60f65711388e5
         return false;
     }
 

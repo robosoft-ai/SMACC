@@ -14,7 +14,7 @@
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class PlannerSwitcher: public smacc::ISmaccComponent
 {

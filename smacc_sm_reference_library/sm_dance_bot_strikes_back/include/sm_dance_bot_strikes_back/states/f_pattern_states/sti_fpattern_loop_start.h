@@ -12,10 +12,7 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
   // TRANSITION TABLE
   typedef mpl::list<
-
-      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternRotate1<SS>, CONTINUELOOP>
-
-      >
+      Transition<EvLoopContinue<StiFPatternStartLoop<SS>>, StiFPatternForward2<SS>, CONTINUELOOP>>
       reactions;
 
   // STATE FUNCTIONS
@@ -32,7 +29,7 @@ struct StiFPatternStartLoop : smacc::SmaccState<StiFPatternStartLoop<SS>, SS>
 
     auto horizontalDistance = lidarData->forwardObstacleDistance;
 
-    return horizontalDistance > 1 /*meters*/; // go ahead until 1.5m before the wall
+    return horizontalDistance > 0.5 /*meters*/; // go ahead until 1.5m before the wall
   }
 
   void onEntry()

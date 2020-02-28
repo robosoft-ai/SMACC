@@ -5,9 +5,9 @@
 #include <boost/intrusive_ptr.hpp>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_local_planner::BackwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace backward_local_planner
 {
@@ -346,10 +346,8 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
                                       << " gamma:" << gamma);
 
     //cmd_vel.linear.x=0;
-    //cmd_vel.angular.z = 0;
-
-    tf::Stamped<tf::Pose> global_pose;
-    costmapRos_->getRobotPose(global_pose);
+    //cmd_vel.angular.z = 0;    
+    tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
 
     auto *costmap2d = costmapRos_->getCostmap();
     auto yaw = tf::getYaw(global_pose.getRotation());
@@ -607,4 +605,4 @@ void BackwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     goalMarkerPublisher_.publish(ma);
 }
 } // namespace backward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -1,8 +1,8 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 CbNavigateForward::CbNavigateForward(float forwardDistance)
 {
@@ -86,4 +86,4 @@ void CbNavigateForward::onExit()
     this->odomTracker_->setWorkingMode(WorkingMode::IDLE);
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

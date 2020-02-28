@@ -7,7 +7,7 @@
 #include <yaml-cpp/yaml.h>
 #include <tf/transform_datatypes.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 WaypointNavigator::WaypointNavigator()
     : currentWaypoint_(0),
@@ -155,4 +155,4 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     ROS_ERROR_STREAM("Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

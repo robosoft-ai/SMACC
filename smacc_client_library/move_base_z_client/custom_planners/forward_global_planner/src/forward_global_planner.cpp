@@ -16,7 +16,7 @@
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace forward_global_planner
 {
@@ -66,9 +66,9 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
         // skip initial pure spinning and initial straight motion
         //ROS_INFO("1 - heading to goal position pure spinning");
         double heading_direction = atan2(dy, dx);
-        prevState = move_base_z_client::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
+        prevState = cl_move_base_z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
         //ROS_INFO("2 - going forward keep orientation pure straight");
-        prevState = move_base_z_client::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
+        prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
     }
     else
     {
@@ -77,7 +77,7 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 
     //ROS_INFO("3 - heading to goal orientation");
     double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
-    move_base_z_client::makePureSpinningSubPlan(prevState, goalOrientation, plan, puresSpinningRadStep_);
+    cl_move_base_z::makePureSpinningSubPlan(prevState, goalOrientation, plan, puresSpinningRadStep_);
 
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
@@ -119,7 +119,7 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 }
 
 }; // namespace forward_global_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z
 
 //register this planner as a BaseGlobalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::forward_global_planner::ForwardGlobalPlanner, nav_core::BaseGlobalPlanner);
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_global_planner::ForwardGlobalPlanner, nav_core::BaseGlobalPlanner);

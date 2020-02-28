@@ -15,7 +15,7 @@
 typedef double meter;
 typedef double rad;
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace pure_spinning_global_planner
 {
@@ -60,4 +60,4 @@ public:
     void initialize();
 };
 } // namespace forward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

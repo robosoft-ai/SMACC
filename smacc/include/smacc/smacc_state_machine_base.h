@@ -28,22 +28,22 @@ public:
         //updateCurrentState<InitialStateType>(false);
     }
 
-    virtual void Reset() override
+    virtual void reset() override
     {
-        ISmaccStateMachine::Reset();
+        ISmaccStateMachine::reset();
         this->terminate();
         smacc::run<DerivedStateMachine>();
     }
 
-    virtual void Stop() override
+    virtual void stop() override
     {
-        ISmaccStateMachine::Stop();
+        ISmaccStateMachine::stop();
         this->terminate();
     }
 
-    virtual void EStop() override
+    virtual void eStop() override
     {
-        ISmaccStateMachine::EStop();
+        ISmaccStateMachine::eStop();
         this->terminate();
     }
 

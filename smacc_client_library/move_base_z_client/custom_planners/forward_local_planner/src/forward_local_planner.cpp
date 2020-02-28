@@ -13,9 +13,9 @@
 #include <base_local_planner/simple_trajectory_generator.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace forward_local_planner
 {
@@ -392,8 +392,9 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     //integrate trajectory and check collision
 
-    tf::Stamped<tf::Pose> global_pose;
-    costmapRos_->getRobotPose(global_pose);
+    tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
+    
+    //->getRobotPose(global_pose);
 
     auto *costmap2d = costmapRos_->getCostmap();
     auto yaw = tf::getYaw(global_pose.getRotation());
@@ -496,4 +497,4 @@ bool ForwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped> 
     return true;
 }
 } // namespace forward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

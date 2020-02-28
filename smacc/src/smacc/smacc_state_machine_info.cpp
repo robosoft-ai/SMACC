@@ -125,20 +125,20 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
         if (SmaccStateInfo::stateReactorsInfo.count(statetid) > 0)
         {
             int k = 0;
-            for (auto &sbinfo : SmaccStateInfo::stateReactorsInfo[statetid])
+            for (auto &srinfo : SmaccStateInfo::stateReactorsInfo[statetid])
             {
                 smacc_msgs::SmaccStateReactor stateReactorMsg;
                 stateReactorMsg.index = k++;
-                stateReactorMsg.type_name = demangleSymbol(sbinfo->stateReactorType->name());
+                stateReactorMsg.type_name = demangleSymbol(srinfo->stateReactorType->name());
 
                 ss << " - state reactor: " << stateReactorMsg.type_name << std::endl;
-                if (sbinfo->objectTagType != nullptr)
+                if (srinfo->objectTagType != nullptr)
                 {
-                    stateReactorMsg.object_tag = sbinfo->objectTagType->getFullName();
+                    stateReactorMsg.object_tag = srinfo->objectTagType->getFullName();
                     ss << "        - object tag: " << stateReactorMsg.object_tag << std::endl;
                 }
 
-                for (auto &tev : sbinfo->sourceEventTypes)
+                for (auto &tev : srinfo->sourceEventTypes)
                 {
                     // WE SHOULD CREATE A SMACC_EVENT_INFO TYPE, also using in typewalker transition
                     auto eventTypeName = tev->getEventTypeName();

@@ -17,7 +17,7 @@
 #include <dynamic_reconfigure/Config.h>
 #include <array>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class CostmapProxy;
 
@@ -54,7 +54,7 @@ public:
 
 private:
     std::map<std::string, std::shared_ptr<CostmapProxy>> costmapProxies;
-    move_base_z_client::ClMoveBaseZ *owner_;
+    cl_move_base_z::ClMoveBaseZ *owner_;
 };
 //-------------------------------------------------------------------------
 class CostmapProxy

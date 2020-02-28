@@ -13,9 +13,9 @@
 #include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 #include <tf/tf.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
@@ -43,4 +43,4 @@ private:
   // this resource can be used from any method in this state
   ClMoveBaseZ *moveBaseClient_;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

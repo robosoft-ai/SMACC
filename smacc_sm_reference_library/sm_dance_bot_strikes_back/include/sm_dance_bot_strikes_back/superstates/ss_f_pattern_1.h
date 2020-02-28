@@ -1,7 +1,11 @@
 #include <smacc/smacc.h>
+#include <tf/transform_datatypes.h>
+#include <angles/angles.h>
 
-namespace sm_dance_bot_strikes_back {
-namespace f_pattern_states {
+namespace sm_dance_bot_strikes_back
+{
+namespace f_pattern_states
+{
 
 enum class TDirection
 {
@@ -10,16 +14,24 @@ enum class TDirection
 };
 
 // FORWARD DECLARATIONS OF INNER STATES
-template <typename SS> class StiFPatternRotate1;
-template <typename SS> class StiFPatternForward1;
-template <typename SS> class StiFPatternReturn1;
-template <typename SS> class StiFPatternRotate2;
-template <typename SS> class StiFPatternForward2;
-template <typename SS> class StiFPatternStartLoop;
+template <typename SS>
+class StiFPatternRotate1;
+template <typename SS>
+class StiFPatternForward1;
+template <typename SS>
+class StiFPatternReturn1;
+template <typename SS>
+class StiFPatternRotate2;
+template <typename SS>
+class StiFPatternForward2;
+template <typename SS>
+class StiFPatternStartLoop;
 } // namespace f_pattern_states
 } // namespace sm_dance_bot_strikes_back
-namespace sm_dance_bot_strikes_back {
-namespace SS4 {
+namespace sm_dance_bot_strikes_back
+{
+namespace SS4
+{
 using namespace f_pattern_states;
 
 // STATE DECLARATION
@@ -28,24 +40,21 @@ struct SsFPattern1 : smacc::SmaccState<SsFPattern1, MsDanceBotRunMode, StiFPatte
 public:
     using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+    // TRANSITION TABLE
     typedef mpl::list<
-    
-    Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP> //,
+        Transition<EvLoopEnd<StiFPatternStartLoop<SsFPattern1>>, StNavigateToWaypointsX, ENDLOOP>>
+        reactions;
 
-    >reactions;
-
-// STATE VARIABLES
+    // STATE VARIABLES
     // superstate parameters
-    static constexpr float ray_lenght_meters() { return 3.25; }
+    static constexpr float ray_lenght_meters() { return 4; }
     static constexpr float pitch_lenght_meters() { return 0.6; }
-    static constexpr int total_iterations() { return 12; }
     static constexpr TDirection direction() { return TDirection::RIGHT; }
 
-    // superstate state variables
-    int iteration_count;
+    double initialStateAngle = 0;
+    double offset;
 
-// STATE FUNCTIONS
+    // STATE FUNCTIONS
     static void staticConfigure()
     {
         //configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
@@ -53,7 +62,20 @@ public:
 
     void runtimeConfigure()
     {
-        iteration_count = 0;
+        this->offset = 0;//13.5;
+        cl_move_base_z::ClMoveBaseZ *robot;
+        this->requiresClient(robot);
+
+        if (robot != nullptr)
+        {
+            auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
+            this->initialStateAngle = angles::to_degrees(angles::normalize_angle(tf::getYaw(pose.orientation)));
+            ROS_INFO("Initial angle for F pattern: %lf degrees", initialStateAngle);
+        }
+        else
+        {
+            ROS_ERROR("robot pose not found to plan the FPattern motion");
+        }
     }
 }; // namespace SS4
 

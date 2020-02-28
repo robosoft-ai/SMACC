@@ -11,7 +11,7 @@
 typedef actionlib::SimpleActionServer<odom_tracker::OdomTrackerAction> Server;
 
 using namespace odom_tracker;
-using namespace move_base_z_client::odom_tracker;
+using namespace cl_move_base_z::odom_tracker;
 
 class OdomTrackerActionServer
 {

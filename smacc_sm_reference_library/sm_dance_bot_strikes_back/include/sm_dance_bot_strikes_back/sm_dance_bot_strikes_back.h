@@ -15,7 +15,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
 
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_on.h>
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_off.h>
@@ -62,20 +62,9 @@ namespace sm_dance_bot_strikes_back
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StEventCountDown;
-class StRotateDegrees4;
-class StNavigateForward1;
-class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
-class StRotateDegrees2;
-class StRotateDegrees1;
-class StNavigateReverse2;
-class StRotateDegrees3;
-class StNavigateReverse1;
-class StNavigateForward2;
-class StRotateDegrees5;
-class StNavigateReverse3;
-class StRotateDegrees6;
-class StNavigateReverse3;
+class StFpatternPrealignment;
+class StSpatternPrealignment;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -167,16 +156,7 @@ struct SmDanceBotStrikesBack
 //STATES
 #include <sm_dance_bot_strikes_back/states/st_acquire_sensors.h>
 #include <sm_dance_bot_strikes_back/states/st_event_count_down.h>
+#include <sm_dance_bot_strikes_back/states/st_fpattern_prealignment.h>
+#include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.h>
 
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.h>
-
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_6.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_4.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_forward_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoint_1.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_3.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_3.h>

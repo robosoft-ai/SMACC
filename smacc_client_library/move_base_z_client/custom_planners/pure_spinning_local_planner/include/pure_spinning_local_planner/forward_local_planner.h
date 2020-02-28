@@ -15,7 +15,7 @@
 typedef double meter;
 typedef double rad;
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace _local_planner
 {
@@ -96,4 +96,4 @@ private:
     ros::Time waitingStamp_;
 };
 } // namespace forward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

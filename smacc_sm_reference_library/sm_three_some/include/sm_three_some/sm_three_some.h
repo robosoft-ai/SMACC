@@ -15,7 +15,7 @@
 
 using namespace ros_timer_client;
 using namespace ros_publisher_client;
-using namespace keyboard_client;
+using namespace cl_keyboard;
 
 using namespace sm_three_some::cl_subscriber;
 
@@ -47,10 +47,18 @@ namespace SS1
 class Ss1;
 } // namespace SS1
 
+//SUPERSTATES
+namespace SS2
+{
+class Ss2;
+} // namespace SS1
+
+
 //STATES
 class StState1; // first state specially needs a forward declaration
 class StState2;
 class StState3;
+class StState4;
 
 class MsRun;
 class MsRecover;
@@ -87,5 +95,7 @@ struct SmThreeSome
 #include <sm_three_some/states/st_state_1.h>
 #include <sm_three_some/states/st_state_2.h>
 #include <sm_three_some/states/st_state_3.h>
+#include <sm_three_some/states/st_state_4.h>
 
 #include <sm_three_some/superstates/ss_superstate_1.h>
+#include <sm_three_some/superstates/ss_superstate_2.h>

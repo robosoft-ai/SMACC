@@ -10,14 +10,15 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   using TSti::SmaccState;
   using TSti::context_type;
 
-// TRANSITION TABLE
-  typedef mpl::list< 
-  
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>> 
-  
-  >reactions;
+  // TRANSITION TABLE
+  typedef mpl::list<
 
-// STATE FUNCTIONS
+      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternRotate2<SS>>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }
@@ -25,7 +26,6 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   void runtimeConfigure()
   {
     auto &superstate = TSti::template context<SS>();
-    ROS_INFO("[SsrFpattern] Fpattern rotate: SS current iteration: %d/%d", superstate.iteration_count, superstate.total_iterations());
 
     TSti::template configure<OrNavigation, CbNavigateForward>(SS::pitch_lenght_meters());
     TSti::template configure<OrLED, CbLEDOff>();

@@ -41,7 +41,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
    INCLUDE_DIRS include
-   LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch
+   LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch pose
    CATKIN_DEPENDS smacc tf
    DEPENDS yaml-cpp
 )
@@ -91,6 +91,14 @@ add_library(planner_switcher
 )
 
 target_link_libraries(planner_switcher
+   ${catkin_LIBRARIES})
+
+#----------------------------------
+add_library(pose
+   src/components/pose/cp_pose.cpp
+)
+
+target_link_libraries(pose
    ${catkin_LIBRARIES})
 
 #----------------------------------
@@ -148,7 +156,7 @@ target_link_libraries(waypoints_navigator
 # )
 
 ## Mark executables and/or libraries for installation
- install(TARGETS ${PROJECT_NAME} odom_tracker waypoints_navigator planner_switcher costmap_switch move_base_z_client_behaviors
+ install(TARGETS ${PROJECT_NAME} odom_tracker waypoints_navigator planner_switcher costmap_switch move_base_z_client_behaviors pose
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}

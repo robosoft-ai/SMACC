@@ -152,8 +152,15 @@ public:
 
     virtual void cancelGoal() override
     {
-        ROS_INFO("Cancelling goal of %s", this->getName().c_str());
-        client_->cancelGoal();
+        if (client_->isServerConnected())
+        {
+            ROS_INFO("Cancelling goal of %s", this->getName().c_str());
+            client_->cancelGoal();
+        }
+        else
+        {
+            ROS_ERROR("%s [at %s]: not connected with actionserver, skipping cancel goal ...", getName().c_str(), getNamespace().c_str());
+        }
     }
 
     virtual SimpleClientGoalState getState() override
@@ -165,16 +172,17 @@ public:
     {
         ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ << "\"");
 
-        if (!client_->isServerConnected())
+        if (client_->isServerConnected())
         {
-            ROS_INFO("%s [at %s]: not connected with actionserver, waiting ...", getName().c_str(), getNamespace().c_str());
-            client_->waitForServer();
+            ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl
+                                      << goal);
+            client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
         }
-
-        ROS_INFO_STREAM(getName() << ": Goal Value: " << std::endl
-                                  << goal);
-
-        client_->sendGoal(goal, done_cb, active_cb, feedback_cb);
+        else
+        {
+            ROS_ERROR("%s [at %s]: not connected with actionserver, skipping goal request ...", getName().c_str(), getNamespace().c_str());
+            //client_->waitForServer();
+        }
     }
 
 protected:

@@ -44,6 +44,14 @@ public:
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage);
 
+    void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components)
+    {
+        for (auto &ce : components_)
+        {
+            components.push_back(ce.second);
+        }
+    }
+
 protected:
     // components
     std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
@@ -54,7 +62,7 @@ protected:
     // Assigns the owner of this resource to the given state machine parameter object
     void setStateMachine(ISmaccStateMachine *stateMachine);
 
-    void setOrthogonal(ISmaccOrthogonal* orthogonal);
+    void setOrthogonal(ISmaccOrthogonal *orthogonal);
 
 private:
     // A reference to the state machine object that owns this resource

@@ -32,7 +32,7 @@ waypoints:
   # POINT 3
   - position:
       x: 1.0
-      y: -9.33 # north west corner of the room
+      y: -8.5 # north west corner of the room
       #y: -12.35 # south west corner of the room
       z: 0.0
     orientation:
@@ -40,9 +40,15 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
+
+    #orientation:
+    #  x: 0.0
+    #  y: 0.0
+    #  z: -0.3007058
+    #  w: 0.953717
     # POINT 4
   - position:
-      x: -10.0
+      x: -9.5
       y: 13.5
       z: 0.0
     orientation:
@@ -50,7 +56,13 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  # POINT 4
+    # 15degress[ 0, 0, 0.1305262, 0.9914449 ]
+    #orientation:
+    #  x: 0.0
+    #  y: 0.0
+    #  z: 0.1305262
+    #  w: 0.9914449
+  # POINT 5
   - position:
       x: -0.0
       y: 0.0
@@ -60,7 +72,7 @@ waypoints:
       y: 0.0
       z: 0.0
       w: 1.0
-  #POINT 5
+  #POINT 6
   - position:
       x: 0.0
       y: 0.0

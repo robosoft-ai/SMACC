@@ -5,10 +5,11 @@
 
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace sm_dance_bot_strikes_back
 {
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 class OrNavigation : public smacc::Orthogonal<OrNavigation>
 {
@@ -17,6 +18,8 @@ public:
     {
         auto movebaseClient = this->createClient<ClMoveBaseZ>();
         movebaseClient->initialize();
+
+        movebaseClient->createComponent<Pose>();
 
         // create planner switcher
         movebaseClient->createComponent<PlannerSwitcher>();
