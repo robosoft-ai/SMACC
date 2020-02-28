@@ -29,6 +29,7 @@ ForwardGlobalPlanner::ForwardGlobalPlanner()
 
 void ForwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros)
 {
+    ROS_INFO("[Forward Global Planner] initializing");
     planPub_ = nh_.advertise<nav_msgs::Path>("global_plan", 1);
     skip_straight_motion_distance_ = 0.2; //meters
     puresSpinningRadStep_ = 1000;         // rads
@@ -39,6 +40,7 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
                                     const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan,
                                     double &cost)
 {
+    ROS_INFO("[Forward Global Planner] planning");
     cost = 0;
     makePlan(start, goal, plan);
 }

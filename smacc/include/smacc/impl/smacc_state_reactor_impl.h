@@ -10,6 +10,18 @@
 
 namespace smacc
 {
+template <typename EventType>
+void StateReactor::postEvent(const EventType &ev)
+{
+    ownerState->postEvent(ev);
+}
+
+template <typename EventType>
+void StateReactor::postEvent()
+{
+    ownerState->postEvent<EventType>();
+}
+
 template <typename TEv>
 void StateReactor::setOutputEvent()
 {

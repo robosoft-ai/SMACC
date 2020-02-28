@@ -13,7 +13,7 @@ std::array<std::string, 4>
 
 void CostmapSwitch::registerProxyFromDynamicReconfigureServer(std::string costmapName, std::string enablePropertyName)
 {
-
+    ROS_INFO("[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
     auto proxy = std::make_shared<CostmapProxy>(this->owner_->name_ + "/" + costmapName, enablePropertyName);
     costmapProxies[costmapName] = proxy;
 }
@@ -44,16 +44,28 @@ std::string CostmapSwitch::getStandardCostmapName(StandardLayers layertype)
 
 bool CostmapSwitch::exists(std::string layerName)
 {
-    if (!exists(layerName))
+    if (!this->costmapProxies.count(layerName))
+    {
         return false;
+    }
 
-    costmapProxies[layerName]->setCostmapEnabled(true);
+    return true;
 }
 
 void CostmapSwitch::enable(std::string layerName)
 {
+    ROS_INFO("[CostmapSwitch] enabling %s", layerName.c_str());
+
     if (!exists(layerName))
+    {
+        ROS_ERROR("[CostmapSwitch] costmap %s does not exist", layerName.c_str());
         return;
+    }
+    else
+    {
+        ROS_INFO("[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+        costmapProxies[layerName]->setCostmapEnabled(true);
+    }
 }
 
 void CostmapSwitch::enable(StandardLayers layerType)
@@ -63,10 +75,18 @@ void CostmapSwitch::enable(StandardLayers layerType)
 
 void CostmapSwitch::disable(std::string layerName)
 {
-    if (!exists(layerName))
-        return;
+    ROS_INFO("[CostmapSwitch] disabling %s", layerName.c_str());
 
-    costmapProxies[layerName]->setCostmapEnabled(false);
+    if (!exists(layerName))
+    {
+        ROS_ERROR("[CostmapSwitch] costmap %s does not exist", layerName.c_str());
+        return;
+    }
+    else
+    {
+        ROS_INFO("[CostmapSwitch] costmap %s found. Calling dynamic reconfigure server.", layerName.c_str());
+        costmapProxies[layerName]->setCostmapEnabled(false);
+    }
 }
 
 void CostmapSwitch::disable(StandardLayers layerType)
@@ -78,7 +98,7 @@ void CostmapSwitch::disable(StandardLayers layerType)
 
 CostmapProxy::CostmapProxy(std::string costmap_name, std::string enablePropertyName)
 {
-    this->costmapName_ = costmap_name;
+    this->costmapName_ = costmap_name + "/set_parameters";
     dynamic_reconfigure::BoolParameter enableField;
     enableField.name = "enabled";
     enableField.value = true;
@@ -99,7 +119,15 @@ void CostmapProxy::setCostmapEnabled(bool value)
     else
         srv_req.config = disableReq;
 
-    ros::service::call(costmapName_, srv_req, srv_resp);
+    if (ros::service::exists(costmapName_, true))
+    {
+        ROS_INFO("sending dynamic reconfigure request: %s", costmapName_.c_str());
+        ros::service::call(costmapName_, srv_req, srv_resp);
+    }
+    else
+    {
+        ROS_WARN("could not call dynamic reconfigure server. It does not exist: %s", costmapName_.c_str());
+    }
 }
 
 void CostmapProxy::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)
