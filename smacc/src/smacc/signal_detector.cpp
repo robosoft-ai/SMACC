@@ -231,8 +231,14 @@ void SignalDetector::pollingLoop()
 {
     ros::NodeHandle nh("~");
 
-    if (!nh.param("signal_detector_loop_freq", this->loop_rate_hz))
+
+    if (!nh.getParam("signal_detector_loop_freq", this->loop_rate_hz))
     {
+        ROS_WARN("Signal detector frequency (ros param ~signal_detector_loop_freq) was not set, using default frequency: %lf",  this->loop_rate_hz);
+    }
+    else
+    {
+        ROS_WARN("Signal detector frequency (ros param ~signal_detector_loop_freq): %lf",  this->loop_rate_hz);
     }
 
     nh.setParam("signal_detector_loop_freq", this->loop_rate_hz);

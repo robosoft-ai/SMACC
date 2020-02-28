@@ -1,3 +1,7 @@
 <launch>
-    <node pkg="sm_update" type="sm_update_node" name="sm_update" output="screen"/>
+    <!-- launch-prefix="valgrind tool=callgrind log-file='valgrind.log'" -->
+
+    <node pkg="sm_update" type="sm_update_node" name="sm_update" output="screen">
+        <param name="signal_detector_loop_freq" value="50"/>
+    </node>
 </launch>
