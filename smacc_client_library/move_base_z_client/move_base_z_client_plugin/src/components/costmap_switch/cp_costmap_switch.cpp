@@ -44,12 +44,8 @@ std::string CostmapSwitch::getStandardCostmapName(StandardLayers layertype)
 
 bool CostmapSwitch::exists(std::string layerName)
 {
-<<<<<<< HEAD
     if (!this->costmapProxies.count(layerName))
     {
-=======
-    if (!CostmapSwitch::costmapProxies.count(layerName))
->>>>>>> 8789b6c9c0789a1ed6faa6b8a7e60f65711388e5
         return false;
     }
 

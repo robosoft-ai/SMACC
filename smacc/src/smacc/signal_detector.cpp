@@ -182,7 +182,7 @@ void SignalDetector::pollOnce()
             for (auto *updatableClient : this->updatableClients_)
             {
                 ROS_DEBUG_STREAM("[PollOnce] update client call:  " << demangleType(typeid(updatableClient)));
-                updatableClient->update();
+                updatableClient->executeUpdate();
             }
         }
 
@@ -210,7 +210,7 @@ void SignalDetector::pollOnce()
                 for (auto *udpatableStateElement : this->updatableStateElements_)
                 {
                     ROS_DEBUG_STREAM("pollOnce update client behavior call: " << demangleType(typeid(*udpatableStateElement)));
-                    udpatableStateElement->update();
+                    udpatableStateElement->executeUpdate();
                 }
             }
         }

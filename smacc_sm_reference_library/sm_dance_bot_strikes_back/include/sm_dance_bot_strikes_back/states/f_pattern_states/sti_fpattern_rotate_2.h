@@ -47,7 +47,7 @@ struct StiFPatternRotate2 : smacc::SmaccState<StiFPatternRotate2<SS>, SS>
     auto targetAngle =  angles::to_degrees(angles::normalize_angle(angles::from_degrees(initialStateAngle + angle)));
 
     absoluteRotateBehavior->absoluteGoalAngleDegree = targetAngle;
-    ROS_INFO("Fpattern, rotate to: %lf", absoluteRotateBehavior->absoluteGoalAngleDegree);
+    ROS_INFO("Fpattern, rotate to: %lf", *(absoluteRotateBehavior->absoluteGoalAngleDegree));
   }
 };
 } // namespace f_pattern_states

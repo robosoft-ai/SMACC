@@ -25,6 +25,8 @@ struct State2 : smacc::SmaccState<State2, SmUpdate>, ISmaccUpdatable
     {
         ROS_INFO("Entering State2");
 
+        this->setUpdatePeriod(ros::Duration(1));
+
         // get reference to the client
         ClRosTimer *client;
         this->requiresClient(client);

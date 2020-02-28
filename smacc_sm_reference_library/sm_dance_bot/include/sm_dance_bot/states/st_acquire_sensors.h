@@ -1,24 +1,30 @@
 #include <smacc/smacc.h>
 namespace sm_dance_bot
 {
+
+using namespace smacc::default_events;
+
 // STATE DECLARATION
 struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 {
    using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-   struct ON_SENSORS_AVAILABLE : SUCCESS{};
+   // DECLARE CUSTOM OBJECT TAGS
+   struct ON_SENSORS_AVAILABLE : SUCCESS
+   {
+   };
    struct SrAcquireSensors;
 
-// TRANSITION TABLE
+   // TRANSITION TABLE
    typedef mpl::list<
 
-   Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
-   Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>
-   
-   >reactions;
+       Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
+       Transition<EvGlobalError, sc::deep_history<StAcquireSensors>>
 
-// STATE FUNCTIONS
+       >
+       reactions;
+
+   // STATE FUNCTIONS
    static void staticConfigure()
    {
       configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
@@ -28,11 +34,12 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrUpdatablePublisher, ros_publisher_client::CbDefaultPublishLoop>();
 
       // Create State Reactor
-      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();
+      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo, SrAcquireSensors>();
       srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
       srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
-      srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
+      srAllSensorsReady->setOutputEvent<smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
+      // srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
    }
 };
 } // namespace sm_dance_bot
