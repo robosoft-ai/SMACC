@@ -6,7 +6,7 @@
 
 namespace sm_starcraft_ai
 {
-using namespace cl_ros_publisher_client;
+using namespace cl_ros_publisher;
 
 class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 {

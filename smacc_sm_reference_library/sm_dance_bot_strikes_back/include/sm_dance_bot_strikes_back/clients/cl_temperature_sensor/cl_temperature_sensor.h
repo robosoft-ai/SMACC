@@ -8,7 +8,7 @@ namespace sm_dance_bot_strikes_back
 {
 namespace cl_temperature_sensor
 {
-class ClTemperatureSensor : public cl_multirole_sensor_client::ClMultiroleSensor<sensor_msgs::Temperature>
+class ClTemperatureSensor : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::Temperature>
 {
 public:
     ClTemperatureSensor()

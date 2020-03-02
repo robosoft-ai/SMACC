@@ -13,8 +13,8 @@
 #include <sm_starcraft_ai/orthogonals/or_subscriber.h>
 #include <sm_starcraft_ai/orthogonals/or_keyboard.h>
 
-using namespace cl_ros_timer_client;
-using namespace cl_ros_publisher_client;
+using namespace cl_ros_timer;
+using namespace cl_ros_publisher;
 using namespace cl_keyboard;
 
 using namespace sm_starcraft_ai::cl_subscriber;

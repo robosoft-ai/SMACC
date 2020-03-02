@@ -11,7 +11,7 @@
 #include <sm_pr2_plugs/orthogonals/or_timer.h>
 #include <sm_pr2_plugs/orthogonals/or_keyboard.h>
 
-using namespace cl_ros_timer_client;
+using namespace cl_ros_timer;
 using namespace cl_keyboard;
 
 //CLIENT BEHAVIORS
@@ -22,7 +22,7 @@ using namespace cl_keyboard;
 
 
 using namespace smacc;
-using namespace cl_ros_timer_client;
+using namespace cl_ros_timer;
 using namespace smacc::default_events;
 
 namespace sm_pr2_plugs{
