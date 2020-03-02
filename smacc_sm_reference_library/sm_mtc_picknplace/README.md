@@ -3,7 +3,7 @@
  
  <h2>Description</h2> This example is an imitation of the MoveIt Task Constructor Pick-N-Place Demo.<br></br>
   
- <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__mtc_picknplace.html">Doxygen Namespace & Class Reference</a> 
+ <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__mtc__picknplace.html">Doxygen Namespace & Class Reference</a> 
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
