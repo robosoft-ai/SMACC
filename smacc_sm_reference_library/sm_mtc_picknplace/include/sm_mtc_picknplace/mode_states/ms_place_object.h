@@ -2,7 +2,7 @@
 namespace sm_mtc_picknplace
 {
 // STATE DECLARATION
-class MsWeekend : public smacc::SmaccState<MsWeekend, SmMTCPickNPlace, StSaturday>
+class MsPlaceObject : public smacc::SmaccState<MsPlaceObject, SmMTCPickNPlace, StDetachObject>
 {
 public:
    using SmaccState::SmaccState;
@@ -10,7 +10,7 @@ public:
 // TRANSITION TABLE
  //  typedef mpl::list<
     
-  // Transition<EvToDeep, sc::deep_history<StFriday>, SUCCESS>
+  // Transition<EvToDeep, sc::deep_history<StMoveToHome>, SUCCESS>
    
   // >reactions;
 };

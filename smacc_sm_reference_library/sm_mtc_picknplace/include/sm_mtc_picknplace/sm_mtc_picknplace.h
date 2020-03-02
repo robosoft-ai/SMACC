@@ -29,16 +29,24 @@ namespace sm_mtc_picknplace
 {
 
 //STATES
-class StFriday; // first state specially needs a forward declaration
-class StMonday;
-class StTuesday;
-class StWednesday;
-class StThursday;
-class StSaturday;
-class StSunday;
+class StMoveToHome; // first state specially needs a forward declaration
+class StMoveToPlace;
+class StForbidCollisionObject;
+class StLiftObject;
+class StAllowCollisionObject;
+class StAttachObject;
+class StCloseHand;
+class StAllowCollisionHand;
+class StGraspPoseIK;
+class StGenerateGraspPose;
+class StOpenHand;
+class StMoveToPick;
+class StApproachObject;
+class StDetachObject;
+class StRetreatAfterPlace;
 
-class MsWorkweek;
-class MsWeekend;
+class MsPickObject;
+class MsPlaceObject;
 
 // struct EvToDeep : sc::event<EvToDeep>{};
 
@@ -48,7 +56,7 @@ class MsWeekend;
 
 // STATE MACHINE
 struct SmMTCPickNPlace
-    : public smacc::SmaccStateMachineBase<SmMTCPickNPlace, MsWorkweek>
+    : public smacc::SmaccStateMachineBase<SmMTCPickNPlace, MsPickObject>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -63,14 +71,27 @@ struct SmMTCPickNPlace
 } // namespace sm_mtc_picknplace
 
 // MODE STATES
-#include <sm_mtc_picknplace/mode_states/ms_workweek.h>
-#include <sm_mtc_picknplace/mode_states/ms_weekend.h>
+#include <sm_mtc_picknplace/mode_states/ms_pick_object.h>
+#include <sm_mtc_picknplace/mode_states/ms_place_object.h>
 
 //STATES
-#include <sm_mtc_picknplace/states/st_friday.h>
-#include <sm_mtc_picknplace/states/st_monday.h>
-#include <sm_mtc_picknplace/states/st_tuesday.h>
-#include <sm_mtc_picknplace/states/st_wednesday.h>
-#include <sm_mtc_picknplace/states/st_thursday.h>
-#include <sm_mtc_picknplace/states/st_saturday.h>
-#include <sm_mtc_picknplace/states/st_sunday.h>
+#include <sm_mtc_picknplace/states/st_move_to_home.h>
+#include <sm_mtc_picknplace/states/st_move_to_place.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_forbid_collision_object.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_lift_object.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_allow_collision_object.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_attach_object.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_close_hand.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_allow_collision_hand.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_grasp_pose_IK.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_generate_grasp_pose.h>
+#include <sm_mtc_picknplace/states/st_open_hand.h>
+#include <sm_mtc_picknplace/states/st_move_to_pick.h>
+#include <sm_mtc_picknplace/states/ms_pick_object_states/st_approach_object.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_detach_object.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_forbid_collision_hand.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_place_open_hand.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_place_pose_IK.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_generate_place_pose.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_lower_object.h>
+#include <sm_mtc_picknplace/states/ms_place_object_states/st_retreat_after_place.h>

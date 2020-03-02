@@ -11,7 +11,7 @@
 <polygon fill="white" stroke="none" points="-4,4 -4,-754 5251.53,-754 5251.53,4 -4,4"/>
 <g id="clust1" class="cluster"><title>cluster_0</title>
 <path fill="white" stroke="black" d="M49,-390C49,-390 3720.79,-390 3720.79,-390 3726.79,-390 3732.79,-396 3732.79,-402 3732.79,-402 3732.79,-730 3732.79,-730 3732.79,-736 3726.79,-742 3720.79,-742 3720.79,-742 49,-742 49,-742 43,-742 37,-736 37,-730 37,-730 37,-402 37,-402 37,-396 43,-390 49,-390"/>
-<text text-anchor="middle" x="291.5" y="-710" font-family="calibri" font-size="35.00">sm_mtc_picknplace::MsWorkweek</text>
+<text text-anchor="middle" x="291.5" y="-710" font-family="calibri" font-size="35.00">sm_mtc_picknplace::MsPickObject</text>
 </g>
 <g id="clust2" class="cluster"><title>cluster_orthogonals_block_0</title>
 </g>
@@ -26,7 +26,7 @@
 </g>
 <g id="clust27" class="cluster"><title>cluster_4</title>
 <path fill="white" stroke="black" d="M2230.06,-406C2230.06,-406 2878.53,-406 2878.53,-406 2884.53,-406 2890.53,-412 2890.53,-418 2890.53,-418 2890.53,-667 2890.53,-667 2890.53,-673 2884.53,-679 2878.53,-679 2878.53,-679 2230.06,-679 2230.06,-679 2224.06,-679 2218.06,-673 2218.06,-667 2218.06,-667 2218.06,-418 2218.06,-418 2218.06,-412 2224.06,-406 2230.06,-406"/>
-<text text-anchor="middle" x="2454.06" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StThursday</text>
+<text text-anchor="middle" x="2454.06" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StApproachObject</text>
 </g>
 <g id="clust28" class="cluster"><title>cluster_orthogonals_block_4</title>
 <polygon fill="none" stroke="white" points="2238.06,-440 2238.06,-624 2608.84,-624 2608.84,-440 2238.06,-440"/>
@@ -50,7 +50,7 @@
 </g>
 <g id="clust20" class="cluster"><title>cluster_3</title>
 <path fill="white" stroke="black" d="M1549.6,-406C1549.6,-406 2198.06,-406 2198.06,-406 2204.06,-406 2210.06,-412 2210.06,-418 2210.06,-418 2210.06,-667 2210.06,-667 2210.06,-673 2204.06,-679 2198.06,-679 2198.06,-679 1549.6,-679 1549.6,-679 1543.6,-679 1537.6,-673 1537.6,-667 1537.6,-667 1537.6,-418 1537.6,-418 1537.6,-412 1543.6,-406 1549.6,-406"/>
-<text text-anchor="middle" x="1791.6" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StWednesday</text>
+<text text-anchor="middle" x="1791.6" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::MsPickObject</text>
 </g>
 <g id="clust21" class="cluster"><title>cluster_orthogonals_block_3</title>
 <polygon fill="none" stroke="white" points="1557.6,-440 1557.6,-624 1928.38,-624 1928.38,-440 1557.6,-440"/>
@@ -74,7 +74,7 @@
 </g>
 <g id="clust6" class="cluster"><title>cluster_1</title>
 <path fill="white" stroke="black" d="M188.681,-406C188.681,-406 837.142,-406 837.142,-406 843.142,-406 849.142,-412 849.142,-418 849.142,-418 849.142,-667 849.142,-667 849.142,-673 843.142,-679 837.142,-679 837.142,-679 188.681,-679 188.681,-679 182.681,-679 176.681,-673 176.681,-667 176.681,-667 176.681,-418 176.681,-418 176.681,-412 182.681,-406 188.681,-406"/>
-<text text-anchor="middle" x="406.681" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StMonday</text>
+<text text-anchor="middle" x="406.681" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StOpenHand</text>
 </g>
 <g id="clust7" class="cluster"><title>cluster_orthogonals_block_1</title>
 <polygon fill="none" stroke="white" points="196.681,-440 196.681,-624 567.461,-624 567.461,-440 196.681,-440"/>
@@ -98,7 +98,7 @@
 </g>
 <g id="clust13" class="cluster"><title>cluster_2</title>
 <path fill="white" stroke="black" d="M869.142,-406C869.142,-406 1517.6,-406 1517.6,-406 1523.6,-406 1529.6,-412 1529.6,-418 1529.6,-418 1529.6,-667 1529.6,-667 1529.6,-673 1523.6,-679 1517.6,-679 1517.6,-679 869.142,-679 869.142,-679 863.142,-679 857.142,-673 857.142,-667 857.142,-667 857.142,-418 857.142,-418 857.142,-412 863.142,-406 869.142,-406"/>
-<text text-anchor="middle" x="1085.64" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StTuesday</text>
+<text text-anchor="middle" x="1085.64" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StMoveToPick</text>
 </g>
 <g id="clust14" class="cluster"><title>cluster_orthogonals_block_2</title>
 <polygon fill="none" stroke="white" points="877.142,-440 877.142,-624 1247.92,-624 1247.92,-440 877.142,-440"/>
@@ -122,7 +122,7 @@
 </g>
 <g id="clust34" class="cluster"><title>cluster_5</title>
 <path fill="white" stroke="black" d="M2910.53,-406C2910.53,-406 3558.99,-406 3558.99,-406 3564.99,-406 3570.99,-412 3570.99,-418 3570.99,-418 3570.99,-667 3570.99,-667 3570.99,-673 3564.99,-679 3558.99,-679 3558.99,-679 2910.53,-679 2910.53,-679 2904.53,-679 2898.53,-673 2898.53,-667 2898.53,-667 2898.53,-418 2898.53,-418 2898.53,-412 2904.53,-406 2910.53,-406"/>
-<text text-anchor="middle" x="3113.03" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StFriday</text>
+<text text-anchor="middle" x="3113.03" y="-647" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StMoveToHome</text>
 </g>
 <g id="clust35" class="cluster"><title>cluster_orthogonals_block_5</title>
 <polygon fill="none" stroke="white" points="2918.53,-440 2918.53,-624 3289.3,-624 3289.3,-440 2918.53,-440"/>
@@ -146,7 +146,7 @@
 </g>
 <g id="clust41" class="cluster"><title>cluster_6</title>
 <path fill="white" stroke="black" d="M3606.22,-30C3606.22,-30 5227.53,-30 5227.53,-30 5233.53,-30 5239.53,-36 5239.53,-42 5239.53,-42 5239.53,-370 5239.53,-370 5239.53,-376 5233.53,-382 5227.53,-382 5227.53,-382 3606.22,-382 3606.22,-382 3600.22,-382 3594.22,-376 3594.22,-370 3594.22,-370 3594.22,-42 3594.22,-42 3594.22,-36 3600.22,-30 3606.22,-30"/>
-<text text-anchor="middle" x="3839.22" y="-350" font-family="calibri" font-size="35.00">sm_mtc_picknplace::MsWeekend</text>
+<text text-anchor="middle" x="3839.22" y="-350" font-family="calibri" font-size="35.00">sm_mtc_picknplace::MsPlaceObject</text>
 </g>
 <g id="clust42" class="cluster"><title>cluster_orthogonals_block_6</title>
 </g>
@@ -161,7 +161,7 @@
 </g>
 <g id="clust46" class="cluster"><title>cluster_7</title>
 <path fill="white" stroke="black" d="M3777.14,-46C3777.14,-46 4425.6,-46 4425.6,-46 4431.6,-46 4437.6,-52 4437.6,-58 4437.6,-58 4437.6,-307 4437.6,-307 4437.6,-313 4431.6,-319 4425.6,-319 4425.6,-319 3777.14,-319 3777.14,-319 3771.14,-319 3765.14,-313 3765.14,-307 3765.14,-307 3765.14,-58 3765.14,-58 3765.14,-52 3771.14,-46 3777.14,-46"/>
-<text text-anchor="middle" x="3999.14" y="-287" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StSaturday</text>
+<text text-anchor="middle" x="3999.14" y="-287" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StDetachObject</text>
 </g>
 <g id="clust47" class="cluster"><title>cluster_orthogonals_block_7</title>
 <polygon fill="none" stroke="white" points="3785.14,-80 3785.14,-264 4155.91,-264 4155.91,-80 3785.14,-80"/>
@@ -185,7 +185,7 @@
 </g>
 <g id="clust53" class="cluster"><title>cluster_8</title>
 <path fill="white" stroke="black" d="M4457.6,-46C4457.6,-46 5106.06,-46 5106.06,-46 5112.06,-46 5118.06,-52 5118.06,-58 5118.06,-58 5118.06,-307 5118.06,-307 5118.06,-313 5112.06,-319 5106.06,-319 5106.06,-319 4457.6,-319 4457.6,-319 4451.6,-319 4445.6,-313 4445.6,-307 4445.6,-307 4445.6,-58 4445.6,-58 4445.6,-52 4451.6,-46 4457.6,-46"/>
-<text text-anchor="middle" x="4668.6" y="-287" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StSunday</text>
+<text text-anchor="middle" x="4668.6" y="-287" font-family="calibri" font-size="35.00">sm_mtc_picknplace::StRetreatAfterPlace</text>
 </g>
 <g id="clust54" class="cluster"><title>cluster_orthogonals_block_8</title>
 <polygon fill="none" stroke="white" points="4465.6,-80 4465.6,-264 4836.38,-264 4836.38,-80 4465.6,-80"/>

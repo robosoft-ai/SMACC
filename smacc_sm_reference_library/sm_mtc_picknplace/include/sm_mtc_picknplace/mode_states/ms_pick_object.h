@@ -2,7 +2,7 @@
 namespace sm_mtc_picknplace
 {
 // STATE DECLARATION
-class MsWorkweek : public smacc::SmaccState<MsWorkweek, SmMTCPickNPlace, StMonday, sc::has_full_history>
+class MsPickObject : public smacc::SmaccState<MsPickObject, SmMTCPickNPlace, StCloseHand, sc::has_full_history>
 {
 public:
    using SmaccState::SmaccState;

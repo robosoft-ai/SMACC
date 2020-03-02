@@ -1,23 +1,22 @@
 namespace sm_mtc_picknplace
 {
-
 // STATE DECLARATION
-struct StMonday : smacc::SmaccState<StMonday, MsWorkweek>
+struct StGeneratePlacePose : smacc::SmaccState<StGeneratePlacePose, MsPlaceObject>
 {
     using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
-   
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StTuesday, SUCCESS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StTuesday, PREEMPT>
+        
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRetreatAfterPlace, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRetreatAfterPlace, SUCCESS> //,
     
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
+        configure_orthogonal<OrTimer,  CbTimerCountdownOnce>(5);   
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
@@ -28,14 +27,14 @@ struct StMonday : smacc::SmaccState<StMonday, MsWorkweek>
         this->requiresClient(client);
 
         // subscribe to the timer client callback
-        client->onTimerTick(&StMonday::onTimerClientTickCallback, this);
+        client->onTimerTick(&StGeneratePlacePose::onTimerClientTickCallback, this);
 
         // getting reference to the single countdown behavior
         auto *cbsingle = this->getOrthogonal<OrTimer>()
                              ->getClientBehavior<CbTimerCountdownOnce>();
 
         // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StMonday::onSingleBehaviorTickCallback, this);
+        cbsingle->onTimerTick(&StGeneratePlacePose::onSingleBehaviorTickCallback, this);
     }
 
     void onTimerClientTickCallback()
