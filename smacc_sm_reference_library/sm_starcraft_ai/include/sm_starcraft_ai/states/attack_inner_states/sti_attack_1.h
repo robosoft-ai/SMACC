@@ -1,9 +1,9 @@
 namespace sm_starcraft_ai
 {
-namespace inner_states
+namespace attack_inner_states
 {
 // STATE DECLARATION
-struct StiState1 : smacc::SmaccState<StiState1, SS>
+struct StiAttack1 : smacc::SmaccState<StiAttack1, SS>
 {
 public:
   using SmaccState::SmaccState;
@@ -11,7 +11,7 @@ public:
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> 
+  Transition<EvLoopContinue<StiAttack1>, StiAttack2, CONTINUELOOP> 
   
   >reactions;
 
@@ -35,7 +35,7 @@ public:
   void onEntry()
   {
     ROS_INFO("LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&StiState1::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&StiAttack1::loopWhileCondition);
   }
 };
 }

@@ -1,23 +1,24 @@
 namespace sm_starcraft_ai
 {
 // STATE DECLARATION
-struct StState2 : smacc::SmaccState<StState2, MsRun>
+struct StObserve : smacc::SmaccState<StObserve, MsRun>
 {
     using SmaccState::SmaccState;
 
 // DECLARE CUSTOM OBJECT TAGS
-    struct TIMEOUT : SUCCESS{};
-    struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{};
+    struct MOVE : SUCCESS{};
+    struct BUILD : SUCCESS{};
+    struct ATTACK : SUCCESS{};
 
 // TRANSITION TABLE
     typedef mpl::list<
-   
-   Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
-    Transition<EvAllGo<SrAllEventsGo>, StState3>,
+    
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::SsMove, TIMEOUT>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::SsMove>,
     // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
+    Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::SsMove, MOVE>,
+    Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SS2::SsBuild, BUILD>,
+    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsAttack, ATTACK>
     
     >reactions;
 
@@ -28,13 +29,6 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
-
-        // Create State Reactor
-        auto sbAll = static_createStateReactor<SrAllEventsGo>();
-        sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->addInputEvent<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->addInputEvent<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
     }
 
     void runtimeConfigure()
@@ -44,16 +38,16 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         this->requiresClient(client);
 
         // subscribe to the timer client callback
-        client->onTimerTick(&StState2::onTimerClientTickCallback, this);
+        client->onTimerTick(&StObserve::onTimerClientTickCallback, this);
 
         // getting reference to the single countdown behavior
         auto *cbsingle = this->getOrthogonal<OrTimer>()
                              ->getClientBehavior<CbTimerCountdownOnce>();
 
         // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StState2::onSingleBehaviorTickCallback, this);
+        cbsingle->onTimerTick(&StObserve::onSingleBehaviorTickCallback, this);
     }
-
+    
     void onEntry()
     {
         ROS_INFO("On Entry!");

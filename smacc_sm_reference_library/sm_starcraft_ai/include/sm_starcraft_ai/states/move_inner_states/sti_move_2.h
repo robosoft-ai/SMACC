@@ -1,9 +1,9 @@
 namespace sm_starcraft_ai
 {
-namespace inner_states
+namespace move_inner_states
 {
 // STATE DECLARATION
-struct StiState2 : smacc::SmaccState<StiState2, SS>
+struct StiMove2 : smacc::SmaccState<StiMove2, SS>
 {
   using SmaccState::SmaccState;
 
@@ -15,9 +15,9 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState3, TIMEOUT>,
-  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3, NEXT>,
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, PREVIOUS>
+  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMove3, TIMEOUT>,
+  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMove3, NEXT>,
+  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMove1, PREVIOUS>
   
   >reactions;
 
@@ -37,14 +37,14 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
     this->requiresClient(client);
 
     // subscribe to the timer client callback
-    client->onTimerTick(&StiState2::onTimerClientTickCallback, this);
+    client->onTimerTick(&StiMove2::onTimerClientTickCallback, this);
 
     // getting reference to the single countdown behavior
     auto *cbsingle = this->getOrthogonal<OrTimer>()
                          ->getClientBehavior<CbTimerCountdownOnce>();
 
     // subscribe to the single countdown behavior callback
-    cbsingle->onTimerTick(&StiState2::onSingleBehaviorTickCallback, this);
+    cbsingle->onTimerTick(&StiMove2::onSingleBehaviorTickCallback, this);
   }
   
   void onEntry()

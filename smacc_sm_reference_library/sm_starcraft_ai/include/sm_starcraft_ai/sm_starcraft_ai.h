@@ -44,28 +44,24 @@ namespace sm_starcraft_ai
 //SUPERSTATES
 namespace SS1
 {
-class Ss1;
+class SsMove;
 } // namespace SS1
 
 namespace SS2
 {
-class Ss2;
+class SsBuild;
 } // namespace SS2
 
 namespace SS3
 {
-class Ss3;
+class SsAttack;
 } // namespace SS3
 
-
 //STATES
-class StState1; // first state specially needs a forward declaration
-class StState2;
-class StState3;
-class StState4;
+class StObserve;
 
+//MODE STATES
 class MsRun;
-class MsRecover;
 
 struct EvToDeep : sc::event<EvToDeep>
 {
@@ -93,14 +89,10 @@ struct SmStarcraftAI
 
 // MODE STATES
 #include <sm_starcraft_ai/mode_states/ms_run.h>
-#include <sm_starcraft_ai/mode_states/ms_recover.h>
 
 //STATES
-#include <sm_starcraft_ai/states/st_state_1.h>
-#include <sm_starcraft_ai/states/st_state_2.h>
-#include <sm_starcraft_ai/states/st_state_3.h>
-#include <sm_starcraft_ai/states/st_state_4.h>
+#include <sm_starcraft_ai/states/st_observe.h>
 
-#include <sm_starcraft_ai/superstates/ss_superstate_1.h>
-#include <sm_starcraft_ai/superstates/ss_superstate_2.h>
-#include <sm_starcraft_ai/superstates/ss_superstate_3.h>
+#include <sm_starcraft_ai/superstates/ss_move.h>
+#include <sm_starcraft_ai/superstates/ss_build.h>
+#include <sm_starcraft_ai/superstates/ss_attack.h>

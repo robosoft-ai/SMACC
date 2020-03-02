@@ -1,22 +1,22 @@
 namespace sm_starcraft_ai
 {
-namespace SS2
+namespace SS1
 {
 namespace sm_starcraft_ai
 {
-namespace inner_states
+namespace move_inner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
-class StiState1;
-class StiState2;
-class StiState3;
+class StiMove1;
+class StiMove2;
+class StiMove3;
 } // namespace ss1_states
 } // namespace sm_starcraft_ai
 
-using namespace sm_starcraft_ai::inner_states;
+using namespace sm_starcraft_ai::move_inner_states;
 
 // STATE DECLARATION
-struct Ss2 : smacc::SmaccState<Ss2, MsRun, StiState1, sc::has_full_history>
+struct SsMove : smacc::SmaccState<SsMove, MsRun, StiMove1, sc::has_full_history>
 {
 public:
     using SmaccState::SmaccState;
@@ -24,7 +24,7 @@ public:
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiState1>, StState2>
+    Transition<EvLoopEnd<StiMove1>, StObserve>
     
     >reactions;
 
@@ -40,14 +40,14 @@ public:
     void runtimeConfigure()
     {
     }
-}; // namespace SS4
+}; // namespace SS1
 
 //forward declaration for the superstate
-using SS = SS2::Ss2;
+using SS = SS1::SsMove;
 
-#include <sm_starcraft_ai/states/inner_states/sti_state_1.h>
-#include <sm_starcraft_ai/states/inner_states/sti_state_2.h>
-#include <sm_starcraft_ai/states/inner_states/sti_state_3.h>
+#include <sm_starcraft_ai/states/move_inner_states/sti_move_1.h>
+#include <sm_starcraft_ai/states/move_inner_states/sti_move_2.h>
+#include <sm_starcraft_ai/states/move_inner_states/sti_move_3.h>
 
-} // namespace SS2
+} // namespace SS1
 } // namespace sm_starcraft_ai
