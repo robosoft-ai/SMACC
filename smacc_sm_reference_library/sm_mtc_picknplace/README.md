@@ -5,6 +5,9 @@
   
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__mtc__picknplace.html">Doxygen Namespace & Class Reference</a> 
  
+ <p>For more information, see...</p>
+<a href="https://github.com/ros-planning/moveit_task_constructor/blob/master/demo/src/pick_place_task.cpp"></a>
+
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
 
