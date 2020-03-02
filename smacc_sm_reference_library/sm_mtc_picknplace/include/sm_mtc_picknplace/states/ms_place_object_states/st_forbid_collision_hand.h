@@ -8,8 +8,8 @@ struct StForbidCollisionHand : smacc::SmaccState<StForbidCollisionHand, MsPlaceO
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRetreatAfterPlace, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRetreatAfterPlace, SUCCESS> //,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StDetachObject, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StDetachObject, SUCCESS> //,
     
     >reactions;
 

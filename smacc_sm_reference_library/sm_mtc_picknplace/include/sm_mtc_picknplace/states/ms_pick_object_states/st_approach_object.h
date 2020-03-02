@@ -8,8 +8,8 @@ struct StApproachObject : smacc::SmaccState<StApproachObject, MsPickObject>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StMoveToHome, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StMoveToHome, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StGenerateGraspPose, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StGenerateGraspPose, SUCCESS>
     
     >reactions;
 

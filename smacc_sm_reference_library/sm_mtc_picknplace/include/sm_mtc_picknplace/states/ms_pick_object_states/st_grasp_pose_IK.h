@@ -8,8 +8,8 @@ struct StGraspPoseIK : smacc::SmaccState<StGraspPoseIK, MsPickObject>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsPlaceObject, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsPlaceObject, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StAllowCollisionHand, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StAllowCollisionHand, SUCCESS>
     
     >reactions;
 

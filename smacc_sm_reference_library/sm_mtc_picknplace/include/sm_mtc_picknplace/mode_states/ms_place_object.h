@@ -2,7 +2,7 @@
 namespace sm_mtc_picknplace
 {
 // STATE DECLARATION
-class MsPlaceObject : public smacc::SmaccState<MsPlaceObject, SmMTCPickNPlace, StDetachObject>
+class MsPlaceObject : public smacc::SmaccState<MsPlaceObject, SmMTCPickNPlace, StLowerObject, sc::has_full_history>
 {
 public:
    using SmaccState::SmaccState;

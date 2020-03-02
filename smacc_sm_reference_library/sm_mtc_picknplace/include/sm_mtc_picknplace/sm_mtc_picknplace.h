@@ -32,6 +32,7 @@ namespace sm_mtc_picknplace
 class StMoveToHome; // first state specially needs a forward declaration
 class StMoveToPlace;
 class StForbidCollisionObject;
+class StLowerObject;
 class StLiftObject;
 class StAllowCollisionObject;
 class StAttachObject;
@@ -40,6 +41,7 @@ class StAllowCollisionHand;
 class StGraspPoseIK;
 class StGenerateGraspPose;
 class StOpenHand;
+class StEntryState;
 class StMoveToPick;
 class StApproachObject;
 class StDetachObject;
@@ -56,7 +58,7 @@ class MsPlaceObject;
 
 // STATE MACHINE
 struct SmMTCPickNPlace
-    : public smacc::SmaccStateMachineBase<SmMTCPickNPlace, MsPickObject>
+    : public smacc::SmaccStateMachineBase<SmMTCPickNPlace, StEntryState>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -77,6 +79,10 @@ struct SmMTCPickNPlace
 //STATES
 #include <sm_mtc_picknplace/states/st_move_to_home.h>
 #include <sm_mtc_picknplace/states/st_move_to_place.h>
+#include <sm_mtc_picknplace/states/st_open_hand.h>
+#include <sm_mtc_picknplace/states/st_entry_state.h>
+#include <sm_mtc_picknplace/states/st_move_to_pick.h>
+
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_forbid_collision_object.h>
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_lift_object.h>
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_allow_collision_object.h>
@@ -85,9 +91,8 @@ struct SmMTCPickNPlace
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_allow_collision_hand.h>
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_grasp_pose_IK.h>
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_generate_grasp_pose.h>
-#include <sm_mtc_picknplace/states/st_open_hand.h>
-#include <sm_mtc_picknplace/states/st_move_to_pick.h>
 #include <sm_mtc_picknplace/states/ms_pick_object_states/st_approach_object.h>
+
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_detach_object.h>
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_forbid_collision_hand.h>
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_place_open_hand.h>
@@ -95,3 +100,4 @@ struct SmMTCPickNPlace
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_generate_place_pose.h>
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_lower_object.h>
 #include <sm_mtc_picknplace/states/ms_place_object_states/st_retreat_after_place.h>
+

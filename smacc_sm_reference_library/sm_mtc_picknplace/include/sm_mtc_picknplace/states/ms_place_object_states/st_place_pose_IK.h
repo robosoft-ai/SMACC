@@ -8,8 +8,8 @@ struct StPlacePoseIK : smacc::SmaccState<StPlacePoseIK, MsPlaceObject>
 // TRANSITION TABLE
     typedef mpl::list<
         
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StRetreatAfterPlace, PREEMPT>,
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StRetreatAfterPlace, SUCCESS> //,
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StPlaceOpenHand, PREEMPT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StPlaceOpenHand, SUCCESS> //,
     
     >reactions;
 
