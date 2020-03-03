@@ -1,7 +1,7 @@
 #include <smacc/smacc.h>
 #include <ros_timer_client/cl_ros_timer.h>
 
-namespace sm_update
+namespace sm_update_loop
 {
 class OrTimer : public smacc::Orthogonal<OrTimer>
 {
@@ -12,4 +12,4 @@ public:
         client->initialize();
     }
 };
-} // namespace sm_update
+} // namespace sm_update_loop

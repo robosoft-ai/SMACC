@@ -1,19 +1,16 @@
 #include <smacc/smacc.h>
 
-namespace sm_update
+namespace sm_update_loop
 {
-using namespace cl_ros_timer;
-using namespace smacc::default_transition_tags;
-
 // STATE DECLARATION
-struct State1 : smacc::SmaccState<State1, SmUpdate>, ISmaccUpdatable
+struct State2 : smacc::SmaccState<State2, SmUpdateLoop>, ISmaccUpdatable
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
+        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
 
         >
         reactions;
@@ -21,37 +18,33 @@ struct State1 : smacc::SmaccState<State1, SmUpdate>, ISmaccUpdatable
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3); // EvTimer triggers each 3 client ticks
         configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
     }
 
     void runtimeConfigure()
     {
+        ROS_INFO("Entering State2");
+
+        this->setUpdatePeriod(ros::Duration(1));
+
         // get reference to the client
         ClRosTimer *client;
         this->requiresClient(client);
 
         // subscribe to the timer client callback
-        client->onTimerTick(&State1::onTimerClientTickCallback, this);
-
-        // getting reference to the repeat countdown behavior
-        auto *cbrepeat = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownLoop>();
-
-        // subscribe to the repeat countdown behavior callback
-        cbrepeat->onTimerTick(&State1::onRepeatBehaviorTickCallback, this);
+        client->onTimerTick(&State2::onTimerClientTickCallback, this);
 
         // getting reference to the single countdown behavior
         auto *cbsingle = this->getOrthogonal<OrTimer>()
                              ->getClientBehavior<CbTimerCountdownOnce>();
 
         // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&State1::onSingleBehaviorTickCallback, this);
+        cbsingle->onTimerTick(&State2::onSingleBehaviorTickCallback, this);
     }
 
     virtual void update() override
     {
-        ROS_INFO("STATE 1 UPDATE!");
+        ROS_INFO("STATE 2 UPDATE");
     }
 
     void onTimerClientTickCallback()
@@ -59,14 +52,9 @@ struct State1 : smacc::SmaccState<State1, SmUpdate>, ISmaccUpdatable
         ROS_INFO("timer client tick!");
     }
 
-    void onRepeatBehaviorTickCallback()
-    {
-        ROS_INFO("repeat behavior tick!");
-    }
-
     void onSingleBehaviorTickCallback()
     {
         ROS_INFO("single behavior tick!");
     }
 };
-} // namespace sm_update
+}

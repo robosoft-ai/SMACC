@@ -11,7 +11,7 @@
 <polygon fill="white" stroke="none" points="-4,4 -4,-287.911 1568.51,-287.911 1568.51,4 -4,4"/>
 <g id="clust1" class="cluster"><title>cluster_0</title>
 <path fill="white" stroke="black" d="M49,-8C49,-8 890.445,-8 890.445,-8 896.445,-8 902.445,-14 902.445,-20 902.445,-20 902.445,-253 902.445,-253 902.445,-259 896.445,-265 890.445,-265 890.445,-265 49,-265 49,-265 43,-265 37,-259 37,-253 37,-253 37,-20 37,-20 37,-14 43,-8 49,-8"/>
-<text text-anchor="middle" x="180.5" y="-233" font-family="calibri" font-size="35.00">sm_update::State1</text>
+<text text-anchor="middle" x="180.5" y="-233" font-family="calibri" font-size="35.00">sm_update_loop::State1</text>
 </g>
 <g id="clust2" class="cluster"><title>cluster_orthogonals_block_0</title>
 <polygon fill="none" stroke="white" points="57,-114 57,-210 623.764,-210 623.764,-114 57,-114"/>
@@ -31,7 +31,7 @@
 </g>
 <g id="clust7" class="cluster"><title>cluster_1</title>
 <path fill="white" stroke="black" d="M922.445,-8C922.445,-8 1544.51,-8 1544.51,-8 1550.51,-8 1556.51,-14 1556.51,-20 1556.51,-20 1556.51,-253 1556.51,-253 1556.51,-259 1550.51,-265 1544.51,-265 1544.51,-265 922.445,-265 922.445,-265 916.445,-265 910.445,-259 910.445,-253 910.445,-253 910.445,-20 910.445,-20 910.445,-14 916.445,-8 922.445,-8"/>
-<text text-anchor="middle" x="1053.94" y="-233" font-family="calibri" font-size="35.00">sm_update::State2</text>
+<text text-anchor="middle" x="1053.94" y="-233" font-family="calibri" font-size="35.00">sm_update_loop::State2</text>
 </g>
 <g id="clust8" class="cluster"><title>cluster_orthogonals_block_1</title>
 <polygon fill="none" stroke="white" points="930.445,-114 930.445,-210 1277.83,-210 1277.83,-114 930.445,-114"/>
