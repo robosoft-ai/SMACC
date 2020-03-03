@@ -1,12 +1,12 @@
   <h2>State Machine Diagram</h2>
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_mtc_pour/docs/smacc_state_machine_20200302-111121.dot.svg" width="950" align="center" border="10"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_mtc_pour/docs/smacc_state_machine_20200302-212521.dot.svg" width="950" align="center" border="10"/> 
  
- <h2>Description</h2> This example is an imitation of the MoveIt Task Constructor Pick-N-Place Demo.<br></br>
+ <h2>Description</h2> This example is an imitation of the MoveIt Task Constructor Pour Demo.<br></br>
   
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__mtc__picknplace.html">Doxygen Namespace & Class Reference</a> 
  
  <p>For more information, see...</p>
-<a href="https://github.com/ros-planning/moveit_task_constructor/blob/master/demo/src/pick_place_task.cpp">https://github.com/ros-planning/moveit_task_constructor/blob/master/demo/src/pick_place_task.cpp</a>
+<a href="https://github.com/rhaschke/mtc_pour/blob/master/src/mtc_pour_tams_ur5_demo.cpp">https://github.com/rhaschke/mtc_pour/blob/master/src/mtc_pour_tams_ur5_demo.cpp</a>
 
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
