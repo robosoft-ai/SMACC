@@ -86,6 +86,7 @@ private:
     bool goalReached_;
     bool initialPureSpinningStage_;
     bool pureSpinningMode_ = false;
+    bool enable_obstacle_checking_ = true;
 
     const double alpha_offset_ = M_PI;
     const double betta_offset_ = 0;

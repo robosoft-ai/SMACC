@@ -84,15 +84,17 @@ void OdomTracker::pushPath()
     ROS_INFO("odom_tracker m_mutex release");
 }
 
-void OdomTracker::popPath()
+void OdomTracker::popPath(int items)
 {
     ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
 
-    if (!pathStack_.empty())
+    while(items > 0 && !pathStack_.empty())
     {
-        baseTrajectory_.poses = pathStack_.back().poses;
+        auto& stacked = pathStack_.back().poses;
+        baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(),stacked.end()) ;
         pathStack_.pop_back();
+        items --;
     }
 
     ROS_INFO("odom_tracker m_mutex release");

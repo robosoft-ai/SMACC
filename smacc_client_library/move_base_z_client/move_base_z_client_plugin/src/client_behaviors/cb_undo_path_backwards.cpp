@@ -24,4 +24,12 @@ void CbUndoPathBackwards::onEntry()
         moveBaseClient_->sendGoal(goal);
     }
 }
+
+void CbUndoPathBackwards::onExit()
+{
+    this->requiresClient(moveBaseClient_);
+    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+    odomTracker->popPath();
+}
+
 } // namespace cl_move_base_z

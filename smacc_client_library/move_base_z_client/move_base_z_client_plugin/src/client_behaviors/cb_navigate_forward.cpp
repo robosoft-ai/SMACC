@@ -66,7 +66,7 @@ void CbNavigateForward::onEntry()
 
     ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
     ros::Duration(10).sleep();
-    odomTracker_->clearPath();
+    odomTracker_->pushPath();
 
     geometry_msgs::PoseStamped currentPoseMsg;
     currentPoseMsg.header.frame_id = "/odom";

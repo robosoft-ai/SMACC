@@ -22,5 +22,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
   ClMoveBaseZ *moveBaseClient_;
 
   virtual void onEntry() override;
+
+  virtual void onExit() override;
 };
 } // namespace cl_move_base_z

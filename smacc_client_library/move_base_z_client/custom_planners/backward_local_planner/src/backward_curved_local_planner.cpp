@@ -55,6 +55,7 @@ void BackwardLocalPlanner::initialize()
     nh.param("k_rho", k_rho_, k_rho_);
     nh.param("carrot_distance", carrot_distance_, carrot_distance_);
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
+    nh.param("enable_obstacle_checking", enable_obstacle_checking_, enable_obstacle_checking_);
 
     nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
     nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
@@ -346,7 +347,7 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
                                       << " gamma:" << gamma);
 
     //cmd_vel.linear.x=0;
-    //cmd_vel.angular.z = 0;    
+    //cmd_vel.angular.z = 0;
     tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
 
     auto *costmap2d = costmapRos_->getCostmap();
@@ -363,49 +364,53 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     bool aceptedplan = true;
 
     unsigned int mx, my;
-    
-    if (backwardsPlanPath_.size() > 0)
+
+    if (this->enable_obstacle_checking_)
     {
-        auto &finalgoalpose = backwardsPlanPath_.back();
-        
-        int i = 0;
-        // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
-        for (auto &p : trajectory)
+        if (backwardsPlanPath_.size() > 0)
         {
-            float dx = p[0] - finalgoalpose.pose.position.x;
-            float dy = p[1] - finalgoalpose.pose.position.y;
+            auto &finalgoalpose = backwardsPlanPath_.back();
 
-            float dst = sqrt(dx * dx + dy * dy);
-            if (dst < xy_goal_tolerance_ )
+            int i = 0;
+            // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
+            for (auto &p : trajectory)
             {
-                ROS_INFO("trajectory checking skipped, goal reached");
-                break;
+                float dx = p[0] - finalgoalpose.pose.position.x;
+                float dy = p[1] - finalgoalpose.pose.position.y;
+
+                float dst = sqrt(dx * dx + dy * dy);
+                if (dst < xy_goal_tolerance_)
+                {
+                    ROS_INFO("trajectory checking skipped, goal reached");
+                    break;
+                }
+
+                costmap2d->worldToMap(p[0], p[1], mx, my);
+                unsigned int cost = costmap2d->getCost(mx, my);
+
+                ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
+                ROS_INFO_STREAM("cost: " << cost);
+
+                // static const unsigned char NO_INFORMATION = 255;
+                // static const unsigned char LETHAL_OBSTACLE = 254;
+                // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
+                // static const unsigned char FREE_SPACE = 0;
+
+                if (costmap2d->getCost(mx, my) >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
+                {
+                    aceptedplan = false;
+                    ROS_WARN_STREAM("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point " << i << "/" << trajectory.size() << std::endl
+                                                                                             << p[0] << ", " << p[1]);
+                    break;
+                }
+                i++;
             }
-
-            costmap2d->worldToMap(p[0], p[1], mx, my);
-            unsigned int cost = costmap2d->getCost(mx, my);
-
-            ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
-            ROS_INFO_STREAM("cost: " << cost);
-
-            // static const unsigned char NO_INFORMATION = 255;
-            // static const unsigned char LETHAL_OBSTACLE = 254;
-            // static const unsigned char INSCRIBED_INFLATED_OBSTACLE = 253;
-            // static const unsigned char FREE_SPACE = 0;
-
-            if (costmap2d->getCost(mx, my) >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
-            {
-                aceptedplan = false;
-                ROS_WARN_STREAM ("ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point " << i<<"/" << trajectory.size() << std::endl << p[0] << ", " << p[1]);
-                break;
-            }
-            i++;
         }
-    }
-    else
-    {
-        ROS_WARN("[Abort local] Backwards global plan size: %ld", backwardsPlanPath_.size());
-        return false;
+        else
+        {
+            ROS_WARN("[Abort local] Backwards global plan size: %ld", backwardsPlanPath_.size());
+            return false;
+        }
     }
 
     if (aceptedplan)
@@ -451,6 +456,7 @@ void BackwardLocalPlanner::reconfigCB(::backward_local_planner::BackwardLocalPla
     k_alpha_ = config.k_alpha;
     k_betta_ = config.k_betta;
     k_rho_ = config.k_rho;
+    enable_obstacle_checking_ = config.enable_obstacle_checking;
 
     //alpha_offset_ = config.alpha_offset;
     //betta_offset_ = config.betta_offset;
