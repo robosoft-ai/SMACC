@@ -17,6 +17,8 @@ void CbUndoPathBackwards::onEntry()
     odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH_BACKWARD);
 
     ClMoveBaseZ::Goal goal;
+    // this line is used to flush/reset backward planner in the case it were already there
+    //plannerSwitcher->setDefaultPlanners();
     if (forwardpath.poses.size() > 0)
     {
         goal.target_pose = forwardpath.poses.front();

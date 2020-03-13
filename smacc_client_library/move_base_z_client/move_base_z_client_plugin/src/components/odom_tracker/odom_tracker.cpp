@@ -10,24 +10,24 @@ namespace cl_move_base_z
 namespace odom_tracker
 {
 
-OdomTracker::OdomTracker(std::string nodeName)
+OdomTracker::OdomTracker(std::string odomTopicName)
 {
     workingMode_ = WorkingMode::RECORD_PATH_FORWARD;
     publishMessages = true;
     subscribeToOdometryTopic_ = true;
 
-    ros::NodeHandle nh(nodeName);
+    ros::NodeHandle nh;
 
     ROS_WARN("Initializing Odometry Tracker");
 
     if (!nh.getParam("min_point_distance_forward_thresh", minPointDistanceForwardThresh_))
     {
-        minPointDistanceForwardThresh_ = 0.005; // 1 mm
+        minPointDistanceForwardThresh_ = 0.005; // 5 mm
     }
 
     if (!nh.getParam("min_point_distance_backward_thresh", minPointDistanceBackwardThresh_))
     {
-        minPointDistanceBackwardThresh_ = 0.05; // 1 mm
+        minPointDistanceBackwardThresh_ = 0.1; // 5 cm
     }
 
     if (!nh.getParam("min_point_angular_distance_forward_thresh", minPointAngularDistanceForwardThresh_))
@@ -42,7 +42,7 @@ OdomTracker::OdomTracker(std::string nodeName)
 
     if (this->subscribeToOdometryTopic_)
     {
-        odomSub_ = nh.subscribe("odom", 1, &OdomTracker::processOdometryMessage, this);
+        odomSub_ = nh.subscribe(odomTopicName, 1, &OdomTracker::processOdometryMessage, this);
     }
 
     robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "odom_tracker_path", 1);
@@ -88,6 +88,7 @@ void OdomTracker::popPath(int items)
 {
     ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_INFO("popping odom tracker path: current elements: %ld", baseTrajectory_.poses.size());
 
     while(items > 0 && !pathStack_.empty())
     {
@@ -96,6 +97,7 @@ void OdomTracker::popPath(int items)
         pathStack_.pop_back();
         items --;
     }
+    ROS_INFO("popping odom tracker path after: current elements: %ld", baseTrajectory_.poses.size());
 
     ROS_INFO("odom_tracker m_mutex release");
 }

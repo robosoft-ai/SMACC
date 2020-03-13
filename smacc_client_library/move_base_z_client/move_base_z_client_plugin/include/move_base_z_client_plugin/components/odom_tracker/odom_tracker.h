@@ -39,7 +39,7 @@ class OdomTracker : public smacc::ISmaccComponent
 public:
     // by default, the component start in record_forward mode and publishing the
     // current path
-    OdomTracker(std::string nodeName);
+    OdomTracker(std::string odomtopicName="/odom");
 
     // threadsafe
     /// odom callback: Updates the path - this must be called periodically for each odometry message.

@@ -22,7 +22,7 @@ public:
         movebaseClient->createComponent<PlannerSwitcher>();
 
         // create odom tracker
-        movebaseClient->createComponent<OdomTracker>("/");
+        movebaseClient->createComponent<OdomTracker>("/odom");
 
         // create waypoints navigator component
         auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();

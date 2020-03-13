@@ -14,7 +14,10 @@ std::array<std::string, 4>
 void CostmapSwitch::registerProxyFromDynamicReconfigureServer(std::string costmapName, std::string enablePropertyName)
 {
     ROS_INFO("[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
-    auto proxy = std::make_shared<CostmapProxy>(this->owner_->name_ + "/" + costmapName, enablePropertyName);
+    auto  servicename = this->owner_->name_ + "/" + costmapName;
+
+    ROS_INFO("[CostmapSwitch] service name: %s", servicename.c_str());
+    auto proxy = std::make_shared<CostmapProxy>(servicename, enablePropertyName);
     costmapProxies[costmapName] = proxy;
 }
 
