@@ -1,4 +1,5 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 
 namespace cl_move_base_z
 {
@@ -59,6 +60,19 @@ void CbRotate::onEntry()
     auto targetAngle = currentAngle + angle_increment_degree * M_PI / 180.0;
     goal.target_pose.pose.position = currentPoseMsg.position;
     goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
+
+    geometry_msgs::PoseStamped stampedCurrentPoseMsg;
+    stampedCurrentPoseMsg.header.frame_id = "/odom";
+    stampedCurrentPoseMsg.header.stamp = ros::Time::now();
+    stampedCurrentPoseMsg.pose = currentPoseMsg;
+
+    this->requiresClient(moveBaseClient_);
+    auto odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
+    odomTracker->pushPath();
+
+    odomTracker->setStartPoint(stampedCurrentPoseMsg);
+    odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+
 
     ROS_INFO_STREAM("current pose: " << currentPoseMsg);
     ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);

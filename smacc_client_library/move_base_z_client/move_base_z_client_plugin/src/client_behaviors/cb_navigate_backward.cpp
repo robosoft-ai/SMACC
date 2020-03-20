@@ -39,6 +39,8 @@ void CbNavigateBackwards::onEntry()
 
     this->requiresClient(moveBaseClient_);
 
+    // TODO: user better:   auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
+
     //this should work better with a coroutine and await
     ros::Rate rate(10.0);
     tf::StampedTransform currentPose;

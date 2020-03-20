@@ -57,7 +57,7 @@ public:
     void pushPath();
 
     // threadsafe
-    void popPath(int pathCount = 1);
+    void popPath(int pathCount = 1, bool keepPreviousPath = false);
 
     // threadsafe
     void clearPath();

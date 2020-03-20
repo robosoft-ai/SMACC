@@ -45,6 +45,8 @@ void ForwardLocalPlanner::initialize()
     //k_betta_ = 1.0;
     //betta_offset_=0;
 
+    
+
     goalReached_ = false;
     carrot_distance_ = 0.4;
 
@@ -54,12 +56,18 @@ void ForwardLocalPlanner::initialize()
 
     ros::NodeHandle nh("~/ForwardLocalPlanner");
 
+    nh.param("k_rho", k_rho_, k_rho_);
+    nh.param("k_alpha", k_alpha_, k_alpha_);
+    nh.param("k_betta", k_betta_, k_betta_);
+    nh.param("carrot_distance", carrot_distance_,carrot_distance_);
+    
+
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
     nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
     nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
 
-    ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf", max_linear_x_speed_, max_angular_z_speed_);
+    ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, carrot_distance: %lf, ", max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);
 
     waiting_=false;
@@ -262,7 +270,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     while (!ok)
     {
         // iterate the point from the current position and ahead until reaching a new goal point in the path
-        for (; !ok && currentPoseIndex_ < plan_.size(); currentPoseIndex_++)
+        while (!ok && currentPoseIndex_ < plan_.size())
         {
             auto &pose = plan_[currentPoseIndex_];
             const geometry_msgs::Point &p = pose.pose.position;
@@ -282,7 +290,11 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                //ROS_INFO("forward: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
+                ROS_INFO("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
+            }
+            else
+            {
+                currentPoseIndex_++;
             }
         }
 

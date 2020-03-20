@@ -29,10 +29,8 @@ void CbNavigateForward::onEntry()
 
     ROS_INFO_STREAM("Straight motion distance: " << dist);
 
-    this->requiresClient(moveBaseClient_);
-
-    odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
-
+    // TODO: user better:   auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
+    
     //this should work better with a coroutine and await
     ros::Rate rate(10.0);
     tf::StampedTransform currentPose;
@@ -65,13 +63,18 @@ void CbNavigateForward::onEntry()
     tf::poseTFToMsg(targetPose, goal.target_pose.pose);
 
     ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
-    ros::Duration(10).sleep();
-    odomTracker_->pushPath();
+    ros::Duration(0.5).sleep();
 
+    
     geometry_msgs::PoseStamped currentPoseMsg;
     currentPoseMsg.header.frame_id = "/odom";
     currentPoseMsg.header.stamp = ros::Time::now();
     tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
+
+    this->requiresClient(moveBaseClient_);
+    odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
+    odomTracker_->pushPath();
+
     odomTracker_->setStartPoint(currentPoseMsg);
     odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 

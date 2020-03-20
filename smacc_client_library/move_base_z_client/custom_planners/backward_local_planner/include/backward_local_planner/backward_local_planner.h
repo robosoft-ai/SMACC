@@ -70,6 +70,7 @@ private:
     void defaultBackwardCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist &cmd_vel);
 
     void publishGoalMarker(double x, double y, double phi);
+    void computeCurrentEuclideanAndAngularErrors(const tf::Stamped<tf::Pose> &tfpose, double& dist, double& angular_error);
 
     dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
     dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig>::CallbackType f;
@@ -82,6 +83,8 @@ private:
     double k_rho_;
     double k_alpha_;
     double k_betta_;
+    double pure_spinning_allowed_betta_error_;
+    double linear_mode_rho_error_threshold_ ;
 
     bool goalReached_;
     bool initialPureSpinningStage_;
@@ -101,7 +104,7 @@ private:
     double max_angular_z_speed_; // rads/sec
 
     // references the current point inside the backwardsPlanPath were the robot is located
-    int currentPoseIndex_;
+    int currentCarrotPoseIndex_;
 
     void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
     Eigen::Vector3f computeNewPositions(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, double dt);

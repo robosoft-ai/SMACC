@@ -1,5 +1,6 @@
 #include <smacc/smacc.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace sm_viewer_sim
 {
@@ -10,8 +11,10 @@ class OrNavigation : public smacc::Orthogonal<OrNavigation>
 public:
     virtual void onInitialize() override
     {
-        auto client = this->createClient<ClMoveBaseZ>();
-        client->initialize();
+        auto movebaseClient = this->createClient<ClMoveBaseZ>();
+        movebaseClient->createComponent<cl_move_base_z::Pose>();
+
+        movebaseClient->initialize();
     }
 };
 } // namespace sm_viewer_sim

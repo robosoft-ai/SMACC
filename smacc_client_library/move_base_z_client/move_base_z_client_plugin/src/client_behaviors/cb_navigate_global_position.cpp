@@ -1,4 +1,5 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace cl_move_base_z
 {
@@ -25,12 +26,21 @@ void CbNavigateGlobalPosition::onEntry()
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
-
+    
     ROS_INFO("Component requirements completed");
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
+    
+    auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
+
+    geometry_msgs::PoseStamped posestamped;
+    posestamped.header.frame_id = "/odom";
+    posestamped.header.stamp = ros::Time::now();
+    posestamped.pose = pose;
+
+    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+    odomTracker->setStartPoint(posestamped);
     odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart();
