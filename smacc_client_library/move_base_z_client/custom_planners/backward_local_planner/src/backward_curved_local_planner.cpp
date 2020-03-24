@@ -44,7 +44,7 @@ void BackwardLocalPlanner::initialize()
     k_betta_ = -1.0; // set to zero means that orientation is not important
     carrot_angular_distance_ = 0.4;
     pure_spinning_allowed_betta_error_ = 0.01;
-    linear_mode_rho_error_threshold_ =0.02;
+    linear_mode_rho_error_threshold_ = 0.02;
 
     f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
     paramServer_.setCallback(f);
@@ -56,9 +56,7 @@ void BackwardLocalPlanner::initialize()
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
     nh.param("k_rho", k_rho_, k_rho_);
     nh.param("k_betta", k_betta_, k_betta_);
-    nh.param("pure_spinning_allowed_betta_error", pure_spinning_allowed_betta_error_, pure_spinning_allowed_betta_error_);
-    nh.param("linear_mode_rho_error_threshold", linear_mode_rho_error_threshold_ ,linear_mode_rho_error_threshold_ );
-    
+    nh.param("linear_mode_rho_error_threshold", linear_mode_rho_error_threshold_, linear_mode_rho_error_threshold_);
 
     nh.param("carrot_distance", carrot_distance_, carrot_distance_);
     nh.param("carrot_angular_distance", carrot_angular_distance_, carrot_angular_distance_);
@@ -82,7 +80,7 @@ void BackwardLocalPlanner::initialize(std::string name, tf::TransformListener *t
     this->initialize();
 }
 
-void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrors(const tf::Stamped<tf::Pose> &tfpose, double& dist, double& angular_error)
+void BackwardLocalPlanner::computeCurrentEuclideanAndAngularErrors(const tf::Stamped<tf::Pose> &tfpose, double &dist, double &angular_error)
 {
     double angle = tf::getYaw(tfpose.getRotation());
     auto &pose = backwardsPlanPath_[currentCarrotPoseIndex_];
@@ -108,13 +106,13 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose> &tfpose)
 {
     double disterr, angleerr;
     // iterate the point from the current position and backward until reaching a new goal point in the path
-    while(currentCarrotPoseIndex_ < backwardsPlanPath_.size())
+    while (currentCarrotPoseIndex_ < backwardsPlanPath_.size())
     {
         computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
 
         ROS_DEBUG("Current index: %d", currentCarrotPoseIndex_);
-        ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr,angleerr);
-        
+        ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr, angleerr);
+
         // target pose found, goal carrot tries to escape!
         if (disterr < carrot_distance_ && angleerr < carrot_angular_distance_)
         {
@@ -124,11 +122,11 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose> &tfpose)
         {
             break;
         }
-    }    
-    
+    }
+
     computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
     ROS_DEBUG("Current index: %d", currentCarrotPoseIndex_);
-    ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr,angleerr);
+    ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr, angleerr);
 
     return disterr < xy_goal_tolerance_;
 }
@@ -148,7 +146,7 @@ void BackwardLocalPlanner::defaultBackwardCmd(const tf::Stamped<tf::Pose> &tfpos
     double gdy = finalgoal.pose.position.y - tfpose.getOrigin().y();
     double goaldist = sqrt(gdx * gdx + gdy * gdy);
 
-    if ( goaldist < this->xy_goal_tolerance_ && alpha_error < this->yaw_goal_tolerance_) // 5cm
+    if (goaldist < this->xy_goal_tolerance_ && alpha_error < this->yaw_goal_tolerance_) // 5cm
     {
         goalReached_ = true;
         backwardsPlanPath_.clear();
@@ -256,12 +254,13 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     else // default curved backward-free motion mode
     {
         // case B: goal position reached but orientation not yet reached. deactivate linear motion.
-        if (carrotDistanceGoalReached )
+        if (carrotDistanceGoalReached)
         {
             ROS_DEBUG("pure spinning even in not pure-spining mode, carrotDistanceGoalReached: %d", carrotDistanceGoalReached);
+            gamma = k_betta_ * betta_error;
             vetta = 0;
         }
-        
+
         //clasical control to reach a goal backwards
         this->defaultBackwardCmd(tfpose, vetta, gamma, alpha_error, cmd_vel);
     }
@@ -313,7 +312,6 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
     std::vector<Eigen::Vector3f> trajectory;
     this->generateTrajectory(currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/, 0.05 /*seconds*/, trajectory);
 
-    
     // check plan rejection
     bool aceptedplan = true;
 
@@ -342,8 +340,8 @@ bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel
                 costmap2d->worldToMap(p[0], p[1], mx, my);
                 unsigned int cost = costmap2d->getCost(mx, my);
 
-                ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
-                ROS_INFO_STREAM("cost: " << cost);
+                ROS_DEBUG("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
+                ROS_DEBUG_STREAM("cost: " << cost);
 
                 // static const unsigned char NO_INFORMATION = 255;
                 // static const unsigned char LETHAL_OBSTACLE = 254;
@@ -447,22 +445,43 @@ bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>
     tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
     double disterr, angleerr;
     bool found = false;
-    while(currentCarrotPoseIndex_ < backwardsPlanPath_.size())
+    
+
+    if(plan.size()==0)
+    {
+        return true;
+    }
+
+    // initial state check
+    computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
+
+    // initial path handling for the case the initial point is too much far away
+    // lets crop a bit of the initial path, assuming it will be easer to converge to it
+    // allowing some carrot distance
+    if (disterr > carrot_distance_ || angleerr > carrot_angular_distance_)
+    {
+        tf::poseStampedMsgToTF(plan[0], tfpose);
+    }
+   
+    int closestIndex = -1;
+    double minpointdist = std::numeric_limits<double>::max();
+    
+    // lets set the carrot-goal in the corret place with this loop
+    while (currentCarrotPoseIndex_ < backwardsPlanPath_.size())
     {
         computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
 
         ROS_DEBUG("Current index: %d", currentCarrotPoseIndex_);
-        ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr,angleerr);
-        
-        if(found)
+        ROS_DEBUG("linear error to goal %lf, angular error to goal: %lf", disterr, angleerr);
+
+        if (found)
         {
             // we were inside the goal range
             if (disterr > carrot_distance_ || angleerr > carrot_angular_distance_)
             {
-                // but we left it. Undo last index increment (to go back inside the carrot goal scope) and start motion with that carrot goal we found
+                // but we rollback last index increment (to go back inside the carrot goal scope) and start motion with that carrot goal we found
                 currentCarrotPoseIndex_--;
                 break;
-
             }
         }
         else
@@ -476,15 +495,17 @@ bool BackwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped>
         }
 
         currentCarrotPoseIndex_++;
-    }   
+    }
 
-    if(!found)
-        if  (currentCarrotPoseIndex_==0)
-            return true; // lets accept the first goal being outside our carrot goal scope
-        else
-            return false; // in this case, the new plan broke the current execution
+    if (!found)
+    {
+        return false; // in this case, the new plan broke the current execution        
+    }
     else
+    {
+        // SANDARD AND PREFERED CASE ON NEW PLAN
         return true;
+    }
 }
 
 void BackwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxanglediff, float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj)
