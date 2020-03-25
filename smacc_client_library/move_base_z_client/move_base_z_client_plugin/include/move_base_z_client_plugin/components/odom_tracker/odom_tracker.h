@@ -66,7 +66,12 @@ public:
     void setStartPoint(const geometry_msgs::PoseStamped &pose);
 
     // threadsafe
+    void setStartPoint(const geometry_msgs::Pose &pose);
+
+    // threadsafe
     nav_msgs::Path getPath();
+
+    void logStateString();
 
 protected:
     virtual void rtPublishPaths(ros::Time timestamp);

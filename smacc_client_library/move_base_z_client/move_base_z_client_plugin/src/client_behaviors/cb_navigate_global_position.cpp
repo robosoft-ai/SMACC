@@ -33,14 +33,8 @@ void CbNavigateGlobalPosition::onEntry()
     plannerSwitcher->setDefaultPlanners();
     
     auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
-
-    geometry_msgs::PoseStamped posestamped;
-    posestamped.header.frame_id = "/odom";
-    posestamped.header.stamp = ros::Time::now();
-    posestamped.pose = pose;
-
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
-    odomTracker->setStartPoint(posestamped);
+    odomTracker->setStartPoint(pose);
     odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 
     goToRadialStart();

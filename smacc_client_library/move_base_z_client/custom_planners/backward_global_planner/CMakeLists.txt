@@ -7,7 +7,8 @@ project(backward_global_planner)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(catkin REQUIRED
+  forward_global_planner
   costmap_2d
   geometry_msgs
   std_msgs
@@ -17,7 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   roscpp
   tf
-  forward_global_planner
+  
 )
 
 find_package(PCL REQUIRED)
@@ -116,7 +117,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-#  LIBRARIES backward_global_planner
+  LIBRARIES backward_global_planner
   CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs pcl_ros roscpp tf forward_global_planner
 #  DEPENDS system_lib
 )
@@ -128,23 +129,20 @@ catkin_package(
 set(CMAKE_CXX_STANDARD 14)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
-file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
-add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})
-
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
  include
-  ${catkin_INCLUDE_DIRS}
-  ${PCL_INCLUDE_DIRS}}
+ #${PCL_INCLUDE_DIRS}
+ ${catkin_INCLUDE_DIRS}
+ ${forward_global_planner_INCLUDE_DIRS}}
 )
 
 add_library(${PROJECT_NAME}
   src/backward_global_planner.cpp
-
 )
 add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} forward_global_planner)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -193,11 +191,11 @@ install(TARGETS ${PROJECT_NAME}
  )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+ install(DIRECTORY include/${PROJECT_NAME}/
+   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+   FILES_MATCHING PATTERN "*.h"
+   PATTERN ".svn" EXCLUDE
+ )
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES

@@ -1,6 +1,8 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 #include <fstream>
 #include <ros/ros.h>
@@ -38,6 +40,16 @@ void WaypointNavigator::sendNextGoal()
 
     ros::spinOnce();
     ros::Duration(5).sleep();
+
+    auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    if(odomTracker!= nullptr)
+    {
+      auto pose = client_->getComponent<cl_move_base_z::Pose>()->get();
+      odomTracker->setStartPoint(pose);
+
+      odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+      odomTracker->pushPath();
+    }
 
     this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
     client_->sendGoal(goal);

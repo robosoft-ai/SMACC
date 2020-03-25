@@ -3,7 +3,8 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <angles/angles.h>
 
 namespace cl_move_base_z
 {
@@ -16,7 +17,7 @@ OdomTracker::OdomTracker(std::string odomTopicName)
     publishMessages = true;
     subscribeToOdometryTopic_ = true;
 
-    ros::NodeHandle nh;
+    ros::NodeHandle nh("~/odom_tracker");
 
     ROS_WARN("Initializing Odometry Tracker");
 
@@ -79,8 +80,14 @@ void OdomTracker::pushPath()
 {
     ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_INFO("PUSH_PATH PATH EXITING");
+    this->logStateString();
+
     pathStack_.push_back(baseTrajectory_);
     baseTrajectory_.poses.clear();
+    
+    ROS_INFO("PSH_PATH PATH EXITING");
+    this->logStateString();
     ROS_INFO("odom_tracker m_mutex release");
 }
 
@@ -88,8 +95,9 @@ void OdomTracker::popPath(int items, bool keepPreviousPath)
 {
     ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
-    ROS_INFO("popping odom tracker path: current elements: %ld", baseTrajectory_.poses.size());
-    ROS_INFO("path stack size: %ld", pathStack_.size());
+    
+    ROS_INFO("POP PATH ENTRY");
+    this->logStateString();
     
     if (!keepPreviousPath)
     {
@@ -102,12 +110,28 @@ void OdomTracker::popPath(int items, bool keepPreviousPath)
         baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(),stacked.end()) ;
         pathStack_.pop_back();
         items --;
+
+        ROS_INFO("POP PATH Iteration ");
+        this->logStateString();
     }
 
-    ROS_INFO("popping odom tracker path after: current elements: %ld", baseTrajectory_.poses.size());
-    ROS_INFO("path stack size: %ld", pathStack_.size());
-
+    ROS_INFO("POP PATH EXITING");
+    this->logStateString();
     ROS_INFO("odom_tracker m_mutex release");
+}
+
+void OdomTracker::logStateString()
+{
+    ROS_INFO("--- odom tracker state ---");
+    ROS_INFO(" - path stack size: %ld", pathStack_.size());
+    ROS_INFO(" - active path size: %ld", baseTrajectory_.poses.size());
+    int i = 0;
+    for (auto& p : pathStack_)
+    {
+        ROS_INFO_STREAM(" - p "<< i << "[" << p.header.stamp << "], size: " << p.poses.size());
+        i++;
+    }
+    ROS_INFO("---");
 }
 
 void OdomTracker::clearPath()
@@ -116,6 +140,7 @@ void OdomTracker::clearPath()
     baseTrajectory_.poses.clear();
 
     rtPublishPaths(ros::Time::now());
+    this->logStateString();
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::PoseStamped &pose)
@@ -128,6 +153,24 @@ void OdomTracker::setStartPoint(const geometry_msgs::PoseStamped &pose)
     else
     {
         baseTrajectory_.poses.push_back(pose);
+    }
+}
+
+void OdomTracker::setStartPoint(const geometry_msgs::Pose &pose)
+{
+    std::lock_guard<std::mutex> lock(m_mutex_);
+    geometry_msgs::PoseStamped posestamped;
+    posestamped.header.frame_id = "/odom";
+    posestamped.header.stamp = ros::Time::now();
+    posestamped.pose = pose;
+
+    if (baseTrajectory_.poses.size() > 0)
+    {
+        baseTrajectory_.poses[0] = posestamped;
+    }
+    else
+    {
+        baseTrajectory_.poses.push_back(posestamped);
     }
 }
 
@@ -226,12 +269,21 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry &odom)
     }
     else
     {
-        const geometry_msgs::Point &prevPoint = baseTrajectory_.poses.back().pose.position;
+        const auto& prevPose = baseTrajectory_.poses.back().pose;
+        const geometry_msgs::Point &prevPoint = prevPose.position;
+        double prevAngle = tf::getYaw(prevPose.orientation);
+
         const geometry_msgs::Point &currePoint = base_pose.pose.position;
+        double currentAngle = tf::getYaw(base_pose.pose.orientation);
+
         dist = p2pDistance(prevPoint, currePoint);
+        double goalAngleOffset = angles::shortest_angular_distance(prevAngle, currentAngle);
+
         //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceForwardThresh_);
 
-        if (dist > minPointDistanceForwardThresh_)
+        if (  (workingMode_ == WorkingMode::RECORD_PATH_FORWARD &&  (dist > minPointDistanceForwardThresh_ || goalAngleOffset > minPointAngularDistanceForwardThresh_))
+             ||  (workingMode_ == WorkingMode::CLEAR_PATH_BACKWARD &&  ( dist > minPointDistanceBackwardThresh_ || goalAngleOffset > minPointAngularDistanceBackwardThresh_))
+        )
         {
             enqueueOdomMessage = true;
         }

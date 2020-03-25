@@ -7,7 +7,7 @@ project(forward_local_planner)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS
+find_package(catkin REQUIRED
   costmap_2d
   geometry_msgs
   nav_core
@@ -109,7 +109,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES forward_local_planner
-#  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs roscpp std_msgs tf
+  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs roscpp std_msgs tf
 #  DEPENDS system_lib
 )
 
@@ -182,11 +182,11 @@ install(TARGETS ${PROJECT_NAME}
 )
 
 ## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
+install(DIRECTORY include/${PROJECT_NAME}/
+   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+   FILES_MATCHING PATTERN "*.h"
+   PATTERN ".svn" EXCLUDE
+ )
 
 install(FILES
    flp_plugin.xml
