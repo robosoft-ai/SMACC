@@ -1,0 +1,23 @@
+<launch>
+
+<!-- -->
+  <node name="ssm"
+  		pkg="ssm"
+  		type="ssm_node"
+  		respawn="false"
+  		output="screen"
+  		>
+  </node>
+<!-- -->
+<!--
+  <node name="ssm"
+  		pkg="ssm"
+  		type="ssm_node"
+  		respawn="false"
+  		output="screen"
+  		launch-prefix="xterm -e gdb ">
+  		>
+  </node>
+-->
+
+</launch>

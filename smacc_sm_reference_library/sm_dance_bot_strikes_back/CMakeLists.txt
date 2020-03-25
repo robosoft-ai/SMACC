@@ -144,7 +144,7 @@ set_target_properties(led_action_server_node_smdbsb PROPERTIES OUTPUT_NAME "led_
    ${catkin_LIBRARIES}
 )
 
-add_dependencies(led_action_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
+add_dependencies(led_action_server_node_smdbsb ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 
 

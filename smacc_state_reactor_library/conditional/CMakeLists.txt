@@ -101,7 +101,7 @@ find_package(catkin REQUIRED smacc)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES conditional
-  CATKIN_DEPENDS smacc_msgs
+#  CATKIN_DEPENDS smacc_msgs
 #  DEPENDS system_lib
 )
 
