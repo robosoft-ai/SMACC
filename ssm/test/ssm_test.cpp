@@ -59,7 +59,7 @@ private:
 
 }  // namespace simple_state_machine
 
-#include </workspace/src/examples/ssm/include/ssm/StTock.h>
+#include <ssm/StTock.h>
 
 void timerCallback(const ros::TimerEvent &event)
 {
@@ -78,7 +78,12 @@ void my_run()
     boost::thread otherThread(boost::bind(&sc::fifo_scheduler<>::operator(), &scheduler1, 0));
     ros::NodeHandle nh;
     ros::Timer timer = nh.createTimer(ros::Duration(5.0), timerCallback);
+
     myPollingLoop();
+    scheduler1.terminate();
+
+    std::cout << "waiting closing state machine thread" << std::endl;
+    std::cout << "exiting process" << std::endl;
 }
 
 TEST(SSM_TESTS, testStateMachine1)
