@@ -34,6 +34,8 @@ void CbNavigateGlobalPosition::onEntry()
     
     auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+
+    odomTracker->pushPath();
     odomTracker->setStartPoint(pose);
     odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
 

@@ -48,6 +48,8 @@
     <!-- state machine node -->
     <node pkg="sm_dance_bot_strikes_back" type="sm_dance_bot_strikes_back" name="sm_dance_bot_strikes_back" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">
         <remap from="/odom" to="/odometry/filtered" />
+        <remap from="/sm_dance_bot_strikes_back/odom_tracker/odom_tracker_path" to="/odom_tracker_path"/>
+        <remap from="/sm_dance_bot_strikes_back/odom_tracker/odom_tracker_stacked_path" to="/odom_tracker_path_stacked"/>
     </node>
 
     <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_dance_bot)/config/navigation.rviz" if="$(arg show_rviz)">

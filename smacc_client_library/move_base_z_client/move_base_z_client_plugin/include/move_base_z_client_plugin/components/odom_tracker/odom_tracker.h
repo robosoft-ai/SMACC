@@ -82,8 +82,12 @@ protected:
     // this is called when a new odom message is received in backwards mode
     virtual bool updateBackward(const nav_msgs::Odometry &odom);
 
+    void updateAggregatedStackPath();
+
     // -------------- OUTPUTS ---------------------
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
+    std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathStackedPub_;
+    
 
     // --------------- INPUTS ------------------------
     // optional, this class can be used directly calling the odomProcessing method
@@ -113,6 +117,8 @@ protected:
     WorkingMode workingMode_;
 
     std::vector<nav_msgs::Path> pathStack_;
+
+    nav_msgs::Path aggregatedStackPathMsg_;
 
     // subscribes to topic on init if true
     bool subscribeToOdometryTopic_;

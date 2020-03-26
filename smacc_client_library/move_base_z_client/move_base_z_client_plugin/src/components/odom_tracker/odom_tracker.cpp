@@ -25,21 +25,25 @@ OdomTracker::OdomTracker(std::string odomTopicName)
     {
         minPointDistanceForwardThresh_ = 0.005; // 5 mm
     }
+    ROS_INFO_STREAM("[OdomTracker] min_point_distance_forward_thresh :" << minPointDistanceForwardThresh_);
 
     if (!nh.getParam("min_point_distance_backward_thresh", minPointDistanceBackwardThresh_))
     {
         minPointDistanceBackwardThresh_ = 0.1; // 5 cm
     }
+    ROS_INFO_STREAM("[OdomTracker] min_point_distance_backward_thresh :" << minPointDistanceBackwardThresh_);
 
     if (!nh.getParam("min_point_angular_distance_forward_thresh", minPointAngularDistanceForwardThresh_))
     {
-        minPointAngularDistanceForwardThresh_ = 0.15; // degree
+        minPointAngularDistanceForwardThresh_ = 0.08; // radians
     }
+    ROS_INFO_STREAM("[OdomTracker] min_point_angular_distance_forward_thresh :" << minPointAngularDistanceForwardThresh_);
 
     if (!nh.getParam("min_point_angular_distance_backward_thresh", minPointAngularDistanceBackwardThresh_))
     {
-        minPointAngularDistanceBackwardThresh_ = 0.15; // degree
+        minPointAngularDistanceBackwardThresh_ = 0.08; // radians
     }
+    ROS_INFO_STREAM("[OdomTracker] minPointAngularDistanceBackwardThresh :" << minPointAngularDistanceBackwardThresh_);
 
     if (this->subscribeToOdometryTopic_)
     {
@@ -47,6 +51,7 @@ OdomTracker::OdomTracker(std::string odomTopicName)
     }
 
     robotBasePathPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "odom_tracker_path", 1);
+    robotBasePathStackedPub_ = std::make_shared<realtime_tools::RealtimePublisher<nav_msgs::Path>>(nh, "odom_tracker_stacked_path", 1);
 }
 
 /**
@@ -74,6 +79,7 @@ void OdomTracker::setPublishMessages(bool value)
     std::lock_guard<std::mutex> lock(m_mutex_);
     publishMessages = value;
     //ROS_INFO("odom_tracker m_mutex release");
+    this->updateAggregatedStackPath();
 }
 
 void OdomTracker::pushPath()
@@ -85,31 +91,32 @@ void OdomTracker::pushPath()
 
     pathStack_.push_back(baseTrajectory_);
     baseTrajectory_.poses.clear();
-    
-    ROS_INFO("PSH_PATH PATH EXITING");
+
+    ROS_INFO("PUSH_PATH PATH EXITING");
     this->logStateString();
     ROS_INFO("odom_tracker m_mutex release");
+    this->updateAggregatedStackPath();
 }
 
 void OdomTracker::popPath(int items, bool keepPreviousPath)
 {
     ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
-    
+
     ROS_INFO("POP PATH ENTRY");
     this->logStateString();
-    
+
     if (!keepPreviousPath)
     {
         baseTrajectory_.poses.clear();
     }
 
-    while(items > 0 && !pathStack_.empty())
+    while (items > 0 && !pathStack_.empty())
     {
-        auto& stacked = pathStack_.back().poses;
-        baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(),stacked.end()) ;
+        auto &stacked = pathStack_.back().poses;
+        baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
         pathStack_.pop_back();
-        items --;
+        items--;
 
         ROS_INFO("POP PATH Iteration ");
         this->logStateString();
@@ -118,6 +125,7 @@ void OdomTracker::popPath(int items, bool keepPreviousPath)
     ROS_INFO("POP PATH EXITING");
     this->logStateString();
     ROS_INFO("odom_tracker m_mutex release");
+    this->updateAggregatedStackPath();
 }
 
 void OdomTracker::logStateString()
@@ -126,9 +134,9 @@ void OdomTracker::logStateString()
     ROS_INFO(" - path stack size: %ld", pathStack_.size());
     ROS_INFO(" - active path size: %ld", baseTrajectory_.poses.size());
     int i = 0;
-    for (auto& p : pathStack_)
+    for (auto &p : pathStack_)
     {
-        ROS_INFO_STREAM(" - p "<< i << "[" << p.header.stamp << "], size: " << p.poses.size());
+        ROS_INFO_STREAM(" - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
         i++;
     }
     ROS_INFO("---");
@@ -141,11 +149,13 @@ void OdomTracker::clearPath()
 
     rtPublishPaths(ros::Time::now());
     this->logStateString();
+    this->updateAggregatedStackPath();
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::PoseStamped &pose)
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_INFO_STREAM("[OdomTracker] set current path starting point: " << pose);
     if (baseTrajectory_.poses.size() > 0)
     {
         baseTrajectory_.poses[0] = pose;
@@ -154,11 +164,13 @@ void OdomTracker::setStartPoint(const geometry_msgs::PoseStamped &pose)
     {
         baseTrajectory_.poses.push_back(pose);
     }
+    this->updateAggregatedStackPath();
 }
 
 void OdomTracker::setStartPoint(const geometry_msgs::Pose &pose)
 {
     std::lock_guard<std::mutex> lock(m_mutex_);
+    ROS_INFO_STREAM("[OdomTracker] set current path starting point: " << pose);
     geometry_msgs::PoseStamped posestamped;
     posestamped.header.frame_id = "/odom";
     posestamped.header.stamp = ros::Time::now();
@@ -172,6 +184,7 @@ void OdomTracker::setStartPoint(const geometry_msgs::Pose &pose)
     {
         baseTrajectory_.poses.push_back(posestamped);
     }
+    this->updateAggregatedStackPath();
 }
 
 nav_msgs::Path OdomTracker::getPath()
@@ -196,6 +209,27 @@ void OdomTracker::rtPublishPaths(ros::Time timestamp)
         msg.header.stamp = timestamp;
         robotBasePathPub_->unlockAndPublish();
     }
+
+    if (robotBasePathStackedPub_->trylock())
+    {
+        nav_msgs::Path &msg = robotBasePathStackedPub_->msg_;
+        ///  Copy trajectory
+
+        msg = aggregatedStackPathMsg_;
+        msg.header.stamp = timestamp;
+        robotBasePathStackedPub_->unlockAndPublish();
+    }
+}
+
+void OdomTracker::updateAggregatedStackPath()
+{
+    aggregatedStackPathMsg_.poses.clear();
+    for (auto &p : pathStack_)
+    {
+        aggregatedStackPathMsg_.poses.insert(aggregatedStackPathMsg_.poses.end(), p.poses.begin(), p.poses.end());
+    }
+
+    aggregatedStackPathMsg_.header.frame_id = "/odom";
 }
 
 /**
@@ -221,11 +255,18 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry &odom)
     }
     else
     {
-        const geometry_msgs::Point &prevPoint = baseTrajectory_.poses.back().pose.position;
-        const geometry_msgs::Point &currePoint = base_pose.pose.position;
-        double lastpointdist = p2pDistance(prevPoint, currePoint);
+        auto &prevPose = baseTrajectory_.poses.back().pose;
+        const geometry_msgs::Point &prevPoint = prevPose.position;
+        double prevAngle = tf::getYaw(prevPose.orientation);
 
-        acceptBackward = !baseTrajectory_.poses.empty() && lastpointdist < minPointDistanceBackwardThresh_;
+        auto &currePose = base_pose.pose;
+        const geometry_msgs::Point &currePoint = currePose.position;
+        double currentAngle = tf::getYaw(currePose.orientation);
+
+        double lastpointdist = p2pDistance(prevPoint, currePoint);
+        double goalAngleOffset = angles::shortest_angular_distance(prevAngle, currentAngle);
+
+        acceptBackward = !baseTrajectory_.poses.empty() && (lastpointdist > minPointDistanceBackwardThresh_ || goalAngleOffset > minPointAngularDistanceBackwardThresh_);
 
         pullingerror = lastpointdist > 2 * minPointDistanceBackwardThresh_;
     }
@@ -269,7 +310,7 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry &odom)
     }
     else
     {
-        const auto& prevPose = baseTrajectory_.poses.back().pose;
+        const auto &prevPose = baseTrajectory_.poses.back().pose;
         const geometry_msgs::Point &prevPoint = prevPose.position;
         double prevAngle = tf::getYaw(prevPose.orientation);
 
@@ -281,9 +322,7 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry &odom)
 
         //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceForwardThresh_);
 
-        if (  (workingMode_ == WorkingMode::RECORD_PATH_FORWARD &&  (dist > minPointDistanceForwardThresh_ || goalAngleOffset > minPointAngularDistanceForwardThresh_))
-             ||  (workingMode_ == WorkingMode::CLEAR_PATH_BACKWARD &&  ( dist > minPointDistanceBackwardThresh_ || goalAngleOffset > minPointAngularDistanceBackwardThresh_))
-        )
+        if (dist > minPointDistanceForwardThresh_ || goalAngleOffset > minPointAngularDistanceForwardThresh_)
         {
             enqueueOdomMessage = true;
         }
@@ -330,4 +369,4 @@ void OdomTracker::processOdometryMessage(const nav_msgs::Odometry &odom)
     //ROS_INFO("odom_tracker m_mutex release");
 }
 } // namespace odom_tracker
-}
+} // namespace cl_move_base_z
