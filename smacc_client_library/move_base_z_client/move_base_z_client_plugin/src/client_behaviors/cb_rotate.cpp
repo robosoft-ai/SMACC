@@ -33,12 +33,16 @@ void CbRotate::onEntry()
     //this->plannerSwitcher_->setForwardPlanner();
     plannerSwitcher->setDefaultPlanners();
 
-    auto currentPoseMsg = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
+    auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
+    auto referenceFrame = p->getReferenceFrame();
+    auto currentPoseMsg = p->get();
+
     tf::Transform currentPose;
     tf::poseMsgToTF(currentPoseMsg, currentPose);
 
+    auto odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
     ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
+    goal.target_pose.header.frame_id = referenceFrame;
     goal.target_pose.header.stamp = ros::Time::now();
 
     auto currentAngle = tf::getYaw(currentPoseMsg.orientation);
@@ -47,12 +51,11 @@ void CbRotate::onEntry()
     goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
 
     geometry_msgs::PoseStamped stampedCurrentPoseMsg;
-    stampedCurrentPoseMsg.header.frame_id = "/odom";
+    stampedCurrentPoseMsg.header.frame_id = referenceFrame;
     stampedCurrentPoseMsg.header.stamp = ros::Time::now();
     stampedCurrentPoseMsg.pose = currentPoseMsg;
 
     this->requiresClient(moveBaseClient_);
-    auto odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
     odomTracker->pushPath();
 
     odomTracker->setStartPoint(stampedCurrentPoseMsg);

@@ -170,7 +170,8 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener *tf
 void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/odom";
+    
+    marker.header.frame_id = this->costmapRos_->getGlobalFrameID();
     marker.header.stamp = ros::Time::now();
     marker.ns = "my_namespace2";
     marker.id = 0;

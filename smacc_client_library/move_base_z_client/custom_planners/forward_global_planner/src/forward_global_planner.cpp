@@ -82,7 +82,8 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
     planMsg.header.stamp = ros::Time::now();
-    planMsg.header.frame_id = "/odom";
+    
+    planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
     // check plan rejection
     bool acceptedGlobalPlan = true;

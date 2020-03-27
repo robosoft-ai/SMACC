@@ -83,7 +83,7 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, d
 {
     double phi = tf::getYaw(pose.orientation);
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/odom";
+    marker.header.frame_id = this->costmap_ros_->getGlobalFrameID();
     marker.header.stamp = ros::Time::now();
     marker.ns = "my_namespace2";
     marker.id = 0;
@@ -246,7 +246,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
-    planMsg.header.frame_id = "/odom";
+    planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
         // check plan rejection
     bool acceptedGlobalPlan = true;

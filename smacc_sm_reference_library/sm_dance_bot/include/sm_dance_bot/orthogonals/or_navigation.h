@@ -25,7 +25,7 @@ public:
         movebaseClient->createComponent<cl_move_base_z::Pose>();
 
         // create odom tracker
-        movebaseClient->createComponent<OdomTracker>("/odom");
+        movebaseClient->createComponent<OdomTracker>();
 
         // create waypoints navigator component
         auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();

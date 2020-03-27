@@ -28,6 +28,11 @@ public:
         return this->pose_;
     }
 
+    inline const std::string &getReferenceFrame() const
+    {
+        return referenceFrame_;
+    }
+
 private:
     geometry_msgs::Pose pose_;
     tf::TransformListener tfListener_;
@@ -36,4 +41,4 @@ private:
 
     std::mutex m_mutex_;
 };
-}
+} // namespace cl_move_base_z

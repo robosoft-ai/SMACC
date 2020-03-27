@@ -45,9 +45,13 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliar function that defines the motion that is requested to the move_base action server
 void CbNavigateGlobalPosition::goToRadialStart()
 {
+    auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
+    auto referenceFrame = p->getReferenceFrame();
+    auto currentPoseMsg = p->get();
+
     ROS_INFO("Sending Goal to MoveBase");
     ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
+    goal.target_pose.header.frame_id = referenceFrame;
     goal.target_pose.header.stamp = ros::Time::now();
     readStartPoseFromParameterServer(goal);
 

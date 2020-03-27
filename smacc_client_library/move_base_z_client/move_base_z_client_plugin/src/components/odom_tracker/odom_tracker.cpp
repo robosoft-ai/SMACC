@@ -11,15 +11,22 @@ namespace cl_move_base_z
 namespace odom_tracker
 {
 
-OdomTracker::OdomTracker(std::string odomTopicName)
+OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
 {
     workingMode_ = WorkingMode::RECORD_PATH;
     publishMessages = true;
     subscribeToOdometryTopic_ = true;
+    this->odomFrame_ = odomFrame;
 
     ros::NodeHandle nh("~/odom_tracker");
 
     ROS_WARN("Initializing Odometry Tracker");
+
+    if (!nh.getParam("odomFrame", this->odomFrame_))
+    {
+        ROS_INFO_STREAM("[OdomTracker] odomFrame:" << this->odomFrame_);
+    }
+    ROS_INFO_STREAM("[OdomTracker] odomFrame overwriten by ros parameter:" << this->odomFrame_);
 
     if (!nh.getParam("record_point_distance_threshold", recordPointDistanceThreshold_))
     {
@@ -172,7 +179,7 @@ void OdomTracker::setStartPoint(const geometry_msgs::Pose &pose)
     std::lock_guard<std::mutex> lock(m_mutex_);
     ROS_INFO_STREAM("[OdomTracker] set current path starting point: " << pose);
     geometry_msgs::PoseStamped posestamped;
-    posestamped.header.frame_id = "/odom";
+    posestamped.header.frame_id = this->odomFrame_;
     posestamped.header.stamp = ros::Time::now();
     posestamped.pose = pose;
 
@@ -229,7 +236,7 @@ void OdomTracker::updateAggregatedStackPath()
         aggregatedStackPathMsg_.poses.insert(aggregatedStackPathMsg_.poses.end(), p.poses.begin(), p.poses.end());
     }
 
-    aggregatedStackPathMsg_.header.frame_id = "/odom";
+    aggregatedStackPathMsg_.header.frame_id = this->odomFrame_;
 }
 
 /**
