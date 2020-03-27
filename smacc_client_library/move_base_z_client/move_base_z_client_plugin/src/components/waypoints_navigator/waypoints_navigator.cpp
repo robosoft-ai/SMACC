@@ -42,11 +42,10 @@ void WaypointNavigator::sendNextGoal()
     ros::Duration(5).sleep();
 
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
-    if(odomTracker!= nullptr)
+    if (odomTracker != nullptr)
     {
-      auto pose = client_->getComponent<cl_move_base_z::Pose>()->get();
       odomTracker->pushPath();
-
+      auto pose = client_->getComponent<cl_move_base_z::Pose>()->get();
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
     }

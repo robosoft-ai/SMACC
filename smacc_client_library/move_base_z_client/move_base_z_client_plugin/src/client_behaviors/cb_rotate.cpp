@@ -1,5 +1,6 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace cl_move_base_z
 {
@@ -32,25 +33,9 @@ void CbRotate::onEntry()
     //this->plannerSwitcher_->setForwardPlanner();
     plannerSwitcher->setDefaultPlanners();
 
-    ros::Rate rate(10.0);
-    geometry_msgs::Pose currentPoseMsg;
-    while (ros::ok())
-    {
-        tf::StampedTransform currentPose;
-        try
-        {
-            listener.lookupTransform("/odom", "/base_link",
-                                     ros::Time(0), currentPose);
-
-            tf::poseTFToMsg(currentPose, currentPoseMsg);
-            break;
-        }
-        catch (tf::TransformException ex)
-        {
-            ROS_INFO("[CbRotate] Waiting transform: %s", ex.what());
-            ros::Duration(1.0).sleep();
-        }
-    }
+    auto currentPoseMsg = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
+    tf::Transform currentPose;
+    tf::poseMsgToTF(currentPoseMsg, currentPose);
 
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
@@ -72,7 +57,6 @@ void CbRotate::onEntry()
 
     odomTracker->setStartPoint(stampedCurrentPoseMsg);
     odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
-
 
     ROS_INFO_STREAM("current pose: " << currentPoseMsg);
     ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);

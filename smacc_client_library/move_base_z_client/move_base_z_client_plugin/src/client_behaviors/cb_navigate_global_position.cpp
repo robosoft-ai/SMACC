@@ -26,12 +26,12 @@ void CbNavigateGlobalPosition::onEntry()
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    
+
     ROS_INFO("Component requirements completed");
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
-    
+
     auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 

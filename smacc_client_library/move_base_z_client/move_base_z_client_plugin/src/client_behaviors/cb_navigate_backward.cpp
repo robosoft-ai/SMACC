@@ -1,7 +1,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 #include <thread>
 #include <tf/tf.h>
-
 
 namespace cl_move_base_z
 {
@@ -39,27 +39,9 @@ void CbNavigateBackwards::onEntry()
 
     this->requiresClient(moveBaseClient_);
 
-    // TODO: user better:   auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
-
-    //this should work better with a coroutine and await
-    ros::Rate rate(10.0);
-    tf::StampedTransform currentPose;
-
-    while (ros::ok())
-    {
-        try
-        {
-            listener.lookupTransform("/odom", "/base_link",
-                                     ros::Time(0), currentPose);
-
-            break;
-        }
-        catch (tf::TransformException ex)
-        {
-            ROS_INFO("[CbNavigateBackward] Waiting transform: %s", ex.what());
-            ros::Duration(1.0).sleep();
-        }
-    }
+    auto currentPoseMsg = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
+    tf::Transform currentPose;
+    tf::poseMsgToTF(currentPoseMsg, currentPose);
 
     tf::Transform forwardDeltaTransform;
     forwardDeltaTransform.setIdentity();
@@ -75,10 +57,10 @@ void CbNavigateBackwards::onEntry()
     ROS_INFO_STREAM("TARGET POSE FORWARD: " << goal.target_pose.pose);
     ros::Duration(10).sleep();
 
-    geometry_msgs::PoseStamped currentPoseMsg;
-    currentPoseMsg.header.frame_id = "/odom";
-    currentPoseMsg.header.stamp = ros::Time::now();
-    tf::poseTFToMsg(currentPose, currentPoseMsg.pose);
+    geometry_msgs::PoseStamped currentPoseStampedMsg;
+    currentPoseStampedMsg.header.frame_id = "/odom";
+    currentPoseStampedMsg.header.stamp = ros::Time::now();
+    tf::poseTFToMsg(currentPose, currentPoseStampedMsg.pose);
 
     odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
     this->odomTracker_->clearPath();

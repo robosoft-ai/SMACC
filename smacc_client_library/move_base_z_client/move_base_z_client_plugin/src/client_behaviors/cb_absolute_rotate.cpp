@@ -73,30 +73,7 @@ void CbAbsoluteRotate::onEntry()
         this->setLocalPlannerYawTolerance(*yawGoalTolerance);
     }
 
-    // TODO: user better:   auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
-
-    ros::Rate rate(10.0);
-    geometry_msgs::Pose currentPoseMsg;
-    tf::StampedTransform currentPose;
-    while (ros::ok())
-    {
-
-        try
-        {
-            listener.lookupTransform("/odom", "/base_link",
-                                     ros::Time(0), currentPose);
-
-            tf::poseTFToMsg(currentPose, currentPoseMsg);
-            break;
-        }
-        catch (tf::TransformException ex)
-        {
-            ROS_INFO("[CbAbsoluteRotate] Waiting transform: %s", ex.what());
-            ros::Duration(1.0).sleep();
-        }
-    }
-
-    
+    auto currentPoseMsg = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
 
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";

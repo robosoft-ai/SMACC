@@ -10,7 +10,7 @@ namespace cl_move_base_z
 {
 
 Pose::Pose(std::string targetFrame, std::string referenceFrame)
-    : targetFrame_(targetFrame), referenceFrame_(referenceFrame)
+    : poseFrameName_(targetFrame), referenceFrame_(referenceFrame)
 {
 }
 
@@ -19,10 +19,13 @@ void Pose::update()
     tf::StampedTransform transform;
     try
     {
-        this->tfListener_.lookupTransform(targetFrame_, referenceFrame_,
+        this->tfListener_.lookupTransform(referenceFrame_, poseFrameName_,
                                           ros::Time(0), transform);
 
-        tf::poseTFToMsg(transform, this->pose_);
+        {
+            std::lock_guard<std::mutex> guard(m_mutex_);
+            tf::poseTFToMsg(transform, this->pose_);
+        }
     }
     catch (tf::TransformException ex)
     {
