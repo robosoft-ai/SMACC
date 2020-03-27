@@ -33,7 +33,7 @@ void WaypointNavigator::sendNextGoal()
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     auto p = client_->getComponent<cl_move_base_z::Pose>();
     auto pose = p->get();
-    
+
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = p->getReferenceFrame();
     goal.target_pose.header.stamp = ros::Time::now();
@@ -45,7 +45,6 @@ void WaypointNavigator::sendNextGoal()
     ros::spinOnce();
     ros::Duration(5).sleep();
 
-    
     if (odomTracker != nullptr)
     {
       odomTracker->pushPath();
