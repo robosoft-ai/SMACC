@@ -14,7 +14,7 @@ void CbUndoPathBackwards::onEntry()
     nav_msgs::Path forwardpath = odomTracker->getPath();
     //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
 
-    odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH_BACKWARD);
+    odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
 
     ClMoveBaseZ::Goal goal;
     // this line is used to flush/reset backward planner in the case it were already there

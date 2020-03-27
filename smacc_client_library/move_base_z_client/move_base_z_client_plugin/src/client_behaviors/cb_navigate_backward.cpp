@@ -83,7 +83,7 @@ void CbNavigateBackwards::onEntry()
     odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
     this->odomTracker_->clearPath();
     this->odomTracker_->setStartPoint(currentPoseMsg);
-    this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+    this->odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setBackwardPlanner();

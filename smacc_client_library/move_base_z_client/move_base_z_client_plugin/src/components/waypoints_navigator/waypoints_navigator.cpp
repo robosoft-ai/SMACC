@@ -48,7 +48,7 @@ void WaypointNavigator::sendNextGoal()
       odomTracker->pushPath();
 
       odomTracker->setStartPoint(pose);
-      odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+      odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
     }
 
     this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);

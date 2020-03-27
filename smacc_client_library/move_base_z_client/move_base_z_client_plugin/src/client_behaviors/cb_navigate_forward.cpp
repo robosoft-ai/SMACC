@@ -76,7 +76,7 @@ void CbNavigateForward::onEntry()
     odomTracker_->pushPath();
 
     odomTracker_->setStartPoint(currentPoseMsg);
-    odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+    odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setForwardPlanner();

@@ -1,6 +1,7 @@
 
 #include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
-#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace cl_move_base_z
 {
@@ -12,7 +13,7 @@ CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal
 {
     this->absoluteGoalAngleDegree = absoluteGoalAngleDegree;
 
-    if (yaw_goal_tolerance >=0)
+    if (yaw_goal_tolerance >= 0)
     {
         this->yawGoalTolerance = yaw_goal_tolerance;
     }
@@ -40,14 +41,14 @@ void CbAbsoluteRotate::setLocalPlannerYawTolerance(float newtolerance)
 
 void CbAbsoluteRotate::onExit()
 {
-    if(yawGoalTolerance)
+    if (yawGoalTolerance)
     {
 
         this->setLocalPlannerYawTolerance(this->oldYawTolerance);
     }
 }
 
-void CbAbsoluteRotate::onEntry() 
+void CbAbsoluteRotate::onEntry()
 {
     double goal_angle;
 
@@ -67,11 +68,11 @@ void CbAbsoluteRotate::onEntry()
     //this->plannerSwitcher_->setForwardPlanner();
     plannerSwitcher->setDefaultPlanners();
 
-    if(yawGoalTolerance)
+    if (yawGoalTolerance)
     {
         this->setLocalPlannerYawTolerance(*yawGoalTolerance);
     }
-  
+
     // TODO: user better:   auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
 
     ros::Rate rate(10.0);
@@ -79,7 +80,7 @@ void CbAbsoluteRotate::onEntry()
     tf::StampedTransform currentPose;
     while (ros::ok())
     {
-        
+
         try
         {
             listener.lookupTransform("/odom", "/base_link",
@@ -94,6 +95,8 @@ void CbAbsoluteRotate::onEntry()
             ros::Duration(1.0).sleep();
         }
     }
+
+    
 
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = "/odom";
@@ -114,7 +117,7 @@ void CbAbsoluteRotate::onEntry()
     odomTracker_->pushPath();
 
     odomTracker_->setStartPoint(stampedCurrentPoseMsg);
-    odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
 
     ROS_INFO_STREAM("current pose: " << currentPoseMsg);
     ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);

@@ -13,7 +13,7 @@ namespace odom_tracker
 
 OdomTracker::OdomTracker(std::string odomTopicName)
 {
-    workingMode_ = WorkingMode::RECORD_PATH_FORWARD;
+    workingMode_ = WorkingMode::RECORD_PATH;
     publishMessages = true;
     subscribeToOdometryTopic_ = true;
 
@@ -21,29 +21,29 @@ OdomTracker::OdomTracker(std::string odomTopicName)
 
     ROS_WARN("Initializing Odometry Tracker");
 
-    if (!nh.getParam("min_point_distance_forward_thresh", minPointDistanceForwardThresh_))
+    if (!nh.getParam("record_point_distance_threshold", recordPointDistanceThreshold_))
     {
-        minPointDistanceForwardThresh_ = 0.005; // 5 mm
+        recordPointDistanceThreshold_ = 0.005; // 5 mm
     }
-    ROS_INFO_STREAM("[OdomTracker] min_point_distance_forward_thresh :" << minPointDistanceForwardThresh_);
+    ROS_INFO_STREAM("[OdomTracker] record_point_distance_threshold :" << recordPointDistanceThreshold_);
 
-    if (!nh.getParam("min_point_distance_backward_thresh", minPointDistanceBackwardThresh_))
+    if (!nh.getParam("record_angular_distance_threshold", recordAngularDistanceThreshold_))
     {
-        minPointDistanceBackwardThresh_ = 0.1; // 5 cm
+        recordAngularDistanceThreshold_ = 0.1; // 5 cm
     }
-    ROS_INFO_STREAM("[OdomTracker] min_point_distance_backward_thresh :" << minPointDistanceBackwardThresh_);
+    ROS_INFO_STREAM("[OdomTracker] record_angular_distance_threshold :" << recordAngularDistanceThreshold_);
 
-    if (!nh.getParam("min_point_angular_distance_forward_thresh", minPointAngularDistanceForwardThresh_))
+    if (!nh.getParam("clear_point_distance_threshold", clearPointDistanceThreshold_))
     {
-        minPointAngularDistanceForwardThresh_ = 0.08; // radians
+        clearPointDistanceThreshold_ = 0.08; // radians
     }
-    ROS_INFO_STREAM("[OdomTracker] min_point_angular_distance_forward_thresh :" << minPointAngularDistanceForwardThresh_);
+    ROS_INFO_STREAM("[OdomTracker] clear_point_distance_threshold :" << clearPointDistanceThreshold_);
 
-    if (!nh.getParam("min_point_angular_distance_backward_thresh", minPointAngularDistanceBackwardThresh_))
+    if (!nh.getParam("clear_angular_distance_threshold", clearAngularDistanceThreshold_))
     {
-        minPointAngularDistanceBackwardThresh_ = 0.08; // radians
+        clearAngularDistanceThreshold_ = 0.08; // radians
     }
-    ROS_INFO_STREAM("[OdomTracker] minPointAngularDistanceBackwardThresh :" << minPointAngularDistanceBackwardThresh_);
+    ROS_INFO_STREAM("[OdomTracker] clear_angular_distance_threshold :" << clearAngularDistanceThreshold_);
 
     if (this->subscribeToOdometryTopic_)
     {
@@ -237,7 +237,7 @@ void OdomTracker::updateAggregatedStackPath()
 * updateBackward()
 ******************************************************************************************************************
 */
-bool OdomTracker::updateBackward(const nav_msgs::Odometry &odom)
+bool OdomTracker::updateClearPath(const nav_msgs::Odometry &odom)
 {
     // we initially accept any message if the queue is empty
     /// Track robot base pose
@@ -266,9 +266,9 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry &odom)
         double lastpointdist = p2pDistance(prevPoint, currePoint);
         double goalAngleOffset = angles::shortest_angular_distance(prevAngle, currentAngle);
 
-        acceptBackward = !baseTrajectory_.poses.empty() && (lastpointdist > minPointDistanceBackwardThresh_ || goalAngleOffset > minPointAngularDistanceBackwardThresh_);
+        acceptBackward = !baseTrajectory_.poses.empty() && (lastpointdist > clearPointDistanceThreshold_ || goalAngleOffset > clearAngularDistanceThreshold_);
 
-        pullingerror = lastpointdist > 2 * minPointDistanceBackwardThresh_;
+        pullingerror = lastpointdist > 2 * clearPointDistanceThreshold_;
     }
 
     //ROS_INFO("Backwards, last distance: %lf < %lf accept: %d", dist, minPointDistanceBackwardThresh_, acceptBackward);
@@ -289,10 +289,10 @@ bool OdomTracker::updateBackward(const nav_msgs::Odometry &odom)
 }
 /**
 ******************************************************************************************************************
-* updateForward()
+* updateRecordPath()
 ******************************************************************************************************************
 */
-bool OdomTracker::updateForward(const nav_msgs::Odometry &odom)
+bool OdomTracker::updateRecordPath(const nav_msgs::Odometry &odom)
 {
     /// Track robot base pose
     geometry_msgs::PoseStamped base_pose;
@@ -320,9 +320,9 @@ bool OdomTracker::updateForward(const nav_msgs::Odometry &odom)
         dist = p2pDistance(prevPoint, currePoint);
         double goalAngleOffset = angles::shortest_angular_distance(prevAngle, currentAngle);
 
-        //ROS_WARN("dist %lf vs min %lf", dist, minPointDistanceForwardThresh_);
+        //ROS_WARN("dist %lf vs min %lf", dist, recordPointDistanceThreshold_);
 
-        if (dist > minPointDistanceForwardThresh_ || goalAngleOffset > minPointAngularDistanceForwardThresh_)
+        if (dist > recordPointDistanceThreshold_ || goalAngleOffset > recordAngularDistanceThreshold_)
         {
             enqueueOdomMessage = true;
         }
@@ -351,13 +351,13 @@ void OdomTracker::processOdometryMessage(const nav_msgs::Odometry &odom)
     //ROS_INFO("odom_tracker m_mutex acquire");
     std::lock_guard<std::mutex> lock(m_mutex_);
 
-    if (workingMode_ == WorkingMode::RECORD_PATH_FORWARD)
+    if (workingMode_ == WorkingMode::RECORD_PATH)
     {
-        updateForward(odom);
+        updateRecordPath(odom);
     }
-    else if (workingMode_ == WorkingMode::CLEAR_PATH_BACKWARD)
+    else if (workingMode_ == WorkingMode::CLEAR_PATH)
     {
-        updateBackward(odom);
+        updateClearPath(odom);
     }
 
     //ROS_WARN("odomTracker odometry callback");

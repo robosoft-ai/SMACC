@@ -37,7 +37,7 @@ void CbNavigateGlobalPosition::onEntry()
 
     odomTracker->pushPath();
     odomTracker->setStartPoint(pose);
-    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH);
 
     goToRadialStart();
 }

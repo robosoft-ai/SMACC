@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include   <move_base_z_client_plugin/components/move_base_z_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/move_base_z_plugin/components/odom_tracker/odom_tracker.h>
 #include <odom_tracker/OdomTrackerAction.h>
 #include <actionlib/server/simple_action_server.h>
 #include <memory>
@@ -35,12 +35,12 @@ public:
     {
       switch (goal->command)
       {
-      case OdomTrackerGoal::RECORD_FORWARD_PATH:
-        odomTracker.setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+      case OdomTrackerGoal::RECORD_PATH:
+        odomTracker.setWorkingMode(WorkingMode::RECORD_PATH);
         break;
 
-      case OdomTrackerGoal::CLEAR_PATH_BACKWARDS:
-        odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH_BACKWARD);
+      case OdomTrackerGoal::CLEAR_PATH:
+        odomTracker.setWorkingMode(WorkingMode::CLEAR_PATH);
         break;
 
       case OdomTrackerGoal::IDLE:

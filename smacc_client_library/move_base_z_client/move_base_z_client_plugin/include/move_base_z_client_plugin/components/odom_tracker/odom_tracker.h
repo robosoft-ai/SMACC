@@ -28,8 +28,8 @@ namespace odom_tracker
 
 enum class WorkingMode : uint8_t
 {
-    RECORD_PATH_FORWARD = 0,
-    CLEAR_PATH_BACKWARD = 1,
+    RECORD_PATH = 0,
+    CLEAR_PATH = 1,
     IDLE = 2
 };
 
@@ -37,7 +37,7 @@ enum class WorkingMode : uint8_t
 class OdomTracker : public smacc::ISmaccComponent
 {
 public:
-    // by default, the component start in record_forward mode and publishing the
+    // by default, the component start in record_path mode and publishing the
     // current path
     OdomTracker(std::string odomtopicName="/odom");
 
@@ -76,11 +76,11 @@ public:
 protected:
     virtual void rtPublishPaths(ros::Time timestamp);
 
-    // this is called when a new odom message is received in forward mode
-    virtual bool updateForward(const nav_msgs::Odometry &odom);
+    // this is called when a new odom message is received in record path mode
+    virtual bool updateRecordPath(const nav_msgs::Odometry &odom);
 
-    // this is called when a new odom message is received in backwards mode
-    virtual bool updateBackward(const nav_msgs::Odometry &odom);
+    // this is called when a new odom message is received in clear path mode
+    virtual bool updateClearPath(const nav_msgs::Odometry &odom);
 
     void updateAggregatedStackPath();
 
@@ -88,7 +88,6 @@ protected:
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathStackedPub_;
     
-
     // --------------- INPUTS ------------------------
     // optional, this class can be used directly calling the odomProcessing method
     // without any subscriber
@@ -96,16 +95,16 @@ protected:
 
     // -------------- PARAMETERS ----------------------
     /// How much distance there is between two points of the path
-    double minPointDistanceForwardThresh_;
+    double recordPointDistanceThreshold_;
 
     /// Meters
-    double minPointDistanceBackwardThresh_;
+    double recordAngularDistanceThreshold_;
 
     /// rads
-    double minPointAngularDistanceForwardThresh_;
+    double clearPointDistanceThreshold_;
 
     /// rads
-    double minPointAngularDistanceBackwardThresh_;
+    double clearAngularDistanceThreshold_;
 
     // --------------- STATE ---------------
     // default true

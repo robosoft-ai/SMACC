@@ -71,7 +71,7 @@ void CbRotate::onEntry()
     odomTracker->pushPath();
 
     odomTracker->setStartPoint(stampedCurrentPoseMsg);
-    odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH_FORWARD);
+    odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
 
 
     ROS_INFO_STREAM("current pose: " << currentPoseMsg);
