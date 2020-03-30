@@ -5,14 +5,14 @@ smacc:
 forward_global_planner:
   ubuntu: [ros-melodic-forward-global-planner]
 #smacc_planner_switcher:
-#  ubuntu: [ros-kinetic-smacc-planner-switcher]
+#  ubuntu: [ros-melodic-smacc-planner-switcher]
 smacc_navigation_plugin:
   ubuntu: [ros-melodic-smacc-navigation-plugin]
 smacc_sensors:
   ubuntu: [ros-melodic-smacc-sensors]
 
 #smacc_interface_components:
-#  ubuntu: [ros-kinetic-smacc-interface-components]
+#  ubuntu: [ros-melodic-smacc-interface-components]
 
 
 

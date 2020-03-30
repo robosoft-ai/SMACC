@@ -49,18 +49,18 @@ RUN gem install package_cloud
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
-RUN echo "regen"
+RUN echo "regen "
 RUN echo "downloading smacc repo"
 RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
 RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer
-
+RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
 WORKDIR /root
 
 #RUN echo "regen"
 # BUILD SMACC AND SMACC_VIEWER
 # -----------------------------------------------------------------
-RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
+RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y; "
 RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin build"
 
 # BUILD DEBIAN FILES
