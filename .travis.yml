@@ -5,7 +5,6 @@ services:
 env:
   global:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
-    BEFORE_SCRIPT=git clone https://github.com/reelrbtx/reelrbtx_msgs.git
     AFTER_SCRIPT=smacc_ci/gh-pages.sh
     VERBOSE_OUTPUT=false
     #CATKIN_CONFIG=--no-install
