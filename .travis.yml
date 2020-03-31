@@ -16,8 +16,6 @@ before_install:
   - sudo apt-get install -y graphviz ghostscript git # these packages is for documentation generation
   
 install:
-  - git clone --depth 1 https://github.com/reelrbtx/reelrbtx_msgs.git reelrbtx_msgs --branch master
-  - git clone --depth 1 git://pabloinigoblasco@$GITHUB_TOKEN:github.com/reelrbtx/rrbtx_control.git rrbtx_control --branch master
   - git clone --quiet --depth 1 https://github.com/ros-industrial/industrial_ci.git .industrial_ci -b master
   - git clone --quiet --depth 1 https://github.com/ros-infrastructure/rosdoc_lite
   
