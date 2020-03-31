@@ -57,16 +57,16 @@ catkin_package(
 
 if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
-    catkin_add_gtest(ssmtest test/ssm_test.cpp)
-
+    
+    #catkin_add_gtest(ssmtest test/ssm_test.cpp)
+    
     include_directories (test/include
                          ${catkin_INCLUDE_DIRS})
     
+    add_rostest_gtest(ssmtest test/ssm_test.test test/ssm_test.cpp)
     target_link_libraries(ssmtest ${catkin_LIBRARIES})
 
-    # add_rostest_gtest(tests_myfirsttest my_first_test.test MyFirstTest.cpp)
-    # target_link_libraries(tests_myfirsttest ${catkin_LIBRARIES})
-
+    
 endif()
 
 #############
@@ -82,7 +82,7 @@ endif()
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS
+install(TARGETS ssmtest
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 
