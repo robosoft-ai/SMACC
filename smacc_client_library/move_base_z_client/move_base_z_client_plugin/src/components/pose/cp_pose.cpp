@@ -14,6 +14,34 @@ Pose::Pose(std::string targetFrame, std::string referenceFrame)
 {
 }
 
+void Pose::waitTransformUpdate(ros::Rate r)
+{
+    bool found = false;
+    while (ros::ok() && !found)
+    {
+
+        tf::StampedTransform transform;
+        try
+        {
+            this->tfListener_.lookupTransform(referenceFrame_, poseFrameName_,
+                                              ros::Time(0), transform);
+
+            {
+                std::lock_guard<std::mutex> guard(m_mutex_);
+                tf::poseTFToMsg(transform, this->pose_);
+                found = true;
+            }
+        }
+        catch (tf::TransformException ex)
+        {
+            ROS_ERROR_THROTTLE(1, "Component pose is failing on pose update: %s", ex.what());
+        }
+
+        r.sleep();
+        ros::spinOnce();
+    }
+}
+
 void Pose::update()
 {
     tf::StampedTransform transform;
@@ -32,4 +60,4 @@ void Pose::update()
         ROS_ERROR_THROTTLE(1, "Component pose is failing on pose update: %s", ex.what());
     }
 }
-}
+} // namespace cl_move_base_z

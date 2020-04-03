@@ -22,6 +22,8 @@ public:
 
     virtual void update() override;
 
+    void waitTransformUpdate(ros::Rate r = ros::Rate(20));
+    
     inline geometry_msgs::Pose get()
     {
         std::lock_guard<std::mutex> guard(m_mutex_);
