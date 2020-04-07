@@ -102,6 +102,11 @@ public:
     {
     }
 
+    ClientHandler()
+        : TClient()
+    {
+    }
+
     template <typename SmaccComponentType, typename... TArgs>
     SmaccComponentType *createComponent(TArgs... targs)
     {

@@ -11,7 +11,7 @@ namespace sm_dance_bot
 namespace cl_led
 {
 
-ClLED::ClLED() : Base("led_action_server_node")
+ClLED::ClLED(std::string actionServerName) : Base(actionServerName)
 {
 }
 

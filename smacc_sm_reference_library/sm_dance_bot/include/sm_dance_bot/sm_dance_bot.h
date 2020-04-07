@@ -79,7 +79,7 @@ class StNavigateReverse3;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
-// MEGASTATE FORWARD DECLARATIONS
+//MODE STATES FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
 
@@ -154,7 +154,7 @@ struct SmDanceBot
 
 } // namespace sm_dance_bot
 
-//MEGASTATES
+//MODE STATES
 #include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
 #include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
 

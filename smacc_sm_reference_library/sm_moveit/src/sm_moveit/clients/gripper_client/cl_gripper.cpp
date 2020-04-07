@@ -3,24 +3,30 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#include <sm_dance_bot_strikes_back/clients/cl_led/cl_led.h>
+#include <sm_moveit/clients/gripper_client/cl_gripper.h>
 //#include <pluginlib/class_list_macros.h>
 
-namespace sm_dance_bot_strikes_back
+namespace sm_moveit
 {
-namespace cl_led
+namespace cl_gripper
 {
 
-ClLED::ClLED(std::string actionServerName) : Base(actionServerName)
+ClGripper::ClGripper(std::string actionServerName)
+    : Base(actionServerName)
 {
 }
 
-std::string ClLED::getName() const
+ClGripper::ClGripper()
+    : Base()
 {
-    return "TOOL ACTION CLIENT";
 }
 
-ClLED::~ClLED()
+std::string ClGripper::getName() const
+{
+    return "GRIPPER ACTUION CLIENT";
+}
+
+ClGripper::~ClGripper()
 {
 }
 } // namespace cl_led
