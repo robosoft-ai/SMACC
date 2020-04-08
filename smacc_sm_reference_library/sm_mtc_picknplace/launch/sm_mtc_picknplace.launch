@@ -1,7 +1,0 @@
-<launch>
-    <arg name="server_nodes_xterms" default="xterm -hold -e" />
-
-    <node pkg="sm_mtc_picknplace" type="sm_mtc_picknplace_node" name="sm_mtc_picknplace" launch-prefix="$(arg server_nodes_xterms)" />
-
-    <node pkg="keyboard_client" type="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(arg server_nodes_xterms)" />
-</launch>
