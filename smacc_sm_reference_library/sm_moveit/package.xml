@@ -57,7 +57,7 @@
   <depend>fetch_moveit_config</depend>
   <depend>fetch_gazebo</depend>
   <depend>move_base_z_client_plugin</depend>
-  <depend>control_msgs/</depend>
+  <depend>control_msgs</depend>
   
   <!-- The export tag contains other, unspecified, tags -->
   <export>
