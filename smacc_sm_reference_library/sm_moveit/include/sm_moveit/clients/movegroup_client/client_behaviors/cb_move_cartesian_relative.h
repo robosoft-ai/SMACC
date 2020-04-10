@@ -7,28 +7,20 @@ namespace cl_movegroup
 class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
 {
 public:
-    CbMoveCartesianRelative(geometry_msgs::Vector3 offset, std::string frameId)
+    geometry_msgs::Vector3 offset_;
+    
+    CbMoveCartesianRelative(geometry_msgs::Vector3 offset) : offset_(offset)
     {
     }
 
     virtual void onEntry() override
     {
-        // ClMoveGroup *movegroupClient;
-
-        // this->requiresClient(movegroupClient);
-
-        // cl_move_base_z::Pose targetObjectPose("/cube_0", "/map");
-
-        // moveToObjectGraspPose(movegroupClient->moveGroupClientInterface,
-        //                      movegroupClient->planningSceneInterface,
-        //                      targetObjectPose);
+        ClMoveGroup *movegroupClient;
+        this->requiresClient(movegroupClient);
+        movegroupClient->moveRelativeCartesian(offset_);
     }
 
     virtual void onExit() override
-    {
-    }
-
-    void executeAsync()
     {
     }
 };

@@ -12,6 +12,13 @@ class CbOpenGripper : public smacc::SmaccClientBehavior
 public:
     virtual void onEntry() override
     {
+        ClGripper *gripper;
+        this->requiresClient(gripper);
+
+        control_msgs::GripperCommandGoal gripperGoal;
+        gripperGoal.command.position = 100;
+        gripperGoal.command.max_effort = 100;
+        gripper->sendGoal(gripperGoal);
     }
 
     virtual void onExit() override

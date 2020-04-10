@@ -68,7 +68,7 @@ public:
 
         if (robot != nullptr)
         {
-            auto pose = robot->getComponent<cl_move_base_z::Pose>()->get();
+            auto pose = robot->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
             this->initialStateAngle = angles::to_degrees(angles::normalize_angle(tf::getYaw(pose.orientation)));
             ROS_INFO("Initial angle for F pattern: %lf degrees", initialStateAngle);
         }

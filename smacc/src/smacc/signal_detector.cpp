@@ -18,7 +18,7 @@ namespace smacc
 SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler)
 {
     scheduler_ = scheduler;
-    loop_rate_hz = 10.0;
+    loop_rate_hz = 20.0;
     end_ = false;
 }
 

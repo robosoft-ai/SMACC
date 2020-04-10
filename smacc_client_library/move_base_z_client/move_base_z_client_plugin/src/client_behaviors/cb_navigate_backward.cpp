@@ -41,7 +41,7 @@ void CbNavigateBackwards::onEntry()
 
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
-    auto currentPoseMsg = p->get();
+    auto currentPoseMsg = p->toPoseMsg();
 
     tf::Transform currentPose;
     tf::poseMsgToTF(currentPoseMsg, currentPose);

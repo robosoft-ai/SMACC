@@ -75,7 +75,7 @@ void CbAbsoluteRotate::onEntry()
 
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
-    auto currentPoseMsg = p->get();
+    auto currentPoseMsg = p->toPoseMsg();
 
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = referenceFrame;

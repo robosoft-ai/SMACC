@@ -7,28 +7,30 @@ namespace sm_moveit
 {
 namespace cl_movegroup
 {
-class CbGoToCube : public smacc::SmaccClientBehavior
+class CbMoveAbsolute : public smacc::SmaccClientBehavior
 {
 
 public:
   geometry_msgs::PoseStamped targetPose;
 
-  CbGoToCube()
+  CbMoveAbsolute()
   {
   }
 
-  CbGoToCube(geometry_msgs::PoseStamped target_pose)
+  CbMoveAbsolute(geometry_msgs::PoseStamped target_pose)
       : targetPose(target_pose)
   {
   }
 
   virtual void onEntry() override
   {
+    ros::WallDuration(4).sleep();
+
     ClMoveGroup *movegroupClient;
-
     this->requiresClient(movegroupClient);
-
     movegroupClient->moveToAbsolutePose(targetPose);
+
+    ros::WallDuration(4).sleep();
   }
 
   virtual void onExit() override

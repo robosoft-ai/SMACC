@@ -10,8 +10,11 @@ namespace cl_move_base_z
 {
 
 Pose::Pose(std::string targetFrame, std::string referenceFrame)
-    : poseFrameName_(targetFrame), referenceFrame_(referenceFrame)
+    : poseFrameName_(targetFrame)
+    , referenceFrame_(referenceFrame)
+    , isInitialized(false)
 {
+    this->pose_.header.frame_id = referenceFrame_;
 }
 
 void Pose::waitTransformUpdate(ros::Rate r)
@@ -28,8 +31,10 @@ void Pose::waitTransformUpdate(ros::Rate r)
 
             {
                 std::lock_guard<std::mutex> guard(m_mutex_);
-                tf::poseTFToMsg(transform, this->pose_);
+                tf::poseTFToMsg(transform, this->pose_.pose);
+                this->pose_.header.stamp = transform.stamp_;
                 found = true;
+                this->isInitialized = true;
             }
         }
         catch (tf::TransformException ex)
@@ -52,7 +57,9 @@ void Pose::update()
 
         {
             std::lock_guard<std::mutex> guard(m_mutex_);
-            tf::poseTFToMsg(transform, this->pose_);
+            tf::poseTFToMsg(transform, this->pose_.pose);
+            this->pose_.header.stamp = transform.stamp_;
+            this->isInitialized = true;
         }
     }
     catch (tf::TransformException ex)

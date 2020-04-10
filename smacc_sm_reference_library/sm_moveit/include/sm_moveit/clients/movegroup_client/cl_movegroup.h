@@ -14,8 +14,56 @@ namespace sm_moveit
 {
 namespace cl_movegroup
 {
+
+template <typename TSource, typename TObjectTag>
+struct MoveGroupMotionExecutionSucceded : sc::event<MoveGroupMotionExecutionSucceded<TSource, TObjectTag>>
+{
+};
+
+template <typename TSource, typename TObjectTag>
+struct MoveGroupMotionExecutionFailed : sc::event<MoveGroupMotionExecutionFailed<TSource, TObjectTag>>
+{
+};
+
+/*
+moveit_msgs/MoveItErrorCodes 
+----------------------------
+int32 SUCCESS=1
+int32 FAILURE=99999
+int32 PLANNING_FAILED=-1
+int32 INVALID_MOTION_PLAN=-2
+int32 MOTION_PLAN_INVALIDATED_BY_ENVIRONMENT_CHANGE=-3
+int32 CONTROL_FAILED=-4
+int32 UNABLE_TO_AQUIRE_SENSOR_DATA=-5
+int32 TIMED_OUT=-6
+int32 PREEMPTED=-7
+int32 START_STATE_IN_COLLISION=-10
+int32 START_STATE_VIOLATES_PATH_CONSTRAINTS=-11
+int32 GOAL_IN_COLLISION=-12
+int32 GOAL_VIOLATES_PATH_CONSTRAINTS=-13
+int32 GOAL_CONSTRAINTS_VIOLATED=-14
+int32 INVALID_GROUP_NAME=-15
+int32 INVALID_GOAL_CONSTRAINTS=-16
+int32 INVALID_ROBOT_STATE=-17
+int32 INVALID_LINK_NAME=-18
+int32 INVALID_OBJECT_NAME=-19
+int32 FRAME_TRANSFORM_FAILURE=-21
+int32 COLLISION_CHECKING_UNAVAILABLE=-22
+int32 ROBOT_STATE_STALE=-23
+int32 SENSOR_INFO_STALE=-24
+int32 NO_IK_SOLUTION=-31
+int32 val
+*/
+
 class ClMoveGroup : public smacc::ISmaccClient
 {
+private:
+  std::function<void()> postEventMotionExecutionSucceded;
+  std::function<void()> postEventMotionExecutionFailed;
+
+  smacc::SmaccSignal<void()> onSucceded_;
+  smacc::SmaccSignal<void()> onFailed_;
+
 public:
   moveit::planning_interface::MoveGroupInterface moveGroupClientInterface;
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
@@ -30,23 +78,42 @@ public:
   {
   }
 
-  void moveToAbsolutePose(geometry_msgs::PoseStamped &targetPose)
+  template <typename TObjectTag, typename TDerived>
+  void configureEventSourceTypes()
   {
-    bool success = moveToObjectGraspPose(moveGroupClientInterface,
-                                         planningSceneInterface,
-                                         targetPose);
+    postEventMotionExecutionSucceded = [=]() {
+      this->onSucceded_();
+      this->postEvent<MoveGroupMotionExecutionSucceded<TDerived, TObjectTag>>();
+    };
 
-    if (success)
-    {
-      nextMotion(moveGroupClientInterface,
-                 planningSceneInterface,
-                 targetPose);
-    }
+    postEventMotionExecutionFailed = [=]() {
+      this->onFailed_();
+      this->postEvent<MoveGroupMotionExecutionFailed<TDerived, TObjectTag>>();
+    };
   }
 
-  bool moveToObjectGraspPose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
-                             moveit::planning_interface::PlanningSceneInterface &planningSceneInterface,
-                             geometry_msgs::PoseStamped &targetObjectPose)
+  template <typename TCallback, typename T>
+  boost::signals2::connection onMotionExecutionSuccedded(TCallback callback, T *object)
+  {
+    return this->getStateMachine()->createSignalConnection(onSucceded_, callback, object);
+  }
+
+  template <typename TCallback, typename T>
+  boost::signals2::connection onMotionExecutionFailed(TCallback callback, T *object)
+  {
+    return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
+  }
+
+  void moveToAbsolutePose(geometry_msgs::PoseStamped &targetPose)
+  {
+    bool success = moveEndEfectorToPose(moveGroupClientInterface,
+                                        planningSceneInterface,
+                                        targetPose);
+  }
+
+  bool moveEndEfectorToPose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
+                            moveit::planning_interface::PlanningSceneInterface &planningSceneInterface,
+                            geometry_msgs::PoseStamped &targetObjectPose)
   {
 
     moveGroupInterface.setPlanningTime(1.0);
@@ -62,90 +129,81 @@ public:
 
     if (success)
     {
-      moveGroupInterface.execute(computedMotionPlan);
-      ros::WallDuration(15.0).sleep();
+      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+
+      if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+      {
+        this->postEventMotionExecutionSucceded();
+      }
+      else
+      {
+        this->postEventMotionExecutionFailed();
+      }
+    }
+    else
+    {
+      this->postEventMotionExecutionFailed();
     }
 
     return success;
   }
 
-  void nextMotion(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
-                  moveit::planning_interface::PlanningSceneInterface &planningSceneInterface,
-                  geometry_msgs::PoseStamped &targetObjectPose)
+  // keeps the end efector orientation fixed
+  void moveRelativeCartesian(geometry_msgs::Vector3 &offset)
   {
-
-    ROS_INFO("------- CARTESIAN TEST --------");
     std::vector<geometry_msgs::Pose> waypoints;
 
-    waypoints.push_back(targetObjectPose.pose); // up and out
-    auto target_pose2 = targetObjectPose.pose;
+    auto referenceStartPose = this->moveGroupClientInterface.getPoseTarget();
+    //auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
+    ROS_INFO_STREAM("RELATIVE MOTION, SOURCE POSE: " << referenceStartPose);
+    waypoints.push_back(referenceStartPose.pose); // up and out
 
-    target_pose2.position.z -= 0.12;
+    auto targetObjectPose = this->moveGroupClientInterface.getPoseTarget();
+
+    auto endPose = referenceStartPose.pose;
+
+    endPose.position.x += offset.x;
+    endPose.position.y += offset.y;
+    endPose.position.z += offset.z;
+
     //target_pose2.position.x -= 0.15;
-    waypoints.push_back(target_pose2); // left
+    waypoints.push_back(endPose); // left
 
-    moveGroupInterface.setMaxVelocityScalingFactor(0.1);
+    this->moveGroupClientInterface.setPoseTarget(endPose);
+
+    this->moveGroupClientInterface.setMaxVelocityScalingFactor(0.1);
 
     moveit_msgs::RobotTrajectory trajectory;
-    double fraction = moveGroupInterface.computeCartesianPath(waypoints,
-                                                              0.01, // eef_step
-                                                              0.0,  // jump_threshold
-                                                              trajectory);
+    double fraction = this->moveGroupClientInterface.computeCartesianPath(waypoints,
+                                                                          0.01, // eef_step
+                                                                          0.0,  // jump_threshold
+                                                                          trajectory);
+
+    if (fraction == -1)
+    {
+      this->postEventMotionExecutionFailed();
+      ROS_INFO("[ClMoveGroup] Absolute motion planning failed. Skipping execution.");
+      return;
+    }
 
     moveit::planning_interface::MoveGroupInterface::Plan grasp_pose_plan;
-    ;
+
     //grasp_pose_plan.start_state_ = *(moveGroupInterface.getCurrentState());
     grasp_pose_plan.trajectory_ = trajectory;
-    moveGroupInterface.execute(grasp_pose_plan);
+    auto executionResult = this->moveGroupClientInterface.execute(grasp_pose_plan);
+
+    if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+    {
+      ROS_INFO("[ClMoveGroup] relative motion execution succedded: fraction %lf", fraction);
+      this->postEventMotionExecutionSucceded();
+    }
+    else
+    {
+      ROS_INFO("[ClMoveGroup] relative motion execution failed");
+      this->postEventMotionExecutionFailed();
+    }
 
     ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)", fraction * 100.0);
-
-    ros::WallDuration(5.0).sleep();
-    ROS_INFO("------- RETREAT TEST --------");
-    /*planningSceneInterface.removeCollisionObjects({"cube_0"});
-    std::vector<double> group_variable_values;
-    moveGroupInterface.getCurrentState()->copyJointGroupPositions(moveGroupInterface.getCurrentState()->getRobotModel()->getJointModelGroup(moveGroupInterface.getName()), group_variable_values);
-    group_variable_values[group_variable_values.size() -1 ]=0;
-    group_variable_values[group_variable_values.size() -2 ]=0;
-  
-    
-    success = (moveGroupInterface.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    ROS_INFO_NAMED("tutorial", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-    if(!success)
-      exit(0);*/
-
-    waypoints.clear();
-
-    target_pose2 = targetObjectPose.pose;
-    target_pose2.position.z -= 0.12;
-    waypoints.push_back(target_pose2);          // up and out
-    waypoints.push_back(targetObjectPose.pose); // up and out
-
-    moveGroupInterface.setMaxVelocityScalingFactor(0.1);
-
-    planningSceneInterface.removeCollisionObjects({"cube_0"});
-    moveit_msgs::RobotTrajectory retreat_trajectory;
-    fraction = moveGroupInterface.computeCartesianPath(waypoints,
-                                                       0.01, // eef_step
-                                                       0.0,  // jump_threshold
-                                                       retreat_trajectory);
-
-    moveit::planning_interface::MoveGroupInterface::Plan retreat_plan;
-    retreat_plan.trajectory_ = retreat_trajectory;
-    moveGroupInterface.execute(retreat_plan);
-
-    ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)",
-             fraction * 100.0);
-
-    ROS_INFO("------- ENDING --------");
-    // ros::WallDuration(15.0).sleep();
-    // ROS_INFO("------- PICKING PIPELINE --------");
-    // moveGroupInterface.setPlanningTime(4.0);
-    // pick(moveGroupInterface, target_pose1.pose);
-  }
-
-  void executeAsync()
-  {
   }
 };
 } // namespace cl_movegroup

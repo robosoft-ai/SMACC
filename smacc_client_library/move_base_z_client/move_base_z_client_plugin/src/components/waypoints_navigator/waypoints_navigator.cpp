@@ -32,7 +32,7 @@ void WaypointNavigator::sendNextGoal()
 
     auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
     auto p = client_->getComponent<cl_move_base_z::Pose>();
-    auto pose = p->get();
+    auto pose = p->toPoseMsg();
 
     ClMoveBaseZ::Goal goal;
     goal.target_pose.header.frame_id = p->getReferenceFrame();

@@ -51,7 +51,7 @@ public:
 
     static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
 
-    ROS_WARN_STREAM("creatingState state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
+    ROS_WARN_STREAM("creating state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
     this->set_context(ctx.pContext_);
 
     this->stateInfo_ = getStateInfo();
@@ -128,17 +128,6 @@ public:
     {
     }
     this->requestUnlockStateMachine("state exit");
-  }
-
-  void throwFinishEvent()
-  {
-    if (!finishStateThrown)
-    {
-      auto *finishEvent = new EvStateFinish<MostDerived>();
-      finishEvent->state = static_cast<MostDerived *>(this);
-      this->postEvent(finishEvent);
-      finishStateThrown = true;
-    }
   }
 
 public:
@@ -240,18 +229,22 @@ public:
     auto *thisobject = static_cast<MostDerived *>(this);
     auto condition = boost::bind(conditionFn, thisobject);
     bool conditionResult = condition();
+
     //ROS_INFO("LOOP EVENT CONDITION: %d", conditionResult);
     if (conditionResult)
     {
-      auto evloopcontinue = new EvLoopContinue<MostDerived>();
-      this->postEvent(evloopcontinue);
+      this->postEvent<EvLoopContinue<MostDerived>>();
     }
     else
     {
-      auto evloopend = new EvLoopEnd<MostDerived>();
-      this->postEvent(evloopend);
+      this->postEvent<EvLoopEnd<MostDerived>>();
     }
     ROS_INFO("POST THROW CONDITION");
+  }
+
+  void throwSequenceFinishedEvent()
+  {
+    this->postEvent<EvSequenceFinished<MostDerived>>();
   }
 
   //////////////////////////////////////////////////////////////////////////
@@ -288,6 +281,8 @@ public:
   {
     auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);
+
+    ROS_INFO("State object created. Initializating...");
     state->entryStateInternal();
 
     outermostContextBase.add(pInnerContext);

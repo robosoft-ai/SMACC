@@ -39,7 +39,7 @@ class OdomTracker : public smacc::ISmaccComponent
 public:
     // by default, the component start in record_path mode and publishing the
     // current path
-    OdomTracker(std::string odomtopicName="/odom", std::string odomFrame = "/odom");
+    OdomTracker(std::string odomtopicName = "/odom", std::string odomFrame = "/odom");
 
     // threadsafe
     /// odom callback: Updates the path - this must be called periodically for each odometry message.
@@ -87,7 +87,7 @@ protected:
     // -------------- OUTPUTS ---------------------
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathStackedPub_;
-    
+
     // --------------- INPUTS ------------------------
     // optional, this class can be used directly calling the odomProcessing method
     // without any subscriber

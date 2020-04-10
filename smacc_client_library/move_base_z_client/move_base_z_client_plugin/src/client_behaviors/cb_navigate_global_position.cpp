@@ -32,7 +32,7 @@ void CbNavigateGlobalPosition::onEntry()
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
 
-    auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->get();
+    auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
     odomTracker->pushPath();
@@ -47,7 +47,7 @@ void CbNavigateGlobalPosition::goToRadialStart()
 {
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
-    auto currentPoseMsg = p->get();
+    auto currentPoseMsg = p->toPoseMsg();
 
     ROS_INFO("Sending Goal to MoveBase");
     ClMoveBaseZ::Goal goal;

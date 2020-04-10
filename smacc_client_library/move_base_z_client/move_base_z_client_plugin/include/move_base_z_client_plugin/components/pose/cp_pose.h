@@ -24,7 +24,13 @@ public:
 
     void waitTransformUpdate(ros::Rate r = ros::Rate(20));
     
-    inline geometry_msgs::Pose get()
+    inline geometry_msgs::Pose toPoseMsg()
+    {
+        std::lock_guard<std::mutex> guard(m_mutex_);
+        return this->pose_.pose;
+    }
+
+    inline geometry_msgs::PoseStamped toPoseStampedMsg()
     {
         std::lock_guard<std::mutex> guard(m_mutex_);
         return this->pose_;
@@ -35,8 +41,10 @@ public:
         return referenceFrame_;
     }
 
+    bool isInitialized;
+
 private:
-    geometry_msgs::Pose pose_;
+    geometry_msgs::PoseStamped pose_;
     tf::TransformListener tfListener_;
     std::string poseFrameName_;
     std::string referenceFrame_;
