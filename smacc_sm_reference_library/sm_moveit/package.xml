@@ -52,8 +52,7 @@
 
 
   <!-- <depend>moveit_core</depend> -->
-  <depend>moveit_ros_planning</depend>
-  <depend>moveit_ros_planning_interface</depend>
+  <depend>moveit</depend>
   <depend>fetch_moveit_config</depend>
   <depend>fetch_gazebo</depend>
   <depend>move_base_z_client_plugin</depend>

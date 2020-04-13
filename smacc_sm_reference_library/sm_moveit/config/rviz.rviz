@@ -5,13 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /MotionPlanning1
+        - /Axes1
         - /MotionPlanning1/Planning Request1
-        - /MarkerArray1
-        - /Map1
-        - /LaserScan1
-        - /Map2
-        - /TF1
       Splitter Ratio: 0.742560029
     Tree Height: 330
   - Class: rviz/Help
@@ -31,6 +26,13 @@ Toolbars:
 Visualization Manager:
   Class: ""
   Displays:
+    - Class: rviz/Axes
+      Enabled: true
+      Length: 0.699999988
+      Name: Axes
+      Radius: 0.0500000007
+      Reference Frame: <Fixed Frame>
+      Value: true
     - Alpha: 0.5
       Cell Size: 1
       Class: rviz/Grid
@@ -453,6 +455,8 @@ Visualization Manager:
           Value: true
         cube_0:
           Value: true
+        cube_1:
+          Value: true
         elbow_flex_link:
           Value: true
         estop_link:
@@ -516,6 +520,8 @@ Visualization Manager:
         map:
           cube_0:
             {}
+          cube_1:
+            {}
           odom:
             base_link:
               estop_link:
@@ -560,6 +566,22 @@ Visualization Manager:
             {}
       Update Interval: 0
       Value: true
+    - Class: rviz/Marker
+      Enabled: true
+      Marker Topic: visualization_marker
+      Name: Marker
+      Namespaces:
+        {}
+      Queue Size: 100
+      Value: true
+    - Alpha: 1
+      Class: rviz/Polygon
+      Color: 25; 255; 0
+      Enabled: true
+      Name: Polygon
+      Topic: /move_base/local_costmap/footprint
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -578,16 +600,16 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 2.73190594
+      Distance: 4.10453081
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.379227877
-        Y: -0.301957965
-        Z: 2.12127929e-07
+        X: 0.241539836
+        Y: -0.457867026
+        Z: 5.69755798e-07
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.0500000007
       Invert Z Axis: false
@@ -596,7 +618,7 @@ Visualization Manager:
       Pitch: 0.489796579
       Target Frame: base_link
       Value: XYOrbit (rviz)
-      Yaw: 1.96994483
+      Yaw: 5.00812912
     Saved: ~
 Window Geometry:
   Displays:
