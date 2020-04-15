@@ -3,9 +3,9 @@
 // ORTHOGONALS
 
 // CLIENT BEHAVIORS
-#include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_absolute.h>
-#include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_cartesian_relative.h>
-#include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_relative.h>
+#include <moveit_z_client/client_behaviors/cb_move_absolute.h>
+#include <moveit_z_client/client_behaviors/cb_move_cartesian_relative.h>
+#include <moveit_z_client/client_behaviors/cb_move_relative.h>
 
 #include <move_base_z_client_plugin/client_behaviors.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>

@@ -25,7 +25,7 @@ struct StCloseGripper : smacc::SmaccState<StCloseGripper, SS>
       ClMoveGroup *moveGroupClient;
       this->requiresClient(moveGroupClient);
 
-      moveGroupClient->planningSceneInterface.removeCollisionObjects({"cube_0"});
+      //moveGroupClient->planningSceneInterface.removeCollisionObjects({"cube_0"});
       ros::Duration(0.5).sleep();
 
       // moveGroupClient->moveGroupClientInterface.attachObject("cube_0");

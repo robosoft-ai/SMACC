@@ -40,11 +40,11 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         auto currentTable = perceptionSystem->getCurrentTable();
         if (currentTable == RobotProcessStatus::TABLE0)
         {
-            moveCartesianRelative->transform_.translation.x = -0.05;
+            moveCartesianRelative->transform_.translation.x = -0.15;
         }
         else if (currentTable == RobotProcessStatus::TABLE1)
         {
-            moveCartesianRelative->transform_.translation.x = 0.05;
+            moveCartesianRelative->transform_.translation.x = 0.15;
         }
 
         moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::throwSequenceFinishedEvent, this);

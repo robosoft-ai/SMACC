@@ -12,7 +12,7 @@
     </group>
 
     <group ns="move_group">
-        <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/>
+        <param name="trajectory_execution/allowed_start_tolerance" value="0.001"/>
     </group>
 
     <node pkg="sm_moveit" type="sm_moveit_node" name="sm_moveit_node" launch-prefix="xterm -hold -e "/>

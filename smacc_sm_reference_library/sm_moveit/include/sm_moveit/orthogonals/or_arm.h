@@ -1,7 +1,7 @@
 #pragma once
 
 #include <smacc/smacc_orthogonal.h>
-#include <sm_moveit/clients/movegroup_client/cl_movegroup.h>
+#include <moveit_z_client/cl_movegroup.h>
 
 namespace sm_moveit
 {

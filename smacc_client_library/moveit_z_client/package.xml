@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>sm_moveit</name>
+  <name>moveit_z_client</name>
   <version>0.0.0</version>
-  <description>The sm_moveit package</description>
+  <description>The moveit_z_client package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/sm_moveit</url> -->
+  <!-- <url type="website">http://wiki.ros.org/moveit_z_client</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -50,13 +50,9 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- <depend>moveit_core</depend> -->
-  <depend>fetch_moveit_config</depend>
-  <depend>fetch_gazebo</depend>
-  <depend>move_base_z_client_plugin</depend>
-  <depend>moveit_z_client</depend>
+  <depend>smacc</depend>
+  <depend>moveit</depend>
 
-  <depend>control_msgs</depend>
   <!-- The export tag contains other, unspecified, tags -->
   <export>
     <!-- Other tools can request additional information be placed here -->

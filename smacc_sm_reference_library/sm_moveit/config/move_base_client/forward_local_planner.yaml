@@ -5,5 +5,5 @@ ForwardLocalPlanner:
     k_betta: -1.0
     carrot_distance: 0.8 #meters
     carrot_angular_distance: 0.5 # radians, no constraint, max 3.1416
-    xy_goal_tolerance: 0.15
+    xy_goal_tolerance: 0.3
     yaw_goal_tolerance: 0.157
