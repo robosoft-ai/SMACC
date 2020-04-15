@@ -10,7 +10,8 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-           Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StPlaceApproach>
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StPlaceApproach>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePrePlacePose, ABORT>/*retry on failure*/
         >
         reactions;
 
@@ -29,8 +30,9 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
         ClPerceptionSystem *perceptionSystem;
         this->requiresClient(perceptionSystem);
 
-        auto placingPose = perceptionSystem->decidePlacePose(0, 0);
-        ROS_INFO_STREAM("Decided place pose for cube: "<< placingPose);
+        geometry_msgs::PoseStamped placingPose = perceptionSystem->decidePlacePose();
+
+        ROS_INFO_STREAM("[StMovePreplacePose] Decided place pose for cube: " << placingPose);
 
         placingPose.pose.position.x -= 0;
         placingPose.pose.position.z += 0.3;
@@ -41,7 +43,6 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
         computeCubeGraspingOrientation(placingPose);
         moveAbsolute->targetPose = placingPose;
     }
-
 
     void computeCubeGraspingOrientation(geometry_msgs::PoseStamped &objectPose)
     {

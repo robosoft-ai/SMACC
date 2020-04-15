@@ -1,8 +1,8 @@
 #pragma once
 
-namespace sm_moveit 
+namespace sm_moveit
 {
-namespace pick_states 
+namespace pick_states
 {
 // STATE DECLARATION
 struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
@@ -11,26 +11,37 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        //Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StGraspRetreat, ABORT> /*retry on failure*/
         >
         reactions;
 
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-        geometry_msgs::Vector3 offset;
-        offset.z = 0.12;
-        configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+
+        configure_orthogonal<OrArm, CbMoveCartesianRelative>();
     }
 
     void runtimeConfigure()
     {
-        ClMoveGroup* moveGroupClient;
-        this->requiresClient(moveGroupClient);
+        ClPerceptionSystem *perceptionSystem;
+        this->requiresClient(perceptionSystem);
+        auto currentTable = perceptionSystem->getCurrentTable();
 
-        moveGroupClient->onMotionExecutionSuccedded(&StGraspRetreat::throwSequenceFinishedEvent, this);
+        auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveCartesianRelative>();
+
+        moveCartesianRelative->offset_.z = 0.15;
+        if (currentTable == RobotProcessStatus::TABLE0)
+        {
+            moveCartesianRelative->offset_.x = -0.4;
+        }
+        else if (currentTable == RobotProcessStatus::TABLE1)
+        {
+            moveCartesianRelative->offset_.x == 0.4;
+        }
     }
 };
 
+} // namespace pick_states
 } // namespace sm_moveit
-}

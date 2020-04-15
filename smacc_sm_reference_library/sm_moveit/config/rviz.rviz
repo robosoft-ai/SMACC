@@ -84,131 +84,6 @@ Visualization Manager:
           Expand Link Details: false
           Expand Tree: false
           Link Tree Style: Links in Alphabetic Order
-          base_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          bellows_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          bellows_link2:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          elbow_flex_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          estop_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          forearm_roll_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          gripper_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_camera_depth_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_depth_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_rgb_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_camera_rgb_optical_frame:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-          head_pan_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          head_tilt_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          l_gripper_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          l_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          laser_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          r_gripper_finger_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          r_wheel_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          shoulder_lift_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          shoulder_pan_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          torso_fixed_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          torso_lift_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          upperarm_roll_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wrist_flex_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
-          wrist_roll_link:
-            Alpha: 1
-            Show Axes: false
-            Show Trail: false
-            Value: true
         Loop Animation: true
         Robot Alpha: 0.5
         Robot Color: 150; 50; 150
@@ -453,10 +328,6 @@ Visualization Manager:
           Value: true
         bellows_link2:
           Value: true
-        cube_0:
-          Value: true
-        cube_1:
-          Value: true
         elbow_flex_link:
           Value: true
         estop_link:
@@ -497,10 +368,6 @@ Visualization Manager:
           Value: true
         shoulder_pan_link:
           Value: true
-        table_0:
-          Value: true
-        table_1:
-          Value: true
         torso_fixed_link:
           Value: true
         torso_lift_link:
@@ -518,51 +385,7 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          cube_0:
-            {}
-          cube_1:
-            {}
           odom:
-            base_link:
-              estop_link:
-                {}
-              l_wheel_link:
-                {}
-              laser_link:
-                {}
-              r_wheel_link:
-                {}
-              torso_fixed_link:
-                {}
-              torso_lift_link:
-                bellows_link:
-                  {}
-                bellows_link2:
-                  {}
-                head_pan_link:
-                  head_tilt_link:
-                    head_camera_link:
-                      head_camera_depth_frame:
-                        head_camera_depth_optical_frame:
-                          {}
-                      head_camera_rgb_frame:
-                        head_camera_rgb_optical_frame:
-                          {}
-                shoulder_pan_link:
-                  shoulder_lift_link:
-                    upperarm_roll_link:
-                      elbow_flex_link:
-                        forearm_roll_link:
-                          wrist_flex_link:
-                            wrist_roll_link:
-                              gripper_link:
-                                l_gripper_finger_link:
-                                  {}
-                                r_gripper_finger_link:
-                                  {}
-          table_0:
-            {}
-          table_1:
             {}
       Update Interval: 0
       Value: true
@@ -573,14 +396,6 @@ Visualization Manager:
       Namespaces:
         {}
       Queue Size: 100
-      Value: true
-    - Alpha: 1
-      Class: rviz/Polygon
-      Color: 25; 255; 0
-      Enabled: true
-      Name: Polygon
-      Topic: /move_base/local_costmap/footprint
-      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
@@ -632,7 +447,7 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002ad000003dafc0200000008fb000000100044006900730070006c0061007900730100000028000001df000000d700fffffffb0000000800480065006c00700000000342000000bb0000007300fffffffb0000000a0056006900650077007300000003b0000000b0000000ad00fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000020d0000018e0000018300fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000003a1000000610000006100ffffff0000048c000003da00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002ad000003dafc0200000008fb000000100044006900730070006c0061007900730100000028000001df000000d700fffffffb0000000800480065006c00700000000342000000bb0000007300fffffffb0000000a0056006900650077007300000003b0000000b0000000ad00fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004a00fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067010000020d0000018e0000018e00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000003a1000000610000006100ffffff0000048c000003da00000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Tool Properties:
     collapsed: false
   Views:

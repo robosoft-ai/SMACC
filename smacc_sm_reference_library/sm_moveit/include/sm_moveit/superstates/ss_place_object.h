@@ -27,8 +27,7 @@ public:
 
     // TRANSITION TABLE
     typedef mpl::list<
-            Transition<EvSequenceFinished<SS2::StPlaceRetreat>, SS1::SsPickObject, ENDLOOP>>
-        reactions;
+            Transition<EvSequenceFinished<SS2::StPlaceRetreat>, SS1::SsPickObject, SUCCESS>> reactions;
 
     // STATE FUNCTIONS
     static void staticConfigure()

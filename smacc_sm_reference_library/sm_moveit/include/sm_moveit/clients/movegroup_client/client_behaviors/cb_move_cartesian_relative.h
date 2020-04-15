@@ -9,6 +9,11 @@ class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
 public:
     geometry_msgs::Vector3 offset_;
     
+    CbMoveCartesianRelative()
+    {
+
+    }
+    
     CbMoveCartesianRelative(geometry_msgs::Vector3 offset) : offset_(offset)
     {
     }

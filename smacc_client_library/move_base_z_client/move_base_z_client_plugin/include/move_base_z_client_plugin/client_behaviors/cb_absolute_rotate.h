@@ -24,6 +24,7 @@ public:
 
     boost::optional<float> absoluteGoalAngleDegree;
     boost::optional<float> yawGoalTolerance;
+    
 
     CbAbsoluteRotate();
 

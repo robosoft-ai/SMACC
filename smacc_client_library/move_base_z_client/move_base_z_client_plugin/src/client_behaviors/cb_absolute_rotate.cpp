@@ -51,6 +51,7 @@ void CbAbsoluteRotate::onExit()
 void CbAbsoluteRotate::onEntry()
 {
     double goal_angle;
+    ROS_INFO_STREAM("[CbAbsoluteRotate] Absolute yaw Angle:" << this->absoluteGoalAngleDegree);
 
     if (!this->absoluteGoalAngleDegree)
     {

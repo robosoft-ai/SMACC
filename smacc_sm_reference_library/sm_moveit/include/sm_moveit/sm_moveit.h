@@ -5,6 +5,9 @@
 // CLIENT BEHAVIORS
 #include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_absolute.h>
 #include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_cartesian_relative.h>
+#include <sm_moveit/clients/movegroup_client/client_behaviors/cb_move_relative.h>
+
+#include <move_base_z_client_plugin/client_behaviors.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 #include <sm_moveit/clients/gripper_client/client_behaviors/cb_close_gripper.h>
@@ -22,6 +25,7 @@ using namespace smacc::state_reactors;
 #include <sm_moveit/orthogonals/or_gripper.h>
 #include <sm_moveit/orthogonals/or_arm.h>
 #include <sm_moveit/orthogonals/or_perception.h>
+#include <sm_moveit/orthogonals/or_navigation.h>
 
 namespace sm_moveit
 {
@@ -36,6 +40,9 @@ namespace SS2
 {
 class SsPlaceObject;
 }
+
+class StRotate180;
+class StForwardNextTable;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -58,6 +65,7 @@ struct SmMoveIt
         this->createOrthogonal<OrGripper>();
         this->createOrthogonal<OrArm>();
         this->createOrthogonal<OrPerception>();
+        this->createOrthogonal<OrNavigation>();
     }
 };
 
@@ -70,6 +78,9 @@ struct SmMoveIt
 #include <sm_moveit/superstates/ss_place_object.h>
 
 //STATES
+#include <sm_moveit/states/st_forward.h>
+#include <sm_moveit/states/st_rotate.h>
+
 
 // #include <sm_moveit/states/st_open_gripper.h>
 

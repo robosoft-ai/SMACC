@@ -11,9 +11,8 @@ struct StMovePregraspPose : smacc::SmaccState<StMovePregraspPose, SS>
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StGraspApproach>
-        //    Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
-
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StGraspApproach, SUCCESS>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePregraspPose, ABORT>/*retry on failure*/
         >
         reactions;
 
@@ -34,11 +33,8 @@ struct StMovePregraspPose : smacc::SmaccState<StMovePregraspPose, SS>
 
         ClPerceptionSystem *perceptionSystem;
         this->requiresClient(perceptionSystem);
-
-        auto &targetObjectPose = *(perceptionSystem->detectedCubePose0);
-
-        targetObjectPose.waitTransformUpdate();
-        auto pregraspPose = targetObjectPose.toPoseStampedMsg();
+        
+        auto pregraspPose = perceptionSystem->decidePickCubePose();
 
         this->computeCubeGraspingOrientation(pregraspPose);
 

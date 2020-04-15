@@ -3,6 +3,18 @@
     <arg name="debug" default="false"/>
     <arg name="gui" default="true"/>
 
+    <!--  setup smacc planners configuration  -->
+    <group ns="move_base">
+        <!-- backward local planner -->
+        <rosparam file="$(find sm_moveit)/config/move_base_client/backward_local_planner.yaml" command="load" />
+        <!-- forward local planner -->
+        <rosparam file="$(find sm_moveit)/config/move_base_client/forward_local_planner.yaml" command="load" />
+    </group>
+
+    <group ns="move_group">
+        <param name="trajectory_execution/allowed_start_tolerance" value="0.01"/>
+    </group>
+
     <node pkg="sm_moveit" type="sm_moveit_node" name="sm_moveit_node" launch-prefix="xterm -hold -e "/>
 
     <!-- Start Gazebo with a blank world -->

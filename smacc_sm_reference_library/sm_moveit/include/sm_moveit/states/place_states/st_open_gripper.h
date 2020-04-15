@@ -10,9 +10,9 @@ struct StOpenGripper : smacc::SmaccState<StOpenGripper, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StPlaceRetreat>
-        >
-        reactions;
+            Transition<EvActionSucceeded<ClGripper, OrGripper>, StPlaceRetreat>
+            >
+            reactions;
 
     // STATE FUNCTIONS
     static void staticConfigure()

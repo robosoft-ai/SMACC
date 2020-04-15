@@ -133,19 +133,45 @@ public:
 
       if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
       {
+        ROS_INFO("[ClMoveGroup] relative motion execution succedded");
         this->postEventMotionExecutionSucceded();
       }
       else
       {
+        ROS_INFO("[ClMoveGroup] motion execution failed");
         this->postEventMotionExecutionFailed();
       }
     }
     else
     {
+      ROS_INFO("[ClMoveGroup] motion execution failed");
       this->postEventMotionExecutionFailed();
     }
 
     return success;
+  }
+
+  void moveRelative(geometry_msgs::Transform &transformOffset)
+  {
+    auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
+    tf::Quaternion currentOrientation;
+    tf::quaternionMsgToTF(referenceStartPose.pose.orientation, currentOrientation);
+    tf::Quaternion desiredRelativeRotation;
+
+    tf::quaternionMsgToTF(transformOffset.rotation, desiredRelativeRotation);
+
+    auto targetOrientation = desiredRelativeRotation * currentOrientation;
+
+    auto targetPose = referenceStartPose;
+
+    tf::quaternionTFToMsg(targetOrientation, targetPose.pose.orientation);
+    targetPose.pose.position.x += transformOffset.translation.x;
+    targetPose.pose.position.y += transformOffset.translation.y;
+    targetPose.pose.position.z += transformOffset.translation.z;
+
+    bool success = moveEndEfectorToPose(moveGroupClientInterface,
+                                        planningSceneInterface,
+                                        targetPose);
   }
 
   // keeps the end efector orientation fixed

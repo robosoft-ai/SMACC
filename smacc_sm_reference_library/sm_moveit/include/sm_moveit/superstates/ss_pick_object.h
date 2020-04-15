@@ -10,6 +10,7 @@ class StCloseGripper;
 class StGraspApproach;
 class StGraspRetreat;
 class StMovePregraspPose;
+class StNavigationPosture;
 } // namespace pick_states
 } // namespace sm_moveit
 
@@ -24,8 +25,7 @@ public:
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvSequenceFinished<SS1::StGraspRetreat> , SS2::SsPlaceObject ,ENDLOOP>
-
+        Transition<EvSequenceFinished<SS1::StNavigationPosture> , StRotate180 ,SUCCESS>
     >reactions;
 
     // STATE FUNCTIONS
@@ -37,6 +37,18 @@ public:
     void runtimeConfigure()
     {
         ROS_INFO("picking object superstate");
+        ClMoveGroup *movegroupClient;
+        this->requiresClient(movegroupClient);
+
+        movegroupClient->onMotionExecutionFailed(&SsPickObject::onMoveitError, this);
+    }
+
+    void onMoveitError()
+    {
+        ROS_ERROR("Moveit motion failed, retrying");
+        ClPerceptionSystem *perceptionSystem;
+        this->requiresClient(perceptionSystem);   
+        perceptionSystem->retryCubeAfterFail();
     }
 };
 
@@ -46,6 +58,7 @@ using SS = SsPickObject;
 #include <sm_moveit/states/pick_states/st_grasp_approach.h>
 #include <sm_moveit/states/pick_states/st_grasp_retreat.h>
 #include <sm_moveit/states/pick_states/st_move_pregrasp_pose.h>
+#include <sm_moveit/states/pick_states/st_navigation_posture.h>
 
 } // namespace SS1
 } // namespace sm_moveit

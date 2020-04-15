@@ -52,6 +52,12 @@
     <rosparam file="$(find sm_moveit)/config/navigation/overlay/costmap_global.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find sm_moveit)/config/navigation/move_base.yaml" command="load" />
     <rosparam file="$(find sm_moveit)/config/navigation/overlay/move_base.yaml" command="load" />
+
+    <!-- backward local planner -->
+    <rosparam file="$(find sm_moveit)/config/move_base_client/backward_local_planner.yaml" command="load" />
+    <!-- forward local planner -->
+    <rosparam file="$(find sm_moveit)/config/move_base_client/forward_local_planner.yaml" command="load" />
+
     <remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>
     <remap from="map" to="map" />
