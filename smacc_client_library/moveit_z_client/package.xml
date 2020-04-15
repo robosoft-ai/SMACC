@@ -52,6 +52,7 @@
 
   <depend>smacc</depend>
   <depend>moveit</depend>
+  <depend>tf</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
