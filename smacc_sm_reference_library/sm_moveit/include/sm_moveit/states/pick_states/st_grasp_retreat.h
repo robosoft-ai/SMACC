@@ -19,7 +19,6 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-
         configure_orthogonal<OrArm, CbMoveCartesianRelative>();
     }
 
@@ -29,7 +28,8 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
         this->requiresClient(perceptionSystem);
         auto currentTable = perceptionSystem->getCurrentTable();
 
-        auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveCartesianRelative>();
+        auto moveCartesianRelative = this->getOrthogonal<OrArm>()
+                                         ->getClientBehavior<CbMoveCartesianRelative>();
 
         moveCartesianRelative->offset_.z = 0.15;
         if (currentTable == RobotProcessStatus::TABLE0)

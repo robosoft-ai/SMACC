@@ -18,7 +18,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrArm, CbMoveRelative>();
+        configure_orthogonal<OrArm, CbMoveCartesianRelative>();
     }
 
     void runtimeConfigure()
@@ -29,6 +29,12 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         ClPerceptionSystem *perceptionSystem;
         this->requiresClient(perceptionSystem);
 
+        auto moveCartesianRelative = this->getOrthogonal<OrArm>()
+                                         ->getClientBehavior<CbMoveCartesianRelative>();
+
+        /*
+        
+
         //geometry_msgs::Transform transform;
         //transform.rotation.w=1;
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveRelative>();
@@ -36,15 +42,16 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         auto quat = tf::createQuaternionFromRPY(M_PI, 0, 0);
         moveCartesianRelative->transform_.translation.z = 0.05;
         tf::quaternionTFToMsg(quat, moveCartesianRelative->transform_.rotation);
-
+*/
+        moveCartesianRelative->offset_.z = -0.2;
         auto currentTable = perceptionSystem->getCurrentTable();
         if (currentTable == RobotProcessStatus::TABLE0)
         {
-            moveCartesianRelative->transform_.translation.x = -0.15;
+            moveCartesianRelative->offset_.x = -0.15;
         }
         else if (currentTable == RobotProcessStatus::TABLE1)
         {
-            moveCartesianRelative->transform_.translation.x = 0.15;
+            moveCartesianRelative->offset_.x = 0.15;
         }
 
         moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::throwSequenceFinishedEvent, this);

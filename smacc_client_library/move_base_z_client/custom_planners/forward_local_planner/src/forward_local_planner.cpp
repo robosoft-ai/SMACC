@@ -45,8 +45,6 @@ void ForwardLocalPlanner::initialize()
     //k_betta_ = 1.0;
     //betta_offset_=0;
 
-    
-
     goalReached_ = false;
     carrot_distance_ = 0.4;
 
@@ -59,8 +57,7 @@ void ForwardLocalPlanner::initialize()
     nh.param("k_rho", k_rho_, k_rho_);
     nh.param("k_alpha", k_alpha_, k_alpha_);
     nh.param("k_betta", k_betta_, k_betta_);
-    nh.param("carrot_distance", carrot_distance_,carrot_distance_);
-    
+    nh.param("carrot_distance", carrot_distance_, carrot_distance_);
 
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
@@ -70,8 +67,8 @@ void ForwardLocalPlanner::initialize()
     ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, carrot_distance: %lf, ", max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);
 
-    waiting_=false;
-    waitingTimeout_= ros::Duration(10);
+    waiting_ = false;
+    waitingTimeout_ = ros::Duration(10);
 }
 
 void ForwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros)
@@ -170,7 +167,7 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener *tf
 void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
-    
+
     marker.header.frame_id = this->costmapRos_->getGlobalFrameID();
     marker.header.stamp = ros::Time::now();
     marker.ns = "my_namespace2";
@@ -397,7 +394,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
                                               << " betta_error:" << betta_error << std::endl
                                               << " vetta:" << vetta << std::endl
                                               << " gamma:" << gamma << std::endl
-                                              << "xy_goal_tolerance:" << xy_goal_tolerance_);
+                                              << " xy_goal_tolerance:" << xy_goal_tolerance_);
 
     //if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
     //{
@@ -406,7 +403,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     //integrate trajectory and check collision
 
     tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
-    
+
     //->getRobotPose(global_pose);
 
     auto *costmap2d = costmapRos_->getCostmap();
@@ -433,9 +430,9 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
         float dst = sqrt(dx * dx + dy * dy);
         if (dst < xy_goal_tolerance_)
-         {
+        {
             //  ROS_INFO("trajectory checking skipped, goal reached");
-             break;
+            break;
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
@@ -460,30 +457,30 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     if (aceptedplan)
     {
-        waiting_=false;
+        waiting_ = false;
         return true;
     }
     else
     {
         // stop and wait
-        cmd_vel.linear.x =0;
-        cmd_vel.angular.z=0;
+        cmd_vel.linear.x = 0;
+        cmd_vel.angular.z = 0;
 
-        if(waiting_ == false)
+        if (waiting_ == false)
         {
             waiting_ = true;
             waitingStamp_ = ros::Time::now();
         }
         else
         {
-            auto waitingduration = ros::Time::now() - waitingStamp_ ;
+            auto waitingduration = ros::Time::now() - waitingStamp_;
 
             if (waitingduration > this->waitingTimeout_)
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }

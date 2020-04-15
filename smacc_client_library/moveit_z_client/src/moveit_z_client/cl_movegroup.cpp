@@ -1,4 +1,6 @@
 #include <moveit_z_client/cl_movegroup.h>
+#include <tf/tf.h>
+#include <tf/transform_datatypes.h>
 
 namespace sm_moveit
 {
