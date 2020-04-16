@@ -23,6 +23,8 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
 
     void runtimeConfigure()
     {
+        ros::WallDuration(2).sleep();
+        
         ClMoveGroup *moveGroupClient;
         this->requiresClient(moveGroupClient);
 
