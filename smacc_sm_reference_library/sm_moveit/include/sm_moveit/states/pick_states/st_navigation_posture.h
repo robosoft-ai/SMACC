@@ -23,8 +23,8 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
 
     void runtimeConfigure()
     {
-        ros::WallDuration(2).sleep();
-        
+        ros::WallDuration(3).sleep();
+
         ClMoveGroup *moveGroupClient;
         this->requiresClient(moveGroupClient);
 
@@ -35,8 +35,6 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
                                          ->getClientBehavior<CbMoveCartesianRelative>();
 
         /*
-        
-
         //geometry_msgs::Transform transform;
         //transform.rotation.w=1;
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveRelative>();
@@ -45,7 +43,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         moveCartesianRelative->transform_.translation.z = 0.05;
         tf::quaternionTFToMsg(quat, moveCartesianRelative->transform_.rotation);
 */
-        moveCartesianRelative->offset_.z = -0.25;
+        moveCartesianRelative->offset_.z = -0.35;
         auto currentTable = perceptionSystem->getCurrentTable();
         if (currentTable == RobotProcessStatus::TABLE0)
         {
