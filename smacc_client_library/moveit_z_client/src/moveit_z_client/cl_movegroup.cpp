@@ -95,6 +95,8 @@ void ClMoveGroup::moveRelativeCartesian(geometry_msgs::Vector3 &offset)
     auto referenceStartPose = this->moveGroupClientInterface.getPoseTarget();
     //auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
     ROS_INFO_STREAM("RELATIVE MOTION, SOURCE POSE: " << referenceStartPose);
+        ROS_INFO_STREAM("Offset: " << offset);
+
     waypoints.push_back(referenceStartPose.pose); // up and out
 
     auto targetObjectPose = this->moveGroupClientInterface.getPoseTarget();
@@ -104,6 +106,8 @@ void ClMoveGroup::moveRelativeCartesian(geometry_msgs::Vector3 &offset)
     endPose.position.x += offset.x;
     endPose.position.y += offset.y;
     endPose.position.z += offset.z;
+
+    ROS_INFO_STREAM("DESTINY POSE: " << endPose);
 
     //target_pose2.position.x -= 0.15;
     waypoints.push_back(endPose); // left

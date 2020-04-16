@@ -350,6 +350,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     }
     else
     {
+        ROS_DEBUG("GOAL REACHED");
         vetta = 0;
         gamma = 0;
         goalReached_ = true;
@@ -394,7 +395,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
                                               << " betta_error:" << betta_error << std::endl
                                               << " vetta:" << vetta << std::endl
                                               << " gamma:" << gamma << std::endl
-                                              << " xy_goal_tolerance:" << xy_goal_tolerance_);
+                                              << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
+                                              << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
 
     //if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
     //{

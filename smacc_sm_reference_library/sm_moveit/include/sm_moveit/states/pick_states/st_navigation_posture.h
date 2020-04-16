@@ -43,7 +43,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         moveCartesianRelative->transform_.translation.z = 0.05;
         tf::quaternionTFToMsg(quat, moveCartesianRelative->transform_.rotation);
 */
-        moveCartesianRelative->offset_.z = -0.35;
+        moveCartesianRelative->offset_.z = -0.25;
         auto currentTable = perceptionSystem->getCurrentTable();
         if (currentTable == RobotProcessStatus::TABLE0)
         {
