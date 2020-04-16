@@ -34,11 +34,11 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
         moveCartesianRelative->offset_.z = 0.15;
         if (currentTable == RobotProcessStatus::TABLE0)
         {
-            moveCartesianRelative->offset_.x = -0.5;
+            moveCartesianRelative->offset_.x = -0.6;
         }
         else if (currentTable == RobotProcessStatus::TABLE1)
         {
-            moveCartesianRelative->offset_.x = 0.5;
+            moveCartesianRelative->offset_.x = 0.6;
         }
     }
 };

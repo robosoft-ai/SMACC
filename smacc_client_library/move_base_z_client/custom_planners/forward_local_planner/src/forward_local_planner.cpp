@@ -343,7 +343,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
         vetta = k_rho_ * rho_error;
         gamma = k_alpha_ * alpha_error;
     }
-    else if (fabs(betta_error) >= 0.01)
+    else if (fabs(betta_error) >= yaw_goal_tolerance_) // pureSpining
     {
         vetta = 0;
         gamma = k_betta_ * betta_error;

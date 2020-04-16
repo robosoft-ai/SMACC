@@ -43,15 +43,15 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         moveCartesianRelative->transform_.translation.z = 0.05;
         tf::quaternionTFToMsg(quat, moveCartesianRelative->transform_.rotation);
 */
-        moveCartesianRelative->offset_.z = -0.2;
+        moveCartesianRelative->offset_.z = -0.35;
         auto currentTable = perceptionSystem->getCurrentTable();
         if (currentTable == RobotProcessStatus::TABLE0)
         {
-            moveCartesianRelative->offset_.x = -0.15;
+            moveCartesianRelative->offset_.x = -0.25;
         }
         else if (currentTable == RobotProcessStatus::TABLE1)
         {
-            moveCartesianRelative->offset_.x = 0.15;
+            moveCartesianRelative->offset_.x = 0.25;
         }
 
         moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::throwSequenceFinishedEvent, this);

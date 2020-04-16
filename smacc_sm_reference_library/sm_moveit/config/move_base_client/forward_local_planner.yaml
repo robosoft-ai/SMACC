@@ -6,4 +6,4 @@ ForwardLocalPlanner:
     carrot_distance: 0.4 #meters
     carrot_angular_distance: 0.9 # radians, no constraint, max 3.1416
     xy_goal_tolerance: 0.35
-    yaw_goal_tolerance: 0.357
+    yaw_goal_tolerance: 0.01
