@@ -4,33 +4,32 @@
  *
  ******************************************************************************************************************/
 
+#pragma once
+
 #include <moveit_z_client/cl_movegroup.h>
+#include <smacc/smacc_client_behavior.h>
+
 namespace sm_moveit
 {
 namespace cl_movegroup
 {
-
-ClMoveGroup::ClMoveGroup(std::string groupName)
-    : moveGroupClientInterface(groupName)
+class CbMoveEndEffectorRelative : public smacc::SmaccClientBehavior
 {
-    ros::WallDuration(10.0).sleep();
-}
+private:
+    ClMoveGroup *movegroupClient_;
 
-ClMoveGroup::~ClMoveGroup()
-{
-}
+public:
+    geometry_msgs::Transform transform_;
 
-void ClMoveGroup::postEventMotionExecutionSucceded()
-{
-    ROS_INFO("[ClMoveGroup] Post Motion Success Event");
-    postEventMotionExecutionSucceded_();
-}
+    CbMoveEndEffectorRelative();
 
-void ClMoveGroup::postEventMotionExecutionFailed()
-{
-    ROS_INFO("[ClMoveGroup] Post Motion Failure Event");
-    postEventMotionExecutionFailed_();
-}
+    CbMoveEndEffectorRelative(geometry_msgs::Transform transform);
 
+    virtual void onEntry() override;
+
+    virtual void onExit() override;
+
+    void moveRelative(geometry_msgs::Transform &transformOffset);
+};
 } // namespace cl_movegroup
 } // namespace sm_moveit

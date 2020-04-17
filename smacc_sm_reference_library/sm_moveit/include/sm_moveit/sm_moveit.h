@@ -3,9 +3,10 @@
 // ORTHOGONALS
 
 // CLIENT BEHAVIORS
-#include <moveit_z_client/client_behaviors/cb_move_absolute.h>
+#include <moveit_z_client/client_behaviors/cb_move_end_effector.h>
+#include <moveit_z_client/client_behaviors/cb_move_end_effector_relative.h>
 #include <moveit_z_client/client_behaviors/cb_move_cartesian_relative.h>
-#include <moveit_z_client/client_behaviors/cb_move_relative.h>
+#include <moveit_z_client/client_behaviors/cb_move_joints.h>
 
 #include <move_base_z_client_plugin/client_behaviors.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
@@ -43,6 +44,7 @@ class SsPlaceObject;
 
 class StRotate180;
 class StForwardNextTable;
+class StInitialPosture;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -56,7 +58,7 @@ namespace sm_moveit
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
 struct SmMoveIt
-    : public smacc::SmaccStateMachineBase<SmMoveIt, SS1::SsPickObject>
+    : public smacc::SmaccStateMachineBase<SmMoveIt, StInitialPosture>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -78,6 +80,7 @@ struct SmMoveIt
 #include <sm_moveit/superstates/ss_place_object.h>
 
 //STATES
+#include <sm_moveit/states/st_initial_posture.h>
 #include <sm_moveit/states/st_forward.h>
 #include <sm_moveit/states/st_rotate.h>
 

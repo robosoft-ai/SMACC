@@ -8,25 +8,25 @@
 
 #include <moveit_z_client/cl_movegroup.h>
 #include <smacc/smacc_client_behavior.h>
+#include <map>
+#include <string>
 
 namespace sm_moveit
 {
 namespace cl_movegroup
 {
-class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
+class CbMoveJoints : public smacc::SmaccClientBehavior
 {
+private:
+    ClMoveGroup *movegroupClient_;
+
 public:
-    geometry_msgs::Vector3 offset_;
+    std::map<std::string, double> jointValueTarget_;
 
-    CbMoveCartesianRelative();
-
-    CbMoveCartesianRelative(geometry_msgs::Vector3 offset);
-
+    CbMoveJoints();
+    CbMoveJoints(const std::map<std::string, double> &jointValueTarget);
     virtual void onEntry() override;
-
     virtual void onExit() override;
-
-    void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
 };
 } // namespace cl_movegroup
 } // namespace sm_moveit

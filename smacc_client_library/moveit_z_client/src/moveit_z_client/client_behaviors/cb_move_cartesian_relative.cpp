@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018-2020
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #include <moveit_z_client/client_behaviors/cb_move_cartesian_relative.h>
 
 namespace sm_moveit

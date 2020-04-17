@@ -1,30 +1,38 @@
-#include <moveit_z_client/client_behaviors/cb_move_relative.h>
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018-2020
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
+#include <moveit_z_client/client_behaviors/cb_move_end_effector_relative.h>
+#include <tf/tf.h>
+#include <tf/transform_datatypes.h>
 
 namespace sm_moveit
 {
 namespace cl_movegroup
 {
-CbMoveRelative::CbMoveRelative()
+CbMoveEndEffectorRelative::CbMoveEndEffectorRelative()
 {
     transform_.rotation.w = 1;
 }
 
-CbMoveRelative::CbMoveRelative(geometry_msgs::Transform transform)
+CbMoveEndEffectorRelative::CbMoveEndEffectorRelative(geometry_msgs::Transform transform)
 {
 }
 
-void CbMoveRelative::onEntry()
+void CbMoveEndEffectorRelative::onEntry()
 {
-    ROS_INFO_STREAM("[CbMoveRelative] Transform end effector pose relative: " << transform_);
+    ROS_INFO_STREAM("[CbMoveEndEffectorRelative] Transform end effector pose relative: " << transform_);
     this->requiresClient(movegroupClient_);
     moveRelative(transform_);
 }
 
-void CbMoveRelative::onExit()
+void CbMoveEndEffectorRelative::onExit()
 {
 }
 
-void CbMoveRelative::moveRelative(geometry_msgs::Transform &transformOffset)
+void CbMoveEndEffectorRelative::moveRelative(geometry_msgs::Transform &transformOffset)
 {
     auto &moveGroupInterface = movegroupClient_->moveGroupClientInterface;
 
@@ -46,14 +54,14 @@ void CbMoveRelative::moveRelative(geometry_msgs::Transform &transformOffset)
 
     moveGroupInterface.setPlanningTime(1.0);
 
-    ROS_INFO_STREAM("[CbMoveRelative] Target End efector Pose: " << targetObjectPose);
+    ROS_INFO_STREAM("[CbMoveEndEffectorRelative] Target End efector Pose: " << targetObjectPose);
 
     moveGroupInterface.setPoseTarget(targetObjectPose);
     moveGroupInterface.setPoseReferenceFrame("/map");
 
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
     bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    ROS_INFO_NAMED("CbMoveRelative", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("CbMoveEndEffectorRelative", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
     if (success)
     {
@@ -61,18 +69,18 @@ void CbMoveRelative::moveRelative(geometry_msgs::Transform &transformOffset)
 
         if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
         {
-            ROS_INFO("[CbMoveRelative] motion execution succedded");
+            ROS_INFO("[CbMoveEndEffectorRelative] motion execution succedded");
             movegroupClient_->postEventMotionExecutionSucceded();
         }
         else
         {
-            ROS_INFO("[CbMoveRelative] motion execution failed");
+            ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
             movegroupClient_->postEventMotionExecutionFailed();
         }
     }
     else
     {
-        ROS_INFO("[CbMoveRelative] motion execution failed");
+        ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
         movegroupClient_->postEventMotionExecutionFailed();
     }
 }

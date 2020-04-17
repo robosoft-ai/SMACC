@@ -18,7 +18,7 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrArm, CbMoveAbsolute>();
+        configure_orthogonal<OrArm, CbMoveEndEffector>();
 
         //   configure_orthogonal<OrNavigation, CbNavigateBackwards>(2);
         //   configure_orthogonal<OrLED, CbLEDOff>();
@@ -38,7 +38,7 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
         placingPose.pose.position.z += 0.3;
 
         auto moveAbsolute = this->getOrthogonal<OrArm>()
-                                ->getClientBehavior<CbMoveAbsolute>();
+                                ->getClientBehavior<CbMoveEndEffector>();
 
         computeCubeGraspingOrientation(placingPose);
         moveAbsolute->targetPose = placingPose;

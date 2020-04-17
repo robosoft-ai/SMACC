@@ -1,3 +1,9 @@
+/*****************************************************************************************************************
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018-2020
+ * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
+ *
+ ******************************************************************************************************************/
+
 #pragma once
 
 #include <moveit_z_client/cl_movegroup.h>
@@ -7,7 +13,7 @@ namespace sm_moveit
 {
 namespace cl_movegroup
 {
-class CbMoveAbsolute : public smacc::SmaccClientBehavior
+class CbMoveEndEffector : public smacc::SmaccClientBehavior
 {
 
 private:
@@ -15,8 +21,8 @@ private:
 
 public:
   geometry_msgs::PoseStamped targetPose;
-  CbMoveAbsolute();
-  CbMoveAbsolute(geometry_msgs::PoseStamped target_pose);
+  CbMoveEndEffector();
+  CbMoveEndEffector(geometry_msgs::PoseStamped target_pose);
   virtual void onEntry() override;
   virtual void onExit() override;
 

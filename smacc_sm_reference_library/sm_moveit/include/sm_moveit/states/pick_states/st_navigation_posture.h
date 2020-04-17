@@ -46,7 +46,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         /*
         //geometry_msgs::Transform transform;
         //transform.rotation.w=1;
-        auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveRelative>();
+        auto moveCartesianRelative = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveEndEffectorRelative>();
 
         auto quat = tf::createQuaternionFromRPY(M_PI, 0, 0);
         moveCartesianRelative->transform_.translation.z = 0.05;
