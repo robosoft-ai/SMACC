@@ -28,7 +28,30 @@ void CbMoveJoints::onEntry()
     moveGroupInterface.setJointValueTarget(jointValueTarget_);
 
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-    moveGroupInterface.plan(computedMotionPlan);
+
+    bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO_NAMED("CbMoveJoints", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+
+    if (success)
+    {
+        auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+
+        if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+        {
+            ROS_INFO("[CbMoveJoints] motion execution succedded");
+            movegroupClient_->postEventMotionExecutionSucceded();
+        }
+        else
+        {
+            ROS_INFO("[CbMoveJoints] motion execution failed");
+            movegroupClient_->postEventMotionExecutionFailed();
+        }
+    }
+    else
+    {
+        ROS_INFO("[CbMoveJoints] motion execution failed");
+        movegroupClient_->postEventMotionExecutionFailed();
+    }
 }
 
 void CbMoveJoints::onExit()

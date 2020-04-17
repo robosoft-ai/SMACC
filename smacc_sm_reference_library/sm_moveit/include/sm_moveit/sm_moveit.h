@@ -19,7 +19,6 @@ using namespace sm_moveit::cl_movegroup;
 using namespace sm_moveit::cl_gripper;
 
 //STATE REACTORS
-
 using namespace smacc::state_reactors;
 
 // ORTHOGONALS
