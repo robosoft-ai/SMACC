@@ -7,23 +7,17 @@ namespace sm_moveit
 {
 namespace cl_movegroup
 {
-class CbMoveRelative : public smacc::SmaccClientBehavior
+class CbMoveJointSpaceAbsolute : public smacc::SmaccClientBehavior
 {
 private:
     ClMoveGroup *movegroupClient_;
 
 public:
-    geometry_msgs::Transform transform_;
-
-    CbMoveRelative();
-
-    CbMoveRelative(geometry_msgs::Transform transform);
-
+    geometry_msgs::PoseStamped targetPose;
+    CbMoveJointSpaceAbsolute();
+    CbMoveJointSpaceAbsolute(geometry_msgs::PoseStamped target_pose);
     virtual void onEntry() override;
-
     virtual void onExit() override;
-
-    void moveRelative(geometry_msgs::Transform &transformOffset);
 };
 } // namespace cl_movegroup
 } // namespace sm_moveit

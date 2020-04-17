@@ -19,6 +19,8 @@ public:
     virtual void onEntry() override;
 
     virtual void onExit() override;
+
+    void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
 };
 } // namespace cl_movegroup
 } // namespace sm_moveit

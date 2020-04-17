@@ -34,6 +34,15 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()
                                          ->getClientBehavior<CbMoveCartesianRelative>();
 
+        std::vector<std::string> namesposes = moveGroupClient->moveGroupClientInterface.getNamedTargets();
+
+        ROS_INFO("--- named poses: ");
+        for (auto &posename : namesposes)
+        {
+            ROS_INFO_STREAM(" - named pose: " << posename);
+        }
+        ROS_INFO("--- named poses");
+
         /*
         //geometry_msgs::Transform transform;
         //transform.rotation.w=1;
@@ -42,9 +51,11 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         auto quat = tf::createQuaternionFromRPY(M_PI, 0, 0);
         moveCartesianRelative->transform_.translation.z = 0.05;
         tf::quaternionTFToMsg(quat, moveCartesianRelative->transform_.rotation);
-*/
+        */
+
         moveCartesianRelative->offset_.z = -0.35;
         auto currentTable = perceptionSystem->getCurrentTable();
+
         if (currentTable == RobotProcessStatus::TABLE0)
         {
             moveCartesianRelative->offset_.x = -0.25;

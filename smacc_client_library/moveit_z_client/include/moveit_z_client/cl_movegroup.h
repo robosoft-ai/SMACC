@@ -57,8 +57,8 @@ int32 val
 class ClMoveGroup : public smacc::ISmaccClient
 {
 private:
-  std::function<void()> postEventMotionExecutionSucceded;
-  std::function<void()> postEventMotionExecutionFailed;
+  std::function<void()> postEventMotionExecutionSucceded_;
+  std::function<void()> postEventMotionExecutionFailed_;
 
   smacc::SmaccSignal<void()> onSucceded_;
   smacc::SmaccSignal<void()> onFailed_;
@@ -71,15 +71,18 @@ public:
 
   virtual ~ClMoveGroup();
 
+  void postEventMotionExecutionSucceded();
+  void postEventMotionExecutionFailed();
+
   template <typename TObjectTag, typename TDerived>
   void configureEventSourceTypes()
   {
-    postEventMotionExecutionSucceded = [=]() {
+    postEventMotionExecutionSucceded_ = [=]() {
       this->onSucceded_();
       this->postEvent<MoveGroupMotionExecutionSucceded<TDerived, TObjectTag>>();
     };
 
-    postEventMotionExecutionFailed = [=]() {
+    postEventMotionExecutionFailed_ = [=]() {
       this->onFailed_();
       this->postEvent<MoveGroupMotionExecutionFailed<TDerived, TObjectTag>>();
     };
@@ -96,17 +99,6 @@ public:
   {
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
-
-  void moveToAbsolutePose(geometry_msgs::PoseStamped &targetPose);
-
-  bool moveEndEfectorToPose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
-                            moveit::planning_interface::PlanningSceneInterface &planningSceneInterface,
-                            geometry_msgs::PoseStamped &targetObjectPose);
-
-  void moveRelative(geometry_msgs::Transform &transformOffset);
-
-  // keeps the end efector orientation fixed
-  void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
 };
 } // namespace cl_movegroup
 } // namespace sm_moveit
