@@ -44,6 +44,7 @@ class SsPlaceObject;
 class StRotate180;
 class StForwardNextTable;
 class StInitialPosture;
+class StUndoIncorrectForward;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -81,8 +82,8 @@ struct SmMoveIt
 //STATES
 #include <sm_moveit/states/st_initial_posture.h>
 #include <sm_moveit/states/st_forward.h>
+#include <sm_moveit/states/st_undo_incorrect_forward.h>
 #include <sm_moveit/states/st_rotate.h>
-
 
 // #include <sm_moveit/states/st_open_gripper.h>
 

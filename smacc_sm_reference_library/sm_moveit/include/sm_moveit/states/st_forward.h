@@ -10,9 +10,8 @@ struct StForwardNextTable : smacc::SmaccState<StForwardNextTable, SmMoveIt>
     typedef mpl::list<
 
         // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
-        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS2::SsPlaceObject, SUCCESS>
-        //Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, ABORT>
-
+        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS2::SsPlaceObject, SUCCESS>,
+        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StUndoIncorrectForward, ABORT>
         >
         reactions;
 
@@ -41,7 +40,7 @@ struct StForwardNextTable : smacc::SmaccState<StForwardNextTable, SmMoveIt>
         else // the robot in at positive x-axis side
         {
                 // target is at negative x-axis side at point x = -1
-                dist = fabs(-1 - currentPose.position.x) + offset;
+                dist = fabs(-1. - currentPose.position.x) + offset;
              
         }
 
