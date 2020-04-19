@@ -1,9 +1,9 @@
  <h2>State Machine Diagram</h2>
 <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_packml/docs/smacc_state_machine_20200205-104849.dot.svg" width="950" align="center" border="10"/> 
 
-<h2>Description</h2> This example implements the 17 state, PackML Interface State Model, shown on page 17, Fig.9 of the <a href="http://omac.org/wp-content/uploads/2016/11/PackML_Unit_Machine_Implementation_Guide-V1-00.pdf">PackML Unit Machine Implementation Guide</a>.<br></br>
+<h2>Description</h2> This example demonstrates the use of both MoveIt and MoveBase within the same state machine, and cross orthogonal communication between the robot arm orthogonal and the perception orthogonal.<br></br>
  
- <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__packML.html">Doxygen Namespace & Class Reference</a> 
+ <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
@@ -28,7 +28,7 @@ source ~/catkin_ws/devel/setup.bash
 And then run the launch file...
 
 ```
-roslaunch sm_packml sm_packml.launch
+roslaunch sm_moveit sm_moveit.launch
 ```
 
 <h2>Viewer Instructions</h2>
