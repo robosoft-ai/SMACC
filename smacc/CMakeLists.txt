@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   controller_manager_msgs
 )
 
-find_package(log4cxx)
 
 ################################################
 ## Declare ROS messages, services and actions ##
