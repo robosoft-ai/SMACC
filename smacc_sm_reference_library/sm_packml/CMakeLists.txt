@@ -164,7 +164,7 @@ install(TARGETS ${PROJECT_NAME}_node
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-   launch/sm_packml.launch
+   launch/sm_packML.launch
    # myfile2
    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
  )
