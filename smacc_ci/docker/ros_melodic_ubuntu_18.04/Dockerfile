@@ -16,10 +16,10 @@ RUN apt-get update && apt-get install -y \
 RUN echo "regen"
 RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools curl
 
-RUN curl -s  https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecloud.io/install/repositories/reelrbtx/SMACC_viewer/script.deb.sh  | bash
-RUN apt-get -y install ros-melodic-smacc-viewer
+RUN curl -s https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecloud.io/install/repositories/reelrbtx/SMACC_viewer/script.deb.sh  | bash
+RUN apt-get -y install ros-melodic-smacc-viewer python-gobject-2 ros-melodic-python-qt-binding python-gtk2 python-gi python-gi-cairo gir1.2-gtk-3.0
 
-
+ENTRYPOINT bash #-c "export DISPLAY=:0; source /opt/ros/melodic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
 #RUN git clone https://github.com/reelrbtx/SMACC.git /root/src
