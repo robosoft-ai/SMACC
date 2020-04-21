@@ -9,7 +9,6 @@ ARG GITHUB_TOKEN
 ARG PACKAGE_CLOUD_USER
 ARG PACKAGE_CLOUD_TOKEN
 
-
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
@@ -54,9 +53,7 @@ RUN echo "downloading smacc repo"
 RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
 
-RUN if [ "$ROS_VERSION_NAME" = "kinetic" ] ; git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer -b master ; git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer -b melodic-devel; fi
-
-RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer
+RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer -b $ROS_VERSION_NAME-devel
 
 RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
 WORKDIR /root
