@@ -12,6 +12,8 @@ smacc_sensors:
   ubuntu: [ros-melodic-smacc-sensors]
 python-gobject-2:
   ubuntu: [python-gobject-2]
+gir1.2-gtk:
+  ubuntu: [gir1.2-gtk]
 
 #smacc_interface_components:
 #  ubuntu: [ros-melodic-smacc-interface-components]
