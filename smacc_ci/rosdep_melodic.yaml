@@ -10,6 +10,8 @@ smacc_navigation_plugin:
   ubuntu: [ros-melodic-smacc-navigation-plugin]
 smacc_sensors:
   ubuntu: [ros-melodic-smacc-sensors]
+python-gobject-2:
+  ubuntu: [python-gobject-2]
 
 #smacc_interface_components:
 #  ubuntu: [ros-melodic-smacc-interface-components]
