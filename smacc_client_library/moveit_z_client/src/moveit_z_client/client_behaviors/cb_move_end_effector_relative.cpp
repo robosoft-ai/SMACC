@@ -8,9 +8,7 @@
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 CbMoveEndEffectorRelative::CbMoveEndEffectorRelative()
 {
@@ -25,6 +23,7 @@ void CbMoveEndEffectorRelative::onEntry()
 {
     ROS_INFO_STREAM("[CbMoveEndEffectorRelative] Transform end effector pose relative: " << transform_);
     this->requiresClient(movegroupClient_);
+    
     moveRelative(transform_);
 }
 
@@ -35,6 +34,7 @@ void CbMoveEndEffectorRelative::onExit()
 void CbMoveEndEffectorRelative::moveRelative(geometry_msgs::Transform &transformOffset)
 {
     auto &moveGroupInterface = movegroupClient_->moveGroupClientInterface;
+
 
     auto referenceStartPose = moveGroupInterface.getCurrentPose();
     tf::Quaternion currentOrientation;
@@ -84,5 +84,4 @@ void CbMoveEndEffectorRelative::moveRelative(geometry_msgs::Transform &transform
         movegroupClient_->postEventMotionExecutionFailed();
     }
 }
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

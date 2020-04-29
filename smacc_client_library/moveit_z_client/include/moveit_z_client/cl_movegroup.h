@@ -15,9 +15,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Transform.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 
 template <typename TSource, typename TObjectTag>
@@ -106,5 +104,4 @@ public:
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
 };
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

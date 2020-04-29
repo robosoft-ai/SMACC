@@ -6,9 +6,7 @@
 
 #include <moveit_z_client/client_behaviors/cb_move_cartesian_relative.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 CbMoveCartesianRelative::CbMoveCartesianRelative()
 {
@@ -91,5 +89,4 @@ void CbMoveCartesianRelative::moveRelativeCartesian(geometry_msgs::Vector3 &offs
 
     ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)", fraction * 100.0);
 }
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

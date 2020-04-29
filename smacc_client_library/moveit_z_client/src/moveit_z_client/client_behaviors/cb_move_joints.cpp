@@ -6,9 +6,7 @@
 
 #include <moveit_z_client/client_behaviors/cb_move_joints.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 
 CbMoveJoints::CbMoveJoints(const std::map<std::string, double> &jointValueTarget)
@@ -57,5 +55,4 @@ void CbMoveJoints::onEntry()
 void CbMoveJoints::onExit()
 {
 }
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

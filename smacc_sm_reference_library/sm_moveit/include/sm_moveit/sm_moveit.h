@@ -12,7 +12,7 @@
 #include <sm_moveit/clients/gripper_client/client_behaviors/cb_open_gripper.h>
 
 // CLIENT NAMESPACES (to improve readability in state transitions and behavior configurations)
-using namespace sm_moveit::cl_movegroup;
+using namespace moveit_z_client;
 using namespace sm_moveit::cl_gripper;
 
 //STATE REACTORS

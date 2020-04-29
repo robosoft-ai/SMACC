@@ -6,17 +6,16 @@
 
 #include <moveit_z_client/client_behaviors/cb_move_end_effector.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 CbMoveEndEffector::CbMoveEndEffector()
 {
 }
 
-CbMoveEndEffector::CbMoveEndEffector(geometry_msgs::PoseStamped target_pose)
+CbMoveEndEffector::CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std::string tip_link)
     : targetPose(target_pose)
 {
+    tip_link_ = tip_link;
 }
 
 void CbMoveEndEffector::onEntry()
@@ -41,8 +40,8 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
 
     ROS_INFO_STREAM("[CbMoveEndEffector] Target End efector Pose: " << targetObjectPose);
 
-    moveGroupInterface.setPoseTarget(targetObjectPose);
-    moveGroupInterface.setPoseReferenceFrame("/map");
+    moveGroupInterface.setPoseTarget(targetObjectPose, tip_link_);
+    moveGroupInterface.setPoseReferenceFrame(targetObjectPose.header.frame_id);
 
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
     bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
@@ -72,5 +71,4 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
     return success;
 }
 
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

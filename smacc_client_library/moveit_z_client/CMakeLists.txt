@@ -10,7 +10,7 @@ project(moveit_z_client)
 find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Eigen3 REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -99,10 +99,10 @@ find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS}
   LIBRARIES moveit_z_client
-  CATKIN_DEPENDS smacc
-#  DEPENDS system_lib
+  CATKIN_DEPENDS smacc moveit_ros_planning_interface
+  DEPENDS Eigen3
 )
 
 ###########
@@ -116,6 +116,7 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 ## Your package locations should be listed before other locations
 include_directories(
  include
+ ${EIGEN3_INCLUDE_DIRS}
  ${catkin_INCLUDE_DIRS}
 )
 

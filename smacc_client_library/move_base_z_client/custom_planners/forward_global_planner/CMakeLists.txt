@@ -20,6 +20,7 @@ find_package(catkin REQUIRED
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS Eigen3)
+find_package(Eigen3)
 
 set(CMAKE_CXX_STANDARD 14)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
@@ -110,7 +111,7 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include
+  INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS}
   LIBRARIES forward_global_planner
   CATKIN_DEPENDS costmap_2d dynamic_reconfigure geometry_msgs nav_msgs roscpp tf
 #  DEPENDS system_lib
@@ -123,7 +124,8 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
- include
+  include
+  ${EIGEN3_INCLUDE_DIRS}
   ${catkin_INCLUDE_DIRS}
 )
 

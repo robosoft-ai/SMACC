@@ -5,7 +5,7 @@
 
 namespace sm_moveit
 {
-using namespace cl_movegroup;
+using namespace moveit_z_client;
 class OrArm : public smacc::Orthogonal<OrArm>
 {
 public:

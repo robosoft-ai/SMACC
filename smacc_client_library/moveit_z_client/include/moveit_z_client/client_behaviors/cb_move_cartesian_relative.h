@@ -9,9 +9,7 @@
 #include <moveit_z_client/cl_movegroup.h>
 #include <smacc/smacc_client_behavior.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
 {
@@ -28,5 +26,4 @@ public:
 
     void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
 };
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

@@ -1,9 +1,13 @@
 #include <smacc/smacc.h>
 
-namespace sm_moveit {
-namespace SS1 {
-namespace sm_moveit {
-namespace pick_states {
+namespace sm_moveit
+{
+namespace SS1
+{
+namespace sm_moveit
+{
+namespace pick_states
+{
 
 //FORWARD DECLARATION OF INNER STATES
 class StCloseGripper;
@@ -25,8 +29,8 @@ public:
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvSequenceFinished<SS1::StNavigationPosture> , StRotate180 ,SUCCESS>
-    >reactions;
+        Transition<EvSequenceFinished<SS1::StNavigationPosture>, StRotate180, SUCCESS>>
+        reactions;
 
     // STATE FUNCTIONS
     static void staticConfigure()
@@ -47,7 +51,7 @@ public:
     {
         ROS_ERROR("Moveit motion failed, retrying");
         ClPerceptionSystem *perceptionSystem;
-        this->requiresClient(perceptionSystem);   
+        this->requiresClient(perceptionSystem);
         perceptionSystem->retryCubeAfterFail();
     }
 };

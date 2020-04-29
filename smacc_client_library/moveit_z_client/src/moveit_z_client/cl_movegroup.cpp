@@ -5,9 +5,7 @@
  ******************************************************************************************************************/
 
 #include <moveit_z_client/cl_movegroup.h>
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 
 ClMoveGroup::ClMoveGroup(std::string groupName)
@@ -32,5 +30,4 @@ void ClMoveGroup::postEventMotionExecutionFailed()
     postEventMotionExecutionFailed_();
 }
 
-} // namespace cl_movegroup
-} // namespace sm_moveit
+} // namespace moveit_z_client

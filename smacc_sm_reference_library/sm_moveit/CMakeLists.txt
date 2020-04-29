@@ -117,7 +117,6 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
- ${EIGEN3_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library

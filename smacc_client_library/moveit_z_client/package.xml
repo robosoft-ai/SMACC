@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <package format="2">
   <name>moveit_z_client</name>
   <version>0.0.0</version>
@@ -53,6 +53,8 @@
   <depend>smacc</depend>
   <depend>moveit</depend>
   <depend>tf</depend>
+  <depend>moveit_ros_planning_interface</depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>

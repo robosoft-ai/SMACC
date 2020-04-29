@@ -10,7 +10,7 @@ from moveit_python import MoveGroupInterface, PlanningSceneInterface
 class FakePerceptionNode:
     def __init__(self):
         self.planning_scene = PlanningSceneInterface("map")
-        
+
         self.tf_broacaster = tf.TransformBroadcaster()
         self.tf_listener = tf.TransformListener()
 
@@ -61,7 +61,7 @@ class FakePerceptionNode:
             rospy.logdebug("updating planning scene")
 
             attached_objects = self.planning_scene.getKnownAttachedObjects()
-            rospy.loginfo (attached_objects)
+            rospy.loginfo(attached_objects)
 
             #self.update_planning_scene = False
             if self.table_collision and not "cube_0" in attached_objects:
@@ -69,9 +69,8 @@ class FakePerceptionNode:
                     #self.planning_scene.removeCollisionObject("table_" + str(i))
                     pos = table_transf[0]
                     self.planning_scene.addBox(
-                        "table_" + str(i), 1.2, 1.2, 0.001, pos[0],  pos[1],  0.7)#0.68
-            
-            
+                        "table_" + str(i), 1.2, 1.2, 0.001, pos[0],  pos[1],  0.7)  # 0.68
+
             if self.cube_collision and not "cube_0" in attached_objects:
                 for i, cube_transf in enumerate(cube_transforms):
                     #self.planning_scene.removeCollisionObject("cube_" + str(i))
@@ -81,11 +80,11 @@ class FakePerceptionNode:
                     #self.cube_collision = False
 
     def propagate_link_states_to_tf(self, linksmsg,  link_name_filter, object_prefix, global_frame):
-        cubeposes = [b for i, b in enumerate(
+        filteredLinkPoses = [b for i, b in enumerate(
             linksmsg.pose) if link_name_filter in linksmsg.name[i]]
 
         transforms = []
-        for i, cubepose in enumerate(cubeposes):
+        for i, cubepose in enumerate(filteredLinkPoses):
             quat = [cubepose.orientation.x, cubepose.orientation.y,
                     cubepose.orientation.z, cubepose.orientation.w]
             trans = [cubepose.position.x,

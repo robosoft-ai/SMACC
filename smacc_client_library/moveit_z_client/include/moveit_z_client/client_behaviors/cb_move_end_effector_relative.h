@@ -9,13 +9,11 @@
 #include <moveit_z_client/cl_movegroup.h>
 #include <smacc/smacc_client_behavior.h>
 
-namespace sm_moveit
-{
-namespace cl_movegroup
+namespace moveit_z_client
 {
 class CbMoveEndEffectorRelative : public smacc::SmaccClientBehavior
 {
-private:
+protected:
     ClMoveGroup *movegroupClient_;
 
 public:
@@ -31,5 +29,5 @@ public:
 
     void moveRelative(geometry_msgs::Transform &transformOffset);
 };
-} // namespace cl_movegroup
-} // namespace sm_moveit
+
+} // namespace moveit_z_client
