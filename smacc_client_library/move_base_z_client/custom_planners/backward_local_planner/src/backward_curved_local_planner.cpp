@@ -218,7 +218,7 @@ namespace cl_move_base_z
             // getting carrot goal information
             tf::Quaternion q = tfpose.getRotation();
             const geometry_msgs::PoseStamped &carrotgoalpose = backwardsPlanPath_[currentCarrotPoseIndex_];
-            ROS_INFO_STREAM("goal pose current index: " << carrotgoalpose);
+            ROS_DEBUG_STREAM("goal pose current index: " << carrotgoalpose);
             const geometry_msgs::Point &carrotGoalPosition = carrotgoalpose.pose.position;
 
             tf::Quaternion goalQ;
