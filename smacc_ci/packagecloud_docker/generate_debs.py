@@ -141,7 +141,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'multirole_sensor_client',
         'ros_publisher_client',
         'ros_timer_client',
-        #        'sm_dance_bot',
+        'sm_dance_bot_strikes_back',
         #        'sm_dance_bot_2',
         #        'sm_viewer_sim',
         #        'sm_three_some'
