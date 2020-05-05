@@ -11,19 +11,11 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-robot=1.4.1-0* \
     && rm -rf /var/lib/apt/lists/*
 
-# SYSTEM DEPENDENCIES
-#----------------------------------------------------------
-
 RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools curl
-
 
 RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools curl
 RUN curl -s  https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecloud.io/install/repositories/reelrbtx/SMACC_viewer/script.deb.sh  | bash
 RUN apt-get install -y ros-kinetic-smacc-viewer
 
-# DOWNLOAD MAIN REPOSITORY
-#----------------------------------------------------------
-#RUN git clone https://github.com/reelrbtx/SMACC.git /root/src
-#RUN  bash -c "source /opt/ros/kinetic/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
-#RUN  bash -c "source /opt/ros/kinetic/setup.bash; cd /root; catkin build"
-
+WORKDIR /root
+ENTRYPOINT bash -c "source /opt/ros/kinetic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
