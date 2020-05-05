@@ -21,4 +21,5 @@ RUN apt-get install -y ros-kinetic-smacc-viewer
 #RUN apt-get -y install python-gobject-2 ros-kinetic-python-qt-binding python-gtk2 python-gi python-gi-cairo gir1.2-gtk-3.0
 
 WORKDIR /root
-ENTRYPOINT bash -c "source /opt/ros/kinetic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
+ADD entrypoint.sh /entrypoint.sh
+#ENTRYPOINT bash -c "source /opt/ros/kinetic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
