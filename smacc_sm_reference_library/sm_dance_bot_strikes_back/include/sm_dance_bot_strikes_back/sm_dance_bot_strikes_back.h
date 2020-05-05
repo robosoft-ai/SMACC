@@ -8,14 +8,9 @@
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
+#include <move_base_z_client_plugin/client_behaviors.h>
 
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_on.h>
 #include <sm_dance_bot_strikes_back/clients/cl_led/client_behaviors/cb_led_off.h>
@@ -62,24 +57,13 @@ namespace sm_dance_bot_strikes_back
 //STATE FORWARD DECLARATIONS
 class StAcquireSensors;
 class StEventCountDown;
-class StRotateDegrees4;
-class StNavigateForward1;
-class StNavigateToWaypoint1;
 class StNavigateToWaypointsX;
-class StRotateDegrees2;
-class StRotateDegrees1;
-class StNavigateReverse2;
-class StRotateDegrees3;
-class StNavigateReverse1;
-class StNavigateForward2;
-class StRotateDegrees5;
-class StNavigateReverse3;
-class StRotateDegrees6;
-class StNavigateReverse3;
+class StFpatternPrealignment;
+class StSpatternPrealignment;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
-// MEGASTATE FORWARD DECLARATIONS
+// MODE STATES FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
 
@@ -116,7 +100,7 @@ struct EvGlobalError : sc::event<EvGlobalError>
 } // namespace sm_dance_bot_strikes_back
 
 using namespace sm_dance_bot_strikes_back;
-using namespace ros_timer_client;
+using namespace cl_ros_timer;
 using namespace smacc;
 
 namespace sm_dance_bot_strikes_back
@@ -153,7 +137,7 @@ struct SmDanceBotStrikesBack
 
 } // namespace sm_dance_bot_strikes_back
 
-//MEGASTATES
+//MODE STATES
 #include <sm_dance_bot_strikes_back/modestates/ms_dance_bot_run_mode.h>
 #include <sm_dance_bot_strikes_back/modestates/ms_dance_bot_recovery_mode.h>
 
@@ -171,13 +155,3 @@ struct SmDanceBotStrikesBack
 #include <sm_dance_bot_strikes_back/states/st_spattern_prealignment.h>
 
 #include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoints_x.h>
-
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_4.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_forward_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_to_waypoint_1.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_2.h>
-#include <sm_dance_bot_strikes_back/states/st_rotate_degrees_3.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_1.h>
-#include <sm_dance_bot_strikes_back/states/st_navigate_reverse_3.h>

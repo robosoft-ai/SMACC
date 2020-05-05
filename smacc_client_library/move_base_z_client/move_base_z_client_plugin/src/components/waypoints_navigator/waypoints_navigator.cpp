@@ -1,13 +1,15 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 #include <fstream>
 #include <ros/ros.h>
 #include <yaml-cpp/yaml.h>
 #include <tf/transform_datatypes.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 WaypointNavigator::WaypointNavigator()
     : currentWaypoint_(0),
@@ -28,8 +30,12 @@ void WaypointNavigator::sendNextGoal()
   {
     auto &next = waypoints_[currentWaypoint_];
 
+    auto odomTracker = client_->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
+    auto p = client_->getComponent<cl_move_base_z::Pose>();
+    auto pose = p->toPoseMsg();
+
     ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
+    goal.target_pose.header.frame_id = p->getReferenceFrame();
     goal.target_pose.header.stamp = ros::Time::now();
     goal.target_pose.pose = next;
 
@@ -38,6 +44,13 @@ void WaypointNavigator::sendNextGoal()
 
     ros::spinOnce();
     ros::Duration(5).sleep();
+
+    if (odomTracker != nullptr)
+    {
+      odomTracker->pushPath();
+      odomTracker->setStartPoint(pose);
+      odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
+    }
 
     this->succeddedConnection_ = client_->onSucceeded(&WaypointNavigator::onGoalReached, this);
     client_->sendGoal(goal);
@@ -155,4 +168,4 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
     ROS_ERROR_STREAM("Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

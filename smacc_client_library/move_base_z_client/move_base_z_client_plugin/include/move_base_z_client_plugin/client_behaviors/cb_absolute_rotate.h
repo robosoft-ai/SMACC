@@ -7,13 +7,13 @@
 
 #include <smacc/smacc_client_behavior.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 #include <boost/optional.hpp>
 #include <tf/transform_listener.h>
 #include <tf/tf.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class CbAbsoluteRotate : public smacc::SmaccClientBehavior
 {
@@ -23,11 +23,19 @@ public:
     ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> absoluteGoalAngleDegree;
+    boost::optional<float> yawGoalTolerance;
+    
 
     CbAbsoluteRotate();
 
-    CbAbsoluteRotate(float absoluteGoalAngleDegree);
+    CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = 0.15);
+
 
     virtual void onEntry() override;
+    virtual void onExit() override;
+
+    private:
+        void setLocalPlannerYawTolerance(float newtolerance);
+        float oldYawTolerance;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

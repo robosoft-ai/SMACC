@@ -18,12 +18,12 @@
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
 #include <forward_global_planner/move_base_z_client_tools.h>
-
+          
 //register this planner as a BaseGlobalPlanner plugin
 
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace backward_global_planner
 {
@@ -83,7 +83,7 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, d
 {
     double phi = tf::getYaw(pose.orientation);
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/odom";
+    marker.header.frame_id = this->costmap_ros_->getGlobalFrameID();
     marker.header.stamp = ros::Time::now();
     marker.ns = "my_namespace2";
     marker.id = 0;
@@ -141,10 +141,10 @@ bool BackwardGlobalPlanner::createPureSpiningAndStragihtLineBackwardPath(const g
         double offset = angles::shortest_angular_distance(startyaw, heading_direction);
         heading_direction = startyaw + offset;
 
-        prevState = move_base_z_client::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
+        prevState = cl_move_base_z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
         //ROS_INFO("2 - going forward keep orientation pure straight");
 
-        prevState = move_base_z_client::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
+        prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
     }
     else
     {
@@ -229,7 +229,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 
     //ROS_INFO("3 - heading to goal orientation");
     //double goalOrientation = angles::normalize_angle(tf::getYaw(goal.pose.orientation));
-    //move_base_z_client::makePureSpinningSubPlan(prevState,goalOrientation,plan);
+    //cl_move_base_z::makePureSpinningSubPlan(prevState,goalOrientation,plan);
 
     //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose, 1.0, 0, 1.0);
@@ -246,7 +246,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
-    planMsg.header.frame_id = "/odom";
+    planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();
 
         // check plan rejection
     bool acceptedGlobalPlan = true;
@@ -368,4 +368,4 @@ bool BackwardGlobalPlanner::commandServiceCall(::backward_global_planner::comman
     return true;
 }
 } // namespace backward_global_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

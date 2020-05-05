@@ -17,7 +17,7 @@ public:
 
     inline ISmaccStateMachine *getStateMachine();
 
-    void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> statereactor);
+    void addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clientBehavior);
 
     void runtimeConfigure();
 

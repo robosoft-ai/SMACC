@@ -11,7 +11,7 @@
 #include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
 #include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class CbNavigateBackwards : public smacc::SmaccClientBehavior
 {
@@ -23,8 +23,8 @@ public:
 
     tf::TransformListener listener;
 
-    move_base_z_client::ClMoveBaseZ *moveBaseClient_;
-    move_base_z_client::odom_tracker::OdomTracker *odomTracker_;
+    cl_move_base_z::ClMoveBaseZ *moveBaseClient_;
+    cl_move_base_z::odom_tracker::OdomTracker *odomTracker_;
 
     CbNavigateBackwards(float backwardDistance);
 
@@ -34,4 +34,4 @@ public:
 
     virtual void onExit() override;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

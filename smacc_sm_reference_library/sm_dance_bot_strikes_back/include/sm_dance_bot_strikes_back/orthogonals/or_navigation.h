@@ -9,7 +9,7 @@
 
 namespace sm_dance_bot_strikes_back
 {
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 class OrNavigation : public smacc::Orthogonal<OrNavigation>
 {
@@ -25,14 +25,14 @@ public:
         movebaseClient->createComponent<PlannerSwitcher>();
 
         // create odom tracker
-        movebaseClient->createComponent<OdomTracker>("/");
+        movebaseClient->createComponent<OdomTracker>();
 
         // create waypoints navigator component
         auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();
         loadWaypointsFromYaml(waypointsNavigator);
 
         // change this to skip some points of the yaml file, default = 0
-        waypointsNavigator->currentWaypoint_ = 0;
+        waypointsNavigator->currentWaypoint_ = 3;
     }
 
     void loadWaypointsFromYaml(WaypointNavigator *waypointsNavigator)

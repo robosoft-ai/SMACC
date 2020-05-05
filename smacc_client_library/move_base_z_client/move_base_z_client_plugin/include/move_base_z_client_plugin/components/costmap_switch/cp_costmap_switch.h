@@ -5,19 +5,19 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/client_bases/smacc_action_client.h>
+#include <functional>
+#include <array>
+#include <ros/ros.h>
+
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <smacc/component.h>
-
-#include <ros/ros.h>
-#include <functional>
 
 #include <dynamic_reconfigure/DoubleParameter.h>
 #include <dynamic_reconfigure/Reconfigure.h>
 #include <dynamic_reconfigure/Config.h>
-#include <array>
 
-namespace move_base_z_client
+
+namespace cl_move_base_z
 {
 class CostmapProxy;
 
@@ -54,7 +54,7 @@ public:
 
 private:
     std::map<std::string, std::shared_ptr<CostmapProxy>> costmapProxies;
-    move_base_z_client::ClMoveBaseZ *owner_;
+    cl_move_base_z::ClMoveBaseZ *owner_;
 };
 //-------------------------------------------------------------------------
 class CostmapProxy

@@ -1,0 +1,4 @@
+<launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_test2)/config/rosconsole.config" />
+    <node pkg="sm_test2" type="sm_test2_node" name="sm_test2" output="screen"/>
+</launch>

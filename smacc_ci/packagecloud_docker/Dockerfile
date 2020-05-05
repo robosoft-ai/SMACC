@@ -9,7 +9,6 @@ ARG GITHUB_TOKEN
 ARG PACKAGE_CLOUD_USER
 ARG PACKAGE_CLOUD_TOKEN
 
-
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
@@ -49,24 +48,28 @@ RUN gem install package_cloud
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
-RUN echo "regen"
+RUN echo "regen "
 RUN echo "downloading smacc repo"
 RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
-RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer
 
+RUN git clone https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com/reelrbtx/SMACC_Viewer.git /root/src/SMACC_Viewer -b $ROS_VERSION_NAME-devel
+
+RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
 WORKDIR /root
+
+
 
 #RUN echo "regen"
 # BUILD SMACC AND SMACC_VIEWER
 # -----------------------------------------------------------------
-RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y;"
+RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y; "
 RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin build"
 
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------
 
-RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
+RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep_${ROS_VERSION_NAME}.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
 RUN rosdep update
 
 RUN echo "regen"

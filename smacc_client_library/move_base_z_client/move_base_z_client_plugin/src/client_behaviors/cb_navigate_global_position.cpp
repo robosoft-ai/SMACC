@@ -1,9 +1,10 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
-using namespace ::move_base_z_client::odom_tracker;
+using namespace ::cl_move_base_z::odom_tracker;
 
 CbNavigateGlobalPosition::CbNavigateGlobalPosition()
 {
@@ -25,13 +26,18 @@ void CbNavigateGlobalPosition::onEntry()
     // this substate will need access to the "MoveBase" resource or plugin. In this line
     // you get the reference to this resource.
     this->requiresClient(moveBaseClient_);
-    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
     ROS_INFO("Component requirements completed");
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     plannerSwitcher->setDefaultPlanners();
-    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH_FORWARD);
+
+    auto pose = moveBaseClient_->getComponent<cl_move_base_z::Pose>()->toPoseMsg();
+    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+
+    odomTracker->pushPath();
+    odomTracker->setStartPoint(pose);
+    odomTracker->setWorkingMode(WorkingMode::RECORD_PATH);
 
     goToRadialStart();
 }
@@ -39,9 +45,13 @@ void CbNavigateGlobalPosition::onEntry()
 // auxiliar function that defines the motion that is requested to the move_base action server
 void CbNavigateGlobalPosition::goToRadialStart()
 {
+    auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
+    auto referenceFrame = p->getReferenceFrame();
+    auto currentPoseMsg = p->toPoseMsg();
+
     ROS_INFO("Sending Goal to MoveBase");
     ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
+    goal.target_pose.header.frame_id = referenceFrame;
     goal.target_pose.header.stamp = ros::Time::now();
     readStartPoseFromParameterServer(goal);
 
@@ -79,4 +89,4 @@ void CbNavigateGlobalPosition::onExit()
     ROS_INFO("Exiting move goal Action Client");
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

@@ -21,15 +21,15 @@
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace odom_tracker
 {
 
 enum class WorkingMode : uint8_t
 {
-    RECORD_PATH_FORWARD = 0,
-    CLEAR_PATH_BACKWARD = 1,
+    RECORD_PATH = 0,
+    CLEAR_PATH = 1,
     IDLE = 2
 };
 
@@ -37,9 +37,9 @@ enum class WorkingMode : uint8_t
 class OdomTracker : public smacc::ISmaccComponent
 {
 public:
-    // by default, the component start in record_forward mode and publishing the
+    // by default, the component start in record_path mode and publishing the
     // current path
-    OdomTracker(std::string nodeName);
+    OdomTracker(std::string odomtopicName = "/odom", std::string odomFrame = "/odom");
 
     // threadsafe
     /// odom callback: Updates the path - this must be called periodically for each odometry message.
@@ -57,7 +57,7 @@ public:
     void pushPath();
 
     // threadsafe
-    void popPath();
+    void popPath(int pathCount = 1, bool keepPreviousPath = false);
 
     // threadsafe
     void clearPath();
@@ -66,19 +66,27 @@ public:
     void setStartPoint(const geometry_msgs::PoseStamped &pose);
 
     // threadsafe
+    void setStartPoint(const geometry_msgs::Pose &pose);
+
+    // threadsafe
     nav_msgs::Path getPath();
+
+    void logStateString();
 
 protected:
     virtual void rtPublishPaths(ros::Time timestamp);
 
-    // this is called when a new odom message is received in forward mode
-    virtual bool updateForward(const nav_msgs::Odometry &odom);
+    // this is called when a new odom message is received in record path mode
+    virtual bool updateRecordPath(const nav_msgs::Odometry &odom);
 
-    // this is called when a new odom message is received in backwards mode
-    virtual bool updateBackward(const nav_msgs::Odometry &odom);
+    // this is called when a new odom message is received in clear path mode
+    virtual bool updateClearPath(const nav_msgs::Odometry &odom);
+
+    void updateAggregatedStackPath();
 
     // -------------- OUTPUTS ---------------------
     std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathPub_;
+    std::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Path>> robotBasePathStackedPub_;
 
     // --------------- INPUTS ------------------------
     // optional, this class can be used directly calling the odomProcessing method
@@ -87,16 +95,18 @@ protected:
 
     // -------------- PARAMETERS ----------------------
     /// How much distance there is between two points of the path
-    double minPointDistanceForwardThresh_;
+    double recordPointDistanceThreshold_;
 
     /// Meters
-    double minPointDistanceBackwardThresh_;
+    double recordAngularDistanceThreshold_;
 
     /// rads
-    double minPointAngularDistanceForwardThresh_;
+    double clearPointDistanceThreshold_;
 
     /// rads
-    double minPointAngularDistanceBackwardThresh_;
+    double clearAngularDistanceThreshold_;
+
+    std::string odomFrame_;
 
     // --------------- STATE ---------------
     // default true
@@ -108,6 +118,8 @@ protected:
     WorkingMode workingMode_;
 
     std::vector<nav_msgs::Path> pathStack_;
+
+    nav_msgs::Path aggregatedStackPathMsg_;
 
     // subscribes to topic on init if true
     bool subscribeToOdometryTopic_;
@@ -129,4 +141,4 @@ inline double p2pDistance(const geometry_msgs::Point &p1, const geometry_msgs::P
     return dist;
 }
 } // namespace odom_tracker
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

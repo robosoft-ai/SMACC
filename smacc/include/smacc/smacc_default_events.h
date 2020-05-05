@@ -124,9 +124,9 @@ struct EvActionRejected : sc::event<EvActionRejected<TSource, TObjectTag>>
 };
 
 template <typename StateType>
-struct EvStateFinish : sc::event<EvStateFinish<StateType>>
+struct EvSequenceFinished : sc::event<EvSequenceFinished<StateType>>
 {
-  StateType *state;
+  
 };
 
 template <typename TSource>

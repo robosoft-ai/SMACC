@@ -26,8 +26,17 @@ void ISmaccClient::postEvent()
 template <typename TComponent>
 TComponent *ISmaccClient::getComponent()
 {
+    return this->getComponent<TComponent>(std::string());
+}
+
+template <typename TComponent>
+TComponent *ISmaccClient::getComponent(std::string name)
+{
     for (auto &component : components_)
     {
+        if (component.first.name != name)
+            continue;
+
         auto *tcomponent = dynamic_cast<TComponent *>(component.second.get());
         if (tcomponent != nullptr)
         {
@@ -45,9 +54,10 @@ ISmaccStateMachine *ISmaccClient::getStateMachine()
 }
 
 template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
-SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
+SmaccComponentType *ISmaccClient::createNamedComponent(std::string name, TArgs... targs)
 {
-    const std::type_info *componentkey = &typeid(SmaccComponentType);
+    ComponentKey componentkey(&typeid(SmaccComponentType), name);
+
     std::shared_ptr<SmaccComponentType> ret;
 
     auto it = this->components_.find(componentkey);
@@ -60,7 +70,7 @@ SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
         ret = std::shared_ptr<SmaccComponentType>(new SmaccComponentType(targs...));
         ret->setStateMachine(this->getStateMachine());
         ret->initialize(this);
-        
+
         this->components_[componentkey] = ret; //std::dynamic_pointer_cast<smacc::ISmaccComponent>(ret);
         ROS_DEBUG("%s resource is required. Done.", tname.c_str());
     }
@@ -73,6 +83,12 @@ SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
     ret->template configureEventSourceTypes<TOrthogonal, TClient>();
 
     return ret.get();
+}
+
+template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+SmaccComponentType *ISmaccClient::createComponent(TArgs... targs)
+{
+    return this->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(std::string(), targs...);
 }
 
 template <typename TSmaccSignal, typename T>

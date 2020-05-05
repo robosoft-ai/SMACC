@@ -120,7 +120,7 @@ include_directories(
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
-   src/${PROJECT_NAME}/cl_microstrain_mips_client.cpp
+   src/${PROJECT_NAME}/microstrain_mips_client.cpp
  )
 
  target_link_libraries(

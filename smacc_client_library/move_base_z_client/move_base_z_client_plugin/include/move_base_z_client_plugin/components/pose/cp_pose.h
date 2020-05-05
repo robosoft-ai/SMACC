@@ -1,5 +1,5 @@
 /*****************************************************************************************************************
- * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018
+ * ReelRobotix Inc. - Software License Agreement      Copyright (c) 2018-2020
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
@@ -11,25 +11,44 @@
 #include <geometry_msgs/Pose.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_datatypes.h>
+#include <mutex>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
 {
 public:
-    Pose(std::string targetFrame = "/base_link", std::string referenceFrame = "/odom");
+    Pose(std::string poseFrameName = "/base_link", std::string referenceFrame = "/odom");
 
     virtual void update() override;
 
-    inline geometry_msgs::Pose get()
+    void waitTransformUpdate(ros::Rate r = ros::Rate(20));
+    
+    inline geometry_msgs::Pose toPoseMsg()
     {
+        std::lock_guard<std::mutex> guard(m_mutex_);
+        return this->pose_.pose;
+    }
+
+    inline geometry_msgs::PoseStamped toPoseStampedMsg()
+    {
+        std::lock_guard<std::mutex> guard(m_mutex_);
         return this->pose_;
     }
 
+    inline const std::string &getReferenceFrame() const
+    {
+        return referenceFrame_;
+    }
+
+    bool isInitialized;
+
 private:
-    geometry_msgs::Pose pose_;
+    geometry_msgs::PoseStamped pose_;
     tf::TransformListener tfListener_;
-    std::string targetFrame_;
+    std::string poseFrameName_;
     std::string referenceFrame_;
+
+    std::mutex m_mutex_;
 };
-}
+} // namespace cl_move_base_z

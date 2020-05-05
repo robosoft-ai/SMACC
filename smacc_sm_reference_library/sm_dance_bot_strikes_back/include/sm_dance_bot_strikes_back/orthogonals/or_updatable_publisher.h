@@ -10,7 +10,7 @@ class OrUpdatablePublisher : public smacc::Orthogonal<OrUpdatablePublisher>
 public:
     virtual void onInitialize() override
     {
-        auto publisherClient_ = this->createClient<ros_publisher_client::ClRosPublisher>();
+        auto publisherClient_ = this->createClient<cl_ros_publisher::ClRosPublisher>();
         publisherClient_->configure<std_msgs::String>("/updatable_string_publisher_out");
     }
 };

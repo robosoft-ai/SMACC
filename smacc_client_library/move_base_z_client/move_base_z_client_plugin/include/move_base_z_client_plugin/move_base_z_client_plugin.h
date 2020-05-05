@@ -11,7 +11,7 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 class WaypointNavigator;
 

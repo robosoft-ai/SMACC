@@ -47,7 +47,7 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
     auto absoluteRotateBehavior = TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
 
     absoluteRotateBehavior->absoluteGoalAngleDegree = initialStateAngle + angle;
-    ROS_INFO("Fpattern, rotate to: %lf", absoluteRotateBehavior->absoluteGoalAngleDegree);
+    ROS_INFO("Fpattern, rotate to: %lf", *(absoluteRotateBehavior->absoluteGoalAngleDegree));
   }
 };
 }

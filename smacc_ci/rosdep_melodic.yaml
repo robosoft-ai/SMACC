@@ -1,0 +1,23 @@
+smacc_msgs:
+  ubuntu: [ros-melodic-smacc-msgs]
+smacc:
+  ubuntu: [ros-melodic-smacc]
+forward_global_planner:
+  ubuntu: [ros-melodic-forward-global-planner]
+#smacc_planner_switcher:
+#  ubuntu: [ros-melodic-smacc-planner-switcher]
+smacc_navigation_plugin:
+  ubuntu: [ros-melodic-smacc-navigation-plugin]
+smacc_sensors:
+  ubuntu: [ros-melodic-smacc-sensors]
+python-gobject-2:
+  ubuntu: [python-gobject-2]
+gir1.2-gtk-3.0:
+  ubuntu: [gir1.2-gtk-3.0]
+
+#smacc_interface_components:
+#  ubuntu: [ros-melodic-smacc-interface-components]
+
+
+
+

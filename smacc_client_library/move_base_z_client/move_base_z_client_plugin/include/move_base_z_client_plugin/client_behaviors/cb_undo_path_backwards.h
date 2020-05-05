@@ -12,7 +12,7 @@
 #include <tf/transform_listener.h>
 #include <nav_msgs/Path.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
 class CbUndoPathBackwards : public smacc::SmaccClientBehavior
@@ -22,5 +22,7 @@ class CbUndoPathBackwards : public smacc::SmaccClientBehavior
   ClMoveBaseZ *moveBaseClient_;
 
   virtual void onEntry() override;
+
+  virtual void onExit() override;
 };
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

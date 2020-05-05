@@ -1,6 +1,6 @@
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
 
-namespace ros_timer_client
+namespace cl_ros_timer
 {
 
 CbTimerCountdownLoop::CbTimerCountdownLoop(unsigned long triggerTickCount)
@@ -29,4 +29,4 @@ void CbTimerCountdownLoop::onEntry()
 void CbTimerCountdownLoop::onExit()
 {
 }
-} // namespace ros_timer_client
+} // namespace cl_ros_timer

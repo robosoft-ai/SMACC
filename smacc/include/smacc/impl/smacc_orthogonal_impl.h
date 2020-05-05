@@ -102,10 +102,21 @@ public:
     {
     }
 
+    ClientHandler()
+        : TClient()
+    {
+    }
+
     template <typename SmaccComponentType, typename... TArgs>
     SmaccComponentType *createComponent(TArgs... targs)
     {
         return ISmaccClient::createComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(targs...);
+    }
+
+    template <typename SmaccComponentType, typename... TArgs>
+    SmaccComponentType *createNamedComponent(std::string name, TArgs... targs)
+    {
+        return ISmaccClient::createNamedComponent<SmaccComponentType, TOrthogonal, TClient, TArgs...>(name, targs...);
     }
 
     virtual smacc::introspection::TypeInfo::Ptr getType() override

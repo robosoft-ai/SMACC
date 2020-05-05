@@ -1,6 +1,8 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 CbRotate::CbRotate()
 {
@@ -31,28 +33,16 @@ void CbRotate::onEntry()
     //this->plannerSwitcher_->setForwardPlanner();
     plannerSwitcher->setDefaultPlanners();
 
-    ros::Rate rate(10.0);
-    geometry_msgs::Pose currentPoseMsg;
-    while (ros::ok())
-    {
-        tf::StampedTransform currentPose;
-        try
-        {
-            listener.lookupTransform("/odom", "/base_link",
-                                     ros::Time(0), currentPose);
+    auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
+    auto referenceFrame = p->getReferenceFrame();
+    auto currentPoseMsg = p->toPoseMsg();
 
-            tf::poseTFToMsg(currentPose, currentPoseMsg);
-            break;
-        }
-        catch (tf::TransformException ex)
-        {
-            ROS_INFO("[CbRotate] Waiting transform: %s", ex.what());
-            ros::Duration(1.0).sleep();
-        }
-    }
+    tf::Transform currentPose;
+    tf::poseMsgToTF(currentPoseMsg, currentPose);
 
+    auto odomTracker = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
     ClMoveBaseZ::Goal goal;
-    goal.target_pose.header.frame_id = "/odom";
+    goal.target_pose.header.frame_id = referenceFrame;
     goal.target_pose.header.stamp = ros::Time::now();
 
     auto currentAngle = tf::getYaw(currentPoseMsg.orientation);
@@ -60,9 +50,20 @@ void CbRotate::onEntry()
     goal.target_pose.pose.position = currentPoseMsg.position;
     goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
 
+    geometry_msgs::PoseStamped stampedCurrentPoseMsg;
+    stampedCurrentPoseMsg.header.frame_id = referenceFrame;
+    stampedCurrentPoseMsg.header.stamp = ros::Time::now();
+    stampedCurrentPoseMsg.pose = currentPoseMsg;
+
+    this->requiresClient(moveBaseClient_);
+    odomTracker->pushPath();
+
+    odomTracker->setStartPoint(stampedCurrentPoseMsg);
+    odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+
     ROS_INFO_STREAM("current pose: " << currentPoseMsg);
     ROS_INFO_STREAM("goal pose: " << goal.target_pose.pose);
     moveBaseClient_->sendGoal(goal);
 }
 
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

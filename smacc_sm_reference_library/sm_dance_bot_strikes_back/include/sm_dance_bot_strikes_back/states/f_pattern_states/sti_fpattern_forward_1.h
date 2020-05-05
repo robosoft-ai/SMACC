@@ -39,7 +39,7 @@ struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, S
                                ->template getClientBehavior<CbNavigateForward>();
 
     forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
-    ROS_INFO("Going forward in F pattern, distance to wall: %lf", forwardBehavior->forwardDistance);
+    ROS_INFO("Going forward in F pattern, distance to wall: %lf", *(forwardBehavior->forwardDistance));
   }
 };
 }

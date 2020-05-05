@@ -11,6 +11,28 @@
 
 namespace smacc
 {
+struct ComponentKey
+{
+    ComponentKey(const std::type_info *typeinfo, std::string name)
+    {
+        this->name = name;
+        this->typeinfo = typeinfo;
+        encodedKey = std::to_string((long)(void *)typeinfo) + "_" + name;
+    }
+    std::string encodedKey;
+    const std::type_info *typeinfo;
+    std::string name;
+
+    bool operator<(const ComponentKey &other) const
+    {
+        return this->encodedKey < other.encodedKey;
+    }
+    bool operator==(const ComponentKey &other) const
+    {
+        return this->encodedKey == other.encodedKey;
+    }
+};
+
 class ISmaccClient
 {
 public:
@@ -30,6 +52,9 @@ public:
 
     template <typename TComponent>
     TComponent *getComponent();
+
+    template <typename TComponent>
+    TComponent *getComponent(std::string name);
 
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes() {}
@@ -54,10 +79,13 @@ public:
 
 protected:
     // components
-    std::map<const std::type_info *, std::shared_ptr<smacc::ISmaccComponent>> components_;
+    std::map<ComponentKey, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
     template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
     SmaccComponentType *createComponent(TArgs... targs);
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createNamedComponent(std::string name, TArgs... targs);
 
     // Assigns the owner of this resource to the given state machine parameter object
     void setStateMachine(ISmaccStateMachine *stateMachine);
