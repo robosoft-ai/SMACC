@@ -23,4 +23,5 @@ RUN curl -s https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packageclo
 RUN apt-get -y install ros-melodic-smacc-viewer
 
 WORKDIR /root
-ENTRYPOINT bash -c "source /opt/ros/melodic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
+ADD entrypoint.sh /entrypoint.sh
+#ENTRYPOINT bash -c "source /opt/ros/melodic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
