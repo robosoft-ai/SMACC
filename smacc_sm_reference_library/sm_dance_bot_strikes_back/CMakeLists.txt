@@ -129,21 +129,22 @@ target_link_libraries(${PROJECT_NAME}
  add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 
- add_executable(temperature_sensor_node test/temperature_sensor_node/src/temperature_sensor_node.cpp)
- target_link_libraries(temperature_sensor_node
+ add_executable(temperature_sensor_node_smdbsb test/temperature_sensor_node/src/temperature_sensor_node.cpp)
+ set_target_properties(temperature_sensor_node_smdbsb PROPERTIES OUTPUT_NAME "temperature_sensor_node")
+
+ target_link_libraries(temperature_sensor_node_smdbsb
    ${catkin_LIBRARIES}
  )
 
- add_executable(led_action_server_node test/led_action_server/src/led_action_server_node.cpp)
+add_executable(led_action_server_node_smdbsb test/led_action_server/src/led_action_server_node.cpp)
+set_target_properties(led_action_server_node_smdbsb PROPERTIES OUTPUT_NAME "led_action_server_node")
 
  target_link_libraries(
-   led_action_server_node
+   led_action_server_node_smdbsb
    ${catkin_LIBRARIES}
 )
 
-add_dependencies(led_action_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
-
-
+add_dependencies(led_action_server_node_smdbsb ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 #############
 ## Install ##
@@ -163,14 +164,14 @@ install(PROGRAMS
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 install(TARGETS 
   ${PROJECT_NAME}
-   temperature_sensor_node
-   led_action_server_node
+   temperature_sensor_node_smdbsb
+   led_action_server_node_smdbsb
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
- install(TARGETS ${PROJECT_NAME} temperature_sensor_node
+ install(TARGETS ${PROJECT_NAME}
    ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
    RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}

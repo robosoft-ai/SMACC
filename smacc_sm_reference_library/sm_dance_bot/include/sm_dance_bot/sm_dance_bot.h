@@ -8,14 +8,9 @@
 #include <multirole_sensor_client/client_behaviors/cb_default_multirole_sensor_behavior.h>
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_rotate.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_absolute_rotate.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
-#include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
+#include <move_base_z_client_plugin/client_behaviors.h>
 
-using namespace move_base_z_client;
+using namespace cl_move_base_z;
 
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_on.h>
 #include <sm_dance_bot/clients/cl_led/client_behaviors/cb_led_off.h>
@@ -79,7 +74,7 @@ class StNavigateReverse3;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
-// MEGASTATE FORWARD DECLARATIONS
+//MODE STATES FORWARD DECLARATIONS
 class MsDanceBotRunMode;
 class MsDanceBotRecoveryMode;
 
@@ -116,7 +111,7 @@ struct EvGlobalError : sc::event<EvGlobalError>
 } // namespace sm_dance_bot
 
 using namespace sm_dance_bot;
-using namespace ros_timer_client;
+using namespace cl_ros_timer;
 using namespace smacc;
 
 
@@ -154,7 +149,7 @@ struct SmDanceBot
 
 } // namespace sm_dance_bot
 
-//MEGASTATES
+//MODE STATES
 #include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
 #include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
 

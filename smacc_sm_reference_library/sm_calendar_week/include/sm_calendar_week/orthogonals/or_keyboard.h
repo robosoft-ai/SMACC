@@ -10,7 +10,7 @@ class OrKeyboard : public smacc::Orthogonal<OrKeyboard>
 public:
     virtual void onInitialize() override
     {
-        auto clKeyboard = this->createClient<keyboard_client::ClKeyboard>();
+        auto clKeyboard = this->createClient<cl_keyboard::ClKeyboard>();
         
         //ClKeyboard.queueSize = 1;
         clKeyboard->initialize();

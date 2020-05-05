@@ -46,15 +46,15 @@ ISmaccStateMachine::~ISmaccStateMachine()
     ROS_INFO("Finishing State Machine");
 }
 
-void ISmaccStateMachine::Reset()
+void ISmaccStateMachine::reset()
 {
 }
 
-void ISmaccStateMachine::Stop()
+void ISmaccStateMachine::stop()
 {
 }
 
-void ISmaccStateMachine::EStop()
+void ISmaccStateMachine::eStop()
 {
 }
 

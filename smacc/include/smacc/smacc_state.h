@@ -47,6 +47,9 @@ public:
   template <typename EventType>
   void postEvent(const EventType &ev);
 
+  template <typename EventType>
+  void postEvent();
+
   // used for transition logging
   template <typename TransitionType>
   void notifyTransition();

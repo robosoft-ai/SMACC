@@ -11,8 +11,7 @@ namespace sm_dance_bot_strikes_back
 namespace cl_led
 {
 
-ClLED::ClLED()
-    : Base("led_action_server_node")
+ClLED::ClLED(std::string actionServerName) : Base(actionServerName)
 {
 }
 

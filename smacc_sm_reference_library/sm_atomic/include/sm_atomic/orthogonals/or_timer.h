@@ -8,7 +8,7 @@ class OrTimer : public smacc::Orthogonal<OrTimer>
 public:
     virtual void onInitialize() override
     {
-        auto client = this->createClient<ros_timer_client::ClRosTimer>(ros::Duration(1));
+        auto client = this->createClient<cl_ros_timer::ClRosTimer>(ros::Duration(1));
         client->initialize();
     }
 };

@@ -36,6 +36,12 @@ public:
     {
     }
 
+    SmaccActionClientBase()
+        : ISmaccActionClient(),
+          name_("")
+    {
+    }
+
     static std::string getEventLabel()
     {
         auto type = TypeInfo::getTypeInfoFromType<ActionType>();
@@ -232,6 +238,8 @@ protected:
         }
     }
 };
+
+#define SMACC_ACTION_CLIENT_DEFINITION(ActionType) ACTION_DEFINITION(ActionType); typedef smacc::client_bases::SmaccActionClientBase<ActionType> Base;
 } // namespace client_bases
 
 } // namespace smacc

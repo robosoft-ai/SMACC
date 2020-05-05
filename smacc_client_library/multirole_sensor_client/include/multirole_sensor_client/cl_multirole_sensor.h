@@ -8,7 +8,7 @@
 #include <boost/signals2.hpp>
 #include <boost/optional/optional_io.hpp>
 
-namespace multirole_sensor_client
+namespace cl_multirole_sensor
 {
 using namespace smacc;
 
@@ -98,4 +98,4 @@ private:
     postTimeoutMessageEvent(timerdata);
   }
 };
-} // namespace multirole_sensor_client
+} // namespace cl_multirole_sensor

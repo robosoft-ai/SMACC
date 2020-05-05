@@ -145,6 +145,12 @@ void ISmaccState::postEvent(const EventType &ev)
 {
     getStateMachine().postEvent(ev);
 }
+
+template <typename EventType>
+void ISmaccState::postEvent()
+{
+    getStateMachine().postEvent<EventType>();
+}
 //-------------------------------------------------------------------------------------------------------
 
 template <typename TransitionType>

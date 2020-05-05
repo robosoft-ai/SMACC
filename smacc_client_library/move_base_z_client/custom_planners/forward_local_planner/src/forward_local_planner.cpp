@@ -13,9 +13,9 @@
 #include <base_local_planner/simple_trajectory_generator.h>
 
 //register this planner as a BaseLocalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::forward_local_planner::ForwardLocalPlanner, nav_core::BaseLocalPlanner)
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 namespace forward_local_planner
 {
@@ -54,16 +54,21 @@ void ForwardLocalPlanner::initialize()
 
     ros::NodeHandle nh("~/ForwardLocalPlanner");
 
+    nh.param("k_rho", k_rho_, k_rho_);
+    nh.param("k_alpha", k_alpha_, k_alpha_);
+    nh.param("k_betta", k_betta_, k_betta_);
+    nh.param("carrot_distance", carrot_distance_, carrot_distance_);
+
     nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
     nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
     nh.param("max_linear_x_speed", max_linear_x_speed_, 1.0);
     nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
 
-    ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf", max_linear_x_speed_, max_angular_z_speed_);
+    ROS_INFO("[ForwardLocalPlanner] max linear speed: %lf, max angular speed: %lf, k_rho: %lf, carrot_distance: %lf, ", max_linear_x_speed_, max_angular_z_speed_, k_rho_, carrot_distance_);
     goalMarkerPublisher_ = nh.advertise<visualization_msgs::MarkerArray>("goal_marker", 1);
 
-    waiting_=false;
-    waitingTimeout_= ros::Duration(10);
+    waiting_ = false;
+    waitingTimeout_ = ros::Duration(10);
 }
 
 void ForwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros)
@@ -162,7 +167,8 @@ void ForwardLocalPlanner::initialize(std::string name, tf::TransformListener *tf
 void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
 {
     visualization_msgs::Marker marker;
-    marker.header.frame_id = "/odom";
+
+    marker.header.frame_id = this->costmapRos_->getGlobalFrameID();
     marker.header.stamp = ros::Time::now();
     marker.ns = "my_namespace2";
     marker.id = 0;
@@ -262,7 +268,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     while (!ok)
     {
         // iterate the point from the current position and ahead until reaching a new goal point in the path
-        for (; !ok && currentPoseIndex_ < plan_.size(); currentPoseIndex_++)
+        while (!ok && currentPoseIndex_ < plan_.size())
         {
             auto &pose = plan_[currentPoseIndex_];
             const geometry_msgs::Point &p = pose.pose.position;
@@ -282,7 +288,11 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                //ROS_INFO("forward: %lf", 100.0 * currentPoseIndex_ / (double)plan_.size());
+                ROS_INFO("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
+            }
+            else
+            {
+                currentPoseIndex_++;
             }
         }
 
@@ -333,13 +343,14 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
         vetta = k_rho_ * rho_error;
         gamma = k_alpha_ * alpha_error;
     }
-    else if (fabs(betta_error) >= 0.01)
+    else if (fabs(betta_error) >= yaw_goal_tolerance_) // pureSpining
     {
         vetta = 0;
         gamma = k_betta_ * betta_error;
     }
     else
     {
+        ROS_DEBUG("GOAL REACHED");
         vetta = 0;
         gamma = 0;
         goalReached_ = true;
@@ -384,7 +395,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
                                               << " betta_error:" << betta_error << std::endl
                                               << " vetta:" << vetta << std::endl
                                               << " gamma:" << gamma << std::endl
-                                              << "xy_goal_tolerance:" << xy_goal_tolerance_);
+                                              << " xy_goal_tolerance:" << xy_goal_tolerance_ << std::endl
+                                              << " yaw_goal_tolerance:" << yaw_goal_tolerance_ << std::endl);
 
     //if(cmd_vel.linear.x==0 && cmd_vel.angular.z == 0 )
     //{
@@ -393,7 +405,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     //integrate trajectory and check collision
 
     tf::Stamped<tf::Pose> global_pose = optionalRobotPose(costmapRos_);
-    
+
     //->getRobotPose(global_pose);
 
     auto *costmap2d = costmapRos_->getCostmap();
@@ -420,9 +432,9 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
         float dst = sqrt(dx * dx + dy * dy);
         if (dst < xy_goal_tolerance_)
-         {
+        {
             //  ROS_INFO("trajectory checking skipped, goal reached");
-             break;
+            break;
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
@@ -447,30 +459,30 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     if (aceptedplan)
     {
-        waiting_=false;
+        waiting_ = false;
         return true;
     }
     else
     {
         // stop and wait
-        cmd_vel.linear.x =0;
-        cmd_vel.angular.z=0;
+        cmd_vel.linear.x = 0;
+        cmd_vel.angular.z = 0;
 
-        if(waiting_ == false)
+        if (waiting_ == false)
         {
             waiting_ = true;
             waitingStamp_ = ros::Time::now();
         }
         else
         {
-            auto waitingduration = ros::Time::now() - waitingStamp_ ;
+            auto waitingduration = ros::Time::now() - waitingStamp_;
 
             if (waitingduration > this->waitingTimeout_)
             {
                 return false;
             }
         }
-        
+
         return true;
     }
 }
@@ -497,4 +509,4 @@ bool ForwardLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStamped> 
     return true;
 }
 } // namespace forward_local_planner
-} // namespace move_base_z_client
+} // namespace cl_move_base_z

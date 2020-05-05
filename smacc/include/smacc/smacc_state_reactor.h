@@ -53,8 +53,15 @@ public:
     //     }
     // };
 
-    
+    virtual void onEntry();
+
     virtual void onEventNotified(const std::type_info *eventType);
+
+    template <typename EventType>
+    void postEvent(const EventType &ev);
+
+    template <typename EventType>
+    void postEvent();
 
     // type based event callback
     template <typename T, typename TClass>

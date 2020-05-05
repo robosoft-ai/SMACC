@@ -9,7 +9,7 @@ namespace sm_dance_bot_strikes_back
 namespace cl_lidar
 {
 
-class ClLidarSensor : public multirole_sensor_client::ClMultiroleSensor<sensor_msgs::LaserScan>
+class ClLidarSensor : public cl_multirole_sensor::ClMultiroleSensor<sensor_msgs::LaserScan>
 {
 public:
     ClLidarSensor(std::string topicname, ros::Duration timeout)

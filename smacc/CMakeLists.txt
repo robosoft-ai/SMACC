@@ -15,7 +15,6 @@ find_package(catkin REQUIRED COMPONENTS
   controller_manager_msgs
 )
 
-find_package(log4cxx)
 
 ################################################
 ## Declare ROS messages, services and actions ##
@@ -38,7 +37,7 @@ find_package(log4cxx)
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES smacc
-  CATKIN_DEPENDS actionlib roscpp smacc_msgs controller_manager_msgs
+  CATKIN_DEPENDS actionlib roscpp smacc_msgs controller_manager_msgs smacc_msgs message_runtime
 #  DEPENDS system_lib
 )
 

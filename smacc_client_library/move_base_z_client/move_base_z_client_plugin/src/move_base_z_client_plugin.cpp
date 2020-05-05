@@ -6,7 +6,7 @@
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <pluginlib/class_list_macros.h>
 
-namespace move_base_z_client
+namespace cl_move_base_z
 {
 
 ClMoveBaseZ::ClMoveBaseZ(std::string moveBaseName)
@@ -30,4 +30,4 @@ ClMoveBaseZ::~ClMoveBaseZ()
 }
 } // namespace smacc
 
-PLUGINLIB_EXPORT_CLASS(move_base_z_client::ClMoveBaseZ, smacc::ISmaccClient)
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::ClMoveBaseZ, smacc::ISmaccClient)
