@@ -18,7 +18,7 @@ public:
         auto movebaseClient = this->createClient<ClMoveBaseZ>();
         movebaseClient->initialize();
 
-        movebaseClient->createComponent<Pose>("/base_link", "/map");
+        movebaseClient->createComponent<Pose>("base_link", "map");
 
         // create planner switcher
         movebaseClient->createComponent<PlannerSwitcher>();
