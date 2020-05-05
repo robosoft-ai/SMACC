@@ -174,6 +174,8 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     marker.id = 0;
     marker.type = visualization_msgs::Marker::ARROW;
     marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.orientation.w = 1;
+    
     marker.scale.x = 0.1;
     marker.scale.y = 0.3;
     marker.scale.z = 0.1;
