@@ -10,6 +10,8 @@ smacc_navigation_plugin:
   ubuntu: [ros-kinetic-smacc-navigation-plugin]
 smacc_sensors:
   ubuntu: [ros-kinetic-smacc-sensors]
+move_base_z_client_plugin:
+  ubuntu: [ros-kinetic-move_base-z-client-plugin]
 python-gobject-2:
   ubuntu: [python-gobject-2]
 gir1.2-gtk-3.0:
