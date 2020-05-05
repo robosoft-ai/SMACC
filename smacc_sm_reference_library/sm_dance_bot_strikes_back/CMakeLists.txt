@@ -204,7 +204,7 @@ install(FILES
 
 install(FILES
 #    config/navigation.rviz
-    config/radial_motion_sm_config.yaml
+    config/sm_dancebot_strikes_back.yaml
     config/rosconsole.config
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
