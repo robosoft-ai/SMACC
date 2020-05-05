@@ -45,9 +45,7 @@
     <!--················ NAV ·······················-->
     <include file="$(find sm_moveit)/launch/include/sm_moveit_nav.launch"/>
 
-
     <!--················ ROBOT ·······················-->
-
     <!-- Oh, you wanted a robot? -->
     <!-- <include file="$(find fetch_gazebo)/launch/include/fetch_pp.launch.xml" /> -->
 
