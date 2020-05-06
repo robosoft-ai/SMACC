@@ -12,6 +12,8 @@ smacc_sensors:
   ubuntu: [ros-melodic-smacc-sensors]
 move_base_z_client_plugin:
     ubuntu: [ros-melodic-move_base-z-client-plugin]
+ros_timer_client:
+    ubuntu: [ros-kinetic-ros-timer-client]
 python-gobject-2:
   ubuntu: [python-gobject-2]
 gir1.2-gtk-3.0:
