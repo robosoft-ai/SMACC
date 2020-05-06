@@ -1,0 +1,4 @@
+<launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_coretest_transition_speed_1)/config/rosconsole.config" />
+    <node pkg="sm_coretest_transition_speed_1" type="sm_coretest_transition_speed_1_node" name="sm_coretest_transition_speed_1" output="screen"/>
+</launch>

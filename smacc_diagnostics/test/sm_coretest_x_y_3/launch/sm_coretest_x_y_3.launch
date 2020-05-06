@@ -1,0 +1,4 @@
+<launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_coretest_x_y_3)/config/rosconsole.config" />
+    <node pkg="sm_coretest_x_y_3" type="sm_coretest_x_y_3_node" name="sm_coretest_x_y_3" output="screen"/>
+</launch>
