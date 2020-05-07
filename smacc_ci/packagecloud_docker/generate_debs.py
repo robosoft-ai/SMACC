@@ -128,9 +128,6 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
     identified_install_packages = get_identified_packages(workspace_folder)
 
     smacc_manual_order_packages = [  # 'forward_global_planner',
-        # 'backward_global_planner',
-        # 'backward_local_planner',
-        # 'forward_local_planner',
         'smacc_msgs',
         'smacc',
         'all_events_go',
@@ -138,15 +135,13 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'event_countdown',
         'keyboard_client',
         'move_base_z_client_plugin',
+        'moveit_z_client',
         'multirole_sensor_client',
         'ros_publisher_client',
         'ros_timer_client',
         'sm_atomic',
         'sm_dance_bot_strikes_back',
         'sm_moveit',
-        #        'sm_dance_bot_2',
-        #        'sm_viewer_sim',
-        #        'sm_three_some'
     ]
 
     smacc_debian_files = iterate_debian_generation(
