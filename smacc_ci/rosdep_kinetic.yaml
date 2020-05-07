@@ -24,7 +24,7 @@ conditional:
   ubuntu: [ros-kinetic-conditional]    
 python-gobject-2:
   ubuntu: [python-gobject-2]
-gir1.2-gtk-3.0:
+gir1.2-gtk:
   ubuntu: [gir1.2-gtk-3.0]
   
 #smacc_interface_components:
