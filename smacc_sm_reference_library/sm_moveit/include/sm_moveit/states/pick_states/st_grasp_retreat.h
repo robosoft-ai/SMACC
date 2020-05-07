@@ -31,14 +31,14 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()
                                          ->getClientBehavior<CbMoveCartesianRelative>();
 
-        moveCartesianRelative->offset_.z = 0.15;
+        moveCartesianRelative->offset_.z = 0.2;
         if (currentTable == RobotProcessStatus::TABLE0)
         {
-            moveCartesianRelative->offset_.x = -0.4;
+            moveCartesianRelative->offset_.x = -0.1;
         }
         else if (currentTable == RobotProcessStatus::TABLE1)
         {
-            moveCartesianRelative->offset_.x = 0.4;
+            moveCartesianRelative->offset_.x = 0.1;
         }
     }
 };
