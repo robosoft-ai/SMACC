@@ -43,6 +43,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
         ClMoveGroup *moveGroupClient;
         this->requiresClient(moveGroupClient);
         moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::throwSequenceFinishedEvent, this);
+        this->getOrthogonal<OrNavigation>()->getClientBehavior<CbMoveJoints>()->scalingFactor_ = 1;
 
         /*
         ros::WallDuration(3).sleep();

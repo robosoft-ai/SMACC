@@ -32,7 +32,7 @@ public:
         loadWaypointsFromYaml(waypointsNavigator);
 
         // change this to skip some points of the yaml file, default = 0
-        waypointsNavigator->currentWaypoint_ = 4;
+        waypointsNavigator->currentWaypoint_ = 0;
     }
 
     void loadWaypointsFromYaml(WaypointNavigator *waypointsNavigator)

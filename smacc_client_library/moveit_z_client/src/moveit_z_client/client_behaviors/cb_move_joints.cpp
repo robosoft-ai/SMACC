@@ -23,6 +23,9 @@ void CbMoveJoints::onEntry()
     this->requiresClient(movegroupClient_);
     auto &moveGroupInterface = movegroupClient_->moveGroupClientInterface;
 
+    if(scalingFactor_)
+        moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
+        
     moveGroupInterface.setJointValueTarget(jointValueTarget_);
 
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
