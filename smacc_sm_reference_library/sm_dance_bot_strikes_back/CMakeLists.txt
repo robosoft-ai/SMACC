@@ -171,11 +171,11 @@ install(TARGETS
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
- install(TARGETS ${PROJECT_NAME}
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
- )
+# install(TARGETS ${PROJECT_NAME}
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
  install(DIRECTORY include/${PROJECT_NAME}/
@@ -183,36 +183,22 @@ install(TARGETS
    FILES_MATCHING PATTERN "*.h"
    PATTERN ".svn" EXCLUDE
  )
-
-install(FILES
-    launch/sm_dance_bot_strikes_back.launch
-    launch/ridgeback_simulation.launch
+ 
+install(DIRECTORY
+    launch/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
 )
 
-install(FILES
-    config/move_base_client/backward_local_planner.yaml
-    config/move_base_client/forward_local_planner.yaml
-    config/move_base_client/waypoints_plan.yaml
-    config/move_base_client/costmap_common_params.yaml
-    config/move_base_client/base_local_planner_params.yaml
-    config/move_base_client/global_costmap_params.yaml
-    config/move_base_client/local_costmap_params.yaml
-
-    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config/move_base_client
-)
-
-install(FILES
-#    config/navigation.rviz
-    config/radial_motion_sm_config.yaml
-    config/rosconsole.config
+install(DIRECTORY
+    config/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
 
-install(FILES
-    urdf/empty.xacro
+install(DIRECTORY
+    urdf/
     DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/urdf
 )
+
 
 
 #############
