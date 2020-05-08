@@ -24,4 +24,3 @@ RUN apt-get -y install ros-melodic-smacc-viewer
 
 WORKDIR /root
 ADD entrypoint.sh /entrypoint.sh
-#ENTRYPOINT bash -c "source /opt/ros/melodic/setup.bash; roscore&  echo $DISPLAY; rosrun smacc_viewer smacc_viewer_node.py" 
