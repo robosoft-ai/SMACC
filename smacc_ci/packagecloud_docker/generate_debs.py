@@ -140,6 +140,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'ros_publisher_client',
         'ros_timer_client',
         'sm_atomic',
+        'sm_dance_bot',
         'sm_dance_bot_strikes_back',
         'sm_moveit',
     ]
