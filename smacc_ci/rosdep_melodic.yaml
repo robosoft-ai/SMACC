@@ -21,7 +21,9 @@ all_events_go:
 event_countdown:
   ubuntu: [ros-melodic-event-countdown]
 conditional:
-  ubuntu: [ros-melodic-conditional]    
+  ubuntu: [ros-melodic-conditional]
+forward_global_planner:
+  ubuntu: [ros-melodic-forward-global-planner]        
 python-gobject-2:
   ubuntu: [python-gobject-2]
 gir1.2-gtk-3.0:
