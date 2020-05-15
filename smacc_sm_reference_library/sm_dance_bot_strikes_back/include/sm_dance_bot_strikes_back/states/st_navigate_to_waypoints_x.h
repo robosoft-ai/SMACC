@@ -30,17 +30,11 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   {
     configure_orthogonal<OrLED, CbLEDOn>();
     configure_orthogonal<OrObstaclePerception, CbLidarSensor>();
+    configure_orthogonal<OrNavigation, CbNavigateNextWaypoint>();
   }
 
   void runtimeConfigure()
   {
-    ClMoveBaseZ *move_base;
-    this->requiresClient(move_base);
-
-    auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
-    
-    waypointsNavigator->sendNextGoal();
-    ROS_INFO("current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
   }
 };
 } // namespace sm_dance_bot_strikes_back
