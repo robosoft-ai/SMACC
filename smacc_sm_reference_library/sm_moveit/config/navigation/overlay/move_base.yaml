@@ -1,30 +1,26 @@
-# Base profile
-TrajectoryPlannerROS:
-  acc_lim_x: 0.35
-  acc_lim_y: 0.0
-  acc_lim_theta: 0.8
-  max_vel_x: 1.0
-  min_vel_x: 0.15
-  max_vel_y: 0.0
-  min_vel_y: 0.0
-  max_vel_theta: 1.5
-  min_vel_theta: -1.5
-  min_in_place_vel_theta: 0.3
-  holonomic_robot: false
-
-# Recovery behaviors
-recovery_behavior_enabled: false
-recovery_behaviors:
-  - name: "conservative_reset"
-    type: "clear_costmap_recovery/ClearCostmapRecovery"
-  - name: "rotate_recovery"
-    type: "rotate_recovery/RotateRecovery"
-  - name: "aggressive_reset"
-    type: "clear_costmap_recovery/ClearCostmapRecovery"
-conservative_reset:
-  reset_distance: 3.0
-rotate_recovery:
-  frequency: 20.0
-  sim_granularity: 0.017
-aggressive_reset: 
-  reset_distance: 0.5
+# # Base profile
+# TrajectoryPlannerROS:
+#   # base vel/accel profile is in robot folders
+#   # tolerances (defaults)
+#   yaw_goal_tolerance: 0.1
+#   xy_goal_tolerance: 0.1
+#   latch_xy_goal_tolerance: true
+#   # forward simulation
+#   sim_time: 1.0
+#   sim_granularity: 0.025
+#   angular_sim_granularity: 0.025
+#   vx_samples: 3
+#   vtheta_samples: 10
+#   # scoring (defaults)
+#   meter_scoring: true
+#   pdist_scale: 8.0
+#   gdist_scale: 12.0
+#   occdist_scale: 0.1
+#   heading_lookahead: 0.325
+#   heading_scoring_timestep: 0.8
+#   heading_scoring: true
+#   dwa: false
+#   # other
+#   oscillation_reset_dist: 0.05
+#   # debug
+#   publish_cost_grid_pc: false

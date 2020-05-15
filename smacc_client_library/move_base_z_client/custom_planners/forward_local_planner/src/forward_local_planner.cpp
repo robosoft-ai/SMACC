@@ -174,6 +174,8 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     marker.id = 0;
     marker.type = visualization_msgs::Marker::ARROW;
     marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.orientation.w = 1;
+    
     marker.scale.x = 0.1;
     marker.scale.y = 0.3;
     marker.scale.z = 0.1;
@@ -261,6 +263,10 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     //ROS_DEBUG("LOCAL PLANNER LOOP");
 
     tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
+
+    geometry_msgs::PoseStamped currentPose;
+    tf::poseStampedTFToMsg(tfpose,currentPose);
+    ROS_INFO_STREAM("[ForwardLocalPlanner] current robot pose " << currentPose);
 
     tf::Quaternion q = tfpose.getRotation();
 

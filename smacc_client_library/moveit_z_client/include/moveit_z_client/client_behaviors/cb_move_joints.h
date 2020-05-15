@@ -17,8 +17,10 @@ class CbMoveJoints : public smacc::SmaccClientBehavior
 {
 protected:
     ClMoveGroup *movegroupClient_;
+    
 
 public:
+    boost::optional<double> scalingFactor_;
     std::map<std::string, double> jointValueTarget_;
 
     CbMoveJoints();

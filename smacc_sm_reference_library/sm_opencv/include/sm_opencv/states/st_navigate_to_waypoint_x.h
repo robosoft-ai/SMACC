@@ -9,7 +9,7 @@ namespace sm_opencv
 
         // TRANSITION TABLE
         typedef mpl::list<
-            Transition<smacc::default_events::EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointX>,
+            Transition<smacc::default_events::EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StDetectItems>,
             Transition<smacc::default_events::EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointX>
             >
             reactions;

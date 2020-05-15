@@ -36,7 +36,7 @@
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_dance_bot_strikes_back)/config/radial_motion_sm_config.yaml" />
+    <rosparam command="load" file="$(find sm_dance_bot_strikes_back)/config/sm_dancebot_strikes_back.yaml" />
 
     <group ns="sm_dance_bot_strikes_back">
         <!-- set run mode -->

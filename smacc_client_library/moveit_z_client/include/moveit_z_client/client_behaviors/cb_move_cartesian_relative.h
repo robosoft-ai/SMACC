@@ -16,6 +16,8 @@ class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
 public:
     geometry_msgs::Vector3 offset_;
 
+    boost::optional<double> scalingFactor_;
+
     CbMoveCartesianRelative();
 
     CbMoveCartesianRelative(geometry_msgs::Vector3 offset);

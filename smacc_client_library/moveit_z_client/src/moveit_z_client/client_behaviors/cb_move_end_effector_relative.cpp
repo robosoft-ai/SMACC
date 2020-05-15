@@ -57,7 +57,7 @@ void CbMoveEndEffectorRelative::moveRelative(geometry_msgs::Transform &transform
     ROS_INFO_STREAM("[CbMoveEndEffectorRelative] Target End efector Pose: " << targetObjectPose);
 
     moveGroupInterface.setPoseTarget(targetObjectPose);
-    moveGroupInterface.setPoseReferenceFrame("/map");
+    moveGroupInterface.setPoseReferenceFrame("map");
 
     moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
     bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);

@@ -55,7 +55,7 @@ namespace sm_moveit
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
 struct SmMoveIt
-    : public smacc::SmaccStateMachineBase<SmMoveIt, StInitialPosture>
+    : public smacc::SmaccStateMachineBase<SmMoveIt, /*StRotate180*/ StInitialPosture>
 {
     using SmaccStateMachineBase::SmaccStateMachineBase;
 
@@ -77,13 +77,13 @@ struct SmMoveIt
 #include <sm_moveit/superstates/ss_place_object.h>
 
 //STATES
+#include <sm_moveit/states/st_initial_forward.h>
 #include <sm_moveit/states/st_initial_posture.h>
 #include <sm_moveit/states/st_forward.h>
 #include <sm_moveit/states/st_undo_incorrect_forward.h>
-#include <sm_moveit/states/st_rotate.h>
+#include <sm_moveit/states/st_rotate180.h>
 
 // #include <sm_moveit/states/st_open_gripper.h>
-
 // #include <sm_moveit/states/st_move_pregrasp_pose.h>
 // #include <sm_moveit/states/st_grasp_approach.h>
 // #include <sm_moveit/states/st_close_gripper.h>

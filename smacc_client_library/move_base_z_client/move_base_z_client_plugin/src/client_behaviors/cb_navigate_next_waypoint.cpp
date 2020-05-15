@@ -3,7 +3,6 @@
 
 namespace cl_move_base_z
 {
-
     CbNavigateNextWaypoint::CbNavigateNextWaypoint()
     {
     }

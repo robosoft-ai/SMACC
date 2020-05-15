@@ -72,7 +72,7 @@ public:
                 originalCube0Pose = detectedCubePose0->toPoseStampedMsg();
 
                 cube0DestinationInTable1 = originalCube0Pose;
-                (*cube0DestinationInTable1).pose.position.x -= 2.5;
+                (*cube0DestinationInTable1).pose.position.x = - originalCube0Pose->pose.position.x;
 
                 ROS_INFO_STREAM("[Perception system] Original Cube 0 Pose captured" << originalCube0Pose->pose);
             }
@@ -82,7 +82,7 @@ public:
                 originalCube1Pose = detectedCubePose1->toPoseStampedMsg();
 
                 cube1DestinationInTable0 = originalCube1Pose;
-                (*cube1DestinationInTable0).pose.position.x += 2.5;
+                (*cube1DestinationInTable0).pose.position.x = - originalCube1Pose->pose.position.x;
 
                 ROS_INFO_STREAM("[Perception system] Original Cube 1 Pose captured" << originalCube1Pose->pose);
             }
@@ -92,7 +92,7 @@ public:
                 originalCube2Pose = detectedCubePose2->toPoseStampedMsg();
 
                 cube2DestinationInTable1 = originalCube2Pose;
-                (*cube2DestinationInTable1).pose.position.x -= 2.5;
+                (*cube2DestinationInTable1).pose.position.x -= originalCube2Pose->pose.position.x;
 
                 ROS_INFO_STREAM("[Perception system] Original Cube 2 Pose captured" << originalCube0Pose->pose);
             }

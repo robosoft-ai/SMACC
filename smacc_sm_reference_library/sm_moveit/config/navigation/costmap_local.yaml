@@ -1,4 +1,4 @@
-global_frame: odom
+global_frame: map
 
 rolling_window: true
 publish_frequency: 2.0

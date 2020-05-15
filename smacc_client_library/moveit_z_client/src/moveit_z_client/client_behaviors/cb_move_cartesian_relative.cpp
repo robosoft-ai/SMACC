@@ -55,12 +55,17 @@ void CbMoveCartesianRelative::moveRelativeCartesian(geometry_msgs::Vector3 &offs
 
     movegroupClient->moveGroupClientInterface.setPoseTarget(endPose);
 
-    movegroupClient->moveGroupClientInterface.setMaxVelocityScalingFactor(0.1);
+    float scalinf = 0.5;
+    if(scalingFactor_)
+        scalinf = *scalingFactor_;
+
+    ROS_INFO_STREAM("[CbMoveCartesianRelative] Using scaling factor: " << scalinf);
+    movegroupClient->moveGroupClientInterface.setMaxVelocityScalingFactor(scalinf);
 
     moveit_msgs::RobotTrajectory trajectory;
     double fraction = movegroupClient->moveGroupClientInterface.computeCartesianPath(waypoints,
                                                                                      0.01, // eef_step
-                                                                                     0.0,  // jump_threshold
+                                                                                     0.00,  // jump_threshold
                                                                                      trajectory);
 
     if (fraction == -1)
@@ -68,6 +73,14 @@ void CbMoveCartesianRelative::moveRelativeCartesian(geometry_msgs::Vector3 &offs
         movegroupClient->postEventMotionExecutionFailed();
         ROS_INFO("[CbMoveCartesianRelative] Absolute motion planning failed. Skipping execution.");
         return;
+    }
+    else if(fraction!= 1.0)
+    {
+        ROS_WARN_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje: " << fraction);
+    }
+    else
+    {
+        ROS_INFO_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje: " << fraction);
     }
 
     moveit::planning_interface::MoveGroupInterface::Plan grasp_pose_plan;
@@ -78,7 +91,7 @@ void CbMoveCartesianRelative::moveRelativeCartesian(geometry_msgs::Vector3 &offs
 
     if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
     {
-        ROS_INFO("[CbMoveCartesianRelative] relative motion execution succedded: fraction %lf", fraction);
+        ROS_INFO("[CbMoveCartesianRelative] relative motion execution succedded: fraction %lf.", fraction);
         movegroupClient->postEventMotionExecutionSucceded();
     }
     else

@@ -15,8 +15,8 @@ CbNavigateGlobalPosition::CbNavigateGlobalPosition(float x, float y, float yaw)
     auto p = geometry_msgs::Point();
     p.x = x;
     p.y = y;
-    initialPoint = p;
-    initialYaw = yaw;
+    goalPoint = p;
+    goalYaw = yaw;
 }
 
 void CbNavigateGlobalPosition::onEntry()
@@ -39,11 +39,11 @@ void CbNavigateGlobalPosition::onEntry()
     odomTracker->setStartPoint(pose);
     odomTracker->setWorkingMode(WorkingMode::RECORD_PATH);
 
-    goToRadialStart();
+    execute();
 }
 
 // auxiliar function that defines the motion that is requested to the move_base action server
-void CbNavigateGlobalPosition::goToRadialStart()
+void CbNavigateGlobalPosition::execute()
 {
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
@@ -64,7 +64,7 @@ void CbNavigateGlobalPosition::goToRadialStart()
 
 void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal)
 {
-    if (!initialPoint)
+    if (!goalPoint)
     {
         this->getCurrentState()->getParam("start_position_x", goal.target_pose.pose.position.x);
         this->getCurrentState()->getParam("start_position_y", goal.target_pose.pose.position.y);
@@ -75,8 +75,8 @@ void CbNavigateGlobalPosition::readStartPoseFromParameterServer(ClMoveBaseZ::Goa
     }
     else
     {
-        goal.target_pose.pose.position = *initialPoint;
-        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(*initialYaw);
+        goal.target_pose.pose.position = *goalPoint;
+        goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(*goalYaw);
     }
 
     ROS_INFO_STREAM("start position read from parameter server: " << goal.target_pose.pose.position);

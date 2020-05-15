@@ -8,20 +8,21 @@
 #include <smacc/client_bases/smacc_action_client.h>
 #include <smacc/component.h>
 
-#include <ros/ros.h>
-#include <functional>
+#include <dynamic_reconfigure/Config.h>
 #include <dynamic_reconfigure/DoubleParameter.h>
 #include <dynamic_reconfigure/Reconfigure.h>
-#include <dynamic_reconfigure/Config.h>
+#include <ros/ros.h>
+#include <functional>
 
 namespace cl_move_base_z
 {
-class PlannerSwitcher: public smacc::ISmaccComponent
+class PlannerSwitcher : public smacc::ISmaccComponent
 {
 public:
   PlannerSwitcher();
   void setBackwardPlanner();
   void setForwardPlanner();
+  void setPureSpinningPlanner();
 
   virtual void initialize(smacc::ISmaccClient* owner) override;
 
@@ -34,7 +35,7 @@ private:
   ros::Subscriber dynrecofSub_;
   bool set_planners_mode_flag;
 
-  void updatePlanners(bool subscribecallback=true);
+  void updatePlanners(bool subscribecallback = true);
   void dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr& configuration_update);
 };
-}
+}  // namespace cl_move_base_z
