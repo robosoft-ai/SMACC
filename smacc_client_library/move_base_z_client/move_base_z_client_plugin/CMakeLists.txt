@@ -110,18 +110,6 @@ target_link_libraries(costmap_switch
    ${catkin_LIBRARIES})
 
 #----------------------------------
-file(GLOB_RECURSE SRC_FILES "src/client_behaviors/*.cpp") # opcionalmente GLOB
-
-add_library(move_base_z_client_behaviors
-   ${SRC_FILES}
-)
-
-target_link_libraries(move_base_z_client_behaviors
-   ${catkin_LIBRARIES}
-   odom_tracker
-   planner_switcher)
-
-#----------------------------------
 include_directories(
  include
  ${catkin_INCLUDE_DIRS}
@@ -140,6 +128,19 @@ target_link_libraries(waypoints_navigator
    planner_switcher
    move_base_z_client_plugin
 )
+#----------------------------------
+file(GLOB_RECURSE SRC_FILES "src/client_behaviors/*.cpp") # opcionalmente GLOB
+
+add_library(move_base_z_client_behaviors
+   ${SRC_FILES}
+)
+
+target_link_libraries(move_base_z_client_behaviors
+   ${catkin_LIBRARIES}
+   odom_tracker
+   planner_switcher
+   waypoints_navigator)
+
 
 #############
 ## Install ##
