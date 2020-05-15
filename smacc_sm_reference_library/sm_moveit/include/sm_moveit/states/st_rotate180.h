@@ -42,6 +42,7 @@ struct StRotate180 : smacc::SmaccState<StRotate180, SmMoveIt>
         
         auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
         absoluteRotateBehavior->absoluteGoalAngleDegree = targetAbsoluteAngleDegrees;
+        absoluteRotateBehavior->spinningPlanner = CbAbsoluteRotate::SpiningPlanner::PureSpinning;
     }
 };
 } // namespace sm_moveit

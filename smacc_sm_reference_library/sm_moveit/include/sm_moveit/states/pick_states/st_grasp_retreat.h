@@ -12,7 +12,7 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
     // TRANSITION TABLE
     typedef mpl::list<
         Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StGraspRetreat, ABORT> /*retry on failure*/
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>,  StNavigationPosture> /* not retry on failure*/
         >
         reactions;
 
@@ -31,7 +31,7 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()
                                          ->getClientBehavior<CbMoveCartesianRelative>();
 
-        moveCartesianRelative->offset_.z = 0.2;
+        moveCartesianRelative->offset_.z = 0.1;
         if (currentTable == RobotProcessStatus::TABLE0)
         {
             moveCartesianRelative->offset_.x = -0.1;

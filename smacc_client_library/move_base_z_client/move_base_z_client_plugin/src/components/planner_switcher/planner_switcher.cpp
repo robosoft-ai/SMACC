@@ -36,6 +36,15 @@ void PlannerSwitcher::setForwardPlanner()
   updatePlanners();
 }
 
+
+void PlannerSwitcher::setPureSpinningPlanner()
+{
+  ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set PureSpinningPlanner");
+  desired_global_planner_ = "forward_global_planner/ForwardGlobalPlanner";
+  desired_local_planner_ = "pure_spinning_local_planner/PureSpinningLocalPlanner";
+  updatePlanners();
+}
+
 void PlannerSwitcher::setDefaultPlanners()
 {
   desired_global_planner_ = "navfn/NavfnROS";

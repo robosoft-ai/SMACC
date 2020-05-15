@@ -67,9 +67,10 @@ class FakePerceptionNode:
             if self.table_collision and not "cube_0" in attached_objects:
                 for i, table_transf in enumerate(table_transforms):
                     #self.planning_scene.removeCollisionObject("table_" + str(i))
+                    thickness = 0.3
                     pos = table_transf[0]
                     self.planning_scene.addBox(
-                        "table_" + str(i), 1.2, 1.2, 0.001, pos[0],  pos[1],  0.7)  # 0.68
+                        "table_" + str(i), 1.2, 1.3, 0.001 + thickness, pos[0],  pos[1],  0.7 -  thickness*0.5)  # 0.68
 
             if self.cube_collision and not "cube_0" in attached_objects:
                 for i, cube_transf in enumerate(cube_transforms):
