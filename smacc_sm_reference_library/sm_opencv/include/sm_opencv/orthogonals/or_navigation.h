@@ -41,9 +41,14 @@ namespace sm_opencv
 
             std::string planfilepath;
             ros::NodeHandle nh("~");
-            if (nh.getParam("/sm_opencv/waypoints_plan", planfilepath))
+            if (nh.getParam("waypoints_plan", planfilepath))
             {
+                ROS_INFO("Loaded waypoints path file:", planfilepath);
                 waypointsNavigator->loadWayPointsFromFile(planfilepath);
+            }
+            else
+            {
+                ROS_ERROR("Error while loading waypoints_path file: not found");
             }
         }
     };

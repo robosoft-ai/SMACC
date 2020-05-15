@@ -34,5 +34,6 @@ struct SmOpenCV
 
 
 //STATES
-#include <sm_opencv/states/st_navigate_to_waypoint_x.h>
 #include <sm_opencv/states/st_detect_items.h>
+#include <sm_opencv/states/st_navigate_to_waypoint_x.h>
+

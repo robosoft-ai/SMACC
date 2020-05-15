@@ -1,4 +1,5 @@
 #include <sm_opencv/sm_opencv.h>
+
 int main(int argc, char **argv)
 {
     ros::init(argc, argv, "sm_opencv");
