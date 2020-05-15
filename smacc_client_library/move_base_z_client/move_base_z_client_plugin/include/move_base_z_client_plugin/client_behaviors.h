@@ -5,3 +5,4 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_forward.h>
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_backward.h>
+#include <move_base_z_client_plugin/client_behaviors/cb_navigate_next_waypoint.h>

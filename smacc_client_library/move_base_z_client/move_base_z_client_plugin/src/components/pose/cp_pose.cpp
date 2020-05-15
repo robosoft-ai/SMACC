@@ -40,7 +40,7 @@ void Pose::waitTransformUpdate(ros::Rate r)
         }
         catch (tf::TransformException ex)
         {
-            ROS_ERROR_THROTTLE(1, "Component pose is failing on pose update: %s", ex.what());
+            ROS_ERROR_THROTTLE(1, "[Component pose] is failing on pose update: %s", ex.what());
         }
 
         r.sleep();
@@ -65,7 +65,7 @@ void Pose::update()
     }
     catch (tf::TransformException ex)
     {
-        ROS_ERROR_THROTTLE(1, "Component pose is failing on pose update: %s", ex.what());
+        ROS_ERROR_THROTTLE(1, "[Component pose] is failing on pose update: %s", ex.what());
     }
 }
 } // namespace cl_move_base_z
