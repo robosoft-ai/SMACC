@@ -129,14 +129,14 @@ target_link_libraries(${PROJECT_NAME}
  add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 
- add_executable(temperature_sensor_node_smdbsb test/temperature_sensor_node/src/temperature_sensor_node.cpp)
+ add_executable(temperature_sensor_node_smdbsb servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
  set_target_properties(temperature_sensor_node_smdbsb PROPERTIES OUTPUT_NAME "temperature_sensor_node")
 
  target_link_libraries(temperature_sensor_node_smdbsb
    ${catkin_LIBRARIES}
  )
 
-add_executable(led_action_server_node_smdbsb test/led_action_server/src/led_action_server_node.cpp)
+add_executable(led_action_server_node_smdbsb servers/led_action_server/src/led_action_server_node.cpp)
 set_target_properties(led_action_server_node_smdbsb PROPERTIES OUTPUT_NAME "led_action_server_node")
 
  target_link_libraries(
@@ -156,7 +156,7 @@ add_dependencies(led_action_server_node_smdbsb ${${PROJECT_NAME}_EXPORTED_TARGET
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-   test/service_node_3/src/service_node_3.py
+   servers/service_node_3/src/service_node_3.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
