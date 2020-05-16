@@ -31,7 +31,7 @@
   
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
-  <depend>conditional</depend>
+  <depend>sr_conditional</depend>
   <depend>ros_timer_client</depend>
 
   <depend>ridgeback_gazebo</depend>

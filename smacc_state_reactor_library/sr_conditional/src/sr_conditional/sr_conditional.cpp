@@ -1,14 +1,14 @@
-#include <conditional/sr_conditional.h>
+#include <sr_conditional/sr_conditional.h>
 
 namespace smacc
 {
 namespace state_reactors
 {
-SrConditional::~SrConditional()
+Srsr_conditional::~Srsr_conditional()
 {
 }
 
-bool SrConditional::triggers()
+bool Srsr_conditional::triggers()
 {
     return this->conditionFlag;
 }

@@ -10,12 +10,12 @@ namespace smacc
 namespace state_reactors
 {
 template <typename TSource, typename TObjectTag = EmptyObjectTag>
-struct EvConditionalTrue : sc::event<EvConditionalTrue<TSource, TObjectTag>>
+struct Evsr_conditionalTrue : sc::event<Evsr_conditionalTrue<TSource, TObjectTag>>
 {
 };
 
 //-----------------------------------------------------------------------
-class SrConditional : public StateReactor
+class Srsr_conditional : public StateReactor
 {
 private:
     std::map<const std::type_info *, bool> triggeredEvents;
@@ -23,18 +23,18 @@ private:
 
 public:
     template <typename TEv>
-    SrConditional(std::function<bool(TEv *)> conditionalFunction)
+    Srsr_conditional(std::function<bool(TEv *)> sr_conditionalFunction)
     {
         std::function<void(TEv *)> callback =
             [=](TEv *ev) {
-                bool condition = conditionalFunction(ev);
+                bool condition = sr_conditionalFunction(ev);
                 this->conditionFlag = condition;
             };
 
         this->createEventCallback(callback);
     }
 
-    ~SrConditional();
+    ~Srsr_conditional();
 
     virtual bool triggers() override;
 };

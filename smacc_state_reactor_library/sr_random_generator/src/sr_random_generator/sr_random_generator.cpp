@@ -1,4 +1,4 @@
-#include <random_generator/sr_random_generator.h>
+#include <sr_random_generator/sr_random_generator.h>
 
 namespace smacc
 {
