@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>all_events_go</name>
+  <name>sr_all_events_go</name>
   <version>0.0.1</version>
-  <description>The all_events_go package</description>
+  <description>The sr_all_events_go package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/all_events_go</url> -->
+  <!-- <url type="website">http://wiki.ros.org/sr_all_events_go</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->

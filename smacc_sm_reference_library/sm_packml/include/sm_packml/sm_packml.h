@@ -32,7 +32,7 @@ using namespace sm_packml::cl_subscriber;
 #include <ros_timer_client/client_behaviors/cb_ros_timer.h>
 
 //STATE REACTORS
-#include <all_events_go/sr_all_events_go.h>
+#include <sr_all_events_go/sr_all_events_go.h>
 
 using namespace smacc;
 using namespace smacc::state_reactors;

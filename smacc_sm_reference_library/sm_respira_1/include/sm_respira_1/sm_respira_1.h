@@ -32,7 +32,7 @@ using namespace sm_respira_1::cl_subscriber;
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 //STATE REACTORS
-#include <all_events_go/sr_all_events_go.h>
+#include <sr_all_events_go/sr_all_events_go.h>
 
 using namespace smacc;
 using namespace smacc::state_reactors;

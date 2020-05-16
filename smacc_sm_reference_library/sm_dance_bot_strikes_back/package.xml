@@ -29,7 +29,7 @@
   <depend>ros_publisher_client</depend>
   <depend>multirole_sensor_client</depend>
   
-  <depend>all_events_go</depend>
+  <depend>sr_all_events_go</depend>
   <depend>event_countdown</depend>
   <depend>conditional</depend>
   <depend>ros_timer_client</depend>
