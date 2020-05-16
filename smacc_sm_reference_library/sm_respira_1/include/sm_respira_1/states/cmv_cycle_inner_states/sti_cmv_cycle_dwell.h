@@ -61,7 +61,7 @@ struct StiPSCycleDwell : smacc::SmaccState<StiPSCycleDwell, SS>
   {
     ROS_INFO("On Exit!");
   }
-
+ 
   void onTimerClientTickCallback()
   {
     ROS_INFO("timer client tick!");
@@ -71,7 +71,7 @@ struct StiPSCycleDwell : smacc::SmaccState<StiPSCycleDwell, SS>
   {
     ROS_INFO("single behavior tick!");
   }
-
+  
 };
 }
 }
