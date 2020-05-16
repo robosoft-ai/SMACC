@@ -86,7 +86,7 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME}_node src/main.cpp)
+add_executable(${PROJECT_NAME}_node src/sm_opencv.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 
 add_executable(opencv_perception_node test/opencv_perception_node/main.cpp)
