@@ -18,7 +18,7 @@ multirole_sensor_client:
   ubuntu: [ros-melodic-multirole-sensor-client]
 sr_all_events_go:
   ubuntu: [ros-melodic-all-events-go]
-event_countdown:
+sr_event_countdown:
   ubuntu: [ros-melodic-event-countdown]
 conditional:
   ubuntu: [ros-melodic-conditional]
