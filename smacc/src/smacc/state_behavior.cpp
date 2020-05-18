@@ -28,6 +28,11 @@ void StateReactor::onEntry()
 
 }
 
+void StateReactor::onExit()
+{
+
+}
+
 void StateReactor::update()
 {
     if (this->triggers())

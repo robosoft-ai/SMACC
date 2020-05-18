@@ -25,8 +25,15 @@ void CbAbsoluteRotate::setLocalPlannerYawTolerance(float newtolerance)
     dynamic_reconfigure::ReconfigureResponse srv_resp;
     dynamic_reconfigure::Config conf;
 
-    ros::NodeHandle nh;
-    nh.getParam("/move_base/BackwardLocalPlanner/yaw_goal_tolerance", this->oldYawTolerance);
+    ros::NodeHandle nh("~");
+    std::string localPlannerName = "TrajectoryPlannerROS";
+
+    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    {
+        localPlannerName = "PureSpinningLocalPlanner";
+    }
+
+    nh.getParam(localPlannerName+"/yaw_goal_tolerance", this->oldYawTolerance);
 
     dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
     yaw_goal_tolerance.name = "yaw_goal_tolerance";
@@ -35,17 +42,17 @@ void CbAbsoluteRotate::setLocalPlannerYawTolerance(float newtolerance)
 
     srv_req.config = conf;
     ROS_INFO("[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: %lf ", newtolerance, this->oldYawTolerance);
-    ros::service::call("/move_base/BackwardLocalPlanner", srv_req, srv_resp);
+    ros::service::call( localPlannerName, srv_req, srv_resp);
     ros::spinOnce();
 }
 
 void CbAbsoluteRotate::onExit()
 {
-    if(spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
     {
 
     }
-    else if (spinningPlanner == CbAbsoluteRotate::SpiningPlanner::Default)
+    else
     {
         this->setLocalPlannerYawTolerance(this->oldYawTolerance);
     }
@@ -71,11 +78,11 @@ void CbAbsoluteRotate::onEntry()
     //this should work better with a coroutine and await
     //this->plannerSwitcher_->setForwardPlanner();
     
-    if(spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
     {
         plannerSwitcher->setPureSpinningPlanner();
     }
-    else if (spinningPlanner == CbAbsoluteRotate::SpiningPlanner::Default)
+    else
     {
         plannerSwitcher->setDefaultPlanners();
 
