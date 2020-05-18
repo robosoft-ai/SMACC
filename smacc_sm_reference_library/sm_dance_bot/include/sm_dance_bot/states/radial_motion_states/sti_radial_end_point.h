@@ -20,7 +20,7 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
   {
     ROS_INFO("ssr radial end point, distance in meters: %lf", SS::ray_length_meters());
     configure_orthogonal<OrNavigation, CbNavigateForward>(SS::ray_length_meters());
-    configure_orthogonal<OrLED, CbLEDOff>();
+    configure_orthogonal<OrLED, CbLEDOn>();
   }
 
   void runtimeConfigure()
