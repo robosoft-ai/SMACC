@@ -57,6 +57,9 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin multirole_se
 # )
 
 add_action_files(
+   DIRECTORY
+   servers/led_action_server/action/
+   
    FILES
    LEDControl.action
 )
