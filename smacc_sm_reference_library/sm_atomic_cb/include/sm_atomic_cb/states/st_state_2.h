@@ -40,11 +40,13 @@ struct State2 : smacc::SmaccState<State2, SmAtomicCB>
         cbsingle->onTimerTick(&State2::onSingleBehaviorTickCallback, this);
     }
        
+    // fire callback function
     void onTimerClientTickCallback()
     {
         ROS_INFO("timer client tick!");
     }
 
+    // fire callback function
     void onSingleBehaviorTickCallback()
     {
         ROS_INFO("single behavior tick!");
