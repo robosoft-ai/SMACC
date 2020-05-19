@@ -43,7 +43,7 @@ namespace sm_opencv
             ros::NodeHandle nh("~");
             if (nh.getParam("waypoints_plan", planfilepath))
             {
-                ROS_INFO("Loaded waypoints path file:", planfilepath);
+                ROS_INFO("Loaded waypoints path file: %s", planfilepath.c_str());
                 waypointsNavigator->loadWayPointsFromFile(planfilepath);
             }
             else

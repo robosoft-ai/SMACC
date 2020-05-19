@@ -7,6 +7,7 @@
 #include <opencv2/features2d.hpp>
 
 ros::Publisher detectionPub;
+ros::Publisher debugImagePub;
 ros::Subscriber imageSub;
 
 void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& out)
@@ -17,7 +18,7 @@ void segmentColor(const cv::Mat& inputRGB, int hueMean, int hueWindow, cv::Mat& 
   cv::threshold(out, out, 100, 255, cv::THRESH_BINARY);
 }
 
-int testImage(cv::Mat& input, std::string colorName, int hueMean, int hueWindow)
+int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hueMean, int hueWindow)
 {
   cv::Mat segmented;
 
@@ -42,43 +43,56 @@ int testImage(cv::Mat& input, std::string colorName, int hueMean, int hueWindow)
     std::cout << "blob " << colorName << " detected: " << b.size << std::endl;
   }
 
+  if(!blobs.empty())
+  { 
+    auto& b = blobs.front();
+    cv::Rect r;
+    float diameter = b.size;
+    auto radius = diameter*0.5;
+    r.x = b.pt.x - radius;
+    r.y = b.pt.y - radius;
+    r.width = diameter;
+    r.height = diameter;
+    cv::rectangle(debugImage,r, cv::Scalar(255,0,0),1 );
+  }
+
   // cv::imshow(colorName + " filter - "+ path, segmented);
   // cv::waitKey();
 
   return blobs.size();
 }
 
-int testRed(cv::Mat& input)
+int testRed(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, "red", 130, 20);
+  return testImage(input, debugImage, "red", 130, 20);
 }
 
-int testBlue(cv::Mat& input)
+int testBlue(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, "blue", 10, 10);
+  return testImage(input, debugImage, "blue", 10, 10);
 }
 
-int testGreen(cv::Mat& input)
+int testGreen(cv::Mat& input, cv::Mat& debugImage)
 {
-  return testImage(input, "green", 50, 10);
+  return testImage(input, debugImage, "green", 50, 10);
 }
 
-int testRed(std::string path)
+int testRed(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  return testImage(input, "red", 130, 20);
+  return testImage(input, debugImage, "red", 130, 20);
 }
 
-int testBlue(std::string path)
+int testBlue(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  return testImage(input, "blue", 10, 10);
+  return testImage(input, debugImage, "blue", 10, 10);
 }
 
-int testGreen(std::string path)
+int testGreen(std::string path, cv::Mat& debugImage)
 {
   cv::Mat input = cv::imread(path);
-  return testImage(input, "green", 50, 10);
+  return testImage(input, debugImage, "green", 50, 10);
 }
 
 void update()
@@ -88,18 +102,22 @@ void update()
 void callback(const sensor_msgs::Image& img)
 {
   cv_bridge::CvImagePtr cv_image = cv_bridge::toCvCopy(img, "rgb8");
+  
   cv::Mat image = cv_image->image;
+  cv_bridge::CvImage debugImageBridge;
+  debugImageBridge.encoding = "rgb8";
+  debugImageBridge.image = image.clone();
 
   int detectedColor = 0;
-  if (testRed(image) > 0)
+  if (testRed(image, debugImageBridge.image) > 0)
   {
     detectedColor = 1;
   }
-  else if (testGreen(image) > 0)
+  else if (testGreen(image, debugImageBridge.image) > 0)
   {
     detectedColor = 2;
   }
-  else if (testBlue(image) > 0)
+  else if (testBlue(image, debugImageBridge.image) > 0)
   {
     detectedColor = 3;
   }
@@ -108,7 +126,8 @@ void callback(const sensor_msgs::Image& img)
   detectedColorMsg.data = detectedColor;
   detectionPub.publish(detectedColorMsg);
 
-  // cv::imshow("receivedImage", image);
+  debugImageBridge.header = img.header;
+  debugImagePub.publish(debugImageBridge.toImageMsg());
 }
 
 int main(int argc, char** argv)
@@ -118,6 +137,7 @@ int main(int argc, char** argv)
 
   detectionPub = nh.advertise<std_msgs::Int32>("detected_color", 1);
   imageSub = nh.subscribe("/image_raw", 1, callback);
+  debugImagePub = nh.advertise<sensor_msgs::Image>("/opencv_debug_image", 1);
 
   ros::Rate r(10);
 
