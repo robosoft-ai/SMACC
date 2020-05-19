@@ -1,0 +1,3 @@
+<launch>
+    <node pkg="sm_atomic_cb" type="sm_atomic_cb_node" name="sm_atomic_cb"/>
+</launch>
