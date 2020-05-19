@@ -296,10 +296,8 @@ private:
   {
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
-    auto classname = smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str();
-
     // TODO: make this static to build the parameter tree at startup
-    this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
+    this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str());
 
     ROS_DEBUG("[%s] nodehandle namespace: %s", STATE_NAME, nh.getNamespace().c_str());
 
