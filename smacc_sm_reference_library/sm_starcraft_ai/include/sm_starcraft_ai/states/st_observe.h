@@ -33,19 +33,6 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
 
     void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&StObserve::onTimerClientTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StObserve::onSingleBehaviorTickCallback, this);
     }
     
     void onEntry()
@@ -58,14 +45,5 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
         ROS_INFO("On Exit!");
     }
 
-    void onTimerClientTickCallback()
-    {
-        ROS_INFO("timer client tick!");
-    }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
 };
 } // namespace sm_starcraft_ai

@@ -35,19 +35,6 @@ struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SS>
 
   void runtimeConfigure()
   {
-    // get reference to the client
-    ClRosTimer *client;
-    this->requiresClient(client);
-
-    // subscribe to the timer client callback
-    client->onTimerTick(&StiPSCycleInspire::onTimerClientTickCallback, this);
-
-    // getting reference to the single countdown behavior
-    auto *cbsingle = this->getOrthogonal<OrTimer>()
-                         ->getClientBehavior<CbTimerCountdownOnce>();
-
-    // subscribe to the single countdown behavior callback
-    cbsingle->onTimerTick(&StiPSCycleInspire::onSingleBehaviorTickCallback, this);
   }
   
   void onEntry()
@@ -60,15 +47,6 @@ struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SS>
     ROS_INFO("On Exit!");
   }
 
-  void onTimerClientTickCallback()
-  {
-    ROS_INFO("timer client tick!");
-  }
-
-  void onSingleBehaviorTickCallback()
-  {
-    ROS_INFO("single behavior tick!");
-  }
 };
 }
 }

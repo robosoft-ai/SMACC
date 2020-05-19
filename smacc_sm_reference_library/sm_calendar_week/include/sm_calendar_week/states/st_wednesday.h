@@ -22,29 +22,17 @@ struct StWednesday : smacc::SmaccState<StWednesday, MsWorkweek>
 
        void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&StWednesday::onTimerClientTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StWednesday::onSingleBehaviorTickCallback, this);
     }
 
-    void onTimerClientTickCallback()
+    void onEntry()
     {
-        ROS_INFO("timer client tick!");
+        ROS_INFO("On Entry!");
     }
 
-    void onSingleBehaviorTickCallback()
+    void onExit()
     {
-        ROS_INFO("single behavior tick!");
+        ROS_INFO("On Exit!");
     }
+
 };
 } // namespace sm_calendar_week

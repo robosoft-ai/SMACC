@@ -13,10 +13,9 @@ struct State1 : smacc::SmaccState<State1, SmUpdateLoop>, ISmaccUpdatable
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
 
-        >
-        reactions;
+    >reactions;
 
     // STATE FUNCTIONS
     static void staticConfigure()

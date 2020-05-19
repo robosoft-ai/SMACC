@@ -19,31 +19,19 @@ struct StFailLowerSpine : smacc::SmaccState<StFailLowerSpine, MsUnplug>
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
-       void runtimeConfigure()
+    void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&StFailLowerSpine::onTimerClientTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StFailLowerSpine::onSingleBehaviorTickCallback, this);
     }
 
-    void onTimerClientTickCallback()
+    void onEntry()
     {
-        ROS_INFO("timer client tick!");
+        ROS_INFO("On Entry!");
     }
 
-    void onSingleBehaviorTickCallback()
+    void onExit()
     {
-        ROS_INFO("single behavior tick!");
+        ROS_INFO("On Exit!");
     }
+   
 };
 } // namespace sm_pr2_plugs

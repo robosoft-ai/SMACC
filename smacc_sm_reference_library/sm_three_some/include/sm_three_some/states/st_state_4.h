@@ -14,7 +14,6 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-    
     }
 
     void runtimeConfigure()
@@ -31,14 +30,5 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
         ROS_INFO("On Exit!");
     }
 
-    void onTimerClientTickCallback()
-    {
-        ROS_INFO("timer client tick!");
-    }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
 };
 } // namespace sm_three_some

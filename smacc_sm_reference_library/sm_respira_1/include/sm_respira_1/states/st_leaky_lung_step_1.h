@@ -6,14 +6,15 @@ struct StLeakyLungStep1 : smacc::SmaccState<StLeakyLungStep1, MsLeakyLung>
     using SmaccState::SmaccState;
 
 // DECLARE CUSTOM OBJECT TAGS
-    struct MOVE : SUCCESS{};
-    struct BUILD : SUCCESS{};
-    struct ATTACK : SUCCESS{};
+    struct TIMEOUT : SUCCESS{};
+    struct NEXT : SUCCESS{};
+    struct PREVIOUS : ABORT{};  
+
 
 // TRANSITION TABLE
     typedef mpl::list<
     
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep2, SUCCESS>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep2, TIMEOUT>,
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::SsACCycle>,
     // Keyboard events
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLeakyLungStep2, SUCCESS>
@@ -33,19 +34,6 @@ struct StLeakyLungStep1 : smacc::SmaccState<StLeakyLungStep1, MsLeakyLung>
 
     void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&StLeakyLungStep1::onTimerClientTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StLeakyLungStep1::onSingleBehaviorTickCallback, this);
     }
     
     void onEntry()
@@ -58,14 +46,5 @@ struct StLeakyLungStep1 : smacc::SmaccState<StLeakyLungStep1, MsLeakyLung>
         ROS_INFO("On Exit!");
     }
 
-    void onTimerClientTickCallback()
-    {
-        ROS_INFO("timer client tick!");
-    }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
 };
 } // namespace sm_respira_1
