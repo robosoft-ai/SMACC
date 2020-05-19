@@ -41,11 +41,12 @@ bool ISmaccState::param(std::string param_name, T &param_val, const T &default_v
 }
 //-------------------------------------------------------------------------------------------------------
 
+#define THIS_STATE_NAME ((demangleSymbol(typeid(*this).name()).c_str()))
 template <typename TOrthogonal, typename TBehavior, typename... Args>
 std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
 {
     std::string orthogonalkey = demangledTypeName<TOrthogonal>();
-    ROS_INFO("Configuring orthogonal: %s", orthogonalkey.c_str());
+    ROS_INFO("[%s] Configuring orthogonal: %s", THIS_STATE_NAME, orthogonalkey.c_str());
 
     TOrthogonal *orthogonal = this->getOrthogonal<TOrthogonal>();
     if (orthogonal != nullptr)
@@ -57,7 +58,7 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
     }
     else
     {
-        ROS_ERROR("Skipping client behavior creation. Orthogonal did not exist.");
+        ROS_ERROR("[%s] Skipping client behavior creation in orthogonal [%s]. It does not exist.", THIS_STATE_NAME, orthogonalkey.c_str());
         return nullptr;
     }
 }
@@ -73,6 +74,7 @@ void ISmaccState::requiresComponent(SmaccComponentType *&storage)
 template <typename SmaccClientType>
 void ISmaccState::requiresClient(SmaccClientType *&storage)
 {
+    const char* sname = (demangleSymbol(typeid(*this).name()).c_str());
     storage = nullptr;
     auto &orthogonals = this->getStateMachine().getOrthogonals();
     for (auto &ortho : orthogonals)
@@ -82,7 +84,7 @@ void ISmaccState::requiresClient(SmaccClientType *&storage)
             return;
     }
 
-    ROS_ERROR("Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault if the returned reference is used.", demangleSymbol<SmaccClientType>().c_str());
+    ROS_ERROR("[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault if the returned reference is used.", sname, demangleSymbol<SmaccClientType>().c_str());
 }
 //-------------------------------------------------------------------------------------------------------
 

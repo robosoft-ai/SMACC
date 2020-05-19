@@ -4,103 +4,100 @@
 
 namespace smacc
 {
-void ISmaccOrthogonal::setStateMachine(ISmaccStateMachine *value)
-{
-  this->stateMachine_ = value;
-  this->onInitialize();
-}
-
-void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
-{
-  if (clBehavior != nullptr)
+  void ISmaccOrthogonal::setStateMachine(ISmaccStateMachine *value)
   {
-    ROS_INFO("Setting Ortho %s client behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
-    clBehavior->stateMachine_ = this->getStateMachine();
-    clBehavior->currentOrthogonal = this;
-
-    clientBehaviors_.push_back(clBehavior);
+    this->stateMachine_ = value;
+    this->onInitialize();
   }
-  else
+
+  void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
   {
-    ROS_INFO("Not behavioral State by orthogonal");
+    if (clBehavior != nullptr)
+    {
+      ROS_INFO("[Orthogonal %s] adding client behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+      clBehavior->stateMachine_ = this->getStateMachine();
+      clBehavior->currentOrthogonal = this;
+
+      clientBehaviors_.push_back(clBehavior);
+    }
+    else
+    {
+      ROS_INFO("[orthogonal %s] no client behaviors in this state", this->getName().c_str());
+    }
   }
-}
 
-void ISmaccOrthogonal::onInitialize()
-{
-}
-
-std::string ISmaccOrthogonal::getName() const
-{
-  return demangleSymbol(typeid(*this).name());
-}
-
-void ISmaccOrthogonal::runtimeConfigure()
-{
-  for (auto &clBehavior : clientBehaviors_)
+  void ISmaccOrthogonal::onInitialize()
   {
-    ROS_INFO("Orthogonal %s runtimeConfigure, current Behavior: %s", this->getName().c_str(),
-             clBehavior->getName().c_str());
-
-    clBehavior->runtimeConfigure();
   }
-}
 
-void ISmaccOrthogonal::assignClientToOrthogonal(smacc::ISmaccClient *client)
-{
-  client->setStateMachine(getStateMachine());
-  client->setOrthogonal(this);
-}
+  std::string ISmaccOrthogonal::getName() const
+  {
+    return demangleSymbol(typeid(*this).name());
+  }
 
-void ISmaccOrthogonal::onEntry()
-{
-  if (clientBehaviors_.size() > 0)
+  void ISmaccOrthogonal::runtimeConfigure()
   {
     for (auto &clBehavior : clientBehaviors_)
     {
-      auto cbname = clBehavior->getName().c_str();
-      ROS_INFO("Orthogonal %s OnEntry, current Behavior: %s", this->getName().c_str(), cbname);
+      ROS_INFO("[Orthogonal %s] runtimeConfigure, current Behavior: %s", this->getName().c_str(),
+               clBehavior->getName().c_str());
 
-      try
-      {
-        clBehavior->onEntry();
-      }
-      catch (const std::exception &e)
-      {
-        ROS_ERROR("[ClientBehavior %s] Exception on Entry - continuing with next client behavior. Exception info: %s",
-                  cbname, e.what());
-      }
+      clBehavior->runtimeConfigure();
     }
   }
-  else
-  {
-    ROS_INFO("Orthogonal %s OnEntry", this->getName().c_str());
-  }
-}
 
-void ISmaccOrthogonal::onExit()
-{
-  if (clientBehaviors_.size() > 0)
+  void ISmaccOrthogonal::assignClientToOrthogonal(smacc::ISmaccClient *client)
   {
-    for (auto &clBehavior : clientBehaviors_)
+    client->setStateMachine(getStateMachine());
+    client->setOrthogonal(this);
+  }
+
+  void ISmaccOrthogonal::onEntry()
+  {
+    if (clientBehaviors_.size() > 0)
     {
-      auto cbname = clBehavior->getName().c_str();
-      ROS_INFO("Orthogonal %s OnExit, current Behavior: %s", this->getName().c_str(), cbname);
-      try
+      for (auto &clBehavior : clientBehaviors_)
       {
-        clBehavior->onExit();
-      }
-      catch (const std::exception &e)
-      {
-        ROS_ERROR("[ClientBehavior %s] Exception onExit - continuing with next client behavior. Exception info: %s",
-                  cbname, e.what());
+        ROS_INFO("[Orthogonal %s] OnEntry, current Behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+
+        try
+        {
+          clBehavior->onEntry();
+        }
+        catch (const std::exception &e)
+        {
+          ROS_ERROR("[ClientBehavior %s] Exception on Entry - continuing with next client behavior. Exception info: %s",
+                    clBehavior->getName().c_str(), e.what());
+        }
       }
     }
-    clientBehaviors_.clear();
+    else
+    {
+      ROS_INFO("[Orthogonal %s] OnEntry", this->getName().c_str());
+    }
   }
-  else
+
+  void ISmaccOrthogonal::onExit()
   {
-    ROS_INFO("Orthogonal %s OnExit", this->getName().c_str());
+    if (clientBehaviors_.size() > 0)
+    {
+      for (auto &clBehavior : clientBehaviors_)
+      {
+        ROS_INFO("[Orthogonal %s] OnExit, current Behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
+        try
+        {
+          clBehavior->onExit();
+        }
+        catch (const std::exception &e)
+        {
+          ROS_ERROR("[ClientBehavior %s] Exception onExit - continuing with next client behavior. Exception info: %s", clBehavior->getName().c_str(), e.what());
+        }
+      }
+      clientBehaviors_.clear();
+    }
+    else
+    {
+      ROS_INFO("[Orthogonal %s] OnExit", this->getName().c_str());
+    }
   }
-}
-}  // namespace smacc
+} // namespace smacc

@@ -38,7 +38,7 @@ TOrthogonal *ISmaccStateMachine::getOrthogonal()
 
   if (it != orthogonals_.end())
   {
-    ROS_INFO("%s resource is required. Found resource in cache.", orthogonalkey.c_str());
+    ROS_DEBUG("Orthogonal %s resource is being required from some state, client or component. Found resource in cache.", orthogonalkey.c_str());
     ret = dynamic_cast<TOrthogonal *>(it->second.get());
     return ret;
   }
@@ -356,7 +356,7 @@ void ISmaccStateMachine::notifyOnStateEntryStart(StateType *state)
 std:
   lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-  ROS_INFO_STREAM("Notification State Entry, orthogonals:" << this->orthogonals_.size() << ", new state " << state);
+  ROS_DEBUG("[State Machne] Initializating a new state '%s' and updating current state. Getting state meta-information. number of orthogonals: %ld", demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
 
   stateSeqCounter_++;
   currentState_ = state;
@@ -368,7 +368,7 @@ void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
 {
   for (auto pair : this->orthogonals_)
   {
-    ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
+    //ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
     auto &orthogonal = pair.second;
     try
     {
@@ -404,7 +404,7 @@ void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
 {
   for (auto pair : this->orthogonals_)
   {
-    ROS_INFO("ortho onruntime configure: %s", pair.second->getName().c_str());
+    //ROS_INFO("ortho onruntime configure: %s", pair.second->getName().c_str());
     auto &orthogonal = pair.second;
     orthogonal->runtimeConfigure();
   }
@@ -430,7 +430,7 @@ void ISmaccStateMachine::notifyOnStateExit(StateType *state)
     }
   }
 
-  for (auto &sr : this->currentState_->getStateReactors())
+  for (auto &sr : state->getStateReactors())
   {
     auto srname = smacc::demangleSymbol(typeid(*sr).name()).c_str();
     ROS_INFO("state reactor OnExit: %s", srname);
