@@ -38,16 +38,17 @@ struct StForwardNextTable : smacc::SmaccState<StForwardNextTable, SmMoveIt>
     goalPoint.z = 0;
     goalPoint.y = 0;
     double yaw = 0;
+    double forwardOffset = 1.2;
     if (currentPose.position.x < -0.2)  // robot is at negative x-axis side
     {
       // target is at positive side, at point x=0
-      goalPoint.x = 1.2;
+      goalPoint.x = forwardOffset;
       yaw = 0;
     }
     else  // the robot in at positive x-axis side
     {
       // target is at negative x-axis side at point x = -1
-      goalPoint.x = -1.2;
+      goalPoint.x = -forwardOffset;
       yaw = -M_PI;
     }
 
@@ -64,18 +65,11 @@ struct StForwardNextTable : smacc::SmaccState<StForwardNextTable, SmMoveIt>
     auto pose = moveBaseClient_->getComponent<Pose>();
     auto currentPose = pose->toPoseMsg();
 
-    auto offset = 0.2;
+    auto offset = 0.15;
+    auto forwardDistance = 2.0;
     double dist;
-    if (currentPose.position.x < -0.2)  // robot is at negative x-axis side
-    {
-      // target is at positive side, at point x=0
-      dist = 2 + offset;
-    }
-    else  // the robot in at positive x-axis side
-    {
-      // target is at negative x-axis side at point x = -1
-      dist = 2 + offset;
-    }
+    
+    dist = forwardDistance + offset;
 
     auto forwardBh = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateForward>();
     forwardBh->forwardDistance = dist;

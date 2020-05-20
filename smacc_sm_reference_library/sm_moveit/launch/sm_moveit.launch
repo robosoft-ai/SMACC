@@ -26,11 +26,12 @@
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="headless" value="false"/>
-        <arg name="world_name" value="$(find sm_moveit)/worlds/test_zone_pick_place.sdf"/>
+        <arg name="world_name" value="$(find sm_moveit)/simulation/worlds/test_zone_pick_place.sdf"/>
     </include>
 
 
     <include file="$(find fetch_moveit_config)/launch/move_group.launch">
+        <arg name="pipeline" value="ompl"/>
     </include>
 
     <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" args="-d $(find sm_moveit)/config/rviz.rviz" output="screen">

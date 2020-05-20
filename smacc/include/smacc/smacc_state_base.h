@@ -177,10 +177,8 @@ public:
   template <typename TOrthogonal, typename TBehavior, typename... Args>
   static void configure_orthogonal(Args &&... args)
   {
-    auto strorthogonal = demangleSymbol(typeid(TOrthogonal).name()).c_str();
-    auto strbehavior = demangleSymbol(typeid(TBehavior).name()).c_str();
 
-    ROS_INFO("[%s] Runtime configure orthogonal %s -> %s", STATE_NAME, strorthogonal, strbehavior);
+    ROS_INFO("[%s] Runtime configure orthogonal %s -> %s", STATE_NAME, demangleSymbol(typeid(TOrthogonal).name()).c_str(), demangleSymbol(typeid(TBehavior).name()).c_str());
 
     ClientBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = [=](ISmaccState *state) {

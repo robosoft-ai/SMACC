@@ -9,7 +9,7 @@
   <rosparam file="$(find fetch_gazebo)/config/default_controllers.yaml" command="load" />
 
   <!-- URDF and TF support -->
-  <param name="robot_description" command="$(find xacro)/xacro.py $(find sm_moveit)/robots/fetch_gazebo_robot.xacro" />
+  <param name="robot_description" command="$(find xacro)/xacro.py $(find sm_moveit)/simulation/robots/fetch_gazebo_robot.xacro" />
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" >
     <param name="publish_frequency" value="100.0"/>
   </node>
