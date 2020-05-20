@@ -266,7 +266,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     geometry_msgs::PoseStamped currentPose;
     tf::poseStampedTFToMsg(tfpose,currentPose);
-    ROS_INFO_STREAM("[ForwardLocalPlanner] current robot pose " << currentPose);
+    ROS_DEBUG_STREAM("[ForwardLocalPlanner] current robot pose " << currentPose);
 
     tf::Quaternion q = tfpose.getRotation();
 

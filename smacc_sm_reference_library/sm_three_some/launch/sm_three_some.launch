@@ -1,5 +1,5 @@
 <launch>
-    <arg name="server_nodes_xterms" default="xterm -hold -e" />
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
 
     <node pkg="sm_three_some" type="sm_three_some_node" name="sm_three_some" launch-prefix="$(arg server_nodes_xterms)" />
 
