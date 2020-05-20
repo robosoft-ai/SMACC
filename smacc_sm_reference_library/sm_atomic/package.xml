@@ -52,6 +52,7 @@
   <depend>roscpp</depend>
   <depend>smacc</depend>
   <depend>ros_timer_client</depend>
+  <depend>xterm</depend>
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
