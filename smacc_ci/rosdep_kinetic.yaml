@@ -20,8 +20,8 @@ all_events_go:
   ubuntu: [ros-kinetic-all-events-go]
 event_countdown:
   ubuntu: [ros-kinetic-event-countdown]
-conditional:
-  ubuntu: [ros-kinetic-conditional]    
+sr_conditional:
+  ubuntu: [ros-kinetic-sr-conditional]    
 forward_global_planner:
   ubuntu: [ros-kinetic-forward-global-planner]    
 python-gobject-2:

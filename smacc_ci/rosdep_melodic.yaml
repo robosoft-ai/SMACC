@@ -20,8 +20,8 @@ all_events_go:
   ubuntu: [ros-melodic-all-events-go]
 event_countdown:
   ubuntu: [ros-melodic-event-countdown]
-conditional:
-  ubuntu: [ros-melodic-conditional]
+sr_conditional:
+  ubuntu: [ros-melodic-sr-conditional]
 forward_global_planner:
   ubuntu: [ros-melodic-forward-global-planner]        
 python-gobject-2:
