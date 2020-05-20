@@ -24,6 +24,8 @@ sr_conditional:
   ubuntu: [ros-kinetic-sr-conditional]    
 forward_global_planner:
   ubuntu: [ros-kinetic-forward-global-planner]    
+sm_dance_bot:
+  ubuntu: [ros-kinetic-sm-dance-bot]    
 python-gobject-2:
   ubuntu: [python-gobject-2]
 gir1.2-gtk:
