@@ -53,8 +53,8 @@
   <depend>smacc</depend>
   <depend>actionlib</depend>
   <depend>actionlib_msgs</depend>
-  
   <depend>move_base_z_client_plugin</depend>  
+  <depend>xterm</depend>
   
   
   

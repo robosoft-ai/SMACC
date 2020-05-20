@@ -1,5 +1,5 @@
 <launch>
-    <arg name="server_nodes_xterms" default="xterm -hold -e" />
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
 
     <node pkg="sm_calendar_week" type="sm_calendar_week_node" name="sm_calendar_week" launch-prefix="$(arg server_nodes_xterms)" />
 

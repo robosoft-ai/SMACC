@@ -36,7 +36,7 @@
 
   <depend>ridgeback_gazebo</depend>
   <depend>ridgeback_navigation</depend>
-  
+  <depend>xterm</depend>
   <depend>tf</depend>¡
 
   <export>

@@ -5,7 +5,7 @@
         <arg name="gui" value="$(arg show_gz_client)"/>
     </include>
 
-    <node pkg="move_base" type="move_base" respawn="true" name="move_base" launch-prefix="xterm -hold -e ">
+    <node pkg="move_base" type="move_base" respawn="true" name="move_base" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e ">
         <rosparam file="$(find sm_dance_bot)/config/move_base_client/costmap_common_params.yaml" command="load" ns="global_costmap" />
         <rosparam file="$(find sm_dance_bot)/config/move_base_client/costmap_common_params.yaml" command="load" ns="local_costmap" />
 
