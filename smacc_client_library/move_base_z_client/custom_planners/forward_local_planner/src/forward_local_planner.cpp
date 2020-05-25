@@ -294,7 +294,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                ROS_INFO("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
+                ROS_DEBUG("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
             }
             else
             {
