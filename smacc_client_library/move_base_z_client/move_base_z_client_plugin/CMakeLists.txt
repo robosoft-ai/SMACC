@@ -119,7 +119,8 @@ add_library(move_base_z_client_behaviors
 target_link_libraries(move_base_z_client_behaviors
    ${catkin_LIBRARIES}
    odom_tracker
-   planner_switcher)
+   planner_switcher
+   waypoints_navigator)
 
 #----------------------------------
 include_directories(
