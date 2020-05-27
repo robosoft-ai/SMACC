@@ -26,16 +26,3 @@ sm_dance_bot:
   ubuntu: [ros-melodic-sm-dance-bot]    
 forward_global_planner:
   ubuntu: [ros-melodic-forward-global-planner]        
-python-gobject-2:
-  ubuntu: [python-gobject-2]
-gir1.2-gtk-3.0:
-  ubuntu: [gir1.2-gtk-3.0]
-
-
-  
-#smacc_interface_components:
-#  ubuntu: [ros-melodic-smacc-interface-components]
-
-
-
-
