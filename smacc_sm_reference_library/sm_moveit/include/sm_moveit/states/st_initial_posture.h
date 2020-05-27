@@ -38,7 +38,7 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt>
 
 
     std::map<std::string, double> jointValues
-       {{"torso_lift_joint", -1.5886941446227077e-11},
+       {{"torso_lift_joint", 0.05},
         {"bellows_joint", 0.006636882979390101},
         {"head_pan_joint", -1.7973139598836951e-07},
         {"head_tilt_joint",0.0024005013786707607},

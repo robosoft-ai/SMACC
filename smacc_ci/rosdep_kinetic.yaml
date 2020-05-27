@@ -17,9 +17,9 @@ ros_publisher_client:
 multirole_sensor_client:
   ubuntu: [ros-kinetic-multirole-sensor-client]
 sr_all_events_go:
-  ubuntu: [ros-kinetic-all-events-go]
+  ubuntu: [ros-kinetic-sr-all-events-go]
 sr_event_countdown:
-  ubuntu: [ros-kinetic-event-countdown]
+  ubuntu: [ros-kinetic-sr-event-countdown]
 sr_conditional:
   ubuntu: [ros-kinetic-sr-conditional]    
 forward_global_planner:

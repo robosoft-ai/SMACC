@@ -1,5 +1,5 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="fetch" >
-  <xacro:include filename="$(find fetch_description)/robots/fetch.urdf" />
+  <xacro:include filename="$(find sm_moveit)/urdf/fetch.urdf" />
 
   <!-- Add four casters to the base -->
   <xacro:macro name="caster" params="prefix joint_x joint_y">
@@ -101,6 +101,10 @@
   <gazebo reference="wrist_roll_joint">
     <implicitSpringDamper>1</implicitSpringDamper>
   </gazebo>
+  <gazebo reference="torso_lift_joint">
+    <implicitSpringDamper>1</implicitSpringDamper>
+  </gazebo>
+  
 
   <!-- Gripper is another fallacy of physics -->
   <gazebo reference="r_gripper_finger_link">
