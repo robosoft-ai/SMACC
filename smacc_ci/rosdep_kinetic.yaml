@@ -16,9 +16,9 @@ ros_publisher_client:
     ubuntu: [ros-kinetic-ros-publisher-client]
 multirole_sensor_client:
   ubuntu: [ros-kinetic-multirole-sensor-client]
-sr_all_events_go:
+sr_sr_all_events_go:
   ubuntu: [ros-kinetic-sr-all-events-go]
-sr_event_countdown:
+sr_sr_random_generator:
   ubuntu: [ros-kinetic-sr-event-countdown]
 sr_conditional:
   ubuntu: [ros-kinetic-sr-conditional]    

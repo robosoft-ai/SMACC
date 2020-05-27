@@ -1,4 +1,4 @@
-#include <conditional/sr_conditional.h>
+#include <sr_conditional/sr_conditional.h>
 
 namespace smacc
 {

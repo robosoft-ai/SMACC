@@ -63,7 +63,7 @@
   <depend>multirole_sensor_client</depend>
   
   <depend>all_events_go</depend>
-  <depend>event_countdown</depend>
+  <depend>sr_random_generator</depend>
   <depend>conditional</depend>
   <depend>ros_timer_client</depend>
 

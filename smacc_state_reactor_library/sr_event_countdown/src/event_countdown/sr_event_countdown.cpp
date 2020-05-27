@@ -1,6 +1,6 @@
 
 #include <smacc/common.h>
-#include <event_countdown/sr_event_countdown.h>
+#include <sr_random_generator/sr_sr_random_generator.h>
 #include <memory>
 
 namespace smacc

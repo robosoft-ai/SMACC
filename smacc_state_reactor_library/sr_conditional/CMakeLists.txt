@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(conditional)
+project(sr_conditional)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED smacc)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES conditional
+  LIBRARIES sr_conditional
 #  CATKIN_DEPENDS smacc_msgs
 #  DEPENDS system_lib
 )
