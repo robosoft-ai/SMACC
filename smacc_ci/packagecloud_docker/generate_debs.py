@@ -164,28 +164,6 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
 
     return smacc_debian_files
 
-
-def create_and_push_smacc_viewer_debians(osname, osversion, rosversion):
-    workspace_source_folder = os.path.join(
-        workspace_folder, relative_smacc_viewer_folder)
-    identified_install_packages = get_identified_packages(workspace_folder)
-    smacc_viewer_manual_order_packages = ["smacc_viewer"]
-    smacc_viewer_debian_files = iterate_debian_generation(
-        workspace_source_folder, smacc_viewer_manual_order_packages, identified_install_packages, osversion, rosversion)
-
-    create_repo_task = subprocess.Popen(
-        "package_cloud repository create smacc_viewer", shell=True)
-    create_repo_task.wait()
-
-    # ----- PUSHING TO SMACC VIEWER--------------
-    remove_debian_files(repo_owner, "smacc_viewer",  osname,
-                        osversion, smacc_viewer_debian_files)
-    push_debian_files(repo_owner, "smacc_viewer", osname,
-                      osversion, smacc_viewer_debian_files)
-
-    return smacc_viewer_debian_files
-
-
 if __name__ == "__main__":
     # === requirements for the build machine ==
     # sudo apt-get install ruby-dev rake
@@ -234,7 +212,6 @@ if __name__ == "__main__":
     print("ubuntu: " + osversion)
 
     relative_smacc_folder = args.smacc_src_folder  # "src/SMACC"
-    relative_smacc_viewer_folder = args.smacc_viewer_src_folder  # "src/SMACC_Viewer"
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
     repo_owner = args.repo_owner
@@ -249,17 +226,5 @@ if __name__ == "__main__":
 
     smacc_debians = create_and_push_smacc_debians(
         osname, osversion, ros_version)
-    smacc_viewer_debians = create_and_push_smacc_viewer_debians(
-        osname, osversion, ros_version)
 
     print("SMACC DEBIANS: " + str(smacc_debians))
-    print("SMACC VIEWER DEBIANS: " + str(smacc_viewer_debians))
-
-    print("PUSHING SMACC_MSGS TO smacc_viewer repo")
-    extra_smacc_viewer = [df for df in smacc_debians if "smacc-msgs" in df]
-    print(extra_smacc_viewer)
-
-    remove_debian_files(repo_owner, "smacc_viewer",  osname,
-                        osversion, extra_smacc_viewer)
-    push_debian_files(repo_owner, "smacc_viewer",  osname,
-                      osversion, extra_smacc_viewer)
