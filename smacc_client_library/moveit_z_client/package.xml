@@ -54,7 +54,7 @@
   <depend>moveit</depend>
   <depend>tf</depend>
   <depend>moveit_ros_planning_interface</depend>
-  <depend>move_base_z_client</depend>
+  <depend>move_base_z_client_plugin</depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->

@@ -131,7 +131,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'smacc_msgs',
         'smacc',
         'sr_all_events_go',
-        'conditional',
+        'sr_conditional',
         'sr_random_generator',
         'keyboard_client',
         'multirole_sensor_client',
