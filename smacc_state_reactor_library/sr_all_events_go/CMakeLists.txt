@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(all_events_go)
+project(sr_all_events_go)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED smacc)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES all_events_go
+  LIBRARIES sr_all_events_go
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )

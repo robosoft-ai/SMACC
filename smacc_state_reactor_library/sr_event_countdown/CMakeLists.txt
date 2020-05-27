@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sr_random_generator)
+project(sr_event_countdown)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -100,7 +100,7 @@ find_package(catkin REQUIRED smacc)
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  LIBRARIES sr_random_generator
+  LIBRARIES sr_event_countdown
   #CATKIN_DEPENDS smacc
   #DEPENDS system_lib
 )
@@ -120,8 +120,8 @@ include_directories(
 
 ## Declare a C++ library
  add_library(${PROJECT_NAME}
-   #src/${PROJECT_NAME}/sr_sr_random_generator.cpp
-   src/sr_random_generator/sr_sr_random_generator.cpp
+   #src/${PROJECT_NAME}/sr_event_countdown.cpp
+   src/sr_event_countdown/sr_event_countdown.cpp
  )
  
 
@@ -133,7 +133,7 @@ add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EX
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/sr_random_generator_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/sr_event_countdown_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -197,7 +197,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_sr_random_generator.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_sr_event_countdown.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

@@ -1,5 +1,5 @@
 
-#include <sr_all_events_go/sr_sr_all_events_go.h>
+#include <sr_all_events_go/sr_all_events_go.h>
 #include <smacc/common.h>
 
 namespace smacc
