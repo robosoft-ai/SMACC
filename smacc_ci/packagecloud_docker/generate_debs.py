@@ -212,7 +212,6 @@ if __name__ == "__main__":
     print("ubuntu: " + osversion)
 
     relative_smacc_folder = args.smacc_src_folder  # "src/SMACC"
-    relative_smacc_viewer_folder = args.smacc_viewer_src_folder  # "src/SMACC_Viewer"
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
     repo_owner = args.repo_owner
