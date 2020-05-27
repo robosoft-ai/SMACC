@@ -50,7 +50,7 @@ RUN gem install package_cloud
 #----------------------------------------------------------
 RUN echo "regen "
 RUN echo "downloading smacc repo"
-RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
+RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC --branch ${ROS_VERSION_NAME}-devel
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
 
 RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
