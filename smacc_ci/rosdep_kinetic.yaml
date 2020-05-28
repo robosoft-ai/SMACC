@@ -22,6 +22,8 @@ sr_event_countdown_generator:
   ubuntu: [ros-kinetic-sr-event-countdown]
 sr_conditional:
   ubuntu: [ros-kinetic-sr-conditional]
+sr_random_generator:
+  ubuntu: [ros-kinetic-sr-random-generator]
 sm_dance_bot:
   ubuntu: [ros-kinetic-sm-dance-bot]        
 forward_global_planner:
