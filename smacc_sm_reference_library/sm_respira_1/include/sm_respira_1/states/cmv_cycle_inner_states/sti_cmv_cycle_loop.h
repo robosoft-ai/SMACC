@@ -3,19 +3,20 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleLoop : smacc::SmaccState<StiPSCycleLoop, SS>
+struct StiPSCycleLoop : smacc::SmaccState<StiPSCycleLoop, SsCMVCycle>
 {
 public:
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiPSCycleLoop>, StiPSCycleInspire, CONTINUELOOP> 
-  
-  >reactions;
 
-// STATE FUNCTIONS
+      Transition<EvLoopContinue<StiPSCycleLoop>, StiPSCycleInspire, CONTINUELOOP>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }
@@ -26,9 +27,10 @@ public:
 
   bool loopWhileCondition()
   {
-    auto &superstate = this->context<SS>();
+    auto &superstate = this->context<SsCMVCycle>();
 
-    ROS_INFO("Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
+    ROS_INFO("Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count,
+             superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();
   }
 
@@ -38,5 +40,5 @@ public:
     checkWhileLoopConditionAndThrowEvent(&StiPSCycleLoop::loopWhileCondition);
   }
 };
-}
-}
+}  // namespace cmv_cycle_inner_states
+}  // namespace sm_respira_1
