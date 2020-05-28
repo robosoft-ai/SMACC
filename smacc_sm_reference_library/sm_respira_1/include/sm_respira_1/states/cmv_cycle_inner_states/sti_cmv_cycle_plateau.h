@@ -3,28 +3,35 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SS>
+struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SsCMVCycle>
 {
   using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};  
+  // DECLARE CUSTOM OBJECT TAGS
+  struct TIMEOUT : SUCCESS
+  {
+  };
+  struct NEXT : SUCCESS
+  {
+  };
+  struct PREVIOUS : ABORT
+  {
+  };
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-    
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleExpire, TIMEOUT>,  
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleInspire, PREVIOUS>,
-  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleExpire, NEXT>,
 
-  Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
-  Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
-      
-  >reactions;
+      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleExpire, TIMEOUT>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleInspire, PREVIOUS>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleExpire, NEXT>,
 
- // STATE FUNCTIONS
+      Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
+      Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
@@ -46,7 +53,6 @@ struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SS>
   {
     ROS_INFO("On Exit!");
   }
-
 };
-}
-}
+}  // namespace cmv_cycle_inner_states
+}  // namespace sm_respira_1

@@ -8,8 +8,8 @@ struct StCalibrationStep1 : smacc::SmaccState<StCalibrationStep1, MsCalibration>
 // TRANSITION TABLE
     typedef mpl::list<
     
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::SsACCycle, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::SsACCycle>,
+    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
+    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun, SUCCESS>
     

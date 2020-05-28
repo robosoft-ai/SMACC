@@ -41,15 +41,26 @@ using namespace smacc::default_events;
 namespace sm_respira_1
 {
 //SUPERSTATES
-namespace SS1
-{
 class SsACCycle;
-} // namespace SS1
-
-namespace SS2
+namespace ac_cycle_inner_states
 {
+class StiACCycleLoop;
+class StiACCycleInspire;
+class StiACCyclePlateau;
+class StiACCycleExpire;
+class StiACCycleDwell;
+} 
+
 class SsCMVCycle;
-} // namespace SS2
+namespace cmv_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiPSCycleLoop;
+class StiPSCycleInspire;
+class StiPSCyclePlateau;
+class StiPSCycleExpire;
+class StiPSCycleDwell;
+}
 
 namespace SS3
 {
@@ -108,7 +119,6 @@ struct SmRespira1
 #include <sm_respira_1/mode_states/ms_calibration.h>
 #include <sm_respira_1/mode_states/ms_shutdown.h>
 
-
 //STATES
 #include <sm_respira_1/states/st_observe.h>
 #include <sm_respira_1/states/st_leaky_lung_step_1.h>
@@ -122,3 +132,17 @@ struct SmRespira1
 #include <sm_respira_1/superstates/ss_cmv_cycle.h>
 #include <sm_respira_1/superstates/ss_pc_cycle.h>
 #include <sm_respira_1/superstates/ss_ps_cycle.h>
+
+//ss_ac_cycle
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_loop.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_inspire.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_plateau.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_expire.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_dwell.h>
+
+//ss_cmv_cycle
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_loop.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_inspire.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_expire.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.h>
