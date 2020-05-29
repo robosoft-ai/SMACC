@@ -1386,15 +1386,15 @@
 <polygon fill="#22aa22" stroke="#22aa22" stroke-width="2" points="1847.5745,-2193.8616 1857.0665,-2189.1551 1846.7113,-2186.915 1847.5745,-2193.8616"/>
 <text text-anchor="middle" x="1674.3674" y="-2309.5278" font-family="Times,serif" font-size="14.00" fill="#000000">EvKeyPressB</text>
 </g>
-<!-- EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1 -->
+<!-- EvKeyPressC_sm_respira_1::SsPCCycle_1 -->
 <g id="node20" class="node">
-<title>EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1</title>
+<title>EvKeyPressC_sm_respira_1::SsPCCycle_1</title>
 <path fill="#99ff99" stroke="#000000" d="M1972.0665,-2257.1551C1972.0665,-2257.1551 1880.0665,-2257.1551 1880.0665,-2257.1551 1874.0665,-2257.1551 1868.0665,-2251.1551 1868.0665,-2245.1551 1868.0665,-2245.1551 1868.0665,-2233.1551 1868.0665,-2233.1551 1868.0665,-2227.1551 1874.0665,-2221.1551 1880.0665,-2221.1551 1880.0665,-2221.1551 1972.0665,-2221.1551 1972.0665,-2221.1551 1978.0665,-2221.1551 1984.0665,-2227.1551 1984.0665,-2233.1551 1984.0665,-2233.1551 1984.0665,-2245.1551 1984.0665,-2245.1551 1984.0665,-2251.1551 1978.0665,-2257.1551 1972.0665,-2257.1551"/>
 <text text-anchor="middle" x="1926.0665" y="-2234.1551" font-family="Times,serif" font-size="20.00" fill="#000000">PC_CYCLE</text>
 </g>
-<!-- CbDefaultKeyboardBehavior_1&#45;&gt;EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1 -->
+<!-- CbDefaultKeyboardBehavior_1&#45;&gt;EvKeyPressC_sm_respira_1::SsPCCycle_1 -->
 <g id="edge334" class="edge">
-<title>CbDefaultKeyboardBehavior_1:e&#45;&gt;EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1:w</title>
+<title>CbDefaultKeyboardBehavior_1:e&#45;&gt;EvKeyPressC_sm_respira_1::SsPCCycle_1:w</title>
 <path fill="none" stroke="#22aa22" stroke-width="2" d="M1566.9966,-2353.1551C1569.6711,-2353.1551 1658.754,-2334.6338 1661.3853,-2334.1551 1729.4685,-2321.7695 1757.79,-2347.9896 1815.0665,-2309.1551 1844.0848,-2289.4803 1832.2433,-2248.6554 1857.8382,-2240.5658"/>
 <polygon fill="#22aa22" stroke="#22aa22" stroke-width="2" points="1858.6385,-2243.9886 1868.0665,-2239.1551 1857.6821,-2237.0543 1858.6385,-2243.9886"/>
 <text text-anchor="middle" x="1754.2459" y="-2319.5097" font-family="Times,serif" font-size="14.00" fill="#000000">EvKeyPressC</text>
@@ -1493,9 +1493,9 @@
 <title>entry_20</title>
 <ellipse fill="#000000" stroke="#000000" cx="2047.0665" cy="-2239.1551" rx="2" ry="2"/>
 </g>
-<!-- EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1&#45;&gt;entry_20 -->
+<!-- EvKeyPressC_sm_respira_1::SsPCCycle_1&#45;&gt;entry_20 -->
 <g id="edge333" class="edge">
-<title>EvKeyPressC_sm_respira_1::SS3::SsPCCycle_1:e&#45;&gt;entry_20:w</title>
+<title>EvKeyPressC_sm_respira_1::SsPCCycle_1:e&#45;&gt;entry_20:w</title>
 <path fill="none" stroke="#22aa22" stroke-width="2" d="M1984.0665,-2239.1551C2007.4711,-2239.1551 2015.7221,-2239.1551 2034.983,-2239.1551"/>
 <polygon fill="#22aa22" stroke="#22aa22" stroke-width="2" points="2035.0666,-2242.6552 2045.0665,-2239.1551 2035.0665,-2235.6552 2035.0666,-2242.6552"/>
 </g>

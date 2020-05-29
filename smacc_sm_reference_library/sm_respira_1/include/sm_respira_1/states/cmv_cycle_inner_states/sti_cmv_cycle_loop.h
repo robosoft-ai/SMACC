@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleLoop : smacc::SmaccState<StiPSCycleLoop, SsCMVCycle>
+struct StiCMVCycleLoop : smacc::SmaccState<StiCMVCycleLoop, SsCMVCycle>
 {
 public:
   using SmaccState::SmaccState;
@@ -11,7 +11,7 @@ public:
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvLoopContinue<StiPSCycleLoop>, StiPSCycleInspire, CONTINUELOOP>
+      Transition<EvLoopContinue<StiCMVCycleLoop>, StiCMVCycleInspire, CONTINUELOOP>
 
       >
       reactions;
@@ -37,7 +37,7 @@ public:
   void onEntry()
   {
     ROS_INFO("LOOP START ON ENTRY");
-    checkWhileLoopConditionAndThrowEvent(&StiPSCycleLoop::loopWhileCondition);
+    checkWhileLoopConditionAndThrowEvent(&StiCMVCycleLoop::loopWhileCondition);
   }
 };
 }  // namespace cmv_cycle_inner_states

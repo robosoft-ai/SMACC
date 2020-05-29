@@ -52,7 +52,31 @@ class StiACCycleDwell;
 } 
 
 class SsCMVCycle;
+
 namespace cmv_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiCMVCycleLoop;
+class StiCMVCycleInspire;
+class StiCMVCyclePlateau;
+class StiCMVCycleExpire;
+class StiCMVCycleDwell;
+}
+
+
+class SsPCCycle;
+namespace pc_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiPCCycleLoop;
+class StiPCCycleInspire;
+class StiPCCyclePlateau;
+class StiPCCycleExpire;
+class StiPCCycleDwell;
+} 
+
+class SsPSCycle;
+namespace ps_cycle_inner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
 class StiPSCycleLoop;
@@ -60,17 +84,7 @@ class StiPSCycleInspire;
 class StiPSCyclePlateau;
 class StiPSCycleExpire;
 class StiPSCycleDwell;
-}
-
-namespace SS3
-{
-class SsPCCycle;
-} // namespace SS3
-
-namespace SS4
-{
-class SsPSCycle;
-} // namespace SS4
+} 
 
 //STATES
 class StObserve;
@@ -146,3 +160,17 @@ struct SmRespira1
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.h>
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_expire.h>
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.h>
+
+//ss_pc_cycle
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_expire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_dwell.h>
+
+//ss_ps_cycle
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_loop.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_inspire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_plateau.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_expire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_dwell.h>

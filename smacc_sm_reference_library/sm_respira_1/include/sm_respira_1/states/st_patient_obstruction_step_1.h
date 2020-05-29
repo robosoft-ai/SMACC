@@ -18,7 +18,7 @@ struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, 
     // Keyboard events
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, SUCCESS>
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
-    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsPCCycle, ATTACK>
+    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
     
     >reactions;
 

@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace ps_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleExpire : smacc::SmaccState<StiPSCycleExpire, SS>
+struct StiPSCycleExpire : smacc::SmaccState<StiPSCycleExpire, SsPSCycle>
 {
   using SmaccState::SmaccState;
 
