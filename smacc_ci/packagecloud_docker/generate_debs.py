@@ -133,6 +133,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'sr_all_events_go',
         'sr_conditional',
         'sr_random_generator',
+        'sr_event_countdown',
         'keyboard_client',
         'multirole_sensor_client',
         'ros_publisher_client',
