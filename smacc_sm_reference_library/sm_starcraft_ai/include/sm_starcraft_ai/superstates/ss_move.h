@@ -16,7 +16,7 @@ class StiMove3;
 using namespace sm_starcraft_ai::move_inner_states;
 
 // STATE DECLARATION
-struct SsMove : smacc::SmaccState<SsMove, MsRun, StiMove1, sc::has_full_history>
+struct SsMove : smacc::SmaccState<SsMove, MsRun, StiMove1>
 {
 public:
     using SmaccState::SmaccState;

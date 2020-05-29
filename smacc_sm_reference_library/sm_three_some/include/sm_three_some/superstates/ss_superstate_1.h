@@ -16,7 +16,7 @@ class StiState3;
 using namespace sm_three_some::inner_states;
 
 // STATE DECLARATION
-struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1, sc::has_full_history>
+struct Ss1 : smacc::SmaccState<Ss1, MsRun, StiState1>
 {
 public:
     using SmaccState::SmaccState;

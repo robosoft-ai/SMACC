@@ -2,7 +2,7 @@
 
 namespace sm_viewer_sim
 {
-struct MsRunMode : SmaccState<MsRunMode, SmViewerSim, St1, sc::has_full_history>
+struct MsRunMode : SmaccState<MsRunMode, SmViewerSim, St1>
 {
     using SmaccState::SmaccState;
     void onEntry()

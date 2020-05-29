@@ -4,7 +4,7 @@ namespace sm_respira_1
 using namespace sm_respira_1::cmv_cycle_inner_states;
 
 // STATE DECLARATION
-struct SsCMVCycle : smacc::SmaccState<SsCMVCycle, MsRun, StiCMVCycleLoop, sc::has_full_history>
+struct SsCMVCycle : smacc::SmaccState<SsCMVCycle, MsRun, StiCMVCycleLoop>
 {
 public:
     using SmaccState::SmaccState;

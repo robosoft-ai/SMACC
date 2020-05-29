@@ -12,20 +12,15 @@ struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, 
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
-    // Keyboard events
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, SUCCESS>
-    // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
-    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
-    
+
+        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>    
+
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(100);
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

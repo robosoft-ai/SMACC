@@ -29,6 +29,8 @@ public:
   typedef typename Context::inner_context_type context_type;
   typedef typename context_type::state_iterator state_iterator;
 
+  typedef InnerInitial LastDeepState;
+
   bool finishStateThrown;
   InnerInitial *smacc_inner_type;
 

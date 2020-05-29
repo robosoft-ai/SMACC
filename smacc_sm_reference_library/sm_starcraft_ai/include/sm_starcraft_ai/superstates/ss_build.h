@@ -16,7 +16,7 @@ class StiBuild3;
 using namespace sm_starcraft_ai::build_inner_states;
 
 // STATE DECLARATION
-struct SsBuild : smacc::SmaccState<SsBuild, MsRun, StiBuild1, sc::has_full_history>
+struct SsBuild : smacc::SmaccState<SsBuild, MsRun, StiBuild1>
 {
 public:
     using SmaccState::SmaccState;

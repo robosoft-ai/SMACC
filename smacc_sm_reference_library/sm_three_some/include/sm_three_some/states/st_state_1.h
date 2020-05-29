@@ -17,8 +17,8 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState2, TIMEOUT>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>//,
-    // Transition<EvFail, MsRecover, smacc::ABORT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>,
+    Transition<EvFail, MsRecover, smacc::ABORT>
     
     >reactions;
 

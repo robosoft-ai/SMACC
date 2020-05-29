@@ -2,7 +2,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsRun : public smacc::SmaccState<MsRun, SmRespira1, StObserve, sc::has_full_history>
+class MsRun : public smacc::SmaccState<MsRun, SmRespira1, StObserve>
 {
 public:
    using SmaccState::SmaccState;

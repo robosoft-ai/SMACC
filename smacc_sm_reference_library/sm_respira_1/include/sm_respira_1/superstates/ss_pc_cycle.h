@@ -3,7 +3,7 @@ namespace sm_respira_1
 using namespace sm_respira_1::pc_cycle_inner_states;
 
 // STATE DECLARATION
-struct SsPCCycle : smacc::SmaccState<SsPCCycle, MsRun, StiPCCycleLoop, sc::has_full_history>
+struct SsPCCycle : smacc::SmaccState<SsPCCycle, MsRun, StiPCCycleLoop>
 {
 public:
   using SmaccState::SmaccState;
