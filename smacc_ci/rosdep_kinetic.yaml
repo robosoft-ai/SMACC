@@ -18,7 +18,7 @@ multirole_sensor_client:
   ubuntu: [ros-kinetic-multirole-sensor-client]
 sr_all_events_go:
   ubuntu: [ros-kinetic-sr-all-events-go]
-sr_event_countdown_generator:
+sr_event_countdown:
   ubuntu: [ros-kinetic-sr-event-countdown]
 sr_conditional:
   ubuntu: [ros-kinetic-sr-conditional]
