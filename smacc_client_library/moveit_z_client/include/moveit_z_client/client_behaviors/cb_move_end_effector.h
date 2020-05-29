@@ -11,10 +11,8 @@
 
 namespace moveit_z_client
 {
-
 class CbMoveEndEffector : public smacc::SmaccClientBehavior
 {
-
 private:
   ClMoveGroup *movegroupClient_;
 
@@ -24,7 +22,7 @@ public:
   boost::optional<std::string> group_;
 
   CbMoveEndEffector();
-  CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std::string tip_link="");
+  CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std::string tip_link = "");
   virtual void onEntry() override;
   virtual void onExit() override;
 
@@ -33,4 +31,4 @@ private:
                           moveit::planning_interface::PlanningSceneInterface &planningSceneInterface,
                           geometry_msgs::PoseStamped &targetObjectPose);
 };
-} // namespace moveit_z_client
+}  // namespace moveit_z_client

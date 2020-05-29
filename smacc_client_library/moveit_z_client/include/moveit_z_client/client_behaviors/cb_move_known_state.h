@@ -16,14 +16,14 @@ namespace moveit_z_client
 class CbMoveKnownState : public smacc::SmaccClientBehavior
 {
 protected:
-    ClMoveGroup *movegroupClient_;
+  ClMoveGroup *movegroupClient_;
 
 public:
-    std::string statename;
+  std::string statename;
 
-    CbMoveKnownState();
-    CbMoveKnownState(std::string statename);
-    virtual void onEntry() override;
-    virtual void onExit() override;
+  CbMoveKnownState();
+  CbMoveKnownState(std::string statename);
+  virtual void onEntry() override;
+  virtual void onExit() override;
 };
-} // namespace moveit_z_client
+}  // namespace moveit_z_client
