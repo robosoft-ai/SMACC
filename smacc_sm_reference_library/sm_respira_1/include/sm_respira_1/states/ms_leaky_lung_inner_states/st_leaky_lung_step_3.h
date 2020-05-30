@@ -1,7 +1,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, MsPatientObstruction>
+struct StLeakyLungStep3 : smacc::SmaccState<StLeakyLungStep3, MsLeakyLung>
 {
     using SmaccState::SmaccState;
 
@@ -12,15 +12,15 @@ struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, 
 
 // TRANSITION TABLE
     typedef mpl::list<
-
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>    
-
+    
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>    
+    
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(100);
+        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

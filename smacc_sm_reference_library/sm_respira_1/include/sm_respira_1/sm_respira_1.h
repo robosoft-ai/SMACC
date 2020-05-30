@@ -92,6 +92,7 @@ class StLeakyLungStep1;
 class StLeakyLungStep2;
 class StLeakyLungStep3;
 class StPatientObstructionStep1;
+class StPatientObstructionStep2;
 class StCalibrationStep1;
 class StSystemShutdown;
 
@@ -135,12 +136,13 @@ struct SmRespira1
 
 //STATES
 #include <sm_respira_1/states/st_observe.h>
-#include <sm_respira_1/states/st_leaky_lung_step_1.h>
-#include <sm_respira_1/states/st_leaky_lung_step_2.h>
-#include <sm_respira_1/states/st_leaky_lung_step_3.h>
-#include <sm_respira_1/states/st_patient_obstruction_step_1.h>
-#include <sm_respira_1/states/st_calibration_step_1.h>
-#include <sm_respira_1/states/st_system_shutdown.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_1.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_2.h>
+#include <sm_respira_1/states/ms_calibration_inner_states/st_calibration_step_1.h>
+#include <sm_respira_1/states/ms_shutdown_inner_states/st_system_shutdown.h>
 
 #include <sm_respira_1/superstates/ss_ac_cycle.h>
 #include <sm_respira_1/superstates/ss_cmv_cycle.h>
