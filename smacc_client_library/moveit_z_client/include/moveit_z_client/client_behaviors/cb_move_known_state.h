@@ -21,8 +21,8 @@ protected:
 public:
   std::string statename;
 
-  CbMoveKnownState();
   CbMoveKnownState(std::string statename);
+  CbMoveKnownState(std::string pkg, std::string config_path, std::string statename);
   virtual void onEntry() override;
   virtual void onExit() override;
 };

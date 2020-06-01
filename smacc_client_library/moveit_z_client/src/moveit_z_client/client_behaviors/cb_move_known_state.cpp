@@ -9,7 +9,7 @@
 namespace moveit_z_client
 {
 
-CbMoveKnownState::CbMoveKnownState()
+CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path, std::string statename)
 {
 }
 

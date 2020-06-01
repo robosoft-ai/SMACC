@@ -36,7 +36,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     # This generates a `web` directory containing the website.
     echo "cloning gh-pages"
-    git clone https://pabloinigoblasco:$GITHUB_TOKEN@$REPO_URL --branch gh-pages /tmp/doc
+    git clone https://reelrobotics:$GITHUB_TOKEN@$REPO_URL --branch gh-pages /tmp/doc
 
     echo "removing specific branch folder from repo clone.."
     cd /tmp/doc
@@ -45,6 +45,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "cd $CATKIN_WORKSPACE_ROOT"
     ls $CATKIN_WORKSPACE_ROOT/src
+    
     cd $CATKIN_WORKSPACE_ROOT/src/SMACC
     ls
     
@@ -80,7 +81,7 @@ if [ -n "$GITHUB_TOKEN" ]; then
     
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -v https://$GITHUB_USER:$GITHUB_TOKEN@$REPO_URL gh-pages > pushout.txt
+    git push -f -v https://reelrobotics:$GITHUB_TOKEN@$REPO_URL gh-pages > pushout.txt
     cat pushout.txt
 
     # going back to travis build dir
