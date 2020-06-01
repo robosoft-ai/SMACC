@@ -8,6 +8,7 @@ project(moveit_z_client)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
+find_package(yaml-cpp REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
@@ -102,15 +103,15 @@ catkin_package(
   INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS}
   LIBRARIES moveit_z_client
   CATKIN_DEPENDS smacc moveit_ros_planning_interface
-  DEPENDS Eigen3
+  DEPENDS Eigen3 yaml-cpp
 )
 
 ###########
 ## Build ##
 ###########
 
-set(CMAKE_CXX_STANDARD 14)
-add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
+set(CMAKE_CXX_STANDARD 17)
+add_compile_options(-std=c++17) #workaround for ubuntu 16.04, to extinguish
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations

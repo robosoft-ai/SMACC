@@ -53,6 +53,7 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt>
         {"r_gripper_finger_joint", 0.050057917261335}};
 
         configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
+        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit", "config/manipulation/known_states/initial_posture.yaml");
     }
 
     void runtimeConfigure()
