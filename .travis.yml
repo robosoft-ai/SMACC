@@ -7,6 +7,7 @@ env:
     DOCKER_RUN_OPTS='-e GITHUB_TOKEN -e TRAVIS_BRANCH -e TRAVI_REPO_SLUG' 
     AFTER_SCRIPT=smacc_ci/gh-pages.sh
     VERBOSE_OUTPUT=false
+    CMAKE_ARGS=--make-args -s
     #CATKIN_CONFIG=--no-install
   matrix:
     - ROS_DISTRO="kinetic"
