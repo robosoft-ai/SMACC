@@ -152,6 +152,7 @@ file(GLOB_RECURSE SRC_FILES "src/*.cpp") # opcionalmente GLOB
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
+   stdc++fs
  )
 
 #############

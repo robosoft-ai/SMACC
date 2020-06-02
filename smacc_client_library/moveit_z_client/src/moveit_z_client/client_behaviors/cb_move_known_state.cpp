@@ -8,6 +8,7 @@
 #include <yaml-cpp/yaml.h>
 #include <fstream>
 #include <ros/package.h>
+#include <experimental/filesystem>
 
 namespace moveit_z_client
 {
@@ -23,6 +24,16 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
   std::map<std::string, double> jointStates;
 
   ROS_INFO("Opening file with joint known state: %s",  filepath.c_str());
+
+
+  if(std::experimental::filesystem::exists(filepath))
+  {
+    ROS_INFO_STREAM("known state file exists: " << filepath);
+  }
+  else
+  {
+    ROS_ERROR_STREAM("known state file does not exists: " << filepath);
+  }
 
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
@@ -49,20 +60,23 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
 
     if (wp_node != NULL)
     {
-      for (unsigned int i = 0; i < wp_node->size(); ++i)
+      try
       {
-        try
+        for(YAML::const_iterator it=wp_node->begin();it != wp_node->end();++it) 
         {
-          std::string jointname = (*wp_node)[i].Tag();
-          double jointvalue = (*wp_node)[i].as<double>();
+          std::string key = it->first.as<std::string>(); 
+          double value = it->second.as<double>(); 
+          ROS_DEBUG_STREAM(" joint - " << key << ": " << value);
+          jointStates[key] = value;
+        }
 
-          jointStates[jointname] = jointvalue;
-        }
-        catch (std::exception& ex)
-        {
-          ROS_ERROR("parsing joint state file, syntax error in joint %d, error: %s", i, ex.what());
-        }
+        return jointStates;
       }
+      catch(std::exception& ex)
+      {
+        ROS_ERROR("trying to convert to map, failed, errormsg: %s", ex.what());
+      }
+
       ROS_INFO_STREAM("Parsed " << jointStates.size() << " joint entries.");
     }
     else
