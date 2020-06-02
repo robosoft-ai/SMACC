@@ -18,6 +18,8 @@ public:
 
   boost::optional<double> scalingFactor_;
 
+  boost::optional<std::string> group_;
+
   CbMoveCartesianRelative();
 
   CbMoveCartesianRelative(geometry_msgs::Vector3 offset);
@@ -26,6 +28,10 @@ public:
 
   virtual void onExit() override;
 
-  void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
+  void moveRelativeCartesian(moveit::planning_interface::MoveGroupInterface *movegroupClient,
+                             geometry_msgs::Vector3 &offset);
+
+  protected:
+    ClMoveGroup *moveGroupSmaccClient_;
 };
 }  // namespace moveit_z_client

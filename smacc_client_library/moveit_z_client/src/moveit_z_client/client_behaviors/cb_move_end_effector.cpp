@@ -5,6 +5,8 @@
  ******************************************************************************************************************/
 
 #include <moveit_z_client/client_behaviors/cb_move_end_effector.h>
+// #include <moveit/kinematic_constraints/kinematic_constraint.h>
+#include <moveit/kinematic_constraints/utils.h>
 
 namespace moveit_z_client
 {
@@ -20,12 +22,22 @@ CbMoveEndEffector::CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std
 
 void CbMoveEndEffector::onEntry()
 {
+    ROS_DEBUG("Synchronous sleep of 4 seconds");
     ros::WallDuration(4).sleep();
-    this->requiresClient(movegroupClient_);
 
-    this->moveToAbsolutePose(movegroupClient_->moveGroupClientInterface, movegroupClient_->planningSceneInterface, targetPose);
-
-    ros::WallDuration(4).sleep();
+    if (this->group_)
+    {
+        moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
+        this->moveToAbsolutePose(move_group, movegroupClient_->planningSceneInterface, targetPose);
+    }
+    else
+    {
+        this->requiresClient(movegroupClient_);
+        this->moveToAbsolutePose(movegroupClient_->moveGroupClientInterface, movegroupClient_->planningSceneInterface, targetPose);
+    }
+    
+    ROS_DEBUG("Synchronous sleep of 3 seconds");
+    ros::WallDuration(3).sleep();
 }
 
 void CbMoveEndEffector::onExit()
@@ -47,6 +59,7 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
     bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
     ROS_INFO_NAMED("CbMoveEndEffector", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
+    
     if (success)
     {
         auto executionResult = moveGroupInterface.execute(computedMotionPlan);

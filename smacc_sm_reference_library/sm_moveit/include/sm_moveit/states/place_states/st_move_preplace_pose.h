@@ -42,6 +42,7 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
 
         computeCubeGraspingOrientation(placingPose);
         moveAbsolute->targetPose = placingPose;
+        moveAbsolute->group_="arm";
     }
 
     void computeCubeGraspingOrientation(geometry_msgs::PoseStamped &objectPose)

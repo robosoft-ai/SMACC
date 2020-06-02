@@ -42,6 +42,7 @@ struct StMovePregraspPose : smacc::SmaccState<StMovePregraspPose, SS>
                                 ->getClientBehavior<CbMoveEndEffector>();
 
         moveAbsolute->targetPose = pregraspPose;
+        moveAbsolute->group_ = "arm";
     }
 
     void computeCubeGraspingOrientation(geometry_msgs::PoseStamped &objectPose)
