@@ -22,4 +22,3 @@ RUN curl -s  https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecl
 RUN apt-get install -y ros-kinetic-smacc-viewer
 
 WORKDIR /root
-ADD entrypoint.sh /entrypoint.sh
