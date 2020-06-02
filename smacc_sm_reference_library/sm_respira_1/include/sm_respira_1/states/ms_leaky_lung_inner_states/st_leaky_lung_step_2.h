@@ -1,25 +1,24 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StLeakyLungStep1 : smacc::SmaccState<StLeakyLungStep1, MsLeakyLung>
+struct StLeakyLungStep2 : smacc::SmaccState<StLeakyLungStep2, MsLeakyLung>
 {
     using SmaccState::SmaccState;
 
 // DECLARE CUSTOM OBJECT TAGS
     struct TIMEOUT : SUCCESS{};
     struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{};  
-
+    struct PREVIOUS : ABORT{}; 
 
 // TRANSITION TABLE
     typedef mpl::list<
     
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep2, TIMEOUT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep3, SUCCESS>
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLeakyLungStep2, SUCCESS>
+    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
-    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsPCCycle, ATTACK>
+    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
     
     >reactions;
 

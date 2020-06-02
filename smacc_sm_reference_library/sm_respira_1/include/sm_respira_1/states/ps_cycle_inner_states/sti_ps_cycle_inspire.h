@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace ps_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SS>
+struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SsPSCycle>
 {
   using SmaccState::SmaccState;
 
@@ -19,7 +19,7 @@ struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SS>
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCyclePlateau, NEXT>,
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleLoop, PREVIOUS>,
 
-  Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
+  Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
   Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
   
   >reactions;

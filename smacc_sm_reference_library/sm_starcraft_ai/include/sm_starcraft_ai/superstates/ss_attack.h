@@ -16,7 +16,7 @@ class StiAttack3;
 using namespace sm_starcraft_ai::attack_inner_states;
 
 // STATE DECLARATION
-struct SsAttack : smacc::SmaccState<SsAttack, MsRun, StiAttack1, sc::has_full_history>
+struct SsAttack : smacc::SmaccState<SsAttack, MsRun, StiAttack1>
 {
 public:
     using SmaccState::SmaccState;

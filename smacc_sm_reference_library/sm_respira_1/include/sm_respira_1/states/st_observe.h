@@ -21,8 +21,8 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
     // Keyboard events
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, AC_CYCLE>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, CMV_CYCLE>,
-    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsPCCycle, PC_CYCLE>,
-    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, SS4::SsPSCycle, PS_CYCLE>,
+    Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, PC_CYCLE>,
+    Transition<EvKeyPressD<CbDefaultKeyboardBehavior, OrKeyboard>, SsPSCycle, PS_CYCLE>,
 
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsCalibration, CALIBRATION>,
     Transition<EvKeyPressS<CbDefaultKeyboardBehavior, OrKeyboard>, MsShutdown, SHUTDOWN>

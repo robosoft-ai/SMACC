@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleDwell : smacc::SmaccState<StiPSCycleDwell, SsCMVCycle>
+struct StiCMVCycleDwell : smacc::SmaccState<StiCMVCycleDwell, SsCMVCycle>
 {
   using SmaccState::SmaccState;
 
@@ -21,11 +21,11 @@ struct StiPSCycleDwell : smacc::SmaccState<StiPSCycleDwell, SsCMVCycle>
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleLoop, TIMEOUT>,
-      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleExpire, PREVIOUS>,
-      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleLoop, NEXT>,
+      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCycleLoop, TIMEOUT>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleExpire, PREVIOUS>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleLoop, NEXT>,
 
-      Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
+      Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
       Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
 
       >

@@ -4,7 +4,7 @@ namespace sm_respira_1
 using namespace sm_respira_1::cmv_cycle_inner_states;
 
 // STATE DECLARATION
-struct SsCMVCycle : smacc::SmaccState<SsCMVCycle, MsRun, StiPSCycleLoop, sc::has_full_history>
+struct SsCMVCycle : smacc::SmaccState<SsCMVCycle, MsRun, StiCMVCycleLoop>
 {
 public:
     using SmaccState::SmaccState;
@@ -12,7 +12,7 @@ public:
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiPSCycleLoop>, StObserve>
+    Transition<EvLoopEnd<StiCMVCycleLoop>, StObserve>
     
     >reactions;
 

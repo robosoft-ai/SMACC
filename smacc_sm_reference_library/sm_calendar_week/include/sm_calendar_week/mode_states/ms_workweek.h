@@ -2,7 +2,7 @@
 namespace sm_calendar_week
 {
 // STATE DECLARATION
-class MsWorkweek : public smacc::SmaccState<MsWorkweek, SmCalendarWeek, StMonday, sc::has_full_history>
+class MsWorkweek : public smacc::SmaccState<MsWorkweek, SmCalendarWeek, StMonday>
 {
 public:
    using SmaccState::SmaccState;

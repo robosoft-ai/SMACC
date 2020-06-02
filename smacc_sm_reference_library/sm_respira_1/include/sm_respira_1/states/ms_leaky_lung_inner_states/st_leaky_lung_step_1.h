@@ -1,31 +1,32 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, MsPatientObstruction>
+struct StLeakyLungStep1 : smacc::SmaccState<StLeakyLungStep1, MsLeakyLung>
 {
     using SmaccState::SmaccState;
 
 // DECLARE CUSTOM OBJECT TAGS
     struct TIMEOUT : SUCCESS{};
     struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{}; 
+    struct PREVIOUS : ABORT{};  
+
 
 // TRANSITION TABLE
     typedef mpl::list<
     
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StLeakyLungStep2, TIMEOUT>,
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StObserve, SUCCESS>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StLeakyLungStep2, SUCCESS>
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
-    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsPCCycle, ATTACK>
+    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
     
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();

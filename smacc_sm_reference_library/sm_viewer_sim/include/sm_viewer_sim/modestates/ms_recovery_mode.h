@@ -5,7 +5,7 @@ namespace sm_viewer_sim
 struct MsRecoveryMode : SmaccState<MsRecoveryMode, SmViewerSim>
 {
     typedef mpl::list<
-    Transition<EvToDeep, sc::deep_history<St1>, SUCCESS>>
+    Transition<EvToDeep, sc::deep_history<MsRunMode::LastDeepState>, SUCCESS>>
     
     reactions;
 

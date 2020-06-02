@@ -13,12 +13,7 @@ struct StLeakyLungStep3 : smacc::SmaccState<StLeakyLungStep3, MsLeakyLung>
 // TRANSITION TABLE
     typedef mpl::list<
     
-    // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsLeakyLung>, SUCCESS>
-    // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
-    // Keyboard events
-    // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
-    // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
-    // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsPCCycle, ATTACK>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>    
     
     >reactions;
 

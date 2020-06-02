@@ -52,7 +52,31 @@ class StiACCycleDwell;
 } 
 
 class SsCMVCycle;
+
 namespace cmv_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiCMVCycleLoop;
+class StiCMVCycleInspire;
+class StiCMVCyclePlateau;
+class StiCMVCycleExpire;
+class StiCMVCycleDwell;
+}
+
+
+class SsPCCycle;
+namespace pc_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiPCCycleLoop;
+class StiPCCycleInspire;
+class StiPCCyclePlateau;
+class StiPCCycleExpire;
+class StiPCCycleDwell;
+} 
+
+class SsPSCycle;
+namespace ps_cycle_inner_states
 {
 //FORWARD DECLARATIONS OF ALL INNER STATES
 class StiPSCycleLoop;
@@ -60,17 +84,7 @@ class StiPSCycleInspire;
 class StiPSCyclePlateau;
 class StiPSCycleExpire;
 class StiPSCycleDwell;
-}
-
-namespace SS3
-{
-class SsPCCycle;
-} // namespace SS3
-
-namespace SS4
-{
-class SsPSCycle;
-} // namespace SS4
+} 
 
 //STATES
 class StObserve;
@@ -78,6 +92,7 @@ class StLeakyLungStep1;
 class StLeakyLungStep2;
 class StLeakyLungStep3;
 class StPatientObstructionStep1;
+class StPatientObstructionStep2;
 class StCalibrationStep1;
 class StSystemShutdown;
 
@@ -121,12 +136,13 @@ struct SmRespira1
 
 //STATES
 #include <sm_respira_1/states/st_observe.h>
-#include <sm_respira_1/states/st_leaky_lung_step_1.h>
-#include <sm_respira_1/states/st_leaky_lung_step_2.h>
-#include <sm_respira_1/states/st_leaky_lung_step_3.h>
-#include <sm_respira_1/states/st_patient_obstruction_step_1.h>
-#include <sm_respira_1/states/st_calibration_step_1.h>
-#include <sm_respira_1/states/st_system_shutdown.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_1.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_2.h>
+#include <sm_respira_1/states/ms_calibration_inner_states/st_calibration_step_1.h>
+#include <sm_respira_1/states/ms_shutdown_inner_states/st_system_shutdown.h>
 
 #include <sm_respira_1/superstates/ss_ac_cycle.h>
 #include <sm_respira_1/superstates/ss_cmv_cycle.h>
@@ -146,3 +162,17 @@ struct SmRespira1
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.h>
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_expire.h>
 #include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.h>
+
+//ss_pc_cycle
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_expire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_dwell.h>
+
+//ss_ps_cycle
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_loop.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_inspire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_plateau.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_expire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_dwell.h>

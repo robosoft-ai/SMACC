@@ -1,31 +1,26 @@
-namespace sm_three_some
+namespace sm_respira_1
 {
 // STATE DECLARATION
-struct StState1 : smacc::SmaccState<StState1, MsRun>
+struct StPatientObstructionStep2 : smacc::SmaccState<StPatientObstructionStep2, MsPatientObstruction>
 {
     using SmaccState::SmaccState;
 
 // DECLARE CUSTOM OBJECT TAGS
     struct TIMEOUT : SUCCESS{};
     struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{};
-
+    struct PREVIOUS : ABORT{}; 
 
 // TRANSITION TABLE
     typedef mpl::list<
-        
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState2, TIMEOUT>,
-    // Keyboard events
-    Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::Ss1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState2, NEXT>,
-    Transition<EvFail, MsRecover, smacc::ABORT>
-    
+
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, sc::deep_history<MsRun::LastDeepState>, SUCCESS>    
+
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);   
+        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(50);
         configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
         configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
@@ -34,7 +29,7 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     void runtimeConfigure()
     {
     }
-
+    
     void onEntry()
     {
         ROS_INFO("On Entry!");
@@ -46,4 +41,4 @@ struct StState1 : smacc::SmaccState<StState1, MsRun>
     }
 
 };
-} // namespace sm_three_some
+} // namespace sm_respira_1

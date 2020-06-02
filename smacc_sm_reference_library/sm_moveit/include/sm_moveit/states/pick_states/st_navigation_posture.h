@@ -38,25 +38,25 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
     //         {"l_gripper_finger_joint", 0.05001998415439018},
     //         {"r_gripper_finger_joint", 0.050039698895249535}};
 
-     std::map<std::string, double> jointValues
-       {{"torso_lift_joint", -1.5886941446227077e-11},
-        {"bellows_joint", 0.006636882979390101},
-        {"head_pan_joint", -1.7973139598836951e-07},
-        {"head_tilt_joint",0.0024005013786707607},
-        {"shoulder_pan_joint", 1.3199500661528623},
-        {"shoulder_lift_joint", 1.3999822887756963},
-        {"upperarm_roll_joint", -0.19998775461277418},
-        {"elbow_flex_joint",1.7199706352473747},
-        {"forearm_roll_joint", 1.3521167669949818e-06},
-        {"wrist_flex_joint", 1.6600028174761388},
-        {"wrist_roll_joint", -2.1971452301983163e-07},
-        // {"l_gripper_finger_joint",0.05003185444046081},
-        // {"r_gripper_finger_joint", 0.050057917261335}
-        };
+    //  std::map<std::string, double> jointValues
+    //    {{"torso_lift_joint", -1.5886941446227077e-11},
+    //     {"bellows_joint", 0.006636882979390101},
+    //     {"head_pan_joint", -1.7973139598836951e-07},
+    //     {"head_tilt_joint",0.0024005013786707607},
+    //     {"shoulder_pan_joint", 1.3199500661528623},
+    //     {"shoulder_lift_joint", 1.3999822887756963},
+    //     {"upperarm_roll_joint", -0.19998775461277418},
+    //     {"elbow_flex_joint",1.7199706352473747},
+    //     {"forearm_roll_joint", 1.3521167669949818e-06},
+    //     {"wrist_flex_joint", 1.6600028174761388},
+    //     {"wrist_roll_joint", -2.1971452301983163e-07},
+    //     // {"l_gripper_finger_joint",0.05003185444046081},
+    //     // {"r_gripper_finger_joint", 0.050057917261335}
+    //     };
 
-        configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
+        //configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
 
-        configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
+        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit", "config/manipulation/known_states/nav_posture.yaml");
     }
 
     void runtimeConfigure()

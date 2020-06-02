@@ -14,20 +14,20 @@ namespace moveit_z_client
 class CbMoveEndEffectorRelative : public smacc::SmaccClientBehavior
 {
 protected:
-    ClMoveGroup *movegroupClient_;
+  ClMoveGroup *movegroupClient_;
 
 public:
-    geometry_msgs::Transform transform_;
+  geometry_msgs::Transform transform_;
 
-    CbMoveEndEffectorRelative();
+  CbMoveEndEffectorRelative();
 
-    CbMoveEndEffectorRelative(geometry_msgs::Transform transform);
+  CbMoveEndEffectorRelative(geometry_msgs::Transform transform);
 
-    virtual void onEntry() override;
+  virtual void onEntry() override;
 
-    virtual void onExit() override;
+  virtual void onExit() override;
 
-    void moveRelative(geometry_msgs::Transform &transformOffset);
+  void moveRelative(geometry_msgs::Transform &transformOffset);
 };
 
-} // namespace moveit_z_client
+}  // namespace moveit_z_client

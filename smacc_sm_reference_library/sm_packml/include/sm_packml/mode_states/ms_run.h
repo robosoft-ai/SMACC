@@ -2,7 +2,7 @@
 namespace sm_packml
 {
 // STATE DECLARATION
-class MsRun : public smacc::SmaccState<MsRun, SmPackML, StStarting, sc::has_full_history>
+class MsRun : public smacc::SmaccState<MsRun, SmPackML, StStarting>
 {
 public:
    using SmaccState::SmaccState;

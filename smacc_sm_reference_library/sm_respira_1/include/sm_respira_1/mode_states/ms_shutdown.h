@@ -2,7 +2,7 @@
 namespace sm_respira_1
 {
 // STATE DECLARATION
-class MsShutdown : public smacc::SmaccState<MsShutdown, SmRespira1, StSystemShutdown, sc::has_full_history>
+class MsShutdown : public smacc::SmaccState<MsShutdown, SmRespira1, StSystemShutdown>
 {
 public:
    using SmaccState::SmaccState;

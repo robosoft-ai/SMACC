@@ -16,16 +16,15 @@ namespace moveit_z_client
 class CbMoveJoints : public smacc::SmaccClientBehavior
 {
 protected:
-    ClMoveGroup *movegroupClient_;
-    
+  ClMoveGroup *movegroupClient_;
 
 public:
-    boost::optional<double> scalingFactor_;
-    std::map<std::string, double> jointValueTarget_;
+  boost::optional<double> scalingFactor_;
+  std::map<std::string, double> jointValueTarget_;
 
-    CbMoveJoints();
-    CbMoveJoints(const std::map<std::string, double> &jointValueTarget);
-    virtual void onEntry() override;
-    virtual void onExit() override;
+  CbMoveJoints();
+  CbMoveJoints(const std::map<std::string, double> &jointValueTarget);
+  virtual void onEntry() override;
+  virtual void onExit() override;
 };
-} // namespace moveit_z_client
+}  // namespace moveit_z_client
