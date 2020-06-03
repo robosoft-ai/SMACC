@@ -35,7 +35,8 @@ RUN apt-get update && apt-get install -y \
 
 # SYSTEM DEPENDENCIES
 #----------------------------------------------------------
-RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools fakeroot
+RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils git python-catkin-tools
+RUN export DEBIAN_FRONTEND="noninteractive"; apt-get install -y fakeroot
 
 RUN apt-get update
 RUN apt-get install -y python-argcomplete python-bloom dh-make
