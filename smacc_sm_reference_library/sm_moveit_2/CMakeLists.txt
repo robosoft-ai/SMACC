@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(sm_moveit)
+project(sm_moveit_2)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -101,7 +101,7 @@ find_package(catkin REQUIRED moveit_z_client move_base_z_client_plugin moveit_ro
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES sm_moveit
+#  LIBRARIES sm_moveit_2
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -109,7 +109,7 @@ catkin_package(
 ###########
 ## Build ##
 ###########
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ## Specify additional locations of header files
@@ -121,12 +121,12 @@ include_directories(
 
 ## Declare a C++ library
 #add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/sm_moveit.cpp
+#   src/${PROJECT_NAME}/sm_moveit_2.cpp
 #)
 
 add_executable(${PROJECT_NAME}_node 
-                     src/sm_moveit_node.cpp
-                     src/sm_moveit/clients/gripper_client/cl_gripper.cpp
+                     src/sm_moveit_2_node.cpp
+                     src/sm_moveit_2/clients/gripper_client/cl_gripper.cpp
                      )
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
@@ -192,7 +192,7 @@ install(DIRECTORY
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_sm_moveit.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_sm_moveit_2.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

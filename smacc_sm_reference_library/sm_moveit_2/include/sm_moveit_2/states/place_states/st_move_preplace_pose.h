@@ -1,5 +1,5 @@
 #pragma once
-namespace sm_moveit
+namespace sm_moveit_2
 {
 namespace place_states
 {
@@ -42,6 +42,7 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
 
         computeCubeGraspingOrientation(placingPose);
         moveAbsolute->targetPose = placingPose;
+        moveAbsolute->group_="arm";
     }
 
     void computeCubeGraspingOrientation(geometry_msgs::PoseStamped &objectPose)
@@ -67,4 +68,4 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
     }
 };
 } // namespace place_states
-} // namespace sm_moveit
+} // namespace sm_moveit_2

@@ -1,0 +1,4 @@
+PureSpinningLocalPlanner:
+    yaw_goal_tolerance: 0.02
+    k_betta: 15.0
+    max_angular_z_speed: 2.5 # rad/s

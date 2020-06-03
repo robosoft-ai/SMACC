@@ -1,6 +1,6 @@
 
 #pragma once
-namespace sm_moveit
+namespace sm_moveit_2
 {
 namespace pick_states
 {
@@ -18,15 +18,22 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
     // STATE FUNCTIONS
     static void staticConfigure()
-    {
-        geometry_msgs::Vector3 offset;
-        offset.z = -0.12;
-        configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+    { 
+        configure_orthogonal<OrArm, CbMoveCartesianRelative>();
     }
 
     void runtimeConfigure()
     {
+        auto moveCartesian = this->getOrthogonal<OrArm>()
+                                ->getClientBehavior<CbMoveCartesianRelative>();
+
+        geometry_msgs::Vector3 offset;
+        offset.z = -0.12;
+
+        moveCartesian->offset_= offset;
+        moveCartesian->group_ = "arm";
+
     }
 };
 } // namespace pick_states
-} // namespace sm_moveit
+} // namespace sm_moveit_2

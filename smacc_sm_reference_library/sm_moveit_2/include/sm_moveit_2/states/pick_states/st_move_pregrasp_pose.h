@@ -1,17 +1,18 @@
 #pragma once
-namespace sm_moveit
+namespace sm_moveit_2
 {
-namespace place_states
+namespace pick_states
 {
 // STATE DECLARATION
-struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
+struct StMovePregraspPose : smacc::SmaccState<StMovePregraspPose, SS>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StPlaceApproach>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePrePlacePose, ABORT>/*retry on failure*/
+
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StGraspApproach, SUCCESS>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePregraspPose, ABORT>/*retry on failure*/
         >
         reactions;
 
@@ -27,25 +28,28 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
 
     void runtimeConfigure()
     {
+        ROS_INFO("Pre grasp pose initialization.");
+        ros::WallDuration(5).sleep();
+
         ClPerceptionSystem *perceptionSystem;
         this->requiresClient(perceptionSystem);
+        
+        auto pregraspPose = perceptionSystem->decidePickCubePose();
 
-        geometry_msgs::PoseStamped placingPose = perceptionSystem->decidePlacePose();
-
-        ROS_INFO_STREAM("[StMovePreplacePose] Decided place pose for cube: " << placingPose);
-
-        placingPose.pose.position.x -= 0;
-        placingPose.pose.position.z += 0.3;
+        this->computeCubeGraspingOrientation(pregraspPose);
 
         auto moveAbsolute = this->getOrthogonal<OrArm>()
                                 ->getClientBehavior<CbMoveEndEffector>();
 
-        computeCubeGraspingOrientation(placingPose);
-        moveAbsolute->targetPose = placingPose;
+        moveAbsolute->targetPose = pregraspPose;
+        moveAbsolute->group_ = "arm";
     }
 
     void computeCubeGraspingOrientation(geometry_msgs::PoseStamped &objectPose)
     {
+        objectPose.pose.position.x -= 0;
+        objectPose.pose.position.z += 0.3;
+
         // ------ cube grasping orientation -------
         // grasp the object with the gripper using top-to-bottom direction
         auto cubeYawOnTable = tf::getYaw(objectPose.pose.orientation);
@@ -66,5 +70,5 @@ struct StMovePrePlacePose : smacc::SmaccState<StMovePrePlacePose, SS>
         tf::quaternionTFToMsg(quat, objectPose.pose.orientation);
     }
 };
-} // namespace place_states
-} // namespace sm_moveit
+} // namespace pick_states
+} // namespace sm_moveit_2
