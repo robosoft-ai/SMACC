@@ -28,7 +28,7 @@ trap 'error_handler' ERR
 bash -c "while true; do echo \$(date) - building ...; sleep $PING_SLEEP; done" &
 PING_LOOP_PID=$!
 
-sudo docker build --quiet --build-arg ROS_DOCKER_BASE="ros:kinetic-robot" --build-arg ROS_VERSION_NAME="kinetic" --build-arg UBUNTU_VERSION="xenial" --build-arg GITHUB_USER="$1" --build-arg GITHUB_TOKEN="$2" --build-arg PACKAGE_CLOUD_USER="$3" --build-arg PACKAGE_CLOUD_TOKEN="$4" -t package_cloud_tool_docker . >> $BUILD_OUTPUT 2>&1
+sudo docker build --quiet --build-arg ROS_DOCKER_BASE="ros:kinetic-robot" --build-arg ROS_VERSION_NAME="kinetic" --build-arg UBUNTU_VERSION="xenial" --build-arg GITHUB_USER="$1" --build-arg GITHUB_TOKEN="$2" --build-arg PACKAGE_CLOUD_USER="$3" --build-arg PACKAGE_CLOUD_TOKEN="$4" -t package_cloud_tool_docker . >> $BUILD_OUTPUT
 
 # The build finished without returning an error so dump a tail of the output
 dump_output
