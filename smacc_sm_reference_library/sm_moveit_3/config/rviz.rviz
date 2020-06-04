@@ -6,7 +6,7 @@ Panels:
       Expanded:
         - /MotionPlanning1/Planning Request1
       Splitter Ratio: 0.7425600290298462
-    Tree Height: 263
+    Tree Height: 293
   - Class: rviz/Help
     Name: Help
   - Class: rviz/Views
@@ -100,6 +100,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          bl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          br_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           elbow_flex_link:
             Alpha: 1
             Show Axes: false
@@ -110,7 +120,17 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          fl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           forearm_roll_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          fr_caster_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -270,6 +290,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          bl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          br_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           elbow_flex_link:
             Alpha: 1
             Show Axes: false
@@ -280,7 +310,17 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          fl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           forearm_roll_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          fr_caster_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -446,6 +486,10 @@ Visualization Manager:
           Value: true
         bellows_link2:
           Value: true
+        bl_caster_link:
+          Value: true
+        br_caster_link:
+          Value: true
         cube_0:
           Value: true
         cube_1:
@@ -456,7 +500,11 @@ Visualization Manager:
           Value: true
         estop_link:
           Value: true
+        fl_caster_link:
+          Value: true
         forearm_roll_link:
+          Value: true
+        fr_caster_link:
           Value: true
         gripper_link:
           Value: true
@@ -521,7 +569,15 @@ Visualization Manager:
             {}
           odom:
             base_link:
+              bl_caster_link:
+                {}
+              br_caster_link:
+                {}
               estop_link:
+                {}
+              fl_caster_link:
+                {}
+              fr_caster_link:
                 {}
               l_wheel_link:
                 {}
@@ -576,7 +632,7 @@ Visualization Manager:
       Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
       Name: FWLocalPlannerMarkers
       Namespaces:
-        {}
+        my_namespace2: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -600,6 +656,18 @@ Visualization Manager:
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
       Topic: /move_base/ForwardGlobalPlanner/global_plan
+      Unreliable: false
+      Value: true
+    - Class: rviz/Image
+      Enabled: true
+      Image Topic: /head_camera/rgb/image_raw
+      Max Value: 1
+      Median window: 5
+      Min Value: 0
+      Name: RobotVision
+      Normalize Range: true
+      Queue Size: 2
+      Transport Hint: raw
       Unreliable: false
       Value: true
   Enabled: true
@@ -652,7 +720,9 @@ Window Geometry:
     collapsed: false
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002e4000003a7fc0200000008fb000000100044006900730070006c006100790073010000003d00000198000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001db000001a70000019b00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000003880000005c0000005c00ffffff00000453000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002e4000003a7fc0200000009fb000000100044006900730070006c006100790073010000003d000001b6000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e0067000000013f0000019b0000019b00fffffffb0000001e0054006f006f006c002000500072006f0070006500720074006900650073000000020f000000a70000005c00fffffffb000000160052006f0062006f00740056006900730069006f006e01000001f9000001eb0000001600ffffff00000453000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  RobotVision:
+    collapsed: false
   Tool Properties:
     collapsed: false
   Views:
