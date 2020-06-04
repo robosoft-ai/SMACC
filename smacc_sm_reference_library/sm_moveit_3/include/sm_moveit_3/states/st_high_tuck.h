@@ -2,13 +2,13 @@
 namespace sm_moveit_3
 {
 // STATE DECLARATION
-struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveit3>
+struct StHighTuck : smacc::SmaccState<StHighTuck, SmMoveit3>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StInitialForward>,
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighUpperCut>,
         Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;
@@ -37,23 +37,9 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveit3>
         //     {"r_gripper_finger_joint", 0.050039698895249535}};
 
 
-    //  std::map<std::string, double> jointValues
-    //     {{"torso_lift_joint", 0.05},
-    //      {"bellows_joint", 0.006636882979390101},
-    //      {"head_pan_joint", -1.7973139598836951e-07},
-    //      {"head_tilt_joint",0.0024005013786707607},
-    //      {"shoulder_pan_joint", 1.3199500661528623},
-    //      {"shoulder_lift_joint", 1.3999822887756963},
-    //      {"upperarm_roll_joint", -0.19998775461277418},
-    //      {"elbow_flex_joint",1.7199706352473747},
-    //      {"forearm_roll_joint", 1.3521167669949818e-06},
-    //      {"wrist_flex_joint", 1.6600028174761388},
-    //      {"wrist_roll_joint", -2.1971452301983163e-07},
-    //      {"l_gripper_finger_joint",0.05003185444046081},
-    //      {"r_gripper_finger_joint", 0.050057917261335}};
 
-      //  configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
-        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/initial_posture.yaml");
+     //   configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
+        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/high_left_under_tuck.yaml");
     }
 
     void runtimeConfigure()

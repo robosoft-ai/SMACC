@@ -10,7 +10,7 @@ struct StInitialForward : smacc::SmaccState<StInitialForward, SmMoveit3>
     typedef mpl::list<
 
         // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
-        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS1::SsPickObject, SUCCESS>,
+        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StHighTuck, SUCCESS>,
         Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StInitialForward, ABORT>
         >
         reactions;

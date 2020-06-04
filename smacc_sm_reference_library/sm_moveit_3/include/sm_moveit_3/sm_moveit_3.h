@@ -41,6 +41,9 @@ class SsPlaceObject;
 class StRotate180;
 class StForwardNextTable;
 class StInitialPosture;
+class StHighTuck;
+class StHighUpperCut;
+class StHighOverPick;
 class StUndoIncorrectForward;
 
 //SUPERSTATE FORWARD DECLARATIONS
@@ -77,6 +80,9 @@ struct SmMoveit3
 #include <sm_moveit_3/superstates/ss_place_object.h>
 
 //STATES
+#include <sm_moveit_3/states/st_high_over_pick.h>
+#include <sm_moveit_3/states/st_high_upper_cut.h>
+#include <sm_moveit_3/states/st_high_tuck.h>
 #include <sm_moveit_3/states/st_initial_forward.h>
 #include <sm_moveit_3/states/st_initial_posture.h>
 #include <sm_moveit_3/states/st_forward.h>
