@@ -42,7 +42,8 @@ class StRotate180;
 class StForwardNextTable;
 class StInitialPosture;
 class StHighTuck;
-class StHighUpperCut;
+class StHighCenterUpperCut;
+class StHighLeftUpperCut;
 class StHighOverPick;
 class StUndoIncorrectForward;
 
@@ -81,7 +82,8 @@ struct SmMoveit3
 
 //STATES
 #include <sm_moveit_3/states/st_high_over_pick.h>
-#include <sm_moveit_3/states/st_high_upper_cut.h>
+#include <sm_moveit_3/states/st_high_center_upper_cut.h>
+#include <sm_moveit_3/states/st_high_left_upper_cut.h>
 #include <sm_moveit_3/states/st_high_tuck.h>
 #include <sm_moveit_3/states/st_initial_forward.h>
 #include <sm_moveit_3/states/st_initial_posture.h>

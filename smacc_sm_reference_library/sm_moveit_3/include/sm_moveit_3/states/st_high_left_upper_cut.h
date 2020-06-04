@@ -2,14 +2,14 @@
 namespace sm_moveit_3
 {
 // STATE DECLARATION
-struct StHighUpperCut : smacc::SmaccState<StHighUpperCut, SmMoveit3>
+struct StHighLeftUpperCut : smacc::SmaccState<StHighLeftUpperCut, SmMoveit3>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, SS1::SsPickObject, SUCCESS>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighCenterUpperCut, SUCCESS>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighLeftUpperCut, ABORT> /*retry on failure*/
         >
         reactions;
 

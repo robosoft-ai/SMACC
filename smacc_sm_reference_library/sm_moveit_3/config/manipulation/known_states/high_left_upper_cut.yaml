@@ -3,9 +3,9 @@ joint_states:
   bellows_joint: 0.06
   head_pan_joint: 0.00
   head_tilt_joint: 0.00
-  shoulder_pan_joint: 0.05
+  shoulder_pan_joint: 1.45
   shoulder_lift_joint: 1.52
-  upperarm_roll_joint: -3.14
+  upperarm_roll_joint: -1.73
   elbow_flex_joint : 1.64
   forearm_roll_joint: -0.07
   wrist_flex_joint: 1.61

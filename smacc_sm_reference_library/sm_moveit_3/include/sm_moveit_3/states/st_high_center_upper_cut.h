@@ -2,14 +2,14 @@
 namespace sm_moveit_3
 {
 // STATE DECLARATION
-struct StHighOverPick : smacc::SmaccState<StHighOverPick, SmMoveit3>
+struct StHighCenterUpperCut : smacc::SmaccState<StHighCenterUpperCut, SmMoveit3>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, SS1::SsPickObject, SUCCESS>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighOverPick, ABORT> /*retry on failure*/
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighOverPick, SUCCESS>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighCenterUpperCut, ABORT> /*retry on failure*/
         >
         reactions;
 
@@ -36,8 +36,9 @@ struct StHighOverPick : smacc::SmaccState<StHighOverPick, SmMoveit3>
         //     {"l_gripper_finger_joint", 0.05001998415439018},
         //     {"r_gripper_finger_joint", 0.050039698895249535}};
 
-      //  configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
-        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/high_center_over_pick.yaml");
+
+//        configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
+        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/high_center_upper_cut.yaml");
     }
 
     void runtimeConfigure()
