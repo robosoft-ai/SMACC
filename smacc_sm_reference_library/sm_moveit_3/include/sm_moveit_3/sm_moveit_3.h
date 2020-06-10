@@ -44,6 +44,7 @@ class StInitialPosture;
 class StHighTuck;
 class StHighCenterUpperCut;
 class StHighLeftUpperCut;
+class StHighCenterUpperPalm;
 class StHighOverPick;
 class StUndoIncorrectForward;
 
@@ -82,6 +83,7 @@ struct SmMoveit3
 
 //STATES
 #include <sm_moveit_3/states/st_high_over_pick.h>
+#include <sm_moveit_3/states/st_high_center_upper_palm.h>
 #include <sm_moveit_3/states/st_high_center_upper_cut.h>
 #include <sm_moveit_3/states/st_high_left_upper_cut.h>
 #include <sm_moveit_3/states/st_high_tuck.h>

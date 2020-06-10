@@ -2,14 +2,14 @@
 namespace sm_moveit_3
 {
 // STATE DECLARATION
-struct StHighLeftUpperCut : smacc::SmaccState<StHighLeftUpperCut, SmMoveit3>
+struct StHighCenterUpperPalm : smacc::SmaccState<StHighCenterUpperPalm, SmMoveit3>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighCenterUpperCut, SUCCESS>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighLeftUpperCut, ABORT> /*retry on failure*/
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighOverPick, SUCCESS>,
+        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighCenterUpperCut, ABORT> /*retry on failure*/
         >
         reactions;
 
@@ -38,7 +38,7 @@ struct StHighLeftUpperCut : smacc::SmaccState<StHighLeftUpperCut, SmMoveit3>
 
 
 //        configure_orthogonal<OrNavigation, CbMoveJoints>(jointValues);
-        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/high_left_upper_cut.yaml");
+        configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_3", "config/manipulation/known_states/high_center_upper_palm.yaml");
     }
 
     void runtimeConfigure()

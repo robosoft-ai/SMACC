@@ -8,7 +8,7 @@ struct StHighCenterUpperCut : smacc::SmaccState<StHighCenterUpperCut, SmMoveit3>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighOverPick, SUCCESS>,
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StHighCenterUpperPalm, SUCCESS>,
         Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StHighCenterUpperCut, ABORT> /*retry on failure*/
         >
         reactions;
