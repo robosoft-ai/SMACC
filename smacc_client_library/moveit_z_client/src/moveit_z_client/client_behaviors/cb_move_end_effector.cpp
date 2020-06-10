@@ -22,8 +22,10 @@ CbMoveEndEffector::CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std
 
 void CbMoveEndEffector::onEntry()
 {
-    ROS_DEBUG("Synchronous sleep of 4 seconds");
-    ros::WallDuration(4).sleep();
+    ROS_DEBUG("[CbMoveEndEffector] Synchronous sleep of 1 seconds");
+    ros::WallDuration(1).sleep();
+
+    this->requiresClient(movegroupClient_);
 
     if (this->group_)
     {
@@ -32,15 +34,18 @@ void CbMoveEndEffector::onEntry()
     }
     else
     {
-        this->requiresClient(movegroupClient_);
         this->moveToAbsolutePose(movegroupClient_->moveGroupClientInterface, movegroupClient_->planningSceneInterface, targetPose);
     }
     
-    ROS_DEBUG("Synchronous sleep of 3 seconds");
-    ros::WallDuration(3).sleep();
+    ROS_DEBUG("[CbMoveEndEffector] Synchronous sleep of 1 seconds");
+    ros::WallDuration(1).sleep();
 }
 
 void CbMoveEndEffector::onExit()
+{
+}
+
+void CbMoveEndEffector::update()
 {
 }
 

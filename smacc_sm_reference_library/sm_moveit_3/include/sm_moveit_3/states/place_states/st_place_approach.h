@@ -27,6 +27,7 @@ struct StPlaceApproach : smacc::SmaccState<StPlaceApproach, SS>
     {
         ClMoveGroup *moveGroupClient;
         this->requiresClient(moveGroupClient);
+
         moveGroupClient->onMotionExecutionSuccedded(&StPlaceApproach::throwSequenceFinishedEvent, this);
     }
 

@@ -11,7 +11,7 @@
 
 namespace moveit_z_client
 {
-class CbMoveEndEffector : public smacc::SmaccClientBehavior
+class CbMoveEndEffector : public smacc::SmaccClientBehavior, public smacc::ISmaccUpdatable
 {
 private:
   ClMoveGroup *movegroupClient_;
@@ -25,6 +25,7 @@ public:
   CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std::string tip_link = "");
   virtual void onEntry() override;
   virtual void onExit() override;
+  virtual void update() override;
 
 private:
   bool moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,

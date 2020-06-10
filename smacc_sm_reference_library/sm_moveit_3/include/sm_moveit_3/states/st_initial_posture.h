@@ -58,6 +58,7 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveit3>
 
     void runtimeConfigure()
     {
+        ros::Duration(3).sleep();
     }
 };
 } // namespace sm_moveit_3
