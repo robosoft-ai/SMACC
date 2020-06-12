@@ -7,6 +7,7 @@
 #include <moveit_z_client/client_behaviors/cb_move_end_effector_relative.h>
 #include <tf/tf.h>
 #include <tf/transform_datatypes.h>
+#include <future>
 
 namespace moveit_z_client
 {
@@ -22,20 +23,32 @@ CbMoveEndEffectorRelative::CbMoveEndEffectorRelative(geometry_msgs::Transform tr
 void CbMoveEndEffectorRelative::onEntry()
 {
     ROS_INFO_STREAM("[CbMoveEndEffectorRelative] Transform end effector pose relative: " << transform_);
+
     this->requiresClient(movegroupClient_);
-    
-    moveRelative(transform_);
+
+    if (this->group_)
+    {
+        auto res = std::async(std::launch::async, [=] 
+        {
+                moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
+                this->moveRelative(move_group, this->transform_);
+        });
+    }
+    else
+    {
+        auto res = std::async(std::launch::async, [=] 
+        {
+            this->moveRelative(movegroupClient_->moveGroupClientInterface, this->transform_);
+        });
+    }
 }
 
 void CbMoveEndEffectorRelative::onExit()
 {
 }
 
-void CbMoveEndEffectorRelative::moveRelative(geometry_msgs::Transform &transformOffset)
+void CbMoveEndEffectorRelative::moveRelative(moveit::planning_interface::MoveGroupInterface& moveGroupInterface, geometry_msgs::Transform &transformOffset)
 {
-    auto &moveGroupInterface = movegroupClient_->moveGroupClientInterface;
-
-
     auto referenceStartPose = moveGroupInterface.getCurrentPose();
     tf::Quaternion currentOrientation;
     tf::quaternionMsgToTF(referenceStartPose.pose.orientation, currentOrientation);

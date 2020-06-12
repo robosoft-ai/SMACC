@@ -5,6 +5,7 @@
  ******************************************************************************************************************/
 
 #include <moveit_z_client/client_behaviors/cb_move_cartesian_relative.h>
+#include <future>
 
 namespace moveit_z_client
 {
@@ -22,12 +23,16 @@ void CbMoveCartesianRelative::onEntry()
 
   if (this->group_)
   {
-    moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
-    this->moveRelativeCartesian(&move_group, offset_);
+    auto res = std::async(std::launch::async, [=] {
+      moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
+      this->moveRelativeCartesian(&move_group, offset_);
+    });
   }
   else
   {
-    this->moveRelativeCartesian(&moveGroupSmaccClient_->moveGroupClientInterface, offset_);
+    auto res = std::async(std::launch::async, [=] {
+      this->moveRelativeCartesian(&moveGroupSmaccClient_->moveGroupClientInterface, offset_);
+    });
   }
 }
 
