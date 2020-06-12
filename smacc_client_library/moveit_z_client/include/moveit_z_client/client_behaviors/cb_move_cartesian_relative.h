@@ -31,7 +31,7 @@ public:
   void moveRelativeCartesian(moveit::planning_interface::MoveGroupInterface *movegroupClient,
                              geometry_msgs::Vector3 &offset);
 
-  protected:
+  public:
     ClMoveGroup *moveGroupSmaccClient_;
 };
 }  // namespace moveit_z_client
