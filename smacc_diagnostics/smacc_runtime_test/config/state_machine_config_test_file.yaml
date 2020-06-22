@@ -1,0 +1,7 @@
+state_machine_rosparam_ws: sm_dance_bot
+success_switch:
+   - type: state_reached
+     state_name: state_1
+failure_switch:
+   - type: timeout
+     duration: 10.0 # sec

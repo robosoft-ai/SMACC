@@ -1,0 +1,5 @@
+<launch>
+    <node pkg="smacc_runtime_test" name="smacc_runtime_test_node" type="smacc_runtime_test_node" output="screen">
+        <rosparam file="$(find smacc_runtime_test)/config/state_machine_config_test_file.yaml"/>
+    </node>
+</launch>

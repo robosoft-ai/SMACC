@@ -1,13 +1,13 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <package format="2">
-  <name>sm_atomic</name>
-  <version>0.0.1</version>
-  <description>The sm_atomic package</description>
+  <name>smacc_runtime_test</name>
+  <version>0.0.0</version>
+  <description>The smacc_runtime_test package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
+  <maintainer email="plain@todo.todo">plain</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/sm_atomic</url> -->
+  <!-- <url type="website">http://wiki.ros.org/smacc_runtime_test_node</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
@@ -50,10 +50,9 @@
   <!--   <doc_depend>doxygen</doc_depend> -->
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
-  <depend>smacc</depend>
-  <depend>ros_timer_client</depend>
-  <depend>xterm</depend>
-  <depend>smacc_runtime_test</depend>
+  <depend>rosgraph_msgs</depend>
+  <depend>smacc_msgs</depend>
+
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
