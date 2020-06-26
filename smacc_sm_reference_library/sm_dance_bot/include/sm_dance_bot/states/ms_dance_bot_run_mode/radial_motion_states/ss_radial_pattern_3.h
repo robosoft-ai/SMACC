@@ -47,9 +47,9 @@ public:
 
 // FORWARD DECLARATION FOR THE SUPERSTATE
 using SS = SsRadialPattern3;
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_end_point.h>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_return.h>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_rotate.h>
-#include <sm_dance_bot/states/radial_motion_states/sti_radial_loop_start.h>
+#include "sti_radial_end_point.h"
+#include "sti_radial_return.h"
+#include "sti_radial_rotate.h"
+#include "sti_radial_loop_start.h"
 } // namespace SS3
 } // namespace sm_dance_bot

@@ -7,14 +7,14 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
   
   Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> 
   
   >reactions;
 
-// STATE FUNCTIONS
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
   }

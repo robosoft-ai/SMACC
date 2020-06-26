@@ -7,7 +7,7 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 {
   using SmaccState::SmaccState;
   
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
   
   Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, SUCCESS>,
@@ -15,7 +15,7 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
   
   >reactions;
 
-// STATE FUNCTIONS
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrNavigation, CbUndoPathBackwards>();

@@ -150,31 +150,31 @@ struct SmDanceBot
 } // namespace sm_dance_bot
 
 //MODE STATES
-#include <sm_dance_bot/modestates/ms_dance_bot_run_mode.h>
-#include <sm_dance_bot/modestates/ms_dance_bot_recovery_mode.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/ms_dance_bot_run_mode.h>
+#include <sm_dance_bot/states/ms_dance_bot_recovery_mode/ms_dance_bot_recovery_mode.h>
 
 //SUPERSTATES
-#include <sm_dance_bot/superstates/ss_radial_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_2.h>
-#include <sm_dance_bot/superstates/ss_radial_pattern_3.h>
-#include <sm_dance_bot/superstates/ss_f_pattern_1.h>
-#include <sm_dance_bot/superstates/ss_s_pattern_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/radial_motion_states/ss_radial_pattern_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/radial_motion_states/ss_radial_pattern_2.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/radial_motion_states/ss_radial_pattern_3.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/f_pattern_states/ss_f_pattern_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/s_pattern_states/ss_s_pattern_1.h>
 
 //STATES
-#include <sm_dance_bot/states/st_acquire_sensors.h>
-#include <sm_dance_bot/states/st_event_count_down.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_acquire_sensors.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_event_count_down.h>
 
-#include <sm_dance_bot/states/st_navigate_to_waypoints_x.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_to_waypoints_x.h>
 
-#include <sm_dance_bot/states/st_rotate_degrees_6.h>
-#include <sm_dance_bot/states/st_rotate_degrees_5.h>
-#include <sm_dance_bot/states/st_navigate_forward_2.h>
-#include <sm_dance_bot/states/st_rotate_degrees_4.h>
-#include <sm_dance_bot/states/st_navigate_forward_1.h>
-#include <sm_dance_bot/states/st_navigate_to_waypoint_1.h>
-#include <sm_dance_bot/states/st_rotate_degrees_2.h>
-#include <sm_dance_bot/states/st_rotate_degrees_1.h>
-#include <sm_dance_bot/states/st_navigate_reverse_2.h>
-#include <sm_dance_bot/states/st_rotate_degrees_3.h>
-#include <sm_dance_bot/states/st_navigate_reverse_1.h>
-#include <sm_dance_bot/states/st_navigate_reverse_3.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_6.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_5.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_forward_2.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_4.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_forward_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_to_waypoint_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_2.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_reverse_2.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_rotate_degrees_3.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_reverse_1.h>
+#include <sm_dance_bot/states/ms_dance_bot_run_mode/st_navigate_reverse_3.h>
