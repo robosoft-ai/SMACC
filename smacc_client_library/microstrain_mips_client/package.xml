@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>microstrain_mips_client</name>
-  <version>0.0.0</version>
+  <version>0.9.0</version>
   <description>The microstrain_mips_client package</description>
 
   
