@@ -4,8 +4,8 @@
   <version>0.0.1</version>
   <description>The backward_global_planner package.</description>
 
-  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
-  <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
 
   <license>Proprietary Reel Robotics</license>
 

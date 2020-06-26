@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <package format="2">
   <name>forward_local_planner</name>
-  <version>0.0.1</version>
+  <version>0.9.0</version>
   <description>forward_local_planner package.</description>
 
-  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
-  <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
 
   <license>Proprietary Reel Robotics</license>
 
@@ -22,7 +22,7 @@
   <depend>tf</depend>
   <depend>forward_global_planner</depend>
 
-  <!-- The export tag contains other, unspecified, tags -->
+  
   <export>
     <nav_core plugin="${prefix}/flp_plugin.xml" />
     <rosdoc config="rosdoc.yaml" />

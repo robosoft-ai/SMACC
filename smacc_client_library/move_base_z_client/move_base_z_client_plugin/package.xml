@@ -2,11 +2,11 @@
 <package format="2">
   <name>move_base_z_client_plugin</name>
   
-  <version>0.0.1</version>
-  <description>The move_base_z_client_plugin package implements SMACC Action Client Plugin for the ROS Navigation State - move_baes node.  Developed by Reel Robotics.</description>
+  <version>0.9.0</version>
+  <description>The move_base_z_client_plugin package implements SMACC Action Client Plugin for the ROS Navigation State - move_base node.  Developed by Reel Robotics.</description>
 
-  <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
-  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
+  <author email="pablo@ibrobotics.com">Pablo Inigo Blasco</author>
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
 
   <license>MIT</license>
 

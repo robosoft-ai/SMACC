@@ -1,20 +1,12 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>sm_dance_bot_strikes_back</name>
-  <version>0.0.1</version>
+  <version>0.9.0</version>
   <description>The dance_bot_strikes_back package</description>
-
-  <!-- One maintainer tag required, multiple allowed, one person per tag -->
-  <!-- Example:  -->
-  <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
-
-
-  <!-- One license tag required, multiple allowed, one license per tag -->
-  <!-- Commonly used license strings: -->
-  <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
-
+  
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  
+  <license>BSD-3</license>
 
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
@@ -40,7 +32,5 @@
   <depend>tf</depend>¡
 
   <export>
-    <!-- Other tools can request additional information be placed here -->
-
   </export>
 </package>
