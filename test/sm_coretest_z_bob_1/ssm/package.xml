@@ -4,10 +4,7 @@
   <version>0.9.0</version>
   <description>The ssm package</description>
 
-  
-  <maintainer email="go@todo.todo">go</maintainer>
-
-
+  <maintainer email="pablo@ibrobotics.com">go</maintainer>
   
   <license>BSD-3</license>
   
@@ -19,10 +16,6 @@
   <exec_depend>roscpp</exec_depend>
   <exec_depend>smacc</exec_depend>
 
-
-  
   <export>
-    
-
   </export>
 </package>
