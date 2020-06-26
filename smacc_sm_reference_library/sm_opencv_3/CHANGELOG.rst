@@ -4,6 +4,7 @@ Changelog for package sm_opencv_3
 
 Forthcoming
 -----------
+
 * Added gazebo camera changes to sm_opencv and sm_opencv_3
 * Merge branch 'master' into melodic-devel
 * fixing opencv demos and other minor issues

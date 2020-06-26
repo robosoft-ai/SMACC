@@ -4,6 +4,7 @@ Changelog for package moveit_z_client
 
 Forthcoming
 -----------
+
 * progess on cubes collisions
 * adding threads to moveit client behaviors
 * some improvements in moveit_z_client and examples

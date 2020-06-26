@@ -4,6 +4,7 @@ Changelog for package battery_monitor_client
 
 Forthcoming
 -----------
+
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
 * fixed Doxygen Client Namespaces

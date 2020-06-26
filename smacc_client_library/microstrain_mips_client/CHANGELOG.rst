@@ -4,6 +4,7 @@ Changelog for package microstrain_mips_client
 
 Forthcoming
 -----------
+
 * Merge branch 'master' into melodic-devel
 * fixed Doxygen Client Namespaces
 * refactoring client namespaces names

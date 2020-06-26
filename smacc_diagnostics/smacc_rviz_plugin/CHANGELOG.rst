@@ -4,6 +4,7 @@ Changelog for package smacc_rviz_plugin
 
 Forthcoming
 -----------
+
 * Progressing on transition log
 * progress on viewer, modestates and history mode
 * progress in the viewer and examples

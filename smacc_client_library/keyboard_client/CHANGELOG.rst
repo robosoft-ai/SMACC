@@ -4,6 +4,7 @@ Changelog for package keyboard_client
 
 Forthcoming
 -----------
+
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
 * Merge branch 'master' of https://github.com/reelrbtx/SMACC

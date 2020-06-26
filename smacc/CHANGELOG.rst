@@ -4,6 +4,7 @@ Changelog for package smacc
 
 Forthcoming
 -----------
+
 * Progressing on transition log
 * dynamic behavior
 * progress on viewer, modestates and history mode

@@ -4,6 +4,7 @@ Changelog for package ros_timer_client
 
 Forthcoming
 -----------
+
 * Merge branch 'master' into melodic-devel
 * fixed Doxygen Client Namespaces
 * refactoring client namespaces names

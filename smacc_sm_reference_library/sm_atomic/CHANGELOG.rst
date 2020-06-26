@@ -4,6 +4,7 @@ Changelog for package sm_atomic
 
 Forthcoming
 -----------
+
 * creating feature smacc_runtime test
 * Merge branch 'master' into melodic-devel
 * adding xterm dependency to examples

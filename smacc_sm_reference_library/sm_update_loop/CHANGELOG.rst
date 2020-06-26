@@ -4,6 +4,7 @@ Changelog for package sm_update_loop
 
 Forthcoming
 -----------
+
 * Merge branch 'master' into melodic-devel
 * adding xterm dependency to examples
 * More CbTimer Updating

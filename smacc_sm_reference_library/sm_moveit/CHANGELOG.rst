@@ -4,6 +4,7 @@ Changelog for package sm_moveit
 
 Forthcoming
 -----------
+
 * improving opencv2 box detection and also restoring sm_moveit example
 * Added sm_moveit_2
 * improving sm_moveit

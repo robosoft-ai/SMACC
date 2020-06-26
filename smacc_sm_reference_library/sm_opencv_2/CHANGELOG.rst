@@ -4,6 +4,7 @@ Changelog for package sm_opencv_2
 
 Forthcoming
 -----------
+
 * Merge branch 'master' of https://github.com/reelrbtx/SMACC
 * Changing waypoints in sm_opencv_2
 * improving opencv2 box detection and also restoring sm_moveit example
