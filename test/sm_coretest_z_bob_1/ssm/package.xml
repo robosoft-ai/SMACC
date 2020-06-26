@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ssm</name>
-  <version>0.9.0/version>
+  <version>0.9.0</version>
   <description>The ssm package</description>
 
   
@@ -10,17 +10,6 @@
 
   
   <license>BSD-3</license>
-
-
-  <!-- Url tags are optional, but multiple are allowed, one per tag -->
-  <!-- Optional attribute type can be: website, bugtracker, or repository -->
-  <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/ssm</url> -->
-
-
-  
-
-
   
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>roscpp</build_depend>
