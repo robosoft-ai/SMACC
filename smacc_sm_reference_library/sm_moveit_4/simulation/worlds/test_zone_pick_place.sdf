@@ -69,17 +69,22 @@
 
     <include>
       <uri>model://demo_cube</uri>
-      <pose>2.0 -0.15 0.75 0 0 0</pose>
+      <pose>1.85 -0.30 0.75 0 0 0</pose>
     </include>
 
      <include>
       <uri>model://demo_cube</uri>
-      <pose>2.0 0.0 0.75 0 0 0</pose>
+      <pose>1.85 0.30 0.75 0 0 0</pose>
     </include>
 
      <include>
       <uri>model://demo_cube</uri>
-      <pose>2.0 0.15 0.75 0 0 0</pose>
+      <pose>1.7 0.30 0.75 0 0 0</pose>
+    </include>
+         
+    <include>
+      <uri>model://demo_cube</uri>
+      <pose>1.7 -0.30 0.75 0 0 0</pose>
     </include>
 
   </world>
