@@ -9,7 +9,7 @@ namespace sm_moveit
 namespace cl_perception_system
 {
 
-        enum class RobotProcessStatus : int
+    enum class RobotProcessStatus : int
     {
         TABLE0 = 0,
         TABLE1 = 1,
@@ -72,9 +72,10 @@ public:
                 originalCube0Pose = detectedCubePose0->toPoseStampedMsg();
 
                 cube0DestinationInTable1 = originalCube0Pose;
-                (*cube0DestinationInTable1).pose.position.x -= 2.5;
+                (*cube0DestinationInTable1).pose.position.x = - originalCube0Pose->pose.position.x;
 
                 ROS_INFO_STREAM("[Perception system] Original Cube 0 Pose captured" << originalCube0Pose->pose);
+                ROS_INFO_STREAM("[Perception system] Cube 0 Pose table 1 destination" << (*cube0DestinationInTable1));
             }
 
             if (!originalCube1Pose && detectedCubePose1->isInitialized)
@@ -82,9 +83,10 @@ public:
                 originalCube1Pose = detectedCubePose1->toPoseStampedMsg();
 
                 cube1DestinationInTable0 = originalCube1Pose;
-                (*cube1DestinationInTable0).pose.position.x += 2.5;
+                (*cube1DestinationInTable0).pose.position.x = - originalCube1Pose->pose.position.x;
 
                 ROS_INFO_STREAM("[Perception system] Original Cube 1 Pose captured" << originalCube1Pose->pose);
+                ROS_INFO_STREAM("[Perception system] Cube 1 Pose table 0 destination" << (*cube1DestinationInTable0));
             }
 
             if (!originalCube2Pose && detectedCubePose2->isInitialized)
@@ -92,9 +94,10 @@ public:
                 originalCube2Pose = detectedCubePose2->toPoseStampedMsg();
 
                 cube2DestinationInTable1 = originalCube2Pose;
-                (*cube2DestinationInTable1).pose.position.x -= 2.5;
+                (*cube2DestinationInTable1).pose.position.x = -originalCube2Pose->pose.position.x;
 
-                ROS_INFO_STREAM("[Perception system] Original Cube 2 Pose captured" << originalCube0Pose->pose);
+                ROS_INFO_STREAM("[Perception system] Original Cube 2 Pose captured" << originalCube2Pose->pose);
+                ROS_INFO_STREAM("[Perception system] Cube 2 Pose table 1 destination" << (*cube2DestinationInTable1));
             }
         }
     }

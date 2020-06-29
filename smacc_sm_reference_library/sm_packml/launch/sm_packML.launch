@@ -1,5 +1,5 @@
 <launch>
-    <arg name="server_nodes_xterms" default="xterm -hold -e" />
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e" />
 
     <node pkg="sm_packml" type="sm_packML_node" name="sm_packml" launch-prefix="$(arg server_nodes_xterms)" />
 

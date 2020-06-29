@@ -2,34 +2,34 @@
 
 namespace smacc
 {
-SmaccClientBehavior::SmaccClientBehavior()
-{
-    stateMachine_ = nullptr;
-    currentState = nullptr;
-}
+    SmaccClientBehavior::SmaccClientBehavior()
+    {
+        stateMachine_ = nullptr;
+        currentState = nullptr;
+    }
 
-SmaccClientBehavior::~SmaccClientBehavior()
-{
-    ROS_WARN("Client behavior deallocated.");
-}
+    SmaccClientBehavior::~SmaccClientBehavior()
+    {
+        ROS_WARN("Client behavior deallocated.");
+    }
 
-std::string SmaccClientBehavior::getName() const
-{
-    return demangleSymbol(typeid(*this).name());
-}
+    std::string SmaccClientBehavior::getName() const
+    {
+        return demangleSymbol(typeid(*this).name());
+    }
 
-void SmaccClientBehavior::onEntry()
-{
-    ROS_INFO("SmaccClientBehavior %s onEntry", this->getName().c_str());
-}
+    void SmaccClientBehavior::onEntry()
+    {
+        ROS_DEBUG("[%s] Default empty SmaccClientBehavior onEntry", this->getName().c_str());
+    }
 
-void SmaccClientBehavior::runtimeConfigure()
-{
-    ROS_INFO("SmaccClientBehavior %s runtimeConfigure", this->getName().c_str());
-}
+    void SmaccClientBehavior::runtimeConfigure()
+    {
+        ROS_DEBUG("[%s] Default empty SmaccClientBehavior runtimeConfigure", this->getName().c_str());
+    }
 
-void SmaccClientBehavior::onExit()
-{
-    ROS_INFO("SmaccClientBehavior %s onExit", this->getName().c_str());
-}
+    void SmaccClientBehavior::onExit()
+    {
+        ROS_DEBUG("[%s] Default empty SmaccClientBehavior onExit", this->getName().c_str());
+    }
 } // namespace smacc

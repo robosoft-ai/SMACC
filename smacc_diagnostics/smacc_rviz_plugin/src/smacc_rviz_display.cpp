@@ -145,7 +145,7 @@ void SmaccRvizDisplay::processMessage( const smacc_msgs::SmaccStatus::ConstPtr& 
     concatenated = concatenated + std::string("/")+ state;
   }
 
-  ROS_INFO("current state: %s", concatenated.c_str());
+  ROS_DEBUG("current state: %s", concatenated.c_str());
   current_state_->setValue(QString(concatenated.c_str()));
   // Here we call the rviz::FrameManager to get the transform from the
   // fixed frame to the frame in the header of this Imu message.  If

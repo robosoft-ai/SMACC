@@ -2,7 +2,7 @@
 namespace sm_starcraft_ai
 {
 // STATE DECLARATION
-class MsRun : public smacc::SmaccState<MsRun, SmStarcraftAI, StObserve, sc::has_full_history>
+class MsRun : public smacc::SmaccState<MsRun, SmStarcraftAI, StObserve>
 {
 public:
    using SmaccState::SmaccState;

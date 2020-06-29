@@ -2,10 +2,10 @@
 
     <!--========= LAUNCH FILE ARGUMENTS ======================================================-->
     <!-- defines the xterm parameters for the clients, set to empty to skip using xterm window-->
-    <arg name="server_nodes_xterms" default="xterm -hold -e" />
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e" />
 
     <!-- defines the xterm parameters for the state machine, set to empty to skip using xterm window-->
-    <arg name="sm_xterm" default="xterm -hold -geometry 1000x600 -sl 10000 -e" />
+    <arg name="sm_xterm" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e" />
 
     <!-- if true, gazebo client is shown -->
     <arg name="show_gz_client" default="true" />
@@ -36,7 +36,7 @@
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_dance_bot_strikes_back)/config/radial_motion_sm_config.yaml" />
+    <rosparam command="load" file="$(find sm_dance_bot_strikes_back)/config/sm_dancebot_strikes_back.yaml" />
 
     <group ns="sm_dance_bot_strikes_back">
         <!-- set run mode -->

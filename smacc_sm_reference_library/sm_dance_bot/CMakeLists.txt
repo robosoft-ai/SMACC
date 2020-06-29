@@ -7,7 +7,7 @@ project(sm_dance_bot)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin multirole_sensor_client tf all_events_go event_countdown ros_timer_client conditional ros_publisher_client actionlib actionlib_msgs)
+find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin multirole_sensor_client tf sr_all_events_go sr_event_countdown ros_timer_client sr_conditional ros_publisher_client actionlib actionlib_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -57,6 +57,9 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin multirole_se
 # )
 
 add_action_files(
+   DIRECTORY
+   servers/led_action_server/action/
+   
    FILES
    LEDControl.action
 )
@@ -129,12 +132,12 @@ target_link_libraries(${PROJECT_NAME}
  add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS} ${PROJECT_NAME}_generate_messages_cpp)
 
 
- add_executable(temperature_sensor_node test/temperature_sensor_node/src/temperature_sensor_node.cpp)
+ add_executable(temperature_sensor_node servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
  target_link_libraries(temperature_sensor_node
    ${catkin_LIBRARIES}
  )
 
- add_executable(led_action_server_node test/led_action_server/src/led_action_server_node.cpp)
+ add_executable(led_action_server_node servers/led_action_server/src/led_action_server_node.cpp)
 
  target_link_libraries(
    led_action_server_node
@@ -155,7 +158,7 @@ add_dependencies(led_action_server_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${ca
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
 install(PROGRAMS
-   test/service_node_3/src/service_node_3.py
+   servers/service_node_3/src/service_node_3.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

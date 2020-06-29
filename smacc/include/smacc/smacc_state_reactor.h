@@ -54,6 +54,7 @@ public:
     // };
 
     virtual void onEntry();
+    virtual void onExit();
 
     virtual void onEventNotified(const std::type_info *eventType);
 

@@ -29,6 +29,8 @@ public:
   typedef typename Context::inner_context_type context_type;
   typedef typename context_type::state_iterator state_iterator;
 
+  typedef InnerInitial LastDeepState;
+
   bool finishStateThrown;
   InnerInitial *smacc_inner_type;
 
@@ -44,6 +46,7 @@ public:
 
   SmaccState() = delete;
 
+  #define STATE_NAME (demangleSymbol(typeid(MostDerived).name()).c_str())
   // Constructor that initializes the state ros node handle
   SmaccState(my_context ctx)
   {
@@ -51,7 +54,7 @@ public:
 
     static_assert(!std::is_same<MostDerived, Context>::value, "The context must be a different state or state machine than the current state");
 
-    ROS_WARN_STREAM("creating state: " << demangleSymbol(typeid(MostDerived).name()).c_str());
+    ROS_WARN("[%s] creating ", STATE_NAME);
     this->set_context(ctx.pContext_);
 
     this->stateInfo_ = getStateInfo();
@@ -62,11 +65,11 @@ public:
     finishStateThrown = false;
 
     this->contextNh = optionalNodeHandle(ctx.pContext_);
-    ROS_DEBUG("context node handle namespace: %s", contextNh.getNamespace().c_str());
+    ROS_DEBUG("[%s] Ros node handle namespace for this state: %s", STATE_NAME, contextNh.getNamespace().c_str());
     if (contextNh.getNamespace() == "/")
     {
       auto nhname = smacc::utils::cleanShortTypeName(typeid(Context));
-      ROS_INFO("Creating ros NodeHandle for this state: %s", nhname.c_str());
+      ROS_INFO("[%s] Creating ros NodeHandle for this state: %s", STATE_NAME, nhname.c_str());
       contextNh = ros::NodeHandle(nhname);
     }
   }
@@ -176,10 +179,8 @@ public:
   template <typename TOrthogonal, typename TBehavior, typename... Args>
   static void configure_orthogonal(Args &&... args)
   {
-    auto strorthogonal = demangleSymbol(typeid(TOrthogonal).name());
-    auto strbehavior = demangleSymbol(typeid(TBehavior).name());
 
-    ROS_INFO_STREAM("Orthogonal " << strorthogonal << " -> " << strbehavior);
+    ROS_INFO("[%s] Runtime configure orthogonal %s -> %s", STATE_NAME, demangleSymbol(typeid(TOrthogonal).name()).c_str(), demangleSymbol(typeid(TBehavior).name()).c_str());
 
     ClientBehaviorInfoEntry bhinfo;
     bhinfo.factoryFunction = [=](ISmaccState *state) {
@@ -239,7 +240,7 @@ public:
     {
       this->postEvent<EvLoopEnd<MostDerived>>();
     }
-    ROS_INFO("POST THROW CONDITION");
+    ROS_INFO("[]%s POST THROW CONDITION", STATE_NAME);
   }
 
   void throwSequenceFinishedEvent()
@@ -278,11 +279,12 @@ public:
   static inner_context_ptr_type shallow_construct(
       const context_ptr_type &pContext,
       outermost_context_base_type &outermostContextBase)
-  {
+  {    
+    // allocating in memory
     auto state = new MostDerived(SmaccState<MostDerived, Context, InnerInitial, historyMode>::my_context(pContext));
     const inner_context_ptr_type pInnerContext(state);
 
-    ROS_INFO("State object created. Initializating...");
+    ROS_INFO("[%s] State object created. Initializating...", STATE_NAME);
     state->entryStateInternal();
 
     outermostContextBase.add(pInnerContext);
@@ -294,25 +296,23 @@ private:
   {
     this->getStateMachine().notifyOnStateEntryStart(static_cast<MostDerived *>(this));
 
-    std::string classname = smacc::utils::cleanShortTypeName(typeid(MostDerived));
-
     // TODO: make this static to build the parameter tree at startup
-    this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + classname);
+    this->nh = ros::NodeHandle(contextNh.getNamespace() + std::string("/") + smacc::utils::cleanShortTypeName(typeid(MostDerived)).c_str());
 
-    ROS_DEBUG("nodehandle namespace: %s", nh.getNamespace().c_str());
+    ROS_DEBUG("[%s] nodehandle namespace: %s", STATE_NAME, nh.getNamespace().c_str());
 
     this->setParam("created", true);
 
     // before dynamic runtimeConfigure, we execute the staticConfigure behavior configurations
     {
-      ROS_INFO("-- STATIC STATE DESCRIPTION --");
+      ROS_INFO("[%s] -- STATIC STATE DESCRIPTION --", STATE_NAME);
 
       for (const auto &stateReactorsVector : SmaccStateInfo::staticBehaviorInfo)
       {
-        ROS_DEBUG_STREAM(" - state info: " << demangleSymbol(stateReactorsVector.first->name()));
+        ROS_DEBUG("[%s] state info: %s", STATE_NAME,  demangleSymbol(stateReactorsVector.first->name()).c_str());
         for (auto &bhinfo : stateReactorsVector.second)
         {
-          ROS_DEBUG_STREAM(" - client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+          ROS_DEBUG("[%s] client behavior: %s", STATE_NAME,  demangleSymbol(bhinfo.behaviorType->name()).c_str());
         }
       }
 
@@ -322,20 +322,20 @@ private:
 
       for (auto &bhinfo : staticDefinedBehaviors)
       {
-        ROS_INFO_STREAM("- Creating static client behavior: " << demangleSymbol(bhinfo.behaviorType->name()));
+        ROS_INFO("[%s] Creating static client behavior: %s", STATE_NAME, demangleSymbol(bhinfo.behaviorType->name()).c_str());
         bhinfo.factoryFunction(this);
       }
 
       for (auto &sr : staticDefinedStateReactors)
       {
-        ROS_INFO_STREAM("- Creating static state reactor: " << demangleSymbol(sr->stateReactorType->name()));
+        ROS_INFO("[%s] Creating static state reactor: %s", STATE_NAME,  demangleSymbol(sr->stateReactorType->name()).c_str());
         sr->factoryFunction(this);
       }
 
-      ROS_INFO("---- END STATIC DESCRIPTION");
+      ROS_INFO("[%s] ---- END STATIC DESCRIPTION", STATE_NAME);
     }
 
-    ROS_INFO("State runtime configuration");
+    ROS_INFO("[%s] State runtime configuration", STATE_NAME);
 
     // first we runtime configure the state, where we create client behaviors
     static_cast<MostDerived *>(this)->runtimeConfigure();
@@ -343,8 +343,11 @@ private:
     // second the orthogonals are internally configured
     this->getStateMachine().notifyOnRuntimeConfigured(static_cast<MostDerived *>(this));
 
+    ROS_INFO("[%s] State OnEntry", STATE_NAME);
+
     // finally we go to the derived state onEntry Function
     static_cast<MostDerived *>(this)->onEntry();
+    ROS_INFO("[%s] State OnEntry code finished", STATE_NAME);
 
     // here orthogonals and client behaviors are entered OnEntry
     this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));

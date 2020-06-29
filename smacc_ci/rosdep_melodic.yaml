@@ -16,24 +16,13 @@ ros_publisher_client:
   ubuntu: [ros-melodic-ros-publisher-client]
 multirole_sensor_client:
   ubuntu: [ros-melodic-multirole-sensor-client]
-all_events_go:
-  ubuntu: [ros-melodic-all-events-go]
-event_countdown:
-  ubuntu: [ros-melodic-event-countdown]
-conditional:
-  ubuntu: [ros-melodic-conditional]
+sr_all_events_go:
+  ubuntu: [ros-melodic-sr-all-events-go]
+sr_event_countdown:
+  ubuntu: [ros-melodic-sr-event-countdown]
+sr_conditional:
+  ubuntu: [ros-melodic-sr-conditional]
+sm_dance_bot:
+  ubuntu: [ros-melodic-sm-dance-bot]    
 forward_global_planner:
   ubuntu: [ros-melodic-forward-global-planner]        
-python-gobject-2:
-  ubuntu: [python-gobject-2]
-gir1.2-gtk-3.0:
-  ubuntu: [gir1.2-gtk-3.0]
-
-
-  
-#smacc_interface_components:
-#  ubuntu: [ros-melodic-smacc-interface-components]
-
-
-
-

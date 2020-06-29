@@ -10,7 +10,7 @@ public:
 // TRANSITION TABLE
    typedef mpl::list<
     
-   Transition<EvToDeep, sc::deep_history<StState1>, SUCCESS>
+   Transition<EvToDeep, sc::deep_history<MsRun::LastDeepState>, SUCCESS>
    
    >reactions;
 };

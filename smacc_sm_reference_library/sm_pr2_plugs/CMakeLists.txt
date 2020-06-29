@@ -8,7 +8,7 @@ project(sm_pr2_plugs)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED smacc multirole_sensor_client ros_timer_client all_events_go ros_publisher_client keyboard_client)
+find_package(catkin REQUIRED smacc multirole_sensor_client ros_timer_client sr_all_events_go ros_publisher_client keyboard_client)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

@@ -625,7 +625,7 @@ GENERATE_BUGLIST       = YES
 
 GENERATE_DEPRECATEDLIST= YES
 
-# The ENABLED_SECTIONS tag can be used to enable conditional documentation
+# The ENABLED_SECTIONS tag can be used to enable sr_conditional documentation
 # sections, marked by \if <section_label> ... \endif and \cond <section_label>
 # ... \endcond blocks.
 
@@ -1991,7 +1991,7 @@ PERLMOD_MAKEVAR_PREFIX =
 ENABLE_PREPROCESSING   = YES
 
 # If the MACRO_EXPANSION tag is set to YES, doxygen will expand all macro names
-# in the source code. If set to NO, only conditional compilation will be
+# in the source code. If set to NO, only sr_conditional compilation will be
 # performed. Macro expansion can be done in a controlled way by setting
 # EXPAND_ONLY_PREDEF to YES.
 # The default value is: NO.

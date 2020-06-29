@@ -27,41 +27,17 @@ struct State1 : smacc::SmaccState<State1, SmAtomic>
 
     void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&State1::onTimerClientTickCallback, this);
-
-        // getting reference to the repeat countdown behavior
-        auto *cbrepeat = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownLoop>();
-
-        // subscribe to the repeat countdown behavior callback
-        cbrepeat->onTimerTick(&State1::onRepeatBehaviorTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&State1::onSingleBehaviorTickCallback, this);
     }
 
-    void onTimerClientTickCallback()
+    void onEntry()
     {
-        ROS_INFO("timer client tick!");
+        ROS_INFO("On Entry!");
     }
 
-    void onRepeatBehaviorTickCallback()
+    void onExit()
     {
-        ROS_INFO("repeat behavior tick!");
+        ROS_INFO("On Exit!");
     }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
+  
 };
 } // namespace sm_atomic

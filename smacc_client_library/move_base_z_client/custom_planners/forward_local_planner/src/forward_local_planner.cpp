@@ -174,6 +174,8 @@ void ForwardLocalPlanner::publishGoalMarker(double x, double y, double phi)
     marker.id = 0;
     marker.type = visualization_msgs::Marker::ARROW;
     marker.action = visualization_msgs::Marker::ADD;
+    marker.pose.orientation.w = 1;
+    
     marker.scale.x = 0.1;
     marker.scale.y = 0.3;
     marker.scale.z = 0.1;
@@ -262,6 +264,10 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 
     tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
+    geometry_msgs::PoseStamped currentPose;
+    tf::poseStampedTFToMsg(tfpose,currentPose);
+    ROS_DEBUG_STREAM("[ForwardLocalPlanner] current robot pose " << currentPose);
+
     tf::Quaternion q = tfpose.getRotation();
 
     bool ok = false;
@@ -288,7 +294,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
-                ROS_INFO("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
+                ROS_DEBUG("current index: %d, carrot goal percentaje: %lf, dist: %lf, maxdist: %lf, angle_error: %lf", currentPoseIndex_, 100.0 * currentPoseIndex_ / plan_.size(), dist, carrot_distance_, angular_error);
             }
             else
             {

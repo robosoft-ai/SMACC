@@ -18,18 +18,19 @@ namespace cl_move_base_z
 class CbAbsoluteRotate : public smacc::SmaccClientBehavior
 {
 public:
+    enum class SpiningPlanner {Default, PureSpinning, Forward};
+
     tf::TransformListener listener;
 
     ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> absoluteGoalAngleDegree;
     boost::optional<float> yawGoalTolerance;
-    
+    boost::optional<SpiningPlanner> spinningPlanner;    
 
     CbAbsoluteRotate();
 
     CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = 0.15);
-
 
     virtual void onEntry() override;
     virtual void onExit() override;

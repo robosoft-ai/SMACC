@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace pc_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPCCyclePlateau : smacc::SmaccState<StiPCCyclePlateau, SS>
+struct StiPCCyclePlateau : smacc::SmaccState<StiPCCyclePlateau, SsPCCycle>
 {
   using SmaccState::SmaccState;
 
@@ -19,7 +19,7 @@ struct StiPCCyclePlateau : smacc::SmaccState<StiPCCyclePlateau, SS>
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCycleInspire, PREVIOUS>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPCCycleExpire, NEXT>,
 
-  Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
+  Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
   Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
       
   >reactions;
@@ -35,19 +35,6 @@ struct StiPCCyclePlateau : smacc::SmaccState<StiPCCyclePlateau, SS>
 
   void runtimeConfigure()
   {
-    // get reference to the client
-    ClRosTimer *client;
-    this->requiresClient(client);
-
-    // subscribe to the timer client callback
-    client->onTimerTick(&StiPCCyclePlateau::onTimerClientTickCallback, this);
-
-    // getting reference to the single countdown behavior
-    auto *cbsingle = this->getOrthogonal<OrTimer>()
-                          ->getClientBehavior<CbTimerCountdownOnce>();
-
-    // subscribe to the single countdown behavior callback
-    cbsingle->onTimerTick(&StiPCCyclePlateau::onSingleBehaviorTickCallback, this);
   }
 
   void onEntry()
@@ -58,16 +45,6 @@ struct StiPCCyclePlateau : smacc::SmaccState<StiPCCyclePlateau, SS>
   void onExit()
   {
     ROS_INFO("On Exit!");
-  }
-
-  void onTimerClientTickCallback()
-  {
-    ROS_INFO("timer client tick!");
-  }
-
-  void onSingleBehaviorTickCallback()
-  {
-    ROS_INFO("single behavior tick!");
   }
 
 };

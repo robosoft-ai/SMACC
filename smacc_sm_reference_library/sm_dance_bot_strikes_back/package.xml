@@ -21,6 +21,7 @@
   <depend>smacc</depend>
   <depend>actionlib</depend>
   <depend>actionlib_msgs</depend>
+  <depend>sm_dance_bot</depend>
   
   <depend>move_base_z_client_plugin</depend>  
   <depend>angles</depend>  
@@ -28,14 +29,14 @@
   <depend>ros_publisher_client</depend>
   <depend>multirole_sensor_client</depend>
   
-  <depend>all_events_go</depend>
-  <depend>event_countdown</depend>
-  <depend>conditional</depend>
+  <depend>sr_all_events_go</depend>
+  <depend>sr_event_countdown</depend>
+  <depend>sr_conditional</depend>
   <depend>ros_timer_client</depend>
 
   <depend>ridgeback_gazebo</depend>
   <depend>ridgeback_navigation</depend>
-  
+  <depend>xterm</depend>
   <depend>tf</depend>¡
 
   <export>

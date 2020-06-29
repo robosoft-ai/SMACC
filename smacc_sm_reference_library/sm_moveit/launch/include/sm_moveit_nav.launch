@@ -41,7 +41,7 @@
 
 
   <!-- planners, costmaps, etc -->
-  <node pkg="move_base" type="move_base" name="move_base" respawn="true" launch-prefix="xterm -hold -e ">
+  <node pkg="move_base" type="move_base" name="move_base" respawn="true" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e ">
     <rosparam file="$(find sm_moveit)/config/navigation/costmap_common.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find sm_moveit)/config/navigation/overlay/costmap_common.yaml" command="load" ns="global_costmap" />
     <rosparam file="$(find sm_moveit)/config/navigation/costmap_common.yaml" command="load" ns="local_costmap" />
@@ -57,6 +57,8 @@
     <rosparam file="$(find sm_moveit)/config/move_base_client/backward_local_planner.yaml" command="load" />
     <!-- forward local planner -->
     <rosparam file="$(find sm_moveit)/config/move_base_client/forward_local_planner.yaml" command="load" />
+    <!-- pure spinning local planner -->
+    <rosparam file="$(find sm_moveit)/config/move_base_client/pure_spinning_local_planner.yaml" command="load" />
 
     <remap from="cmd_vel" to="cmd_vel"/>
     <remap from="odom" to="odom"/>

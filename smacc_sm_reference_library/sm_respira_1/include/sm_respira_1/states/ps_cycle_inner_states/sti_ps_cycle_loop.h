@@ -3,7 +3,7 @@ namespace sm_respira_1
 namespace ps_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCycleLoop : smacc::SmaccState<StiPSCycleLoop, SS>
+struct StiPSCycleLoop : smacc::SmaccState<StiPSCycleLoop, SsPSCycle>
 {
 public:
   using SmaccState::SmaccState;
@@ -26,7 +26,7 @@ public:
 
   bool loopWhileCondition()
   {
-    auto &superstate = this->context<SS>();
+    auto &superstate = this->context<SsPSCycle>();
 
     ROS_INFO("Loop start, current iterations: %d, total iterations: %d", superstate.iteration_count, superstate.total_iterations());
     return superstate.iteration_count++ < superstate.total_iterations();

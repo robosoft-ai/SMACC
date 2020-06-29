@@ -164,7 +164,7 @@ add_library(${PROJECT_NAME}
 # )
 
 install(PROGRAMS
-   test/keyboard_server_node/keyboard_server_node.py
+   server/keyboard_server_node/keyboard_server_node.py
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
  )
 

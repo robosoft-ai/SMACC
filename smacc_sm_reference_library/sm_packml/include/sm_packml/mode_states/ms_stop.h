@@ -9,8 +9,6 @@ public:
 
 // TRANSITION TABLE
  //  typedef mpl::list<
-    
-  // Transition<EvToDeep, sc::deep_history<StIdle>, SUCCESS>
    
   // >reactions;
 };

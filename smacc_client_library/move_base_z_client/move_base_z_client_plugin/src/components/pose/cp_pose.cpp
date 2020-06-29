@@ -15,6 +15,7 @@ Pose::Pose(std::string targetFrame, std::string referenceFrame)
     , isInitialized(false)
 {
     this->pose_.header.frame_id = referenceFrame_;
+    ROS_INFO("[Pose] Creating Pose tracker component to track %s in the reference frame %s", targetFrame.c_str(), referenceFrame.c_str());
 }
 
 void Pose::waitTransformUpdate(ros::Rate r)

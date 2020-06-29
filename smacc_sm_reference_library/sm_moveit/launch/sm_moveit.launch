@@ -17,7 +17,7 @@
         <param name="trajectory_execution/allowed_start_tolerance" value="0.001"/>
     </group> -->
 
-    <node pkg="sm_moveit" type="sm_moveit_node" name="sm_moveit_node" launch-prefix="xterm -hold -e "/>
+    <node pkg="sm_moveit" type="sm_moveit_node" name="sm_moveit_node" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e "/>
 
     <!-- Start Gazebo with a blank world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
@@ -26,11 +26,12 @@
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="headless" value="false"/>
-        <arg name="world_name" value="$(find sm_moveit)/worlds/test_zone_pick_place.sdf"/>
+        <arg name="world_name" value="$(find sm_moveit)/simulation/worlds/test_zone_pick_place.sdf"/>
     </include>
 
 
     <include file="$(find fetch_moveit_config)/launch/move_group.launch">
+        <arg name="pipeline" value="ompl"/>
     </include>
 
     <node name="$(anon rviz)" pkg="rviz" type="rviz" respawn="false" args="-d $(find sm_moveit)/config/rviz.rviz" output="screen">
@@ -45,35 +46,7 @@
     <!--················ NAV ·······················-->
     <include file="$(find sm_moveit)/launch/include/sm_moveit_nav.launch"/>
 
-
-    <!--················ ROBOT ·······················-->
-
     <!-- Oh, you wanted a robot? -->
-    <!-- <include file="$(find fetch_gazebo)/launch/include/fetch_pp.launch.xml" /> -->
+    <include file="$(find sm_moveit)/launch/include/fetch.launch.xml" />
 
-    <!-- Setup controllers -->
-    <rosparam file="$(find fetch_gazebo)/config/default_controllers.yaml" command="load" />
-
-    <!-- URDF and TF support -->
-    <param name="robot_description" command="$(find xacro)/xacro.py $(find sm_moveit)/robots/fetch_gazebo_robot.xacro" />
-    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher">
-        <param name="publish_frequency" value="100.0"/>
-    </node>
-
-    <!-- Put a robot in gazebo, make it look pretty -->
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -x 0 -y 0 -z 0 -Y 0 -model fetch -param robot_description"/>
-
-    <node name="prepare_robot" pkg="fetch_gazebo" type="prepare_simulated_robot_pick_place.py" />
-
-    <!-- Give this robot a serial number and version -->
-    <param name="robot/serial" value="ABCDEFGHIJKLMNOPQRSTUVWX" />
-    <param name="robot/version" value="0.0.1" />
-
-    <!-- Head Camera Pipeline -->
-    <include file="$(find fetch_gazebo)/launch/include/head_camera.launch.xml" />
-
-    <!-- Start a mux between application and teleop -->
-    <node pkg="topic_tools" type="mux" name="cmd_vel_mux" respawn="true" args="base_controller/command /cmd_vel /teleop/cmd_vel">
-        <remap from="mux" to="cmd_vel_mux" />
-    </node>
 </launch>

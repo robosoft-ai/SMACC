@@ -10,15 +10,14 @@ struct State1 : smacc::SmaccState<State1, SmUpdateLoop>, ISmaccUpdatable
 {
     using SmaccState::SmaccState;
 
-    // TRANSITION TABLE
+// TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
 
-        >
-        reactions;
+    >reactions;
 
-    // STATE FUNCTIONS
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3); // EvTimer triggers each 3 client ticks
@@ -27,26 +26,7 @@ struct State1 : smacc::SmaccState<State1, SmUpdateLoop>, ISmaccUpdatable
 
     void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&State1::onTimerClientTickCallback, this);
-
-        // getting reference to the repeat countdown behavior
-        auto *cbrepeat = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownLoop>();
-
-        // subscribe to the repeat countdown behavior callback
-        cbrepeat->onTimerTick(&State1::onRepeatBehaviorTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&State1::onSingleBehaviorTickCallback, this);
+        ROS_INFO("Run-Time Configure");
     }
 
     virtual void update() override
@@ -54,19 +34,15 @@ struct State1 : smacc::SmaccState<State1, SmUpdateLoop>, ISmaccUpdatable
         ROS_INFO("STATE 1 UPDATE!");
     }
 
-    void onTimerClientTickCallback()
+    void onEntry()
     {
-        ROS_INFO("timer client tick!");
+        ROS_INFO("On Entry!");
     }
 
-    void onRepeatBehaviorTickCallback()
+    void onExit()
     {
-        ROS_INFO("repeat behavior tick!");
+        ROS_INFO("On Exit!");
     }
 
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
 };
 } // namespace sm_update_loop

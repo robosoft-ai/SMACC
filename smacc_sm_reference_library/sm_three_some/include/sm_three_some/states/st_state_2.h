@@ -39,19 +39,6 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
     void runtimeConfigure()
     {
-        // get reference to the client
-        ClRosTimer *client;
-        this->requiresClient(client);
-
-        // subscribe to the timer client callback
-        client->onTimerTick(&StState2::onTimerClientTickCallback, this);
-
-        // getting reference to the single countdown behavior
-        auto *cbsingle = this->getOrthogonal<OrTimer>()
-                             ->getClientBehavior<CbTimerCountdownOnce>();
-
-        // subscribe to the single countdown behavior callback
-        cbsingle->onTimerTick(&StState2::onSingleBehaviorTickCallback, this);
     }
 
     void onEntry()
@@ -64,14 +51,5 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
         ROS_INFO("On Exit!");
     }
 
-    void onTimerClientTickCallback()
-    {
-        ROS_INFO("timer client tick!");
-    }
-
-    void onSingleBehaviorTickCallback()
-    {
-        ROS_INFO("single behavior tick!");
-    }
 };
 } // namespace sm_three_some

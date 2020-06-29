@@ -3,28 +3,35 @@ namespace sm_respira_1
 namespace cmv_cycle_inner_states
 {
 // STATE DECLARATION
-struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SS>
+struct StiCMVCyclePlateau : smacc::SmaccState<StiCMVCyclePlateau, SsCMVCycle>
 {
   using SmaccState::SmaccState;
 
-// DECLARE CUSTOM OBJECT TAGS
-  struct TIMEOUT : SUCCESS{};
-  struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};  
+  // DECLARE CUSTOM OBJECT TAGS
+  struct TIMEOUT : SUCCESS
+  {
+  };
+  struct NEXT : SUCCESS
+  {
+  };
+  struct PREVIOUS : ABORT
+  {
+  };
 
-// TRANSITION TABLE
+  // TRANSITION TABLE
   typedef mpl::list<
-    
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleExpire, TIMEOUT>,  
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleInspire, PREVIOUS>,
-  Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleExpire, NEXT>,
 
-  Transition<EvKeyPressY<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
-  Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
-      
-  >reactions;
+      Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiCMVCycleExpire, TIMEOUT>,
+      Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleInspire, PREVIOUS>,
+      Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiCMVCycleExpire, NEXT>,
 
- // STATE FUNCTIONS
+      Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
+      Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
+
+      >
+      reactions;
+
+  // STATE FUNCTIONS
   static void staticConfigure()
   {
     configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
@@ -35,19 +42,6 @@ struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SS>
 
   void runtimeConfigure()
   {
-    // get reference to the client
-    ClRosTimer *client;
-    this->requiresClient(client);
-
-    // subscribe to the timer client callback
-    client->onTimerTick(&StiPSCyclePlateau::onTimerClientTickCallback, this);
-
-    // getting reference to the single countdown behavior
-    auto *cbsingle = this->getOrthogonal<OrTimer>()
-                          ->getClientBehavior<CbTimerCountdownOnce>();
-
-    // subscribe to the single countdown behavior callback
-    cbsingle->onTimerTick(&StiPSCyclePlateau::onSingleBehaviorTickCallback, this);
   }
 
   void onEntry()
@@ -59,17 +53,6 @@ struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SS>
   {
     ROS_INFO("On Exit!");
   }
-
-  void onTimerClientTickCallback()
-  {
-    ROS_INFO("timer client tick!");
-  }
-
-  void onSingleBehaviorTickCallback()
-  {
-    ROS_INFO("single behavior tick!");
-  }
-
 };
-}
-}
+}  // namespace cmv_cycle_inner_states
+}  // namespace sm_respira_1

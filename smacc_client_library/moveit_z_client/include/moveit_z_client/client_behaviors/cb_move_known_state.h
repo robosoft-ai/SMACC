@@ -10,20 +10,16 @@
 #include <smacc/smacc_client_behavior.h>
 #include <map>
 #include <string>
+#include <moveit_z_client/client_behaviors/cb_move_joints.h>
 
 namespace moveit_z_client
 {
-class CbMoveKnownState : public smacc::SmaccClientBehavior
+class CbMoveKnownState : public CbMoveJoints
 {
-protected:
-    ClMoveGroup *movegroupClient_;
-
 public:
-    std::string statename;
+  CbMoveKnownState(std::string pkg, std::string config_path);
 
-    CbMoveKnownState();
-    CbMoveKnownState(std::string statename);
-    virtual void onEntry() override;
-    virtual void onExit() override;
+  private:
+  static std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath);
 };
-} // namespace moveit_z_client
+}  // namespace moveit_z_client

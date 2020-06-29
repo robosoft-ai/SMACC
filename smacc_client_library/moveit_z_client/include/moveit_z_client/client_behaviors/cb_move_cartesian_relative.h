@@ -14,16 +14,24 @@ namespace moveit_z_client
 class CbMoveCartesianRelative : public smacc::SmaccClientBehavior
 {
 public:
-    geometry_msgs::Vector3 offset_;
+  geometry_msgs::Vector3 offset_;
 
-    CbMoveCartesianRelative();
+  boost::optional<double> scalingFactor_;
 
-    CbMoveCartesianRelative(geometry_msgs::Vector3 offset);
+  boost::optional<std::string> group_;
 
-    virtual void onEntry() override;
+  CbMoveCartesianRelative();
 
-    virtual void onExit() override;
+  CbMoveCartesianRelative(geometry_msgs::Vector3 offset);
 
-    void moveRelativeCartesian(geometry_msgs::Vector3 &offset);
+  virtual void onEntry() override;
+
+  virtual void onExit() override;
+
+  void moveRelativeCartesian(moveit::planning_interface::MoveGroupInterface *movegroupClient,
+                             geometry_msgs::Vector3 &offset);
+
+  public:
+    ClMoveGroup *moveGroupSmaccClient_;
 };
-} // namespace moveit_z_client
+}  // namespace moveit_z_client

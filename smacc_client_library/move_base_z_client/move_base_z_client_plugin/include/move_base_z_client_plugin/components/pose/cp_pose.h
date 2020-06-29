@@ -18,7 +18,7 @@ namespace cl_move_base_z
 class Pose : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
 {
 public:
-    Pose(std::string poseFrameName = "/base_link", std::string referenceFrame = "/odom");
+    Pose(std::string poseFrameName = "base_link", std::string referenceFrame = "odom");
 
     virtual void update() override;
 

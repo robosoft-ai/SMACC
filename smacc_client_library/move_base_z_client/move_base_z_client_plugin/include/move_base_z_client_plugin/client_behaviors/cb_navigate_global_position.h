@@ -20,17 +20,17 @@ using namespace ::cl_move_base_z::odom_tracker;
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
 public:
-  boost::optional<geometry_msgs::Point> initialPoint;
-  boost::optional<float> initialYaw;
+  boost::optional<geometry_msgs::Point> goalPoint;
+  boost::optional<float> goalYaw;
 
   CbNavigateGlobalPosition();
 
-  CbNavigateGlobalPosition(float x, float y, float yaw);
+  CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
 
   virtual void onEntry();
 
   // auxiliar function that defines the motion that is requested to the move_base action server
-  void goToRadialStart();
+  void execute();
 
   void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);
 

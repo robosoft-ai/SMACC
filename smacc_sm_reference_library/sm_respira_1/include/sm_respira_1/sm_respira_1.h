@@ -32,7 +32,7 @@ using namespace sm_respira_1::cl_subscriber;
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 //STATE REACTORS
-#include <all_events_go/sr_all_events_go.h>
+#include <sr_all_events_go/sr_all_events_go.h>
 
 using namespace smacc;
 using namespace smacc::state_reactors;
@@ -41,25 +41,50 @@ using namespace smacc::default_events;
 namespace sm_respira_1
 {
 //SUPERSTATES
-namespace SS1
-{
 class SsACCycle;
-} // namespace SS1
-
-namespace SS2
+namespace ac_cycle_inner_states
 {
+class StiACCycleLoop;
+class StiACCycleInspire;
+class StiACCyclePlateau;
+class StiACCycleExpire;
+class StiACCycleDwell;
+} 
+
 class SsCMVCycle;
-} // namespace SS2
 
-namespace SS3
+namespace cmv_cycle_inner_states
 {
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiCMVCycleLoop;
+class StiCMVCycleInspire;
+class StiCMVCyclePlateau;
+class StiCMVCycleExpire;
+class StiCMVCycleDwell;
+}
+
+
 class SsPCCycle;
-} // namespace SS3
-
-namespace SS4
+namespace pc_cycle_inner_states
 {
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiPCCycleLoop;
+class StiPCCycleInspire;
+class StiPCCyclePlateau;
+class StiPCCycleExpire;
+class StiPCCycleDwell;
+} 
+
 class SsPSCycle;
-} // namespace SS4
+namespace ps_cycle_inner_states
+{
+//FORWARD DECLARATIONS OF ALL INNER STATES
+class StiPSCycleLoop;
+class StiPSCycleInspire;
+class StiPSCyclePlateau;
+class StiPSCycleExpire;
+class StiPSCycleDwell;
+} 
 
 //STATES
 class StObserve;
@@ -67,6 +92,7 @@ class StLeakyLungStep1;
 class StLeakyLungStep2;
 class StLeakyLungStep3;
 class StPatientObstructionStep1;
+class StPatientObstructionStep2;
 class StCalibrationStep1;
 class StSystemShutdown;
 
@@ -108,17 +134,45 @@ struct SmRespira1
 #include <sm_respira_1/mode_states/ms_calibration.h>
 #include <sm_respira_1/mode_states/ms_shutdown.h>
 
-
 //STATES
 #include <sm_respira_1/states/st_observe.h>
-#include <sm_respira_1/states/st_leaky_lung_step_1.h>
-#include <sm_respira_1/states/st_leaky_lung_step_2.h>
-#include <sm_respira_1/states/st_leaky_lung_step_3.h>
-#include <sm_respira_1/states/st_patient_obstruction_step_1.h>
-#include <sm_respira_1/states/st_calibration_step_1.h>
-#include <sm_respira_1/states/st_system_shutdown.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_1.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_2.h>
+#include <sm_respira_1/states/ms_leaky_lung_inner_states/st_leaky_lung_step_3.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_1.h>
+#include <sm_respira_1/states/ms_patient_obstruction_inner_states/st_patient_obstruction_step_2.h>
+#include <sm_respira_1/states/ms_calibration_inner_states/st_calibration_step_1.h>
+#include <sm_respira_1/states/ms_shutdown_inner_states/st_system_shutdown.h>
 
 #include <sm_respira_1/superstates/ss_ac_cycle.h>
 #include <sm_respira_1/superstates/ss_cmv_cycle.h>
 #include <sm_respira_1/superstates/ss_pc_cycle.h>
 #include <sm_respira_1/superstates/ss_ps_cycle.h>
+
+//ss_ac_cycle
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_loop.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_inspire.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_plateau.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_expire.h>
+#include <sm_respira_1/states/ac_cycle_inner_states/sti_ac_cycle_dwell.h>
+
+//ss_cmv_cycle
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_loop.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_inspire.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_plateau.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_expire.h>
+#include <sm_respira_1/states/cmv_cycle_inner_states/sti_cmv_cycle_dwell.h>
+
+//ss_pc_cycle
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_loop.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_inspire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_plateau.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_expire.h>
+#include <sm_respira_1/states/pc_cycle_inner_states/sti_pc_cycle_dwell.h>
+
+//ss_ps_cycle
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_loop.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_inspire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_plateau.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_expire.h>
+#include <sm_respira_1/states/ps_cycle_inner_states/sti_ps_cycle_dwell.h>

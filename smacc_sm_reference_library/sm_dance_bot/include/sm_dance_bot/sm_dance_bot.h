@@ -36,9 +36,9 @@ using namespace sm_dance_bot::cl_led;
 //using namespace sm_dance_bot::cl_updatable_publisher;
 
 //STATE REACTORS
-#include <all_events_go/sr_all_events_go.h>
-#include <event_countdown/sr_event_countdown.h>
-#include <conditional/sr_conditional.h>
+#include <sr_all_events_go/sr_all_events_go.h>
+#include <sr_event_countdown/sr_event_countdown.h>
+#include <sr_conditional/sr_conditional.h>
 
 using namespace smacc::state_reactors;
 
