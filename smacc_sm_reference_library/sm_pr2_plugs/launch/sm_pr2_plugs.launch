@@ -1,7 +1,0 @@
-<launch>
-    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
-
-    <node pkg="sm_pr2_plugs" type="sm_pr2_plugs_node" name="sm_pr2_plugs" launch-prefix="$(arg server_nodes_xterms)" />
-
-    <node pkg="keyboard_client" type="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(arg server_nodes_xterms)" />
-</launch>
