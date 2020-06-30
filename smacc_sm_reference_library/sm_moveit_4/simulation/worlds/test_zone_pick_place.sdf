@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0"?>
 <sdf version="1.4">
   <world name="default">
     <include>
@@ -17,73 +17,74 @@
       <name>table2</name>
       <pose>-2.0 2.0 -0.08 0 0 0</pose>
     </include>
-        <include>
+    <include>
       <uri>model://cafe_table</uri>
-      <name>table1</name>
+      <name>table3</name>
       <pose>2.0 2.0 -0.08 0 0 0</pose>
     </include>
-        <include>
+    <include>
       <uri>model://cafe_table</uri>
-      <name>table1</name>
+      <name>table4</name>
       <pose>2.0 -2.0 -0.08 0 0 0</pose>
     </include>
     <include>
       <uri>model://cafe_table</uri>
-      <name>table2</name>
+      <name>table5</name>
       <pose>-2.0 -2.0 -0.08 0 0 0</pose>
     </include>
     <include>
       <uri>model://cafe_table</uri>
-      <name>table2</name>
+      <name>table6</name>
       <pose>-2.0 0 -0.08 0 0 0</pose>
     </include>
+    
     <include>
-      <uri>model://demo_cube</uri>
+      <uri>model://demo_cube_green</uri>
       <pose>1.7 -0.0 0.75 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://demo_cube</uri>
+      <uri>model://demo_cube_red</uri>
       <pose>1.7 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://demo_cube</uri>
+      <uri>model://demo_cube_white</uri>
       <pose>1.7 -0.15 0.75 0 0 0</pose>
     </include>
 
-     <include>
-      <uri>model://demo_cube</uri>
+    <include>
+      <uri>model://demo_cube_red</uri>
       <pose>1.85 -0.15 0.75 0 0 0</pose>
     </include>
 
-     <include>
-      <uri>model://demo_cube</uri>
+    <include>
+      <uri>model://demo_cube_purple</uri>
       <pose>1.85 0.0 0.75 0 0 0</pose>
     </include>
 
-     <include>
-      <uri>model://demo_cube</uri>
+    <include>
+      <uri>model://demo_cube_green</uri>
       <pose>1.85 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://demo_cube</uri>
+      <uri>model://demo_cube_yellow</uri>
       <pose>1.85 -0.30 0.75 0 0 0</pose>
     </include>
 
-     <include>
-      <uri>model://demo_cube</uri>
+    <include>
+      <uri>model://demo_cube_white</uri>
       <pose>1.85 0.30 0.75 0 0 0</pose>
     </include>
 
-     <include>
-      <uri>model://demo_cube</uri>
+    <include>
+      <uri>model://demo_cube_yellow</uri>
       <pose>1.7 0.30 0.75 0 0 0</pose>
     </include>
-         
+
     <include>
-      <uri>model://demo_cube</uri>
+      <uri>model://demo_cube_purple</uri>
       <pose>1.7 -0.30 0.75 0 0 0</pose>
     </include>
 
