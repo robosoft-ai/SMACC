@@ -20,7 +20,7 @@ class StPlaceRetreat;
 using namespace sm_moveit_4::place_states;
 
 // STATE DECLARATION
-struct SsPlaceObject : smacc::SmaccState<SsPlaceObject, SmMoveIt44, StMovePrePlacePose>
+struct SsPlaceObject : smacc::SmaccState<SsPlaceObject, SmMoveIt4, StMovePrePlacePose>
 {
 public:
     using SmaccState::SmaccState;

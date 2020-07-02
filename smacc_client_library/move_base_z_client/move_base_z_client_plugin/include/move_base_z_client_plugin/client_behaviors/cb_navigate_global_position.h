@@ -20,12 +20,14 @@ using namespace ::cl_move_base_z::odom_tracker;
 class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 {
 public:
-  boost::optional<geometry_msgs::Point> goalPoint;
+  boost::optional<geometry_msgs::Point> goalPosition;
   boost::optional<float> goalYaw;
 
   CbNavigateGlobalPosition();
 
   CbNavigateGlobalPosition(float x, float y, float yaw /*radians*/);
+
+  void setGoal(const geometry_msgs::Pose& pose);
 
   virtual void onEntry();
 

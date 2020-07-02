@@ -13,9 +13,9 @@ PlannerSwitcher::PlannerSwitcher()
 {
 }
 
-void PlannerSwitcher::initialize(smacc::ISmaccClient *owner)
+void PlannerSwitcher::onInitialize()
 {
-  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner);
+  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
   ros::NodeHandle nh(client_->name_);
   dynrecofSub_ = nh.subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1, boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
 }

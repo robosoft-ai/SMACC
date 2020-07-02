@@ -20,6 +20,12 @@ ISmaccComponent::ISmaccComponent()
 void ISmaccComponent::initialize(ISmaccClient *owner)
 {
     owner_ = owner;
+    this->onInitialize();
+}
+
+void ISmaccComponent::onInitialize()
+{
+
 }
 
 void ISmaccComponent::setStateMachine(ISmaccStateMachine *stateMachine)

@@ -36,7 +36,7 @@ public:
 
     CostmapSwitch();
 
-    virtual void initialize(smacc::ISmaccClient *owner) override;
+    virtual void onInitialize() override;
 
     static std::string getStandardCostmapName(StandardLayers layertype);
 
@@ -54,7 +54,7 @@ public:
 
 private:
     std::map<std::string, std::shared_ptr<CostmapProxy>> costmapProxies;
-    cl_move_base_z::ClMoveBaseZ *owner_;
+    cl_move_base_z::ClMoveBaseZ *moveBaseClient_;
 };
 //-------------------------------------------------------------------------
 class CostmapProxy

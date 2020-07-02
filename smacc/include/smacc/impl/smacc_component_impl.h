@@ -11,9 +11,21 @@
 
 namespace smacc
 {
-template <typename EventType>
-void ISmaccComponent::postEvent(const EventType &ev)
-{
-    stateMachine_->postEvent(ev);
-}
-}
+    template <typename EventType>
+    void ISmaccComponent::postEvent(const EventType &ev)
+    {
+        stateMachine_->postEvent(ev);
+    }
+
+    template <typename TComponent>
+    void ISmaccComponent::requiresComponent(TComponent *&requiredComponentStorage)
+    {
+        requiredComponentStorage = this->owner_->getComponent<TComponent>();
+    }
+
+    template <typename TClient>
+    void ISmaccComponent::requiresClient(TClient *& requiredClientStorage)
+    {
+        this->owner_->requiresClient(requiredClientStorage);
+    }
+} // namespace smacc

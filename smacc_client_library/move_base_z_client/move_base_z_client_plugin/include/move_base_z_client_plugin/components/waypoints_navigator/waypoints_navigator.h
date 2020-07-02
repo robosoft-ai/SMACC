@@ -38,9 +38,9 @@ public:
 
   WaypointNavigator();
 
-  virtual void initialize(smacc::ISmaccClient *owner) override
+  virtual void onInitialize() override
   {
-    client_ = dynamic_cast<ClMoveBaseZ *>(owner);
+    client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
   }
 
   void insertWaypoint(int index, geometry_msgs::Pose &newpose);

@@ -6,6 +6,6 @@ int main(int argc, char **argv)
   ros::NodeHandle nh;
   ROS_INFO("SM MOVEIT NODE STARTS");
   
-  smacc::run<sm_moveit_4::SmMoveIt44>();
+  smacc::run<sm_moveit_4::SmMoveIt4>();
   
 }

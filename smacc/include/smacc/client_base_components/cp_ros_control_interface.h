@@ -25,7 +25,7 @@ public:
 
     virtual ~CpRosControlInterface();
 
-    virtual void initialize(ISmaccClient *owner) override;
+    virtual void onInitialize() override;
 
     // template <typename TObjectTag, typename TDerived>
     // void configureEventSourceTypes() {}

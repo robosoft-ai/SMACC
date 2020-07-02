@@ -114,7 +114,7 @@ public:
 protected:
     void checkStateMachineConsistence();
 
-    void onInitializing(std::string smshortname);
+    void initializeROS(std::string smshortname);
 
     void onInitialized();
 

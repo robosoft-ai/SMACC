@@ -4,13 +4,13 @@
 namespace sm_moveit_4
 {
 // STATE DECLARATION
-struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt44>
+struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt4>
 {
     using SmaccState::SmaccState;
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StInitialForward>,
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigateToSourceTable>,
         Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;

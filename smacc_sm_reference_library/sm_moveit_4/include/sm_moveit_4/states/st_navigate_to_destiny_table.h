@@ -2,7 +2,7 @@
 namespace sm_moveit_4
 {
 // STATE DECLARATION
-struct StRotate180 : smacc::SmaccState<StRotate180, SmMoveIt44>
+struct StRotate180 : smacc::SmaccState<StRotate180, SmMoveIt4>
 {
     using SmaccState::SmaccState;
 
@@ -35,11 +35,9 @@ struct StRotate180 : smacc::SmaccState<StRotate180, SmMoveIt44>
         }
         else // the robot in at positive x-axis side
         {
-                targetAbsoluteAngleDegrees = 180;
-             
+                targetAbsoluteAngleDegrees = 180;             
         }
 
-        
         auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
         absoluteRotateBehavior->absoluteGoalAngleDegree = targetAbsoluteAngleDegrees;
         absoluteRotateBehavior->spinningPlanner = CbAbsoluteRotate::SpiningPlanner::PureSpinning;

@@ -117,7 +117,7 @@ void ISmaccStateMachine::onInitialized()
     timer_ = nh_.createTimer(ros::Duration(0.5), &ISmaccStateMachine::state_machine_visualization, this);
 }
 
-void ISmaccStateMachine::onInitializing(std::string shortname)
+void ISmaccStateMachine::initializeROS(std::string shortname)
 {
     ROS_WARN_STREAM("State machine base creation:" << shortname);
     // STATE MACHINE TOPICS

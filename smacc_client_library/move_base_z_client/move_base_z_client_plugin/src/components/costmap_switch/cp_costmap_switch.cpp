@@ -14,7 +14,7 @@ std::array<std::string, 4>
 void CostmapSwitch::registerProxyFromDynamicReconfigureServer(std::string costmapName, std::string enablePropertyName)
 {
     ROS_INFO("[CostmapSwitch] registering costmap type: %s", costmapName.c_str());
-    auto proxy = std::make_shared<CostmapProxy>(this->owner_->name_ + "/" + costmapName, enablePropertyName);
+    auto proxy = std::make_shared<CostmapProxy>(this->moveBaseClient_->name_ + "/" + costmapName, enablePropertyName);
     costmapProxies[costmapName] = proxy;
 }
 
@@ -22,11 +22,11 @@ CostmapSwitch::CostmapSwitch()
 {
 }
 
-void CostmapSwitch::initialize(smacc::ISmaccClient *owner)
+void CostmapSwitch::onInitialize()
 {
-    this->owner_ = dynamic_cast<cl_move_base_z::ClMoveBaseZ *>(owner);
+    this->moveBaseClient_ = dynamic_cast<cl_move_base_z::ClMoveBaseZ *>(owner_);
 
-    if (this->owner_ == nullptr)
+    if (this->moveBaseClient_ == nullptr)
     {
         ROS_ERROR("the owner of the CostmapSwitch must be a ClMoveBaseZ");
     }

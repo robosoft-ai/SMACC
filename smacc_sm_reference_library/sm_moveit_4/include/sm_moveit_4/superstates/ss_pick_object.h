@@ -21,7 +21,7 @@ class StNavigationPosture;
 using namespace sm_moveit_4::pick_states;
 
 // STATE DECLARATION
-struct SsPickObject : smacc::SmaccState<SsPickObject, SmMoveIt44, StMovePregraspPose>
+struct SsPickObject : smacc::SmaccState<SsPickObject, SmMoveIt4, StMovePregraspPose>
 {
 public:
     using SmaccState::SmaccState;

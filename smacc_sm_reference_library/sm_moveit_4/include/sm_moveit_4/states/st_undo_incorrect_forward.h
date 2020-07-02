@@ -2,7 +2,7 @@
 namespace sm_moveit_4
 {
 // STATE DECLARATION
-struct StUndoIncorrectForward : smacc::SmaccState<StUndoIncorrectForward, SmMoveIt44>
+struct StUndoIncorrectForward : smacc::SmaccState<StUndoIncorrectForward, SmMoveIt4>
 {
     using SmaccState::SmaccState;
 

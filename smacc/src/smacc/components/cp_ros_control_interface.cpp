@@ -21,7 +21,7 @@ CpRosControlInterface::~CpRosControlInterface()
 {
 }
 
-void CpRosControlInterface::initialize(ISmaccClient *owner)
+void CpRosControlInterface::onInitialize()
 {
     srvListControllers = nh_.serviceClient<ListControllers>(*serviceName_);
     srvListControllersTypes = nh_.serviceClient<ListControllerTypes>(*serviceName_);
