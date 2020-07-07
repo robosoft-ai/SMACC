@@ -20,28 +20,14 @@ struct StCloseGripper : smacc::SmaccState<StCloseGripper, SS>
       configure_orthogonal<OrGripper, CbCloseGripper>();
    }
 
+   void onEntry()
+   {
+      ros::Duration(1.0).sleep();
+   }
+
    void onExit()
    {
-      ClMoveGroup *moveGroupClient;
-      this->requiresClient(moveGroupClient);
-
-      //moveGroupClient->planningSceneInterface.removeCollisionObjects({"cube_0"});
-      ros::Duration(0.5).sleep();
-
-      // moveGroupClient->moveGroupClientInterface.attachObject("cube_0");
-
-      // moveGroupClient->moveGroupClientInterface.attachObject("cube_0");
-      // moveGroupClient->planningSceneInterface.removeCollisionObjects({"cube_0"});
-
-      /*
-         std::vector<std::string> touch_links{"l_gripper_finger_link", "r_gripper_finger_link"};
-         moveGroupClient->moveGroupClientInterface.attachObject("cube_0", "gripper_link", touch_links);
-         moveGroupClient->moveGroupClientInterface.setSupportSurfaceName("table_0");
-         */
-
-      // planning_scene.world.collision_objects.clear();
-      // planning_scene.world.collision_objects.push_back(remove_object);
-      // planning_scene.robot_state.attached_collision_objects.push_back(attached_object);
+      ros::Duration(1.0).sleep();
    }
 };
 } // namespace pick_states

@@ -41,6 +41,19 @@ namespace sm_moveit_4
             ros::Subscriber gazeboStateSubscriber_;
 
         public:
+            double safeTableHeightOffsetForCubeCollisions = 0;
+
+
+            void setSafeArmMotionToAvoidCubeCollisions()
+            {
+                 safeTableHeightOffsetForCubeCollisions = 0.16;
+            }
+
+            void unsetSafeArmMotionToAvoidCubeCollisions()
+            {
+                 safeTableHeightOffsetForCubeCollisions = 0;
+            }
+
             virtual void onInitialize() override
             {
                 this->requiresClient(movegroupclient_);
@@ -101,9 +114,9 @@ namespace sm_moveit_4
                             collision.primitives.resize(1);
                             collision.primitives[0].type = collision.primitives[0].BOX;
                             collision.primitives[0].dimensions.resize(3);
-                            collision.primitives[0].dimensions[0] = 1.2;
+                            collision.primitives[0].dimensions[0] = 1.05;
                             collision.primitives[0].dimensions[1] = 1.3;
-                            collision.primitives[0].dimensions[2] = 0.001 + thickness;
+                            collision.primitives[0].dimensions[2] = 0.001 + thickness + safeTableHeightOffsetForCubeCollisions;
 
                             /* Define the pose of the table. */
                             collision.primitive_poses.resize(1);
@@ -117,7 +130,8 @@ namespace sm_moveit_4
                         }
 
                         //this->planningSceneInterface_->removeCollisionObjects(removeCollisionObjectNames);
-                        this->planningSceneInterface_->addCollisionObjects(collisionObjects);
+                        //this->planningSceneInterface_->addCollisionObjects(collisionObjects);
+                        this->planningSceneInterface_->applyCollisionObjects(collisionObjects);
                     }
 
                     if (cubeCollision_ && !hasCubeAttached)
@@ -140,22 +154,22 @@ namespace sm_moveit_4
                 CpSceneState *scene;
                 this->requiresComponent(scene);
 
-                if (scene->cubeInfos_.size() == 0)
+                if (scene->cubeInfos_.front().color == "")
                 {
                     std::vector<std::string> strs;
+                    int i=0;
                     for (auto &linkname : linknames)
                     {
                         if (linkname.find("cube") != std::string::npos)
                         {
                             strs.clear();
                             boost::split(strs, linkname, boost::is_any_of("_:")); // demo_cube_green::link
-                            CubeInfo cubeinfo;
+                            CubeInfo& cubeinfo = scene->cubeInfos_[i++];
 
                             cubeinfo.color = strs[2];
 
                             cubeinfo.dstTableInfo_ = &(*(std::find_if(scene->tablesInfo_.begin(), scene->tablesInfo_.end(),
-                                                                      [&](auto &ti) { return ti.targetColor_ == cubeinfo.color; })));
-                            scene->cubeInfos_.push_back(cubeinfo);
+                                                                      [&](auto &ti) { return ti.associatedCubeColor_ == cubeinfo.color; })));
                         }
                     }
                 }

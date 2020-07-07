@@ -20,25 +20,32 @@ CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
 #define HAVE_NEW_YAMLCPP
 std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::string pkg, std::string filepath)
 {
-  filepath = ros::package::getPath(pkg) +"/" + filepath;
+  auto pkgpath = ros::package::getPath(pkg);
+
+  if(pkgpath == "")
+  {
+    ROS_ERROR_STREAM("[CbMoveKnownState] package not found for the known poses file: " << pkg);
+  }
+
+  filepath =  pkgpath +"/" + filepath;
   std::map<std::string, double> jointStates;
 
-  ROS_INFO("Opening file with joint known state: %s",  filepath.c_str());
+  ROS_INFO("[CbMoveKnownState] Opening file with joint known state: %s",  filepath.c_str());
 
 
   if(std::experimental::filesystem::exists(filepath))
   {
-    ROS_INFO_STREAM("known state file exists: " << filepath);
+    ROS_INFO_STREAM("[CbMoveKnownState] known state file exists: " << filepath);
   }
   else
   {
-    ROS_ERROR_STREAM("known state file does not exists: " << filepath);
+    ROS_ERROR_STREAM("[CbMoveKnownState] known state file does not exists: " << filepath);
   }
 
   std::ifstream ifs(filepath.c_str(), std::ifstream::in);
   if (ifs.good() == false)
   {
-    ROS_ERROR("Error opening file with joint known states: %s",  filepath.c_str());
+    ROS_ERROR("[CbMoveKnownState] Error opening file with joint known states: %s",  filepath.c_str());
     throw std::string("joint state files not found");
   }
 

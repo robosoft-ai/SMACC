@@ -1,46 +1,53 @@
 #include <smacc/smacc.h>
+#include <tf/tf.h>
 namespace sm_moveit_4
 {
-// STATE DECLARATION
-struct StRotate180 : smacc::SmaccState<StRotate180, SmMoveIt4>
-{
-    using SmaccState::SmaccState;
-
-    // TRANSITION TABLE
-    typedef mpl::list<
-
-        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StForwardNextTable, SUCCESS>,
-        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StRotate180, ABORT> /*retry*/
-        >
-        reactions;
-
-    // STATE FUNCTIONS
-    static void staticConfigure()
+    // STATE DECLARATION
+    struct StNavigateToDestinyTable : smacc::SmaccState<StNavigateToDestinyTable, SmMoveIt4>
     {
-        configure_orthogonal<OrNavigation, CbAbsoluteRotate>(180/*-M_PI*/);
-    }
+        using SmaccState::SmaccState;
 
-    void runtimeConfigure()
-    {
-        ClMoveBaseZ *moveBaseClient_;
-        this->requiresClient(moveBaseClient_);
+        // TRANSITION TABLE
+        typedef mpl::list<
 
-        auto pose = moveBaseClient_->getComponent<Pose>();
-        auto currentPose = pose->toPoseMsg();
+            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS2::SsPlaceObject, SUCCESS>,
+            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
+            >
+            reactions;
 
-        double targetAbsoluteAngleDegrees;
-        if (currentPose.position.x < -0.2) // robot is at negative x-axis side
+        // STATE FUNCTIONS
+        static void staticConfigure()
         {
-                targetAbsoluteAngleDegrees = 0;
-        }
-        else // the robot in at positive x-axis side
-        {
-                targetAbsoluteAngleDegrees = 180;             
+            configure_orthogonal_fn<OrNavigation, CbNavigateGlobalPosition>(
+                [](auto &navigateGlobalPosition) {
+                    ClPerceptionSystem *perceptionSystem;
+                    navigateGlobalPosition.requiresClient(perceptionSystem);
+
+                    geometry_msgs::PoseStamped nextCubePose;
+                    perceptionSystem->decidePickCubePose(nextCubePose);
+                    auto targetTablePose = perceptionSystem->getTargetTablePose().pose;
+
+                    if (targetTablePose.position.x > 0)
+                    {
+                        targetTablePose.position.x -= 0.85;
+                        
+                    }
+                    else
+                    {
+                        targetTablePose.position.x += 0.85;
+                        auto quat = tf::createQuaternionFromYaw(M_PI);
+                        tf::quaternionTFToMsg(quat, targetTablePose.orientation);
+                    }
+
+                    // align with the cube in the y axis
+                    // targetTablePose.position.y = nextCubePose.pose.position.y;
+
+                    navigateGlobalPosition.setGoal(targetTablePose);
+                });
         }
 
-        auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
-        absoluteRotateBehavior->absoluteGoalAngleDegree = targetAbsoluteAngleDegrees;
-        absoluteRotateBehavior->spinningPlanner = CbAbsoluteRotate::SpiningPlanner::PureSpinning;
-    }
-};
+        void runtimeConfigure()
+        {
+        }
+    };
 } // namespace sm_moveit_4

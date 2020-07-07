@@ -39,53 +39,53 @@
     </include>
     
     <include>
-      <uri>model://demo_cube_green</uri>
-      <pose>1.7 -0.0 0.75 0 0 0</pose>
-    </include>
-
-    <include>
       <uri>model://demo_cube_red</uri>
-      <pose>1.7 0.15 0.75 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://demo_cube_white</uri>
-      <pose>1.7 -0.15 0.75 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://demo_cube_red</uri>
-      <pose>1.85 -0.15 0.75 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://demo_cube_purple</uri>
-      <pose>1.85 0.0 0.75 0 0 0</pose>
+      <pose>1.65 -0.0 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_green</uri>
-      <pose>1.85 0.15 0.75 0 0 0</pose>
-    </include>
-
-    <include>
-      <uri>model://demo_cube_yellow</uri>
-      <pose>1.85 -0.30 0.75 0 0 0</pose>
+      <pose>1.65 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_white</uri>
-      <pose>1.85 0.30 0.75 0 0 0</pose>
+      <pose>1.65 -0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
-      <uri>model://demo_cube_yellow</uri>
-      <pose>1.7 0.30 0.75 0 0 0</pose>
+      <uri>model://demo_cube_red</uri>
+      <pose>1.8 -0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_purple</uri>
-      <pose>1.7 -0.30 0.75 0 0 0</pose>
+      <pose>1.8 0.0 0.75 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://demo_cube_green</uri>
+      <pose>1.8 0.15 0.75 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://demo_cube_yellow</uri>
+      <pose>1.8 -0.30 0.75 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://demo_cube_white</uri>
+      <pose>1.8 0.30 0.75 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://demo_cube_yellow</uri>
+      <pose>1.65 0.30 0.75 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://demo_cube_purple</uri>
+      <pose>1.65 -0.30 0.75 0 0 0</pose>
     </include>
 
   </world>

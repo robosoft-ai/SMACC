@@ -18,18 +18,24 @@ namespace sm_moveit_4
         static void staticConfigure()
         {
             configure_orthogonal_fn<OrNavigation, CbNavigateGlobalPosition>
-            (
-                [](auto& navigateGlobalPosition, auto& state)
-                {
-                    ClPerceptionSystem* perceptionSystem;
-                    state.requiresClient(perceptionSystem);
-                    
-                    auto mainTablePose = perceptionSystem->getMainTablePose().pose;
-                    mainTablePose.position.x -= 1.2;
+                                                            (
+                                                                [](auto& navigateGlobalPosition)
+                                                                {
+                                                                    ClPerceptionSystem* perceptionSystem;
+                                                                    navigateGlobalPosition.requiresClient(perceptionSystem);
+                                                                    
+                                                                    auto mainTablePose = perceptionSystem->getMainTablePose().pose;
+                                                                    mainTablePose.position.x -= 0.85;
 
-                    navigateGlobalPosition.setGoal(mainTablePose);
-                }
-            );
+                                                                    geometry_msgs::PoseStamped nextCubePose;
+                                                                    perceptionSystem->decidePickCubePose(nextCubePose);
+
+                                                                    // align with the cube in the y axis
+                                                                    mainTablePose.position.y = nextCubePose.pose.position.y;
+
+                                                                    navigateGlobalPosition.setGoal(mainTablePose);
+                                                                }
+                                                            );
         }
 
         void runtimeConfigure()

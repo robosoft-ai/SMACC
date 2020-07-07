@@ -39,10 +39,6 @@ public:
     ISmaccClient();
     virtual ~ISmaccClient();
 
-    // it is called after the client initialization, provides information about the orthogonal it is located in
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes() {}
-
     virtual void initialize();
 
     // Returns a custom identifier defined by the specific plugin implementation
@@ -73,6 +69,11 @@ public:
     void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components);
 
 protected:
+
+// it is called after the client initialization, provides information about the orthogonal it is located in
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes() {}
+    
     // components
     std::map<ComponentKey, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
@@ -93,5 +94,6 @@ private:
     ISmaccOrthogonal *orthogonal_;
 
     friend class ISmaccOrthogonal;
+    friend class ISmaccComponent;
 };
 } // namespace smacc

@@ -11,6 +11,7 @@ struct StPlaceRetreat : smacc::SmaccState<StPlaceRetreat, SS>
     // TRANSITION TABLE
     typedef mpl::list<
 
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture, SUCCESS>,
         Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StPlaceRetreat, ABORT> /*retry on failure*/
         >
         reactions;
@@ -18,17 +19,23 @@ struct StPlaceRetreat : smacc::SmaccState<StPlaceRetreat, SS>
     // STATE FUNCTIONS
     static void staticConfigure()
     {
-        geometry_msgs::Vector3 offset;
-        offset.z = 0.15;
-        configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
+        configure_orthogonal<OrArm, CbMoveCartesianRelative>();
     }
 
     void runtimeConfigure()
     {
-        ClMoveGroup *moveGroupClient;
-        this->requiresClient(moveGroupClient);
+        auto moveCartesianRelative = this->getOrthogonal<OrArm>()
+                                         ->getClientBehavior<CbMoveCartesianRelative>();
 
-        moveGroupClient->onMotionExecutionSuccedded(&StPlaceRetreat::throwSequenceFinishedEvent, this);
+        moveCartesianRelative->offset_.z = 0.15;
+    }
+
+    void onExit()
+    {
+        ClPerceptionSystem *perceptionSystem;
+        this->requiresClient(perceptionSystem);
+
+        perceptionSystem->setSafeArmMotionToAvoidCubeCollisions();
     }
 };
 } // namespace place_states

@@ -38,10 +38,10 @@ namespace SS2
 class SsPlaceObject;
 }
 
-class StRotate180;
-class StForwardNextTable;
 class StInitialPosture;
 class StUndoIncorrectForward;
+class StNavigateToSourceTable;
+class StNavigateToDestinyTable;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -80,5 +80,3 @@ struct SmMoveIt4
 #include "states/st_navigate_to_source_table.h"
 #include "states/st_navigate_to_destiny_table.h"
 #include "states/st_initial_posture.h"
-#include "states/st_forward.h"
-#include "states/st_undo_incorrect_forward.h"

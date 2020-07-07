@@ -26,6 +26,7 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
     void runtimeConfigure()
     {
+        ros::Duration(2).sleep();
     }
 };
 } // namespace pick_states

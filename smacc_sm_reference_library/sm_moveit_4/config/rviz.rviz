@@ -5,6 +5,7 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /MotionPlanning1/Planning Request1
+        - /Pose1
       Splitter Ratio: 0.7425600290298462
     Tree Height: 263
   - Class: rviz/Help
@@ -100,6 +101,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          bl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          br_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           elbow_flex_link:
             Alpha: 1
             Show Axes: false
@@ -110,7 +121,17 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          fl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           forearm_roll_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          fr_caster_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -270,6 +291,16 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          bl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          br_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           elbow_flex_link:
             Alpha: 1
             Show Axes: false
@@ -280,7 +311,17 @@ Visualization Manager:
             Show Axes: false
             Show Trail: false
             Value: true
+          fl_caster_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
           forearm_roll_link:
+            Alpha: 1
+            Show Axes: false
+            Show Trail: false
+            Value: true
+          fr_caster_link:
             Alpha: 1
             Show Axes: false
             Show Trail: false
@@ -446,17 +487,39 @@ Visualization Manager:
           Value: true
         bellows_link2:
           Value: true
+        bl_caster_link:
+          Value: true
+        br_caster_link:
+          Value: true
         cube_0:
           Value: true
         cube_1:
           Value: true
         cube_2:
           Value: true
+        cube_3:
+          Value: true
+        cube_4:
+          Value: true
+        cube_5:
+          Value: true
+        cube_6:
+          Value: true
+        cube_7:
+          Value: true
+        cube_8:
+          Value: true
+        cube_9:
+          Value: true
         elbow_flex_link:
           Value: true
         estop_link:
           Value: true
+        fl_caster_link:
+          Value: true
         forearm_roll_link:
+          Value: true
+        fr_caster_link:
           Value: true
         gripper_link:
           Value: true
@@ -496,6 +559,14 @@ Visualization Manager:
           Value: true
         table_1:
           Value: true
+        table_2:
+          Value: true
+        table_3:
+          Value: true
+        table_4:
+          Value: true
+        table_5:
+          Value: true
         torso_fixed_link:
           Value: true
         torso_lift_link:
@@ -519,9 +590,31 @@ Visualization Manager:
             {}
           cube_2:
             {}
+          cube_3:
+            {}
+          cube_4:
+            {}
+          cube_5:
+            {}
+          cube_6:
+            {}
+          cube_7:
+            {}
+          cube_8:
+            {}
+          cube_9:
+            {}
           odom:
             base_link:
+              bl_caster_link:
+                {}
+              br_caster_link:
+                {}
               estop_link:
+                {}
+              fl_caster_link:
+                {}
+              fr_caster_link:
                 {}
               l_wheel_link:
                 {}
@@ -560,6 +653,14 @@ Visualization Manager:
           table_0:
             {}
           table_1:
+            {}
+          table_2:
+            {}
+          table_3:
+            {}
+          table_4:
+            {}
+          table_5:
             {}
       Update Interval: 0
       Value: true
@@ -602,6 +703,21 @@ Visualization Manager:
       Topic: /move_base/ForwardGlobalPlanner/global_plan
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.30000001192092896
+      Head Radius: 0.10000000149011612
+      Name: Pose
+      Shaft Length: 1
+      Shaft Radius: 0.05000000074505806
+      Shape: Arrow
+      Topic: /move_base_simple/goal
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -620,41 +736,41 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 3.540740489959717
+      Distance: 4.902852535247803
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: 0.3345531225204468
-        Y: -0.00020534545183181763
-        Z: 3.9094186377042206e-7
+        X: 0.5140109062194824
+        Y: -0.1014057993888855
+        Z: 2.717325742196408e-7
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.41020286083221436
+      Pitch: 0.5152028203010559
       Target Frame: base_link
       Value: XYOrbit (rviz)
-      Yaw: 4.484972953796387
+      Yaw: 4.539942741394043
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
+    collapsed: true
   Height: 1025
   Help:
     collapsed: false
-  Hide Left Dock: false
+  Hide Left Dock: true
   Hide Right Dock: false
   MotionPlanning:
-    collapsed: false
+    collapsed: true
   MotionPlanning - Trajectory Slider:
     collapsed: false
-  QMainWindow State: 000000ff00000000fd0000000100000000000002e4000003a7fc0200000008fb000000100044006900730070006c006100790073010000003d00000198000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006701000001db000001a70000019b00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007301000003880000005c0000005c00ffffff00000453000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000100000000000002e4000003a7fc0200000008fb000000100044006900730070006c006100790073000000003d00000198000000c900fffffffb0000000800480065006c00700000000342000000bb0000006e00fffffffb0000000a0056006900650077007300000003b0000000b0000000a400fffffffb0000000c00430061006d00650072006100000002ff000001610000000000000000fb0000001e004d006f00740069006f006e00200050006c0061006e006e0069006e0067010000024e0000017f0000000000000000fb00000044004d006f00740069006f006e0050006c0061006e006e0069006e00670020002d0020005400720061006a006500630074006f0072007900200053006c00690064006500720000000000ffffffff0000004100fffffffb0000001c004d006f00740069006f006e0050006c0061006e006e0069006e006700000001db000001a70000019b00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007300000003880000005c0000005c00ffffff0000073d000003a700000001000000020000000100000002fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Tool Properties:
-    collapsed: false
+    collapsed: true
   Views:
     collapsed: false
   Width: 1853

@@ -45,6 +45,12 @@ protected:
 
     virtual void onInitialize();
 
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createSiblingComponent(TArgs... targs);
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createSiblingNamedComponent(std::string name, TArgs... targs);
+
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
 

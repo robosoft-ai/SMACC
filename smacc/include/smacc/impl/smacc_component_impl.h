@@ -24,8 +24,21 @@ namespace smacc
     }
 
     template <typename TClient>
-    void ISmaccComponent::requiresClient(TClient *& requiredClientStorage)
+    void ISmaccComponent::requiresClient(TClient *&requiredClientStorage)
     {
         this->owner_->requiresClient(requiredClientStorage);
     }
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *ISmaccComponent::createSiblingComponent(TArgs... targs)
+    {
+        return this->owner_->createComponent<SmaccComponentType, TOrthogonal, TClient>(targs...);
+    }
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *ISmaccComponent::createSiblingNamedComponent(std::string name, TArgs... targs)
+    {
+        return this->owner_->createNamedComponent<SmaccComponentType, TOrthogonal, TClient>(name, targs...);
+    }
+
 } // namespace smacc

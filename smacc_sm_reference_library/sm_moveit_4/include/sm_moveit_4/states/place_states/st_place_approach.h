@@ -19,23 +19,17 @@ struct StPlaceApproach : smacc::SmaccState<StPlaceApproach, SS>
     static void staticConfigure()
     {
         geometry_msgs::Vector3 offset;
-        offset.z = -0.12;
+        offset.z = -0.1;
         configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
     }
 
     void runtimeConfigure()
     {
-        ClMoveGroup *moveGroupClient;
-        this->requiresClient(moveGroupClient);
-        moveGroupClient->onMotionExecutionSuccedded(&StPlaceApproach::throwSequenceFinishedEvent, this);
+        ros::WallDuration(2).sleep();
     }
 
     void onExit()
     {
-        ClPerceptionSystem *perceptionSystem;
-        this->requiresClient(perceptionSystem);
-
-        perceptionSystem->nextCube();
     }
 };
 } // namespace place_states

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <smacc/component.h>
+#include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
 namespace sm_moveit_4
 {
@@ -8,10 +9,12 @@ namespace sm_moveit_4
     {
         struct TableInfo
         {
-            std::string targetColor_;
+            std::string associatedCubeColor_ = "";
+            cl_move_base_z::Pose *pose_ = nullptr;
+            int cubesCounter_ = 0;
         };
 
-        enum CubeLocation
+        enum class CubeLocation
         {
             ORIGIN_TABLE,
             DESTINY_TABLE
@@ -19,9 +22,10 @@ namespace sm_moveit_4
 
         struct CubeInfo
         {
-            std::string color;
-            const TableInfo *dstTableInfo_;
-            CubeLocation location_;
+            std::string color = "";
+            TableInfo *dstTableInfo_ = nullptr;
+            CubeLocation location_ = CubeLocation::ORIGIN_TABLE;
+            cl_move_base_z::Pose *pose_ = nullptr;
         };
 
         /*
@@ -30,14 +34,35 @@ namespace sm_moveit_4
         */
         class CpSceneState : public smacc::ISmaccComponent
         {
-            public:
-                // cubes state, only mutated at the begining of the scene
-                std::vector<CubeInfo> cubeInfos_;
+        public:
+            std::vector<CubeInfo> cubeInfos_;
+            std::vector<TableInfo> tablesInfo_;
 
-                const std::vector<TableInfo> tablesInfo_ = {{"yellow"}, {"white"}, {"purple"}, {"none"}, {"red"}, {"green"}};
+            CpSceneState(int cubeCount, int tableCount)
+            {
+                cubeInfos_.resize(cubeCount);
+                tablesInfo_.resize(tableCount);
+            }
 
-                // only mutated at the begining of the scene, does not need thread-safety, pose components are thread safe
-                std::vector<cl_move_base_z::Pose *> tablePoses_;
+            template <typename TObjectTag, typename TDerived>
+            void configureEventSourceTypes()
+            {
+                // create table "poses track components"
+                std::vector<std::string> availableColors = {"yellow", "white", "purple", "none", "red", "green"};
+                for (int i = 0; i < tablesInfo_.size(); i++)
+                {
+                    auto tablename = "table_" + std::to_string(i);
+                    this->tablesInfo_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(tablename, tablename, "map");
+                    this->tablesInfo_[i].associatedCubeColor_ = availableColors[i];
+                }
+
+                // create cube "poses track components"
+                for (int i = 0; i < cubeInfos_.size(); i++)
+                {
+                    auto cubename = "cube_" + std::to_string(i);
+                    this->cubeInfos_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(cubename, cubename, "map");
+                }
+            }
         };
-    }
-};
+    } // namespace cl_perception_system
+};    // namespace sm_moveit_4
