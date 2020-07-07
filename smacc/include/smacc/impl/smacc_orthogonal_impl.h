@@ -22,7 +22,8 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
             return true;
     }
 
-    ROS_WARN("Required client not found in current orthogonal. Searching in other orthogonals.");
+    auto requiredClientName = demangledTypeName<SmaccClientType>();
+    ROS_WARN_STREAM("Required client ["<< requiredClientName<< "] not found in current orthogonal. Searching in other orthogonals.");
 
     for (auto &orthoentry : this->getStateMachine()->getOrthogonals())
     {
@@ -31,7 +32,7 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
             storage = dynamic_cast<SmaccClientType *>(client.get());
             if (storage != nullptr)
             {
-                ROS_WARN("Required client found in other orthogonal.");
+                ROS_WARN_STREAM("Required client  ["<< requiredClientName<<"] found in other orthogonal.");
                 return true;
             }
         }
@@ -54,7 +55,7 @@ void ISmaccOrthogonal::requiresComponent(SmaccComponentType *&storage)
 }
 
 template <typename TOrthogonal, typename TClient>
-void ISmaccOrthogonal::assignClientToOrthogonal(smacc::ISmaccClient* client)
+void ISmaccOrthogonal::assignClientToOrthogonal(TClient* client)
 {
     client->setStateMachine(getStateMachine());
     client->setOrthogonal(this);

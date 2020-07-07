@@ -25,14 +25,16 @@ namespace sm_moveit_4
                 ros::WallDuration(2).sleep();
                 ClMoveGroup *moveGroupClient;
                 this->requiresClient(moveGroupClient);
-                moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::throwSequenceFinishedEvent, this);
+                moveGroupClient->onMotionExecutionSuccedded(&StNavigationPosture::onSuccessFullExit, this);
             }
 
-            void onExit()
+            void onSuccessFullExit()
             {
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
+
                 perceptionSystem->nextCube();
+                this->throwSequenceFinishedEvent();
             }
         };
     } // namespace place_states

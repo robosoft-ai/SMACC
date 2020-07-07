@@ -48,7 +48,16 @@ namespace sm_moveit_4
 
             geometry_msgs::PoseStamped getMainTablePose()
             {
-                return this->sceneState_->tablesInfo_[3].pose_->toPoseStampedMsg();
+                for (auto &table : this->sceneState_->tablesInfo_)
+                {
+                    if (table.associatedCubeColor_ == "none")
+                    {
+                        return table.pose_->toPoseStampedMsg();
+                    }
+                }
+
+                geometry_msgs::PoseStamped empty;
+                return empty;
             }
 
             geometry_msgs::PoseStamped getTargetTablePose()
@@ -57,11 +66,27 @@ namespace sm_moveit_4
                 return currentCube->dstTableInfo_->pose_->toPoseStampedMsg();
             }
 
-            void nextCube()
+            void printCubesState()
+            {
+                std::stringstream ss;
+                int i = 0;
+                for (auto &c : this->sceneState_->cubeInfos_)
+                {
+
+                    ss << "- Cube " << i << " frame: " << c.pose_->toPoseStampedMsg().header.frame_id << " location: " << (c.location_ == CubeLocation::ORIGIN_TABLE ? " origin table" : " destination table" )<< std::endl;
+                }
+
+                ROS_INFO_STREAM(ss.str());
+            }
+
+            CubeInfo *nextCube()
             {
                 auto currentCube = getTargetCurrentCubeInfo();
                 currentCube->location_ = CubeLocation::DESTINY_TABLE;
                 currentCube->dstTableInfo_->cubesCounter_++;
+                printCubesState();
+
+                return getTargetCurrentCubeInfo();
             }
 
             virtual void update() override
@@ -126,15 +151,15 @@ namespace sm_moveit_4
                     if (basepose.position.x < dstTablePose.pose.position.x)
                     {
                         placePose.pose.position.x = dstTablePose.pose.position.x - 0.25;
-                        placePose.pose.position.y =dstTablePose.pose.position.y +  0.1 ;
+                        placePose.pose.position.y = dstTablePose.pose.position.y + 0.1;
                     }
                     else
                     {
                         placePose.pose.position.x = dstTablePose.pose.position.x + 0.25;
-                        placePose.pose.position.y = dstTablePose.pose.position.y +- 0.1 ;
+                        placePose.pose.position.y = dstTablePose.pose.position.y + -0.1;
                     }
 
-                    placePose.pose.position.y += - c->dstTableInfo_->cubesCounter_ * 0.1;
+                    placePose.pose.position.y += -c->dstTableInfo_->cubesCounter_ * 0.1;
                     placePose.pose.orientation.w = 1;
 
                     placePose.header.frame_id = dstTablePose.header.frame_id;

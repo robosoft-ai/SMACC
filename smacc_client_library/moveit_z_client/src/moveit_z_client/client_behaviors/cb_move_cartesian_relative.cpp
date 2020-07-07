@@ -81,38 +81,32 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
                                                           0.00,  // jump_threshold
                                                           trajectory);
 
-  if (fraction == -1)
+  moveit::planning_interface::MoveItErrorCode behaviorResult;
+  if (fraction != 1.0 || fraction == -1)
   {
-    moveGroupSmaccClient_->postEventMotionExecutionFailed();
-    ROS_INFO("[CbMoveCartesianRelative] Absolute motion planning failed. Skipping execution.");
-    return;
-  }
-  else if (fraction != 1.0)
-  {
-    ROS_WARN_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje: " << fraction);
+    ROS_WARN_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje. Execution skipped because not 100% of cartesian motion: " << fraction);
+    behaviorResult = moveit::planning_interface::MoveItErrorCode::PLANNING_FAILED;
   }
   else
   {
     ROS_INFO_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje: " << fraction);
+
+    moveit::planning_interface::MoveGroupInterface::Plan grasp_pose_plan;
+
+    // grasp_pose_plan.start_state_ = *(moveGroupInterface.getCurrentState());
+    grasp_pose_plan.trajectory_ = trajectory;
+    behaviorResult = movegroupClient->execute(grasp_pose_plan);
   }
 
-  moveit::planning_interface::MoveGroupInterface::Plan grasp_pose_plan;
-
-  // grasp_pose_plan.start_state_ = *(moveGroupInterface.getCurrentState());
-  grasp_pose_plan.trajectory_ = trajectory;
-  auto executionResult = movegroupClient->execute(grasp_pose_plan);
-
-  if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+  if (behaviorResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
   {
     ROS_INFO("[CbMoveCartesianRelative] relative motion execution succedded: fraction %lf.", fraction);
     moveGroupSmaccClient_->postEventMotionExecutionSucceded();
   }
   else
   {
-    ROS_INFO("[CbMoveCartesianRelative] relative motion execution failed");
+    ROS_INFO("[CbMoveCartesianRelative] relative motion execution failed: fraction %lf.", fraction);
     moveGroupSmaccClient_->postEventMotionExecutionFailed();
-  }
-
-  ROS_INFO("Visualizing plan 4 (cartesian path) (%.2f%% acheived)", fraction * 100.0);
+  }  
 }
 }  // namespace moveit_z_client

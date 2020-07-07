@@ -17,7 +17,7 @@ namespace sm_moveit_4
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal_fn<OrNavigation, CbNavigateGlobalPosition>
+            configure_orthogonal_runtime_callback<OrNavigation, CbNavigateGlobalPosition>
                                                             (
                                                                 [](auto& navigateGlobalPosition)
                                                                 {
@@ -28,12 +28,17 @@ namespace sm_moveit_4
                                                                     mainTablePose.position.x -= 0.85;
 
                                                                     geometry_msgs::PoseStamped nextCubePose;
-                                                                    perceptionSystem->decidePickCubePose(nextCubePose);
+                                                                    if(perceptionSystem->decidePickCubePose(nextCubePose))
+                                                                    {
+                                                                        // align with the cube in the y axis
+                                                                        mainTablePose.position.y = nextCubePose.pose.position.y;
 
-                                                                    // align with the cube in the y axis
-                                                                    mainTablePose.position.y = nextCubePose.pose.position.y;
-
-                                                                    navigateGlobalPosition.setGoal(mainTablePose);
+                                                                        navigateGlobalPosition.setGoal(mainTablePose);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        ROS_WARN("[DEMO COMPLETED! All cubes are on their tables!]");
+                                                                    }
                                                                 }
                                                             );
         }

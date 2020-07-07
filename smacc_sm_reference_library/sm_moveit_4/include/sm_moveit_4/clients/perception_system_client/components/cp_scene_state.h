@@ -48,10 +48,10 @@ namespace sm_moveit_4
             void configureEventSourceTypes()
             {
                 // create table "poses track components"
-                std::vector<std::string> availableColors = {"yellow", "white", "purple", "none", "red", "green"};
+                std::vector<std::string> availableColors = {"none", "yellow", "white", "purple", "red", "green"};
                 for (int i = 0; i < tablesInfo_.size(); i++)
                 {
-                    auto tablename = "table_" + std::to_string(i);
+                    auto tablename = "table_" + std::to_string(i + 1);
                     this->tablesInfo_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(tablename, tablename, "map");
                     this->tablesInfo_[i].associatedCubeColor_ = availableColors[i];
                 }
@@ -59,7 +59,7 @@ namespace sm_moveit_4
                 // create cube "poses track components"
                 for (int i = 0; i < cubeInfos_.size(); i++)
                 {
-                    auto cubename = "cube_" + std::to_string(i);
+                    auto cubename = "cube_" + std::to_string(i + 1);
                     this->cubeInfos_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(cubename, cubename, "map");
                 }
             }

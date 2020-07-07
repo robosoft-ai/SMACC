@@ -50,7 +50,7 @@ protected:
     virtual void onInitialize();
 
     template <typename TOrthogonal, typename TClient>
-    void assignClientToOrthogonal(smacc::ISmaccClient* client);
+    void assignClientToOrthogonal(TClient* client);
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
 

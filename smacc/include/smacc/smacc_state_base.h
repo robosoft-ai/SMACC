@@ -177,7 +177,7 @@ namespace smacc
     }
 
     template <typename TOrthogonal, typename TBehavior>
-    static void configure_orthogonal_fn(std::function<void(TBehavior &bh, MostDerived&)> initializationFunction)
+    static void configure_orthogonal_runtime_callback(std::function<void(TBehavior &bh, MostDerived&)> initializationFunction)
     {
       configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
         //auto bh = std::make_shared<TBehavior>(args...);
@@ -187,7 +187,7 @@ namespace smacc
     }
 
     template <typename TOrthogonal, typename TBehavior>
-    static void configure_orthogonal_fn(std::function<void(TBehavior &bh)> initializationFunction)
+    static void configure_orthogonal_runtime_callback(std::function<void(TBehavior &bh)> initializationFunction)
     {
       configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
         //auto bh = std::make_shared<TBehavior>(args...);

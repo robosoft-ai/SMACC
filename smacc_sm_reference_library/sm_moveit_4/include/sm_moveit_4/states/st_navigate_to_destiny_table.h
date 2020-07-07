@@ -18,7 +18,7 @@ namespace sm_moveit_4
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal_fn<OrNavigation, CbNavigateGlobalPosition>(
+            configure_orthogonal_runtime_callback<OrNavigation, CbNavigateGlobalPosition>(
                 [](auto &navigateGlobalPosition) {
                     ClPerceptionSystem *perceptionSystem;
                     navigateGlobalPosition.requiresClient(perceptionSystem);

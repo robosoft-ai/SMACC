@@ -21,14 +21,16 @@ CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
 std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::string pkg, std::string filepath)
 {
   auto pkgpath = ros::package::getPath(pkg);
+  std::map<std::string, double> jointStates;
 
   if(pkgpath == "")
   {
-    ROS_ERROR_STREAM("[CbMoveKnownState] package not found for the known poses file: " << pkg);
+    ROS_ERROR_STREAM("[CbMoveKnownState] package not found for the known poses file: " << pkg << std::endl << " [IGNORING BEHAVIOR]");
+    return jointStates;
   }
 
   filepath =  pkgpath +"/" + filepath;
-  std::map<std::string, double> jointStates;
+  
 
   ROS_INFO("[CbMoveKnownState] Opening file with joint known state: %s",  filepath.c_str());
 

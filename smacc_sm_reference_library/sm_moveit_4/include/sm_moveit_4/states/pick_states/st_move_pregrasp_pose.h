@@ -19,7 +19,7 @@ namespace sm_moveit_4
             // STATE FUNCTIONS
             static void staticConfigure()
             {
-                configure_orthogonal_fn<OrArm, CbMoveEndEffector>(
+                configure_orthogonal_runtime_callback<OrArm, CbMoveEndEffector>(
                     [](auto &cbMoveEndEffector) {
                         ROS_INFO("Pre grasp pose initialization.");
                         ros::WallDuration(1).sleep();

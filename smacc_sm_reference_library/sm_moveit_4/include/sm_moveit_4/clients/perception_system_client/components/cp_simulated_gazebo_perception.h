@@ -106,7 +106,7 @@ namespace sm_moveit_4
                         {
                             auto &tableTransf = tableTransforms[i];
                             auto &pos = tableTransf.getOrigin();
-                            std::string tablename = "table_" + std::to_string(i);
+                            std::string tablename = "table_" + std::to_string(i + 1);
                             removeCollisionObjectNames[i] = tablename;
                             moveit_msgs::CollisionObject &collision = collisionObjects[i];
                             collision.operation = moveit_msgs::CollisionObject::ADD;
@@ -192,15 +192,15 @@ namespace sm_moveit_4
                 }
 
                 i = 0;
-                for (auto &cubepose : filteredLinkPoses)
+                for (auto &linkpose : filteredLinkPoses)
                 {
                     tf::Pose tfpose;
-                    tf::poseMsgToTF(cubepose, tfpose);
+                    tf::poseMsgToTF(linkpose, tfpose);
                     tf::StampedTransform transform;
                     transform.setOrigin(tfpose.getOrigin());
                     transform.setRotation(tfpose.getRotation());
                     transform.frame_id_ = globalFrame;
-                    transform.child_frame_id_ = objectPrefix + std::to_string(i);
+                    transform.child_frame_id_ = objectPrefix + std::to_string(i + 1);
                     transform.stamp_ = ros::Time::now();
 
                     tfBroadcaster_.sendTransform(transform);
