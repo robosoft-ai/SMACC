@@ -46,12 +46,6 @@ namespace smacc
     }
   }
 
-  void ISmaccOrthogonal::assignClientToOrthogonal(smacc::ISmaccClient *client)
-  {
-    client->setStateMachine(getStateMachine());
-    client->setOrthogonal(this);
-  }
-
   void ISmaccOrthogonal::onEntry()
   {
     if (clientBehaviors_.size() > 0)

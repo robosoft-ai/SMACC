@@ -46,10 +46,10 @@ public:
     template <typename TClientBehavior>
     TClientBehavior *getClientBehavior();
 
-
 protected:
     virtual void onInitialize();
 
+    template <typename TOrthogonal, typename TClient>
     void assignClientToOrthogonal(smacc::ISmaccClient* client);
 
     std::vector<std::shared_ptr<smacc::ISmaccClient>> clients_;
