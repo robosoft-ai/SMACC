@@ -46,7 +46,7 @@ namespace sm_moveit_4
 
             void setSafeArmMotionToAvoidCubeCollisions()
             {
-                 safeTableHeightOffsetForCubeCollisions = 0.16;
+                 safeTableHeightOffsetForCubeCollisions = 0.17;
             }
 
             void unsetSafeArmMotionToAvoidCubeCollisions()
@@ -58,7 +58,7 @@ namespace sm_moveit_4
             {
                 this->requiresClient(movegroupclient_);
                 planningSceneInterface_ = &movegroupclient_->planningSceneInterface;
-
+                
                 tableCollision_ = true;
                 updatePeriod_ = ros::Duration(0.25);
                 startTime = ros::Time::now();
@@ -99,15 +99,15 @@ namespace sm_moveit_4
                     if (tableCollision_ && !hasCubeAttached)
                     {
                         std::vector<moveit_msgs::CollisionObject> collisionObjects(tableTransforms.size());
-                        std::vector<std::string> removeCollisionObjectNames(tableTransforms.size());
-
+                        //std::vector<std::string> removeCollisionObjectNames(tableTransforms.size());
+                        ros::Time time = ros::Time::now();
                         auto thickness = 0.12;
                         for (int i = 0; i < tableTransforms.size(); i++)
                         {
                             auto &tableTransf = tableTransforms[i];
                             auto &pos = tableTransf.getOrigin();
                             std::string tablename = "table_" + std::to_string(i + 1);
-                            removeCollisionObjectNames[i] = tablename;
+                            //removeCollisionObjectNames[i] = tablename;
                             moveit_msgs::CollisionObject &collision = collisionObjects[i];
                             collision.operation = moveit_msgs::CollisionObject::ADD;
                             collision.id = tablename;
@@ -115,7 +115,7 @@ namespace sm_moveit_4
                             collision.primitives[0].type = collision.primitives[0].BOX;
                             collision.primitives[0].dimensions.resize(3);
                             collision.primitives[0].dimensions[0] = 1.05;
-                            collision.primitives[0].dimensions[1] = 1.3;
+                            collision.primitives[0].dimensions[1] = 1.4;
                             collision.primitives[0].dimensions[2] = 0.001 + thickness + safeTableHeightOffsetForCubeCollisions;
 
                             /* Define the pose of the table. */
@@ -127,10 +127,12 @@ namespace sm_moveit_4
 
                             collision.header.frame_id = tableTransf.frame_id_;
                             collision.header.stamp = tableTransf.stamp_;
+                            time = tableTransf.stamp_;
                         }
 
-                        //this->planningSceneInterface_->removeCollisionObjects(removeCollisionObjectNames);
-                        //this->planningSceneInterface_->addCollisionObjects(collisionObjects);
+                        createVirtualFloorCollisionBox(collisionObjects, time);
+                        lateralBox(collisionObjects, time);
+
                         this->planningSceneInterface_->applyCollisionObjects(collisionObjects);
                     }
 
@@ -144,6 +146,47 @@ namespace sm_moveit_4
                         //             #self.cube_collision = False
                     }
                 }
+            }
+
+            void additional(float x, float y , float z, float xl, float yl, float zl, std::string id, std::string frameid, moveit_msgs::CollisionObject& collision, ros::Time time)
+            {
+                collision.operation = moveit_msgs::CollisionObject::ADD;
+                collision.id = id;
+
+                collision.primitives.resize(1);
+                collision.primitives[0].type = collision.primitives[0].BOX;
+                collision.primitives[0].dimensions.resize(3);
+
+                collision.primitives[0].dimensions[0] = xl;
+                collision.primitives[0].dimensions[1] = yl;
+                collision.primitives[0].dimensions[2] = zl ;
+
+                collision.primitive_poses.resize(1);
+                collision.primitive_poses[0].position.x = x;
+                collision.primitive_poses[0].position.y = y;
+                collision.primitive_poses[0].position.z = z;
+                collision.primitive_poses[0].orientation.w = 1.0;
+
+                collision.header.frame_id = frameid;
+                collision.header.stamp = time;
+            }
+
+            void lateralBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
+            {
+                moveit_msgs::CollisionObject box;
+                additional(0, -0.5, 0, 1.0, 0.01, 1.2, "right", "base_link", box, time);
+                collisions.push_back(box);
+
+                additional(0, 0.5, 0, 1.0, 0.01, 1.2, "left", "base_link", box, time);
+                collisions.push_back(box);
+
+            }
+
+            void createVirtualFloorCollisionBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
+            {
+                moveit_msgs::CollisionObject floor;
+                additional(0, 0, -0.1, 8, 8, 0.05, "floor", "map", floor, time);
+                collisions.push_back(floor);
             }
 
             /*

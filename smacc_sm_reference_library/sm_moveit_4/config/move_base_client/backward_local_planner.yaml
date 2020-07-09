@@ -1,6 +1,6 @@
 # backwards configuration, the robot will move backwards
 BackwardLocalPlanner:
-    k_rho: -1.5 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
+    k_rho: -0.5 # linear distance to the goal gain, default = -1.0 (related with carrot distance)
     k_alpha: -0.1
     k_betta: -1.0
     carrot_distance: 0.3 #meters default 0.5 

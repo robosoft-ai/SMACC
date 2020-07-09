@@ -27,7 +27,7 @@ namespace sm_moveit_4
 
             // TRANSITION TABLE
             typedef mpl::list<
-                Transition<EvSequenceFinished<SS2::StNavigationPosture>, StNavigateToSourceTable, SUCCESS>>
+                Transition<EvSequenceFinished<SS2::StNavigationPosture>, StNavigationTableRetreat, SUCCESS>>
                 reactions;
 
             // STATE FUNCTIONS

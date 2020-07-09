@@ -13,6 +13,8 @@
 
 namespace cl_move_base_z
 {
+
+// sends the mobile base some distance backwards
 class CbNavigateBackwards : public smacc::SmaccClientBehavior
 {
 public:

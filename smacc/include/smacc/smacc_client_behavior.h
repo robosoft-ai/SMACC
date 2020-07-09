@@ -5,13 +5,11 @@
  ******************************************************************************************************************/
 
 #pragma once
-#include <smacc/common.h>
+#include <smacc/smacc_client_behavior_base.h>
 
 namespace smacc
 {
-class ISmaccState;
-
-class SmaccClientBehavior
+class SmaccClientBehavior: public ISmaccClientBehavior
 {
 public:
     SmaccClientBehavior();

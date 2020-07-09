@@ -73,7 +73,7 @@ namespace sm_moveit_4
                 for (auto &c : this->sceneState_->cubeInfos_)
                 {
 
-                    ss << "- Cube " << i << " frame: " << c.pose_->toPoseStampedMsg().header.frame_id << " location: " << (c.location_ == CubeLocation::ORIGIN_TABLE ? " origin table" : " destination table" )<< std::endl;
+                    ss << "- Cube " << i++ << " frame: " << c.pose_->toPoseStampedMsg().header.frame_id << " location: " << (c.location_ == CubeLocation::ORIGIN_TABLE ? " origin table" : " destination table" )<< std::endl;
                 }
 
                 ROS_INFO_STREAM(ss.str());

@@ -87,12 +87,14 @@ void CbMoveEndEffectorRelative::moveRelative(moveit::planning_interface::MoveGro
         }
         else
         {
+            moveGroupInterface.setPoseTarget(referenceStartPose); // undo to avoid abort-repeat state issues with this relative motion
             ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
             movegroupClient_->postEventMotionExecutionFailed();
         }
     }
     else
     {
+        moveGroupInterface.setPoseTarget(referenceStartPose); //undo since we did not executed the motion
         ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
         movegroupClient_->postEventMotionExecutionFailed();
     }

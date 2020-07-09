@@ -38,6 +38,7 @@ void CbMoveCartesianRelative::onEntry()
 
 void CbMoveCartesianRelative::onExit()
 {
+    
 }
 
 // keeps the end efector orientation fixed
@@ -46,8 +47,10 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
 {
   std::vector<geometry_msgs::Pose> waypoints;
 
-  auto referenceStartPose = movegroupClient->getPoseTarget();
-  // auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
+  // this one was working fine but the issue is that for relative motions it grows up on ABORT-State-Loop pattern
+  auto referenceStartPose = movegroupClient->getPoseTarget(); 
+  //auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
+
   ROS_INFO_STREAM("[CbMoveCartesianRelative] RELATIVE MOTION, SOURCE POSE: " << referenceStartPose);
   ROS_INFO_STREAM("[CbMoveCartesianRelative] Offset: " << offset);
 
@@ -105,6 +108,7 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
   }
   else
   {
+    movegroupClient->setPoseTarget(referenceStartPose); // undo changes since we did not executed the motion
     ROS_INFO("[CbMoveCartesianRelative] relative motion execution failed: fraction %lf.", fraction);
     moveGroupSmaccClient_->postEventMotionExecutionFailed();
   }  

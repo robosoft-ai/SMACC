@@ -42,6 +42,7 @@ class StInitialPosture;
 class StUndoIncorrectForward;
 class StNavigateToSourceTable;
 class StNavigateToDestinyTable;
+class StNavigationTableRetreat;
 
 //SUPERSTATE FORWARD DECLARATIONS
 
@@ -80,3 +81,4 @@ struct SmMoveIt4
 #include "states/st_navigate_to_source_table.h"
 #include "states/st_navigate_to_destiny_table.h"
 #include "states/st_initial_posture.h"
+#include "states/st_navigation_table_retreat.h"

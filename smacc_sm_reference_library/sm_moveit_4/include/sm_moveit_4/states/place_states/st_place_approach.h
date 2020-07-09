@@ -19,7 +19,7 @@ struct StPlaceApproach : smacc::SmaccState<StPlaceApproach, SS>
     static void staticConfigure()
     {
         geometry_msgs::Vector3 offset;
-        offset.z = -0.09;
+        offset.z = -0.085;
         configure_orthogonal<OrArm, CbMoveCartesianRelative>(offset);
     }
 

@@ -22,6 +22,10 @@ class CbNavigateGlobalPosition : public smacc::SmaccClientBehavior
 public:
   boost::optional<geometry_msgs::Point> goalPosition;
   boost::optional<float> goalYaw;
+  boost::optional<float> yawTolerance;
+  boost::optional<float> yawToleranceX;
+  boost::optional<float> yawToleranceY;
+
 
   CbNavigateGlobalPosition();
 

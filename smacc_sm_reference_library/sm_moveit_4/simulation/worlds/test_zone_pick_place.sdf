@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
+  
   <world name="default">
+    <scene>
+      <ambient>0.0 0.0 0.0 1.0</ambient>
+      <shadows>0</shadows>
+    </scene>
+    
     <include>
       <uri>model://ground_plane</uri>
     </include>
@@ -88,5 +94,62 @@
       <pose>1.65 -0.30 0.75 0 0 0</pose>
     </include>
 
+    <light name='user_point_light_0' type='point'>
+      <pose frame=''>-6.41259 1.369695 1 0 -0 0</pose>
+      <diffuse>0.25 0.25 0.25 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>50</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+    <light name='user_point_light_1' type='point'>
+      <pose frame=''>6.41259 1.369695 1 0 -0 0</pose>
+      <diffuse>0.25 0.25 0.25 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>50</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+    <light name='user_point_light_2' type='point'>
+      <pose frame=''>1.369695 6.41259 1 0 -0 0</pose>
+      <diffuse>0.25 0.25 0.25 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>50</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
+
+
+    <light name='user_point_light_3' type='point'>
+      <pose frame=''>1.369695 -6.41259 1 0 -0 0</pose>
+      <diffuse>0.25 0.25 0.25 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <attenuation>
+        <range>50</range>
+        <constant>0.5</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <cast_shadows>0</cast_shadows>
+      <direction>0 0 -1</direction>
+    </light>
   </world>
 </sdf>

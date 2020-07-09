@@ -17,7 +17,7 @@ namespace sm_moveit_4
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal_runtime_callback<OrNavigation, CbNavigateGlobalPosition>
+            configure_orthogonal_runtime<OrNavigation, CbNavigateGlobalPosition>
                                                             (
                                                                 [](auto& navigateGlobalPosition)
                                                                 {
@@ -32,6 +32,8 @@ namespace sm_moveit_4
                                                                     {
                                                                         // align with the cube in the y axis
                                                                         mainTablePose.position.y = nextCubePose.pose.position.y;
+
+
 
                                                                         navigateGlobalPosition.setGoal(mainTablePose);
                                                                     }

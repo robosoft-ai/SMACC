@@ -18,36 +18,31 @@ namespace sm_moveit_4
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal_runtime_callback<OrNavigation, CbNavigateGlobalPosition>(
-                [](auto &navigateGlobalPosition) {
-                    ClPerceptionSystem *perceptionSystem;
-                    navigateGlobalPosition.requiresClient(perceptionSystem);
-
-                    geometry_msgs::PoseStamped nextCubePose;
-                    perceptionSystem->decidePickCubePose(nextCubePose);
-                    auto targetTablePose = perceptionSystem->getTargetTablePose().pose;
-
-                    if (targetTablePose.position.x > 0)
-                    {
-                        targetTablePose.position.x -= 0.85;
-                        
-                    }
-                    else
-                    {
-                        targetTablePose.position.x += 0.85;
-                        auto quat = tf::createQuaternionFromYaw(M_PI);
-                        tf::quaternionTFToMsg(quat, targetTablePose.orientation);
-                    }
-
-                    // align with the cube in the y axis
-                    // targetTablePose.position.y = nextCubePose.pose.position.y;
-
-                    navigateGlobalPosition.setGoal(targetTablePose);
-                });
+            configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>();
         }
 
         void runtimeConfigure()
         {
+            auto navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
+            ClPerceptionSystem *perceptionSystem;
+            navigateGlobalPosition->requiresClient(perceptionSystem);
+
+            geometry_msgs::PoseStamped nextCubePose;
+            perceptionSystem->decidePickCubePose(nextCubePose);
+            auto targetTablePose = perceptionSystem->getTargetTablePose().pose;
+
+            if (targetTablePose.position.x > 0)
+            {
+                targetTablePose.position.x -= 0.85;   
+            }
+            else
+            {
+                targetTablePose.position.x += 0.85;
+                auto quat = tf::createQuaternionFromYaw(M_PI);
+                tf::quaternionTFToMsg(quat, targetTablePose.orientation);
+            }
+
+            navigateGlobalPosition->setGoal(targetTablePose);
         }
     };
 } // namespace sm_moveit_4
