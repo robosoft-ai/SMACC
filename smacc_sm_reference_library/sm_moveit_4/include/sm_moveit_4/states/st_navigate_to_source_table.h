@@ -40,6 +40,7 @@ namespace sm_moveit_4
                                                                     else
                                                                     {
                                                                         ROS_WARN("[DEMO COMPLETED! All cubes are on their tables!]");
+                                                                        ros::spin();
                                                                     }
                                                                 }
                                                             );

@@ -174,19 +174,18 @@ namespace sm_moveit_4
             void lateralBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
             {
                 moveit_msgs::CollisionObject box;
-                additional(0, -0.5, 0, 1.0, 0.01, 1.2, "right", "base_link", box, time);
+                additional(0, -0.28, 0.3, 1.0, 0.01, 0.6, "right", "base_link", box, time);
                 collisions.push_back(box);
 
-                additional(0, 0.5, 0, 1.0, 0.01, 1.2, "left", "base_link", box, time);
+                additional(0, 0.28, 0.3, 1.0, 0.01, 0.6, "left", "base_link", box, time);
                 collisions.push_back(box);
-
             }
 
             void createVirtualFloorCollisionBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
             {
                 moveit_msgs::CollisionObject floor;
-                additional(0, 0, -0.1, 8, 8, 0.05, "floor", "map", floor, time);
-                collisions.push_back(floor);
+                //additional(0, 0, -0.1, 8, 8, 0.05, "floor", "map", floor, time);
+                //collisions.push_back(floor);
             }
 
             /*
