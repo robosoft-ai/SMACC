@@ -25,8 +25,11 @@ namespace sm_moveit_4
             {
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
+                
 
-                perceptionSystem->setSafeArmMotionToAvoidCubeCollisions();
+                ClMoveGroup* moveGroup;
+                this->requiresClient(moveGroup);
+                moveGroup->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
 
                 geometry_msgs::PoseStamped placingPose;
 
@@ -41,10 +44,10 @@ namespace sm_moveit_4
 
             void onExit()
             {
-                ClPerceptionSystem *perceptionSystem;
-                this->requiresClient(perceptionSystem);
+                ClMoveGroup *moveGroup;
+                this->requiresClient(moveGroup);
 
-                perceptionSystem->unsetSafeArmMotionToAvoidCubeCollisions();
+                moveGroup->getComponent<CpConstraintTableWorkspaces>()->unsetSafeArmMotionToAvoidCubeCollisions();
             }
         };
     } // namespace place_states

@@ -23,6 +23,7 @@ namespace sm_moveit_4
             int decissionsCount;
             int currentCube = 0;
 
+            // subcomponents
             CpSceneState *sceneState_;
             CpSimulatedGazeboPerception *gazeboPerceptionSimulation_;
 
@@ -124,15 +125,6 @@ namespace sm_moveit_4
                 }
             }
 
-            void setSafeArmMotionToAvoidCubeCollisions()
-            {
-                this->gazeboPerceptionSimulation_->setSafeArmMotionToAvoidCubeCollisions();
-            }
-
-            void unsetSafeArmMotionToAvoidCubeCollisions()
-            {
-                this->gazeboPerceptionSimulation_->unsetSafeArmMotionToAvoidCubeCollisions();
-            }
 
             bool decidePlacePose(geometry_msgs::PoseStamped &placePose)
             {

@@ -32,10 +32,10 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
 
     void onExit()
     {
-        ClPerceptionSystem *perceptionSystem;
-        this->requiresClient(perceptionSystem);
+        ClMoveGroup *moveGroup;
+        this->requiresClient(moveGroup);
         
-        perceptionSystem->setSafeArmMotionToAvoidCubeCollisions();
+        moveGroup->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
     }
 };
 

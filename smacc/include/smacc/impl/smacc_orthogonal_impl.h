@@ -38,6 +38,7 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
         }
     }
 
+    ROS_ERROR_STREAM("Required client ["<< requiredClientName<< "] not found even in other orthogonals. Returning null pointer. If the requested client is used may result in a segmentation fault.");
     return false;
 }
 
