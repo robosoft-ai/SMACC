@@ -130,8 +130,8 @@ namespace sm_moveit_4
                             time = tableTransf.stamp_;
                         }
 
-                        createVirtualFloorCollisionBox(collisionObjects, time);
-                        lateralBox(collisionObjects, time);
+                        // createVirtualFloorCollisionBox(collisionObjects, time);
+                        createVirtualCollisionWalls(collisionObjects, time);
 
                         this->planningSceneInterface_->applyCollisionObjects(collisionObjects);
                     }
@@ -148,7 +148,7 @@ namespace sm_moveit_4
                 }
             }
 
-            void additional(float x, float y , float z, float xl, float yl, float zl, std::string id, std::string frameid, moveit_msgs::CollisionObject& collision, ros::Time time)
+            void createCollisionBox(float x, float y , float z, float xl, float yl, float zl, std::string id, std::string frameid, moveit_msgs::CollisionObject& collision, ros::Time time)
             {
                 collision.operation = moveit_msgs::CollisionObject::ADD;
                 collision.id = id;
@@ -171,21 +171,21 @@ namespace sm_moveit_4
                 collision.header.stamp = time;
             }
 
-            void lateralBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
+            void createVirtualCollisionWalls(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
             {
                 moveit_msgs::CollisionObject box;
-                additional(0, -0.28, 0.3, 1.0, 0.01, 0.6, "right", "base_link", box, time);
+                createCollisionBox(0, -0.28, 0.3, 1.0, 0.01, 0.6, "right", "base_link", box, time);
                 collisions.push_back(box);
 
-                additional(0, 0.28, 0.3, 1.0, 0.01, 0.6, "left", "base_link", box, time);
+                createCollisionBox(0, 0.28, 0.3, 1.0, 0.01, 0.6, "left", "base_link", box, time);
                 collisions.push_back(box);
             }
 
             void createVirtualFloorCollisionBox(std::vector<moveit_msgs::CollisionObject>& collisions, ros::Time time)
             {
                 moveit_msgs::CollisionObject floor;
-                //additional(0, 0, -0.1, 8, 8, 0.05, "floor", "map", floor, time);
-                //collisions.push_back(floor);
+                createCollisionBox(0, 0, -0.1, 8, 8, 0.05, "floor", "map", floor, time);
+                collisions.push_back(floor);
             }
 
             /*
