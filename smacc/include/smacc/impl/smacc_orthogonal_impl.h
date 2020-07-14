@@ -22,7 +22,8 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
             return true;
     }
 
-    ROS_WARN("Required client not found in current orthogonal. Searching in other orthogonals.");
+    auto requiredClientName = demangledTypeName<SmaccClientType>();
+    ROS_WARN_STREAM("Required client ["<< requiredClientName<< "] not found in current orthogonal. Searching in other orthogonals.");
 
     for (auto &orthoentry : this->getStateMachine()->getOrthogonals())
     {
@@ -31,12 +32,13 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
             storage = dynamic_cast<SmaccClientType *>(client.get());
             if (storage != nullptr)
             {
-                ROS_WARN("Required client found in other orthogonal.");
+                ROS_WARN_STREAM("Required client  ["<< requiredClientName<<"] found in other orthogonal.");
                 return true;
             }
         }
     }
 
+    ROS_ERROR_STREAM("Required client ["<< requiredClientName<< "] not found even in other orthogonals. Returning null pointer. If the requested client is used may result in a segmentation fault.");
     return false;
 }
 
@@ -52,6 +54,16 @@ void ISmaccOrthogonal::requiresComponent(SmaccComponentType *&storage)
         stateMachine_->requiresComponent(storage);
     }
 }
+
+template <typename TOrthogonal, typename TClient>
+void ISmaccOrthogonal::assignClientToOrthogonal(TClient* client)
+{
+    client->setStateMachine(getStateMachine());
+    client->setOrthogonal(this);
+
+    client->template configureEventSourceTypes<TOrthogonal, TClient>();
+}
+
 template <typename TClientBehavior>
 TClientBehavior *ISmaccOrthogonal::getClientBehavior()
 {
@@ -140,17 +152,17 @@ public:
         // }
 
         ROS_INFO("[%s] creates a client of type '%s' and object tag '%s'",
-                 demangleType(typeid(*this)).c_str(),
-                 demangledTypeName<TClient>().c_str(),
-                 demangledTypeName<TOrthogonal>().c_str());
+                    demangleType(typeid(*this)).c_str(),
+                    demangledTypeName<TClient>().c_str(),
+                    demangledTypeName<TOrthogonal>().c_str()
+                );
 
         auto client = std::make_shared<ClientHandler<TOrthogonal, TClient>>(args...);
-        this->assignClientToOrthogonal(client.get());
-
-        client->template configureEventSourceTypes<TOrthogonal, TClient>();
+        this->template assignClientToOrthogonal<TOrthogonal, TClient>(client.get());
 
         // it is stored the client (not the client handler)
         clients_.push_back(client);
+
         return client;
     }
 };

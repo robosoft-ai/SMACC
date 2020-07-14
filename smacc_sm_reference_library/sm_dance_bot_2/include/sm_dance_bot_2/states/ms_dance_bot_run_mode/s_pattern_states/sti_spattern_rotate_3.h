@@ -1,0 +1,40 @@
+namespace sm_dance_bot_2
+{
+namespace s_pattern_states
+{
+// STATE DECLARATION
+struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
+{
+    using SmaccState::SmaccState;
+
+// TRANSITION TABLE
+    typedef mpl::list<
+    
+    Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>,
+    Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward2>
+    
+    >reactions;
+
+// STATE FUNCTIONS
+    static void staticConfigure()
+    {
+    }
+
+    void runtimeConfigure()
+    {
+        auto &superstate = this->context<SS>();
+        ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
+
+        float offset = 7;
+        float angle = 0;
+        if (superstate.direction() == TDirection::LEFT)
+            angle = -90 - offset;
+        else
+            angle = +90 + offset;
+
+        this->configure<OrNavigation, CbRotate>(angle);
+        this->configure<OrLED, CbLEDOff>();
+    }
+};
+} // namespace s_pattern_states
+} // namespace sm_dance_bot_2

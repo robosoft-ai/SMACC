@@ -54,10 +54,6 @@ public:
     template <typename StateType>
     void addState(std::shared_ptr<StateType> &state);
 
-    void computeAllStateMessage(std::vector<smacc_msgs::SmaccState> &msg)
-    {
-    }
-
     void assembleSMStructureMessage(ISmaccStateMachine *sm);
 };
 

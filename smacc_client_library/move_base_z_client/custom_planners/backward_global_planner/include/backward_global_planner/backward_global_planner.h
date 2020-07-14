@@ -34,9 +34,6 @@ public:
     virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
                                            const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
 
-    virtual bool createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped &start,
-                                                              const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
-
     virtual void initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_) override;
 
 private:
@@ -56,10 +53,6 @@ private:
     void onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage);
 
     void publishGoalMarker(const geometry_msgs::Pose &pose, double r, double g, double b);
-
-    ros::ServiceServer cmd_server_;
-
-    bool commandServiceCall(::backward_global_planner::command::Request &req, ::backward_global_planner::command::Response &res);
 
     double skip_straight_motion_distance_; //meters
 

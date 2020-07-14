@@ -17,6 +17,11 @@ WaypointNavigator::WaypointNavigator()
 {
 }
 
+void WaypointNavigator::onInitialize()
+{
+  client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
+}
+
 void WaypointNavigator::onGoalReached(ClMoveBaseZ::ResultConstPtr &res)
 {
   waypointsEventDispatcher.postWaypointEvent(currentWaypoint_);

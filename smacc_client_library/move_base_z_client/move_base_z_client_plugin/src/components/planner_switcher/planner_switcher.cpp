@@ -13,11 +13,19 @@ PlannerSwitcher::PlannerSwitcher()
 {
 }
 
-void PlannerSwitcher::initialize(smacc::ISmaccClient *owner)
+void PlannerSwitcher::onInitialize()
 {
-  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner);
+  auto client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
   ros::NodeHandle nh(client_->name_);
   dynrecofSub_ = nh.subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1, boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
+}
+
+void PlannerSwitcher::setUndoPathBackwardPlanner()
+{
+  ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+  desired_global_planner_ = "undo_path_global_planner/UndoPathGlobalPlanner";
+  desired_local_planner_ = "backward_local_planner/BackwardLocalPlanner";
+  updatePlanners();
 }
 
 void PlannerSwitcher::setBackwardPlanner()
@@ -72,10 +80,31 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
 
   srv_req.config = conf;
   ROS_INFO("seting values of the dynamic reconfigure server");
-  ros::service::call("/move_base/set_parameters", srv_req, srv_resp);
-  ros::spinOnce();
-  ros::Duration(0.5).sleep();
-  ROS_INFO_STREAM("[PlannerSwitcher] Response: " << srv_resp);
+  bool error;
+  do
+  {
+    bool res = ros::service::call("/move_base/set_parameters", srv_req, srv_resp);
+    ros::spinOnce();
+    ros::Duration(0.5).sleep();
+    
+    error = false;
+    auto baselocalPlannerIt = std::find_if(srv_resp.config.strs.begin(), srv_resp.config.strs.end(), [](auto sp){return sp.name == "base_local_planner";});
+    auto baseglobalPlannerIt = std::find_if(srv_resp.config.strs.begin(), srv_resp.config.strs.end(), [](auto sp){return sp.name == "base_global_planner";});
+
+    auto updatedLocalPlanner = baselocalPlannerIt->value;
+    auto updatedGlobalPlanner = baseglobalPlannerIt->value;
+    ROS_INFO_STREAM("[PlannerSwitcher] Selected base local planner: " << updatedLocalPlanner);
+    ROS_INFO_STREAM("[PlannerSwitcher] Selected base global planner: " << updatedGlobalPlanner);
+
+    if(updatedGlobalPlanner != desired_global_planner_ || updatedLocalPlanner!= desired_local_planner_)
+    {
+      ROS_WARN("[PlannerSwitcher] Planners not correctly configured. Waiting 1 second and retrying...");
+      ROS_INFO_STREAM("[PlannerSwitcher] Response: " << srv_resp);
+      error = true;
+    }
+
+  }while(error);
+
 }
 
 void PlannerSwitcher::dynreconfCallback(const dynamic_reconfigure::Config::ConstPtr &configuration_update)

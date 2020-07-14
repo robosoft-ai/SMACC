@@ -10,9 +10,7 @@
 
 namespace smacc
 {
-
-class ISmaccClient;
-
+    
 class ISmaccComponent
 {
 public:
@@ -20,13 +18,15 @@ public:
 
     virtual ~ISmaccComponent();
 
-    virtual void initialize(ISmaccClient *owner);
+    // Returns a custom identifier defined by the specific plugin implementation
+    virtual std::string getName() const;
+
+protected:
+
+    void initialize(ISmaccClient *owner);
 
     // Assigns the owner of this resource to the given state machine parameter object
     void setStateMachine(ISmaccStateMachine *stateMachine);
-
-    // Returns a custom identifier defined by the specific plugin implementation
-    virtual std::string getName() const;
 
     template <typename EventType>
     void postEvent(const EventType &ev);
@@ -37,14 +37,26 @@ public:
     template <typename TObjectTag, typename TDerived>
     void configureEventSourceTypes() {}
 
-protected:
+    template <typename TComponent>
+    void requiresComponent(TComponent *& requiredComponentStorage);
+
+    template <typename TClient>
+    void requiresClient(TClient *& requiredClientStorage);
+
+    virtual void onInitialize();
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createSiblingComponent(TArgs... targs);
+
+    template <typename SmaccComponentType, typename TOrthogonal, typename TClient, typename... TArgs>
+    SmaccComponentType *createSiblingNamedComponent(std::string name, TArgs... targs);
+
     // A reference to the state machine object that owns this resource
     ISmaccStateMachine *stateMachine_;
-
-    boost::optional<std::string> serviceName_;
 
     ISmaccClient *owner_;
 
     friend class ISmaccOrthogonal;
+    friend class ISmaccClient;
 };
 } // namespace smacc

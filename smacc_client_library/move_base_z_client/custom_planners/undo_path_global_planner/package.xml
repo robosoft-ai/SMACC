@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>undo_path_global_planner</name>
+  <version>0.0.1</version>
+  <description>The undo_path_global_planner package.</description>
+
+  <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
+  <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
+
+  <license>Proprietary Reel Robotics</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>geometry_msgs</depend>
+  <depend>message_generation</depend>
+  <depend>message_runtime</depend>
+  <depend>nav_core</depend>
+  <depend>nav_msgs</depend>
+  <depend>pcl_ros</depend>
+  <depend>roscpp</depend>
+  <depend>tf</depend>
+  <depend>costmap_2d</depend>
+  <depend>dynamic_reconfigure</depend>
+  <depend>forward_global_planner</depend>
+
+  <export>
+      <nav_core plugin="${prefix}/upgp_plugin.xml" />
+  </export>
+</package>

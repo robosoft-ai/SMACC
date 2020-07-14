@@ -45,15 +45,17 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
 
   if(!blobs.empty())
   { 
-    auto& b = blobs.front();
-    cv::Rect r;
-    float diameter = b.size;
-    auto radius = diameter*0.5;
-    r.x = b.pt.x - radius;
-    r.y = b.pt.y - radius;
-    r.width = diameter;
-    r.height = diameter;
-    cv::rectangle(debugImage,r, cv::Scalar(255,0,0),1 );
+    for(auto& b: blobs)
+    {
+      cv::Rect r;
+      float diameter = b.size;
+      auto radius = diameter*0.5;
+      r.x = b.pt.x - radius;
+      r.y = b.pt.y - radius;
+      r.width = diameter;
+      r.height = diameter;
+      cv::rectangle(debugImage,r, cv::Scalar(255,0,0),1 );
+    }
   }
 
   // cv::imshow(colorName + " filter - "+ path, segmented);
@@ -113,11 +115,13 @@ void callback(const sensor_msgs::Image& img)
   {
     detectedColor = 1;
   }
-  else if (testGreen(image, debugImageBridge.image) > 0)
+  
+  if (testGreen(image, debugImageBridge.image) > 0)
   {
     detectedColor = 2;
   }
-  else if (testBlue(image, debugImageBridge.image) > 0)
+  
+  if (testBlue(image, debugImageBridge.image) > 0)
   {
     detectedColor = 3;
   }

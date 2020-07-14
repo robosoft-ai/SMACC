@@ -49,12 +49,12 @@ public:
 
     virtual void initiate_impl() override
     {
-        ROS_INFO("initiate_impl");
-        auto shortname = smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
-        this->onInitializing(shortname);
-
         ROS_INFO("Introspecting state machine via typeWalker");
         this->buildStateMachineInfo<InitialStateType>();
+
+        ROS_INFO("initiate_impl");
+        auto shortname = smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
+        this->initializeROS(shortname);        
 
         ROS_INFO("Initializing ROS communication mechanisms");
         this->onInitialized();

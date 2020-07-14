@@ -21,10 +21,12 @@ class PlannerSwitcher : public smacc::ISmaccComponent
 public:
   PlannerSwitcher();
   void setBackwardPlanner();
+  void setUndoPathBackwardPlanner();
+
   void setForwardPlanner();
   void setPureSpinningPlanner();
 
-  virtual void initialize(smacc::ISmaccClient* owner) override;
+  virtual void onInitialize() override;
 
   // sets ROS defaults local and global planners
   void setDefaultPlanners();

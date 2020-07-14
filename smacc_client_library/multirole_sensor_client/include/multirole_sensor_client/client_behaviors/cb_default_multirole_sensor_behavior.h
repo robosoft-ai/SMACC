@@ -51,7 +51,7 @@ public:
 
   virtual void onEntry() override
   {
-    ROS_INFO("CbDefaultMultiRoleSensorBehavior onEntry. Requires client of type '%s'", demangleSymbol<ClientType>().c_str());
+    ROS_INFO("[CbDefaultMultiRoleSensorBehavior] onEntry. Requires client of type '%s'", demangleSymbol<ClientType>().c_str());
 
     this->requiresClient(sensor_);
 
@@ -62,7 +62,7 @@ public:
     else
     {
       deferedEventPropagation();
-      ROS_INFO("CbDefaultMultiRoleSensorBehavior onEntry. sensor initialize");
+      ROS_INFO("[CbDefaultMultiRoleSensorBehavior] onEntry. sensor initialize");
       sensor_->initialize();
     }
   }

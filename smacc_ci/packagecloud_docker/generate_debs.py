@@ -141,6 +141,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'forward_global_planner',
         'forward_local_planner',
         'backward_global_planner',
+        'undo_path_global_planner',
         'backward_local_planner',        
         'moveit_z_client',
         'sm_atomic',

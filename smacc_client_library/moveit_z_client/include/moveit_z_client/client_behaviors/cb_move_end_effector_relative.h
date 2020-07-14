@@ -13,11 +13,10 @@ namespace moveit_z_client
 {
 class CbMoveEndEffectorRelative : public smacc::SmaccClientBehavior
 {
-protected:
-  ClMoveGroup *movegroupClient_;
-
 public:
   geometry_msgs::Transform transform_;
+
+  boost::optional<std::string> group_;
 
   CbMoveEndEffectorRelative();
 
@@ -27,7 +26,11 @@ public:
 
   virtual void onExit() override;
 
-  void moveRelative(geometry_msgs::Transform &transformOffset);
+protected:
+  void moveRelative(moveit::planning_interface::MoveGroupInterface &moveGroupinterface,
+                    geometry_msgs::Transform &transformOffset);
+
+  ClMoveGroup *movegroupClient_;
 };
 
 }  // namespace moveit_z_client

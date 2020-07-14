@@ -20,7 +20,6 @@
 #include <forward_global_planner/move_base_z_client_tools.h>
           
 //register this planner as a BaseGlobalPlanner plugin
-
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
 
 namespace cl_move_base_z
@@ -56,10 +55,7 @@ void BackwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DRO
     costmap_ros_ = costmap_ros;
     //ROS_WARN_NAMED("Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
-    forwardPathSub_ = nh_.subscribe("odom_tracker_path", 2, &BackwardGlobalPlanner::onForwardTrailMsg, this);
-
     ros::NodeHandle nh;
-    cmd_server_ = nh.advertiseService<::backward_global_planner::command::Request, ::backward_global_planner::command::Response>("cmd", boost::bind(&BackwardGlobalPlanner::commandServiceCall, this, _1, _2));
     planPub_ = nh.advertise<nav_msgs::Path>("backward_planner/global_plan", 1);
     markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("backward_planner/markers", 1);
 }
@@ -115,17 +111,17 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, d
 
 /**
 ******************************************************************************************************************
-* createPureSpiningAndStragihtLineBackwardPath()
+* defaultBackwardPath()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::createPureSpiningAndStragihtLineBackwardPath(const geometry_msgs::PoseStamped &start,
-                                                                         const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
+bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
+                                                      const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
 {
-    //tf::Stamped<tf::Pose> tfpose;
-    //ROS_WARN_NAMED("Backwards", "getting robot pose referencing costmap: %ld", (long)costmap_ros_);
-
     auto q = start.pose.orientation;
 
+    geometry_msgs::PoseStamped pose;
+    pose = start;
+    
     double dx = start.pose.position.x - goal.pose.position.x;
     double dy = start.pose.position.y - goal.pose.position.y;
 
@@ -150,62 +146,8 @@ bool BackwardGlobalPlanner::createPureSpiningAndStragihtLineBackwardPath(const g
     {
         prevState = start;
     }
-}
 
-/**
-******************************************************************************************************************
-* defaultBackwardPath()
-******************************************************************************************************************
-*/
-bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
-                                                      const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
-{
-    auto q = start.pose.orientation;
-
-    geometry_msgs::PoseStamped pose;
-    pose = start;
-
-    plan.push_back(pose);
-
-    //ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
-    int i = lastForwardPathMsg_.poses.size();
-    double mindist = std::numeric_limits<double>::max();
-    int mindistindex = -1;
-
-    geometry_msgs::Pose goalProjected;
-
-    for (auto &p : lastForwardPathMsg_.poses | boost::adaptors::reversed)
-    {
-        pose = p;
-        pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-        pose.header.stamp = ros::Time::now();
-
-        double dx = pose.pose.position.x - goal.pose.position.x;
-        double dy = pose.pose.position.y - goal.pose.position.y;
-
-        double dist = sqrt(dx * dx + dy * dy);
-        if (dist <= mindist)
-        {
-            mindistindex = i;
-            mindist = dist;
-            goalProjected = pose.pose;
-        }
-
-        i--;
-    }
-
-    if (mindistindex != -1)
-    {
-        for (int i = lastForwardPathMsg_.poses.size() - 1; i >= mindistindex; i--)
-        {
-            auto &pose = lastForwardPathMsg_.poses[i];
-            plan.push_back(pose);
-        }
-    }
-    else
-    {
-        ROS_WARN_STREAM("Creating the backwards plan, it is not found any close trajectory point. Last forward path plan message size: " << lastForwardPathMsg_.poses.size());
-    }
+    ROS_WARN_STREAM( "[BackwardGlobalPlanner ] backward global plan size:  " <<plan.size());
 }
 
 /**
@@ -241,7 +183,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
         plan.clear();
         plan.push_back(start);
         plan.push_back(start);
-        ROS_INFO("Artificial backward plan on current pose.");
+        ROS_INFO("[BackwardGlobalPlanner] Artificial backward plan on current pose.");
     }
 
     nav_msgs::Path planMsg;
@@ -290,82 +232,5 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     return true;
 }
 
-/**
-******************************************************************************************************************
-* commandServiceCall()
-******************************************************************************************************************
-*/
-bool BackwardGlobalPlanner::commandServiceCall(::backward_global_planner::command::Request &req, ::backward_global_planner::command::Response &res)
-{
-    //ROS_INFO_NAMED("Backwards", "BackwardGlobalplanner SERVICE CALL");
-    std::string msg = req.cmd.data.c_str();
-
-    std::vector<std::string> fields; // Create a vector of strings, called "fields"
-    boost::split(fields, msg, boost::algorithm::is_any_of(" "));
-
-    //ROS_INFO_NAMED("Backwards", "backward planner SERVICE REQUEST");
-
-    if (fields.size() == 0)
-    {
-        res.success.data = false;
-        return false;
-    }
-
-    std::string cmd = fields[0];
-    bool error = false;
-    if (cmd == "savepath")
-    {
-        //ROS_INFO_NAMED("Backwards","SAVE PATH COMMAND");
-        if (fields.size() > 1)
-        {
-            std::vector<std::string> tail(fields.begin() + 1, fields.end());
-            std::string filename = boost::algorithm::join(tail, " ");
-
-            std::ofstream os;
-            os.open(filename);
-            os << lastForwardPathMsg_;
-            os.close();
-
-            //ROS_INFO_STREAM("serialized path: " << lastForwardPathMsg_);
-        }
-        else
-        {
-            error = true;
-        }
-    }
-    else if (cmd == "loadpath")
-    {
-        //ROS_INFO_NAMED("Backwards", "LOAD PATH COMMAND");
-        if (fields.size() > 1)
-        {
-            std::vector<std::string> tail(fields.begin() + 1, fields.end());
-            std::string filename = boost::algorithm::join(tail, " ");
-
-            std::ifstream ifs(filename);
-            std::string alltext((std::istreambuf_iterator<char>(ifs)), std::istreambuf_iterator<char>());
-
-            nav_msgs::Path p;
-            uint32_t serial_size = ros::serialization::serializationLength(p);
-            boost::shared_array<uint8_t> buffer(new uint8_t[serial_size]);
-            ros::serialization::IStream stream(buffer.get(), serial_size);
-            ros::serialization::deserialize(stream, p);
-
-            //ROS_INFO_STREAM_NAMED("Backwards", "serialized path: " << p);
-            lastForwardPathMsg_ = p;
-        }
-        else
-        {
-            error = true;
-        }
-    }
-    else
-    {
-        res.success.data = false;
-        return false;
-    }
-
-    res.success.data = error;
-    return true;
-}
 } // namespace backward_global_planner
 } // namespace cl_move_base_z

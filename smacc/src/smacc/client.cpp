@@ -20,6 +20,15 @@ ISmaccClient::~ISmaccClient()
 
 void ISmaccClient::initialize()
 {
+
+}
+
+void ISmaccClient::getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components)
+{
+    for (auto &ce : components_)
+    {
+        components.push_back(ce.second);
+    }
 }
 
 std::string ISmaccClient::getName() const

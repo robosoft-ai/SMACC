@@ -56,9 +56,6 @@ public:
     template <typename TComponent>
     TComponent *getComponent(std::string name);
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes() {}
-
     virtual smacc::introspection::TypeInfo::Ptr getType();
 
     inline ISmaccStateMachine *getStateMachine();
@@ -69,15 +66,14 @@ public:
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage);
 
-    void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components)
-    {
-        for (auto &ce : components_)
-        {
-            components.push_back(ce.second);
-        }
-    }
+    void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components);
 
 protected:
+
+// it is called after the client initialization, provides information about the orthogonal it is located in
+    template <typename TObjectTag, typename TDerived>
+    void configureEventSourceTypes() {}
+    
     // components
     std::map<ComponentKey, std::shared_ptr<smacc::ISmaccComponent>> components_;
 
@@ -98,5 +94,6 @@ private:
     ISmaccOrthogonal *orthogonal_;
 
     friend class ISmaccOrthogonal;
+    friend class ISmaccComponent;
 };
 } // namespace smacc

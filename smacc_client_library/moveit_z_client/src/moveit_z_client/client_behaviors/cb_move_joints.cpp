@@ -5,57 +5,79 @@
  ******************************************************************************************************************/
 
 #include <moveit_z_client/client_behaviors/cb_move_joints.h>
+#include <future>
 
 namespace moveit_z_client
 {
+  CbMoveJoints::CbMoveJoints(const std::map<std::string, double> &jointValueTarget) : jointValueTarget_(jointValueTarget)
+  {
+  }
 
-CbMoveJoints::CbMoveJoints(const std::map<std::string, double> &jointValueTarget)
-    : jointValueTarget_(jointValueTarget)
-{
-}
+  CbMoveJoints::CbMoveJoints()
+  {
+  }
 
-CbMoveJoints::CbMoveJoints()
-{
-}
-
-void CbMoveJoints::onEntry()
-{
+  void CbMoveJoints::onEntry()
+  {
     this->requiresClient(movegroupClient_);
-    auto &moveGroupInterface = movegroupClient_->moveGroupClientInterface;
 
-    if(scalingFactor_)
-        moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
-        
-    moveGroupInterface.setJointValueTarget(jointValueTarget_);
-
-    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-
-    bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    ROS_INFO_NAMED("CbMoveJoints", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-
-    if (success)
+    if (this->group_)
     {
-        auto executionResult = moveGroupInterface.execute(computedMotionPlan);
-
-        if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
-        {
-            ROS_INFO("[CbMoveJoints] motion execution succedded");
-            movegroupClient_->postEventMotionExecutionSucceded();
-        }
-        else
-        {
-            ROS_INFO("[CbMoveJoints] motion execution failed");
-            movegroupClient_->postEventMotionExecutionFailed();
-        }
+      auto res = std::async(std::launch::async, [=] {
+        moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
+        this->moveJoints(move_group);
+      });
     }
     else
     {
-        ROS_INFO("[CbMoveJoints] motion execution failed");
-        movegroupClient_->postEventMotionExecutionFailed();
+      auto res =
+          std::async(std::launch::async, [=] { this->moveJoints(movegroupClient_->moveGroupClientInterface); });
     }
-}
+  }
 
-void CbMoveJoints::onExit()
-{
-}
+  void CbMoveJoints::moveJoints(moveit::planning_interface::MoveGroupInterface &moveGroupInterface)
+  {
+    if (scalingFactor_)
+      moveGroupInterface.setMaxVelocityScalingFactor(*scalingFactor_);
+
+    bool success;
+    moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
+
+    if (jointValueTarget_.size() == 0)
+    {
+      ROS_WARN("[CbMoveJoints] No joint was value specified. Skipping planning call.");
+      success = false;
+    }
+    else
+    {
+      moveGroupInterface.setJointValueTarget(jointValueTarget_);
+      success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+      ROS_INFO_NAMED("CbMoveJoints", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    }
+
+    if (success)
+    {
+      auto executionResult = moveGroupInterface.execute(computedMotionPlan);
+
+      if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+      {
+        ROS_INFO("[CbMoveJoints] motion execution succedded. Throwing success event.");
+        movegroupClient_->postEventMotionExecutionSucceded();
+      }
+      else
+      {
+        ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
+        movegroupClient_->postEventMotionExecutionFailed();
+      }
+    }
+    else
+    {
+      ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
+      movegroupClient_->postEventMotionExecutionFailed();
+    }
+  }
+
+  void CbMoveJoints::onExit()
+  {
+  }
 } // namespace moveit_z_client

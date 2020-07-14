@@ -27,6 +27,7 @@
   <depend>smacc</depend>
   <depend>ros_timer_client</depend>
   <depend>xterm</depend>
+  <depend>smacc_runtime_test</depend>
 
   
   <export>

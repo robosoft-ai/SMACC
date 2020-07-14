@@ -68,7 +68,11 @@ private:
   smacc::SmaccSignal<void()> onFailed_;
 
 public:
+  // this structure contains the default move_group configuration for any arm motion through move_group
+  // the client behavior will overrite these default values in a copy of this object so that their changes
+  // are not persinstent. In the other hand, if you change this client configuration, the parameters will be persistent.
   moveit::planning_interface::MoveGroupInterface moveGroupClientInterface;
+  
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
 
   ClMoveGroup(std::string groupName);
