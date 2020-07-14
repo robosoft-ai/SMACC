@@ -1,5 +1,5 @@
  <h2>State Machine Diagram</h2>
-<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_moveit_4/docs/smacc_state_machine_20200516-174120.dot.svg" width="950" align="center" border="10"/> 
+<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_moveit_4/docs/smacc_state_machine_20200714-150153.dot.svg" width="950" align="center" border="10"/> 
 
 <h2>Description</h2> This example demonstrates the use of both MoveIt and MoveBase within the same state machine, and cross orthogonal communication between the robot arm orthogonal and the perception orthogonal.<br></br>
  
