@@ -16,41 +16,43 @@ namespace sm_moveit_4
                 >
                 reactions;
 
+            // State member variables
+            ClMoveGroup *moveGroup_;
+
             // STATE FUNCTIONS
             static void staticConfigure()
             {
-                configure_orthogonal_runtime<OrArm, CbMoveEndEffector>(
-                    [](auto &cbMoveEndEffector) {
-                        ROS_INFO("Pre grasp pose initialization.");
-                        ros::WallDuration(1).sleep();
-
-                        ClPerceptionSystem *perceptionSystem;
-                        cbMoveEndEffector.requiresClient(perceptionSystem);
-
-                        geometry_msgs::PoseStamped targetCubePose;
-
-                        perceptionSystem->setSafeArmMotionToAvoidCubeCollisions();
-
-                        if (perceptionSystem->decidePickCubePose(targetCubePose))
-                        {
-                            geometry_msgs::PoseStamped pregraspPose = targetCubePose;
-                            perceptionSystem->computePregraspPoseFromCubePose(pregraspPose);
-
-                            cbMoveEndEffector.targetPose = pregraspPose;
-                        }
-                    });
+                configure_orthogonal<OrArm, CbMoveEndEffector>();
             }
 
             void runtimeConfigure()
             {
+                ROS_INFO("Pre grasp pose initialization.");
+                ros::WallDuration(1).sleep();
+
+                // --------------------------------------
+                this->requiresClient(moveGroup_);
+                
+                ClPerceptionSystem *perceptionSystem;
+                this->requiresClient(perceptionSystem);
+
+                auto cbMoveEndEffector = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveEndEffector>();
+                // --------------------------------------
+                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
+
+                geometry_msgs::PoseStamped targetCubePose;
+                if (perceptionSystem->decidePickCubePose(targetCubePose))
+                {
+                    geometry_msgs::PoseStamped pregraspPose = targetCubePose;
+                    perceptionSystem->computePregraspPoseFromCubePose(pregraspPose);
+
+                    cbMoveEndEffector->targetPose = pregraspPose;
+                }
             }
 
             void onExit()
             {
-                ClPerceptionSystem *perceptionSystem;
-                this->requiresClient(perceptionSystem);
-
-                perceptionSystem->unsetSafeArmMotionToAvoidCubeCollisions();
+                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->unsetSafeArmMotionToAvoidCubeCollisions();
             }
         };
     } // namespace pick_states

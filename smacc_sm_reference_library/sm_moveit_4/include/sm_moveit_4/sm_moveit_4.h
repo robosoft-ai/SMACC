@@ -24,6 +24,8 @@ using namespace smacc::state_reactors;
 #include <sm_moveit_4/orthogonals/or_perception.h>
 #include <sm_moveit_4/orthogonals/or_navigation.h>
 
+using namespace sm_moveit_4::cl_moveit_z_client;
+
 namespace sm_moveit_4
 {
 //STATE FORWARD DECLARATIONS
@@ -62,9 +64,9 @@ struct SmMoveIt4
 
     virtual void onInitialize() override
     {
+        this->createOrthogonal<OrPerception>();
         this->createOrthogonal<OrGripper>();
         this->createOrthogonal<OrArm>();
-        this->createOrthogonal<OrPerception>();
         this->createOrthogonal<OrNavigation>();
     }
 };
