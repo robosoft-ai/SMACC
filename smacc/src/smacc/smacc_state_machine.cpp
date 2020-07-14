@@ -127,8 +127,6 @@ void ISmaccStateMachine::initializeROS(std::string shortname)
 
     // STATE MACHINE SERVICES
     transitionHistoryService_ = nh_.advertiseService(shortname + "/smacc/transition_log_history", &ISmaccStateMachine::getTransitionLogHistory, this);
-
-    this->onInitialize();
 }
 
 bool ISmaccStateMachine::getTransitionLogHistory(smacc_msgs::SmaccGetTransitionHistory::Request &req, smacc_msgs::SmaccGetTransitionHistory::Response &res)

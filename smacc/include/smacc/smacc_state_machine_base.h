@@ -49,17 +49,20 @@ public:
 
     virtual void initiate_impl() override
     {
-        ROS_INFO("Introspecting state machine via typeWalker");
+        // this is before because this creates orthogonals
+        this->onInitialize();
+
+        ROS_INFO("[SmaccStateMachine] Introspecting state machine via typeWalker");
         this->buildStateMachineInfo<InitialStateType>();
 
-        ROS_INFO("initiate_impl");
+        ROS_INFO("[SmaccStateMachine] initiate_impl");
         auto shortname = smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
         this->initializeROS(shortname);        
 
-        ROS_INFO("Initializing ROS communication mechanisms");
+        ROS_INFO("[SmaccStateMachine] Initializing ROS communication mechanisms");
         this->onInitialized();
 
-        ROS_INFO("Initializing state machine");
+        ROS_INFO("[SmaccStateMachine] Initializing state machine");
         sc::state_machine<DerivedStateMachine, InitialStateType, SmaccAllocator>::initiate();
     }
 };
