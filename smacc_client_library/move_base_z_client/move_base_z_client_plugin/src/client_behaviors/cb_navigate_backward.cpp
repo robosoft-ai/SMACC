@@ -45,24 +45,18 @@ namespace cl_move_base_z
 
         tf::Transform currentPose;
         tf::poseMsgToTF(currentPoseMsg, currentPose);
-
         tf::Transform forwardDeltaTransform;
         forwardDeltaTransform.setIdentity();
         forwardDeltaTransform.setOrigin(tf::Vector3(-dist, 0, 0));
-
         tf::Transform targetPose = currentPose * forwardDeltaTransform;
-
         ClMoveBaseZ::Goal goal;
         goal.target_pose.header.frame_id = referenceFrame;
         goal.target_pose.header.stamp = ros::Time::now();
         tf::poseTFToMsg(targetPose, goal.target_pose.pose);
-
         ROS_INFO_STREAM("[CbNavigateBackwards] TARGET POSE BACKWARDS: " << goal.target_pose);
-        ros::Duration(5).sleep();
 
         odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
-
-        if (odomTracker_)
+        if (odomTracker_!=nullptr)
         {
             this->odomTracker_->clearPath();
             this->odomTracker_->setStartPoint(currentPoseMsg);
@@ -71,6 +65,8 @@ namespace cl_move_base_z
 
         auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
         plannerSwitcher->setBackwardPlanner();
+        // this wait might be needed to let the backward planner receive the last forward message from the odom tracker
+        ros::Duration(0.5).sleep();
 
         moveBaseClient_->sendGoal(goal);
     }

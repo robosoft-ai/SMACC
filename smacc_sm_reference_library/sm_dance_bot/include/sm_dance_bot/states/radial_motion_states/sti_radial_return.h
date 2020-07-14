@@ -22,8 +22,13 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
     configure_orthogonal<OrLED, CbLEDOff>();
   }
 
-  void runtimeConfigure()
+  void onExit()
   {
+      ClMoveBaseZ* moveBase;
+      this->requiresClient(moveBase);
+
+      auto odomTracker = moveBase->getComponent<OdomTracker>();
+      odomTracker->clearPath();
   }
 };
 }

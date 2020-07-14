@@ -11,18 +11,18 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <ros/ros.h>
-#include <backward_global_planner/command.h>
+#include <undo_path_global_planner/command.h>
 
 namespace cl_move_base_z
 {
-namespace backward_global_planner
+namespace undo_path_global_planner
 {
-class BackwardGlobalPlanner : public nav_core::BaseGlobalPlanner
+class UndoPathGlobalPlanner : public nav_core::BaseGlobalPlanner
 {
 public:
-    BackwardGlobalPlanner();
+    UndoPathGlobalPlanner();
 
-    virtual ~BackwardGlobalPlanner();
+    virtual ~UndoPathGlobalPlanner();
 
     bool makePlan(const geometry_msgs::PoseStamped &start,
                   const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
@@ -31,7 +31,7 @@ public:
                   const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan,
                   double &cost);
 
-    virtual bool createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
+    virtual bool createDefaultUndoPathPlan(const geometry_msgs::PoseStamped &start,
                                            const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan);
 
     virtual void initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros_) override;
@@ -53,6 +53,8 @@ private:
     void onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage);
 
     void publishGoalMarker(const geometry_msgs::Pose &pose, double r, double g, double b);
+
+    ros::ServiceServer cmd_server_;
 
     double skip_straight_motion_distance_; //meters
 

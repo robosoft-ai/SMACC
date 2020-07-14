@@ -18,7 +18,7 @@ using namespace sm_dance_bot::radial_motion_states;
 struct SsRadialPattern2 : smacc::SmaccState<SsRadialPattern2, MsDanceBotRunMode, StiRadialLoopStart>
 {
 public: 
-        using SmaccState::SmaccState;
+    using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<

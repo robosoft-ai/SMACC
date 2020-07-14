@@ -21,6 +21,8 @@ class PlannerSwitcher : public smacc::ISmaccComponent
 public:
   PlannerSwitcher();
   void setBackwardPlanner();
+  void setUndoPathBackwardPlanner();
+
   void setForwardPlanner();
   void setPureSpinningPlanner();
 

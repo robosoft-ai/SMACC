@@ -31,7 +31,7 @@ public:
   ClMultiroleSensor()
       : smacc::client_bases::SmaccSubscriberClient<MessageType>()
   {
-    ROS_INFO("CbLidarSensor constructor");
+    ROS_INFO("[ClMultiroleSensor] constructor");
     initialized_ = false;
   }
 

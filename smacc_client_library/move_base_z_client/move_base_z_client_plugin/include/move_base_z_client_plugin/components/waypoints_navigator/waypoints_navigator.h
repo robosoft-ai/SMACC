@@ -38,10 +38,7 @@ public:
 
   WaypointNavigator();
 
-  virtual void onInitialize() override
-  {
-    client_ = dynamic_cast<ClMoveBaseZ *>(owner_);
-  }
+  virtual void onInitialize() override;
 
   void insertWaypoint(int index, geometry_msgs::Pose &newpose);
 

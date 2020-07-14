@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>backward_global_planner</name>
+  <name>undo_path_global_planner</name>
   <version>0.0.1</version>
-  <description>The backward_global_planner package.</description>
+  <description>The undo_path_global_planner package.</description>
 
   <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
   <author email="pibgeus@gmail.com">Pablo Inigo Blasco</author>
 
-  <license>BSDv3</license>
+  <license>Proprietary Reel Robotics</license>
 
   <buildtool_depend>catkin</buildtool_depend>
 
@@ -24,6 +24,6 @@
   <depend>forward_global_planner</depend>
 
   <export>
-      <nav_core plugin="${prefix}/bgp_plugin.xml" />
+      <nav_core plugin="${prefix}/upgp_plugin.xml" />
   </export>
 </package>

@@ -22,7 +22,7 @@ void CbUndoPathBackwards::onEntry()
     if (forwardpath.poses.size() > 0)
     {
         goal.target_pose = forwardpath.poses.front();
-        plannerSwitcher->setBackwardPlanner();
+        plannerSwitcher->setUndoPathBackwardPlanner();
         moveBaseClient_->sendGoal(goal);
     }
 }

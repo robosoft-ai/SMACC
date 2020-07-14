@@ -9,7 +9,7 @@
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl_ros/point_cloud.h>
 #include <pluginlib/class_list_macros.h>
-#include <backward_global_planner/backward_global_planner.h>
+#include <undo_path_global_planner/undo_path_global_planner.h>
 #include <fstream>
 #include <streambuf>
 #include <nav_msgs/Path.h>
@@ -20,23 +20,24 @@
 #include <forward_global_planner/move_base_z_client_tools.h>
           
 //register this planner as a BaseGlobalPlanner plugin
-PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
+
+PLUGINLIB_EXPORT_CLASS(cl_move_base_z::undo_path_global_planner::UndoPathGlobalPlanner, nav_core::BaseGlobalPlanner);
 
 namespace cl_move_base_z
 {
-namespace backward_global_planner
+namespace undo_path_global_planner
 {
 /**
 ******************************************************************************************************************
 * Constructor()
 ******************************************************************************************************************
 */
-BackwardGlobalPlanner::BackwardGlobalPlanner()
+UndoPathGlobalPlanner::UndoPathGlobalPlanner()
 {
     skip_straight_motion_distance_ = 0.2;
 }
 
-BackwardGlobalPlanner::~BackwardGlobalPlanner()
+UndoPathGlobalPlanner::~UndoPathGlobalPlanner()
 {
     //clear
     nav_msgs::Path planMsg;
@@ -49,15 +50,17 @@ BackwardGlobalPlanner::~BackwardGlobalPlanner()
 * initialize()
 ******************************************************************************************************************
 */
-void BackwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros)
+void UndoPathGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DROS *costmap_ros)
 {
-    //ROS_INFO_NAMED("Backwards", "BackwardGlobalPlanner initialize");
+    //ROS_INFO_NAMED("Backwards", "UndoPathGlobalPlanner initialize");
     costmap_ros_ = costmap_ros;
     //ROS_WARN_NAMED("Backwards", "initializating global planner, costmap address: %ld", (long)costmap_ros);
 
+    forwardPathSub_ = nh_.subscribe("odom_tracker_path", 2, &UndoPathGlobalPlanner::onForwardTrailMsg, this);
+
     ros::NodeHandle nh;
-    planPub_ = nh.advertise<nav_msgs::Path>("backward_planner/global_plan", 1);
-    markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("backward_planner/markers", 1);
+    planPub_ = nh.advertise<nav_msgs::Path>("undo_path_planner/global_plan", 1);
+    markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("undo_path_planner/markers", 1);
 }
 
 /**
@@ -65,7 +68,7 @@ void BackwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DRO
 * onForwardTrailMsg()
 ******************************************************************************************************************
 */
-void BackwardGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage)
+void UndoPathGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage)
 {
     lastForwardPathMsg_ = *trailMessage;
 }
@@ -75,7 +78,7 @@ void BackwardGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr &tr
 * publishGoalMarker()
 ******************************************************************************************************************
 */
-void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, double r, double g, double b)
+void UndoPathGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, double r, double g, double b)
 {
     double phi = tf::getYaw(pose.orientation);
     visualization_msgs::Marker marker;
@@ -114,40 +117,58 @@ void BackwardGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, d
 * defaultBackwardPath()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseStamped &start,
+bool UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::PoseStamped &start,
                                                       const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
 {
     auto q = start.pose.orientation;
 
     geometry_msgs::PoseStamped pose;
     pose = start;
-    
-    double dx = start.pose.position.x - goal.pose.position.x;
-    double dy = start.pose.position.y - goal.pose.position.y;
 
-    double lenght = sqrt(dx * dx + dy * dy);
+    plan.push_back(pose);
 
-    geometry_msgs::PoseStamped prevState;
-    if (lenght > skip_straight_motion_distance_)
+    //ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
+    int i = lastForwardPathMsg_.poses.size();
+ 
+    double mindist = std::numeric_limits<double>::max();
+    int mindistindex = -1;
+
+    geometry_msgs::Pose goalProjected;
+
+    for (auto &p : lastForwardPathMsg_.poses | boost::adaptors::reversed)
     {
-        // skip initial pure spinning and initial straight motion
-        //ROS_INFO("1 - heading to goal position pure spinning");
-        double heading_direction = atan2(dy, dx);
-        double startyaw = tf::getYaw(q);
-        double offset = angles::shortest_angular_distance(startyaw, heading_direction);
-        heading_direction = startyaw + offset;
+        pose = p;
+        pose.header.frame_id = costmap_ros_->getGlobalFrameID();
+        pose.header.stamp = ros::Time::now();
 
-        prevState = cl_move_base_z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
-        //ROS_INFO("2 - going forward keep orientation pure straight");
+        double dx = pose.pose.position.x - goal.pose.position.x;
+        double dy = pose.pose.position.y - goal.pose.position.y;
 
-        prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
+        double dist = sqrt(dx * dx + dy * dy);
+        if (dist <= mindist)
+        {
+            mindistindex = i;
+            mindist = dist;
+            goalProjected = pose.pose;
+        }
+
+        i--;
+    }
+
+    if (mindistindex != -1)
+    {
+        ROS_WARN_STREAM("[UndoPathGlobalPlanner ] Creating the backwards plan from odom tracker path" << lastForwardPathMsg_.poses.size());
+        // copy the path at the inverse direction
+        for (int i = lastForwardPathMsg_.poses.size() - 1; i >= mindistindex; i--)
+        {
+            auto &pose = lastForwardPathMsg_.poses[i];
+            plan.push_back(pose);
+        }
     }
     else
     {
-        prevState = start;
+        ROS_ERROR_STREAM( "[UndoPathGlobalPlanner ] backward global plan size:  " <<plan.size());   
     }
-
-    ROS_WARN_STREAM( "[BackwardGlobalPlanner ] backward global plan size:  " <<plan.size());
 }
 
 /**
@@ -155,7 +176,7 @@ bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseS
 * makePlan()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
+bool UndoPathGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
                                      const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
 {
     //ROS_WARN_NAMED("Backwards", "Backwards global planner: Generating global plan ");
@@ -163,7 +184,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 
     plan.clear();
 
-    this->createDefaultBackwardPath(start, goal, plan);
+    this->createDefaultUndoPathPlan(start, goal, plan);
     //this->createPureSpiningAndStragihtLineBackwardPath(start, goal, plan);
 
     //ROS_INFO_STREAM(" start - " << start);
@@ -183,7 +204,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
         plan.clear();
         plan.push_back(start);
         plan.push_back(start);
-        ROS_INFO("[BackwardGlobalPlanner] Artificial backward plan on current pose.");
+        ROS_INFO("UndoPathGlobalPlanner Artificial backward plan on current pose.");
     }
 
     nav_msgs::Path planMsg;
@@ -223,7 +244,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 * makePlan()
 ******************************************************************************************************************
 */
-bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
+bool UndoPathGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
                                      const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan,
                                      double &cost)
 {
@@ -232,5 +253,5 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     return true;
 }
 
-} // namespace backward_global_planner
+} // namespace undo_path_global_planner
 } // namespace cl_move_base_z

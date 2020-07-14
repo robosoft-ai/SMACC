@@ -8,6 +8,3 @@ BackwardLocalPlanner:
     xy_goal_tolerance: 0.015 # 0.025
     yaw_goal_tolerance: 0.3
     pure_spinning_straight_line_mode: true
-
-
-

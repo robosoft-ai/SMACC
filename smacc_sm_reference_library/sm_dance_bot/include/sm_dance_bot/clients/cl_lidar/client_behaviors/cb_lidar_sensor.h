@@ -18,7 +18,7 @@ public:
 
   virtual void onEntry() override
   {
-    ROS_INFO("CbLidarSensor onEntry");
+    ROS_INFO("[CbLidarSensor] onEntry");
     cl_multirole_sensor::CbDefaultMultiRoleSensorBehavior<ClLidarSensor>::onEntry();
   }
 

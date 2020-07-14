@@ -105,17 +105,14 @@ void CbAbsoluteRotate::onEntry()
     goal.target_pose.pose.position = currentPoseMsg.position;
     goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
 
-    geometry_msgs::PoseStamped stampedCurrentPoseMsg;
-    stampedCurrentPoseMsg.header.frame_id = referenceFrame;
-    stampedCurrentPoseMsg.header.stamp = ros::Time::now();
-    stampedCurrentPoseMsg.pose = currentPoseMsg;
-
     this->requiresClient(moveBaseClient_);
     auto odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
-    odomTracker_->pushPath();
-
-    odomTracker_->setStartPoint(stampedCurrentPoseMsg);
-    odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+    if (odomTracker_!=nullptr)
+    {
+        odomTracker_->pushPath();
+        odomTracker_->setStartPoint(p->toPoseStampedMsg());
+        odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
+    }
 
     ROS_INFO_STREAM("[CbAbsoluteRotate] current pose: " << currentPoseMsg);
     ROS_INFO_STREAM("[CbAbsoluteRotate] goal pose: " << goal.target_pose.pose);
