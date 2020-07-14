@@ -10,7 +10,7 @@ namespace smacc
     this->onInitialize();
   }
 
-  void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::SmaccClientBehavior> clBehavior)
+  void ISmaccOrthogonal::addClientBehavior(std::shared_ptr<smacc::ISmaccClientBehavior> clBehavior)
   {
     if (clBehavior != nullptr)
     {

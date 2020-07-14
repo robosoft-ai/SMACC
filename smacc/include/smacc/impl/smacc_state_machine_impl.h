@@ -224,7 +224,7 @@ void ISmaccStateMachine::mapBehavior()
     // of this component
     BehaviorType *behavior;
     this->requiresComponent(behavior);
-    globalreference = dynamic_cast<SmaccClientBehavior *>(behavior);
+    globalreference = dynamic_cast<ISmaccClientBehavior *>(behavior);
 
     this->setGlobalSMData(stateFieldName, globalreference);
   }
@@ -289,7 +289,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
 {
   static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
                     std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
-                    std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value ||
+                    std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
                     std::is_base_of<StateReactor, TSmaccObjectType>::value ||
                     std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
                 "Only are accepted smacc types as subscribers for smacc signals");
@@ -307,7 +307,7 @@ boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSig
   }
   else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
            std::is_base_of<StateReactor, TSmaccObjectType>::value ||
-           std::is_base_of<SmaccClientBehavior, TSmaccObjectType>::value)
+           std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
   {
     ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
              demangledTypeName<TSmaccObjectType>().c_str());

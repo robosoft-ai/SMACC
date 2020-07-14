@@ -15,6 +15,7 @@ class ISmaccStateMachine;
 class ISmaccClient;
 class ISmaccUpdatable;
 class ISmaccComponent;
+class ISmaccClientBehavior;
 class SmaccClientBehavior;
 class SignalDetector;
 

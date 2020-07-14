@@ -84,7 +84,7 @@ inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &ISmaccOrthogonal
     return clients_;
 }
 
-inline const std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> &ISmaccOrthogonal::getClientBehaviors() const
+inline const std::vector<std::shared_ptr<smacc::ISmaccClientBehavior>> &ISmaccOrthogonal::getClientBehaviors() const
 {
     return this->clientBehaviors_;
 }
