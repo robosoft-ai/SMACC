@@ -17,7 +17,7 @@
         <param name="trajectory_execution/allowed_start_tolerance" value="0.001"/>
     </group> -->
 
-    <!-- <node pkg="sm_moveit_4" type="sm_moveit_4_node" name="sm_moveit_4_node" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e "/> -->
+    <node pkg="sm_moveit_4" type="sm_moveit_4_node" name="sm_moveit_4_node" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e "/>
 
     <!-- Start Gazebo with a blank world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
