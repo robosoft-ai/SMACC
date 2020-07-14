@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>undo_path_global_planner</name>
-  <version>0.0.1</version>
+  <version>0.9.1</version>
   <description>The undo_path_global_planner package.</description>
 
   <maintainer email="pibgeus@gmail.com">Pablo Inigo Blasco</maintainer>
