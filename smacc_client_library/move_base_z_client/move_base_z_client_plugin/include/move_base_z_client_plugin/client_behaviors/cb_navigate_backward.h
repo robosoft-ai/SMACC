@@ -6,16 +6,17 @@
 #pragma once
 
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
+#include <smacc/smacc_asynchronous_client_behavior.h>
 #include <tf/transform_listener.h>
 
-#include   <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace cl_move_base_z
 {
 
-// sends the mobile base some distance backwards
-class CbNavigateBackwards : public smacc::SmaccClientBehavior
+// It sends the mobile base some distance backwards
+class CbNavigateBackwards : public smacc::SmaccAsyncClientBehavior
 {
 public:
     boost::optional<float> backwardDistance;

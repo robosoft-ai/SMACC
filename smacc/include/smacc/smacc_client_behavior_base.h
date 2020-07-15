@@ -9,8 +9,6 @@
 
 namespace smacc
 {
-    class ISmaccState;
-
     class ISmaccClientBehavior
     {
     public:
@@ -31,9 +29,9 @@ namespace smacc
     protected:
         virtual void runtimeConfigure();
 
-        virtual void onEntry() = 0;
+        virtual void onEntry() {};
 
-        virtual void onExit() = 0;
+        virtual void onExit() {};
 
         template <typename EventType>
         void postEvent(const EventType &ev);
@@ -43,7 +41,12 @@ namespace smacc
 
         inline ISmaccState *getCurrentState();
 
+        virtual void executeOnEntry();
+
+        virtual void executeOnExit();
+
     private:
+        
         template <typename TObjectTag, typename TDerived>
         void configureEventSourceTypes();
 

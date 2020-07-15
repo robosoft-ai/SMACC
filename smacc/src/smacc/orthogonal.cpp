@@ -56,7 +56,7 @@ namespace smacc
 
         try
         {
-          clBehavior->onEntry();
+          clBehavior->executeOnEntry();
         }
         catch (const std::exception &e)
         {
@@ -80,7 +80,7 @@ namespace smacc
         ROS_INFO("[Orthogonal %s] OnExit, current Behavior: %s", this->getName().c_str(), clBehavior->getName().c_str());
         try
         {
-          clBehavior->onExit();
+          clBehavior->executeOnExit();
         }
         catch (const std::exception &e)
         {
