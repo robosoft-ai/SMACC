@@ -22,11 +22,11 @@ namespace sm_moveit_4
 
             // (Constraint workspace) create two simetrics virtual-collision side walls from the robot base reference frame
             std::string referenceFrame = "base_link";
-            double lateralDistance = 0.28;
+            double lateralDistance = 0.38;
 
             geometry_msgs::Vector3 size;
             size.x = 1.0;
-            size.y = 0.01;
+            size.y = 0.2;
             size.z = 0.6;
 
             geometry_msgs::Vector3 offset;

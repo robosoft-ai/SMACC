@@ -55,7 +55,7 @@ void CbMoveEndEffector::update()
 bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
                                            geometry_msgs::PoseStamped &targetObjectPose)
 {
-  moveit::planning_interface::PlanningSceneInterface &planningSceneInterface = movegroupClient_->planningSceneInterface;
+  auto& planningSceneInterface = movegroupClient_->planningSceneInterface;
   ROS_DEBUG("[CbMoveEndEffector] Synchronous sleep of 1 seconds");
   ros::WallDuration(1).sleep();
 

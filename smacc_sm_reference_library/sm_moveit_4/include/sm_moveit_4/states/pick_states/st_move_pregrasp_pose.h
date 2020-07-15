@@ -38,7 +38,7 @@ namespace sm_moveit_4
 
                 auto cbMoveEndEffector = this->getOrthogonal<OrArm>()->getClientBehavior<CbMoveEndEffector>();
                 // --------------------------------------
-                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
+                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setBigTableCollisionVolume();
 
                 geometry_msgs::PoseStamped targetCubePose;
                 if (perceptionSystem->decidePickCubePose(targetCubePose))
@@ -52,7 +52,7 @@ namespace sm_moveit_4
 
             void onExit()
             {
-                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->unsetSafeArmMotionToAvoidCubeCollisions();
+                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setSmallTableCollisionVolume();
             }
         };
     } // namespace pick_states

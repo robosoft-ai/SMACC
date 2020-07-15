@@ -29,7 +29,7 @@ namespace sm_moveit_4
 
                 ClMoveGroup* moveGroup;
                 this->requiresClient(moveGroup);
-                moveGroup->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
+                moveGroup->getComponent<CpConstraintTableWorkspaces>()->setBigTableCollisionVolume();
 
                 geometry_msgs::PoseStamped placingPose;
 
@@ -47,7 +47,7 @@ namespace sm_moveit_4
                 ClMoveGroup *moveGroup;
                 this->requiresClient(moveGroup);
 
-                moveGroup->getComponent<CpConstraintTableWorkspaces>()->unsetSafeArmMotionToAvoidCubeCollisions();
+                moveGroup->getComponent<CpConstraintTableWorkspaces>()->setSmallTableCollisionVolume();
             }
         };
     } // namespace place_states
