@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <smacc/smacc.h>
 #include <tf/tf.h>
 namespace sm_moveit_4

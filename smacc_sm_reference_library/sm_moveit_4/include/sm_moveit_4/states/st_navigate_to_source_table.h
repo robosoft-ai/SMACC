@@ -1,3 +1,5 @@
+#pragma once 
+
 #include <smacc/smacc.h>
 #include <ros/spinner.h>
 

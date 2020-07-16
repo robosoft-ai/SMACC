@@ -1,4 +1,7 @@
+#pragma once 
+
 #include <smacc/smacc.h>
+
 namespace sm_moveit_4
 {
     // STATE DECLARATION

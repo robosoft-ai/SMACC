@@ -127,7 +127,11 @@ include_directories(
 add_executable(${PROJECT_NAME}_node 
                      src/sm_moveit_4_node.cpp
                      src/sm_moveit_4/clients/gripper_client/cl_gripper.cpp
+                     src/sm_moveit_4/clients/cl_moveit_client/cp_constraint_lateral_workspace.cpp
+                     src/sm_moveit_4/clients/cl_moveit_client/cp_constraint_virtual_side_wall.cpp
+                     src/sm_moveit_4/clients/cl_moveit_client/cp_constraint_tables_workspaces.cpp
                      )
+                     
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############

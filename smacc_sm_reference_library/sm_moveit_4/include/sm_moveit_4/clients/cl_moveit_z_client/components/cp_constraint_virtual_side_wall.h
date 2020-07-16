@@ -3,21 +3,19 @@
 #include <smacc/component.h>
 #include <moveit_z_client/cl_movegroup.h>
 #include <geometry_msgs/Vector3.h>
-#include <ros/time.h>
 
 namespace sm_moveit_4
 {
     namespace cl_moveit_z_client
     {
         // Adds two simetric collision virtual walls for the moveit planning
-        class CpConstraintLateralWorkspace : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
+        class CpConstraintVirtualSideWall : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
         {
         private:
             moveit::planning_interface::PlanningSceneInterface *planningSceneInterface_;
             moveit_z_client::ClMoveGroup *movegroupclient_;
 
             std::string referenceFrame_;
-            float lateralDistance_;
             geometry_msgs::Vector3 offset_;
             geometry_msgs::Vector3 size_;
             bool enabled_ = true;
@@ -28,7 +26,7 @@ namespace sm_moveit_4
 
             void disable();
 
-            CpConstraintLateralWorkspace(std::string referenceFrame, float lateralDistance, geometry_msgs::Vector3 size, geometry_msgs::Vector3 offset = geometry_msgs::Vector3());
+            CpConstraintVirtualSideWall(std::string referenceFrame, geometry_msgs::Vector3 size, geometry_msgs::Vector3 offset = geometry_msgs::Vector3());
 
             virtual void onInitialize() override;
 
