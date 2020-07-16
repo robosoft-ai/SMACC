@@ -2,6 +2,7 @@
 
 namespace smacc
 {
+    /*
     void SmaccAsyncClientBehavior::executeOnEntry()
     {
         ISmaccClientBehavior::executeOnEntry();
@@ -15,5 +16,5 @@ namespace smacc
     SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior()
     {
 
-    }
+    }*/
 } // namespace smacc
