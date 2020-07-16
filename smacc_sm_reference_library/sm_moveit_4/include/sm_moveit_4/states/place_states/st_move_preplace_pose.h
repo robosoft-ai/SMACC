@@ -25,7 +25,6 @@ namespace sm_moveit_4
             {
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
-                
 
                 ClMoveGroup* moveGroup;
                 this->requiresClient(moveGroup);

@@ -3,6 +3,8 @@
 
 namespace sm_moveit_4
 {
+    struct EvFinishDemo : sc::event<EvFinishDemo> {};
+
     // STATE DECLARATION
     struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmMoveIt4>
     {
@@ -13,7 +15,9 @@ namespace sm_moveit_4
 
             // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
             Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS1::SsPickObject, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>>
+            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>,
+            Transition<EvFinishDemo, StNavigateFinalPose>
+            >
             reactions;
 
         // STATE FUNCTIONS
@@ -42,8 +46,7 @@ namespace sm_moveit_4
             }
             else
             {
-                ROS_WARN("[DEMO COMPLETED! All cubes are on their tables!]");
-                ros::spin();
+                this->postEvent<EvFinishDemo>();
             }
         }
 
