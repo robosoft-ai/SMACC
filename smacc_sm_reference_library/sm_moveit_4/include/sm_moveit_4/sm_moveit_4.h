@@ -3,7 +3,7 @@
 // ORTHOGONALS
 
 // CLIENT BEHAVIORS
-#include <moveit_z_client/client_behaviors.h>
+#include <move_group_interface_client/client_behaviors.h>
 
 #include <move_base_z_client_plugin/client_behaviors.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
@@ -12,7 +12,7 @@
 #include "clients/gripper_client/client_behaviors/cb_open_gripper.h"
 
 // CLIENT NAMESPACES (to improve readability in state transitions and behavior configurations)
-using namespace moveit_z_client;
+using namespace move_group_interface_client;
 using namespace sm_moveit_4::cl_gripper;
 
 // ORTHOGONALS
@@ -21,7 +21,7 @@ using namespace sm_moveit_4::cl_gripper;
 #include "orthogonals/or_perception.h"
 #include "orthogonals/or_navigation.h"
 
-using namespace sm_moveit_4::cl_moveit_z_client;
+using namespace sm_moveit_4::move_group_interface_client;
 
 namespace sm_moveit_4
 {

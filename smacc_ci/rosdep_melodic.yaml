@@ -8,7 +8,7 @@ smacc_sensors:
   ubuntu: [ros-melodic-smacc-sensors]
 move_base_z_client_plugin:
   ubuntu: [ros-melodic-move-base-z-client-plugin]
-moveit_z_client:
+move_group_interface_client:
   ubuntu: [ros-melodic-moveit-z-client]
 ros_timer_client:
   ubuntu: [ros-melodic-ros-timer-client]

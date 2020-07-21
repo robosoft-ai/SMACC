@@ -143,7 +143,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
         'backward_global_planner',
         'undo_path_global_planner',
         'backward_local_planner',        
-        'moveit_z_client',
+        'move_group_interface_client',
         'sm_atomic',
         'sm_dance_bot',
         'sm_dance_bot_strikes_back',

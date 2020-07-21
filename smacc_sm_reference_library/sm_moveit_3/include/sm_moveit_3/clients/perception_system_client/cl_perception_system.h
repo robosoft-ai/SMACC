@@ -3,7 +3,7 @@
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <smacc/smacc_client.h>
-#include <moveit_z_client/cl_movegroup.h>
+#include <move_group_interface_client/cl_movegroup.h>
 
 
 #include <gazebo_msgs/LinkStates.h>
@@ -75,7 +75,7 @@ public:
     gazeboStateSubscriber_ =
         nh.subscribe("/gazebo/link_states", 1, &ClPerceptionSystem::simulatedLinkStateCallback, this);
     
-    moveit_z_client::ClMoveGroup* movegroupclient;
+    move_group_interface_client::ClMoveGroup* movegroupclient;
     requiresClient(movegroupclient);
     planningInterface_ = &movegroupclient->planningSceneInterface;
   }

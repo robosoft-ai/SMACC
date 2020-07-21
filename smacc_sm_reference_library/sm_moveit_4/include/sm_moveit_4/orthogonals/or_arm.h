@@ -1,17 +1,17 @@
 #pragma once
 
 #include <smacc/smacc_orthogonal.h>
-#include <moveit_z_client/cl_movegroup.h>
-#include <sm_moveit_4/clients/cl_moveit_z_client/components/cp_constraint_lateral_workspace.h>
-#include <sm_moveit_4/clients/cl_moveit_z_client/components/cp_constraint_virtual_side_wall.h>
-#include <sm_moveit_4/clients/cl_moveit_z_client/components/cp_constraint_tables_workspaces.h>
+#include <move_group_interface_client/cl_movegroup.h>
+#include <sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_lateral_workspace.h>
+#include <sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_virtual_side_wall.h>
+#include <sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_tables_workspaces.h>
 
-#include <moveit_z_client/components/cp_grasping_objects.h>
+#include <move_group_interface_client/components/cp_grasping_objects.h>
 
 namespace sm_moveit_4
 {
-    using namespace moveit_z_client;
-    using namespace sm_moveit_4::cl_moveit_z_client;
+    using namespace ::move_group_interface_client;
+    using namespace sm_moveit_4::move_group_interface_client;
 
 
     class OrArm : public smacc::Orthogonal<OrArm>
@@ -23,7 +23,7 @@ namespace sm_moveit_4
             moveGroupClient->initialize();
 
             // (Constraint workspace) create obstacles around table surfaces (optionally covering the cubes volume)
-            moveGroupClient->createComponent<cl_moveit_z_client::CpConstraintTableWorkspaces>();
+            moveGroupClient->createComponent<move_group_interface_client::CpConstraintTableWorkspaces>();
 
             // (Constraint workspace) create two simetrics virtual-collision side walls from the robot base reference frame
             {
@@ -38,7 +38,7 @@ namespace sm_moveit_4
                 geometry_msgs::Vector3 offset;
                 offset.z = 0.3;
 
-                moveGroupClient->createComponent<cl_moveit_z_client::CpConstraintLateralWorkspace>(referenceFrame, lateralDistance, size, offset);
+                moveGroupClient->createComponent<move_group_interface_client::CpConstraintLateralWorkspace>(referenceFrame, lateralDistance, size, offset);
             }
 
             // (Constraint workspace) create one tall virtual-wall-collision at the left side (from the robot base reference frame)
@@ -55,12 +55,12 @@ namespace sm_moveit_4
                 offset.y = 0.48;
                 offset.z = 0.6;
 
-                moveGroupClient->createComponent<cl_moveit_z_client::CpConstraintVirtualSideWall>(referenceFrame, size, offset);
+                moveGroupClient->createComponent<move_group_interface_client::CpConstraintVirtualSideWall>(referenceFrame, size, offset);
             }
 
             //-----------------------------------------------
             {
-                auto *graspingComponent = moveGroupClient->createComponent<sm_moveit_4::cl_moveit_z_client::GraspingComponent>();
+                auto *graspingComponent = moveGroupClient->createComponent<GraspingComponent>();
                 graspingComponent->fingerTipNames = {"l_gripper_finger_link", "r_gripper_finger_link"};
 
                 // create 10 graspable cubes located exactly in the tf frames with the same name 
