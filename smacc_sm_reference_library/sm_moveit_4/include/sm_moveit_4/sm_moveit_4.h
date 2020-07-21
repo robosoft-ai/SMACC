@@ -25,50 +25,50 @@ using namespace sm_moveit_4::cl_moveit_z_client;
 
 namespace sm_moveit_4
 {
-//STATE FORWARD DECLARATIONS
+    //STATE FORWARD DECLARATIONS
 
-namespace SS1
-{
-class SsPickObject;
-}
+    namespace SS1
+    {
+        class SsPickObject;
+    }
 
-namespace SS2
-{
-class SsPlaceObject;
-}
+    namespace SS2
+    {
+        class SsPlaceObject;
+    }
 
-class StInitialPosture;
-class StUndoIncorrectForward;
-class StNavigateToSourceTable;
-class StNavigateToDestinyTable;
-class StNavigationTableRetreat;
-class StNavigateFinalPose;
-class StFinalRaiseHandsUp;
+    class StInitialPosture;
+    class StUndoIncorrectForward;
+    class StNavigateToSourceTable;
+    class StNavigateToDestinyTable;
+    class StNavigationTableRetreat;
+    class StNavigateFinalPose;
+    class StFinalRaiseHandsUp;
 
-//SUPERSTATE FORWARD DECLARATIONS
+    //SUPERSTATE FORWARD DECLARATIONS
 
-// MODE STATES FORWARD DECLARATIONS
+    // MODE STATES FORWARD DECLARATIONS
 } // namespace sm_moveit_4
 
 using namespace smacc;
 
 namespace sm_moveit_4
 {
-/// \brief Advanced example of state machine with smacc that shows multiple techniques
-///  for the development of state machines
-struct SmMoveIt4
-    : public smacc::SmaccStateMachineBase<SmMoveIt4, StInitialPosture>
-{
-    using SmaccStateMachineBase::SmaccStateMachineBase;
-
-    virtual void onInitialize() override
+    /// \brief Advanced example of state machine with smacc that shows multiple techniques
+    ///  for the development of state machines
+    struct SmMoveIt4
+        : public smacc::SmaccStateMachineBase<SmMoveIt4, StInitialPosture>
     {
-        this->createOrthogonal<OrPerception>();
-        this->createOrthogonal<OrGripper>();
-        this->createOrthogonal<OrArm>();
-        this->createOrthogonal<OrNavigation>();
-    }
-};
+        using SmaccStateMachineBase::SmaccStateMachineBase;
+
+        virtual void onInitialize() override
+        {
+            this->createOrthogonal<OrPerception>();
+            this->createOrthogonal<OrGripper>();
+            this->createOrthogonal<OrArm>();
+            this->createOrthogonal<OrNavigation>();
+        }
+    };
 
 } // namespace sm_moveit_4
 

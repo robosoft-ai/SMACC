@@ -6,9 +6,13 @@
 #include <sm_moveit_4/clients/cl_moveit_z_client/components/cp_constraint_virtual_side_wall.h>
 #include <sm_moveit_4/clients/cl_moveit_z_client/components/cp_constraint_tables_workspaces.h>
 
+#include <moveit_z_client/components/cp_grasping_objects.h>
+
 namespace sm_moveit_4
 {
     using namespace moveit_z_client;
+    using namespace sm_moveit_4::cl_moveit_z_client;
+
 
     class OrArm : public smacc::Orthogonal<OrArm>
     {
@@ -52,6 +56,18 @@ namespace sm_moveit_4
                 offset.z = 0.6;
 
                 moveGroupClient->createComponent<cl_moveit_z_client::CpConstraintVirtualSideWall>(referenceFrame, size, offset);
+            }
+
+            //-----------------------------------------------
+            {
+                auto *graspingComponent = moveGroupClient->createComponent<sm_moveit_4::cl_moveit_z_client::GraspingComponent>();
+                graspingComponent->fingerTipNames = {"l_gripper_finger_link", "r_gripper_finger_link"};
+
+                // create 10 graspable cubes located exactly in the tf frames with the same name 
+                for (int i = 0; i < 10; i++)
+                {
+                    graspingComponent->createGraspableBox("cube_" + std::to_string(i + 1), 0, 0, 0, 0.06, 0.06, 0.06);
+                }
             }
         }
     };

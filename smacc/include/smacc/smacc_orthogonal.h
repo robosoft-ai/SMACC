@@ -58,6 +58,8 @@ private:
     ISmaccStateMachine *stateMachine_;
 
     std::vector<std::shared_ptr<smacc::SmaccClientBehavior>> clientBehaviors_;
+
+    friend class ISmaccStateMachine;
 };
 
 } // namespace smacc

@@ -17,6 +17,7 @@ namespace sm_moveit_4
             static void staticConfigure()
             {
                 configure_orthogonal<OrGripper, CbOpenGripper>();
+                configure_orthogonal<OrGripper, CbDetachObject>();
             }
 
             void onEntry()
@@ -26,14 +27,6 @@ namespace sm_moveit_4
 
             void onExit()
             {
-                ClMoveGroup *moveGroupClient;
-                this->requiresClient(moveGroupClient);
-
-                auto &planningSceneInterface = moveGroupClient->planningSceneInterface;
-
-                moveGroupClient->moveGroupClientInterface.detachObject("collisioncube");
-                planningSceneInterface.removeCollisionObjects({"collisioncube"});
-
                 ros::WallDuration(2).sleep();
             }
         };
