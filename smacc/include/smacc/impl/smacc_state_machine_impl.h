@@ -96,17 +96,19 @@ void ISmaccStateMachine::requiresComponent(SmaccComponentType *&storage)
   ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
   std::lock_guard<std::recursive_mutex> lock(m_mutex_);
 
-  for (auto *ortho : this->orthogonals_)
+  for (auto ortho : this->orthogonals_)
   {
-    for (ISmaccClient *client : ortho->getClients())
+    for (auto& client : ortho.second->clients_)
     {
+
       storage = client->getComponent<SmaccComponentType>();
-      if (storage == nullptr)
+      if (storage != nullptr)
       {
         return;
       }
     }
   }
+  ROS_WARN("component %s is required but it was not found in any orthogonal", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
 
   // std::string componentkey = demangledTypeName<SmaccComponentType>();
   // SmaccComponentType *ret;

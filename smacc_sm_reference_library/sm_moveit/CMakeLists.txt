@@ -7,7 +7,7 @@ project(sm_moveit)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED moveit_z_client move_base_z_client_plugin moveit_ros_planning_interface control_msgs)
+find_package(catkin REQUIRED move_group_interface_client move_base_z_client_plugin moveit_ros_planning_interface control_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)

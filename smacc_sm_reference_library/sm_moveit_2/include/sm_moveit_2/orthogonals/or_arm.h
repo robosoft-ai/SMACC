@@ -1,11 +1,11 @@
 #pragma once
 
 #include <smacc/smacc_orthogonal.h>
-#include <moveit_z_client/cl_movegroup.h>
+#include <move_group_interface_client/cl_movegroup.h>
 
 namespace sm_moveit_2
 {
-using namespace moveit_z_client;
+using namespace move_group_interface_client;
 class OrArm : public smacc::Orthogonal<OrArm>
 {
 public:

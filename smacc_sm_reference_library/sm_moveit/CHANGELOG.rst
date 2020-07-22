@@ -27,7 +27,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in moveit_z_client and other fixes
+* some improvments in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * minor change
 * Cleaning up Warnings
@@ -72,7 +72,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in moveit_z_client and other fixes
+* some improvments in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * minor change
 * Cleaning up Warnings

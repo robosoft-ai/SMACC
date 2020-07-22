@@ -35,7 +35,7 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
         // moveit_msgs::Constraints path_constraints;
 
-        // moveit_z_client::ClMoveGroup* moveGroupSmaccClient_;
+        // move_group_interface_client::ClMoveGroup* moveGroupSmaccClient_;
         // this->requiresClient(moveGroupSmaccClient_);
 
         // auto jointValues = moveGroupSmaccClient_->moveGroupClientInterface.getCurrentJointValues();

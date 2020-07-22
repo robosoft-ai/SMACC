@@ -7,7 +7,7 @@ project(sm_moveit_4)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED moveit_z_client move_base_z_client_plugin moveit_ros_planning_interface control_msgs)
+find_package(catkin REQUIRED move_group_interface_client move_base_z_client_plugin moveit_ros_planning_interface control_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -127,7 +127,11 @@ include_directories(
 add_executable(${PROJECT_NAME}_node 
                      src/sm_moveit_4_node.cpp
                      src/sm_moveit_4/clients/gripper_client/cl_gripper.cpp
+                     src/sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_lateral_workspace.cpp
+                     src/sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_virtual_side_wall.cpp
+                     src/sm_moveit_4/clients/move_group_interface_client/components/cp_constraint_tables_workspaces.cpp
                      )
+                     
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############

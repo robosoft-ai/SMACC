@@ -57,7 +57,7 @@
   <depend>fetch_navigation</depend>
 
   <depend>move_base_z_client_plugin</depend>
-  <depend>moveit_z_client</depend>
+  <depend>move_group_interface_client</depend>
 
   <depend>control_msgs</depend>
   <depend>fake_localization</depend>

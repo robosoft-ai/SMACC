@@ -1,6 +1,12 @@
+#pragma once 
+
 #include <smacc/smacc.h>
+#include <ros/spinner.h>
+
 namespace sm_moveit_4
 {
+    struct EvFinishDemo : sc::event<EvFinishDemo> {};
+
     // STATE DECLARATION
     struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmMoveIt4>
     {
@@ -11,44 +17,39 @@ namespace sm_moveit_4
 
             // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
             Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS1::SsPickObject, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>>
+            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>,
+            Transition<EvFinishDemo, StNavigateFinalPose>
+            >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal_runtime<OrNavigation, CbNavigateGlobalPosition>
-                                                            (
-                                                                [](auto& navigateGlobalPosition)
-                                                                {
-                                                                    ClPerceptionSystem* perceptionSystem;
-                                                                    navigateGlobalPosition.requiresClient(perceptionSystem);
-                                                                    
-                                                                    auto mainTablePose = perceptionSystem->getMainTablePose().pose;
-                                                                    mainTablePose.position.x -= 0.85;
-
-                                                                    geometry_msgs::PoseStamped nextCubePose;
-                                                                    if(perceptionSystem->decidePickCubePose(nextCubePose))
-                                                                    {
-                                                                        // align with the cube in the y axis
-                                                                        mainTablePose.position.y = nextCubePose.pose.position.y;
-
-
-
-                                                                        navigateGlobalPosition.setGoal(mainTablePose);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        ROS_WARN("[DEMO COMPLETED! All cubes are on their tables!]");
-                                                                        ros::spin();
-                                                                    }
-                                                                }
-                                                            );
+            configure_orthogonal<OrNavigation, CbNavigateGlobalPosition>();
         }
 
         void runtimeConfigure()
         {
-            ROS_INFO("runtime");
+            auto* navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
+            
+            ClPerceptionSystem *perceptionSystem;
+            navigateGlobalPosition->requiresClient(perceptionSystem);
+
+            auto mainTablePose = perceptionSystem->getMainTablePose().pose;
+            mainTablePose.position.x -= 0.85;
+
+            geometry_msgs::PoseStamped nextCubePose;
+            if (perceptionSystem->decidePickCubePose(nextCubePose))
+            {
+                // align with the cube in the y axis
+                mainTablePose.position.y = nextCubePose.pose.position.y;
+
+                navigateGlobalPosition->setGoal(mainTablePose);
+            }
+            else
+            {
+                this->postEvent<EvFinishDemo>();
+            }
         }
 
         void OnEntry()

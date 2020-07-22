@@ -24,6 +24,12 @@ struct StPlaceRetreat : smacc::SmaccState<StPlaceRetreat, SS>
 
     void runtimeConfigure()
     {
+        /*for the case of abor/retry cartesian retreat --*/
+        ClMoveGroup *moveGroup;
+        this->requiresClient(moveGroup);
+        moveGroup->getComponent<CpConstraintTableWorkspaces>()->disableTableCollisionVolume();
+        ros::Duration(1).sleep();
+        
         auto moveCartesianRelative = this->getOrthogonal<OrArm>()
                                          ->getClientBehavior<CbMoveCartesianRelative>();
 
@@ -35,7 +41,7 @@ struct StPlaceRetreat : smacc::SmaccState<StPlaceRetreat, SS>
         ClMoveGroup *moveGroup;
         this->requiresClient(moveGroup);
 
-        moveGroup->getComponent<CpConstraintTableWorkspaces>()->setSafeArmMotionToAvoidCubeCollisions();
+        moveGroup->getComponent<CpConstraintTableWorkspaces>()->setBigTableCollisionVolume();
     }
 };
 } // namespace place_states

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <moveit_z_client/cl_movegroup.h>
+#include <move_group_interface_client/cl_movegroup.h>
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 

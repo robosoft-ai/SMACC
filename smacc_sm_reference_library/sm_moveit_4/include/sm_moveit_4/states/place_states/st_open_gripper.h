@@ -17,6 +17,7 @@ namespace sm_moveit_4
             static void staticConfigure()
             {
                 configure_orthogonal<OrGripper, CbOpenGripper>();
+                configure_orthogonal<OrGripper, CbDetachObject>();
             }
 
             void onEntry()

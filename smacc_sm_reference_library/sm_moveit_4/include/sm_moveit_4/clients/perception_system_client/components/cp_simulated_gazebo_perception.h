@@ -7,7 +7,7 @@
 
 #include <gazebo_msgs/LinkStates.h>
 #include <moveit_msgs/CollisionObject.h>
-#include <moveit_z_client/cl_movegroup.h>
+#include <move_group_interface_client/cl_movegroup.h>
 
 #include "cp_scene_state.h"
 
@@ -16,7 +16,7 @@ namespace sm_moveit_4
     namespace cl_perception_system
     {
         using namespace smacc;
-        using namespace moveit_z_client;
+        using namespace move_group_interface_client;
 
         /*
         This component focuses in propagating gazebo links states (tables and cubes) to the tf system.

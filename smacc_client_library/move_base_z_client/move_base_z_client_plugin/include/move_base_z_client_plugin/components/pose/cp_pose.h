@@ -41,6 +41,11 @@ public:
         return referenceFrame_;
     }
 
+    inline const std::string &getFrameId() const
+    {
+        return poseFrameName_;
+    }
+
     bool isInitialized;
 
 private:

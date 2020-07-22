@@ -6,7 +6,7 @@ Forthcoming
 -----------
 * progess on cubes collisions
 * Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* some improvements in moveit_z_client and examples
+* some improvements in move_group_interface_client and examples
 * Tweaks
 * improving opencv2 box detection and also restoring sm_moveit example
 * A few more stances

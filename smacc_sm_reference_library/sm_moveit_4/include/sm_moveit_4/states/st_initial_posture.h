@@ -23,6 +23,13 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt4>
 
     void runtimeConfigure()
     {
+        
+    }
+
+    void onExit()
+    {
+        // to avoid looping very fast if it aborts
+        ros::Duration(1).sleep();
     }
 };
 } // namespace sm_moveit_4
