@@ -10,7 +10,7 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt4>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigateToSourceTable>,
+        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigateToSourceTable, SUCCESS>,
         Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;
@@ -26,10 +26,18 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmMoveIt4>
         
     }
 
-    void onExit()
+    void onExit(SUCCESS)
+    {
+    }
+
+    void onExit(ABORT)
     {
         // to avoid looping very fast if it aborts
         ros::Duration(1).sleep();
+    }
+
+    void onExit()
+    {
     }
 };
 } // namespace sm_moveit_4
