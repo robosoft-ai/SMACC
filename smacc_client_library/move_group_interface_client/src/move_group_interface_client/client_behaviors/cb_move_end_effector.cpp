@@ -40,10 +40,6 @@ void CbMoveEndEffector::onEntry()
   }
 }
 
-void CbMoveEndEffector::onExit()
-{
-}
-
 bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
                                            geometry_msgs::PoseStamped &targetObjectPose)
 {
@@ -70,17 +66,21 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
     {
       ROS_INFO("[CbMoveEndEffector] motion execution succedded");
       movegroupClient_->postEventMotionExecutionSucceded();
+      this->postSuccessEvent();
+
     }
     else
     {
       ROS_INFO("[CbMoveEndEffector] motion execution failed");
       movegroupClient_->postEventMotionExecutionFailed();
+      this->postFailureEvent();
     }
   }
   else
   {
     ROS_INFO("[CbMoveEndEffector] motion execution failed");
     movegroupClient_->postEventMotionExecutionFailed();
+    this->postFailureEvent();
   }
 
   ROS_DEBUG("[CbMoveEndEffector] Synchronous sleep of 1 seconds");

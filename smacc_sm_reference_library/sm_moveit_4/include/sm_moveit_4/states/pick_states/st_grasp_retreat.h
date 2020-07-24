@@ -11,8 +11,8 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture, SUCCESS>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>,  StGraspRetreat, ABORT> /* not retry on failure*/
+        Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StNavigationPosture, SUCCESS>,
+        Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>,  StGraspRetreat, ABORT> /* not retry on failure*/
         >
         reactions;
 
@@ -41,7 +41,7 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
         
     }
 
-    void onExit()
+    void onExit(SUCCESS)
     {
         ClMoveGroup *moveGroup;
         this->requiresClient(moveGroup);

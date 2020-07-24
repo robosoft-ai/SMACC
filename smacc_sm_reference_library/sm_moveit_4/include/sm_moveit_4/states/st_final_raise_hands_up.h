@@ -11,7 +11,7 @@ struct StFinalRaiseHandsUp : smacc::SmaccState<StFinalRaiseHandsUp, SmMoveIt4>
     // TRANSITION TABLE
     typedef mpl::list<
         
-        Transition<MoveGroupMotionExecutionFailed<StFinalRaiseHandsUp, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
+        Transition<EvCbFailure<CbMoveKnownState, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;
 
@@ -24,6 +24,11 @@ struct StFinalRaiseHandsUp : smacc::SmaccState<StFinalRaiseHandsUp, SmMoveIt4>
     void runtimeConfigure()
     {
         // to avoid looping very fast if it aborts
+        ros::Duration(1).sleep();
+    }
+
+    void onExit(ABORT)
+    {
         ros::Duration(1).sleep();
     }
 };

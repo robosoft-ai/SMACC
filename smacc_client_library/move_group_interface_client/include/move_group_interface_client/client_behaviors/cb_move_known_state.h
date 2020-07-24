@@ -16,6 +16,7 @@ class CbMoveKnownState : public CbMoveJoints
 {
 public:
   CbMoveKnownState(std::string pkg, std::string config_path);
+  virtual ~CbMoveKnownState();
 
   private:
   static std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath);

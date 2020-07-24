@@ -87,6 +87,12 @@ namespace smacc
           ROS_ERROR("[ClientBehavior %s] Exception onExit - continuing with next client behavior. Exception info: %s", clBehavior->getName().c_str(), e.what());
         }
       }
+
+      for (auto &clBehavior : clientBehaviors_)
+      {
+        clBehavior->dispose();
+      }
+
       clientBehaviors_.clear();
     }
     else

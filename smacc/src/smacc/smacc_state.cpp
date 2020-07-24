@@ -67,13 +67,4 @@ void ISmaccState::notifyTransitionFromTransitionTypeInfo(TypeInfo::Ptr &transiti
     }
 }
 
-void ISmaccState::requestLockStateMachine(std::string msg)
-{
-    this->getStateMachine().lockStateMachine(msg);
-}
-void ISmaccState::requestUnlockStateMachine(std::string msg)
-{
-    this->getStateMachine().unlockStateMachine(msg);
-}
-
 } // namespace smacc

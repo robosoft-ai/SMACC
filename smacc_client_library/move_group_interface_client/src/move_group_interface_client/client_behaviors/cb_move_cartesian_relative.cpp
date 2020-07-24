@@ -100,12 +100,14 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
   {
     ROS_INFO("[CbMoveCartesianRelative] relative motion execution succedded: fraction %lf.", fraction);
     moveGroupSmaccClient_->postEventMotionExecutionSucceded();
+    this->postSuccessEvent();
   }
   else
   {
     movegroupClient->setPoseTarget(referenceStartPose); // undo changes since we did not executed the motion
     ROS_INFO("[CbMoveCartesianRelative] relative motion execution failed: fraction %lf.", fraction);
     moveGroupSmaccClient_->postEventMotionExecutionFailed();
+    this->postFailureEvent();
   }  
 }
 }  // namespace move_group_interface_client

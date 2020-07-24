@@ -11,8 +11,8 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper, SUCCESS>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StGraspApproach, ABORT>/*retry on failure*/
+        Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StCloseGripper, SUCCESS>,
+        Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StGraspApproach, ABORT>/*retry on failure*/
         >
         reactions;
 
@@ -26,7 +26,14 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
     void runtimeConfigure()
     {
-        ros::Duration(2).sleep();
+        ClMoveGroup* moveGroup_;
+        this->requiresClient(moveGroup_);
+        moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setSmallTableCollisionVolume();
+    }
+
+    void onExit(ABORT)
+    {
+        ros::Duration(2).sleep();        
     }
 };
 } // namespace pick_states

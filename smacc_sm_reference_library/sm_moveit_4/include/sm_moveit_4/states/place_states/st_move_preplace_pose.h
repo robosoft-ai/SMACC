@@ -10,8 +10,8 @@ namespace sm_moveit_4
 
             // TRANSITION TABLE
             typedef mpl::list<
-                Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StPlaceApproach>,
-                Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePrePlacePose, ABORT> /*retry on failure*/
+                Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StPlaceApproach>,
+                Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMovePrePlacePose, ABORT> /*retry on failure*/
                 >
                 reactions;
 
@@ -26,7 +26,7 @@ namespace sm_moveit_4
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
 
-                ClMoveGroup* moveGroup;
+                ClMoveGroup *moveGroup;
                 this->requiresClient(moveGroup);
                 moveGroup->getComponent<CpConstraintTableWorkspaces>()->setBigTableCollisionVolume();
 

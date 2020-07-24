@@ -60,17 +60,20 @@ namespace move_group_interface_client
       {
         ROS_INFO("[CbMoveJoints] motion execution succedded. Throwing success event.");
         movegroupClient_->postEventMotionExecutionSucceded();
+        this->postSuccessEvent();
       }
       else
       {
         ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
         movegroupClient_->postEventMotionExecutionFailed();
+        this->postFailureEvent();
       }
     }
     else
     {
       ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
       movegroupClient_->postEventMotionExecutionFailed();
+      this->postFailureEvent();
     }
   }
 

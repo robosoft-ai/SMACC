@@ -11,15 +11,15 @@
 #include <future>
 namespace move_group_interface_client
 {
-class CbMoveEndEffector : public smacc::SmaccAsyncClientBehavior
+class CbMoveEndEffectorTrajectory : public smacc::SmaccAsyncClientBehavior
 {
 public:
   geometry_msgs::PoseStamped targetPose;
   std::string tip_link_;
   boost::optional<std::string> group_;
 
-  CbMoveEndEffector();
-  CbMoveEndEffector(geometry_msgs::PoseStamped target_pose, std::string tip_link = "");
+  CbMoveEndEffectorTrajectory();
+  CbMoveEndEffectorTrajectory(geometry_msgs::PoseStamped target_pose, std::string tip_link = "");
 
   virtual void onEntry() override;
 

@@ -17,6 +17,12 @@ CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
 {
 }
 
+CbMoveKnownState::~CbMoveKnownState()
+{
+  
+}
+
+
 #define HAVE_NEW_YAMLCPP
 std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::string pkg, std::string filepath)
 {

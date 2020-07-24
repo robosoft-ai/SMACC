@@ -34,5 +34,10 @@ namespace smacc
         ROS_DEBUG("[%s] Default empty SmaccClientBehavior onExit", this->getName().c_str());
         this->onExit();
     }
+
+    void ISmaccClientBehavior::dispose()
+    {
+
+    }
     
 } // namespace smacc

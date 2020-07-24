@@ -78,12 +78,14 @@ namespace move_group_interface_client
             {
                 ROS_INFO("[CbMoveEndEffectorRelative] motion execution succedded");
                 movegroupClient_->postEventMotionExecutionSucceded();
+                this->postSuccessEvent();
             }
             else
             {
                 moveGroupInterface.setPoseTarget(referenceStartPose); // undo to avoid abort-repeat state issues with this relative motion
                 ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
                 movegroupClient_->postEventMotionExecutionFailed();
+                this->postFailureEvent();
             }
         }
         else
@@ -91,6 +93,7 @@ namespace move_group_interface_client
             moveGroupInterface.setPoseTarget(referenceStartPose); //undo since we did not executed the motion
             ROS_INFO("[CbMoveEndEffectorRelative] motion execution failed");
             movegroupClient_->postEventMotionExecutionFailed();
+            this->postFailureEvent();
         }
     }
 } // namespace move_group_interface_client

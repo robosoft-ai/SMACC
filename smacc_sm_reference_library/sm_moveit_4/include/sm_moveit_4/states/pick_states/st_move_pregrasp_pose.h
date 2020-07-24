@@ -11,8 +11,8 @@ namespace sm_moveit_4
             // TRANSITION TABLE
             typedef mpl::list<
 
-                Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StGraspApproach, SUCCESS>,
-                Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StMovePregraspPose, ABORT> /*retry on failure*/
+                Transition<EvCbSuccess<CbMoveEndEffector, OrArm>, StGraspApproach, SUCCESS>,
+                Transition<EvCbFailure<CbMoveEndEffector, OrArm>, StMovePregraspPose, ABORT> /*retry on failure*/
                 >
                 reactions;
 
@@ -48,11 +48,6 @@ namespace sm_moveit_4
 
                     cbMoveEndEffector->targetPose = pregraspPose;
                 }
-            }
-
-            void onExit()
-            {
-                moveGroup_->getComponent<CpConstraintTableWorkspaces>()->setSmallTableCollisionVolume();
             }
         };
     } // namespace pick_states

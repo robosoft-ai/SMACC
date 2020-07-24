@@ -20,7 +20,7 @@ void ISmaccClientBehavior::postEvent(const EventType &ev)
     }
     else
     {
-        stateMachine_->postEvent(ev);
+        stateMachine_->postEvent(ev, EventLifeTime::CURRENT_STATE);
     }
 }
 
@@ -33,7 +33,8 @@ void ISmaccClientBehavior::postEvent()
     }
     else
     {
-        stateMachine_->template postEvent<EventType>();
+         
+        stateMachine_->template postEvent<EventType>(EventLifeTime::CURRENT_STATE);
     }
 }
 

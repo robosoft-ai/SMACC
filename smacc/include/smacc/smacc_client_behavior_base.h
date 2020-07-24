@@ -45,6 +45,8 @@ namespace smacc
 
         virtual void executeOnExit();
 
+        virtual void dispose();
+
     private:
         
         template <typename TObjectTag, typename TDerived>

@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<package format="2">
+  <name>sm_atomic</name>
+  <version>0.9.1</version>
+  <description>The sm_atomic package</description>
+
+  
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+
+
+  
+  <license>BSD-3</license>
+
+
+  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/sm_atomic</url> -->
+
+
+  
+
+
+  
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>smacc</depend>
+  <depend>ros_timer_client</depend>
+  <depend>xterm</depend>
+  <depend>smacc_runtime_test</depend>
+
+<<<<<<< HEAD
+  <test_depend>rostest</test_depend>
+  <test_depend>gtest</test_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+=======
+  
+>>>>>>> master
+  <export>
+    
+
+  </export>
+</package>

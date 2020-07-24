@@ -7,6 +7,7 @@
 #pragma once
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_reactor.h>
+#include <smacc/introspection/state_traits.h>
 
 namespace smacc
 {
@@ -113,24 +114,16 @@ namespace smacc
     // this function is called by boot statechart before the destructor call
     void exit()
     {
-      try
-      {
-        this->requestLockStateMachine("state exit");
-        auto fullname = demangleSymbol(typeid(MostDerived).name());
-        ROS_WARN_STREAM("exiting state: " << fullname);
-        //this->setParam("destroyed", true);
-
-        // first process orthogonals onexits
-        this->getStateMachine().notifyOnStateExit(static_cast<MostDerived *>(this));
-
-        // then call exit state
-        ROS_WARN_STREAM("state exit: " << fullname);
-        static_cast<MostDerived *>(this)->onExit();
-      }
-      catch (...)
-      {
-      }
-      this->requestUnlockStateMachine("state exit");
+        auto* derivedThis = static_cast<MostDerived *>(this);
+        this->getStateMachine().notifyOnStateExitting(derivedThis);
+        try
+        {          // static_cast<MostDerived *>(this)->onExit();
+          standardOnExit(*derivedThis);
+        }
+        catch (...)
+        {
+        }
+        this->getStateMachine().notifyOnStateExited(derivedThis);
     }
 
   public:

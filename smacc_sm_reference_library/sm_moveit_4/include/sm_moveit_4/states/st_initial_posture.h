@@ -10,15 +10,20 @@ namespace sm_moveit_4
 
         // TRANSITION TABLE
         typedef mpl::list<
-            Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigateToSourceTable, SUCCESS>,
-            Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
+            // Transition<Finished<CbMoveKnownState, OrNavigation>, StNavigateToSourceTable, SUCCESS>,
+
+            // Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigateToSourceTable, SUCCESS>,
+            // Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
+            
+            Transition<EvCbSuccess<CbMoveKnownState, OrArm>, StNavigateToSourceTable, SUCCESS>,
+            Transition<EvCbFailure<CbMoveKnownState, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
             >
             reactions;
 
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            configure_orthogonal<OrNavigation, CbMoveKnownState>("sm_moveit_4", "config/manipulation/known_states/initial_posture.yaml");
+            configure_orthogonal<OrArm, CbMoveKnownState>("sm_moveit_4", "config/manipulation/known_states/initial_posture.yaml");
         }
 
         void runtimeConfigure()

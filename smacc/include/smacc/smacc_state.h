@@ -81,9 +81,5 @@ protected:
   ISmaccState *parentState_;
 
   const smacc::introspection::SmaccStateInfo *stateInfo_;
-
-  void requestLockStateMachine(std::string msg);
-
-  void requestUnlockStateMachine(std::string msg);
 };
 } // namespace smacc

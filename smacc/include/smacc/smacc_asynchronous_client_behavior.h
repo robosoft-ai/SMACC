@@ -7,13 +7,32 @@
 #pragma once
 #include <smacc/smacc_client_behavior_base.h>
 #include <thread>
+#include <condition_variable>
+#include <mutex>
+#include <future>
 
 namespace smacc
 {
+
+    template <typename AsyncCB, typename Orthogonal>
+    struct EvCbFinished : sc::event<EvCbFinished<AsyncCB, Orthogonal>>
+    {
+    };
+
+    template <typename AsyncCB, typename Orthogonal>
+    struct EvCbSuccess : sc::event<EvCbSuccess<AsyncCB, Orthogonal>>
+    {
+    };
+
+    template <typename AsyncCB, typename Orthogonal>
+    struct EvCbFailure : sc::event<EvCbFailure<AsyncCB, Orthogonal>>
+    {
+    };
+
     // Asnchronous client behaviors are used when the onEntry or onExit function execution is slow
-    // CONCEPT: this funcionality is related with the orthogonality of SmaccState machines. 
+    // CONCEPT: this funcionality is related with the orthogonality of SmaccState machines.
     // No behavior should block the creation of other behaviors, all of them conceptually start in parallel.
-    // Alternative for long duration behaviors: using default-synchromous SmaccClientBehaviors with the update method 
+    // Alternative for long duration behaviors: using default-synchromous SmaccClientBehaviors with the update method
     // ASYNCHRONOUS STATE MACHINES DESIGN NOTES: Asynchromous behaviors can safely post events and use its local methods,
     //  but the interaction with other components or elements of
     // the state machine is not by-default thread safe and must be manually implemented. For example, if some element of the architecture
@@ -22,14 +41,32 @@ namespace smacc
     // to some mutex for that component
     class SmaccAsyncClientBehavior : public ISmaccClientBehavior
     {
-    protected:
+    public:
+        template <typename TObjectTag, typename TDerived>
+        void configureEventSourceTypes()
+        {
+            postFinishEventFn_ = [=] { this->postEvent<EvCbFinished<TDerived, TObjectTag>>(); };
+            postSuccessEventFn_ = [=] { this->postEvent<EvCbSuccess<TDerived, TObjectTag>>(); };
+            postFailureEventFn_ = [=] { this->postEvent<EvCbFailure<TDerived, TObjectTag>>(); };
+        }
+
         virtual ~SmaccAsyncClientBehavior();
+
+    protected:
         virtual void executeOnEntry() override;
         virtual void executeOnExit() override;
+
+        void postSuccessEvent();
+        void postFailureEvent();
+
+        virtual void dispose() override;
+
     private:
-        std::shared_ptr<std::thread> onEntryThread_;
-        std::shared_ptr<std::thread> onExitThread_;
+        std::future<int> onEntryThread_;
+        std::future<int> onExitThread_;
+
+        std::function<void()> postFinishEventFn_;
+        std::function<void()> postSuccessEventFn_;
+        std::function<void()> postFailureEventFn_;
     };
 } // namespace smacc
-
-#include <smacc/impl/smacc_client_behavior_impl.h>

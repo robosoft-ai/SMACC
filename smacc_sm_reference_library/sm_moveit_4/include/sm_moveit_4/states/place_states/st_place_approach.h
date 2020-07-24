@@ -10,8 +10,8 @@ struct StPlaceApproach : smacc::SmaccState<StPlaceApproach, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StOpenGripper>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StPlaceApproach, ABORT>/*retry on failure*/
+        Transition<EvCbSuccess<CbMoveCartesianRelative, OrArm>, StOpenGripper>,
+        Transition<EvCbFailure<CbMoveCartesianRelative, OrArm>, StPlaceApproach, ABORT>/*retry on failure*/
         >
         reactions;
 
