@@ -1,0 +1,44 @@
+<?xml version="1.0" ?>
+<package format="2">
+  <name>sm_fetch_two_table_pick_n_place_1</name>
+  <version>0.9.1</version>
+  <description>The sm_fetch_two_table_pick_n_place_1 package</description>
+
+  
+  <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
+
+
+  
+  <license>BSD-3</license>
+
+
+  <!-- Url tags are optional, but multiple are allowed, one per tag -->
+  <!-- Optional attribute type can be: website, bugtracker, or repository -->
+  <!-- Example: -->
+  <!-- <url type="website">http://wiki.ros.org/sm_fetch_two_table_pick_n_place_1</url> -->
+
+
+  
+
+
+  
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- <depend>moveit_core</depend> -->
+  <depend>fetch_moveit_config</depend>
+  <depend>fetch_gazebo</depend>
+  <depend>fetch_maps</depend>
+  <depend>fetch_navigation</depend>
+
+  <depend>move_base_z_client_plugin</depend>
+  <depend>move_group_interface_client</depend>
+
+  <depend>control_msgs</depend>
+  <depend>fake_localization</depend>
+  <depend>xterm</depend>
+  
+  
+  <export>
+  
+  </export>
+</package>
