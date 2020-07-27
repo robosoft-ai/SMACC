@@ -9,7 +9,7 @@
 #include <move_group_interface_client/cl_movegroup.h>
 #include <smacc/smacc_asynchronous_client_behavior.h>
 #include <future>
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 class CbMoveEndEffectorTrajectory : public smacc::SmaccAsyncClientBehavior
 {
@@ -31,4 +31,4 @@ protected:
 
   ClMoveGroup *movegroupClient_;
 };
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

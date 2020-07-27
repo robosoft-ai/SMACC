@@ -1,14 +1,14 @@
 #include <move_group_interface_client/client_behaviors/cb_detach_object.h>
 #include <move_group_interface_client/cl_movegroup.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
     void CbDetachObject::onEntry()
     {
-        move_group_interface_client::GraspingComponent *graspingComponent;
+        cl_move_group_interface::GraspingComponent *graspingComponent;
         this->requiresComponent(graspingComponent);
 
-        move_group_interface_client::ClMoveGroup *moveGroupClient;
+        cl_move_group_interface::ClMoveGroup *moveGroupClient;
         this->requiresClient(moveGroupClient);
 
         auto &planningSceneInterface = moveGroupClient->planningSceneInterface;
@@ -20,4 +20,4 @@ namespace move_group_interface_client
     void CbDetachObject::onExit()
     {
     }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

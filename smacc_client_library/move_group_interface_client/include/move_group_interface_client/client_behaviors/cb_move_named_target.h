@@ -11,7 +11,7 @@
 #include <map>
 #include <string>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
   //named targets are configured in the urdf file
 class CbMoveNamedTarget : public smacc::SmaccAsyncClientBehavior
@@ -29,4 +29,4 @@ public:
 
   std::map<std::string, double> getNamedTargetValues();
 };
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

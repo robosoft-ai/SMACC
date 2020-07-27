@@ -1,5 +1,5 @@
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
    class CpTrajectoryHistory : public smacc::ISmaccComponent
    {

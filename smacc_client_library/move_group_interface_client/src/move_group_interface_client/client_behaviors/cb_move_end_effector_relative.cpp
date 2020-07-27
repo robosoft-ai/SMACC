@@ -9,7 +9,7 @@
 #include <tf/transform_datatypes.h>
 #include <future>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
     CbMoveEndEffectorRelative::CbMoveEndEffectorRelative()
     {
@@ -96,4 +96,4 @@ namespace move_group_interface_client
             this->postFailureEvent();
         }
     }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

@@ -15,7 +15,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/Transform.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 
 template <typename TSource, typename TObjectTag>
@@ -108,4 +108,4 @@ public:
     return this->getStateMachine()->createSignalConnection(onFailed_, callback, object);
   }
 };
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

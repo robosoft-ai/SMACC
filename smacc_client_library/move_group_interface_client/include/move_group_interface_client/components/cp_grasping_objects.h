@@ -5,7 +5,7 @@
 #include <moveit_msgs/CollisionObject.h>
 #include <map>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
    class GraspingComponent : public smacc::ISmaccComponent
    {
@@ -22,4 +22,4 @@ namespace move_group_interface_client
       void createGraspableBox(std::string frameid, float x, float y, float z, float xl, float yl, float zl);
    };
 
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

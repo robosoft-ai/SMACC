@@ -3,7 +3,7 @@
 #include <smacc/smacc.h>
 #include <move_group_interface_client/cl_movegroup.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
     class CbAttachObject : public smacc::SmaccClientBehavior
     {
@@ -20,4 +20,4 @@ namespace move_group_interface_client
 
     private:
     };
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

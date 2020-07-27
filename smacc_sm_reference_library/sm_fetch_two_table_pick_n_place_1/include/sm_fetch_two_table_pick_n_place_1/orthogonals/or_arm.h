@@ -5,7 +5,7 @@
 
 namespace sm_fetch_two_table_pick_n_place_1
 {
-using namespace move_group_interface_client;
+using namespace cl_move_group_interface;
 class OrArm : public smacc::Orthogonal<OrArm>
 {
 public:

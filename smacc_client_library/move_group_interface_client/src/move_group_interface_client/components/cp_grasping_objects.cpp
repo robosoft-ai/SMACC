@@ -1,6 +1,6 @@
 #include <move_group_interface_client/components/cp_grasping_objects.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
    bool GraspingComponent::getGraspingObject(std::string name, moveit_msgs::CollisionObject &object)
    {
@@ -39,4 +39,4 @@ namespace move_group_interface_client
 
       graspingObjects[boxname] = collision;
    }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

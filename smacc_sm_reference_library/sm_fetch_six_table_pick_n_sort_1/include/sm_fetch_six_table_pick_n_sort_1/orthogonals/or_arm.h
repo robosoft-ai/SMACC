@@ -10,8 +10,8 @@
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    using namespace ::move_group_interface_client;
-    using namespace sm_fetch_six_table_pick_n_sort_1::move_group_interface_client;
+    using namespace cl_move_group_interface;
+    using namespace sm_fetch_six_table_pick_n_sort_1::cl_move_group_interface;
 
 
     class OrArm : public smacc::Orthogonal<OrArm>
@@ -23,7 +23,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
             moveGroupClient->initialize();
 
             // (Constraint workspace) create obstacles around table surfaces (optionally covering the cubes volume)
-            moveGroupClient->createComponent<move_group_interface_client::CpConstraintTableWorkspaces>();
+            moveGroupClient->createComponent<cl_move_group_interface::CpConstraintTableWorkspaces>();
 
             // (Constraint workspace) create two simetrics virtual-collision side walls from the robot base reference frame
             {
@@ -38,7 +38,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 geometry_msgs::Vector3 offset;
                 offset.z = 0.3;
 
-                moveGroupClient->createComponent<move_group_interface_client::CpConstraintLateralWorkspace>(referenceFrame, lateralDistance, size, offset);
+                moveGroupClient->createComponent<cl_move_group_interface::CpConstraintLateralWorkspace>(referenceFrame, lateralDistance, size, offset);
             }
 
             // (Constraint workspace) create one tall virtual-wall-collision at the left side (from the robot base reference frame)
@@ -55,7 +55,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 offset.y = 0.48;
                 offset.z = 0.6;
 
-                moveGroupClient->createComponent<move_group_interface_client::CpConstraintVirtualSideWall>(referenceFrame, size, offset);
+                moveGroupClient->createComponent<cl_move_group_interface::CpConstraintVirtualSideWall>(referenceFrame, size, offset);
             }
 
             //-----------------------------------------------

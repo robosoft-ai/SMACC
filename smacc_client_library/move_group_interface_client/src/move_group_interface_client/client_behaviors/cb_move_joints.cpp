@@ -7,7 +7,7 @@
 #include <move_group_interface_client/client_behaviors/cb_move_joints.h>
 #include <future>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
   CbMoveJoints::CbMoveJoints(const std::map<std::string, double> &jointValueTarget) : jointValueTarget_(jointValueTarget)
   {
@@ -80,4 +80,4 @@ namespace move_group_interface_client
   void CbMoveJoints::onExit()
   {
   }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

@@ -16,7 +16,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
     namespace cl_perception_system
     {
         using namespace smacc;
-        using namespace move_group_interface_client;
+        using namespace cl_move_group_interface;
 
         /*
         This component focuses in propagating gazebo links states (tables and cubes) to the tf system.

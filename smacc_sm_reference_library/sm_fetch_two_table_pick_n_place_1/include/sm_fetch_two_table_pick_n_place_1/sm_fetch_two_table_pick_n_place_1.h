@@ -12,7 +12,7 @@
 #include <sm_fetch_two_table_pick_n_place_1/clients/gripper_client/client_behaviors/cb_open_gripper.h>
 
 // CLIENT NAMESPACES (to improve readability in state transitions and behavior configurations)
-using namespace move_group_interface_client;
+using namespace cl_move_group_interface;
 using namespace sm_fetch_two_table_pick_n_place_1::cl_gripper;
 
 //STATE REACTORS

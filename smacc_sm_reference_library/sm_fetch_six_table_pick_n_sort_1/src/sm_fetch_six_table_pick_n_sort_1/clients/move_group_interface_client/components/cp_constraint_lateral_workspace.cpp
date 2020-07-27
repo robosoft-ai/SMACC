@@ -2,7 +2,7 @@
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    namespace move_group_interface_client
+    namespace cl_move_group_interface
     {
 
         void CpConstraintLateralWorkspace::enable()
@@ -86,6 +86,6 @@ namespace sm_fetch_six_table_pick_n_sort_1
             collisions.push_back(box);
         }
 
-    } // namespace move_group_interface_client
+    } // namespace cl_move_group_interface
 
 } // namespace sm_fetch_six_table_pick_n_sort_1

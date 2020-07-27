@@ -1,7 +1,7 @@
 #include <move_group_interface_client/client_behaviors/cb_attach_object.h>
 #include <move_group_interface_client/components/cp_grasping_objects.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
     CbAttachObject::CbAttachObject(std::string targetObjectName)
         : targetObjectName_(targetObjectName)
@@ -15,10 +15,10 @@ namespace move_group_interface_client
 
     void CbAttachObject::onEntry()
     {
-        move_group_interface_client::ClMoveGroup *moveGroup;
+        cl_move_group_interface::ClMoveGroup *moveGroup;
         this->requiresClient(moveGroup);
 
-        move_group_interface_client::GraspingComponent *graspingComponent;
+        cl_move_group_interface::GraspingComponent *graspingComponent;
         this->requiresComponent(graspingComponent);
 
         // auto cubepos = cubeinfo->pose_->toPoseStampedMsg();
@@ -43,4 +43,4 @@ namespace move_group_interface_client
     void CbAttachObject::onExit()
     {
     }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

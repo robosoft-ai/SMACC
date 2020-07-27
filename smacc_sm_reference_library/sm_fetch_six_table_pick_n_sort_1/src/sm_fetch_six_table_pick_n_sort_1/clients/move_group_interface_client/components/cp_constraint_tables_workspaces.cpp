@@ -2,7 +2,7 @@
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    namespace move_group_interface_client
+    namespace cl_move_group_interface
     {
         void CpConstraintTableWorkspaces::setBigTableCollisionVolume()
         {
@@ -87,6 +87,6 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 this->planningSceneInterface_->removeCollisionObjects(disableNames);
             }
         }
-    } // namespace move_group_interface_client
+    } // namespace cl_move_group_interface
 
 } // namespace sm_fetch_six_table_pick_n_sort_1

@@ -6,14 +6,14 @@
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    namespace move_group_interface_client
+    namespace cl_move_group_interface
     {
         // Adds two simetric collision virtual walls for the moveit planning
         class CpConstraintVirtualSideWall : public smacc::ISmaccComponent, public smacc::ISmaccUpdatable
         {
         private:
             moveit::planning_interface::PlanningSceneInterface *planningSceneInterface_;
-            ::move_group_interface_client::ClMoveGroup *movegroupclient_;
+            ::cl_move_group_interface::ClMoveGroup *movegroupclient_;
 
             std::string referenceFrame_;
             geometry_msgs::Vector3 offset_;
@@ -37,6 +37,6 @@ namespace sm_fetch_six_table_pick_n_sort_1
             void createVirtualCollisionWalls(std::vector<moveit_msgs::CollisionObject> &collisions, const ros::Time &time, int addOrRemove);
         };
 
-    } // namespace move_group_interface_client
+    } // namespace cl_move_group_interface
 
 } // namespace sm_fetch_six_table_pick_n_sort_1

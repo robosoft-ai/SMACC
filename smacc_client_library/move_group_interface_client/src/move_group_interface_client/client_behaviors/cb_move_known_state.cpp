@@ -10,7 +10,7 @@
 #include <ros/package.h>
 #include <experimental/filesystem>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
   : CbMoveJoints(loadJointStatesFromFile(pkg, config_path))
@@ -104,4 +104,4 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
     ROS_ERROR_STREAM("Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
 }
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

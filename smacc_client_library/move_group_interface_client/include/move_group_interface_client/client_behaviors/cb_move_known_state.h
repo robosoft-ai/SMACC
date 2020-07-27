@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 class CbMoveKnownState : public CbMoveJoints
 {
@@ -21,4 +21,4 @@ public:
   private:
   static std::map<std::string, double> loadJointStatesFromFile(std::string pkg, std::string filepath);
 };
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

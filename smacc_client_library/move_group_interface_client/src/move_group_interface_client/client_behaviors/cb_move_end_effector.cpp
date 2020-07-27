@@ -9,7 +9,7 @@
 #include <moveit/kinematic_constraints/utils.h>
 #include <future>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 CbMoveEndEffector::CbMoveEndEffector()
 {
@@ -89,4 +89,4 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
   return success;
 }
 
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

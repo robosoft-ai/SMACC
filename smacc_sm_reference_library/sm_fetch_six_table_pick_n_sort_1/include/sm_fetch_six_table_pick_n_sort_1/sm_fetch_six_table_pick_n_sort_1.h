@@ -12,7 +12,7 @@
 #include "clients/gripper_client/client_behaviors/cb_open_gripper.h"
 
 // CLIENT NAMESPACES (to improve readability in state transitions and behavior configurations)
-using namespace move_group_interface_client;
+using namespace cl_move_group_interface;
 using namespace sm_fetch_six_table_pick_n_sort_1::cl_gripper;
 
 // ORTHOGONALS
@@ -21,7 +21,7 @@ using namespace sm_fetch_six_table_pick_n_sort_1::cl_gripper;
 #include "orthogonals/or_perception.h"
 #include "orthogonals/or_navigation.h"
 
-using namespace sm_fetch_six_table_pick_n_sort_1::move_group_interface_client;
+using namespace sm_fetch_six_table_pick_n_sort_1::cl_move_group_interface;
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {

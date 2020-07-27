@@ -7,7 +7,7 @@
 #include <move_group_interface_client/client_behaviors/cb_move_cartesian_relative.h>
 #include <future>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 CbMoveCartesianRelative::CbMoveCartesianRelative()
 {
@@ -110,4 +110,4 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
     this->postFailureEvent();
   }  
 }
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

@@ -6,7 +6,7 @@
 
 #include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
     CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory()
     {
@@ -29,4 +29,4 @@ namespace move_group_interface_client
 
         // handle finishing events
     }
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

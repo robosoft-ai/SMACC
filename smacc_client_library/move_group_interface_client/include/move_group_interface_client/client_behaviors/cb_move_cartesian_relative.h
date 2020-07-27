@@ -9,7 +9,7 @@
 #include <move_group_interface_client/cl_movegroup.h>
 #include <smacc/smacc_asynchronous_client_behavior.h>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 class CbMoveCartesianRelative : public smacc::SmaccAsyncClientBehavior
 {
@@ -34,4 +34,4 @@ public:
   public:
     ClMoveGroup *moveGroupSmaccClient_;
 };
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

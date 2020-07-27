@@ -5,7 +5,7 @@
  ******************************************************************************************************************/
 
 #include <move_group_interface_client/cl_movegroup.h>
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 
 ClMoveGroup::ClMoveGroup(std::string groupName)
@@ -30,4 +30,4 @@ void ClMoveGroup::postEventMotionExecutionFailed()
     postEventMotionExecutionFailed_();
 }
 
-} // namespace move_group_interface_client
+} // namespace cl_move_group_interface

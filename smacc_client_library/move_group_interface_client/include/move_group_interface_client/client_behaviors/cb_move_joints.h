@@ -11,7 +11,7 @@
 #include <map>
 #include <string>
 
-namespace move_group_interface_client
+namespace cl_move_group_interface
 {
 class CbMoveJoints : public smacc::SmaccAsyncClientBehavior
 {
@@ -29,4 +29,4 @@ protected:
   void moveJoints(moveit::planning_interface::MoveGroupInterface &moveGroupInterface);
   ClMoveGroup *movegroupClient_;
   };
-}  // namespace move_group_interface_client
+}  // namespace cl_move_group_interface

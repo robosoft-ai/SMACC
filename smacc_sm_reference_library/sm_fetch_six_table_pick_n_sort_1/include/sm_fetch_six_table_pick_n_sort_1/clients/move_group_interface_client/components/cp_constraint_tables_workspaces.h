@@ -8,7 +8,7 @@
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    namespace move_group_interface_client
+    namespace cl_move_group_interface
     {
         using namespace cl_perception_system;
         // Adds two simetric collision virtual walls for the moveit planning
@@ -34,6 +34,6 @@ namespace sm_fetch_six_table_pick_n_sort_1
             virtual void update();
         };
 
-    } // namespace move_group_interface_client
+    } // namespace cl_move_group_interface
 
 } // namespace sm_fetch_six_table_pick_n_sort_1
