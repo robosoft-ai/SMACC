@@ -14,20 +14,19 @@ namespace cl_move_group_interface
 class CbMoveEndEffectorTrajectory : public smacc::SmaccAsyncClientBehavior
 {
 public:
-  geometry_msgs::PoseStamped targetPose;
-  std::string tip_link_;
+  
+  // std::string tip_link_;
   boost::optional<std::string> group_;
 
-  CbMoveEndEffectorTrajectory();
-  CbMoveEndEffectorTrajectory(geometry_msgs::PoseStamped target_pose, std::string tip_link = "");
+  CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped>& endEffectorTrajectory);
 
   virtual void onEntry() override;
 
   std::future<moveit::planning_interface::MoveItErrorCode> planAndExecuteAsync();
 
 protected:
-  bool moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
-                          geometry_msgs::PoseStamped &targetObjectPose);
+
+  std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory_;
 
   ClMoveGroup *movegroupClient_;
 };

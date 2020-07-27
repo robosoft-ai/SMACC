@@ -10,8 +10,7 @@ namespace cl_move_group_interface
 
     CbAttachObject::CbAttachObject()
     {
-        
-    }
+        }
 
     void CbAttachObject::onEntry()
     {
