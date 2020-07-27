@@ -53,17 +53,17 @@ public:
         return this->getStateMachine()->createSignalConnection(onFirstMessageReceived_, callback, object);
     }
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes()
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
     {
         this->postMessageEvent = [=](auto msg) {
-            auto event = new EvTopicMessage<TDerived, TObjectTag>();
+            auto event = new EvTopicMessage<TSourceObject, TOrthogonal>();
             event->msgData = msg;
             this->postEvent(event);
         };
 
         this->postInitialMessageEvent = [=](auto msg) {
-            auto event = new EvTopicInitialMessage<TDerived, TObjectTag>();
+            auto event = new EvTopicInitialMessage<TSourceObject, TOrthogonal>();
             event->msgData = msg;
             this->postEvent(event);
         };

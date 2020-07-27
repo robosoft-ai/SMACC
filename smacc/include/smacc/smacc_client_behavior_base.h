@@ -49,8 +49,8 @@ namespace smacc
 
     private:
         
-        template <typename TObjectTag, typename TDerived>
-        void configureEventSourceTypes();
+        template <typename TOrthogonal, typename TSourceObject>
+        void onOrthogonalAllocation();
 
         // a reference to the owner state machine
         ISmaccStateMachine *stateMachine_;

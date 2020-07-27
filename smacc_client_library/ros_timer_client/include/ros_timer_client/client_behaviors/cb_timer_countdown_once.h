@@ -13,11 +13,11 @@ public:
     virtual void onEntry() override;
     virtual void onExit() override;
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes()
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
     {
         this->postCountDownEvent_ = [=]() {
-            this->template postEvent<EvTimer<TDerived, TObjectTag>>();
+            this->template postEvent<EvTimer<TSourceObject, TOrthogonal>>();
         };
     }
 

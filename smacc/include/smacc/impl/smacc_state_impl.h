@@ -53,7 +53,7 @@ std::shared_ptr<TBehavior> ISmaccState::configure(Args &&... args)
     {
         auto clientBehavior = std::shared_ptr<TBehavior>(new TBehavior(args...));
         clientBehavior->currentState = this;
-        clientBehavior->template configureEventSourceTypes<TOrthogonal, TBehavior>();
+        clientBehavior->template onOrthogonalAllocation<TOrthogonal, TBehavior>();
         orthogonal->addClientBehavior(clientBehavior);
         return clientBehavior;
     }

@@ -56,10 +56,10 @@ public:
 
   long getCurrentWaypointIndex() const;
 
-  template <typename TObjectTag, typename TDerived>
-  void configureEventSourceTypes()
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
-    waypointsEventDispatcher.initialize<TDerived, TObjectTag>(client_);
+    waypointsEventDispatcher.initialize<TSourceObject, TOrthogonal>(client_);
   }
 
   int currentWaypoint_;

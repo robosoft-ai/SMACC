@@ -27,8 +27,8 @@ public:
 
     virtual void onInitialize() override;
 
-    // template <typename TObjectTag, typename TDerived>
-    // void configureEventSourceTypes() {}
+    // template <typename TOrthogonal, typename TSourceObject>
+    // void onOrthogonalAllocation() {}
 
     std::vector<ControllerTypeInfo> listControllerTypes();
 

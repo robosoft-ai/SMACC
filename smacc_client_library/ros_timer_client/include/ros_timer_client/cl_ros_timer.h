@@ -6,8 +6,8 @@
 
 namespace cl_ros_timer
 {
-template <typename TSource, typename TObjectTag>
-struct EvTimer : sc::event<EvTimer<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvTimer : sc::event<EvTimer<TSource, TOrthogonal>>
 {
     /*
     ClRosTimer *sender;
@@ -36,11 +36,11 @@ public:
         return this->getStateMachine()->createSignalConnection(onTimerTick_, callback, object);
     }
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes()
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
     {
         this->postTimerEvent_ = [=]() {
-            this->postEvent<EvTimer<ClRosTimer, TObjectTag>>();
+            this->postEvent<EvTimer<TSourceObject, TOrthogonal>>();
         };
     }
 

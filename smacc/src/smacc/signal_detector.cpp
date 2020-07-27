@@ -66,7 +66,7 @@ void SignalDetector::findUpdatableClients()
                 auto updatableComponent = dynamic_cast<ISmaccUpdatable *>(componententry.get());
                 if (updatableComponent != nullptr)
                 {
-                    ROS_DEBUG_STREAM("Adding updatable component: " << demangleType(typeid(updatableComponent)));
+                    ROS_DEBUG_STREAM("Adding updatable component: " << demangleType(typeid(*updatableComponent)));
                     this->updatableClients_.push_back(updatableComponent);
                 }
             }

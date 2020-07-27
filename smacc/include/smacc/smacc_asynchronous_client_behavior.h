@@ -42,12 +42,12 @@ namespace smacc
     class SmaccAsyncClientBehavior : public ISmaccClientBehavior
     {
     public:
-        template <typename TObjectTag, typename TDerived>
-        void configureEventSourceTypes()
+        template <typename TOrthogonal, typename TSourceObject>
+        void onOrthogonalAllocation()
         {
-            postFinishEventFn_ = [=] { this->postEvent<EvCbFinished<TDerived, TObjectTag>>(); };
-            postSuccessEventFn_ = [=] { this->postEvent<EvCbSuccess<TDerived, TObjectTag>>(); };
-            postFailureEventFn_ = [=] { this->postEvent<EvCbFailure<TDerived, TObjectTag>>(); };
+            postFinishEventFn_ = [=] { this->postEvent<EvCbFinished<TSourceObject, TOrthogonal>>(); };
+            postSuccessEventFn_ = [=] { this->postEvent<EvCbSuccess<TSourceObject, TOrthogonal>>(); };
+            postFailureEventFn_ = [=] { this->postEvent<EvCbFailure<TSourceObject, TOrthogonal>>(); };
         }
 
         virtual ~SmaccAsyncClientBehavior();

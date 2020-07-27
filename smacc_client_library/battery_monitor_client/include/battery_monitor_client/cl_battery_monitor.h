@@ -21,10 +21,10 @@ public:
 
     virtual ~ClBatteryMonitor();
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes()
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
     {
-        smacc::client_bases::SmaccSubscriberClient<sensor_msgs::BatteryState>::configureEventSourceTypes<TObjectTag, TDerived>();
+        smacc::client_bases::SmaccSubscriberClient<sensor_msgs::BatteryState>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
     }
 };
 }

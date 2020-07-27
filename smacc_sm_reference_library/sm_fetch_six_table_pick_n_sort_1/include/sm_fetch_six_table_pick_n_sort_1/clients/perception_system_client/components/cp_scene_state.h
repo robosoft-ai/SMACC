@@ -44,15 +44,15 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 tablesInfo_.resize(tableCount);
             }
 
-            template <typename TObjectTag, typename TDerived>
-            void configureEventSourceTypes()
+            template <typename TOrthogonal, typename TSourceObject>
+            void onOrthogonalAllocation()
             {
                 // create table "poses track components"
                 std::vector<std::string> availableColors = {"none", "yellow", "white", "purple", "red", "green"};
                 for (int i = 0; i < tablesInfo_.size(); i++)
                 {
                     auto tablename = "table_" + std::to_string(i + 1);
-                    this->tablesInfo_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(tablename, tablename, "map");
+                    this->tablesInfo_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TSourceObject, TOrthogonal>(tablename, tablename, "map");
                     this->tablesInfo_[i].associatedCubeColor_ = availableColors[i];
                 }
 
@@ -60,7 +60,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 for (int i = 0; i < cubeInfos_.size(); i++)
                 {
                     auto cubename = "cube_" + std::to_string(i + 1);
-                    this->cubeInfos_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TDerived, TObjectTag>(cubename, cubename, "map");
+                    this->cubeInfos_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TSourceObject, TOrthogonal>(cubename, cubename, "map");
                 }
             }
         };

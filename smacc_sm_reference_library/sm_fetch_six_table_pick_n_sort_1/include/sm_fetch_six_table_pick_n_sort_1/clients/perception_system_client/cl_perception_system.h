@@ -36,15 +36,15 @@ namespace sm_fetch_six_table_pick_n_sort_1
             {
             }
 
-            template <typename TObjectTag, typename TDerived>
-            void configureEventSourceTypes()
+            template <typename TOrthogonal, typename TSourceObject>
+            void onOrthogonalAllocation()
             {
                 const int TABLE_COUNT = 6;
                 const int CUBE_COUNT = 10;
 
                 // order matters, since gazeboPerception udpates sceneState
-                sceneState_ = this->createComponent<CpSceneState, TDerived, TObjectTag>(CUBE_COUNT, TABLE_COUNT);
-                gazeboPerceptionSimulation_ = this->createComponent<CpSimulatedGazeboPerception, TDerived, TObjectTag>();
+                sceneState_ = this->createComponent<CpSceneState, TSourceObject, TOrthogonal>(CUBE_COUNT, TABLE_COUNT);
+                gazeboPerceptionSimulation_ = this->createComponent<CpSimulatedGazeboPerception, TSourceObject, TOrthogonal>();
             }
 
             geometry_msgs::PoseStamped getMainTablePose()

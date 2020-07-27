@@ -12,23 +12,23 @@ namespace default_events
 using namespace smacc::introspection;
 using namespace smacc::default_transition_tags;
 
-template <typename ActionFeedback, typename TObjectTag>
-struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TObjectTag>>
+template <typename ActionFeedback, typename TOrthogonal>
+struct EvActionFeedback : sc::event<EvActionFeedback<ActionFeedback, TOrthogonal>>
 {
   smacc::client_bases::ISmaccActionClient *client;
   ActionFeedback feedbackMessage;
   //boost::any feedbackMessage;
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvActionResult : sc::event<EvActionResult<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvActionResult : sc::event<EvActionResult<TSource, TOrthogonal>>
 {
   typename TSource::Result resultMessage;
 };
 
 //--------------------------------
-template <typename TSource, typename TObjectTag>
-struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TOrthogonal>>
 {
   typename TSource::Result resultMessage;
 
@@ -51,8 +51,8 @@ struct EvActionSucceeded : sc::event<EvActionSucceeded<TSource, TObjectTag>>
   }
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvActionAborted : sc::event<EvActionAborted<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvActionAborted : sc::event<EvActionAborted<TSource, TOrthogonal>>
 {
   typename TSource::Result resultMessage;
 
@@ -75,8 +75,8 @@ struct EvActionAborted : sc::event<EvActionAborted<TSource, TObjectTag>>
   }
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TOrthogonal>>
 {
   typename TSource::Result resultMessage;
 
@@ -99,8 +99,8 @@ struct EvActionPreempted : sc::event<EvActionPreempted<TSource, TObjectTag>>
   }
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvActionRejected : sc::event<EvActionRejected<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvActionRejected : sc::event<EvActionRejected<TSource, TOrthogonal>>
 {
   typename TSource::Result resultMessage;
 
@@ -157,8 +157,8 @@ struct EvLoopEnd : sc::event<EvLoopEnd<TSource>>
   }
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TOrthogonal>>
 {
   //typename EvTopicInitialMessage<SensorBehaviorType>::TMessageType msgData;
   static std::string getEventLabel()
@@ -172,8 +172,8 @@ struct EvTopicInitialMessage : sc::event<EvTopicInitialMessage<TSource, TObjectT
   typename TSource::TMessageType msgData;
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvTopicMessage : sc::event<EvTopicMessage<TSource, TOrthogonal>>
 {
   static std::string getEventLabel()
   {

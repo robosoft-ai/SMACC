@@ -87,16 +87,16 @@ public:
         this->postEvent(ev);
     }
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes()
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
     {
-        // we create here all the event factory functions capturing the TObjectTag
-        postSuccessEvent = [=](auto msg) { this->postResultEvent<EvActionSucceeded<TDerived, TObjectTag>>(msg); };
-        postAbortedEvent = [=](auto msg) { this->postResultEvent<EvActionAborted<TDerived, TObjectTag>>(msg); };
-        postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TDerived, TObjectTag>>(msg); };
-        postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TDerived, TObjectTag>>(msg); };
+        // we create here all the event factory functions capturing the TOrthogonal
+        postSuccessEvent = [=](auto msg) { this->postResultEvent<EvActionSucceeded<TSourceObject, TOrthogonal>>(msg); };
+        postAbortedEvent = [=](auto msg) { this->postResultEvent<EvActionAborted<TSourceObject, TOrthogonal>>(msg); };
+        postPreemptedEvent = [=](auto msg) { this->postResultEvent<EvActionPreempted<TSourceObject, TOrthogonal>>(msg); };
+        postRejectedEvent = [=](auto msg) { this->postResultEvent<EvActionRejected<TSourceObject, TOrthogonal>>(msg); };
         postFeedbackEvent = [=](auto msg) {
-            auto actionFeedbackEvent = new EvActionFeedback<Feedback, TObjectTag>();
+            auto actionFeedbackEvent = new EvActionFeedback<Feedback, TOrthogonal>();
             actionFeedbackEvent->client = this;
             actionFeedbackEvent->feedbackMessage = *msg;
             this->postEvent(actionFeedbackEvent);

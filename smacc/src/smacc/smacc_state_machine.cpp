@@ -183,7 +183,7 @@ void ISmaccStateMachine::checkStateMachineConsistence()
     //         bool found = false;
     //         for (auto &orthogonal : orthogonals_)
     //         {
-    //             if (orthogonal.first == evinfo->getObjectTagName())
+    //             if (orthogonal.first == evinfo->geTOrthogonalName())
     //             {
     //                 found = true;
     //                 break;
@@ -196,13 +196,13 @@ void ISmaccStateMachine::checkStateMachineConsistence()
     //                         << "[Consistency Checking] Transition event refers not existing orthogonal." << std::endl
     //                         << "State: " << demangleType(*stinfo->tid_) << std::endl
     //                         << "Transition: " << transition.transitionTypeInfo->getFullName() << std::endl
-    //                         << "Orthogonal: " << evinfo->getObjectTagName() << std::endl
+    //                         << "Orthogonal: " << evinfo->geTOrthogonalName() << std::endl
     //                         << "---------" << std::endl;
 
     //             errorFound = true;
     //         }
     //         //std::string getEventSourceName();
-    //         //std::string getObjectTagName();
+    //         //std::string geTOrthogonalName();
     //     }
     // }
 

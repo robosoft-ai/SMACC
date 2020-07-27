@@ -12,8 +12,8 @@ namespace cl_multirole_sensor
 {
 using namespace smacc;
 
-template <typename TSource, typename TObjectTag>
-struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvTopicMessageTimeout : sc::event<EvTopicMessageTimeout<TSource, TOrthogonal>>
 {
   ros::TimerEvent timerData;
 };
@@ -43,15 +43,15 @@ public:
 
   std::function<void(const ros::TimerEvent &ev)> postTimeoutMessageEvent;
 
-  template <typename TObjectTag, typename TDerived>
-  void configureEventSourceTypes()
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
-    SmaccSubscriberClient<MessageType>::template configureEventSourceTypes<TObjectTag, TDerived>();
+    SmaccSubscriberClient<MessageType>::template onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
     this->postTimeoutMessageEvent = [=](auto &timerdata) {
       onMessageTimeout_(timerdata);
 
-      auto event = new EvTopicMessageTimeout<TDerived, TObjectTag>();
+      auto event = new EvTopicMessageTimeout<TSourceObject, TOrthogonal>();
       event->timerData = timerdata;
       this->postEvent(event);
     };

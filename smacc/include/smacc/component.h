@@ -34,8 +34,8 @@ protected:
     template <typename EventType>
     void postEvent();
 
-    template <typename TObjectTag, typename TDerived>
-    void configureEventSourceTypes() {}
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation() {}
 
     template <typename TComponent>
     void requiresComponent(TComponent *& requiredComponentStorage);

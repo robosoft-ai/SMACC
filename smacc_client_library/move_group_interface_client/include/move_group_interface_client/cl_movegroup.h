@@ -18,13 +18,13 @@
 namespace cl_move_group_interface
 {
 
-template <typename TSource, typename TObjectTag>
-struct MoveGroupMotionExecutionSucceded : sc::event<MoveGroupMotionExecutionSucceded<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct MoveGroupMotionExecutionSucceded : sc::event<MoveGroupMotionExecutionSucceded<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct MoveGroupMotionExecutionFailed : sc::event<MoveGroupMotionExecutionFailed<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct MoveGroupMotionExecutionFailed : sc::event<MoveGroupMotionExecutionFailed<TSource, TOrthogonal>>
 {
 };
 
@@ -82,17 +82,17 @@ public:
   void postEventMotionExecutionSucceded();
   void postEventMotionExecutionFailed();
 
-  template <typename TObjectTag, typename TDerived>
-  void configureEventSourceTypes()
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
     postEventMotionExecutionSucceded_ = [=]() {
       this->onSucceded_();
-      this->postEvent<MoveGroupMotionExecutionSucceded<TDerived, TObjectTag>>();
+      this->postEvent<MoveGroupMotionExecutionSucceded<TSourceObject, TOrthogonal>>();
     };
 
     postEventMotionExecutionFailed_ = [=]() {
       this->onFailed_();
-      this->postEvent<MoveGroupMotionExecutionFailed<TDerived, TObjectTag>>();
+      this->postEvent<MoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
     };
   }
 

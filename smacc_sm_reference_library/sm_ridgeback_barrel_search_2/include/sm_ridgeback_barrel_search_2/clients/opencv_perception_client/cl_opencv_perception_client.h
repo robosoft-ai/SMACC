@@ -20,10 +20,10 @@ public:
   {
   }
 
-  template <typename TObjectTag, typename TDerived>
-  void configureEventSourceTypes()
+  template <typename TOrthogonal, typename TSourceObject>
+  void onOrthogonalAllocation()
   {
-    smacc::client_bases::SmaccSubscriberClient<std_msgs::Int32>::configureEventSourceTypes<TObjectTag, TDerived>();
+    smacc::client_bases::SmaccSubscriberClient<std_msgs::Int32>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 };
 }  

@@ -61,7 +61,7 @@ void ISmaccOrthogonal::assignClientToOrthogonal(TClient* client)
     client->setStateMachine(getStateMachine());
     client->setOrthogonal(this);
 
-    client->template configureEventSourceTypes<TOrthogonal, TClient>();
+    client->template onOrthogonalAllocation<TOrthogonal, TClient>();
 }
 
 template <typename TClientBehavior>
@@ -144,8 +144,8 @@ public:
     template <typename TClient, typename... TArgs>
     std::shared_ptr<ClientHandler<TOrthogonal, TClient>> createClient(TArgs... args)
     {
-        //static_assert(std::is_base_of<ISmaccOrthogonal, TObjectTag>::value, "The object Tag must be the orthogonal type where the client was created");
-        // if (typeid(*this) != typeid(TObjectTag))
+        //static_assert(std::is_base_of<ISmaccOrthogonal, TOrthogonal>::value, "The object Tag must be the orthogonal type where the client was created");
+        // if (typeid(*this) != typeid(TOrthogonal))
         // {
         //     ROS_ERROR_STREAM("Error creating client. The object Tag must be the type of the orthogonal where the client was created:" << demangleType(typeid(*this)) << ". The object creation was skipped and a nullptr was returned");
         //     return nullptr;

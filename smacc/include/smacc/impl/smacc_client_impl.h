@@ -81,7 +81,7 @@ namespace smacc
             ret = dynamic_pointer_cast<SmaccComponentType>(it->second);
         }
 
-        ret->template configureEventSourceTypes<TOrthogonal, TClient>();
+        ret->template onOrthogonalAllocation<TOrthogonal, TClient>();
 
         return ret.get();
     }

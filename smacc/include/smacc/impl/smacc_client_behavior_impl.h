@@ -69,7 +69,7 @@ void ISmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
     }
 }
 
-template <typename TObjectTag, typename TDerived>
-void ISmaccClientBehavior::configureEventSourceTypes() {}
+template <typename TOrthogonal, typename TSourceObject>
+void ISmaccClientBehavior::onOrthogonalAllocation() {}
 
 } // namespace smacc

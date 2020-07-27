@@ -13,133 +13,133 @@
 namespace cl_keyboard
 {
 //----------------- TIMER sc::event DEFINITION ----------------------------------------------
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressA : sc::event<EvKeyPressA<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressA : sc::event<EvKeyPressA<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressB : sc::event<EvKeyPressB<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressB : sc::event<EvKeyPressB<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressC : sc::event<EvKeyPressC<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressC : sc::event<EvKeyPressC<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressD : sc::event<EvKeyPressD<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressD : sc::event<EvKeyPressD<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressE : sc::event<EvKeyPressE<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressE : sc::event<EvKeyPressE<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressF : sc::event<EvKeyPressF<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressF : sc::event<EvKeyPressF<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressG : sc::event<EvKeyPressG<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressG : sc::event<EvKeyPressG<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressH : sc::event<EvKeyPressH<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressH : sc::event<EvKeyPressH<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressI : sc::event<EvKeyPressI<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressI : sc::event<EvKeyPressI<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressJ : sc::event<EvKeyPressJ<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressJ : sc::event<EvKeyPressJ<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressK : sc::event<EvKeyPressK<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressK : sc::event<EvKeyPressK<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressL : sc::event<EvKeyPressL<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressL : sc::event<EvKeyPressL<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressM : sc::event<EvKeyPressM<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressM : sc::event<EvKeyPressM<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressN : sc::event<EvKeyPressN<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressN : sc::event<EvKeyPressN<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressO : sc::event<EvKeyPressO<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressO : sc::event<EvKeyPressO<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressP : sc::event<EvKeyPressP<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressP : sc::event<EvKeyPressP<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressQ : sc::event<EvKeyPressQ<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressQ : sc::event<EvKeyPressQ<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressR : sc::event<EvKeyPressR<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressR : sc::event<EvKeyPressR<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressS : sc::event<EvKeyPressS<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressS : sc::event<EvKeyPressS<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressT : sc::event<EvKeyPressT<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressT : sc::event<EvKeyPressT<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressU : sc::event<EvKeyPressU<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressU : sc::event<EvKeyPressU<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressV : sc::event<EvKeyPressV<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressV : sc::event<EvKeyPressV<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressW : sc::event<EvKeyPressW<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressW : sc::event<EvKeyPressW<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressX : sc::event<EvKeyPressX<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressX : sc::event<EvKeyPressX<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressY : sc::event<EvKeyPressY<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressY : sc::event<EvKeyPressY<TSource, TOrthogonal>>
 {
 };
 
-template <typename TSource, typename TObjectTag>
-struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TObjectTag>>
+template <typename TSource, typename TOrthogonal>
+struct EvKeyPressZ : sc::event<EvKeyPressZ<TSource, TOrthogonal>>
 {
 };
 
@@ -165,68 +165,68 @@ public:
 
         std::function<void(std_msgs::UInt16)> postEventKeyPress;
 
-        template <typename TObjectTag, typename TDerived>
-        void configureEventSourceTypes()
+        template <typename TOrthogonal, typename TSourceObject>
+        void onOrthogonalAllocation()
         {
                 // call tothe base configuration to properly handling the message and initial message smacc events
-                smacc::client_bases::SmaccSubscriberClient<std_msgs::UInt16>::configureEventSourceTypes<TObjectTag, TDerived>();
+                smacc::client_bases::SmaccSubscriberClient<std_msgs::UInt16>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
                 postEventKeyPress = [=](auto unicode_keychar) {
                         char character = (char)unicode_keychar.data;
                         ROS_WARN("detected keyboard: %c", character);
 
                         if (character == 'a')
-                                this->postKeyEvent<EvKeyPressA<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressA<ClKeyboard, TOrthogonal>>();
                         else if (character == 'b')
-                                this->postKeyEvent<EvKeyPressB<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressB<ClKeyboard, TOrthogonal>>();
                         else if (character == 'c')
-                                this->postKeyEvent<EvKeyPressC<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressC<ClKeyboard, TOrthogonal>>();
                         else if (character == 'd')
-                                this->postKeyEvent<EvKeyPressD<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressD<ClKeyboard, TOrthogonal>>();
                         else if (character == 'e')
-                                this->postKeyEvent<EvKeyPressE<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressE<ClKeyboard, TOrthogonal>>();
                         else if (character == 'f')
-                                this->postKeyEvent<EvKeyPressF<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressF<ClKeyboard, TOrthogonal>>();
                         else if (character == 'g')
-                                this->postKeyEvent<EvKeyPressG<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressG<ClKeyboard, TOrthogonal>>();
                         else if (character == 'h')
-                                this->postKeyEvent<EvKeyPressH<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressH<ClKeyboard, TOrthogonal>>();
                         else if (character == 'y')
-                                this->postKeyEvent<EvKeyPressI<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressI<ClKeyboard, TOrthogonal>>();
                         else if (character == 'j')
-                                this->postKeyEvent<EvKeyPressJ<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressJ<ClKeyboard, TOrthogonal>>();
                         else if (character == 'k')
-                                this->postKeyEvent<EvKeyPressK<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressK<ClKeyboard, TOrthogonal>>();
                         else if (character == 'l')
-                                this->postKeyEvent<EvKeyPressL<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressL<ClKeyboard, TOrthogonal>>();
                         else if (character == 'm')
-                                this->postKeyEvent<EvKeyPressM<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressM<ClKeyboard, TOrthogonal>>();
                         else if (character == 'n')
-                                this->postKeyEvent<EvKeyPressN<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressN<ClKeyboard, TOrthogonal>>();
                         else if (character == 'o')
-                                this->postKeyEvent<EvKeyPressO<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressO<ClKeyboard, TOrthogonal>>();
                         else if (character == 'p')
-                                this->postKeyEvent<EvKeyPressP<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressP<ClKeyboard, TOrthogonal>>();
                         else if (character == 'q')
-                                this->postKeyEvent<EvKeyPressQ<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressQ<ClKeyboard, TOrthogonal>>();
                         else if (character == 'r')
-                                this->postKeyEvent<EvKeyPressR<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressR<ClKeyboard, TOrthogonal>>();
                         else if (character == 's')
-                                this->postKeyEvent<EvKeyPressS<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressS<ClKeyboard, TOrthogonal>>();
                         else if (character == 't')
-                                this->postKeyEvent<EvKeyPressT<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressT<ClKeyboard, TOrthogonal>>();
                         else if (character == 'u')
-                                this->postKeyEvent<EvKeyPressU<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressU<ClKeyboard, TOrthogonal>>();
                         else if (character == 'v')
-                                this->postKeyEvent<EvKeyPressV<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressV<ClKeyboard, TOrthogonal>>();
                         else if (character == 'w')
-                                this->postKeyEvent<EvKeyPressW<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressW<ClKeyboard, TOrthogonal>>();
                         else if (character == 'x')
-                                this->postKeyEvent<EvKeyPressX<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressX<ClKeyboard, TOrthogonal>>();
                         else if (character == 'y')
-                                this->postKeyEvent<EvKeyPressY<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressY<ClKeyboard, TOrthogonal>>();
                         else if (character == 'z')
-                                this->postKeyEvent<EvKeyPressZ<ClKeyboard, TObjectTag>>();
+                                this->postKeyEvent<EvKeyPressZ<ClKeyboard, TOrthogonal>>();
                         OnKeyPress_(character); /*  */
                 };
         }
