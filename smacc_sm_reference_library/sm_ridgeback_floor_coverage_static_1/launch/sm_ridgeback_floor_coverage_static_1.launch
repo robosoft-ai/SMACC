@@ -1,0 +1,64 @@
+<launch>
+
+    <!--========= LAUNCH FILE ARGUMENTS ======================================================-->
+    <!-- defines the xterm parameters for the clients, set to empty to skip using xterm window-->
+    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e" />
+
+    <!-- defines the xterm parameters for the state machine, set to empty to skip using xterm window-->
+    <arg name="sm_xterm" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -geometry 1000x600 -sl 10000 -e" />
+
+    <!-- if true, gazebo client is shown -->
+    <arg name="show_gz_client" default="true" />
+
+    <!-- if true, smacc_viewer is shown -->
+    <arg name="show_smacc_viewer" default="true" />
+
+    <!-- if true, rviz is shown -->
+    <arg name="show_rviz" default="true" />
+
+    <!-- It does not start the sm node in order to start it from your standalone process with debugger-->
+    <arg name="debug" default="false" />
+
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_ridgeback_floor_coverage_static_1)/config/rosconsole.config" />
+
+    <!--================================================================================-->
+    <!-- load the navigation environment simulated in gazebo-->
+    <include file="$(find sm_ridgeback_floor_coverage_static_1)/launch/ridgeback_simulation.launch">
+        <arg name="show_gz_client" value="$(arg show_gz_client)" />
+    </include>
+
+    <!--  setup smacc planners configuration  -->
+    <group ns="move_base">
+        <!-- backward local planner -->
+        <rosparam file="$(find sm_ridgeback_floor_coverage_static_1)/config/move_base_client/backward_local_planner.yaml" command="load" />
+        <!-- forward local planner -->
+        <rosparam file="$(find sm_ridgeback_floor_coverage_static_1)/config/move_base_client/forward_local_planner.yaml" command="load" />
+    </group>
+
+    <!-- load state machine parameters -->
+    <rosparam command="load" file="$(find sm_ridgeback_floor_coverage_static_1)/config/sm_ridgeback_floor_coverage_static_1_config.yaml" />
+
+    <group ns="sm_ridgeback_floor_coverage_static_1">
+        <!-- set run mode -->
+        <param name="run_mode" value="debug" />
+        <!-- load flight plan -->
+        <param name="waypoints_plan" value="$(find sm_ridgeback_floor_coverage_static_1)/config/move_base_client/waypoints_plan.yaml" />        
+    </group>
+
+    <!-- state machine node -->
+    <node pkg="sm_ridgeback_floor_coverage_static_1" type="sm_ridgeback_floor_coverage_static_1" name="sm_ridgeback_floor_coverage_static_1" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">
+        <remap from="/odom" to="/odometry/filtered" />
+        <remap from="/sm_ridgeback_floor_coverage_static_1/odom_tracker/odom_tracker_path" to="/odom_tracker_path"/>
+        <remap from="/sm_ridgeback_floor_coverage_static_1/odom_tracker/odom_tracker_stacked_path" to="/odom_tracker_path_stacked"/>
+    </node>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find sm_ridgeback_floor_coverage_static_1)/config/navigation.rviz" if="$(arg show_rviz)">
+        <remap from="/remap_smacc_status" to="/SmRidgebackFloorCoverageStatic1/smacc/status" />
+    </node>
+
+    <node pkg="sm_ridgeback_floor_coverage_static_1" type="led_action_server_node" name="led_action_server_node" launch-prefix="$(arg server_nodes_xterms)" />
+    <node pkg="sm_ridgeback_floor_coverage_static_1" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)" />
+    <node pkg="sm_ridgeback_floor_coverage_static_1" type="service_node_3.py" name="service_server_node" launch-prefix="$(arg server_nodes_xterms)" />
+
+    <!-- <node pkg="smacc_viewer" type="smacc_viewer_node.py" name="smacc_viewer" if="$(arg show_smacc_viewer)"/> -->
+</launch>

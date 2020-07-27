@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>sm_ridgeback_floor_coverage_dynamic_1</name>
+  <version>0.9.1</version>
+  <description>The dance_bot_strikes_back package</description>
+  
+  <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
+  
+  <license>BSD-3</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>smacc</depend>
+  <depend>actionlib</depend>
+  <depend>actionlib_msgs</depend>
+  <depend>sm_dance_bot</depend>
+  
+  <depend>move_base_z_client_plugin</depend>  
+  <depend>angles</depend>  
+
+  <depend>ros_publisher_client</depend>
+  <depend>multirole_sensor_client</depend>
+  
+  <depend>sr_all_events_go</depend>
+  <depend>sr_event_countdown</depend>
+  <depend>sr_conditional</depend>
+  <depend>ros_timer_client</depend>
+
+  <depend>ridgeback_gazebo</depend>
+  <depend>ridgeback_navigation</depend>
+  <depend>xterm</depend>
+  <depend>tf</depend>¡
+
+  <export>
+  </export>
+</package>
