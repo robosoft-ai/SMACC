@@ -384,6 +384,8 @@ namespace smacc
   template <typename StateType>
   void ISmaccStateMachine::notifyOnStateEntryEnd(StateType *state)
   {
+    ROS_INFO("[%s] State OnEntry code finished", demangleSymbol(typeid(StateType).name()).c_str());
+
     for (auto pair : this->orthogonals_)
     {
       //ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
@@ -419,10 +421,8 @@ namespace smacc
   }
 
   template <typename StateType>
-  void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
+  void ISmaccStateMachine::notifyOnRuntimeConfigurationFinished(StateType *state)
   {
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
-
     for (auto pair : this->orthogonals_)
     {
       //ROS_INFO("ortho onruntime configure: %s", pair.second->getName().c_str());
@@ -431,6 +431,15 @@ namespace smacc
     }
 
     this->updateStatusMessage();
+
+    stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
+
+  }
+
+  template <typename StateType>
+  void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
+  {
+    stateMachineCurrentAction = StateMachineInternalAction::STATE_CONFIGURING;
   }
 
   template <typename StateType>

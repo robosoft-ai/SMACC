@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <move_group_interface_client/client_behaviors/cb_move_joints.h>
+#include "cb_move_joints.h"
 #include <map>
 #include <string>
 

@@ -100,9 +100,9 @@ find_package(Eigen3 REQUIRED)
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS}
-  LIBRARIES move_group_interface_client
-  CATKIN_DEPENDS smacc moveit_ros_planning_interface
+  INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR}
+  LIBRARIES move_group_interface_client ${YAML_CPP_LIBRARIES}
+  CATKIN_DEPENDS smacc moveit_ros_planning_interface 
   DEPENDS Eigen3 yaml-cpp
 )
 

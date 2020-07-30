@@ -6,26 +6,51 @@
 
 #include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.h>
 #include <moveit_msgs/GetPositionIK.h>
+#include <visualization_msgs/MarkerArray.h>
+#include <tf/transform_datatypes.h>
 
 namespace cl_move_group_interface
 {
+    CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory()
+    {
+        initializeROS();
+    }
+
     CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped> &endEffectorTrajectory)
         : endEffectorTrajectory_(endEffectorTrajectory)
 
     {
+        initializeROS();
+    }
+
+    void CbMoveEndEffectorTrajectory::initializeROS()
+    {
+        ros::NodeHandle nh;
+        markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("trajectory_markers", 1);
+        iksrv_ = nh.serviceClient<moveit_msgs::GetPositionIK>("/compute_ik");
     }
 
     void CbMoveEndEffectorTrajectory::onEntry()
     {
+
         moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
 
         this->requiresClient(movegroupClient_);
+
+        this->generateTrajectory();
+
+        if (this->endEffectorTrajectory_.size() == 0)
+        {
+            ROS_WARN_STREAM("[" << smacc::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
+            return;
+        }
+
+        this->publishTrajectoryMarkers();
+
         // get current robot state
         auto currentState = movegroupClient_->moveGroupClientInterface.getCurrentState();
 
         // get the IK client
-        ros::NodeHandle nh;
-        auto iksrv = nh.serviceClient<moveit_msgs::GetPositionIK>("/compute_ik");
         auto groupname = movegroupClient_->moveGroupClientInterface.getName();
         auto currentjointnames = currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
 
@@ -33,7 +58,13 @@ namespace cl_move_group_interface
         currentState->copyJointGroupPositions(groupname, jointPositions);
 
         std::vector<std::vector<double>> trajectory;
+        std::vector<ros::Duration> trajectoryTimeStamps;
+
         trajectory.push_back(jointPositions);
+        trajectoryTimeStamps.push_back(ros::Duration(0));
+
+        auto& first = endEffectorTrajectory_.front();
+        ros::Time referenceTime = first.header.stamp;
 
         for (int k = 0; k < this->endEffectorTrajectory_.size(); k++)
         {
@@ -47,11 +78,11 @@ namespace cl_move_group_interface
 
             moveit_msgs::GetPositionIKResponse res;
 
-            pose.header.stamp = ros::Time::now();
+            //pose.header.stamp = ros::Time::now();
             req.ik_request.pose_stamped = pose;
 
             ROS_WARN_STREAM("IK request: " << req);
-            if (iksrv.call(req, res))
+            if (iksrv_.call(req, res))
             {
                 auto &prevtrajpoint = trajectory.back();
                 //jointPositions.clear();
@@ -71,16 +102,18 @@ namespace cl_move_group_interface
 
                 // continuity check
                 bool discontinuity = false;
-                if(k!=0)
+                int jointindex = 0;
+                double deltajoint;
+                if (k != 0)
                 {
-                    for (int j = 0; j < jointPositions.size(); j++)
+                    for (jointindex = 0; jointindex < jointPositions.size(); jointindex++)
                     {
-                        auto deltajoint = jointPositions[j] - prevtrajpoint[j];
+                        deltajoint = jointPositions[jointindex] - prevtrajpoint[jointindex];
 
-                        if (fabs(deltajoint) > 0.07 /*2 deg*/)
+                        discontinuity = fabs(deltajoint) > 0.07 /*2 deg*/;
+
+                        if (discontinuity)
                         {
-                            discontinuity = true;
-                            ROS_ERROR_STREAM("IK discontinuity " << currentjointnames[j] << " : " << deltajoint );
                             break;
                         }
                     }
@@ -88,12 +121,25 @@ namespace cl_move_group_interface
 
                 if (discontinuity)
                 {
+                    std::stringstream ss;
+                    ss << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] " << currentjointnames[jointindex] << " IK discontinuity : " << deltajoint << std::endl
+                       << "prev joint value: " << prevtrajpoint[jointindex] << std::endl
+                       << "current joint value: " << jointPositions[jointindex] << std::endl;
+
+                    for (int kindex = 0; kindex < trajectory.size(); kindex++)
+                    {
+                        ss << "[" << kindex << "]: " << trajectory[kindex][jointindex] << std::endl;
+                    }
+
+                    ROS_ERROR_STREAM(ss.str());
                     k--;
-                    ROS_ERROR("IK discontinuity detected, retrying");
                 }
                 else
                 {
                     trajectory.push_back(jointPositions);
+                    ros::Duration durationFromStart = pose.header.stamp - referenceTime;
+                    trajectoryTimeStamps.push_back(durationFromStart);
+
                     ROS_WARN_STREAM("IK solution: " << res.solution.joint_state);
                     ROS_WARN_STREAM("trajpoint: " << std::endl
                                                   << ss.str());
@@ -118,19 +164,79 @@ namespace cl_move_group_interface
         computedMotionPlan.start_state_.joint_state.position = trajectory.front();
         computedMotionPlan.trajectory_.joint_trajectory.joint_names = currentjointnames;
 
-        double t = 0;
+        int i = 0;
         for (auto &p : trajectory)
         {
             trajectory_msgs::JointTrajectoryPoint jp;
             jp.positions = p;
-            jp.time_from_start = ros::Duration(t);
-            t += 1.0;
+            jp.time_from_start = trajectoryTimeStamps[i]; //ros::Duration(t);
             computedMotionPlan.trajectory_.joint_trajectory.points.push_back(jp);
+            i++;
         }
 
         // call execute
         this->movegroupClient_->moveGroupClientInterface.execute(computedMotionPlan.trajectory_);
 
         // handle finishing events
+    }
+
+    void CbMoveEndEffectorTrajectory::update()
+    {
+        if (ma.markers.size() == this->endEffectorTrajectory_.size())
+        {
+            markersPub_.publish(ma);
+        }
+    }
+
+    void CbMoveEndEffectorTrajectory::publishTrajectoryMarkers()
+    {
+        tf::Transform localdirection;
+        localdirection.setIdentity();
+        localdirection.setOrigin(tf::Vector3(0.04, 0, 0));
+        auto frameid = this->endEffectorTrajectory_.front().header.frame_id;
+
+        int i = 0;
+        for (auto &pose : this->endEffectorTrajectory_)
+        {
+            visualization_msgs::Marker marker;
+            marker.header.frame_id = frameid;
+            marker.header.stamp = ros::Time::now();
+            marker.ns = "trajectory";
+            marker.id = i++;
+            marker.type = visualization_msgs::Marker::ARROW;
+            marker.action = visualization_msgs::Marker::ADD;
+            marker.scale.x = 0.01;
+            marker.scale.y = 0.03;
+            marker.scale.z = 0.01;
+            marker.color.a = 1.0;
+            marker.color.r = 1.0;
+            marker.color.g = 0;
+            marker.color.b = 0;
+
+            geometry_msgs::Point start, end;
+            start.x = pose.pose.position.x;
+            start.y = pose.pose.position.y;
+            start.z = pose.pose.position.z;
+
+            tf::Transform basetransform;
+            tf::poseMsgToTF(pose.pose, basetransform);
+            tf::Transform endarrow = localdirection * basetransform;
+
+            end.x = endarrow.getOrigin().x();
+            end.y = endarrow.getOrigin().y();
+            end.z = endarrow.getOrigin().z();
+
+            marker.pose.orientation.w = 1;
+            marker.points.push_back(start);
+            marker.points.push_back(end);
+
+            ma.markers.push_back(marker);
+        }
+    }
+
+    void CbMoveEndEffectorTrajectory::generateTrajectory()
+    {
+        // bypass current trajectory, overriden in derived classes
+        // this->endEffectorTrajectory_ = ...
     }
 } // namespace cl_move_group_interface

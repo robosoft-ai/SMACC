@@ -357,20 +357,23 @@ namespace smacc
 
       ROS_INFO("[%s] State runtime configuration", STATE_NAME);
 
+      auto* derivedthis = static_cast<MostDerived *>(this);
+      
+      // second the orthogonals are internally configured
+      this->getStateMachine().notifyOnRuntimeConfigured(derivedthis);
+
       // first we runtime configure the state, where we create client behaviors
       static_cast<MostDerived *>(this)->runtimeConfigure();
-
-      // second the orthogonals are internally configured
-      this->getStateMachine().notifyOnRuntimeConfigured(static_cast<MostDerived *>(this));
+      
+      this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);
 
       ROS_INFO("[%s] State OnEntry", STATE_NAME);
 
       // finally we go to the derived state onEntry Function
       static_cast<MostDerived *>(this)->onEntry();
-      ROS_INFO("[%s] State OnEntry code finished", STATE_NAME);
-
+      
       // here orthogonals and client behaviors are entered OnEntry
-      this->getStateMachine().notifyOnStateEntryEnd(static_cast<MostDerived *>(this));
+      this->getStateMachine().notifyOnStateEntryEnd(derivedthis);
     }
   };
 } // namespace smacc

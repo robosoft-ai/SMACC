@@ -35,6 +35,7 @@ enum class EventLifeTime{
 
 enum class StateMachineInternalAction
 {
+    STATE_CONFIGURING,
     STATE_ENTERING,
     STATE_STEADY,
     STATE_EXITING,
@@ -115,6 +116,9 @@ public:
 
     template <typename StateType>
     void notifyOnStateExited(StateType *state);
+
+    template <typename StateType>
+    void notifyOnRuntimeConfigurationFinished(StateType *state);
 
     inline unsigned long getCurrentStateCounter() const;
 
