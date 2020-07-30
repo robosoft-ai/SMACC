@@ -90,7 +90,7 @@ std::string SmaccEventInfo::getEventTypeName()
     return demangleSymbol(eventType->getNonTemplatedTypeName().c_str());
 }
 
-std::string SmaccEventInfo::geTOrthogonalName()
+std::string SmaccEventInfo::getOrthogonalName()
 {
     if (eventType->templateParameters.size() > 1)
     {

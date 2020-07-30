@@ -11,13 +11,14 @@
 
 namespace cl_move_group_interface
 {
-    CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory()
+    CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(std::string tipLink)
+        : tipLink_(tipLink)
     {
         initializeROS();
     }
 
-    CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped> &endEffectorTrajectory)
-        : endEffectorTrajectory_(endEffectorTrajectory)
+    CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped> &endEffectorTrajectory, std::string tipLink)
+        : endEffectorTrajectory_(endEffectorTrajectory), tipLink_(tipLink)
 
     {
         initializeROS();
@@ -32,7 +33,6 @@ namespace cl_move_group_interface
 
     void CbMoveEndEffectorTrajectory::onEntry()
     {
-
         moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
 
         this->requiresClient(movegroupClient_);
@@ -45,7 +45,8 @@ namespace cl_move_group_interface
             return;
         }
 
-        this->publishTrajectoryMarkers();
+        this->createMarkers();
+        markersInitialized_ = true;
 
         // get current robot state
         auto currentState = movegroupClient_->moveGroupClientInterface.getCurrentState();
@@ -53,6 +54,11 @@ namespace cl_move_group_interface
         // get the IK client
         auto groupname = movegroupClient_->moveGroupClientInterface.getName();
         auto currentjointnames = currentState->getJointModelGroup(groupname)->getActiveJointModelNames();
+
+        if (!tipLink_ || *tipLink_ == "")
+        {
+            tipLink_ = movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+        }
 
         std::vector<double> jointPositions;
         currentState->copyJointGroupPositions(groupname, jointPositions);
@@ -63,13 +69,15 @@ namespace cl_move_group_interface
         trajectory.push_back(jointPositions);
         trajectoryTimeStamps.push_back(ros::Duration(0));
 
-        auto& first = endEffectorTrajectory_.front();
+        auto &first = endEffectorTrajectory_.front();
         ros::Time referenceTime = first.header.stamp;
 
         for (int k = 0; k < this->endEffectorTrajectory_.size(); k++)
         {
             auto &pose = this->endEffectorTrajectory_[k];
             moveit_msgs::GetPositionIKRequest req;
+
+            req.ik_request.ik_link_name = *tipLink_;
             req.ik_request.robot_state.joint_state.name = currentjointnames;
             req.ik_request.robot_state.joint_state.position = jointPositions;
 
@@ -133,6 +141,10 @@ namespace cl_move_group_interface
 
                     ROS_ERROR_STREAM(ss.str());
                     k--;
+
+                    movegroupClient_->postEventMotionExecutionFailed();
+                    this->postFailureEvent();
+                    return;
                 }
                 else
                 {
@@ -175,24 +187,52 @@ namespace cl_move_group_interface
         }
 
         // call execute
-        this->movegroupClient_->moveGroupClientInterface.execute(computedMotionPlan.trajectory_);
+        auto executionResult = this->movegroupClient_->moveGroupClientInterface.execute(computedMotionPlan.trajectory_);
+
+        if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
+        {
+            ROS_INFO_STREAM("[" << this->getName() << "] motion execution succedded");
+            movegroupClient_->postEventMotionExecutionSucceded();
+            this->postSuccessEvent();
+        }
+        else
+        {
+            ROS_INFO_STREAM("[" << this->getName() << "] motion execution failed");
+            movegroupClient_->postEventMotionExecutionFailed();
+            this->postFailureEvent();
+        }
 
         // handle finishing events
-    }
+    } // namespace cl_move_group_interface
 
     void CbMoveEndEffectorTrajectory::update()
     {
-        if (ma.markers.size() == this->endEffectorTrajectory_.size())
+        if (markersInitialized_)
         {
-            markersPub_.publish(ma);
+            std::lock_guard<std::mutex> guard(m_mutex_);
+            markersPub_.publish(beahiorMarkers_);
         }
     }
 
-    void CbMoveEndEffectorTrajectory::publishTrajectoryMarkers()
+    void CbMoveEndEffectorTrajectory::onExit()
+    {
+        markersInitialized_= false;
+
+        std::lock_guard<std::mutex> guard(m_mutex_);
+        for(auto& marker: this->beahiorMarkers_.markers)
+        {
+            marker.header.stamp = ros::Time::now();
+            marker.action = visualization_msgs::Marker::DELETE;
+        }
+
+        markersPub_.publish(beahiorMarkers_);
+    }
+
+    void CbMoveEndEffectorTrajectory::createMarkers()
     {
         tf::Transform localdirection;
         localdirection.setIdentity();
-        localdirection.setOrigin(tf::Vector3(0.04, 0, 0));
+        localdirection.setOrigin(tf::Vector3(0.05, 0, 0));
         auto frameid = this->endEffectorTrajectory_.front().header.frame_id;
 
         int i = 0;
@@ -205,10 +245,10 @@ namespace cl_move_group_interface
             marker.id = i++;
             marker.type = visualization_msgs::Marker::ARROW;
             marker.action = visualization_msgs::Marker::ADD;
-            marker.scale.x = 0.01;
-            marker.scale.y = 0.03;
+            marker.scale.x = 0.005;
+            marker.scale.y = 0.01;
             marker.scale.z = 0.01;
-            marker.color.a = 1.0;
+            marker.color.a = 0.8;
             marker.color.r = 1.0;
             marker.color.g = 0;
             marker.color.b = 0;
@@ -230,7 +270,7 @@ namespace cl_move_group_interface
             marker.points.push_back(start);
             marker.points.push_back(end);
 
-            ma.markers.push_back(marker);
+            beahiorMarkers_.markers.push_back(marker);
         }
     }
 

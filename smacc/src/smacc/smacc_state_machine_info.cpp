@@ -150,7 +150,7 @@ void SmaccStateMachineInfo::assembleSMStructureMessage(ISmaccStateMachine *sm)
                     event.event_source = tev->getEventSourceName();
                     ss << "                 - source type: " << event.event_source << std::endl;
 
-                    event.event_object_tag = tev->geTOrthogonalName();
+                    event.event_object_tag = tev->getOrthogonalName();
                     ss << "                 - source object: " << event.event_object_tag << std::endl;
 
                     event.label = tev->label;

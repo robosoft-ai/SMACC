@@ -19,26 +19,32 @@ public:
   
   // std::string tip_link_;
   boost::optional<std::string> group_;
+  boost::optional<std::string> tipLink_;
 
-  CbMoveEndEffectorTrajectory();
-  CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped>& endEffectorTrajectory);
+  CbMoveEndEffectorTrajectory(std::string tipLink="");
+  CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped>& endEffectorTrajectory, std::string tipLink="");
 
   virtual void onEntry() override;
+
+  virtual void onExit() override;
 
   virtual void update() override;
 
 protected:
   virtual void generateTrajectory();  
-  void publishTrajectoryMarkers();
+  virtual void createMarkers();
 
   std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory_;
 
   ClMoveGroup *movegroupClient_;
+  visualization_msgs::MarkerArray beahiorMarkers_;
 
   private:
   void initializeROS();
   ros::Publisher markersPub_;
-  visualization_msgs::MarkerArray ma;
+  std::atomic<bool> markersInitialized_ = false;
+  
   ros::ServiceClient iksrv_;
+  std::mutex m_mutex_;
 };
 }  // namespace cl_move_group_interface

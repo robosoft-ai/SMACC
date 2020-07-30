@@ -32,7 +32,7 @@ struct SmaccEventInfo
     std::string getEventSourceName();
 
     // AKA orthogonal
-    std::string geTOrthogonalName();
+    std::string getOrthogonalName();
 
     std::string label;
 

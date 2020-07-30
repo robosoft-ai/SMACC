@@ -16,7 +16,7 @@ void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::Smac
     transitionMsg.transition_name = transition.transitionTag;
     transitionMsg.transition_type = transition.transitionType;
     transitionMsg.event.event_source = transition.eventInfo->getEventSourceName();
-    transitionMsg.event.event_object_tag = transition.eventInfo->geTOrthogonalName();
+    transitionMsg.event.event_object_tag = transition.eventInfo->getOrthogonalName();
     transitionMsg.event.label = transition.eventInfo->label;
     transitionMsg.history_node = transition.historyNode;
 

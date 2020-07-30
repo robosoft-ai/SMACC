@@ -5,7 +5,6 @@
  ******************************************************************************************************************/
 
 #include <move_group_interface_client/client_behaviors/cb_move_cartesian_relative.h>
-#include <future>
 
 namespace cl_move_group_interface
 {
