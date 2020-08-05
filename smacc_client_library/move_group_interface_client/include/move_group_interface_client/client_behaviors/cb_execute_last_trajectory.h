@@ -5,7 +5,7 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include "cb_move_end_effector_trajectory.h"
+#include <move_group_interface_client/client_behaviors/cb_move_end_effector_trajectory.h>
 #include <move_group_interface_client/components/cp_trajectory_history.h>
 
 namespace cl_move_group_interface
@@ -13,36 +13,11 @@ namespace cl_move_group_interface
     class CbExecuteLastTrajectory : public CbMoveEndEffectorTrajectory
     {
     public:
-        CbExecuteLastTrajectory()
-        {
-        }
+        CbExecuteLastTrajectory();
 
-        virtual void onEntry() override
-        {
-            this->requiresClient(movegroupClient_);
+        virtual ~CbExecuteLastTrajectory();
 
-            CpTrajectoryHistory *trajectoryHistory;
-            this->requiresComponent(trajectoryHistory);
-
-            // this->generateTrajectory();
-            // endEffectorTrajectory_ =
-
-            // if (this->endEffectorTrajectory_.size() == 0)
-            // {
-            //     ROS_WARN_STREAM("[" << smacc::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
-            //     return;
-            // }
-
-            //this->createMarkers();
-            //markersInitialized_ = true;
-
-            moveit_msgs::RobotTrajectory trajectory;
-
-            if (trajectoryHistory->getLastTrajectory(trajectory))
-            {
-                this->executeJointSpaceTrajectory(trajectory);
-            }
-        }
+        virtual void onEntry() override;
     };
 
 } // namespace cl_move_group_interface

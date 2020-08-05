@@ -12,6 +12,7 @@ namespace cl_move_group_interface
     {
     public:
         CbEndEffectorRotate(double deltaRadians, std::string tipLink = "");
+        virtual ~CbEndEffectorRotate();
 
         virtual void onEntry() override;
     };

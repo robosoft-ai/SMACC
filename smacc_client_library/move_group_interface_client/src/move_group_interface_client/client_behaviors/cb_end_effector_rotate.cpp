@@ -8,6 +8,11 @@ namespace cl_move_group_interface
         deltaRadians_ = deltaRadians;
     }
 
+    CbEndEffectorRotate::~CbEndEffectorRotate()
+    {
+
+    }
+
     void CbEndEffectorRotate::onEntry()
     {
         // autocompute pivot pose
