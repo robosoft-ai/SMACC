@@ -4,6 +4,7 @@
 
 // CLIENT BEHAVIORS
 #include <move_group_interface_client/client_behaviors.h>
+#include <move_group_interface_client/cl_movegroup.h>
 
 #include <move_base_z_client_plugin/client_behaviors.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
@@ -19,10 +20,10 @@ using namespace sm_fetch_two_table_pick_n_place_1::cl_gripper;
 using namespace smacc::state_reactors;
 
 // ORTHOGONALS
-#include <sm_fetch_two_table_pick_n_place_1/orthogonals/or_gripper.h>
-#include <sm_fetch_two_table_pick_n_place_1/orthogonals/or_arm.h>
-#include <sm_fetch_two_table_pick_n_place_1/orthogonals/or_perception.h>
-#include <sm_fetch_two_table_pick_n_place_1/orthogonals/or_navigation.h>
+#include "orthogonals/or_gripper.h"
+#include "orthogonals/or_arm.h"
+#include "orthogonals/or_perception.h"
+#include "orthogonals/or_navigation.h"
 
 namespace sm_fetch_two_table_pick_n_place_1
 {
@@ -73,15 +74,15 @@ struct SmFetchTwoTablePickNPlace1
 //MODESTATES
 
 //SUPERSTATES
-#include <sm_fetch_two_table_pick_n_place_1/superstates/ss_pick_object.h>
-#include <sm_fetch_two_table_pick_n_place_1/superstates/ss_place_object.h>
+#include "superstates/ss_pick_object.h"
+#include "superstates/ss_place_object.h"
 
 //STATES
-#include <sm_fetch_two_table_pick_n_place_1/states/st_initial_forward.h>
-#include <sm_fetch_two_table_pick_n_place_1/states/st_initial_posture.h>
-#include <sm_fetch_two_table_pick_n_place_1/states/st_forward.h>
-#include <sm_fetch_two_table_pick_n_place_1/states/st_undo_incorrect_forward.h>
-#include <sm_fetch_two_table_pick_n_place_1/states/st_rotate180.h>
+#include "states/st_initial_forward.h"
+#include "states/st_initial_posture.h"
+#include "states/st_forward.h"
+#include "states/st_undo_incorrect_forward.h"
+#include "states/st_rotate180.h"
 
 // #include <sm_fetch_two_table_pick_n_place_1/states/st_open_gripper.h>
 // #include <sm_fetch_two_table_pick_n_place_1/states/st_move_pregrasp_pose.h>

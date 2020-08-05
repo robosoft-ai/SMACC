@@ -6,45 +6,107 @@
 
 #pragma once
 
-#include <move_group_interface_client/cl_movegroup.h>
 #include <smacc/smacc_asynchronous_client_behavior.h>
-#include <future>
+#include <move_group_interface_client/cl_movegroup.h>
 #include <visualization_msgs/MarkerArray.h>
 
 namespace cl_move_group_interface
 {
-class CbMoveEndEffectorTrajectory : public smacc::SmaccAsyncClientBehavior, public smacc::ISmaccUpdatable
-{
-public:
-  
-  // std::string tip_link_;
-  boost::optional<std::string> group_;
-  boost::optional<std::string> tipLink_;
+  template <typename AsyncCB, typename Orthogonal>
+  struct EvJointDiscontinuity : sc::event<EvJointDiscontinuity<AsyncCB, Orthogonal>>
+  {
+    moveit_msgs::RobotTrajectory trajectory;
+  };
 
-  CbMoveEndEffectorTrajectory(std::string tipLink="");
-  CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped>& endEffectorTrajectory, std::string tipLink="");
+  template <typename AsyncCB, typename Orthogonal>
+  struct EvIncorrectInitialPosition : sc::event<EvIncorrectInitialPosition<AsyncCB, Orthogonal>>
+  {
+    moveit_msgs::RobotTrajectory trajectory;
+  };
 
-  virtual void onEntry() override;
+  enum class ComputeJointTrajectoryErrorCode
+  {
+    SUCCESS,
+    INCORRECT_INITIAL_STATE,
+    JOINT_TRAJECTORY_DISCONTINUITY
+  };
 
-  virtual void onExit() override;
+  class CbMoveEndEffectorTrajectory : public smacc::SmaccAsyncClientBehavior,
+                                      public smacc::ISmaccUpdatable
+  {
+  public:
+    // std::string tip_link_;
+    boost::optional<std::string> group_;
 
-  virtual void update() override;
+    boost::optional<std::string> tipLink_;
 
-protected:
-  virtual void generateTrajectory();  
-  virtual void createMarkers();
+    boost::optional<bool> allowInitialTrajectoryStateJointDiscontinuity_;
 
-  std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory_;
+    CbMoveEndEffectorTrajectory(std::string tipLink = "");
 
-  ClMoveGroup *movegroupClient_;
-  visualization_msgs::MarkerArray beahiorMarkers_;
+    CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped> &endEffectorTrajectory, std::string tipLink = "");
+
+    template <typename TOrthogonal, typename TSourceObject>
+    void onOrthogonalAllocation()
+    {
+      smacc::SmaccAsyncClientBehavior::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
+
+      postJointDiscontinuityEvent = [this](auto traj) {
+        auto ev = new EvJointDiscontinuity<TSourceObject, TOrthogonal>();
+        ev->trajectory = traj;
+        this->postEvent(ev);
+      };
+
+      postIncorrectInitialStateEvent = [this](auto traj) 
+      {
+        auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
+        ev->trajectory = traj;
+        this->postEvent(ev);
+      };
+
+      postMotionExecutionFailureEvents = [this]
+      {
+          ROS_INFO_STREAM("[" << this->getName() << "] motion execution failed");
+          movegroupClient_->postEventMotionExecutionFailed();
+          this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject,TOrthogonal>>();
+      };
+    }    
+
+    virtual void onEntry() override;
+
+    virtual void onExit() override;
+
+    virtual void update() override;
+
+  protected:
+    ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(moveit_msgs::RobotTrajectory &computedJointTrajectory);
+    
+    void executeJointSpaceTrajectory(const moveit_msgs::RobotTrajectory &computedJointTrajectory);
+
+    virtual void generateTrajectory();
+
+    virtual void createMarkers();
+
+    std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory_;
+
+    ClMoveGroup *movegroupClient_;
+
+    visualization_msgs::MarkerArray beahiorMarkers_;
 
   private:
-  void initializeROS();
-  ros::Publisher markersPub_;
-  std::atomic<bool> markersInitialized_ = false;
-  
-  ros::ServiceClient iksrv_;
-  std::mutex m_mutex_;
-};
-}  // namespace cl_move_group_interface
+    void initializeROS();
+
+    ros::Publisher markersPub_;
+
+    std::atomic<bool> markersInitialized_ = false;
+
+    ros::ServiceClient iksrv_;
+
+    std::mutex m_mutex_;
+
+    std::function<void(moveit_msgs::RobotTrajectory &)> postJointDiscontinuityEvent;
+    std::function<void(moveit_msgs::RobotTrajectory &)> postIncorrectInitialStateEvent;
+
+    std::function<void()> postMotionExecutionFailureEvents;
+  };
+} // namespace cl_move_group_interface

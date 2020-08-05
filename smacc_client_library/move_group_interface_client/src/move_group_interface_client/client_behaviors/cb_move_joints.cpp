@@ -32,6 +32,24 @@ namespace cl_move_group_interface
     }
   }
 
+  std::string currentJointStatesToString(moveit::planning_interface::MoveGroupInterface &moveGroupInterface, std::map<std::string, double>& targetJoints)
+  {
+    auto state = moveGroupInterface.getCurrentState();
+    auto vnames = state->getVariableNames();
+    
+    std::stringstream ss;
+
+    for(auto& tgj: targetJoints)
+    {
+      auto it = std::find(vnames.begin(),vnames.end(), tgj.first);
+      auto index = std::distance(vnames.begin(), it);
+
+      ss << tgj.first << ":" << state->getVariablePosition(index) << std::endl;
+    }
+
+    return ss.str();
+  }
+
   void CbMoveJoints::moveJoints(moveit::planning_interface::MoveGroupInterface &moveGroupInterface)
   {
     if (scalingFactor_)
@@ -48,6 +66,7 @@ namespace cl_move_group_interface
     else
     {
       moveGroupInterface.setJointValueTarget(jointValueTarget_);
+      //moveGroupInterface.setGoalJointTolerance(0.01);
       success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
       ROS_INFO_NAMED("CbMoveJoints", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
     }
@@ -56,22 +75,27 @@ namespace cl_move_group_interface
     {
       auto executionResult = moveGroupInterface.execute(computedMotionPlan);
 
+      auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+      
       if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
       {
-        ROS_INFO("[CbMoveJoints] motion execution succedded. Throwing success event.");
+        ROS_INFO_STREAM("[" << this->getName() << "] motion execution succedded. Throwing success event. " << std::endl
+                                                                                              << statestr);
         movegroupClient_->postEventMotionExecutionSucceded();
         this->postSuccessEvent();
       }
       else
       {
-        ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
+        ROS_WARN_STREAM("[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl
+                                                                                       << statestr);
         movegroupClient_->postEventMotionExecutionFailed();
         this->postFailureEvent();
       }
     }
     else
     {
-      ROS_WARN("[CbMoveJoints] motion execution failed. Throwing fail event.");
+      auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
+      ROS_WARN_STREAM("[" << this->getName() << "] motion execution failed. Throwing fail event." << std::endl << statestr);
       movegroupClient_->postEventMotionExecutionFailed();
       this->postFailureEvent();
     }

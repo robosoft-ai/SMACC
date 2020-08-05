@@ -19,12 +19,12 @@ namespace cl_move_group_interface
 {
 
 template <typename TSource, typename TOrthogonal>
-struct MoveGroupMotionExecutionSucceded : sc::event<MoveGroupMotionExecutionSucceded<TSource, TOrthogonal>>
+struct EvMoveGroupMotionExecutionSucceded : sc::event<EvMoveGroupMotionExecutionSucceded<TSource, TOrthogonal>>
 {
 };
 
 template <typename TSource, typename TOrthogonal>
-struct MoveGroupMotionExecutionFailed : sc::event<MoveGroupMotionExecutionFailed<TSource, TOrthogonal>>
+struct EvMoveGroupMotionExecutionFailed : sc::event<EvMoveGroupMotionExecutionFailed<TSource, TOrthogonal>>
 {
 };
 
@@ -87,12 +87,12 @@ public:
   {
     postEventMotionExecutionSucceded_ = [=]() {
       this->onSucceded_();
-      this->postEvent<MoveGroupMotionExecutionSucceded<TSourceObject, TOrthogonal>>();
+      this->postEvent<EvMoveGroupMotionExecutionSucceded<TSourceObject, TOrthogonal>>();
     };
 
     postEventMotionExecutionFailed_ = [=]() {
       this->onFailed_();
-      this->postEvent<MoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
+      this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject, TOrthogonal>>();
     };
   }
 

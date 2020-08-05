@@ -8,6 +8,7 @@
 #include <moveit_msgs/GetPositionIK.h>
 #include <visualization_msgs/MarkerArray.h>
 #include <tf/transform_datatypes.h>
+#include <move_group_interface_client/components/cp_trajectory_history.h>
 
 namespace cl_move_group_interface
 {
@@ -31,23 +32,8 @@ namespace cl_move_group_interface
         iksrv_ = nh.serviceClient<moveit_msgs::GetPositionIK>("/compute_ik");
     }
 
-    void CbMoveEndEffectorTrajectory::onEntry()
+    ComputeJointTrajectoryErrorCode CbMoveEndEffectorTrajectory::computeJointSpaceTrajectory(moveit_msgs::RobotTrajectory &computedJointTrajectory)
     {
-        moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-
-        this->requiresClient(movegroupClient_);
-
-        this->generateTrajectory();
-
-        if (this->endEffectorTrajectory_.size() == 0)
-        {
-            ROS_WARN_STREAM("[" << smacc::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
-            return;
-        }
-
-        this->createMarkers();
-        markersInitialized_ = true;
-
         // get current robot state
         auto currentState = movegroupClient_->moveGroupClientInterface.getCurrentState();
 
@@ -71,6 +57,9 @@ namespace cl_move_group_interface
 
         auto &first = endEffectorTrajectory_.front();
         ros::Time referenceTime = first.header.stamp;
+
+        int discontinuity = 0;
+        bool initialStateDiscontinuity = false;
 
         for (int k = 0; k < this->endEffectorTrajectory_.size(); k++)
         {
@@ -109,42 +98,61 @@ namespace cl_move_group_interface
                 }
 
                 // continuity check
-                bool discontinuity = false;
                 int jointindex = 0;
+                int discontinuityJointIndex = -1;
+                double discontinuityDeltaJointIndex = -1;
                 double deltajoint;
-                if (k != 0)
+
+                bool check = k > 0 || !allowInitialTrajectoryStateJointDiscontinuity_ || allowInitialTrajectoryStateJointDiscontinuity_ && !(*allowInitialTrajectoryStateJointDiscontinuity_);
+                if (check)
                 {
                     for (jointindex = 0; jointindex < jointPositions.size(); jointindex++)
                     {
                         deltajoint = jointPositions[jointindex] - prevtrajpoint[jointindex];
 
-                        discontinuity = fabs(deltajoint) > 0.07 /*2 deg*/;
-
-                        if (discontinuity)
+                        if (!discontinuity && fabs(deltajoint) > 0.1 /*2.5 deg*/)
                         {
-                            break;
+                            discontinuity++;
+                            discontinuityDeltaJointIndex = deltajoint;
+                            discontinuityJointIndex = jointindex;
+                            
+                            if(k == 0)
+                                initialStateDiscontinuity = true;
                         }
                     }
                 }
 
-                if (discontinuity)
+                if (discontinuity && discontinuityJointIndex!= -1)
                 {
+                    // show a message and stop the trajectory generation
                     std::stringstream ss;
-                    ss << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] " << currentjointnames[jointindex] << " IK discontinuity : " << deltajoint << std::endl
-                       << "prev joint value: " << prevtrajpoint[jointindex] << std::endl
-                       << "current joint value: " << jointPositions[jointindex] << std::endl;
+                    ss << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] " << currentjointnames[discontinuityJointIndex] << " IK discontinuity : " << discontinuityDeltaJointIndex << std::endl
+                       << "prev joint value: " << prevtrajpoint[discontinuityJointIndex] << std::endl
+                       << "current joint value: " << jointPositions[discontinuityJointIndex] << std::endl;
+
+                    ss << std::endl;
+                    for (int ji = 0; ji < jointPositions.size(); ji++)
+                    {
+                        ss << currentjointnames[ji] << ": " << jointPositions[ji] << std::endl;
+                    }
 
                     for (int kindex = 0; kindex < trajectory.size(); kindex++)
                     {
-                        ss << "[" << kindex << "]: " << trajectory[kindex][jointindex] << std::endl;
+                        ss << "[" << kindex << "]: " << trajectory[kindex][discontinuityJointIndex] << std::endl;
+                    }
+
+                    if (k == 0)
+                    {
+                        ss << "This is the first posture of the trajectory. Maybe the robot initial posture is not coincident to the initial posture of the generated joint trajectory." << std::endl;
                     }
 
                     ROS_ERROR_STREAM(ss.str());
-                    k--;
 
-                    movegroupClient_->postEventMotionExecutionFailed();
-                    this->postFailureEvent();
-                    return;
+                    trajectory.push_back(jointPositions);
+                    ros::Duration durationFromStart = pose.header.stamp - referenceTime;
+                    trajectoryTimeStamps.push_back(durationFromStart);
+
+                    continue;
                 }
                 else
                 {
@@ -171,23 +179,39 @@ namespace cl_move_group_interface
 
         // get current robot state
         // fill plan message
-        computedMotionPlan.start_state_.joint_state.name = currentjointnames;
+        // computedMotionPlan.start_state_.joint_state.name = currentjointnames;
+        // computedMotionPlan.start_state_.joint_state.position = trajectory.front();
+        // computedMotionPlan.trajectory_.joint_trajectory.joint_names = currentjointnames;
 
-        computedMotionPlan.start_state_.joint_state.position = trajectory.front();
-        computedMotionPlan.trajectory_.joint_trajectory.joint_names = currentjointnames;
-
+        computedJointTrajectory.joint_trajectory.joint_names = currentjointnames;
         int i = 0;
         for (auto &p : trajectory)
         {
+            if (i == 0) // not copy the current state in the trajectory (used to solve discontinuity in other behaviors)
+            {
+                i++;
+                continue;
+            }
+
             trajectory_msgs::JointTrajectoryPoint jp;
             jp.positions = p;
             jp.time_from_start = trajectoryTimeStamps[i]; //ros::Duration(t);
-            computedMotionPlan.trajectory_.joint_trajectory.points.push_back(jp);
+            computedJointTrajectory.joint_trajectory.points.push_back(jp);
             i++;
         }
 
+        if(initialStateDiscontinuity)
+            return ComputeJointTrajectoryErrorCode::INCORRECT_INITIAL_STATE;
+        else if(discontinuity >0)
+            return ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY;
+        return ComputeJointTrajectoryErrorCode::SUCCESS;
+    }
+
+    void CbMoveEndEffectorTrajectory::executeJointSpaceTrajectory(const moveit_msgs::RobotTrajectory &computedJointTrajectory)
+    {
+        ROS_INFO_STREAM("[" << this->getName() << "] Executing joint trajectory");
         // call execute
-        auto executionResult = this->movegroupClient_->moveGroupClientInterface.execute(computedMotionPlan.trajectory_);
+        auto executionResult = this->movegroupClient_->moveGroupClientInterface.execute(computedJointTrajectory);
 
         if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
         {
@@ -197,9 +221,61 @@ namespace cl_move_group_interface
         }
         else
         {
-            ROS_INFO_STREAM("[" << this->getName() << "] motion execution failed");
+            this->postMotionExecutionFailureEvents();
+            this->postFailureEvent();
+        }
+    }
+
+    void CbMoveEndEffectorTrajectory::onEntry()
+    {
+        this->requiresClient(movegroupClient_);
+
+        this->generateTrajectory();
+
+        if (this->endEffectorTrajectory_.size() == 0)
+        {
+            ROS_WARN_STREAM("[" << smacc::demangleSymbol(typeid(*this).name()) << "] No points in the trajectory. Skipping behavior.");
+            return;
+        }
+
+        this->createMarkers();
+        markersInitialized_ = true;
+
+        moveit_msgs::RobotTrajectory computedTrajectory;
+
+        auto errorcode = computeJointSpaceTrajectory(computedTrajectory);
+
+        bool trajectoryGenerationSuccess = errorcode == ComputeJointTrajectoryErrorCode::SUCCESS;
+
+        CpTrajectoryHistory *trajectoryHistory;
+        this->requiresComponent(trajectoryHistory);
+
+        if (!trajectoryGenerationSuccess)
+        {
+            ROS_INFO_STREAM("[" << this->getName() << "] Incorrect trajectory. Posting failure event.");
+            if (trajectoryHistory != nullptr)
+            {
+                moveit_msgs::MoveItErrorCodes error;
+                error.val = moveit_msgs::MoveItErrorCodes::NO_IK_SOLUTION;
+                trajectoryHistory->pushTrajectory(computedTrajectory, error);
+            }
+
             movegroupClient_->postEventMotionExecutionFailed();
             this->postFailureEvent();
+
+            if(errorcode == ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY)
+            {
+                this->postJointDiscontinuityEvent(computedTrajectory);
+            }
+            else if(errorcode == ComputeJointTrajectoryErrorCode::INCORRECT_INITIAL_STATE)
+            {
+                this->postIncorrectInitialStateEvent(computedTrajectory);
+            }
+            return;
+        }
+        else
+        {
+            this->executeJointSpaceTrajectory(computedTrajectory);
         }
 
         // handle finishing events
@@ -216,10 +292,10 @@ namespace cl_move_group_interface
 
     void CbMoveEndEffectorTrajectory::onExit()
     {
-        markersInitialized_= false;
+        markersInitialized_ = false;
 
         std::lock_guard<std::mutex> guard(m_mutex_);
-        for(auto& marker: this->beahiorMarkers_.markers)
+        for (auto &marker : this->beahiorMarkers_.markers)
         {
             marker.header.stamp = ros::Time::now();
             marker.action = visualization_msgs::Marker::DELETE;

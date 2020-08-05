@@ -189,7 +189,8 @@ namespace smacc
 
             // STATE UPDATABLE ELEMENTS
             if (this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::TRANSITIONING &&
-                this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING)
+                this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING && 
+                this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_EXITING)
             {
                 // we do not update updatable elements during trasitioning or configuration of states
                 long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();

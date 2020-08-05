@@ -174,6 +174,7 @@ protected:
 
 private:
     std::recursive_mutex m_mutex_;
+    std::recursive_mutex eventQueueMutex_;
 
     StateMachineInternalAction stateMachineCurrentAction;
 

@@ -10,7 +10,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
             // TRANSITION TABLE
             typedef mpl::list<
-                //Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
+                //Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
                 Transition<EvCbFailure<CbMoveKnownState, OrArm>, StNavigationPosture, ABORT>>
                 reactions;
 

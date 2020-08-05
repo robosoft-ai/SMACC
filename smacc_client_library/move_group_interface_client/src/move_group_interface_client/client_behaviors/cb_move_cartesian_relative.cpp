@@ -23,6 +23,7 @@ void CbMoveCartesianRelative::onEntry()
   if (this->group_)
   {
       moveit::planning_interface::MoveGroupInterface move_group(*(this->group_));
+      this->moveRelativeCartesian(&move_group, offset_);
   }
   else
   {
@@ -41,16 +42,16 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
 {
   std::vector<geometry_msgs::Pose> waypoints;
 
-  // this one was working fine but the issue is that for relative motions it grows up on ABORT-State-Loop pattern
-  auto referenceStartPose = movegroupClient->getPoseTarget(); 
-  //auto referenceStartPose = this->moveGroupClientInterface.getCurrentPose();
+  // this one was working fine but the issue is that for relative motions it grows up on ABORT-State-Loop pattern. 
+  // But, we need current pose because maybe setCurrentPose was not set by previos behaviors. The only solution would be 
+  // distinguishing between the executtion error and the planning error with no state change
+  //auto referenceStartPose = movegroupClient->getPoseTarget(); 
+  auto referenceStartPose = movegroupClient->getCurrentPose();
 
   ROS_INFO_STREAM("[CbMoveCartesianRelative] RELATIVE MOTION, SOURCE POSE: " << referenceStartPose);
   ROS_INFO_STREAM("[CbMoveCartesianRelative] Offset: " << offset);
 
   waypoints.push_back(referenceStartPose.pose);  // up and out
-
-  auto targetObjectPose = movegroupClient->getPoseTarget();
 
   auto endPose = referenceStartPose.pose;
 

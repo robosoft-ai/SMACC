@@ -8,7 +8,6 @@
 
 namespace cl_move_group_interface
 {
-
     CbCircularPivotMotion::CbCircularPivotMotion(std::string tipLink)
         : CbMoveEndEffectorTrajectory(tipLink)
     {
@@ -28,48 +27,7 @@ namespace cl_move_group_interface
     {
         if (!relativeInitialPose_)
         {
-
-            //auto currentRobotEndEffectorPose = this->movegroupClient_->moveGroupClientInterface.getCurrentPose();
-
-            tf::TransformListener tfListener;
-            // tf::StampedTransform globalBaseLink;
-            tf::StampedTransform endEffectorInPivotFrame;
-
-            try
-            {
-                if (!tipLink_ || *tipLink_ == "")
-                {
-                    tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
-                }
-
-                tfListener.waitForTransform(planePivotPose_.header.frame_id, *tipLink_, ros::Time(0), ros::Duration(10));
-                tfListener.lookupTransform(planePivotPose_.header.frame_id, *tipLink_, ros::Time(0), endEffectorInPivotFrame);
-
-                // we define here the global frame as the pivot frame id
-                // tfListener.waitForTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), ros::Duration(10));
-                // tfListener.lookupTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), globalBaseLink);
-            }
-            catch (const std::exception &e)
-            {
-                std::cerr << e.what() << '\n';
-            }
-
-            // tf::Transform endEffectorInBaseLinkFrame;
-            // tf::poseMsgToTF(currentRobotEndEffectorPose.pose, endEffectorInBaseLinkFrame);
-
-            // tf::Transform endEffectorInPivotFrame = globalBaseLink * endEffectorInBaseLinkFrame; // pose composition
-
-            // now pivot and EndEffector share a common reference frame (let say map)
-            // now get the current pose from the pivot reference frame with inverse composition
-            tf::Transform pivotTransform;
-            tf::poseMsgToTF(planePivotPose_.pose, pivotTransform);
-            tf::Transform invertedNewReferenceFrame = pivotTransform.inverse();
-
-            tf::Transform currentPoseRelativeToPivot = invertedNewReferenceFrame * endEffectorInPivotFrame;
-
-            geometry_msgs::Pose finalEndEffectorRelativePose;
-            tf::poseTFToMsg(currentPoseRelativeToPivot, finalEndEffectorRelativePose);
-            relativeInitialPose_ = finalEndEffectorRelativePose;
+            this->computeCurrentEndEffectorPoseRelativeToPivot();
         }
 
         // project offset into the xy-plane
@@ -77,8 +35,8 @@ namespace cl_move_group_interface
         double radius = sqrt(relativeInitialPose_->position.z * relativeInitialPose_->position.z + relativeInitialPose_->position.y * relativeInitialPose_->position.y);
         double initialAngle = atan2(relativeInitialPose_->position.z, relativeInitialPose_->position.y);
 
-        double totallineardist = radius * deltaRadians_;
-        double totalangulardist = deltaRadians_;
+        double totallineardist = fabs(radius * deltaRadians_);
+        double totalangulardist = fabs(deltaRadians_);
 
         // at least 1 sample per centimeter (average)
         // at least 1 sample per ~1.1 degrees (average)
@@ -158,6 +116,51 @@ namespace cl_move_group_interface
 
             this->endEffectorTrajectory_.push_back(globalPose);
         }
+    }
+
+    void CbCircularPivotMotion::computeCurrentEndEffectorPoseRelativeToPivot()
+    {
+        //auto currentRobotEndEffectorPose = this->movegroupClient_->moveGroupClientInterface.getCurrentPose();
+
+        tf::TransformListener tfListener;
+        // tf::StampedTransform globalBaseLink;
+        tf::StampedTransform endEffectorInPivotFrame;
+
+        try
+        {
+            if (!tipLink_ || *tipLink_ == "")
+            {
+                tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+            }
+
+            tfListener.waitForTransform(planePivotPose_.header.frame_id, *tipLink_, ros::Time(0), ros::Duration(10));
+            tfListener.lookupTransform(planePivotPose_.header.frame_id, *tipLink_, ros::Time(0), endEffectorInPivotFrame);
+
+            // we define here the global frame as the pivot frame id
+            // tfListener.waitForTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), ros::Duration(10));
+            // tfListener.lookupTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), globalBaseLink);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+
+        // tf::Transform endEffectorInBaseLinkFrame;
+        // tf::poseMsgToTF(currentRobotEndEffectorPose.pose, endEffectorInBaseLinkFrame);
+
+        // tf::Transform endEffectorInPivotFrame = globalBaseLink * endEffectorInBaseLinkFrame; // pose composition
+
+        // now pivot and EndEffector share a common reference frame (let say map)
+        // now get the current pose from the pivot reference frame with inverse composition
+        tf::Transform pivotTransform;
+        tf::poseMsgToTF(planePivotPose_.pose, pivotTransform);
+        tf::Transform invertedNewReferenceFrame = pivotTransform.inverse();
+
+        tf::Transform currentPoseRelativeToPivot = invertedNewReferenceFrame * endEffectorInPivotFrame;
+
+        geometry_msgs::Pose finalEndEffectorRelativePose;
+        tf::poseTFToMsg(currentPoseRelativeToPivot, finalEndEffectorRelativePose);
+        relativeInitialPose_ = finalEndEffectorRelativePose;
     }
 
     void CbCircularPivotMotion::createMarkers()

@@ -108,6 +108,7 @@ namespace smacc
         }
       }
     }
+
     ROS_WARN("component %s is required but it was not found in any orthogonal", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
 
     // std::string componentkey = demangledTypeName<SmaccComponentType>();
@@ -136,6 +137,7 @@ namespace smacc
   template <typename EventType>
   void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
   {
+    std::lock_guard<std::recursive_mutex> guard(eventQueueMutex_);
     if (evlifetime == EventLifeTime::CURRENT_STATE && (stateMachineCurrentAction == StateMachineInternalAction::STATE_EXITING ||
                                                        stateMachineCurrentAction == StateMachineInternalAction::TRANSITIONING))
     {
@@ -146,27 +148,18 @@ namespace smacc
       // meanwhile we were doing the transition, but the main thread was waiting for its correct finalization (with thread.join)
     }
 
-    std::unique_lock<std::recursive_mutex> lock(m_mutex_);
+    // when a postting event is requested by any component, client, or client behavior
+    // we reach this place. Now, we propagate the events to all the state state reactors to generate
+    // some more events
 
-    if (lock.owns_lock())
+    ROS_DEBUG_STREAM("[PostEvent entry point] " << demangleSymbol<EventType>());
+    auto currentstate = currentState_;
+    if (currentstate != nullptr)
     {
-      // when a postting event is requested by any component, client, or client behavior
-      // we reach this place. Now, we propagate the events to all the state state reactors to generate
-      // some more events
-
-      ROS_DEBUG_STREAM("[PostEvent entry point] " << demangleSymbol<EventType>());
-      auto currentstate = currentState_;
-      if (currentstate != nullptr)
-      {
-        propagateEventToStateReactors(currentstate, ev);
-      }
-
-      this->signalDetector_->postEvent(ev);
+      propagateEventToStateReactors(currentstate, ev);
     }
-    else
-    {
-      ROS_WARN_STREAM("Event with lifetime (Current state) was discarded." << demangleSymbol<EventType>());
-    }
+
+    this->signalDetector_->postEvent(ev);
   }
 
   template <typename EventType>
@@ -433,7 +426,6 @@ namespace smacc
     this->updateStatusMessage();
 
     stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
-
   }
 
   template <typename StateType>
@@ -447,7 +439,6 @@ namespace smacc
   {
     stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
 
-    this->lockStateMachine("state exit");
     auto fullname = demangleSymbol(typeid(StateType).name());
     ROS_WARN_STREAM("exiting state: " << fullname);
     //this->setParam("destroyed", true);
@@ -481,6 +472,8 @@ namespace smacc
                   srname, e.what());
       }
     }
+
+    this->lockStateMachine("state exit");
 
     for (auto &conn : this->stateCallbackConnections)
     {

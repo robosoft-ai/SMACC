@@ -8,8 +8,8 @@ struct StInitialPosture : smacc::SmaccState<StInitialPosture, SmFetchTwoTablePic
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StInitialForward>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
+        Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StInitialForward>,
+        Transition<EvMoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;
 

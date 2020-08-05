@@ -23,8 +23,6 @@ public:
 
   virtual void onEntry() override;
 
-  std::future<moveit::planning_interface::MoveItErrorCode> planAndExecuteAsync();
-
 protected:
   bool moveToAbsolutePose(moveit::planning_interface::MoveGroupInterface &moveGroupInterface,
                           geometry_msgs::PoseStamped &targetObjectPose);

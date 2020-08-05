@@ -6,11 +6,11 @@ namespace smacc
     {
         ROS_INFO_STREAM("[" << getName() << "] Creating asynchronous onEntry thread");
         this->onEntryThread_ = std::async(std::launch::async,
-            [=] {
-                this->onEntry();
-                this->postFinishEventFn_();
-                return 0;
-                });
+                                          [=] {
+                                              this->onEntry();
+                                              this->postFinishEventFn_();
+                                              return 0;
+                                          });
     }
 
     void SmaccAsyncClientBehavior::executeOnExit()
@@ -20,7 +20,24 @@ namespace smacc
 
         try
         {
-            this->onEntryThread_.get();
+            ros::Rate r(200);
+            while (ros::ok())
+            {
+                bool valid = this->onEntryThread_.valid();
+                if (valid)
+                {
+                    auto status = this->onEntryThread_.wait_for(std::chrono::milliseconds(20));
+                    if (status == std::future_status::ready)
+                    {
+                        this->onEntryThread_.get();
+                        break;
+                    }
+                }
+
+                r.sleep();
+                ros::spinOnce();
+                ROS_DEBUG("waiting for finishing client behavior");
+            }
         }
         catch (const std::exception &e)
         {
@@ -29,10 +46,10 @@ namespace smacc
 
         ROS_INFO_STREAM("[" << getName() << "] onExit - Creating asynchronous onExit thread");
         this->onExitThread_ = std::async(std::launch::async,
-            [=] {
-                this->onExit();
-                return 0;
-            });
+                                         [=] {
+                                             this->onExit();
+                                             return 0;
+                                         });
     }
 
     void SmaccAsyncClientBehavior::dispose()
@@ -40,7 +57,7 @@ namespace smacc
         ROS_DEBUG_STREAM("[" << getName() << "] Destroying client behavior- Waiting finishing of asynchronous onExit thread");
         try
         {
-            this->onExitThread_ .get();
+            this->onExitThread_.get();
         }
         catch (...)
         {
@@ -52,7 +69,6 @@ namespace smacc
 
     SmaccAsyncClientBehavior::~SmaccAsyncClientBehavior()
     {
-        
     }
 
     void SmaccAsyncClientBehavior::postSuccessEvent()

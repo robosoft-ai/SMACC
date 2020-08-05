@@ -11,8 +11,8 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture>,
-        Transition<MoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>,  StNavigationPosture> /* not retry on failure*/
+        Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StNavigationPosture>,
+        Transition<EvMoveGroupMotionExecutionFailed<ClMoveGroup, OrArm>,  StNavigationPosture> /* not retry on failure*/
         >
         reactions;
 

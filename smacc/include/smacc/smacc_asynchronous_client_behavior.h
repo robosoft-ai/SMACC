@@ -6,6 +6,7 @@
 
 #pragma once
 #include <smacc/smacc_client_behavior_base.h>
+#include <smacc/smacc_signal.h>
 #include <thread>
 #include <condition_variable>
 #include <mutex>
@@ -13,7 +14,6 @@
 
 namespace smacc
 {
-
     template <typename AsyncCB, typename Orthogonal>
     struct EvCbFinished : sc::event<EvCbFinished<AsyncCB, Orthogonal>>
     {
@@ -43,14 +43,18 @@ namespace smacc
     {
     public:
         template <typename TOrthogonal, typename TSourceObject>
-        void onOrthogonalAllocation()
-        {
-            postFinishEventFn_ = [=] { this->postEvent<EvCbFinished<TSourceObject, TOrthogonal>>(); };
-            postSuccessEventFn_ = [=] { this->postEvent<EvCbSuccess<TSourceObject, TOrthogonal>>(); };
-            postFailureEventFn_ = [=] { this->postEvent<EvCbFailure<TSourceObject, TOrthogonal>>(); };
-        }
+        void onOrthogonalAllocation();
 
         virtual ~SmaccAsyncClientBehavior();
+
+        template <typename TCallback, typename T>
+        boost::signals2::connection onSuccess(TCallback callback, T *object);
+
+        template <typename TCallback, typename T>
+        boost::signals2::connection onFinished(TCallback callback, T *object);
+
+        template <typename TCallback, typename T>
+        boost::signals2::connection onFailure(TCallback callback, T *object);
 
     protected:
         virtual void executeOnEntry() override;
@@ -68,5 +72,11 @@ namespace smacc
         std::function<void()> postFinishEventFn_;
         std::function<void()> postSuccessEventFn_;
         std::function<void()> postFailureEventFn_;
+
+        SmaccSignal<void()> onFinished_;
+        SmaccSignal<void()> onSuccess_;
+        SmaccSignal<void()> onFailure_;
     };
 } // namespace smacc
+
+#include <smacc/impl/smacc_asynchronous_client_behavior_impl.h>

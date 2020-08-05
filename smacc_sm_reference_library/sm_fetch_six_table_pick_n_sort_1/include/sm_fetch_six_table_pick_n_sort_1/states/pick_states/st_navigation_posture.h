@@ -11,7 +11,7 @@ struct StNavigationPosture : smacc::SmaccState<StNavigationPosture, SS>
 
     // TRANSITION TABLE
     typedef mpl::list<
-        //Transition<MoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
+        //Transition<EvMoveGroupMotionExecutionSucceded<ClMoveGroup, OrArm>, StCloseGripper>
         Transition<EvCbFailure<CbMoveKnownState, OrArm>, StNavigationPosture, ABORT>>
         reactions;
 
