@@ -14,7 +14,6 @@
         <rosparam file="$(find sm_moveit_screw_loop)/config/move_base_client/forward_local_planner.yaml" command="load" />
     </group>
 
-
     <node pkg="sm_moveit_screw_loop" type="sm_moveit_screw_loop_node" name="sm_moveit_screw_loop_node" launch-prefix="$(arg xterm_prefix)" unless="$(arg debug)"/>
 
     <!-- Start Gazebo with a blank world -->

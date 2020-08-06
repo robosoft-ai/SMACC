@@ -18,23 +18,16 @@ namespace cl_move_group_interface
 
         boost::optional<double> linearSpeed_m_s_;
 
-        // if not specified it would be used the current robot pose
-        boost::optional<geometry_msgs::Pose> relativeInitialPose_;
-
-        CbCircularPouringMotion(std::string tipLink = "");
-
-        CbCircularPouringMotion(const geometry_msgs::PoseStamped &planePivotPose, double deltaHeight, std::string tipLink = "");
-
-        CbCircularPouringMotion(const geometry_msgs::PoseStamped &planePivotPose, const geometry_msgs::Pose &relativeInitialPose, double deltaHeight, std::string tipLink = "");
+        CbCircularPouringMotion(const geometry_msgs::PointStamped &pivotPoint, double deltaHeight, std::string tipLink = "");
 
         virtual void generateTrajectory() override;
 
         virtual void createMarkers() override;
+        
+        void getCurrentEndEffectorPose(tf::StampedTransform& currentEndEffectorTransform);
 
     protected:
-        geometry_msgs::PoseStamped pivotPose_;
-
-        geometry_msgs::PoseStamped targetPose_;
+        geometry_msgs::PointStamped pivotPoint_;
 
         // distance in meters from the initial pose to the bottom/top direction in z axe
         double deltaHeight_;
