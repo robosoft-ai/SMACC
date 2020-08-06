@@ -27,16 +27,6 @@ namespace sm_moveit_screw_loop
 {
     //STATE FORWARD DECLARATIONS
 
-    namespace SS1
-    {
-        class SsPickObject;
-    }
-
-    namespace SS2
-    {
-        class SsPlaceObject;
-    }
-
     namespace SS3
     {
         class SsRecoveryScrew;
@@ -44,11 +34,6 @@ namespace sm_moveit_screw_loop
 
     class StInitialPosture;
     class StSecondPosture;
-    class StUndoIncorrectForward;
-    class StNavigateToSourceTable;
-    class StNavigateToDestinyTable;
-    class StNavigationTableRetreat;
-    class StNavigateFinalPose;
     class StFinalRaiseHandsUp;
 
     //SUPERSTATE FORWARD DECLARATIONS
@@ -81,15 +66,10 @@ namespace sm_moveit_screw_loop
 //MODESTATES
 
 //SUPERSTATES
-#include "superstates/ss_pick_object.h"
-#include "superstates/ss_place_object.h"
+
 #include "superstates/ss_recovery_screw.h"
 
-//STATES
-#include "states/st_navigate_to_source_table.h"
-#include "states/st_navigate_to_destiny_table.h"
+
 #include "states/st_initial_posture.h"
 #include "states/st_second_posture.h"
-#include "states/st_navigation_table_retreat.h"
-#include "states/st_navigate_final_pose.h"
 #include "states/st_final_raise_hands_up.h"
