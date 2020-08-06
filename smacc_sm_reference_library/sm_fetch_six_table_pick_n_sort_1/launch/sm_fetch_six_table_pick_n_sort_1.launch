@@ -14,7 +14,6 @@
         <rosparam file="$(find sm_fetch_six_table_pick_n_sort_1)/config/move_base_client/forward_local_planner.yaml" command="load" />
     </group>
 
-
     <node pkg="sm_fetch_six_table_pick_n_sort_1" type="sm_fetch_six_table_pick_n_sort_1_node" name="sm_fetch_six_table_pick_n_sort_1_node" launch-prefix="$(arg xterm_prefix)" unless="$(arg debug)"/>
 
     <!-- Start Gazebo with a blank world -->

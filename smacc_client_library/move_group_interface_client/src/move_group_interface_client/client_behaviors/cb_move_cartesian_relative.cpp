@@ -47,6 +47,7 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
   // distinguishing between the executtion error and the planning error with no state change
   //auto referenceStartPose = movegroupClient->getPoseTarget(); 
   auto referenceStartPose = movegroupClient->getCurrentPose();
+  movegroupClient->setPoseReferenceFrame(referenceStartPose.header.frame_id);
 
   ROS_INFO_STREAM("[CbMoveCartesianRelative] RELATIVE MOTION, SOURCE POSE: " << referenceStartPose);
   ROS_INFO_STREAM("[CbMoveCartesianRelative] Offset: " << offset);

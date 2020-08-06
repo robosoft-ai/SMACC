@@ -23,23 +23,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
         // STATE FUNCTIONS
         static void staticConfigure()
         {
-            //configure_orthogonal<OrArm, CbMoveKnownState>("sm_fetch_six_table_pick_n_sort_1", "config/manipulation/known_states/initial_posture.yaml");
-
-            std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory;
-
-            for(int i=0;i< 100;i++)
-            {
-                geometry_msgs::PoseStamped p;
-                p.header.frame_id = "map";
-                p.pose.position.x = 0.4;
-                p.pose.position.y = -0.2 + 0.005* i;
-                p.pose.position.z = 1 ;
-                p.pose.orientation.w = 1;
-
-                endEffectorTrajectory.push_back(p);
-            }
-
-            configure_orthogonal<OrArm, CbMoveEndEffectorTrajectory>(endEffectorTrajectory);
+            configure_orthogonal<OrArm, CbMoveKnownState>("sm_fetch_six_table_pick_n_sort_1", "config/manipulation/known_states/initial_posture.yaml");
         }
 
         void runtimeConfigure()
