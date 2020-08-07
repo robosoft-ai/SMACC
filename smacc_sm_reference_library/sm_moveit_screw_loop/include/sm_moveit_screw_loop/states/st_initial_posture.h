@@ -28,9 +28,9 @@ namespace sm_moveit_screw_loop
             //configure_orthogonal<OrArm, CbMoveKnownState>("sm_moveit_screw_loop", "config/manipulation/known_states/initial_posture.yaml");
 
             geometry_msgs::PoseStamped pivot;
-            pivot.pose.position.x = 0.9;
+            pivot.pose.position.x = 0.6;
             pivot.pose.position.y = 0;
-            pivot.pose.position.z = 1.0;
+            pivot.pose.position.z = 0.6;
             pivot.pose.orientation.w = 1;
             pivot.header.frame_id = "map";
             configure_orthogonal<OrArm, CbMoveEndEffector>(pivot, "gripper_link");

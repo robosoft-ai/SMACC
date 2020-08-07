@@ -108,5 +108,7 @@ namespace cl_move_group_interface
     std::function<void(moveit_msgs::RobotTrajectory &)> postIncorrectInitialStateEvent;
 
     std::function<void()> postMotionExecutionFailureEvents;
+
+    bool autocleanmarkers = false;
   };
 } // namespace cl_move_group_interface

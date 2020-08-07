@@ -26,11 +26,18 @@ namespace cl_move_group_interface
         
         void getCurrentEndEffectorPose(tf::StampedTransform& currentEndEffectorTransform);
 
+        geometry_msgs::Vector3 directionVector_;
+
+        // relative position of the "lid" of the bottle in the end effector reference frame.
+        // that point is the one that must do the linear motion
+        geometry_msgs::Pose pointerRelativePose_; 
     protected:
         geometry_msgs::PointStamped pivotPoint_;
 
         // distance in meters from the initial pose to the bottom/top direction in z axe
         double deltaHeight_;
+
+        std::vector<geometry_msgs::PoseStamped> pointerTrajectory_;
 
     private:
         void computeCurrentEndEffectorPoseRelativeToPivot();
