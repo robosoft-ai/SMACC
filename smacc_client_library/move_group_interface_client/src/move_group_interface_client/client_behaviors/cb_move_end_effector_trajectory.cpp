@@ -330,19 +330,20 @@ namespace cl_move_group_interface
             marker.color.b = 0;
 
             geometry_msgs::Point start, end;
-            start.x = pose.pose.position.x;
-            start.y = pose.pose.position.y;
-            start.z = pose.pose.position.z;
+            start.x = 0;
+            start.y = 0;
+            start.z = 0;
 
             tf::Transform basetransform;
             tf::poseMsgToTF(pose.pose, basetransform);
             tf::Transform endarrow = localdirection * basetransform;
 
-            end.x = endarrow.getOrigin().x();
-            end.y = endarrow.getOrigin().y();
-            end.z = endarrow.getOrigin().z();
+            end.x = localdirection.getOrigin().x();
+            end.y = localdirection.getOrigin().y();
+            end.z = localdirection.getOrigin().z();
 
-            marker.pose.orientation.w = 1;
+            marker.pose.position = pose.pose.position;
+            marker.pose.orientation = pose.pose.orientation;
             marker.points.push_back(start);
             marker.points.push_back(end);
 

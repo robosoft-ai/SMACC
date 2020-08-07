@@ -30,7 +30,7 @@ namespace sm_moveit_screw_loop
             geometry_msgs::PoseStamped pivot;
             pivot.pose.position.x = 0.9;
             pivot.pose.position.y = 0;
-            pivot.pose.position.z = 0.8;
+            pivot.pose.position.z = 1.0;
             pivot.pose.orientation.w = 1;
             pivot.header.frame_id = "map";
             configure_orthogonal<OrArm, CbMoveEndEffector>(pivot, "gripper_link");

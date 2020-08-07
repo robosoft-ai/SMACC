@@ -70,14 +70,24 @@ namespace cl_move_group_interface
 
         this->getCurrentEndEffectorPose(currentEndEffectorTransform);
 
-        v0 = currentEndEffectorTransform.getOrigin();
+        tf::Vector3 pivot;
+        tf::pointMsgToTF(pivotPoint_.point,pivot);
+        v0 = currentEndEffectorTransform.getOrigin() - pivot ;
         v1 = v0;
         v1.setZ(v1.z()- this->deltaHeight_);
 
         tf::Quaternion initialOrientation = currentEndEffectorTransform.getRotation();
-        tf::Quaternion rotation = tf::shortestArcQuat(v0, v1);
-        auto finalOrientation = initialOrientation * rotation;
+        tf::Vector3 vp1(v1);
+        tf::Vector3 vp0(v0);
+        tf::Quaternion rotation = tf::shortestArcQuatNormalize2(vp1,vp0);
+        auto finalOrientation = initialOrientation*rotation ;
 
+        auto shortestAngle = tf::angleShortestPath(initialOrientation, finalOrientation);
+
+        v0+=pivot;
+        v1+=pivot;
+        
+        float linc = deltaHeight_/steps;// METERS_PER_SAMPLE with sign
         float interpolation_factor = 0;
         tf::Vector3 vi = v0;
         for (float i =0; i < steps; i++)
@@ -85,7 +95,7 @@ namespace cl_move_group_interface
             auto q = tf::slerp(initialOrientation, finalOrientation, interpolation_factor);
 
             interpolation_factor += interpolation_factor_step;
-            dist_meters += METERS_PER_SAMPLE;
+            dist_meters += linc;
 
             vi = v0;
             vi.setZ(vi.getZ() + dist_meters);
