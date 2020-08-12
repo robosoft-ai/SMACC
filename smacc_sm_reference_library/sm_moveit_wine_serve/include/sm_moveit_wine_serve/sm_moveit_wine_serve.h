@@ -46,6 +46,7 @@ namespace sm_moveit_wine_serve
     class StPlaceBottleBack;
     class StReleaseGripper;
     class StPlaceRetreat;
+    class StNavigateToDestinyTable;
 
     //SUPERSTATE FORWARD DECLARATIONS
 
@@ -91,6 +92,7 @@ namespace sm_moveit_wine_serve
 #include "states/st_place_retreat.h"
 #include "states/st_final_raise_hands_up.h"
 #include "states/st_navigate_to_source_table.h"
+#include "states/st_navigate_to_destiny_table.h"
 
 
 

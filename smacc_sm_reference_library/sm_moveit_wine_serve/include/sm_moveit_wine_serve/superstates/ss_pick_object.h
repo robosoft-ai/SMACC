@@ -28,7 +28,7 @@ namespace sm_moveit_wine_serve
             // TRANSITION TABLE
             typedef mpl::list<
 
-                Transition<EvSequenceFinished<SS1::StGraspRetreat>, StPouringPosture, SUCCESS>
+                Transition<EvSequenceFinished<SS1::StGraspRetreat>, StNavigateToDestinyTable, SUCCESS>
             >
             reactions;
 

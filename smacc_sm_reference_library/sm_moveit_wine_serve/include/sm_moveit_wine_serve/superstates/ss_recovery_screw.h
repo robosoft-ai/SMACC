@@ -8,7 +8,6 @@ namespace sm_moveit_wine_serve
         {
             namespace recovery_screw
             {
-
                 //FORWARD DECLARATION OF INNER STATES
                 class StRecoveryScrewInitial;
                 class StRecoveryScrewSecond;

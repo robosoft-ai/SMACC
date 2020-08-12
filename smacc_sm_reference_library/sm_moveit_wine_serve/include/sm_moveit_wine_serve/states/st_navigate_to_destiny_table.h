@@ -2,17 +2,17 @@
 
 #include <smacc/smacc.h>
 #include <tf/tf.h>
-namespace sm_fetch_six_table_pick_n_sort_1
+namespace sm_moveit_wine_serve
 {
     // STATE DECLARATION
-    struct StNavigateToDestinyTable : smacc::SmaccState<StNavigateToDestinyTable, SmMoveitWineServe>
+    struct StNavigateToDestinyTable : smacc::SmaccState<StNavigateToDestinyTable, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 
         // TRANSITION TABLE
         typedef mpl::list<
 
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS2::SsPlaceObject, SUCCESS>,
+            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StPouringPosture, SUCCESS>,
             Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
             >
             reactions;
