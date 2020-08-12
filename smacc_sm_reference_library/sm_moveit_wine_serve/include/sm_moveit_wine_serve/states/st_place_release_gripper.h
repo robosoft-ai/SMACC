@@ -4,7 +4,7 @@
 namespace sm_moveit_wine_serve
 {
     // STATE DECLARATION
-    struct StReleaseGripper : smacc::SmaccState<StReleaseGripper, SmFetchSixTablePickNSort1>
+    struct StReleaseGripper : smacc::SmaccState<StReleaseGripper, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 

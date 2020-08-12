@@ -4,7 +4,7 @@
 namespace sm_moveit_wine_serve
 {
     // STATE DECLARATION
-    struct StPlaceBottleBack : smacc::SmaccState<StPlaceBottleBack, SmFetchSixTablePickNSort1>
+    struct StPlaceBottleBack : smacc::SmaccState<StPlaceBottleBack, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 

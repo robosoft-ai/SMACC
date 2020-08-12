@@ -4,7 +4,7 @@
 namespace sm_moveit_wine_serve
 {
     // STATE DECLARATION
-    struct StPouringPosture : smacc::SmaccState<StPouringPosture, SmFetchSixTablePickNSort1>
+    struct StPouringPosture : smacc::SmaccState<StPouringPosture, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 

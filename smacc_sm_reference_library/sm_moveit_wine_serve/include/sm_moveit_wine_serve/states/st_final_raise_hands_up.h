@@ -4,7 +4,7 @@
 namespace sm_moveit_wine_serve
 {
 // STATE DECLARATION
-struct StFinalRaiseHandsUp : smacc::SmaccState<StFinalRaiseHandsUp, SmFetchSixTablePickNSort1>
+struct StFinalRaiseHandsUp : smacc::SmaccState<StFinalRaiseHandsUp, SmMoveitWineFetch>
 {
     using SmaccState::SmaccState;
 

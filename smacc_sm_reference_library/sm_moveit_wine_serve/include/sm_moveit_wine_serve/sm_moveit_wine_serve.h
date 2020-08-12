@@ -58,8 +58,8 @@ namespace sm_moveit_wine_serve
 {
     /// \brief Advanced example of state machine with smacc that shows multiple techniques
     ///  for the development of state machines
-    struct SmFetchSixTablePickNSort1
-        : public smacc::SmaccStateMachineBase<SmFetchSixTablePickNSort1, StNavigateToSourceTable>
+    struct SmMoveitWineFetch
+        : public smacc::SmaccStateMachineBase<SmMoveitWineFetch, StNavigateToSourceTable>
     {
         using SmaccStateMachineBase::SmaccStateMachineBase;
 

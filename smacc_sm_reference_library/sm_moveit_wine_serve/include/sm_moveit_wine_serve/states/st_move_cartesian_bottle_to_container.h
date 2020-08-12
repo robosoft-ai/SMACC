@@ -4,7 +4,7 @@
 namespace sm_moveit_wine_serve
 {
     // STATE DECLARATION
-    struct StMoveCartesianBottleToContainer : smacc::SmaccState<StMoveCartesianBottleToContainer, SmFetchSixTablePickNSort1>
+    struct StMoveCartesianBottleToContainer : smacc::SmaccState<StMoveCartesianBottleToContainer, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 

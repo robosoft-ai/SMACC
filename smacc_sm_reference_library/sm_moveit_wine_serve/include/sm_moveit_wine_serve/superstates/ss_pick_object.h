@@ -20,7 +20,7 @@ namespace sm_moveit_wine_serve
         using namespace sm_moveit_wine_serve::pick_states;
 
         // STATE DECLARATION
-        struct SsPickObject : smacc::SmaccState<SsPickObject, SmFetchSixTablePickNSort1, StMovePregraspPose>
+        struct SsPickObject : smacc::SmaccState<SsPickObject, SmMoveitWineFetch, StMovePregraspPose>
         {
         public:
             using SmaccState::SmaccState;

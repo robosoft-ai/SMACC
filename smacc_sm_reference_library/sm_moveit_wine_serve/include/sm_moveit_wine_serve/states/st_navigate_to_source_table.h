@@ -8,7 +8,7 @@ namespace sm_moveit_wine_serve
     struct EvFinishDemo : sc::event<EvFinishDemo> {};
 
     // STATE DECLARATION
-    struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmFetchSixTablePickNSort1>
+    struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmMoveitWineFetch>
     {
         using SmaccState::SmaccState;
 

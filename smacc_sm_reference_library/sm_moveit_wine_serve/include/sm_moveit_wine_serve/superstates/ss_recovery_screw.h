@@ -19,7 +19,7 @@ namespace sm_moveit_wine_serve
         using namespace sm_moveit_wine_serve::recovery_screw;
 
         // STATE DECLARATION
-        struct SsRecoveryScrew : smacc::SmaccState<SsRecoveryScrew, SmFetchSixTablePickNSort1, StRecoveryScrewInitial>
+        struct SsRecoveryScrew : smacc::SmaccState<SsRecoveryScrew, SmMoveitWineFetch, StRecoveryScrewInitial>
         {
         public:
             using SmaccState::SmaccState;
