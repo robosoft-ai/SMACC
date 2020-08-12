@@ -10,41 +10,18 @@
 
 namespace cl_move_group_interface
 {
-    CbCircularPouringMotion::CbCircularPouringMotion(const geometry_msgs::PointStamped &planePivotPoint, double deltaHeight, std::string tipLink)
-        : pivotPoint_(planePivotPoint)
+    CbCircularPouringMotion::CbCircularPouringMotion(const geometry_msgs::Point &relativePivotPoint, double deltaHeight, std::string tipLink, std::string globalFrame)
+        : relativePivotPoint_(relativePivotPoint)
         , deltaHeight_(deltaHeight)
         , CbMoveEndEffectorTrajectory(tipLink)
+        , globalFrame_(globalFrame)
     {
-    }
-
-    void CbCircularPouringMotion::getCurrentEndEffectorPose(tf::StampedTransform& currentEndEffectorTransform)
-    {
-        tf::TransformListener tfListener;
-
-        try
-        {
-            if (!tipLink_ || *tipLink_ == "")
-            {
-                tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
-            }
-
-            tfListener.waitForTransform(this->pivotPoint_.header.frame_id, *tipLink_, ros::Time(0), ros::Duration(10));
-            tfListener.lookupTransform(this->pivotPoint_.header.frame_id, *tipLink_, ros::Time(0), currentEndEffectorTransform);
-
-            // we define here the global frame as the pivot frame id
-            // tfListener.waitForTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), ros::Duration(10));
-            // tfListener.lookupTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), globalBaseLink);
-        }
-        catch (const std::exception &e)
-        {
-            std::cerr << e.what() << '\n';
-        }
     }
 
     void CbCircularPouringMotion::generateTrajectory()
     {
         // at least 1 sample per centimeter (average)        
-        const double METERS_PER_SAMPLE = 0.005;
+        const double METERS_PER_SAMPLE = 0.001;
 
         float dist_meters =0;
         float totallineardist = fabs(this->deltaHeight_);
@@ -67,7 +44,7 @@ namespace cl_move_group_interface
 
         tf::StampedTransform currentEndEffectorTransform;
 
-        this->getCurrentEndEffectorPose(currentEndEffectorTransform);
+        this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
 
         tf::Transform lidEndEffectorTransform;
         tf::poseMsgToTF(this->pointerRelativePose_, lidEndEffectorTransform);
@@ -75,9 +52,12 @@ namespace cl_move_group_interface
         tf::Vector3 v0, v1;
         v0 = (currentEndEffectorTransform * lidEndEffectorTransform).getOrigin();
 
-        tf::Vector3 pivot;
-        tf::pointMsgToTF(pivotPoint_.point,pivot);
-        v0 = v0 - pivot ;
+        tf::Point pivotPoint;
+        tf::pointMsgToTF(this->relativePivotPoint_, pivotPoint);
+
+        tf::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
+        
+        v0 = v0 - pivot;
         v1 = v0;
         v1.setZ(v1.z() + this->deltaHeight_);
 
@@ -86,7 +66,7 @@ namespace cl_move_group_interface
         tf::Quaternion rotation = tf::shortestArcQuatNormalize2(vp0, vp1);
 
         tf::Quaternion initialEndEffectorOrientation = currentEndEffectorTransform.getRotation();
-        auto finalEndEffectorOrientation = initialEndEffectorOrientation* rotation ;
+        auto finalEndEffectorOrientation = initialEndEffectorOrientation* rotation;
 
         tf::Quaternion initialPointerOrientation = initialEndEffectorOrientation * lidEndEffectorTransform.getRotation();
         tf::Quaternion finalPointerOrientation = finalEndEffectorOrientation * lidEndEffectorTransform.getRotation();
@@ -95,12 +75,13 @@ namespace cl_move_group_interface
 
         v0+=pivot;
         v1+=pivot;
-        
+
         float linc = deltaHeight_/steps;// METERS_PER_SAMPLE with sign
         float interpolation_factor = 0;
         tf::Vector3 vi = v0;
 
-        tf::Transform invertedLidTransform = lidEndEffectorTransform.inverse(); 
+        tf::Transform invertedLidTransform = lidEndEffectorTransform.inverse();
+        ros::Time startTime = ros::Time::now();
 
         for (float i =0; i < steps; i++)
         {
@@ -119,16 +100,16 @@ namespace cl_move_group_interface
 
             geometry_msgs::PoseStamped pointerPose;
             tf::poseTFToMsg(pose, pointerPose.pose);
-            pointerPose.header.frame_id = pivotPoint_.header.frame_id;
-            pointerPose.header.stamp = pivotPoint_.header.stamp + ros::Duration(i * secondsPerSample);
+            pointerPose.header.frame_id = globalFrame_;
+            pointerPose.header.stamp = startTime + ros::Duration(i * secondsPerSample);
             this->pointerTrajectory_.push_back(pointerPose);
 
             tf::Transform poseEndEffector = pose * invertedLidTransform;
-            
+
             geometry_msgs::PoseStamped globalEndEffectorPose;
             tf::poseTFToMsg(poseEndEffector, globalEndEffectorPose.pose);
-            globalEndEffectorPose.header.frame_id = pivotPoint_.header.frame_id;
-            globalEndEffectorPose.header.stamp = pivotPoint_.header.stamp + ros::Duration(i * secondsPerSample);
+            globalEndEffectorPose.header.frame_id = globalFrame_;
+            globalEndEffectorPose.header.stamp = startTime + ros::Duration(i * secondsPerSample);
 
             this->endEffectorTrajectory_.push_back(globalEndEffectorPose);
         }
@@ -137,6 +118,13 @@ namespace cl_move_group_interface
     void CbCircularPouringMotion::createMarkers()
     {
         CbMoveEndEffectorTrajectory::createMarkers();
+
+        tf::StampedTransform currentEndEffectorTransform;
+        this->getCurrentEndEffectorPose(globalFrame_, currentEndEffectorTransform);
+        tf::Point pivotPoint;
+        tf::pointMsgToTF(this->relativePivotPoint_, pivotPoint);
+        tf::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
+
 
         visualization_msgs::Marker marker;
 
@@ -153,13 +141,12 @@ namespace cl_move_group_interface
         marker.color.g = 0;
         marker.color.b = 1.0;
 
-        marker.pose.position = this->pivotPoint_.point;
-        marker.header.frame_id = this->pivotPoint_.header.frame_id;
+        tf::pointTFToMsg(pivot, marker.pose.position);
+        marker.header.frame_id = globalFrame_;
         marker.header.stamp = ros::Time::now();
 
         beahiorMarkers_.markers.push_back(marker);
-
-
+ 
         tf::Transform localdirection;
         localdirection.setIdentity();
         localdirection.setOrigin(tf::Vector3(0.05, 0, 0));

@@ -15,8 +15,13 @@ namespace cl_move_group_interface
     public:
         CbMoveLastTrajectoryInitialState();
 
+        CbMoveLastTrajectoryInitialState(int backIndex);
+
         virtual ~CbMoveLastTrajectoryInitialState();
 
         virtual void onEntry() override;
+
+    private:
+        int backIndex_ = -1;
     };
 } // namespace cl_move_group_interface

@@ -9,6 +9,7 @@
 #include <visualization_msgs/MarkerArray.h>
 #include <tf/transform_datatypes.h>
 #include <move_group_interface_client/components/cp_trajectory_history.h>
+#include <tf/transform_listener.h>
 
 namespace cl_move_group_interface
 {
@@ -58,14 +59,14 @@ namespace cl_move_group_interface
         auto &first = endEffectorTrajectory_.front();
         ros::Time referenceTime = first.header.stamp;
 
-        int discontinuity = 0;
-        bool initialStateDiscontinuity = false;
+        std::vector<int> discontinuityIndexes;
 
         int ikAttempts = 4;
         for (int k = 0; k < this->endEffectorTrajectory_.size(); k++)
         {
             auto &pose = this->endEffectorTrajectory_[k];
             moveit_msgs::GetPositionIKRequest req;
+            req.ik_request.attempts = 20;
 
             req.ik_request.ik_link_name = *tipLink_;
             req.ik_request.robot_state.joint_state.name = currentjointnames;
@@ -111,35 +112,38 @@ namespace cl_move_group_interface
                     {
                         deltajoint = jointPositions[jointindex] - prevtrajpoint[jointindex];
 
-                        if (!discontinuity && fabs(deltajoint) > 0.1 /*2.5 deg*/)
+                        if (fabs(deltajoint) > 0.3 /*2.5 deg*/)
                         {
-                            discontinuity++;
                             discontinuityDeltaJointIndex = deltajoint;
                             discontinuityJointIndex = jointindex;
-
-                            if (k == 0)
-                                initialStateDiscontinuity = true;
                         }
                     }
                 }
 
-                if(ikAttempts > 0 && discontinuityJointIndex!= -1)
+                if (ikAttempts > 0 && discontinuityJointIndex != -1)
                 {
-                    k --;
-                    ikAttempts --;
+                    k--;
+                    ikAttempts--;
                     continue;
                 }
                 else
                 {
-                    ikAttempts = 4;
-                
-                    if (discontinuity && discontinuityJointIndex!= -1)
+                    bool discontinuity = false;
+                    if (ikAttempts == 0)
                     {
-                        // show a message and stop the trajectory generation
+                        discontinuityIndexes.push_back(k);
+                        discontinuity = true;
+                    }
+
+                    ikAttempts = 4;
+
+                    if (discontinuity && discontinuityJointIndex != -1)
+                    {
+                        // show a message and stop the trajectory generation && jointindex!= 7 || fabs(deltajoint) > 0.1 /*2.5 deg*/  && jointindex== 7
                         std::stringstream ss;
                         ss << "Traj[" << k << "/" << endEffectorTrajectory_.size() << "] " << currentjointnames[discontinuityJointIndex] << " IK discontinuity : " << discontinuityDeltaJointIndex << std::endl
-                            << "prev joint value: " << prevtrajpoint[discontinuityJointIndex] << std::endl
-                            << "current joint value: " << jointPositions[discontinuityJointIndex] << std::endl;
+                           << "prev joint value: " << prevtrajpoint[discontinuityJointIndex] << std::endl
+                           << "current joint value: " << jointPositions[discontinuityJointIndex] << std::endl;
 
                         ss << std::endl;
                         for (int ji = 0; ji < jointPositions.size(); ji++)
@@ -163,7 +167,6 @@ namespace cl_move_group_interface
                         ros::Duration durationFromStart = pose.header.stamp - referenceTime;
                         trajectoryTimeStamps.push_back(durationFromStart);
 
-                        
                         continue;
                     }
                     else
@@ -174,7 +177,7 @@ namespace cl_move_group_interface
 
                         ROS_WARN_STREAM("IK solution: " << res.solution.joint_state);
                         ROS_WARN_STREAM("trajpoint: " << std::endl
-                            << ss.str());
+                                                      << ss.str());
                     }
                 }
             }
@@ -213,10 +216,14 @@ namespace cl_move_group_interface
             i++;
         }
 
-        if (initialStateDiscontinuity)
-            return ComputeJointTrajectoryErrorCode::INCORRECT_INITIAL_STATE;
-        else if (discontinuity >0)
-            return ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY;
+        if (discontinuityIndexes.size())
+        {
+            if (discontinuityIndexes[0] == 0)
+                return ComputeJointTrajectoryErrorCode::INCORRECT_INITIAL_STATE;
+            else
+                return ComputeJointTrajectoryErrorCode::JOINT_TRAJECTORY_DISCONTINUITY;
+        }
+
         return ComputeJointTrajectoryErrorCode::SUCCESS;
     }
 
@@ -270,7 +277,7 @@ namespace cl_move_group_interface
             {
                 moveit_msgs::MoveItErrorCodes error;
                 error.val = moveit_msgs::MoveItErrorCodes::NO_IK_SOLUTION;
-                trajectoryHistory->pushTrajectory(computedTrajectory, error);
+                trajectoryHistory->pushTrajectory(this->getName(), computedTrajectory, error);
             }
 
             movegroupClient_->postEventMotionExecutionFailed();
@@ -288,6 +295,13 @@ namespace cl_move_group_interface
         }
         else
         {
+            if (trajectoryHistory != nullptr)
+            {
+                moveit_msgs::MoveItErrorCodes error;
+                error.val = moveit_msgs::MoveItErrorCodes::SUCCESS;
+                trajectoryHistory->pushTrajectory(this->getName(), computedTrajectory, error);
+            }
+
             this->executeJointSpaceTrajectory(computedTrajectory);
         }
 
@@ -370,5 +384,29 @@ namespace cl_move_group_interface
     {
         // bypass current trajectory, overriden in derived classes
         // this->endEffectorTrajectory_ = ...
+    }
+
+    void CbMoveEndEffectorTrajectory::getCurrentEndEffectorPose(std::string globalFrame, tf::StampedTransform &currentEndEffectorTransform)
+    {
+        tf::TransformListener tfListener;
+
+        try
+        {
+            if (!tipLink_ || *tipLink_ == "")
+            {
+                tipLink_ = this->movegroupClient_->moveGroupClientInterface.getEndEffectorLink();
+            }
+
+            tfListener.waitForTransform(globalFrame, *tipLink_, ros::Time(0), ros::Duration(10));
+            tfListener.lookupTransform(globalFrame, *tipLink_, ros::Time(0), currentEndEffectorTransform);
+
+            // we define here the global frame as the pivot frame id
+            // tfListener.waitForTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), ros::Duration(10));
+            // tfListener.lookupTransform(currentRobotEndEffectorPose.header.frame_id, planePivotPose_.header.frame_id, ros::Time(0), globalBaseLink);
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+        }
     }
 } // namespace cl_move_group_interface

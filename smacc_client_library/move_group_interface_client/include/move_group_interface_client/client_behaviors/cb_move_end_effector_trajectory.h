@@ -9,6 +9,7 @@
 #include <smacc/smacc_asynchronous_client_behavior.h>
 #include <move_group_interface_client/cl_movegroup.h>
 #include <visualization_msgs/MarkerArray.h>
+#include <tf/transform_datatypes.h>
 
 namespace cl_move_group_interface
 {
@@ -92,6 +93,8 @@ namespace cl_move_group_interface
     ClMoveGroup *movegroupClient_;
 
     visualization_msgs::MarkerArray beahiorMarkers_;
+
+    void getCurrentEndEffectorPose(std::string globalFrame, tf::StampedTransform& currentEndEffectorTransform);
 
   private:
     void initializeROS();

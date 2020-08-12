@@ -18,21 +18,19 @@ namespace cl_move_group_interface
 
         boost::optional<double> linearSpeed_m_s_;
 
-        CbCircularPouringMotion(const geometry_msgs::PointStamped &pivotPoint, double deltaHeight, std::string tipLink = "");
+        CbCircularPouringMotion(const geometry_msgs::Point &pivotPoint, double deltaHeight, std::string tipLink , std::string globalFrame);
 
         virtual void generateTrajectory() override;
 
         virtual void createMarkers() override;
         
-        void getCurrentEndEffectorPose(tf::StampedTransform& currentEndEffectorTransform);
-
         geometry_msgs::Vector3 directionVector_;
 
         // relative position of the "lid" of the bottle in the end effector reference frame.
         // that point is the one that must do the linear motion
         geometry_msgs::Pose pointerRelativePose_; 
     protected:
-        geometry_msgs::PointStamped pivotPoint_;
+        geometry_msgs::Point relativePivotPoint_;
 
         // distance in meters from the initial pose to the bottom/top direction in z axe
         double deltaHeight_;
@@ -41,6 +39,8 @@ namespace cl_move_group_interface
 
     private:
         void computeCurrentEndEffectorPoseRelativeToPivot();
+
+        std::string globalFrame_;
     };
 
 } // namespace cl_move_group_interface

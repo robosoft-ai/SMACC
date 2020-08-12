@@ -13,6 +13,11 @@ namespace cl_move_group_interface
     {
     }
 
+    CbMoveLastTrajectoryInitialState::CbMoveLastTrajectoryInitialState(int backIndex)
+        : backIndex_(backIndex)
+    {
+    }
+
     CbMoveLastTrajectoryInitialState::~CbMoveLastTrajectoryInitialState()
     {
     }
@@ -20,14 +25,15 @@ namespace cl_move_group_interface
     void CbMoveLastTrajectoryInitialState::onEntry()
     {
         CpTrajectoryHistory *trajectoryHistory;
+        this->requiresComponent(trajectoryHistory);
 
         if (trajectoryHistory != nullptr)
         {
-            this->requiresComponent(trajectoryHistory);
-
             moveit_msgs::RobotTrajectory trajectory;
 
-            if (trajectoryHistory->getLastTrajectory(trajectory))
+            bool trajectoryFound = trajectoryHistory->getLastTrajectory(backIndex_, trajectory);
+
+            if (trajectoryFound)
             {
                 trajectory_msgs::JointTrajectoryPoint &initialPoint = trajectory.joint_trajectory.points.front();
 
@@ -38,9 +44,9 @@ namespace cl_move_group_interface
 
                     jointValueTarget_[name] = initialPoint.positions[i];
                     ss << name << ": " << jointValueTarget_[name] << std::endl;
-                    
                 }
-                ROS_INFO_STREAM("[" << this->getName() << "]" << std::endl << ss.str());
+                ROS_INFO_STREAM("[" << this->getName() << "]" << std::endl
+                                    << ss.str());
 
                 ROS_INFO_STREAM("[" << this->getName() << "] move joint onEntry");
                 CbMoveJoints::onEntry();
