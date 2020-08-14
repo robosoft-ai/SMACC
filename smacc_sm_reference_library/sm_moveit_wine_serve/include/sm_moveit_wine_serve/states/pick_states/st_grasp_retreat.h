@@ -12,7 +12,7 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
     // TRANSITION TABLE
     typedef mpl::list<
         Transition<EvCbSuccess<CbMoveCartesianRelative2, OrArm>, StNavigationPosture, SUCCESS>,
-        Transition<EvCbFailure<CbMoveCartesianRelative2, OrArm>,  StPouringPosture, ABORT> /* not retry on failure*/
+        Transition<EvCbFailure<CbMoveCartesianRelative2, OrArm>, StGraspRetreat, ABORT> /* not retry on failure*/
         >
         reactions;
 

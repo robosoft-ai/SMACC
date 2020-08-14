@@ -12,6 +12,9 @@
 
 namespace sm_moveit_wine_serve
 {
+    const int TABLE_COUNT = 6;
+    const int CUBE_COUNT = 2;
+
     using namespace cl_move_base_z;
 
     namespace cl_perception_system
@@ -39,9 +42,6 @@ namespace sm_moveit_wine_serve
             template <typename TOrthogonal, typename TSourceObject>
             void onOrthogonalAllocation()
             {
-                const int TABLE_COUNT = 6;
-                const int CUBE_COUNT = 1;
-
                 // order matters, since gazeboPerception udpates sceneState
                 sceneState_ = this->createComponent<CpSceneState, TSourceObject, TOrthogonal>(CUBE_COUNT, TABLE_COUNT);
                 gazeboPerceptionSimulation_ = this->createComponent<CpSimulatedGazeboPerception, TSourceObject, TOrthogonal>();
@@ -80,7 +80,7 @@ namespace sm_moveit_wine_serve
                 ROS_INFO_STREAM(ss.str());
             }
 
-            CubeInfo *nextCube()
+            CubeInfo *nextObject()
             {
                 auto currentCube = getTargetCurrentCubeInfo();
                 currentCube->location_ = CubeLocation::DESTINY_TABLE;

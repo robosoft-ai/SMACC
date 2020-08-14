@@ -90,7 +90,7 @@ namespace cl_move_group_interface
 
     std::vector<geometry_msgs::PoseStamped> endEffectorTrajectory_;
 
-    ClMoveGroup *movegroupClient_;
+    ClMoveGroup *movegroupClient_ = nullptr;
 
     visualization_msgs::MarkerArray beahiorMarkers_;
 

@@ -22,6 +22,7 @@ namespace sm_moveit_wine_serve
             geometry_msgs::Vector3 offset;
             offset.x = -0.08;
             configure_orthogonal<OrArm, CbUndoLastTrajectory>(2);
+            configure_orthogonal<OrNavigation, CbNavigateBackwards>(0.6);
         }
 
         void runtimeConfigure()

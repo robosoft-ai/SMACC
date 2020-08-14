@@ -5,6 +5,6 @@ BackwardLocalPlanner:
     k_betta: -1.0
     carrot_distance: 0.3 #meters default 0.5 
     carrot_angular_distance: 0.5 # no constraint, max 3.1416
-    xy_goal_tolerance: 0.015 # 0.025
+    xy_goal_tolerance: 0.15 # 0.025
     yaw_goal_tolerance: 0.3
     pure_spinning_straight_line_mode: true

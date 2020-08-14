@@ -26,12 +26,12 @@ namespace cl_move_group_interface
     {
         CpTrajectoryHistory *trajectoryHistory;
         this->requiresComponent(trajectoryHistory);
+        this->requiresClient(movegroupClient_);
 
         if (trajectoryHistory->getLastTrajectory(backIndex_, trajectory))
         {
             auto initialTime = trajectory.joint_trajectory.points.back().time_from_start;
 
-            moveit_msgs::RobotTrajectory reversed;
             reversed = trajectory;
 
             std::reverse(reversed.joint_trajectory.points.begin(), reversed.joint_trajectory.points.end());

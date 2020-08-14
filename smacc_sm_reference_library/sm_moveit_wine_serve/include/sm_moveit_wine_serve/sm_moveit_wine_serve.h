@@ -26,15 +26,19 @@ using namespace sm_moveit_wine_serve::cl_move_group_interface;
 namespace sm_moveit_wine_serve
 {
     //STATE FORWARD DECLARATIONS
-
     namespace SS1
     {
         class recovery_screw;
     } // namespace SS1
-    
+
     namespace SS3
     {
         class SsRecoveryScrew;
+    }
+
+    namespace SS2
+    {
+        class SsPlaceObject;
     }
 
     class StInitialPosture;
@@ -47,6 +51,13 @@ namespace sm_moveit_wine_serve
     class StReleaseGripper;
     class StPlaceRetreat;
     class StNavigateToDestinyTable;
+    class StPlaceGlassBack;
+    class StRetreatBackwards;
+    class StReleaseGlass;
+    class StNavigationPosture;
+    class StDecideDestinyTableAction;
+    class StBringBottleBackNavigateSourceTable;
+    class StBringBottleBackBackwardNavigation;
 
     //SUPERSTATE FORWARD DECLARATIONS
 
@@ -82,7 +93,6 @@ namespace sm_moveit_wine_serve
 #include "superstates/ss_recovery_screw.h"
 #include "superstates/ss_pick_object.h"
 
-
 #include "states/st_initial_posture.h"
 #include "states/st_pouring_posture.h"
 #include "states/st_move_cartesian_bottle_to_container.h"
@@ -93,6 +103,10 @@ namespace sm_moveit_wine_serve
 #include "states/st_final_raise_hands_up.h"
 #include "states/st_navigate_to_source_table.h"
 #include "states/st_navigate_to_destiny_table.h"
-
-
-
+#include "states/st_place_glass_back.h"
+#include "states/st_retreat_backwards.h"
+#include "states/st_release_glass.h"
+#include "states/st_navigation_posture.h"
+#include "states/st_decide_destiny_table_action.h"
+#include "states/st_bring_bottle_back_backward_navigation.h"
+#include "states/st_bring_bottle_back_navigate_source_table.h"

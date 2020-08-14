@@ -74,10 +74,22 @@
       <pose>1.8 0.15 0.75 0 0 0</pose>
     </include>
 -->
-     <include>
+    <!-- <include>
       <uri>model://demo_cube_yellow</uri>
       <pose>1.65 -0.30 0.89 0 0 0</pose>
+    </include>  -->
+
+    <include>
+      <uri>model://cup_glass_hex</uri>
+      <pose>1.65 -0.10 0.89 0 0 0</pose>
     </include> 
+    
+    <include>
+      <uri>model://bottle_red_wine</uri>
+      <pose>1.65 -0.30 0.89 0 0 0</pose>
+    </include> 
+
+    
 <!--
     <include>
       <uri>model://demo_cube_white</uri>

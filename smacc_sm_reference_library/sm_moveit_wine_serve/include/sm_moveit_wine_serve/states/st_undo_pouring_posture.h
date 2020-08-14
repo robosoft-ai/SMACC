@@ -10,7 +10,7 @@ namespace sm_moveit_wine_serve
 
         // TRANSITION TABLE
         typedef mpl::list<
-            Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StPlaceBottleBack, SUCCESS>
+            Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StBringBottleBackBackwardNavigation, SUCCESS>
 
             /*POSIBLE ERRORS*/
             //Transition<EvIncorrectInitialPosition<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT>,

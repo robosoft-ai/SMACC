@@ -62,7 +62,7 @@ namespace sm_moveit_wine_serve
 
             //-----------------------------------------------
             {
-                const int CUBE_COUNT = 1;
+                const int CUBE_COUNT = 2;
                 auto *graspingComponent = moveGroupClient->createComponent<GraspingComponent>();
                 graspingComponent->fingerTipNames ={ "l_gripper_finger_link", "r_gripper_finger_link" };
 
@@ -73,13 +73,30 @@ namespace sm_moveit_wine_serve
                 }
             }
 
-            //------------------------------
+            //------------ BOTTLE ------------------
             {
                 geometry_msgs::Vector3 size;
                 double marginscale = 2.5;
                 size.x = 0.06 * marginscale;
                 size.y = 0.06 * marginscale;
                 size.z = 0.2 * marginscale;
+
+                geometry_msgs::Vector3 offset;
+                offset.x = 0;
+                offset.y = 0;
+                offset.z = 0;
+
+                auto cp = moveGroupClient->createNamedComponent<cl_move_group_interface::CpConstraintVirtualSideWall>("cube_2", "cube_2", "cube_2", size, offset);
+                cp->setUpdatePeriod(ros::Duration(0.15));
+            }
+
+            //------------ GLASS ------------------
+            {
+                geometry_msgs::Vector3 size;
+                double marginscale = 2.5;
+                size.x = 0.06 * marginscale;
+                size.y = 0.06 * marginscale;
+                size.z = 0.11 * marginscale;
 
                 geometry_msgs::Vector3 offset;
                 offset.x = 0;

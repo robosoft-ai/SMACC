@@ -12,7 +12,7 @@ namespace sm_moveit_wine_serve
         // TRANSITION TABLE
         typedef mpl::list<
 
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StPouringPosture, SUCCESS>,
+            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StDecideDestinyTableAction /*SS2::SsPlaceObject*/ /*StPouringPosture*/, SUCCESS>,
             Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
             >
             reactions;

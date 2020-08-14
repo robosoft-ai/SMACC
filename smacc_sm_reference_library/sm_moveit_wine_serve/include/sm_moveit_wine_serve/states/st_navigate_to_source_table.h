@@ -34,6 +34,7 @@ namespace sm_moveit_wine_serve
             
             ClPerceptionSystem *perceptionSystem;
             navigateGlobalPosition->requiresClient(perceptionSystem);
+            //perceptionSystem->nextObject();
 
             auto tablePose = perceptionSystem->getMainTablePose().pose;
             tablePose.position.x -= 0.85;

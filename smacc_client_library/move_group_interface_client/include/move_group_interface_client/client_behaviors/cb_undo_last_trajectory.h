@@ -24,6 +24,7 @@ namespace cl_move_group_interface
         int backIndex_ = -1;
 
         moveit_msgs::RobotTrajectory trajectory;
+        moveit_msgs::RobotTrajectory reversed;
     };
 
 } // namespace cl_move_group_interface

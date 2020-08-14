@@ -13,7 +13,6 @@ namespace sm_moveit_wine_serve
                 class StGraspApproach;
                 class StGraspRetreat;
                 class StMovePregraspPose;
-                class StNavigationPosture;
             } // namespace pick_states
         }     // namespace sm_fetch_six_table_pick_n_sort_1
 
@@ -28,7 +27,7 @@ namespace sm_moveit_wine_serve
             // TRANSITION TABLE
             typedef mpl::list<
 
-                Transition<EvSequenceFinished<SS1::StGraspRetreat>, StNavigateToDestinyTable, SUCCESS>
+                Transition<EvSequenceFinished<SS1::StGraspRetreat>, StRetreatBackwards, SUCCESS>
             >
             reactions;
 
@@ -49,7 +48,6 @@ namespace sm_moveit_wine_serve
 #include <sm_moveit_wine_serve/states/pick_states/st_grasp_approach.h>
 #include <sm_moveit_wine_serve/states/pick_states/st_grasp_retreat.h>
 #include <sm_moveit_wine_serve/states/pick_states/st_move_pregrasp_pose.h>
-#include <sm_moveit_wine_serve/states/pick_states/st_navigation_posture.h>
 
     } // namespace SS1
 } // namespace sm_fetch_six_table_pick_n_sort_1

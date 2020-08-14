@@ -80,7 +80,7 @@ namespace cl_move_group_interface
             //pose.header.stamp = ros::Time::now();
             req.ik_request.pose_stamped = pose;
 
-            ROS_WARN_STREAM("IK request: " << req);
+            ROS_DEBUG_STREAM("IK request: " << req);
             if (iksrv_.call(req, res))
             {
                 auto &prevtrajpoint = trajectory.back();
@@ -175,8 +175,8 @@ namespace cl_move_group_interface
                         ros::Duration durationFromStart = pose.header.stamp - referenceTime;
                         trajectoryTimeStamps.push_back(durationFromStart);
 
-                        ROS_WARN_STREAM("IK solution: " << res.solution.joint_state);
-                        ROS_WARN_STREAM("trajpoint: " << std::endl
+                        ROS_DEBUG_STREAM("IK solution: " << res.solution.joint_state);
+                        ROS_DEBUG_STREAM("trajpoint: " << std::endl
                                                       << ss.str());
                     }
                 }

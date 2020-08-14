@@ -87,6 +87,9 @@ namespace cl_move_group_interface
 
                 this->endEffectorTrajectory_.push_back(pointerPose);
             }
+
+            ROS_INFO_STREAM("[CbMoveEndEffectorRelative2] Target End efector Pose: " << this->endEffectorTrajectory_.back());
+
         }
 
     private:
