@@ -7,9 +7,9 @@
 <br></br>
 
 <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="800"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="850"/> 
  </p>
- <br>/<br>
+ <br></br>
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
 
