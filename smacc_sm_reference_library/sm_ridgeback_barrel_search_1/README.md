@@ -1,9 +1,11 @@
  <h2>State Machine Diagram</h2>
-<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_packml/docs/smacc_state_machine_20200205-104849.dot.svg" width="950" align="center" border="10"/> 
+<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/smacc_state_machine_20200822-022028.dot.svg" width="950" align="center" border="10"/> 
 
 <h2>Description</h2> This example demonstrates the use of both OpenCV and MoveBase within the same state machine, with cross orthogonal communication between the navigation orthogonal and the perception orthogonal.<br></br>
  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
+<br>/<br>
+ <img src="/home/brettpac/catkin_ws/src/SMACC/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="600" align="center" border="10"/> 
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
