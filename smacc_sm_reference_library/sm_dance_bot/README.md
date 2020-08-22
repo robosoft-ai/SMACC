@@ -8,7 +8,7 @@
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=9iyX_x05d3Q&t=7s">here</a>.
 
 <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/sm_dance_bot.jpg" width="800"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/sm_dance_bot.JPG" width="800"/> 
  </p>
  <br></br>
 
