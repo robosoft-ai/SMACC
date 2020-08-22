@@ -4,7 +4,8 @@
 <h2>Description</h2> This example demonstrates the use of both OpenCV and MoveBase within the same state machine, with cross orthogonal communication between the navigation orthogonal and the perception orthogonal.<br></br>
  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
-<br>/<br>
+<br></br>
+
  <img src="/home/brettpac/catkin_ws/src/SMACC/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="600" align="center" border="10"/> 
  
  <h2>Build Instructions</h2>
