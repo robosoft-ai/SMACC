@@ -6,9 +6,10 @@
 <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
 
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=9iyX_x05d3Q&t=7s">here</a>.
+<br></br>
 
 <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_floor_coverage_static_1/docs/sm_ridgeback_floor_coverage_static_1.jpg" width="800"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_floor_coverage_static_1/docs/sm_ridgeback_floor_coverage_static_1.JPG" width="800"/> 
  </p>
  <br></br>
 
