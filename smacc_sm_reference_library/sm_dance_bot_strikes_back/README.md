@@ -7,6 +7,11 @@
 
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=ucMr5Dg6UpU">here</a>.
 
+<p align="center">
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back.jpg" width="800"/> 
+ </p>
+ <br></br>
+
 <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
 
