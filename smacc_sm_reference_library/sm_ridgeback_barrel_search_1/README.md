@@ -6,7 +6,7 @@
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
 <br></br>
 
- <img src="/home/brettpac/catkin_ws/src/SMACC/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="600" align="center" border="10"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_1/docs/sm_ridgeback_barrel_search_1.jpg" width="600" align="center" border="10"/> 
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
