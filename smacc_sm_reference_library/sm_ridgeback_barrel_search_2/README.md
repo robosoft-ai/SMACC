@@ -6,7 +6,7 @@
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
 
  <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_2/docs/sm_ridgeback_barrel_search_2.jpg" width="800"/> 
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_ridgeback_barrel_search_2/docs/sm_ridgeback_barrel_search_2.JPG" width="800"/> 
  </p>
  <br></br>
  
