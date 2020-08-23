@@ -1,15 +1,9 @@
  <h2>State Machine Diagram</h2>
-<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_fetch_two_table_whiskey_pour/docs/smacc_state_machine_20200823-005826.dot.svg" width="950" align="center" border="10"/> 
+<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_fetch_screw_loop_1/docs/smacc_state_machine_20200714-150153.dot.svg" width="950" align="center" border="10"/> 
 
 <h2>Description</h2> This example demonstrates the use of both MoveIt and MoveBase within the same state machine, and cross orthogonal communication between the robot arm orthogonal and the perception orthogonal.<br></br>
  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
-<br></br>
-
- <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_fetch_two_table_whiskey_pour/docs/sm_fetch_two_table_whiskey_pour.JPG" width="800"/> 
- </p>
- <br></br>
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
@@ -34,7 +28,7 @@ source ~/catkin_ws/devel/setup.bash
 And then run the launch file...
 
 ```
-roslaunch sm_fetch_two_table_whiskey_pour sm_fetch_two_table_whiskey_pour.launch
+roslaunch sm_fetch_screw_loop_1 sm_fetch_screw_loop_1.launch
 ```
 
 <h2>Viewer Instructions</h2>
