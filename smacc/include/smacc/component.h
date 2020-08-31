@@ -23,7 +23,7 @@ public:
 
 protected:
 
-    void initialize(ISmaccClient *owner);
+    virtual void initialize(ISmaccClient *owner);
 
     // Assigns the owner of this resource to the given state machine parameter object
     void setStateMachine(ISmaccStateMachine *stateMachine);
