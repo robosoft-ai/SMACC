@@ -4,6 +4,12 @@
 <h2>Description</h2> This example demonstrates the use of both MoveIt and MoveBase within the same state machine, and cross orthogonal communication between the robot arm orthogonal and the perception orthogonal.<br></br>
  
  <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a> 
+
+ <br></br>
+ <p align="center">
+ <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_fetch_two_table_pick_n_place_1/docs/sm_fetch_two_table_pick_n_place_1.JPG" width="800"/> 
+ </p>
+ <br></br>
  
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
