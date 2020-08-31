@@ -5,24 +5,17 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/smacc_client_behavior.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-
-#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include "cb_move_base_client_behavior_base.h"
 #include <tf/transform_listener.h>
-#include <nav_msgs/Path.h>
 
 namespace cl_move_base_z
 {
+  class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
+  {
+    tf::TransformListener listener;
 
-class CbUndoPathBackwards : public smacc::SmaccClientBehavior
-{
-  tf::TransformListener listener;
+    virtual void onEntry() override;
 
-  ClMoveBaseZ *moveBaseClient_;
-
-  virtual void onEntry() override;
-
-  virtual void onExit() override;
-};
+    virtual void onExit() override;
+  };
 } // namespace cl_move_base_z

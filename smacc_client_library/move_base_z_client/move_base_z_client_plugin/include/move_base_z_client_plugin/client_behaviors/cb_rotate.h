@@ -5,22 +5,15 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <smacc/smacc_client_behavior.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
-#include   <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
-
-#include <boost/optional.hpp>
+#include "cb_move_base_client_behavior_base.h"
 #include <tf/transform_listener.h>
-#include <tf/tf.h>
 
 namespace cl_move_base_z
 {
-class CbRotate : public smacc::SmaccClientBehavior
+class CbRotate : public CbMoveBaseClientBehaviorBase
 {
 public:
     tf::TransformListener listener;
-
-    ClMoveBaseZ *moveBaseClient_;
 
     boost::optional<float> rotateDegree;
 

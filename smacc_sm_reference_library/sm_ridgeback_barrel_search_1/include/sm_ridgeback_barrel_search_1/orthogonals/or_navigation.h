@@ -7,6 +7,7 @@
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 #include <move_base_z_client_plugin/components/waypoints_navigator/waypoints_navigator.h>
 
+
 namespace sm_ridgeback_barrel_search_1
 {
     using namespace cl_move_base_z;
@@ -25,7 +26,7 @@ namespace sm_ridgeback_barrel_search_1
             movebaseClient->createComponent<PlannerSwitcher>();
 
             // create odom tracker
-            movebaseClient->createComponent<OdomTracker>();
+            movebaseClient->createComponent<cl_move_base_z::odom_tracker::OdomTracker>();
 
             // create waypoints navigator component
             auto waypointsNavigator = movebaseClient->createComponent<WaypointNavigator>();

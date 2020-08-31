@@ -10,8 +10,8 @@ struct StiRadialEndPoint : smacc::SmaccState<StiRadialEndPoint, SS>
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialReturn, SUCCESS>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialRotate, ABORT>
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiRadialReturn, SUCCESS>,
+  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiRadialRotate, ABORT>
   
   >reactions;
 

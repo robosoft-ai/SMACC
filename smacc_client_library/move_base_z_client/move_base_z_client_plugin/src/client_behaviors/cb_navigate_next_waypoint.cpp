@@ -14,10 +14,7 @@ namespace cl_move_base_z
 
     void CbNavigateNextWaypoint::onEntry()
     {
-        ClMoveBaseZ *move_base;
-        this->requiresClient(move_base);
-
-        auto waypointsNavigator = move_base->getComponent<WaypointNavigator>();
+        auto waypointsNavigator = moveBaseClient_->getComponent<WaypointNavigator>();
         waypointsNavigator->sendNextGoal();
         ROS_INFO("[CbNavigateNextWaypoint] current iteration waypoints x: %ld", waypointsNavigator->getCurrentWaypointIndex());
     }

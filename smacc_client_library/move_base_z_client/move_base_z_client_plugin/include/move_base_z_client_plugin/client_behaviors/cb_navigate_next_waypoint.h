@@ -5,11 +5,12 @@
  ******************************************************************************************************************/
 #pragma once
 
+#include "cb_move_base_client_behavior_base.h"
 #include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 
 namespace cl_move_base_z
 {
-    class CbNavigateNextWaypoint : public smacc::SmaccClientBehavior
+    class CbNavigateNextWaypoint : public CbMoveBaseClientBehaviorBase
     {
     public:
         CbNavigateNextWaypoint();

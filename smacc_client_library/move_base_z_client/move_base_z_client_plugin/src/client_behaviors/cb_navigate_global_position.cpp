@@ -1,5 +1,7 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_navigate_global_position.h>
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace cl_move_base_z
 {
@@ -29,9 +31,6 @@ namespace cl_move_base_z
     {
         ROS_INFO("Entering Navigate Global position");
 
-        // this substate will need access to the "MoveBase" resource or plugin. In this line
-        // you get the reference to this resource.
-        this->requiresClient(moveBaseClient_);
 
         ROS_INFO("Component requirements completed");
 

@@ -37,8 +37,6 @@ namespace cl_move_base_z
 
         ROS_INFO_STREAM("[CbNavigateBackwards] Straight backwards motion distance: " << dist);
 
-        this->requiresClient(moveBaseClient_);
-
         auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
         auto referenceFrame = p->getReferenceFrame();
         auto currentPoseMsg = p->toPoseMsg();

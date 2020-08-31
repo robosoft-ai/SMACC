@@ -5,36 +5,30 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include <thread>
+#include "cb_move_base_client_behavior_base.h"
 #include <tf/transform_listener.h>
-#include <tf/tf.h>
-#include <move_base_z_client_plugin/move_base_z_client_plugin.h>
 #include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
-#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace cl_move_base_z
 {
+    class CbNavigateForward : public CbMoveBaseClientBehaviorBase
+    {
+    public:
+        boost::optional<float> forwardDistance;
 
-class CbNavigateForward : public smacc::SmaccClientBehavior
-{
-public:
-    boost::optional<float> forwardDistance;
+        // just a stub to show how to use parameterless constructor
+        boost::optional<float> forwardSpeed;
 
-    // just a stub to show how to use parameterless constructor
-    boost::optional<float> forwardSpeed;
+        tf::TransformListener listener;
 
-    tf::TransformListener listener;
+        odom_tracker::OdomTracker *odomTracker_;
 
-    ClMoveBaseZ *moveBaseClient_;
+        CbNavigateForward(float forwardDistance);
 
-    odom_tracker::OdomTracker *odomTracker_;
+        CbNavigateForward();
 
-    CbNavigateForward(float forwardDistance);
+        virtual void onEntry() override;
 
-    CbNavigateForward();
-
-    virtual void onEntry() override;
-
-    virtual void onExit() override;
-};
+        virtual void onExit() override;
+    };
 } // namespace cl_move_base_z

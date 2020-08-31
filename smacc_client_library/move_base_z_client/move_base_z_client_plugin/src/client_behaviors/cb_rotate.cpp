@@ -26,8 +26,6 @@ void CbRotate::onEntry()
         angle_increment_degree = *rotateDegree;
     }
 
-    this->requiresClient(moveBaseClient_);
-
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     //this should work better with a coroutine and await
     //this->plannerSwitcher_->setForwardPlanner();

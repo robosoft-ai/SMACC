@@ -28,7 +28,6 @@ void CbNavigateForward::onEntry()
         dist = *forwardDistance;
     }
 
-    this->requiresClient(moveBaseClient_);
     ROS_INFO_STREAM("Straight motion distance: " << dist);
 
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();

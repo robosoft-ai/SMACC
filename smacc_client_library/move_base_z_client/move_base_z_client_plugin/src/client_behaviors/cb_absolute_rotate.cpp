@@ -72,8 +72,6 @@ void CbAbsoluteRotate::onEntry()
         goal_angle = *this->absoluteGoalAngleDegree;
     }
 
-    this->requiresClient(moveBaseClient_);
-
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
     //this should work better with a coroutine and await
     //this->plannerSwitcher_->setForwardPlanner();
@@ -105,7 +103,6 @@ void CbAbsoluteRotate::onEntry()
     goal.target_pose.pose.position = currentPoseMsg.position;
     goal.target_pose.pose.orientation = tf::createQuaternionMsgFromYaw(targetAngle);
 
-    this->requiresClient(moveBaseClient_);
     auto odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
     if (odomTracker_!=nullptr)
     {

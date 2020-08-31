@@ -1,4 +1,6 @@
 #include <move_base_z_client_plugin/client_behaviors/cb_undo_path_backwards.h>
+#include <move_base_z_client_plugin/components/odom_tracker/odom_tracker.h>
+#include <move_base_z_client_plugin/components/planner_switcher/planner_switcher.h>
 
 namespace cl_move_base_z
 {
@@ -6,7 +8,6 @@ using namespace ::cl_move_base_z::odom_tracker;
 
 void CbUndoPathBackwards::onEntry()
 {
-    this->requiresClient(moveBaseClient_);
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
     auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
@@ -29,7 +30,6 @@ void CbUndoPathBackwards::onEntry()
 
 void CbUndoPathBackwards::onExit()
 {
-    this->requiresClient(moveBaseClient_);
     auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
     odomTracker->popPath();
 }

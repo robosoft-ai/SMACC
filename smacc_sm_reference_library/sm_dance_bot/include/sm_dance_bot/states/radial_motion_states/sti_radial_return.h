@@ -10,8 +10,8 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, SUCCESS>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialEndPoint, ABORT>
+  Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
+  Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
   
   >reactions;
 
@@ -27,7 +27,7 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
       ClMoveBaseZ* moveBase;
       this->requiresClient(moveBase);
 
-      auto odomTracker = moveBase->getComponent<OdomTracker>();
+      auto odomTracker = moveBase->getComponent<cl_move_base_z::odom_tracker::OdomTracker>();
       odomTracker->clearPath();
   }
 };
