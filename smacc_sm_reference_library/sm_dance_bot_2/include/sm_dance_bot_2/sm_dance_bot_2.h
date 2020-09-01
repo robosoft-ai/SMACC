@@ -119,8 +119,8 @@ namespace sm_dance_bot_2
 {
 /// \brief Advanced example of state machine with smacc that shows multiple techniques
 ///  for the development of state machines
-struct SmDanceBot
-    : public smacc::SmaccStateMachineBase<SmDanceBot, MsDanceBotRunMode>
+struct SmDanceBot2
+    : public smacc::SmaccStateMachineBase<SmDanceBot2, MsDanceBotRunMode>
 {
     int counter_1;
     bool rt_ready_flag;

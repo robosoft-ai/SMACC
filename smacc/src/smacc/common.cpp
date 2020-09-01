@@ -10,6 +10,7 @@ namespace smacc
 {
 namespace utils
 {
+    
 std::string cleanShortTypeName(const std::type_info &tinfo)
 {
     auto typeinfo= TypeInfo::getFromStdTypeInfo(tinfo);

@@ -134,6 +134,11 @@ install(TARGETS ${PROJECT_NAME}_node opencv_perception_node
 #   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 # )
 
+install(DIRECTORY
+    config/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
+)
+
 #############
 ## Testing ##
 #############

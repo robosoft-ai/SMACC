@@ -56,6 +56,8 @@ private:
 
     std::atomic<bool> end_;
 
+    std::atomic<bool> initialized_;
+
     ros::NodeHandle nh_;
 
     ros::Publisher statusPub_;

@@ -2,7 +2,7 @@
 namespace sm_dance_bot_2
 {
 // STATE DECLARATION
-class MsDanceBotRecoveryMode : public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBot>
+class MsDanceBotRecoveryMode : public smacc::SmaccState<MsDanceBotRecoveryMode, SmDanceBot2>
 {
 public:
    using SmaccState::SmaccState;

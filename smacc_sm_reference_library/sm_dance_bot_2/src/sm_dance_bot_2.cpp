@@ -6,5 +6,5 @@ int main(int argc, char **argv)
     ros::NodeHandle nh;
 
     ros::Duration(5).sleep();
-    smacc::run<SmDanceBot>();
+    smacc::run<SmDanceBot2>();
 }

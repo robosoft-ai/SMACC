@@ -20,6 +20,7 @@ namespace smacc
         scheduler_ = scheduler;
         loop_rate_hz = 20.0;
         end_ = false;
+        initialized_ = false;
     }
 
     /**
@@ -32,6 +33,7 @@ namespace smacc
         smaccStateMachine_ = stateMachine;
         lastState_ = std::numeric_limits<unsigned long>::quiet_NaN();
         findUpdatableClients();
+        initialized_ = true;
     }
 
     /**
@@ -164,12 +166,7 @@ namespace smacc
 */
     void SignalDetector::pollOnce()
     {
-        if (smaccStateMachine_ == nullptr)
-        {
-            // skip if the state machine is not properly initialized yet
-            ROS_DEBUG("[PollOnce] update but state machine is not yet set.");
-            return;
-        }
+        // precondition: smaccStateMachine_ != nullptr
 
         try
         {
@@ -189,7 +186,7 @@ namespace smacc
 
             // STATE UPDATABLE ELEMENTS
             if (this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::TRANSITIONING &&
-                this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING && 
+                this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING &&
                 this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_EXITING)
             {
                 // we do not update updatable elements during trasitioning or configuration of states
@@ -238,7 +235,16 @@ namespace smacc
 */
     void SignalDetector::pollingLoop()
     {
-        ros::NodeHandle nh("~");
+        //ros::NodeHandle nh("~"); // use node name as root of the parameter server
+        
+        ros::NodeHandle _;
+        ros::Rate r0(20);
+        while(!initialized_)
+        {
+            r0.sleep();
+        }
+
+        ros::NodeHandle nh(smacc::utils::cleanShortTypeName(typeid(*this->smaccStateMachine_)));
 
         if (!nh.getParam("signal_detector_loop_freq", this->loop_rate_hz))
         {
