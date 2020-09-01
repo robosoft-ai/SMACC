@@ -9,8 +9,8 @@ struct StRotateDegrees6 : smacc::SmaccState<StRotateDegrees6, MsDanceBotRunMode>
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateReverse3>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+  Transition<EvCbSuccess<CbRotate, OrNavigation>, StNavigateReverse3>,
+  Transition<EvCbFailure<CbRotate, OrNavigation>, StNavigateToWaypointsX>
   
   >reactions;
 

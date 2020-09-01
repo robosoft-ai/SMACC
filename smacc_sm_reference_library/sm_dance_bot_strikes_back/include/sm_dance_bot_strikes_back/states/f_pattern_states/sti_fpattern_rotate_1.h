@@ -16,7 +16,7 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>>
+      Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternStartLoop<SS>>
 
       >
       reactions;

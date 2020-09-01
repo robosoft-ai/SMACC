@@ -1,54 +1,54 @@
 namespace sm_ridgeback_floor_coverage_dynamic_1
 {
-namespace f_pattern_states
-{
-// STATE DECLARATION
-template <typename SS>
-struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
-{
-  typedef SmaccState<StiFPatternRotate1<SS>, SS> TSti;
-  using TSti::context;
-  using TSti::getOrthogonal;
-
-  using TSti::SmaccState;
-  using TSti::context_type;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternStartLoop<SS>>
-
-      >
-      reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+  namespace f_pattern_states
   {
-    //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
-    TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(); // absolute aligned to the y-axis
-    TSti::template configure_orthogonal<OrLED, CbLEDOff>();
-  }
+    // STATE DECLARATION
+    template <typename SS>
+    struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
+    {
+      typedef SmaccState<StiFPatternRotate1<SS>, SS> TSti;
+      using TSti::context;
+      using TSti::getOrthogonal;
 
-  void
-  runtimeConfigure()
-  {
-    auto &superstate = TSti::template context<SS>();
+      using TSti::context_type;
+      using TSti::SmaccState;
 
-    auto initialStateAngle = superstate.initialStateAngle;
+      // TRANSITION TABLE
+      typedef mpl::list<
 
-    float angle = 0;
-    double offset = 9; // for a better behaving
+          Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternStartLoop<SS>>
 
-    if (SS::direction() == TDirection::LEFT)
-      angle = -offset;
-    else
-      angle = +offset;
+          >
+          reactions;
 
-    auto absoluteRotateBehavior = TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
+      // STATE FUNCTIONS
+      static void staticConfigure()
+      {
+        //TSti::template configure_orthogonal<OrNavigation, CbRotate>(angle);
+        TSti::template configure_orthogonal<OrNavigation, CbAbsoluteRotate>(); // absolute aligned to the y-axis
+        TSti::template configure_orthogonal<OrLED, CbLEDOff>();
+      }
 
-    absoluteRotateBehavior->absoluteGoalAngleDegree = initialStateAngle + angle;
-    ROS_INFO("Fpattern, rotate to: %lf", *(absoluteRotateBehavior->absoluteGoalAngleDegree));
-  }
-};
-}
-}
+      void
+      runtimeConfigure()
+      {
+        auto &superstate = TSti::template context<SS>();
+
+        auto initialStateAngle = superstate.initialStateAngle;
+
+        float angle = 0;
+        double offset = 9; // for a better behaving
+
+        if (SS::direction() == TDirection::LEFT)
+          angle = -offset;
+        else
+          angle = +offset;
+
+        auto absoluteRotateBehavior = TSti::template getOrthogonal<OrNavigation>()->template getClientBehavior<CbAbsoluteRotate>();
+
+        absoluteRotateBehavior->absoluteGoalAngleDegree = initialStateAngle + angle;
+        ROS_INFO("Fpattern, rotate to: %lf", *(absoluteRotateBehavior->absoluteGoalAngleDegree));
+      }
+    };
+  } // namespace f_pattern_states
+} // namespace sm_ridgeback_floor_coverage_dynamic_1

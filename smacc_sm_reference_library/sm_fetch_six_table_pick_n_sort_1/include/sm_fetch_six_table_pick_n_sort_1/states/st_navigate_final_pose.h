@@ -10,8 +10,8 @@ struct StNavigateFinalPose : smacc::SmaccState<StNavigateFinalPose, SmFetchSixTa
 
     // TRANSITION TABLE
     typedef mpl::list<
-        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StFinalRaiseHandsUp, SUCCESS>,
-        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateFinalPose,ABORT> /*retry on failure*/
+        Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StFinalRaiseHandsUp, SUCCESS>,
+        Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateFinalPose,ABORT> /*retry on failure*/
         >
         reactions;
 

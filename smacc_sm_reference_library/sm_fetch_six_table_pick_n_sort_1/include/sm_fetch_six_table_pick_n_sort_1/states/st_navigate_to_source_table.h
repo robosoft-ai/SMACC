@@ -1,11 +1,13 @@
-#pragma once 
+#pragma once
 
 #include <smacc/smacc.h>
 #include <ros/spinner.h>
 
 namespace sm_fetch_six_table_pick_n_sort_1
 {
-    struct EvFinishDemo : sc::event<EvFinishDemo> {};
+    struct EvFinishDemo : sc::event<EvFinishDemo>
+    {
+    };
 
     // STATE DECLARATION
     struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmFetchSixTablePickNSort1>
@@ -15,11 +17,9 @@ namespace sm_fetch_six_table_pick_n_sort_1
         // TRANSITION TABLE
         typedef mpl::list<
 
-            // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS1::SsPickObject, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>,
-            Transition<EvFinishDemo, StNavigateFinalPose>
-            >
+            Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, SS1::SsPickObject, SUCCESS>,
+            Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToSourceTable, ABORT>,
+            Transition<EvFinishDemo, StNavigateFinalPose>>
             reactions;
 
         // STATE FUNCTIONS
@@ -30,8 +30,8 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
         void runtimeConfigure()
         {
-            auto* navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
-            
+            auto *navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
+
             ClPerceptionSystem *perceptionSystem;
             navigateGlobalPosition->requiresClient(perceptionSystem);
 

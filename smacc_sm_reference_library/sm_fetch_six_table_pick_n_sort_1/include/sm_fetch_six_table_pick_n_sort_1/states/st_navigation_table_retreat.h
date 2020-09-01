@@ -11,7 +11,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-                Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, SUCCESS>
+                Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StNavigateToSourceTable, SUCCESS>
                 >
             reactions;
 

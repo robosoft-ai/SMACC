@@ -9,8 +9,8 @@ struct StFpatternPrealignment : smacc::SmaccState<StFpatternPrealignment, MsDanc
 // TRANSITION TABLE
   typedef mpl::list<
     
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS4::SsFPattern1>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, SS4::SsFPattern1>,
+  Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StNavigateToWaypointsX>
   
   >reactions;
 

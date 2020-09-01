@@ -1,40 +1,41 @@
 namespace sm_ridgeback_floor_coverage_static_1
 {
-namespace s_pattern_states
-{
-// STATE DECLARATION
-struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
-{
-    using SmaccState::SmaccState;
-
-// TRANSITION TABLE
-    typedef mpl::list<
-    
-    Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>,
-    Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward2>
-    
-    >reactions;
-
-// STATE FUNCTIONS
-    static void staticConfigure()
+    namespace s_pattern_states
     {
-    }
+        // STATE DECLARATION
+        struct StiSPatternRotate3 : smacc::SmaccState<StiSPatternRotate3, SS>
+        {
+            using SmaccState::SmaccState;
 
-    void runtimeConfigure()
-    {
-        auto &superstate = this->context<SS>();
-        ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
+            // TRANSITION TABLE
+            typedef mpl::list<
 
-        float offset = 7;
-        float angle = 0;
-        if (superstate.direction() == TDirection::LEFT)
-            angle = -90 - offset;
-        else
-            angle = +90 + offset;
+                Transition<EvCbSuccess<CbRotate, OrNavigation>, StiSPatternForward3>,
+                Transition<EvCbFailure<CbRotate, OrNavigation>, StiSPatternForward2>
 
-        this->configure<OrNavigation, CbRotate>(angle);
-        this->configure<OrLED, CbLEDOff>();
-    }
-};
-} // namespace s_pattern_states
+                >
+                reactions;
+
+            // STATE FUNCTIONS
+            static void staticConfigure()
+            {
+            }
+
+            void runtimeConfigure()
+            {
+                auto &superstate = this->context<SS>();
+                ROS_INFO("[StiSPatternRotate] SpatternRotate rotate: SS current iteration: %d/%d", superstate.iteration_count, SS::total_iterations());
+
+                float offset = 7;
+                float angle = 0;
+                if (superstate.direction() == TDirection::LEFT)
+                    angle = -90 - offset;
+                else
+                    angle = +90 + offset;
+
+                this->configure<OrNavigation, CbRotate>(angle);
+                this->configure<OrLED, CbLEDOff>();
+            }
+        };
+    } // namespace s_pattern_states
 } // namespace sm_ridgeback_floor_coverage_static_1

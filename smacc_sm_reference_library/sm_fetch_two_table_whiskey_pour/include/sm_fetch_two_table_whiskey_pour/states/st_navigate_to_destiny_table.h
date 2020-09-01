@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <smacc/smacc.h>
 #include <tf/tf.h>
@@ -12,8 +12,8 @@ namespace sm_fetch_two_table_whiskey_pour
         // TRANSITION TABLE
         typedef mpl::list<
 
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StDecideDestinyTableAction /*SS2::SsPlaceObject*/ /*StPouringPosture*/, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
+            Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StDecideDestinyTableAction /*SS2::SsPlaceObject*/ /*StPouringPosture*/, SUCCESS>,
+            Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
             >
             reactions;
 
@@ -35,7 +35,7 @@ namespace sm_fetch_two_table_whiskey_pour
 
             if (targetTablePose.position.x > 0)
             {
-                targetTablePose.position.x -= 0.85;   
+                targetTablePose.position.x -= 0.85;
             }
             else
             {
@@ -47,4 +47,4 @@ namespace sm_fetch_two_table_whiskey_pour
             navigateGlobalPosition->setGoal(targetTablePose);
         }
     };
-} // namespace sm_fetch_six_table_pick_n_sort_1
+} // namespace sm_fetch_two_table_whiskey_pour

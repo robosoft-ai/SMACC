@@ -1,30 +1,31 @@
 namespace sm_ridgeback_floor_coverage_static_1
 {
-namespace s_pattern_states
-{
-// STATE DECLARATION
-struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
-{
-  using SmaccState::SmaccState;
-
-// TRANSITION TABLE
-  typedef mpl::list<
-  
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternRotate2>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate1>
-  
-  >reactions;
-
-// STATE FUNCTIONS
-  static void staticConfigure()
+  namespace s_pattern_states
   {
-    configure_orthogonal<OrLED, CbLEDOn>();
-    configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
-  }
+    // STATE DECLARATION
+    struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
+    {
+      using SmaccState::SmaccState;
 
-  void runtimeConfigure()
-  {
-  }
-};
-} // namespace s_pattern_states
+      // TRANSITION TABLE
+      typedef mpl::list<
+
+          Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate2>,
+          Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate1>
+
+          >
+          reactions;
+
+      // STATE FUNCTIONS
+      static void staticConfigure()
+      {
+        configure_orthogonal<OrLED, CbLEDOn>();
+        configure_orthogonal<OrNavigation, CbNavigateForward>(SS::pitch1_lenght_meters());
+      }
+
+      void runtimeConfigure()
+      {
+      }
+    };
+  } // namespace s_pattern_states
 } // namespace sm_ridgeback_floor_coverage_static_1

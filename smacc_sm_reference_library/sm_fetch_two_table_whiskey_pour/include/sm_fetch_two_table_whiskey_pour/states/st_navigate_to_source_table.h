@@ -1,11 +1,13 @@
-#pragma once 
+#pragma once
 
 #include <smacc/smacc.h>
 #include <ros/spinner.h>
 
 namespace sm_fetch_two_table_whiskey_pour
 {
-    struct EvFinishDemo : sc::event<EvFinishDemo> {};
+    struct EvFinishDemo : sc::event<EvFinishDemo>
+    {
+    };
 
     // STATE DECLARATION
     struct StNavigateToSourceTable : smacc::SmaccState<StNavigateToSourceTable, SmFetchTwoTableWhiskeyPour>
@@ -15,11 +17,10 @@ namespace sm_fetch_two_table_whiskey_pour
         // TRANSITION TABLE
         typedef mpl::list<
 
-            // Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotate180, SUCCESS>
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS1::SsPickObject, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToSourceTable, ABORT>,
-            Transition<EvFinishDemo, StInitialPosture>
-            >
+            // Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, StRotate180, SUCCESS>
+            Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, SS1::SsPickObject, SUCCESS>,
+            Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToSourceTable, ABORT>,
+            Transition<EvFinishDemo, StInitialPosture>>
             reactions;
 
         // STATE FUNCTIONS
@@ -30,8 +31,8 @@ namespace sm_fetch_two_table_whiskey_pour
 
         void runtimeConfigure()
         {
-            auto* navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
-            
+            auto *navigateGlobalPosition = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbNavigateGlobalPosition>();
+
             ClPerceptionSystem *perceptionSystem;
             navigateGlobalPosition->requiresClient(perceptionSystem);
             //perceptionSystem->nextObject();
@@ -58,4 +59,4 @@ namespace sm_fetch_two_table_whiskey_pour
             ROS_INFO("state on entry");
         }
     };
-} // namespace sm_fetch_six_table_pick_n_sort_1
+} // namespace sm_fetch_two_table_whiskey_pour

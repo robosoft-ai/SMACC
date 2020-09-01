@@ -12,8 +12,8 @@ namespace sm_fetch_six_table_pick_n_sort_1
         // TRANSITION TABLE
         typedef mpl::list<
 
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, SS2::SsPlaceObject, SUCCESS>,
-            Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
+            Transition<EvCbSuccess<CbNavigateGlobalPosition, OrNavigation>, SS2::SsPlaceObject, SUCCESS>,
+            Transition<EvCbFailure<CbNavigateGlobalPosition, OrNavigation>, StNavigateToDestinyTable, ABORT> /*retry*/
             >
             reactions;
 

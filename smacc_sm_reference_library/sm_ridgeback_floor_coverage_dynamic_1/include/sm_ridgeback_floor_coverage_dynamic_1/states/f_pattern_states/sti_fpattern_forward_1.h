@@ -1,46 +1,46 @@
 
 namespace sm_ridgeback_floor_coverage_dynamic_1
 {
-namespace f_pattern_states
-{
-// STATE DECLARATION
-template <typename SS>
-struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, SS>
-{
-  typedef SmaccState<StiFPatternForward1<SS>, SS> TSti;
-  using TSti::SmaccState;
-  using TSti::context_type;
-
-  using TSti::configure_orthogonal;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternReturn1<SS>>
-
-      >
-      reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+  namespace f_pattern_states
   {
-    TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>();
-    TSti::template configure_orthogonal<OrLED, CbLEDOn>();
-  }
+    // STATE DECLARATION
+    template <typename SS>
+    struct StiFPatternForward1 : public smacc::SmaccState<StiFPatternForward1<SS>, SS>
+    {
+      typedef SmaccState<StiFPatternForward1<SS>, SS> TSti;
+      using TSti::context_type;
+      using TSti::SmaccState;
 
-  void runtimeConfigure()
-  {
-    cl_lidar::ClLidarSensor *lidarClient;
-    this->requiresClient(lidarClient);
+      using TSti::configure_orthogonal;
 
-    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+      // TRANSITION TABLE
+      typedef mpl::list<
 
-    auto forwardBehavior = TSti::template getOrthogonal<OrNavigation>()
-                               ->template getClientBehavior<CbNavigateForward>();
+          Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternReturn1<SS>>
 
-    forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
-    ROS_INFO("Going forward in F pattern, distance to wall: %lf", *(forwardBehavior->forwardDistance));
-  }
-};
-}
-}
+          >
+          reactions;
+
+      // STATE FUNCTIONS
+      static void staticConfigure()
+      {
+        TSti::template configure_orthogonal<OrNavigation, CbNavigateForward>();
+        TSti::template configure_orthogonal<OrLED, CbLEDOn>();
+      }
+
+      void runtimeConfigure()
+      {
+        cl_lidar::ClLidarSensor *lidarClient;
+        this->requiresClient(lidarClient);
+
+        auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+        auto forwardBehavior = TSti::template getOrthogonal<OrNavigation>()
+                                   ->template getClientBehavior<CbNavigateForward>();
+
+        forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance;
+        ROS_INFO("Going forward in F pattern, distance to wall: %lf", *(forwardBehavior->forwardDistance));
+      }
+    };
+  } // namespace f_pattern_states
+} // namespace sm_ridgeback_floor_coverage_dynamic_1

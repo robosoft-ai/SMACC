@@ -9,8 +9,8 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees5>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees5>,
+  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX>
   
   >reactions;
 

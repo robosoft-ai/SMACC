@@ -9,8 +9,8 @@ using SmaccState::SmaccState;
 // TRANSITION TABLE
   typedef mpl::list<
 
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StRotateDegrees2>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, ABORT>,
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees2>,
+  Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, ABORT>,
   Transition<EvActionPreempted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
   
   >reactions;

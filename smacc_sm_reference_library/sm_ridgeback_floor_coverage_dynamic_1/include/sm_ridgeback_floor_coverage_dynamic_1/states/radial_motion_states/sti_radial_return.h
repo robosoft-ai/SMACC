@@ -1,30 +1,31 @@
 namespace sm_ridgeback_floor_coverage_dynamic_1
 {
-namespace radial_motion_states
-{
-// STATE DECLARATION
-struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
-{
-  using SmaccState::SmaccState;
-
-// TRANSITION TABLE
-  typedef mpl::list<
-  
-  Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiRadialLoopStart, SUCCESS>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiRadialEndPoint, ABORT>
-  
-  >reactions;
-
-// STATE FUNCTIONS
-  static void staticConfigure()
+  namespace radial_motion_states
   {
-    configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
-    configure_orthogonal<OrLED, CbLEDOff>();
-  }
+    // STATE DECLARATION
+    struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
+    {
+      using SmaccState::SmaccState;
 
-  void runtimeConfigure()
-  {
-  }
-};
-}
-}
+      // TRANSITION TABLE
+      typedef mpl::list<
+
+          Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
+          Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
+
+          >
+          reactions;
+
+      // STATE FUNCTIONS
+      static void staticConfigure()
+      {
+        configure_orthogonal<OrNavigation, CbUndoPathBackwards>();
+        configure_orthogonal<OrLED, CbLEDOff>();
+      }
+
+      void runtimeConfigure()
+      {
+      }
+    };
+  } // namespace radial_motion_states
+} // namespace sm_ridgeback_floor_coverage_dynamic_1

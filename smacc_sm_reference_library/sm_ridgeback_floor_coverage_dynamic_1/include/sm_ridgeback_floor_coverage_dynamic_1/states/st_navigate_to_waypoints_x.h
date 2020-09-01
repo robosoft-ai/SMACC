@@ -21,7 +21,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   Transition<EvWaypoint2<ClMoveBaseZ, OrNavigation>, SS3::SsRadialPattern3, TRANSITION_3>,
   Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, StFpatternPrealignment, TRANSITION_4>,
   Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StSpatternPrealignment, TRANSITION_5>,
-  Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
+  Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
   
   >reactions;
 

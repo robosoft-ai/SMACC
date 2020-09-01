@@ -13,7 +13,7 @@ struct StiFPatternReturn1 : smacc::SmaccState<StiFPatternReturn1<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternRotate1<SS>>
+      Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiFPatternRotate1<SS>>
 
       >
       reactions;

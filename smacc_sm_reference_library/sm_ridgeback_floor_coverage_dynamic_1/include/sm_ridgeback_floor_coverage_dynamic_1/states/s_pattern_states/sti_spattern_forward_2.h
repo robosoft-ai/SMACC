@@ -1,47 +1,47 @@
 namespace sm_ridgeback_floor_coverage_dynamic_1
 {
-namespace s_pattern_states
-{
-// STATE DECLARATION
-struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
-{
-  using SmaccState::SmaccState;
-
-  // TRANSITION TABLE
-  typedef mpl::list<
-
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternRotate3>,
-      Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternRotate2>
-
-      >
-      reactions;
-
-  // STATE FUNCTIONS
-  static void staticConfigure()
+  namespace s_pattern_states
   {
-    configure_orthogonal<OrNavigation, CbNavigateForward>();
-    configure_orthogonal<OrLED, CbLEDOn>();
-  }
+    // STATE DECLARATION
+    struct StiSPatternForward2 : public smacc::SmaccState<StiSPatternForward2, SS>
+    {
+      using SmaccState::SmaccState;
 
-  void runtimeConfigure()
-  {
-    auto &superstate = this->context<SS>();
+      // TRANSITION TABLE
+      typedef mpl::list<
 
-    double extrasecurityMargin = 0.2;
+          Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate3>,
+          Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate2>
 
-    auto forwardBehavior = this->getOrthogonal<OrNavigation>()
-                               ->getClientBehavior<CbNavigateForward>();
+          >
+          reactions;
 
-    cl_lidar::ClLidarSensor *lidarClient;
-    this->requiresClient(lidarClient);
-    auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+      // STATE FUNCTIONS
+      static void staticConfigure()
+      {
+        configure_orthogonal<OrNavigation, CbNavigateForward>();
+        configure_orthogonal<OrLED, CbLEDOn>();
+      }
 
-    if (!std::isnan(lidarData->forwardObstacleDistance))
-      forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin; /*extra security margin for easy dynamic implementation of dynamic-smotion*/
+      void runtimeConfigure()
+      {
+        auto &superstate = this->context<SS>();
 
-    else
-      forwardBehavior->forwardDistance = superstate.pitch2_lenght_meters();
-  }
-};
-} // namespace s_pattern_states
+        double extrasecurityMargin = 0.2;
+
+        auto forwardBehavior = this->getOrthogonal<OrNavigation>()
+                                   ->getClientBehavior<CbNavigateForward>();
+
+        cl_lidar::ClLidarSensor *lidarClient;
+        this->requiresClient(lidarClient);
+        auto lidarData = lidarClient->getComponent<CpLidarSensorData>();
+
+        if (!std::isnan(lidarData->forwardObstacleDistance))
+          forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin; /*extra security margin for easy dynamic implementation of dynamic-smotion*/
+
+        else
+          forwardBehavior->forwardDistance = superstate.pitch2_lenght_meters();
+      }
+    };
+  } // namespace s_pattern_states
 } // namespace sm_ridgeback_floor_coverage_dynamic_1

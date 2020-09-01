@@ -10,8 +10,8 @@ struct StiSPatternRotate4 : smacc::SmaccState<StiSPatternRotate4, SS>
     // TRANSITION TABLE
     typedef mpl::list<
 
-        Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiSPatternForward4>,
-        Transition<EvActionAborted<ClMoveBaseZ, OrNavigation>, StiSPatternForward3>
+        Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiSPatternForward4>,
+        Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StiSPatternForward3>
 
         >
         reactions;

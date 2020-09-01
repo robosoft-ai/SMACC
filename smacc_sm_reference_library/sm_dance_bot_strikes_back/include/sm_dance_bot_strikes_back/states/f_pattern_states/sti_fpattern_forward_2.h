@@ -13,7 +13,7 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
   // TRANSITION TABLE
   typedef mpl::list<
 
-      Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StiFPatternRotate2<SS>>
+      Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternRotate2<SS>>
 
       >
       reactions;

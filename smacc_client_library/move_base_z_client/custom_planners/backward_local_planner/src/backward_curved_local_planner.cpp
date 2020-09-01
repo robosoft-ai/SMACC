@@ -131,7 +131,12 @@ bool BackwardLocalPlanner::createCarrotGoal(const tf::Stamped<tf::Pose> &tfpose)
         }
     }
     //ROS_DEBUG("[BackwardsLocalPlanner] computing angular error"); 
-    //computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
+    if(currentCarrotPoseIndex_ >= backwardsPlanPath_.size() && backwardsPlanPath_.size() > 0 )
+    {
+        currentCarrotPoseIndex_  =  backwardsPlanPath_.size() -1;
+        computeCurrentEuclideanAndAngularErrors(tfpose, disterr, angleerr);
+    }
+
     ROS_DEBUG("[BackwardsLocalPlanner] Current index carrot goal: %d", currentCarrotPoseIndex_);
     ROS_DEBUG("[BackwardsLocalPlanner] create carrot goal: linear error to goal %lf, angular error to goal: %lf", disterr, angleerr);
 

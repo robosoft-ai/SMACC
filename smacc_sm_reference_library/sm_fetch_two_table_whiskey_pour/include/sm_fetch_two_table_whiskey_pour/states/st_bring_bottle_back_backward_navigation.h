@@ -10,7 +10,7 @@ namespace sm_fetch_two_table_whiskey_pour
 
         // TRANSITION TABLE
         typedef mpl::list<
-            Transition<EvActionSucceeded<ClMoveBaseZ, OrNavigation>, StBringBottleBackNavigateSourceTable, SUCCESS>
+            Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StBringBottleBackNavigateSourceTable, SUCCESS>
             //Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToDestinyTable, SUCCESS>
             >
             reactions;
