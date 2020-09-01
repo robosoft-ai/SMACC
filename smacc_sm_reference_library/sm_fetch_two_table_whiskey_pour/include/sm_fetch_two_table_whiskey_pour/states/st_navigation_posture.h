@@ -9,7 +9,7 @@ namespace sm_fetch_two_table_whiskey_pour
 
         // TRANSITION TABLE
         typedef mpl::list<
-            Transition<EvCbSuccess<CbUndoLastTrajectory, OrNavigation>, StNavigateToSourceTable, SUCCESS>
+            Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StNavigateToSourceTable, SUCCESS>
             /*Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StNavigateToSourceTable>*/
             /*Transition<EvCbFailure<CbUndoLastTrajectory, OrArm>, StNavigationPosture, ABORT>*/
             >
