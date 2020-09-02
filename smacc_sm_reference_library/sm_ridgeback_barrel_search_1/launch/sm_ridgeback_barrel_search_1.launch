@@ -52,11 +52,10 @@
         <remap from="odom" to="odometry/filtered" />
      </node>
 
-
     <!-- <include file="$(find ridgeback_navigation)/launch/include/amcl.launch" /> -->
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_ridgeback_barrel_search_1)/config/sm_ridgeback_barrel_search_1.yaml" />
+    <rosparam command="load" file="$(find sm_ridgeback_barrel_search_1)/config/sm_ridgeback_barrel_search_1_config.yaml" />
 
     <!-- state machine node -->
     <node pkg="sm_ridgeback_barrel_search_1" type="sm_ridgeback_barrel_search_1_node" name="sm_ridgeback_barrel_search_1" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">

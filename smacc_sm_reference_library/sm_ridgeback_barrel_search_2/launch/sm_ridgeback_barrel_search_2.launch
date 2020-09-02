@@ -31,7 +31,7 @@
     <!-- <include file="$(find ridgeback_navigation)/launch/include/amcl.launch" /> -->
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_ridgeback_barrel_search_2)/config/sm_ridgeback_barrel_search_2.yaml" />
+    <rosparam command="load" file="$(find sm_ridgeback_barrel_search_2)/config/sm_ridgeback_barrel_search_2_config.yaml" />
 
     <!-- state machine node -->
     <node pkg="sm_ridgeback_barrel_search_2" type="sm_ridgeback_barrel_search_2_node" name="sm_ridgeback_barrel_search_2" launch-prefix="$(arg sm_xterm)" unless="$(arg debug)">

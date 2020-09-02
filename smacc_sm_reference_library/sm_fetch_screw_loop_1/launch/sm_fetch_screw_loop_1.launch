@@ -14,6 +14,7 @@
         <rosparam file="$(find sm_fetch_screw_loop_1)/config/move_base_client/forward_local_planner.yaml" command="load" />
     </group>
 
+    <rosparam command="load" file="$(find sm_fetch_screw_loop_1)/config/sm_fetch_screw_loop_1_config.yaml" />
     <node pkg="sm_fetch_screw_loop_1" type="sm_fetch_screw_loop_1_node" name="sm_fetch_screw_loop_1_node" launch-prefix="$(arg xterm_prefix)" unless="$(arg debug)"/>
 
     <!-- Start Gazebo with a blank world -->

@@ -17,6 +17,7 @@
         <param name="trajectory_execution/allowed_start_tolerance" value="0.001"/>
     </group> -->
 
+    <rosparam command="load" file="$(find sm_fetch_two_table_pick_n_place_1)/config/sm_fetch_two_table_pick_n_place_1_config.yaml" />
     <node pkg="sm_fetch_two_table_pick_n_place_1" type="sm_fetch_two_table_pick_n_place_1_node" name="sm_fetch_two_table_pick_n_place_1_node" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e "/>
 
     <!-- Start Gazebo with a blank world -->

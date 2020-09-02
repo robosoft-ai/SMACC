@@ -36,7 +36,7 @@
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_ridgeback_floor_coverage_dynamic_1)/config/sm_ridgeback_floor_coverage_dynamic_1.yaml" />
+    <rosparam command="load" file="$(find sm_ridgeback_floor_coverage_dynamic_1)/config/sm_ridgeback_floor_coverage_dynamic_1_config.yaml" />
 
     <group ns="sm_ridgeback_floor_coverage_dynamic_1">
         <!-- set run mode -->

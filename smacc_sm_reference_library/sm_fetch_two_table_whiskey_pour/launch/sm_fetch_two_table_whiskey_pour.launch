@@ -14,6 +14,7 @@
         <rosparam file="$(find sm_fetch_two_table_whiskey_pour)/config/move_base_client/forward_local_planner.yaml" command="load" />
     </group>
 
+    <rosparam command="load" file="$(find sm_fetch_two_table_whiskey_pour)/config/sm_fetch_two_table_whiskey_pour_config.yaml" />
     <node pkg="sm_fetch_two_table_whiskey_pour" type="sm_fetch_two_table_whiskey_pour_node" name="sm_fetch_two_table_whiskey_pour_node" launch-prefix="$(arg xterm_prefix)" unless="$(arg debug)"/>
 
     <!-- Start Gazebo with a blank world -->
