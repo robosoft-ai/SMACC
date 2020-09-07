@@ -43,7 +43,6 @@ namespace cl_move_base_z
             k_alpha_ = 0.5;
             k_betta_ = -1.0; // set to zero means that orientation is not important
             carrot_angular_distance_ = 0.4;
-            pure_spinning_allowed_betta_error_ = 0.01;
             linear_mode_rho_error_threshold_ = 0.02;
 
             f = boost::bind(&BackwardLocalPlanner::reconfigCB, this, _1, _2);
@@ -187,11 +186,14 @@ bool BackwardLocalPlanner::checkGoalReached(const tf::Stamped<tf::Pose> &tfpose,
                 vetta = k_rho_ * rho_error;
                 gamma = k_alpha_ * alpha_error;
             }
-            else if (fabs(betta_error) >= pure_spinning_allowed_betta_error_) // works in pure spinning mode
+            else if (fabs(betta_error) >= this->yaw_goal_tolerance_) // works in pure spinning mode
             {
                 vetta = 0;
                 gamma = k_betta_ * betta_error;
             }
+            /*
+            // THIS IS NOT TRUE, IF THE CARROT REACHES THE GOAL DOES NOT MEAN THE ROBOT IS
+            // IN THE CORRECT POSITION
             else if (currentCarrotPoseIndex_ >= backwardsPlanPath_.size() - 1)
             {
                 vetta = 0;
@@ -200,7 +202,7 @@ bool BackwardLocalPlanner::checkGoalReached(const tf::Stamped<tf::Pose> &tfpose,
                 backwardsPlanPath_.clear();
 
                 ROS_INFO_STREAM("BACKWARD LOCAL PLANNER END: Goal Reached. Stop action [rhoerror: " << rho_error<<"]");
-            }
+            }*/
 
             if(this->checkGoalReached(tfpose, vetta, gamma, betta_error, cmd_vel))
             {            
@@ -466,6 +468,8 @@ bool BackwardLocalPlanner::checkGoalReached(const tf::Stamped<tf::Pose> &tfpose,
             carrot_distance_ = config.carrot_distance;
             carrot_angular_distance_ = config.carrot_angular_distance;
             xy_goal_tolerance_ = config.xy_goal_tolerance;
+            yaw_goal_tolerance_ = config.yaw_goal_tolerance;
+            pureSpinningMode_ = config.pure_spinning_straight_line_mode;
         }
 
         /**

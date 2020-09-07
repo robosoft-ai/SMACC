@@ -36,19 +36,19 @@ OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
 
     if (!nh.getParam("record_angular_distance_threshold", recordAngularDistanceThreshold_))
     {
-        recordAngularDistanceThreshold_ = 0.1; // 5 cm
+        recordAngularDistanceThreshold_ = 0.1; // radians
     }
     ROS_INFO_STREAM("[OdomTracker] record_angular_distance_threshold :" << recordAngularDistanceThreshold_);
 
     if (!nh.getParam("clear_point_distance_threshold", clearPointDistanceThreshold_))
     {
-        clearPointDistanceThreshold_ = 0.08; // radians
+        clearPointDistanceThreshold_ = 0.05; // 5 cm
     }
     ROS_INFO_STREAM("[OdomTracker] clear_point_distance_threshold :" << clearPointDistanceThreshold_);
 
     if (!nh.getParam("clear_angular_distance_threshold", clearAngularDistanceThreshold_))
     {
-        clearAngularDistanceThreshold_ = 0.08; // radians
+        clearAngularDistanceThreshold_ = 0.04; // radians
     }
     ROS_INFO_STREAM("[OdomTracker] clear_angular_distance_threshold :" << clearAngularDistanceThreshold_);
 
