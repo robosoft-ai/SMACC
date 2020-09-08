@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(move_base_z_client_plugin)
 
-find_package(catkin REQUIRED smacc pluginlib tf)
+find_package(catkin REQUIRED smacc pluginlib tf dynamic_reconfigure)
 find_package(yaml-cpp REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -29,6 +29,9 @@ generate_messages(
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
 
+generate_dynamic_reconfigure_options(
+  cfg/OdomTracker.cfg
+)
 
 ###################################
 ## catkin specific configuration ##
@@ -141,6 +144,8 @@ target_link_libraries(move_base_z_client_behaviors
    planner_switcher
    waypoints_navigator)
 
+
+ add_dependencies(odom_tracker ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 #############
 ## Install ##

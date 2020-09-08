@@ -89,8 +89,9 @@ include_directories(
 add_executable(${PROJECT_NAME}_node src/sm_ridgeback_barrel_search_2.cpp)
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES})
 
-add_executable(opencv_perception_node servers/opencv_perception_node/opencv_perception_node.cpp)
-target_link_libraries(opencv_perception_node ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(opencv_perception_node_${PROJECT_NAME} servers/opencv_perception_node/opencv_perception_node.cpp)
+set_target_properties(opencv_perception_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "opencv_perception_node")
+target_link_libraries(opencv_perception_node_${PROJECT_NAME} ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 #############
 ## Install ##
@@ -108,7 +109,7 @@ target_link_libraries(opencv_perception_node ${catkin_LIBRARIES} ${OpenCV_LIBRAR
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS ${PROJECT_NAME}_node opencv_perception_node
+install(TARGETS ${PROJECT_NAME}_node opencv_perception_node_${PROJECT_NAME}
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

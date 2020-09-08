@@ -91,8 +91,9 @@ TEST(SSM_TESTS, testStateMachine1)
     std::cout << "testStateMachine1" << std::endl;
 
     int argc = 1;
-    char *argv[] = {"my test"};
-    ros::init(argc, argv, "ssm");
+    char *argv[1];
+    argv[0] = (char*)"my test";
+    ros::init(argc,(char**) argv, "ssm");
     ros::NodeHandle nh;
 
     my_run();
