@@ -21,6 +21,9 @@
 #include <geometry_msgs/Point.h>
 #include <std_msgs/Header.h>
 
+#include <dynamic_reconfigure/server.h>
+#include <move_base_z_client_plugin/OdomTrackerConfig.h>
+    
 namespace cl_move_base_z
 {
 namespace odom_tracker
@@ -74,6 +77,11 @@ public:
     void logStateString();
 
 protected:
+    dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;
+    dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig>::CallbackType f;
+
+    void reconfigCB(move_base_z_client_plugin::OdomTrackerConfig &config, uint32_t level);
+
     virtual void rtPublishPaths(ros::Time timestamp);
 
     // this is called when a new odom message is received in record path mode

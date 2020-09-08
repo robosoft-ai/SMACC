@@ -71,6 +71,7 @@ void UndoPathGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DRO
 void UndoPathGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage)
 {
     lastForwardPathMsg_ = *trailMessage;
+    ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] received backward path msg poses [" << lastForwardPathMsg_.poses.size() <<"]");
 }
 
 /**
@@ -118,7 +119,8 @@ void UndoPathGlobalPlanner::publishGoalMarker(const geometry_msgs::Pose &pose, d
 ******************************************************************************************************************
 */
 bool UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::PoseStamped &start,
-                                                      const geometry_msgs::PoseStamped &goal, std::vector<geometry_msgs::PoseStamped> &plan)
+                                                      const geometry_msgs::PoseStamped &goal, 
+                                                      std::vector<geometry_msgs::PoseStamped> &plan)
 {
     auto q = start.pose.orientation;
 
@@ -128,36 +130,65 @@ bool UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::PoseS
     plan.push_back(pose);
 
     //ROS_WARN_NAMED("Backwards", "Iterating in last forward cord path");
-    int i = lastForwardPathMsg_.poses.size();
+    int i = lastForwardPathMsg_.poses.size() -1;
  
-    double mindist = std::numeric_limits<double>::max();
+    double linear_mindist = std::numeric_limits<double>::max();
     int mindistindex = -1;
 
-    geometry_msgs::Pose goalProjected;
+    geometry_msgs::Pose startPositionProjected;
 
+    // find closest linear point
     for (auto &p : lastForwardPathMsg_.poses | boost::adaptors::reversed)
     {
         pose = p;
         pose.header.frame_id = costmap_ros_->getGlobalFrameID();
         pose.header.stamp = ros::Time::now();
 
-        double dx = pose.pose.position.x - goal.pose.position.x;
-        double dy = pose.pose.position.y - goal.pose.position.y;
+        double dx = pose.pose.position.x - start.pose.position.x;
+        double dy = pose.pose.position.y - start.pose.position.y;
 
         double dist = sqrt(dx * dx + dy * dy);
-        if (dist <= mindist)
+        if (dist <= linear_mindist)
         {
             mindistindex = i;
-            mindist = dist;
+            linear_mindist = dist;
             goalProjected = pose.pose;
+
+            ROS_DEBUG_STREAM("[UndoPathGlobalPlanner]  initial start point search, newbest" << i << " linear error: " << linear_mindist);
         }
 
         i--;
     }
 
+    // closest angular point in this position check
+    i = lastForwardPathMsg_.poses.size() -1;
+    for (auto &p : lastForwardPathMsg_.poses | boost::adaptors::reversed)
+    {
+        pose = p;
+        pose.header.frame_id = costmap_ros_->getGlobalFrameID();
+        pose.header.stamp = ros::Time::now();
+
+        double dx = pose.pose.position.x - start.pose.position.x;
+        double dy = pose.pose.position.y - start.pose.position.y;
+
+        double dist = sqrt(dx * dx + dy * dy);
+        if (dist == linear_mindist)
+        {
+            auto goalAngle = tf::getYaw(pose.pose.orientation);
+            auto startAngle = tf::getYaw(start.pose.orientation);
+            auto angleError = fabs(angles::shortest_angular_distance(goalAngle, startAngle));
+
+            ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] " << i << " angle error: " << angleError);
+        }
+
+        i--;
+    }
+
+
     if (mindistindex != -1)
     {
-        ROS_WARN_STREAM("[UndoPathGlobalPlanner ] Creating the backwards plan from odom tracker path" << lastForwardPathMsg_.poses.size());
+        ROS_WARN_STREAM("[UndoPathGlobalPlanner] Creating the backwards plan from odom tracker path (" << lastForwardPathMsg_.poses.size()<< ") poses");
+        ROS_WARN_STREAM("[UndoPathGlobalPlanner] closer point "<< mindistindex <<" (linear min dist " << linear_mindist<<")");
         // copy the path at the inverse direction
         for (int i = lastForwardPathMsg_.poses.size() - 1; i >= mindistindex; i--)
         {

@@ -17,7 +17,7 @@ namespace cl_move_base_z
         //ROS_INFO("pure spining goal yaw: %lf", dstRads);
         //ROS_WARN_STREAM("pure spinning start pose: " << start);
 
-        double goalAngleOffset = angles::shortest_angular_distance(startYaw, dstRads);
+        double goalAngleOffset = fabs(angles::shortest_angular_distance(startYaw, dstRads));
         //ROS_INFO("shortest angle: %lf", goalAngleOffset);
 
         double radstep = 0.005;

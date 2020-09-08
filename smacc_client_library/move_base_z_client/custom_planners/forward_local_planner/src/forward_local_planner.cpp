@@ -113,7 +113,7 @@ void ForwardLocalPlanner::generateTrajectory(const Eigen::Vector3f &pos, const E
         else
         {
             // ouble from, double to
-            angledist = angles::shortest_angular_distance(currentpos[2], newpos[2]);
+            angledist = fabs(angles::shortest_angular_distance(currentpos[2], newpos[2]));
             if (angledist > maxanglediff)
             {
                 end = true;

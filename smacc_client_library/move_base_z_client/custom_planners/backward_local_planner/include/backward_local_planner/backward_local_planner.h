@@ -70,7 +70,7 @@ private:
     void defaultBackwardCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error,double betta_error, geometry_msgs::Twist &cmd_vel);
 
     void publishGoalMarker(double x, double y, double phi);
-    void computeCurrentEuclideanAndAngularErrors(const tf::Stamped<tf::Pose> &tfpose, double& dist, double& angular_error);
+    void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const tf::Stamped<tf::Pose> &tfpose, double& dist, double& angular_error);
     bool checkGoalReached(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist &cmd_vel);
 
     dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
