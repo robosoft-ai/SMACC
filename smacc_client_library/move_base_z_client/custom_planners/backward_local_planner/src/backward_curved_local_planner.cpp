@@ -116,9 +116,9 @@ namespace cl_move_base_z
             double pangle = tf::getYaw(carrot_orientation);
             angular_error = fabs(angles::shortest_angular_distance(pangle, angle));
 
-            ROS_DEBUG_STREAM("[BackwardLocalPlanner] Compute errors. (linear " << dist << ")(angular " << angular_error << ")" << std::endl
-                                                                               << "Current carrot pose: " << carrot_pose << std::endl
-                                                                               << "Current actual pose:" << currentPoseDebugMsg);
+            ROS_DEBUG_STREAM("[BackwardLocalPlanner] Compute carrot errors. (linear " << dist << ")(angular " << angular_error << ")" << std::endl
+                                                                               << "Current carrot pose: "<< std::endl << carrot_pose << std::endl
+                                                                               << "Current actual pose:"<< std::endl << currentPoseDebugMsg);
         }
 
         /**

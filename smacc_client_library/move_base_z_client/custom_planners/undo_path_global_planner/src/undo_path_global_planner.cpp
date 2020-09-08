@@ -152,7 +152,7 @@ bool UndoPathGlobalPlanner::createDefaultUndoPathPlan(const geometry_msgs::PoseS
         {
             mindistindex = i;
             linear_mindist = dist;
-            goalProjected = pose.pose;
+            startPositionProjected = pose.pose;
 
             ROS_DEBUG_STREAM("[UndoPathGlobalPlanner]  initial start point search, newbest" << i << " linear error: " << linear_mindist);
         }
