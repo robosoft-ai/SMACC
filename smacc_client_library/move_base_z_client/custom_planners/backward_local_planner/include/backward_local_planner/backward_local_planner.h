@@ -63,8 +63,13 @@ public:
 private:
     void reconfigCB(::backward_local_planner::BackwardLocalPlannerConfig &config, uint32_t level);
 
+    // returns true if found
+    bool findInitialCarrotGoal(tf::Stamped<tf::Pose>& pose);
+
     // returns true for a pure spining motion request
-    bool createCarrotGoal(const tf::Stamped<tf::Pose> &tfpose);
+    bool updateCarrotGoal(const tf::Stamped<tf::Pose> &tfpose);
+
+    bool resamplePrecisePlan();
 
     void pureSpinningCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist &cmd_vel);
     void defaultBackwardCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error,double betta_error, geometry_msgs::Twist &cmd_vel);
@@ -72,6 +77,11 @@ private:
     void publishGoalMarker(double x, double y, double phi);
     void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const tf::Stamped<tf::Pose> &tfpose, double& dist, double& angular_error);
     bool checkGoalReached(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, geometry_msgs::Twist &cmd_vel);
+
+    bool resetDivergenceDetection();
+    bool divergenceDetectionUpdate(const tf::Stamped<tf::Pose> &tfpose);
+    bool checkCarrotHalfPlainConstraint(const tf::Stamped<tf::Pose> &tfpose);
+
 
     dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
     dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig>::CallbackType f;
@@ -100,6 +110,7 @@ private:
 
     meter carrot_distance_;
     rad carrot_angular_distance_;
+    meter divergenceDetectionLastCarrotLinearDistance_;
 
     double max_linear_x_speed_;  //meters/sec
     double max_angular_z_speed_; // rads/sec

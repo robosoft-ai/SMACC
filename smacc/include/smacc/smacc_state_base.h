@@ -242,7 +242,7 @@ namespace smacc
       {
         this->postEvent<EvLoopEnd<MostDerived>>();
       }
-      ROS_INFO("[]%s POST THROW CONDITION", STATE_NAME);
+      ROS_INFO("[%s] POST THROW CONDITION", STATE_NAME);
     }
 
     void throwSequenceFinishedEvent()

@@ -176,16 +176,6 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     //ROS_WARN_STREAM( "MAKE PLAN INVOKED, plan size:"<< plan.size());
     publishGoalMarker(goal.pose, 1.0, 0, 1.0);
 
-    if (plan.size() <= 1)
-    {
-        // if the backward plan is too much small, we create one artificial path
-        // with two poses (the current pose) so that we do not reject the plan request        
-        plan.clear();
-        plan.push_back(start);
-        plan.push_back(start);
-        ROS_INFO("[BackwardGlobalPlanner] Artificial backward plan on current pose.");
-    }
-
     nav_msgs::Path planMsg;
     planMsg.poses = plan;
     planMsg.header.frame_id = this->costmap_ros_->getGlobalFrameID();

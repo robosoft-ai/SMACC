@@ -15,7 +15,6 @@ namespace smacc
 
     void SmaccAsyncClientBehavior::executeOnExit()
     {
-        ISmaccClientBehavior::executeOnExit();
         ROS_INFO_STREAM("[" << getName() << "] onExit - join async onEntry thread");
 
         try

@@ -5,11 +5,13 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
+        - /OdomTrackerPath1
+        - /BW Plan1
         - /Odometry1/Shape1
         - /TF1/Frames1
         - /SmaccRvizDisplay1
       Splitter Ratio: 0.3861111104488373
-    Tree Height: 723
+    Tree Height: 411
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -239,7 +241,7 @@ Visualization Manager:
       Enabled: true
       Head Diameter: 0.30000001192092896
       Head Length: 0.20000000298023224
-      Length: 0.30000001192092896
+      Length: 0.10000000149011612
       Line Style: Lines
       Line Width: 0.029999999329447746
       Name: OdomTrackerPath
@@ -248,7 +250,7 @@ Visualization Manager:
         Y: 0
         Z: 0
       Pose Color: 255; 85; 255
-      Pose Style: None
+      Pose Style: Axes
       Radius: 0.029999999329447746
       Shaft Diameter: 0.10000000149011612
       Shaft Length: 0.10000000149011612
@@ -321,7 +323,7 @@ Visualization Manager:
       Radius: 0.029999999329447746
       Shaft Diameter: 0.009999999776482582
       Shaft Length: 0.10000000149011612
-      Topic: /backward_planner/global_plan
+      Topic: /undo_path_planner/global_plan
       Unreliable: false
       Value: true
     - Alpha: 1
@@ -375,7 +377,7 @@ Visualization Manager:
       Marker Topic: /move_base/ForwardLocalPlanner/goal_marker
       Name: FW Goal
       Namespaces:
-        my_namespace2: true
+        {}
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -482,40 +484,41 @@ Visualization Manager:
       Show Names: true
       Tree:
         map:
-          odom:
-            base_link:
-              chassis_link:
-                axle_link:
-                  front_rocker_link:
-                    front_left_wheel_link:
-                      {}
-                    front_right_wheel_link:
-                      {}
-                  rear_rocker_link:
-                    rear_left_wheel_link:
-                      {}
-                    rear_right_wheel_link:
-                      {}
-                front_cover_link:
-                  {}
-                front_laser:
-                  {}
-                front_lights_link:
-                  {}
-                imu_link:
-                  {}
-                left_side_cover_link:
-                  {}
-                rear_cover_link:
-                  {}
-                rear_lights_link:
-                  {}
-                right_side_cover_link:
-                  {}
-                top_link:
-                  {}
-              mid_mount:
+          {}
+        odom:
+          base_link:
+            chassis_link:
+              axle_link:
+                front_rocker_link:
+                  front_left_wheel_link:
+                    {}
+                  front_right_wheel_link:
+                    {}
+                rear_rocker_link:
+                  rear_left_wheel_link:
+                    {}
+                  rear_right_wheel_link:
+                    {}
+              front_cover_link:
                 {}
+              front_laser:
+                {}
+              front_lights_link:
+                {}
+              imu_link:
+                {}
+              left_side_cover_link:
+                {}
+              rear_cover_link:
+                {}
+              rear_lights_link:
+                {}
+              right_side_cover_link:
+                {}
+              top_link:
+                {}
+            mid_mount:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 1
@@ -570,7 +573,7 @@ Visualization Manager:
       Use Timestamp: false
       Value: false
     - Class: smacc_rviz_plugin/SmaccRvizDisplay
-      CurrentState: ""
+      CurrentState: /sm_dance_bot::MsDanceBotRunMode/sm_dance_bot::StNavigateToWaypointsX
       Enabled: true
       Name: SmaccRvizDisplay
       Topic: /remap_smacc_status
@@ -612,19 +615,19 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 60.632442474365234
+      Scale: 78.65935516357422
       Target Frame: base_link
       Value: TopDownOrtho (rviz)
-      X: 5.9219889640808105
-      Y: -5.189697265625
+      X: 0.6073487401008606
+      Y: 0.41081807017326355
     Saved: ~
 Window Geometry:
   Displays:
-    collapsed: false
-  Height: 1025
-  Hide Left Dock: false
+    collapsed: true
+  Height: 713
+  Hide Left Dock: true
   Hide Right Dock: false
-  QMainWindow State: 000000ff00000000fd0000000400000000000001b500000363fc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000003d00000363000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000396fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000002800000396000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073d0000003efc0100000002fb0000000800540069006d006501000000000000073d000002eb00fffffffb0000000800540069006d00650100000000000004500000000000000000000005820000036300000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd0000000400000000000001b50000022bfc0200000008fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073000000003d0000022b000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261000000010000010f00000396fc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a00560069006500770073000000002800000396000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b200000000000000000000000200000490000000a9fc0100000001fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000050d0000003efc0100000002fb0000000800540069006d006501000000000000050d000002eb00fffffffb0000000800540069006d006501000000000000045000000000000000000000050d0000022b00000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -633,6 +636,6 @@ Window Geometry:
     collapsed: false
   Views:
     collapsed: false
-  Width: 1853
+  Width: 1293
   X: 67
   Y: 27

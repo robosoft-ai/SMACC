@@ -83,6 +83,7 @@ protected:
     void reconfigCB(move_base_z_client_plugin::OdomTrackerConfig &config, uint32_t level);
 
     virtual void rtPublishPaths(ros::Time timestamp);
+    
 
     // this is called when a new odom message is received in record path mode
     virtual bool updateRecordPath(const nav_msgs::Odometry &odom);

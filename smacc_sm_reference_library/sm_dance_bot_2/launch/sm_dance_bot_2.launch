@@ -36,7 +36,7 @@
     </group>
 
     <!-- load state machine parameters -->
-    <rosparam command="load" file="$(find sm_dance_bot_2)/config/sm_dance_bot_config.yaml" />
+    <rosparam command="load" file="$(find sm_dance_bot_2)/config/sm_dance_bot_2_config.yaml" />
 
     <group ns="sm_dance_bot_2">
         <!-- set run mode -->
@@ -59,6 +59,6 @@
     <node pkg="sm_dance_bot_2" type="led_action_server_node" name="led_action_server_node" launch-prefix="$(arg server_nodes_xterms)" />
     <node pkg="sm_dance_bot_2" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)" />
     <node pkg="sm_dance_bot_2" type="service_node_3.py" name="service_server_node" launch-prefix="$(arg server_nodes_xterms)" />
-
+    
     <!-- <node pkg="smacc_viewer" type="smacc_viewer_node.py" name="smacc_viewer" if="$(arg show_smacc_viewer)"/> -->
 </launch>
