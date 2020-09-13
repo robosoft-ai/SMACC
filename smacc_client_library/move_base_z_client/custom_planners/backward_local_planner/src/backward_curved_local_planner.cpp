@@ -220,7 +220,7 @@ namespace cl_move_base_z
             // line implicit equation
             // ax + by + c = 0
             double c = -vx * carrot_point.x - vy * carrot_point.y;
-            const double C_OFFSET_METERS = 0.01; // 1 cm
+            const double C_OFFSET_METERS = 0.05; // 5 cm
             double check = vx * tfpose.getOrigin().x() + vy * tfpose.getOrigin().y() + c + C_OFFSET_METERS;
 
             ROS_DEBUG_STREAM("[BackwardLocalPlanner] half plane contraint:" << vx << "*" << carrot_point.x << " + " << vy << "*" << carrot_point.y << " + " << c);
@@ -353,6 +353,7 @@ namespace cl_move_base_z
             {
                 cmd_vel.linear.x = 0;
                 cmd_vel.angular.z = 0;
+                ROS_DEBUG_STREAM("[BackwardLocalPlanner] emergency stop, exit compute commands");
                 return false;
             }
 
@@ -461,7 +462,7 @@ namespace cl_move_base_z
 
             if (goalReached_)
             {
-                ROS_INFO_STREAM(" [BackwardLocalPlanner] goal reached, stop command and skipping trajectory collision: " << cmd_vel);
+                ROS_INFO_STREAM(" [BackwardLocalPlanner] goal reached. Send stop command and skipping trajectory collision: " << cmd_vel);
                 return true;
             }
 
@@ -481,7 +482,7 @@ namespace cl_move_base_z
             this->generateTrajectory(currentpose, currentvel, 0.8 /*meters*/, M_PI / 8 /*rads*/, 3.0 /*seconds*/, 0.05 /*seconds*/, trajectory);
 
             // check plan rejection
-            bool aceptedplan = true;
+            bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
             unsigned int mx, my;
 
@@ -518,7 +519,7 @@ namespace cl_move_base_z
 
                         if (costmap2d->getCost(mx, my) >= costmap_2d::INSCRIBED_INFLATED_OBSTACLE)
                         {
-                            aceptedplan = false;
+                            acceptedLocalTrajectoryFreeOfObstacles = false;
                             ROS_WARN_STREAM("[BackwardLocalPlanner] ABORTED LOCAL PLAN BECAUSE OBSTACLE DETEDTED at point " << i << "/" << trajectory.size() << std::endl
                                                                                                                             << p[0] << ", " << p[1]);
                             break;
@@ -533,9 +534,10 @@ namespace cl_move_base_z
                 }
             }
 
-            if (aceptedplan)
+            if (acceptedLocalTrajectoryFreeOfObstacles)
             {
                 waiting_ = false;
+                ROS_DEBUG("[BackwardLocalPlanner] accepted local trajectory free of obstacle. Local planner continues.");
                 return true;
             }
             else // that is not appceted because existence of obstacles
@@ -609,6 +611,7 @@ namespace cl_move_base_z
 */
         bool BackwardLocalPlanner::isGoalReached()
         {
+            ROS_DEBUG("[BackwardLocalPlanner] isGoalReached call");
             return goalReached_;
         }
 
