@@ -37,7 +37,6 @@ namespace sm_ridgeback_floor_coverage_dynamic_1
 
         if (!std::isnan(lidarData->forwardObstacleDistance))
           forwardBehavior->forwardDistance = lidarData->forwardObstacleDistance - extrasecurityMargin; /*extra security margin for easy dynamic implementation of dynamic-smotion*/
-
         else
           forwardBehavior->forwardDistance = superstate.pitch2_lenght_meters();
       }

@@ -28,11 +28,18 @@ void CbNavigateForward::onEntry()
         dist = *forwardDistance;
     }
 
-    ROS_INFO_STREAM("Straight motion distance: " << dist);
+    ROS_INFO_STREAM("[CbNavigateForward] Straight motion distance: " << dist);
 
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
     auto currentPoseMsg = p->toPoseMsg();
+
+    if(this->forceInitialOrientation)
+    {
+        currentPoseMsg.orientation = *forceInitialOrientation;
+        ROS_WARN_STREAM("[CbNavigateForward] Forcing initial straight motion orientation: " << currentPoseMsg.orientation );        
+    }
+
     tf::Transform currentPose;
     tf::poseMsgToTF(currentPoseMsg, currentPose);
 
