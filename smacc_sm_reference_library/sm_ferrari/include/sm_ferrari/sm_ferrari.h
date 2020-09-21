@@ -1,39 +1,31 @@
 #pragma once
 
-#include <ros/ros.h>
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <ros_timer_client/cl_ros_timer.h>
+//#include <ros_timer_client/cl_ros_timer.h>
 #include <keyboard_client/cl_keyboard.h>
 
 // ORTHOGONALS
-#include <sm_ferrari/orthogonals/or_timer.h>
-#include <sm_ferrari/orthogonals/or_updatable_publisher.h>
-#include <sm_ferrari/orthogonals/or_subscriber.h>
-#include <sm_ferrari/orthogonals/or_keyboard.h>
+//#include "orthogonals/or_timer.h"
+//#include "orthogonals/or_updatable_publisher.h"
+#include "orthogonals/or_subscriber.h"
+#include "orthogonals/or_keyboard.h"
 
-using namespace cl_ros_timer;
-using namespace cl_ros_publisher;
+//using namespace cl_ros_timer;
+//using namespace cl_ros_publisher;
 using namespace cl_keyboard;
 
 using namespace sm_ferrari::cl_subscriber;
 
-//CLIENT BEHAVIORS
-#include <ros_publisher_client/client_behaviors/cb_default_publish_loop.h>
-#include <ros_publisher_client/client_behaviors/cb_muted_behavior.h>
-#include <ros_publisher_client/client_behaviors/cb_publish_once.h>
-
-#include <sm_ferrari/clients/cl_subscriber/client_behaviors/cb_default_subscriber_behavior.h>
-#include <sm_ferrari/clients/cl_subscriber/client_behaviors/cb_watchdog_subscriber_behavior.h>
-
 #include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
+#include "clients/cl_subscriber/client_behaviors/cb_my_subscriber_behavior.h"
 
 //#include <ros_timer_client/client_behaviors/cb_ros_timer.h>
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
+//#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
 
 //STATE REACTORS
-#include <sr_all_events_go/sr_all_events_go.h>
+//#include <sr_all_events_go/sr_all_events_go.h>
 
 using namespace smacc;
 using namespace smacc::state_reactors;
@@ -79,8 +71,8 @@ struct SmFerrari
 
     virtual void onInitialize() override
     {
-        this->createOrthogonal<OrTimer>();
-        this->createOrthogonal<OrUpdatablePublisher>();
+        //this->createOrthogonal<OrTimer>();
+        //this->createOrthogonal<OrUpdatablePublisher>();
         this->createOrthogonal<OrKeyboard>();
         this->createOrthogonal<OrSubscriber>();
     }

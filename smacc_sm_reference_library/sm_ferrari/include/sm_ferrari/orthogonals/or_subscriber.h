@@ -12,7 +12,7 @@ class OrSubscriber : public smacc::Orthogonal<OrSubscriber>
 public:
     virtual void onInitialize() override
     {
-        auto subscriber_client = this->createClient<ClSubscriber>();
+        auto subscriber_client = this->createClient<ClSubscriber>("/temperature");
         subscriber_client->initialize();
     }
 };

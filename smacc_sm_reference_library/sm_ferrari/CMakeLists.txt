@@ -127,6 +127,14 @@ add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catk
    ${catkin_LIBRARIES}
  )
 
+ add_executable(temperature_sensor_node_${PROJECT_NAME} servers/temperature_sensor_node/src/temperature_sensor_node.cpp)
+ set_target_properties(temperature_sensor_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "temperature_sensor_node")
+
+ target_link_libraries(temperature_sensor_node_${PROJECT_NAME}
+   ${catkin_LIBRARIES}
+ )
+
+
 #############
 ## Install ##
 #############

@@ -4,4 +4,6 @@
     <node pkg="sm_ferrari" type="sm_ferrari_node" name="sm_ferrari" launch-prefix="$(arg server_nodes_xterms)" />
 
     <node pkg="keyboard_client" type="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(arg server_nodes_xterms)" />
+
+    <node pkg="sm_ferrari" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)" />
 </launch>

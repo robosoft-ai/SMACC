@@ -13,28 +13,30 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 // TRANSITION TABLE
     typedef mpl::list<
    
-   Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
-    Transition<EvAllGo<SrAllEventsGo>, StState3>,
+   //Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
+    //Transition<EvAllGo<SrAllEventsGo>, StState3>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
-    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
+    Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>,
+    Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StState3, NEXT>
     
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
-        configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-        configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+        //configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+        //configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+        configure_orthogonal<OrSubscriber, CbMySubscriberBehavior>();
+        //configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
         // Create State Reactor
-        auto sbAll = static_createStateReactor<SrAllEventsGo>();
-        sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->addInputEvent<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->addInputEvent<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
+        //auto sbAll = static_createStateReactor<SrAllEventsGo>();
+        //sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
+        //sbAll->addInputEvent<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>>();
+        //sbAll->addInputEvent<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>>();
+        //sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
     }
 
     void runtimeConfigure()

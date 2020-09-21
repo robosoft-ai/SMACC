@@ -15,19 +15,21 @@ struct StiState2 : smacc::SmaccState<StiState2, SS>
 // TRANSITION TABLE
   typedef mpl::list<
   
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState3, TIMEOUT>,
+  //Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiState3, TIMEOUT>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiState3, NEXT>,
-  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, PREVIOUS>
+  Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiState1, PREVIOUS>,
+  Transition<EvMyBehavior<CbMySubscriberBehavior, OrSubscriber>, StiState3, NEXT>
   
   >reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure()
   {
-    configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
-    configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
-    configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
-    configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
+    // configure_orthogonal<OrTimer, CbTimerCountdownOnce>(10);
+    // configure_orthogonal<OrSubscriber, CbWatchdogSubscriberBehavior>();
+    configure_orthogonal<OrSubscriber, CbMySubscriberBehavior>();
+    // configure_orthogonal<OrUpdatablePublisher, CbDefaultPublishLoop>();
+     configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
   }
 
   void runtimeConfigure()
