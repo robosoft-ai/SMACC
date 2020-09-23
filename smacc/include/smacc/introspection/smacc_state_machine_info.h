@@ -14,12 +14,12 @@
 #include <smacc_msgs/SmaccTransition.h>
 #include <smacc_msgs/SmaccOrthogonal.h>
 #include <smacc_msgs/SmaccStateReactor.h>
+#include <smacc_msgs/SmaccEventGenerator.h>
 
 namespace smacc
 {
 namespace introspection
 {
-
 class SmaccStateMachineInfo : public std::enable_shared_from_this<SmaccStateMachineInfo>
 {
 public:

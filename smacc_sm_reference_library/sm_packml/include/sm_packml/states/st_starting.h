@@ -24,10 +24,16 @@ struct StStarting : smacc::SmaccState<StStarting, MsRun>
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
         // Create State Reactor
-        auto sbAll = static_createStateReactor<SrAllEventsGo>();
-        sbAll->addInputEvent<EvTimer<CbTimer, OrTimer>>();
-        sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
-        sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
+        
+
+        auto sbAll = static_createStateReactor<SrAllEventsGo, 
+                                                smacc::state_reactors::EvAllGo<SrAllEventsGo>, 
+                                                mpl::list<EvTimer<CbTimer, OrTimer>, EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>> >();
+
+        //auto sbAll = static_createStateReactor<SrAllEventsGo>();
+        //sbAll->addInputEvent<EvTimer<CbTimer, OrTimer>>();
+        //sbAll->addInputEvent<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>>();
+        //sbAll->setOutputEvent<EvAllGo<SrAllEventsGo>>();
     }
 
     void runtimeConfigure()

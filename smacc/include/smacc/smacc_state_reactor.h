@@ -38,21 +38,6 @@ public:
 
     virtual void onInitialized();
 
-    // template <typename TEventList>
-    // struct AddTEventType
-    // {
-    //     StateReactor *owner_;
-    //     AddTEventType(StateReactor *owner) : owner_(owner)
-    //     {
-    //     }
-
-    //     template <typename T>
-    //     void operator()(T)
-    //     {
-    //         owner_->addInputEvent<T>();
-    //     }
-    // };
-
     virtual void onEntry();
     virtual void onExit();
 

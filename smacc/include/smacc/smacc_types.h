@@ -20,6 +20,7 @@ class SmaccClientBehavior;
 class SignalDetector;
 
 class StateReactor;
+class SmaccEventGenerator;
 
 namespace client_bases
 {
@@ -33,6 +34,7 @@ class SmaccStateMachineInfo;
 class SmaccStateInfo;
 class StateReactorHandler;
 class SmaccStateReactorInfo;
+class SmaccEventGeneratorInfo;
 } // namespace introspection
 
 // ----TAGS FOR TRANSITIONS -----

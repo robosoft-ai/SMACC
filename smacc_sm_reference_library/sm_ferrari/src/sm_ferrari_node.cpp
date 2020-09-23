@@ -2,6 +2,6 @@
 
 int main(int argc, char **argv)
 {
-    ros::init(argc, argv, "three_some");
+    ros::init(argc, argv, "sm_ferrari_node");
     smacc::run<sm_ferrari::SmFerrari>();
 }

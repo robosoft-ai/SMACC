@@ -117,6 +117,17 @@ namespace smacc
                 this->updatableStateElements_.push_back(updatableStateReactor);
             }
         }
+
+        auto eventgenerators = currentState->getEventGenerators();
+        for (auto &eg : eventgenerators)
+        {
+            ISmaccUpdatable *updatableEventGenerator = dynamic_cast<ISmaccUpdatable *>(eg.get());
+            if (updatableEventGenerator != nullptr)
+            {
+                ROS_DEBUG_STREAM("Adding updatable eventGenerator: " << demangleType(typeid(updatableEventGenerator)));
+                this->updatableStateElements_.push_back(updatableEventGenerator);
+            }
+        }
     }
 
     /**
@@ -220,9 +231,9 @@ namespace smacc
                 }
             }
         }
-        catch (...)
+        catch (std::exception& ex)
         {
-            ROS_ERROR("Exception during Signal Detector update loop.");
+            ROS_ERROR("Exception during Signal Detector update loop. %s", ex.what());
         }
 
         smaccStateMachine_->unlockStateMachine("update behaviors");
@@ -236,10 +247,10 @@ namespace smacc
     void SignalDetector::pollingLoop()
     {
         //ros::NodeHandle nh("~"); // use node name as root of the parameter server
-        
+
         ros::NodeHandle _;
         ros::Rate r0(20);
-        while(!initialized_)
+        while (!initialized_)
         {
             r0.sleep();
         }

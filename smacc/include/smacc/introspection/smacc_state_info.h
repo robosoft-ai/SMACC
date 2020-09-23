@@ -60,7 +60,7 @@ struct SmaccTransitionInfo
 };
 //---------------------------------------------
 
-struct CallbackFunctor
+struct StateReactorCallbackFunctor
 {
     std::function<void(std::shared_ptr<smacc::StateReactor>)> fn;
 };
@@ -68,7 +68,7 @@ struct CallbackFunctor
 class StateReactorHandler
 {
 private:
-    std::vector<CallbackFunctor> callbacks_;
+    std::vector<StateReactorCallbackFunctor> callbacks_;
 
 public:
     void configureStateReactor(std::shared_ptr<smacc::StateReactor> sr);
@@ -82,8 +82,6 @@ public:
     std::shared_ptr<smacc::introspection::SmaccStateReactorInfo> srInfo_;
 };
 
-//---------------------------------------------
-
 struct SmaccStateReactorInfo
 {
     std::shared_ptr<SmaccStateInfo> ownerState;
@@ -94,6 +92,39 @@ struct SmaccStateReactorInfo
     std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
     std::shared_ptr<StateReactorHandler> srh;
 };
+
+//---------------------------------------------------------
+struct EventGeneratorCallbackFunctor
+{
+    std::function<void(std::shared_ptr<smacc::SmaccEventGenerator>)> fn;
+};
+
+class EventGeneratorHandler
+{
+private:
+    std::vector<EventGeneratorCallbackFunctor> callbacks_;
+
+public:
+    void configureEventGenerator(std::shared_ptr<smacc::SmaccEventGenerator> eg);
+
+    template <typename TEv>
+    void setOutputEvent();
+
+    std::shared_ptr<smacc::introspection::SmaccEventGeneratorInfo> egInfo_;
+};
+
+struct SmaccEventGeneratorInfo
+{
+    std::shared_ptr<SmaccStateInfo> ownerState;
+    std::function<void(smacc::ISmaccState *)> factoryFunction;
+
+    const std::type_info *eventGeneratorType;
+    std::shared_ptr<TypeInfo> objectTagType;
+    std::vector<std::shared_ptr<SmaccEventInfo>> sourceEventTypes;
+    std::shared_ptr<EventGeneratorHandler> egh;
+};
+
+//---------------------------------------------
 
 enum class SmaccStateType
 {
@@ -110,6 +141,7 @@ public:
 
     static std::map<const std::type_info *, std::vector<ClientBehaviorInfoEntry>> staticBehaviorInfo;
     static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccStateReactorInfo>>> stateReactorsInfo;
+    static std::map<const std::type_info *, std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>> eventGeneratorsInfo;
 
     int stateIndex_;
     std::string fullStateName;

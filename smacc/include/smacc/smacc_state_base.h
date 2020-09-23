@@ -7,6 +7,7 @@
 #pragma once
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_reactor.h>
+#include <smacc/smacc_event_generator.h>
 #include <smacc/introspection/state_traits.h>
 
 namespace smacc
@@ -114,16 +115,16 @@ namespace smacc
     // this function is called by boot statechart before the destructor call
     void exit()
     {
-        auto* derivedThis = static_cast<MostDerived *>(this);
-        this->getStateMachine().notifyOnStateExitting(derivedThis);
-        try
-        {          // static_cast<MostDerived *>(this)->onExit();
-          standardOnExit(*derivedThis);
-        }
-        catch (...)
-        {
-        }
-        this->getStateMachine().notifyOnStateExited(derivedThis);
+      auto *derivedThis = static_cast<MostDerived *>(this);
+      this->getStateMachine().notifyOnStateExitting(derivedThis);
+      try
+      { // static_cast<MostDerived *>(this)->onExit();
+        standardOnExit(*derivedThis);
+      }
+      catch (...)
+      {
+      }
+      this->getStateMachine().notifyOnStateExited(derivedThis);
     }
 
   public:
@@ -170,12 +171,12 @@ namespace smacc
     }
 
     template <typename TOrthogonal, typename TBehavior>
-    static void configure_orthogonal_runtime(std::function<void(TBehavior &bh, MostDerived&)> initializationFunction)
+    static void configure_orthogonal_runtime(std::function<void(TBehavior &bh, MostDerived &)> initializationFunction)
     {
       configure_orthogonal_internal<TOrthogonal, TBehavior>([=](ISmaccState *state) {
         //auto bh = std::make_shared<TBehavior>(args...);
         auto bh = state->configure<TOrthogonal, TBehavior>();
-        initializationFunction(*bh, *(static_cast<MostDerived*>(state)));
+        initializationFunction(*bh, *(static_cast<MostDerived *>(state)));
       });
     }
 
@@ -192,16 +193,93 @@ namespace smacc
     template <typename TOrthogonal, typename TBehavior, typename... Args>
     static void configure_orthogonal(Args &&... args)
     {
-    configure_orthogonal_internal<TOrthogonal, TBehavior>(
-      [=](ISmaccState *state) 
-      {
-        //auto bh = std::make_shared<TBehavior>(args...);
-        state->configure<TOrthogonal, TBehavior>(args...);
-      });
+      configure_orthogonal_internal<TOrthogonal, TBehavior>(
+          [=](ISmaccState *state) {
+            //auto bh = std::make_shared<TBehavior>(args...);
+            state->configure<TOrthogonal, TBehavior>(args...);
+          });
+    }
+
+    /*
+
+  template<typename TInputEventList>
+  void ISmaccState::state_reactor_initialize_inputEventList(smacc::introspection::StateReactorHandler* sr, TInputEventList *)
+  {
+      using boost::mpl::_1;
+      using wrappedList = typename boost::mpl::transform<TInputEventList, _1>::type;
+      AddTEventType<TInputEventList> op(sr);
+      boost::mpl::for_each<wrappedList>(op);
+  }
+
+    template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs... args>
+    std::shared_ptr<TStateReactor> ISmaccState::static_createStateReactor(TArgs... args)
+    {
+      auto srHandler = static_createStateReactor_aux(args...);
+
+      srHandler->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
+      srHandler->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
+      
+      TInputEventList* mock;
+      state_reactor_initialize_inputEventList(mock,)
+      
+      srHandler->setOutputEvent<TOutputEvent>();
+    }
+*/
+    template <typename TStateReactor, typename TOutputEvent, typename TInputEventList, typename... TArgs>
+    static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TArgs... args)
+    {
+      auto srh = std::make_shared<smacc::introspection::StateReactorHandler>();
+      auto srinfo = std::make_shared<SmaccStateReactorInfo>();
+
+      srinfo->stateReactorType = &typeid(TStateReactor);
+      srinfo->srh = srh;
+      srh->srInfo_ = srinfo;
+
+      const std::type_info *tindex = &(typeid(MostDerived)); // get identifier of the current state
+
+      if (!SmaccStateInfo::stateReactorsInfo.count(tindex))
+        SmaccStateInfo::stateReactorsInfo[tindex] = std::vector<std::shared_ptr<SmaccStateReactorInfo>>();
+
+      srinfo->factoryFunction = [&, srh, args...](ISmaccState *state) {
+        auto sr = state->createStateReactor<TStateReactor, TOutputEvent, TInputEventList, TArgs...>(args...);
+        srh->configureStateReactor(sr);
+        sr->initialize(state);
+        return sr;
+      };
+
+      SmaccStateInfo::stateReactorsInfo[tindex].push_back(srinfo);
+
+      return srh;
+    }
+
+    template <typename TEventGenerator, typename... TUArgs>
+    static std::shared_ptr<smacc::introspection::EventGeneratorHandler> static_createEventGenerator(TUArgs... args)
+    {
+      auto egh = std::make_shared<smacc::introspection::EventGeneratorHandler>();
+      auto eginfo = std::make_shared<SmaccEventGeneratorInfo>();
+      eginfo->eventGeneratorType = &typeid(TEventGenerator);
+      eginfo->egh = egh;
+      egh->egInfo_ = eginfo;
+
+      const std::type_info *tindex = &(typeid(MostDerived)); // get identifier of the current state
+
+      if (!SmaccStateInfo::eventGeneratorsInfo.count(tindex))
+        SmaccStateInfo::eventGeneratorsInfo[tindex] = std::vector<std::shared_ptr<SmaccEventGeneratorInfo>>();
+
+      eginfo->factoryFunction = [&, egh, args...](ISmaccState *state) {
+        auto eg = state->createEventGenerator<TEventGenerator>(args...);
+        egh->configureEventGenerator(eg);
+        eg->initialize(state);
+        eg->template onStateAllocation<MostDerived, TEventGenerator>();
+        return eg;
+      };
+
+      SmaccStateInfo::eventGeneratorsInfo[tindex].push_back(eginfo);
+      return egh;
     }
 
     template <typename TStateReactor, typename... TUArgs>
-    static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor(TUArgs... args)
+    static std::shared_ptr<smacc::introspection::StateReactorHandler> static_createStateReactor_aux(TUArgs... args)
     {
       auto srh = std::make_shared<smacc::introspection::StateReactorHandler>();
       auto srinfo = std::make_shared<SmaccStateReactorInfo>();
@@ -339,6 +417,7 @@ namespace smacc
         const std::type_info *tindex = &(typeid(MostDerived));
         auto &staticDefinedBehaviors = SmaccStateInfo::staticBehaviorInfo[tindex];
         auto &staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
+        auto &staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
 
         for (auto &bhinfo : staticDefinedBehaviors)
         {
@@ -352,26 +431,32 @@ namespace smacc
           sr->factoryFunction(this);
         }
 
+        for (auto &eg : staticDefinedEventGenerators)
+        {
+          ROS_INFO("[%s] Creating static event generator: %s", STATE_NAME, demangleSymbol(eg->eventGeneratorType->name()).c_str());
+          eg->factoryFunction(this);
+        }
+
         ROS_INFO("[%s] ---- END STATIC DESCRIPTION", STATE_NAME);
       }
 
       ROS_INFO("[%s] State runtime configuration", STATE_NAME);
 
-      auto* derivedthis = static_cast<MostDerived *>(this);
-      
+      auto *derivedthis = static_cast<MostDerived *>(this);
+
       // second the orthogonals are internally configured
       this->getStateMachine().notifyOnRuntimeConfigured(derivedthis);
 
       // first we runtime configure the state, where we create client behaviors
       static_cast<MostDerived *>(this)->runtimeConfigure();
-      
+
       this->getStateMachine().notifyOnRuntimeConfigurationFinished(derivedthis);
 
       ROS_INFO("[%s] State OnEntry", STATE_NAME);
 
       // finally we go to the derived state onEntry Function
       static_cast<MostDerived *>(this)->onEntry();
-      
+
       // here orthogonals and client behaviors are entered OnEntry
       this->getStateMachine().notifyOnStateEntryEnd(derivedthis);
     }

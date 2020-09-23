@@ -65,7 +65,7 @@ namespace introspection
 template <typename TEv>
 void StateReactorHandler::addInputEvent()
 {
-    CallbackFunctor functor;
+    StateReactorCallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sr) {
         ROS_INFO("[%s] State Reactor adding input event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
         sr->addInputEvent<TEv>();
@@ -83,7 +83,7 @@ void StateReactorHandler::addInputEvent()
 template <typename TEv>
 void StateReactorHandler::setOutputEvent()
 {
-    CallbackFunctor functor;
+    StateReactorCallbackFunctor functor;
     functor.fn = [=](std::shared_ptr<smacc::StateReactor> sr) {
         ROS_INFO("[%s] State Reactor setting output event: %s", demangleType(srInfo_->stateReactorType).c_str(), demangledTypeName<TEv>().c_str());
         sr->setOutputEvent<TEv>();

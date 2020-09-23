@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>sm_ferrari</name>
+  <name>eg_conditional_generator</name>
   <version>0.9.1</version>
-  <description>The sm_ferrari package</description>
-  
+  <description>The eg_conditional_generator package</description>
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
   <license>BSD-3</license>
@@ -11,21 +11,11 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/sm_ferrari</url> -->
-  
+  <!-- <url type="website">http://wiki.ros.org/eg_conditional_generator</url> -->
+
   <buildtool_depend>catkin</buildtool_depend>
+  <depend>catkin</depend>
   <depend>smacc</depend>
-  <depend>multirole_sensor_client</depend>
-  <depend>sr_all_events_go</depend>  
-  <depend>eg_conditional_generator</depend>  
-  <depend>std_msgs</depend>
-
-  <depend>ros_timer_client</depend>
-  <depend>ros_publisher_client</depend>
-  <depend>keyboard_client</depend>
-  <depend>xterm</depend>
-
   <export>
-
   </export>
 </package>

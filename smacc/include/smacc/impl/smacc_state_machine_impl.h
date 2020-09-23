@@ -409,6 +409,21 @@ namespace smacc
       }
     }
 
+    for (auto &eg : this->currentState_->getEventGenerators())
+    {
+      auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
+      ROS_INFO("state reactor onEntry: %s", egname);
+      try
+      {
+        eg->onEntry();
+      }
+      catch (const std::exception &e)
+      {
+        ROS_ERROR("[Event generator %s] Exception on Entry - continuing with next state reactor. Exception info: %s",
+                  egname, e.what());
+      }
+    }
+
     this->updateStatusMessage();
     stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
   }
@@ -470,6 +485,21 @@ namespace smacc
       {
         ROS_ERROR("[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
                   srname, e.what());
+      }
+    }
+
+    for (auto &eg : state->getEventGenerators())
+    {
+      auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
+      ROS_INFO("state reactor OnExit: %s", egname);
+      try
+      {
+        eg->onExit();
+      }
+      catch (const std::exception &e)
+      {
+        ROS_ERROR("[State Reactor %s] Exception on OnExit - continuing with next state reactor. Exception info: %s",
+                  egname, e.what());
       }
     }
 

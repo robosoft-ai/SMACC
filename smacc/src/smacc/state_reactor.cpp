@@ -11,7 +11,6 @@ StateReactor::StateReactor()
 void StateReactor::initialize(smacc::ISmaccState *ownerState)
 {
     this->ownerState = ownerState;
-
     this->onInitialized();
 }
 
@@ -49,6 +48,14 @@ void StateReactorHandler::configureStateReactor(std::shared_ptr<smacc::StateReac
     for (auto callback : this->callbacks_)
     {
         callback.fn(sb);
+    }
+}
+
+void EventGeneratorHandler::configureEventGenerator(std::shared_ptr<smacc::SmaccEventGenerator> eg)
+{
+    for (auto callback : this->callbacks_)
+    {
+        callback.fn(eg);
     }
 }
 } // namespace introspection

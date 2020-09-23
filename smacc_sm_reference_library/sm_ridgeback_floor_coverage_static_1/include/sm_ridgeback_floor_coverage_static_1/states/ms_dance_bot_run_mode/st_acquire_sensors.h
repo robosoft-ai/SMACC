@@ -34,12 +34,18 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher::CbDefaultPublishLoop>();
 
       // Create State Reactor
-      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();
-      srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
-      srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
+      // auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo>();
+      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo,
+                                                   EvAllGo<SrAllEventsGo, SrAcquireSensors>,
+                                                   mpl::list<
+                                                               EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
+                                                               EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>
+                                                            >>();
+                                                            
+      // srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
+      // srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 
-      srAllSensorsReady->setOutputEvent<smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
-      // srAllSensorsReady->setOutputEvent<EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
+      // srAllSensorsReady->setOutputEvent<smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>>();
    }
 };
 } // namespace sm_ridgeback_floor_coverage_static_1

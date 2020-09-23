@@ -22,6 +22,7 @@
 
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_reactor.h>
+//#include <smacc/smacc_event_generator.h>
 
 namespace smacc
 {

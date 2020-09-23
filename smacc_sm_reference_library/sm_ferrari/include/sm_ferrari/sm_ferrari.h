@@ -26,10 +26,12 @@ using namespace sm_ferrari::cl_subscriber;
 
 //STATE REACTORS
 //#include <sr_all_events_go/sr_all_events_go.h>
+#include <eg_conditional_generator/eg_conditional_generator.h>
 
 using namespace smacc;
 using namespace smacc::state_reactors;
 using namespace smacc::default_events;
+using namespace smacc::event_generators;
 
 namespace sm_ferrari
 {
