@@ -65,7 +65,6 @@ if(CATKIN_ENABLE_TESTING)
     
     add_rostest_gtest(ssmtest test/ssm_test.test test/ssm_test.cpp)
     target_link_libraries(ssmtest ${catkin_LIBRARIES})
-
     
 endif()
 
@@ -84,7 +83,7 @@ endif()
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
 #install(TARGETS ssmtest
 #   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+#)
 
 ## Mark libraries for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
@@ -102,8 +101,8 @@ endif()
 #)
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+ install(FILES
+   test/ssm_test.test
+  # myfile2
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+ )
