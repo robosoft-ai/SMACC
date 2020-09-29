@@ -23,5 +23,5 @@ script:
   - .industrial_ci/travis.sh
 # DEBIAN PACKAGES GENERATION
 #  - bash -c 'cd smacc_ci/packagecloud_docker/; ./build_ubuntu_16_04_kinetic.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
-#  - bash -c 'cd smacc_ci/packagecloud_docker/; ./build_ubuntu_18_04_melodic.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
+  - bash -c 'cd smacc_ci/packagecloud_docker/; ./build_ubuntu_18_04_melodic.sh $GITHUB_USER $GITHUB_TOKEN $PACKAGE_CLOUD_USER $PACKAGE_CLOUD_TOKEN'
 
