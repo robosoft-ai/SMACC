@@ -1,3 +1,0 @@
-<launch>
-    <test pkg="ssm" test-name="ssmtest" type="ssmtest"/>
-</launch>
