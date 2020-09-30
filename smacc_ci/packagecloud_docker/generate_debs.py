@@ -130,6 +130,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion):
     smacc_manual_order_packages = [  # 'forward_global_planner',
         'smacc_msgs',
         'smacc',
+        'smacc_runtime_test',
         'sr_all_events_go',
         'sr_conditional',
         'sr_event_countdown',
