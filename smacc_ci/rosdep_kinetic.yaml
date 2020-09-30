@@ -27,7 +27,9 @@ sr_conditional:
 forward_global_planner:
   ubuntu: [ros-kinetic-forward-global-planner]    
 sm_dance_bot:
-  ubuntu: [ros-kinetic-sm-dance-bot]    
+  ubuntu: [ros-kinetic-sm-dance-bot]
+smacc_runtime_test:    
+   ubuntu: [ros-kinetic-smacc-runtime-test]
 
 
 
