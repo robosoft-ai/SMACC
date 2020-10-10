@@ -25,6 +25,7 @@ namespace cl_move_base_z
 
         boost::optional<float> absoluteGoalAngleDegree;
         boost::optional<float> yawGoalTolerance;
+        boost::optional<float> maxVelTheta; // if not defined, default parameter server
         boost::optional<SpiningPlanner> spinningPlanner;
 
         CbAbsoluteRotate();
@@ -35,7 +36,9 @@ namespace cl_move_base_z
         virtual void onExit() override;
 
     private:
-        void setLocalPlannerYawTolerance(float newtolerance);
+        void updateTemporalBehaviorParameters(bool undo);
         float oldYawTolerance;
+        float oldMaxVelTheta;
+        float oldMinVelTheta;
     };
 } // namespace cl_move_base_z

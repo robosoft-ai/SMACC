@@ -19,31 +19,87 @@ CbAbsoluteRotate::CbAbsoluteRotate(float absoluteGoalAngleDegree, float yaw_goal
     }
 }
 
-void CbAbsoluteRotate::setLocalPlannerYawTolerance(float newtolerance)
+void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 {
     dynamic_reconfigure::ReconfigureRequest srv_req;
     dynamic_reconfigure::ReconfigureResponse srv_resp;
     dynamic_reconfigure::Config conf;
 
-    ros::NodeHandle nh("~");
+    ros::NodeHandle nh;
+    std::string nodename = "/move_base";
     std::string localPlannerName = "TrajectoryPlannerROS";
+    dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
+    yaw_goal_tolerance.name = "yaw_goal_tolerance";
+
+    dynamic_reconfigure::DoubleParameter max_vel_theta;
+    max_vel_theta.name = "max_vel_theta";
+
+    dynamic_reconfigure::DoubleParameter min_vel_theta;
+    min_vel_theta.name = "min_vel_theta";
 
     if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
     {
         localPlannerName = "PureSpinningLocalPlanner";
     }
+    
+    if(!undo)
+    {
+       if(yawGoalTolerance)
+       {
+            // save old yaw tolerance
+            nh.getParam(nodename + "/"  + localPlannerName+"/yaw_goal_tolerance", oldYawTolerance);
+            yaw_goal_tolerance.value = *yawGoalTolerance;
+            conf.doubles.push_back(yaw_goal_tolerance);
+            ROS_INFO("[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: %lf ", *yawGoalTolerance, this->oldYawTolerance);
+       }
 
-    nh.getParam(localPlannerName+"/yaw_goal_tolerance", this->oldYawTolerance);
+       if(maxVelTheta)
+       {
+            // save old yaw tolerance
+            nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
+            nh.getParam(nodename + "/"  + localPlannerName+"/max_vel_theta", oldMaxVelTheta);
+            max_vel_theta.value = *maxVelTheta;
+            min_vel_theta.value = -*maxVelTheta;
+            conf.doubles.push_back(max_vel_theta);
+            conf.doubles.push_back(min_vel_theta);
+            ROS_INFO("[CbAbsoluteRotate] updating max vel theta local planner to: %lf, from previous value: %lf ", *maxVelTheta, this->oldMaxVelTheta);
+            ROS_INFO("[CbAbsoluteRotate] updating min vel theta local planner to: %lf, from previous value: %lf ", -*maxVelTheta, this->oldMinVelTheta);
+       }
+    }
+    else
+    {
+        if(yawGoalTolerance)
+        {
+            yaw_goal_tolerance.value = oldYawTolerance;
+            conf.doubles.push_back(yaw_goal_tolerance);
+            ROS_INFO("[CbAbsoluteRotate] restoring yaw tolerance local planner from: %lf, to previous value: %lf ", *yawGoalTolerance, this->oldYawTolerance);
+        }
 
-    dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
-    yaw_goal_tolerance.name = "yaw_goal_tolerance";
-    yaw_goal_tolerance.value = newtolerance;
-    conf.doubles.push_back(yaw_goal_tolerance);
+        if(maxVelTheta)
+        {
+            max_vel_theta.value = oldMaxVelTheta;
+            min_vel_theta.value = oldMinVelTheta;
+            conf.doubles.push_back(max_vel_theta);
+            conf.doubles.push_back(min_vel_theta);
+            ROS_INFO("[CbAbsoluteRotate] restoring max vel theta local planner from: %lf, to previous value: %lf ", *maxVelTheta, this->oldMaxVelTheta);
+            ROS_INFO("[CbAbsoluteRotate] restoring min vel theta local planner from: %lf, to previous value: %lf ", -(*maxVelTheta), this->oldMinVelTheta);
+        }
+    }
 
     srv_req.config = conf;
-    ROS_INFO("[CbAbsoluteRotate] updating yaw tolerance local planner to: %lf, from previous value: %lf ", newtolerance, this->oldYawTolerance);
-    ros::service::call( localPlannerName, srv_req, srv_resp);
-    ros::spinOnce();
+    bool res;
+    do
+    {
+        std::string servername = nodename + "/"  + localPlannerName+"/set_parameters";
+        res = ros::service::call( servername, srv_req, srv_resp);
+        ROS_INFO_STREAM("[CbAbsoluteRotate] dynamic configure call ["<< servername <<"]: " << res);
+        ros::spinOnce();
+        if(!res)
+        {
+            ros::Duration(0.1).sleep();
+            ROS_INFO("[CbAbsoluteRotate] Failed, retrtying call");
+        }
+    }while(!res);
 }
 
 void CbAbsoluteRotate::onExit()
@@ -53,9 +109,10 @@ void CbAbsoluteRotate::onExit()
 
     }
     else
-    {
-        this->setLocalPlannerYawTolerance(this->oldYawTolerance);
+    {    
     }
+
+    this->updateTemporalBehaviorParameters(true);
 }
 
 void CbAbsoluteRotate::onEntry()
@@ -77,18 +134,11 @@ void CbAbsoluteRotate::onEntry()
     //this->plannerSwitcher_->setForwardPlanner();
     
     if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
-    {
         plannerSwitcher->setPureSpinningPlanner();
-    }
     else
-    {
         plannerSwitcher->setDefaultPlanners();
-
-        if (yawGoalTolerance)
-        {
-            this->setLocalPlannerYawTolerance(*yawGoalTolerance);
-        }
-    }
+    
+    updateTemporalBehaviorParameters(false);
 
     auto p = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
     auto referenceFrame = p->getReferenceFrame();
