@@ -11,6 +11,7 @@
 #include <tf/transform_listener.h>
 #include <tf2_ros/buffer.h>
 #include <Eigen/Eigen>
+#include <pure_spinning_local_planner/PureSpinningLocalPlannerConfig.h>
 
 typedef double meter;
 typedef double rad;
@@ -27,7 +28,7 @@ public:
 
   virtual ~PureSpinningLocalPlanner();
 
-  /**
+    /**
    * @brief  Given the current position, orientation, and velocity of the robot: compute velocity commands to send to
    * the robot mobile base
    * @param cmd_vel Will be filled with the velocity command to be passed to the robot base
@@ -61,6 +62,8 @@ public:
   void initialize();
 
 private:
+  void reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level);
+
   void publishGoalMarker(double x, double y, double phi);
 
   costmap_2d::Costmap2DROS *costmapRos_;
@@ -68,6 +71,9 @@ private:
   ros::Publisher goalMarkerPublisher_;
 
   std::vector<geometry_msgs::PoseStamped> plan_;
+
+  dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
+  
 
   double k_betta_;
   bool goalReached_;

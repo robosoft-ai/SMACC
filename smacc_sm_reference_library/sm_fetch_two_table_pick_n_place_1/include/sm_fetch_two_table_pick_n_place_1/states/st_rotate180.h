@@ -40,7 +40,7 @@ namespace sm_fetch_two_table_pick_n_place_1
 
             auto absoluteRotateBehavior = this->getOrthogonal<OrNavigation>()->getClientBehavior<CbAbsoluteRotate>();
             absoluteRotateBehavior->absoluteGoalAngleDegree = targetAbsoluteAngleDegrees;
-            absoluteRotateBehavior->spinningPlanner = CbAbsoluteRotate::SpiningPlanner::PureSpinning;
+            absoluteRotateBehavior->spinningPlanner = SpiningPlanner::PureSpinning;
         }
     };
 } // namespace sm_fetch_two_table_pick_n_place_1
