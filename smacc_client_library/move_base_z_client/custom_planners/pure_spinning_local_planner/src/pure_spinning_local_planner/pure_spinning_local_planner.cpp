@@ -90,9 +90,8 @@ bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd
     auto &goal = plan_[currentPoseIndex_];
     auto targetYaw = tf::getYaw(goal.pose.orientation);
 
-    double sign = targetYaw - currentYaw >0? 1.0: -1.0;
-    double angular_error = angles::shortest_angular_distance(targetYaw, currentYaw) * sign;
-    //double angular_error = ;
+    //double angular_error = angles::shortest_angular_distance( currentYaw , targetYaw) ; 
+    double angular_error = targetYaw - currentYaw ;
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition
