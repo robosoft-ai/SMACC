@@ -27,20 +27,28 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
     ros::NodeHandle nh;
     std::string nodename = "/move_base";
-    std::string localPlannerName = "TrajectoryPlannerROS";
+    std::string localPlannerName;
     dynamic_reconfigure::DoubleParameter yaw_goal_tolerance;
     yaw_goal_tolerance.name = "yaw_goal_tolerance";
 
     dynamic_reconfigure::DoubleParameter max_vel_theta;
-    max_vel_theta.name = "max_vel_theta";
-
     dynamic_reconfigure::DoubleParameter min_vel_theta;
-    min_vel_theta.name = "min_vel_theta";
+    bool isRosBasePlanner = !spinningPlanner || *spinningPlanner == SpiningPlanner::Default;
+    bool isPureSpinningPlanner = spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning;
 
-    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    if(isPureSpinningPlanner)
     {
         localPlannerName = "PureSpinningLocalPlanner";
+        max_vel_theta.name = "max_angular_z_speed";
+        min_vel_theta.name = "min_vel_theta";
     }
+    else if(isRosBasePlanner)
+    {
+        localPlannerName = "TrajectoryPlannerROS";
+        max_vel_theta.name = "max_vel_theta";
+        min_vel_theta.name = "min_vel_theta";
+    }
+    
     
     if(!undo)
     {
@@ -55,9 +63,12 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
        if(maxVelTheta)
        {
-            // save old yaw tolerance
-            nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
-            nh.getParam(nodename + "/"  + localPlannerName+"/max_vel_theta", oldMaxVelTheta);
+           if(isRosBasePlanner)
+           {
+                // save old yaw tolerance
+                nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
+                nh.getParam(nodename + "/"  + localPlannerName+"/max_vel_theta", oldMaxVelTheta);
+           }
             max_vel_theta.value = *maxVelTheta;
             min_vel_theta.value = -*maxVelTheta;
             conf.doubles.push_back(max_vel_theta);
@@ -77,8 +88,12 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
         if(maxVelTheta)
         {
-            max_vel_theta.value = oldMaxVelTheta;
-            min_vel_theta.value = oldMinVelTheta;
+            if(isRosBasePlanner)
+            {
+                max_vel_theta.value = oldMaxVelTheta;
+                min_vel_theta.value = oldMinVelTheta;
+            }
+
             conf.doubles.push_back(max_vel_theta);
             conf.doubles.push_back(min_vel_theta);
             ROS_INFO("[CbAbsoluteRotate] restoring max vel theta local planner from: %lf, to previous value: %lf ", *maxVelTheta, this->oldMaxVelTheta);
@@ -104,7 +119,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
 
 void CbAbsoluteRotate::onExit()
 {
-    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    if(spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning)
     {
 
     }
@@ -133,7 +148,7 @@ void CbAbsoluteRotate::onEntry()
     //this should work better with a coroutine and await
     //this->plannerSwitcher_->setForwardPlanner();
     
-    if(spinningPlanner && *spinningPlanner == CbAbsoluteRotate::SpiningPlanner::PureSpinning)
+    if(spinningPlanner && *spinningPlanner == SpiningPlanner::PureSpinning)
         plannerSwitcher->setPureSpinningPlanner();
     else
         plannerSwitcher->setDefaultPlanners();

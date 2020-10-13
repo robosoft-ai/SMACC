@@ -18,10 +18,6 @@
   <!-- <url type="website">http://wiki.ros.org/pure_spinning_local_planner</url> -->
 
 
-  
-
-
-  
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>costmap_2d</depend>
@@ -32,6 +28,7 @@
   <depend>pcl_ros</depend>
   <depend>roscpp</depend>
   <depend>tf</depend>
+  <depend>dynamic_reconfigure</depend>
 
   
   <export>

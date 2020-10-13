@@ -11,15 +11,17 @@
 
 namespace cl_move_base_z
 {
-    class CbAbsoluteRotate : public CbMoveBaseClientBehaviorBase
-    {
-    public:
         enum class SpiningPlanner
         {
             Default,
             PureSpinning,
             Forward
         };
+        
+    class CbAbsoluteRotate : public CbMoveBaseClientBehaviorBase
+    {
+    public:
+
 
         tf::TransformListener listener;
 

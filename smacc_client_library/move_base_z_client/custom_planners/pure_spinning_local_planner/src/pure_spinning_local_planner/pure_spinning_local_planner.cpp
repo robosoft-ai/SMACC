@@ -30,6 +30,7 @@ tf::Stamped<tf::Pose> optionalRobotPose(costmap_2d::Costmap2DROS *costmapRos)
 #endif
 
 PureSpinningLocalPlanner::PureSpinningLocalPlanner()
+  : paramServer_(ros::NodeHandle("~PureSpinningLocalPlanner"))
 {
   ROS_INFO_STREAM("[PureSpinningLocalPlanner] pure spinning planner already created");
 }
@@ -38,6 +39,38 @@ PureSpinningLocalPlanner::~PureSpinningLocalPlanner()
 {
 }
 
+void PureSpinningLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmapRos)
+{
+  costmapRos_ = costmapRos;
+  this->initialize();
+}
+
+void PureSpinningLocalPlanner::initialize(std::string name, tf::TransformListener *tf,
+                                          costmap_2d::Costmap2DROS *costmapRos)
+{
+  costmapRos_ = costmapRos;
+  this->initialize();
+}
+
+void PureSpinningLocalPlanner::initialize()
+{
+  ros::NodeHandle nh("~/PureSpinningLocalPlanner");
+  nh.param("k_betta", k_betta_, 10.0);
+  nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.08);
+  nh.param("intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_, 0.12);
+  nh.param("max_angular_z_speed", max_angular_z_speed_, 1.0);
+
+  dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig>::CallbackType f;
+  f = boost::bind(&PureSpinningLocalPlanner::reconfigCB, this, _1, _2);
+  paramServer_.setCallback(f);
+}
+
+void PureSpinningLocalPlanner::reconfigCB(::pure_spinning_local_planner::PureSpinningLocalPlannerConfig &config, uint32_t level)
+{
+  this->k_betta_ = config.k_betta;
+  this->yaw_goal_tolerance_ = config.yaw_goal_tolerance;
+  this->max_angular_z_speed_ = config.max_angular_z_speed;
+}
 bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 {
   goalReached_ = false;
@@ -57,8 +90,9 @@ bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd
     auto &goal = plan_[currentPoseIndex_];
     auto targetYaw = tf::getYaw(goal.pose.orientation);
 
-    //double angular_error = angles::shortest_angular_distance(targetYaw, currentYaw);
-    double angular_error = targetYaw - currentYaw;
+    double sign = targetYaw - currentYaw >0? 1.0: -1.0;
+    double angular_error = angles::shortest_angular_distance(targetYaw, currentYaw) * sign;
+    //double angular_error = ;
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition
@@ -72,7 +106,6 @@ bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd
     {
       auto omega = angular_error * k_betta_;
       cmd_vel.angular.z = std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
-
 
       ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] current yaw: " << currentYaw);
       ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] target yaw: " << targetYaw);
@@ -107,29 +140,6 @@ bool PureSpinningLocalPlanner::setPlan(const std::vector<geometry_msgs::PoseStam
   goalReached_ = false;
   currentPoseIndex_ = 0;
   return true;
-}
-
-void PureSpinningLocalPlanner::initialize(std::string name, tf::TransformListener *tf,
-                                          costmap_2d::Costmap2DROS *costmapRos)
-{
-  costmapRos_ = costmapRos;
-  this->initialize();
-}
-
-void PureSpinningLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmapRos)
-{
-  costmapRos_ = costmapRos;
-  this->initialize();
-}
-
-void PureSpinningLocalPlanner::initialize()
-{
-  ros::NodeHandle nh("~/PureSpinningLocalPlanner");
-  nh.param("k_betta", k_betta_, 10.0);
-  nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.08);
-  nh.param("intermediate_goals_yaw_tolerance", intermediate_goal_yaw_tolerance_, 0.12);
-  
-  nh.param("max_angular_z_speed", max_angular_z_speed_, 2.0);
 }
 
 void publishGoalMarker(double x, double y, double phi)
