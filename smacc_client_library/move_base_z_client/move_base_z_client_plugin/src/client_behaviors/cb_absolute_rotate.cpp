@@ -66,7 +66,7 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
            if(isRosBasePlanner)
            {
                 // save old yaw tolerance
-                nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
+                //nh.getParam(nodename + "/"  + localPlannerName+"/min_vel_theta", oldMinVelTheta);
                 nh.getParam(nodename + "/"  + localPlannerName+"/max_vel_theta", oldMaxVelTheta);
            }
             max_vel_theta.value = *maxVelTheta;

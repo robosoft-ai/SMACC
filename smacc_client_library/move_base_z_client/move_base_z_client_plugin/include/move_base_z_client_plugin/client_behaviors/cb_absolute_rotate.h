@@ -32,7 +32,7 @@ namespace cl_move_base_z
 
         CbAbsoluteRotate();
 
-        CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = 0.15);
+        CbAbsoluteRotate(float absoluteGoalAngleDegree, float yawGoalTolerance = -1);
 
         virtual void onEntry() override;
         virtual void onExit() override;

@@ -162,40 +162,46 @@ namespace cl_move_base_z
             }
 
             double const ERROR_DISTANCE_PURE_SPINNING_FACTOR = 1.5;
-            // considering now pure spinning in this point, accepting a larger minerror of 1.5 besterror.
+            // Concept of second pass: now we only consider a pure spinning motion in this point. We want to consume some very close angular targets, (accepting a larger linear minerror of 1.5 besterror. That is, more or less in the same point).
 
             ROS_DEBUG("[UndoPathGlobalPlanner] second angular pass");
             double angularMinDist = std::numeric_limits<double>::max();
-            for (int i = mindistindex; i >= 0; i--)
+            
+                if(mindistindex >=  lastForwardPathMsg_.poses.size())
+                    mindistindex = lastForwardPathMsg_.poses.size() -1;// workaround, something is making a out of bound exception in poses array access
             {
-                // warning this index, i refers to some inverse interpretation from the previous loop,
-                // (last indexes in this path corresponds to the poses closer to our current position)
-                geometry_msgs::PoseStamped pose = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - i - 1];
-                pose.header.frame_id = costmap_ros_->getGlobalFrameID();
-                pose.header.stamp = ros::Time::now();
-
-                double dx = pose.pose.position.x - start.pose.position.x;
-                double dy = pose.pose.position.y - start.pose.position.y;
-
-                double dist = sqrt(dx * dx + dy * dy);
-                if (dist <= linear_mindist * ERROR_DISTANCE_PURE_SPINNING_FACTOR)
+                for (int i = mindistindex; i >= 0; i--)
                 {
-                    double angleOrientation = tf::getYaw(pose.pose.orientation);
-                    double angleError = fabs(angles::shortest_angular_distance(angleOrientation, startPoseAngle));
-                    if (angleError < angularMinDist)
+                    // warning this index, i refers to some inverse interpretation from the previous loop,
+                    // (last indexes in this path corresponds to the poses closer to our current position)
+                    ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] " << i << "/" << lastForwardPathMsg_.poses.size());
+                    geometry_msgs::PoseStamped pose = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - i -1];
+                    pose.header.frame_id = costmap_ros_->getGlobalFrameID();
+                    pose.header.stamp = ros::Time::now();
+
+                    double dx = pose.pose.position.x - start.pose.position.x;
+                    double dy = pose.pose.position.y - start.pose.position.y;
+
+                    double dist = sqrt(dx * dx + dy * dy);
+                    if (dist <= linear_mindist * ERROR_DISTANCE_PURE_SPINNING_FACTOR)
                     {
-                        angularMinDist = angleError;
-                        mindistindex = i;
-                        ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update), NEWBEST_ANGULAR= " << i << ". error, linear: "<<  dist << "(" << linear_mindist << ")" <<", angular: " << angleError << "(" << angularMinDist << ")");
+                        double angleOrientation = tf::getYaw(pose.pose.orientation);
+                        double angleError = fabs(angles::shortest_angular_distance(angleOrientation, startPoseAngle));
+                        if (angleError < angularMinDist)
+                        {
+                            angularMinDist = angleError;
+                            mindistindex = i;
+                            ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update), NEWBEST_ANGULAR= " << i << ". error, linear: "<<  dist << "(" << linear_mindist << ")" <<", angular: " << angleError << "(" << angularMinDist << ")");
+                        }
+                        else
+                        {
+                            ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update), skipped= " << i <<". error, linear: "<<  dist << "(" << linear_mindist << ")" <<", angular: "  << angleError << "(" << angularMinDist << ")");
+                        }
                     }
                     else
                     {
-                        ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update), skipped= " << i <<". error, linear: "<<  dist << "(" << linear_mindist << ")" <<", angular: "  << angleError << "(" << angularMinDist << ")");
+                        ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update) not in linear range, skipped= " << i << " linear error: " << dist << "(" << linear_mindist << ")");
                     }
-                }
-                else
-                {
-                    ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] initial start point search (angular update) not in linear range, skipped= " << i << " linear error: " << dist << "(" << linear_mindist << ")");
                 }
             }
 

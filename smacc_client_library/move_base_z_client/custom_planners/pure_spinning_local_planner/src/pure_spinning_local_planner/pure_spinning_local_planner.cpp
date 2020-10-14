@@ -80,18 +80,20 @@ bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd
 
   geometry_msgs::PoseStamped currentPose;
   tf::poseStampedTFToMsg(tfpose, currentPose);
-  ROS_INFO_STREAM("[PureSpinningLocalPlanner] current robot pose " << currentPose);
+  // ROS_INFO_STREAM("[PureSpinningLocalPlanner] current robot pose " << currentPose);
 
   tf::Quaternion q = tfpose.getRotation();
   auto currentYaw = tf::getYaw(currentPose.pose.orientation);
+  double angular_error;
+  double targetYaw;
 
   while (currentPoseIndex_ < plan_.size())
   {
     auto &goal = plan_[currentPoseIndex_];
-    auto targetYaw = tf::getYaw(goal.pose.orientation);
+    targetYaw = tf::getYaw(goal.pose.orientation);
 
     //double angular_error = angles::shortest_angular_distance( currentYaw , targetYaw) ; 
-    double angular_error = targetYaw - currentYaw ;
+    angular_error = targetYaw - currentYaw ;
 
     // all the points must be reached using the control rule, but the last one
     // have an special condition
@@ -103,23 +105,22 @@ bool PureSpinningLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd
     }
     else
     {
-      auto omega = angular_error * k_betta_;
-      cmd_vel.angular.z = std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
-
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] current yaw: " << currentYaw);
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] target yaw: " << targetYaw);
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] angular error: " << angular_error);
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] param k_betta: " << k_betta_);
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] param yaw_goal_tolerance: " << yaw_goal_tolerance_);
-      ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.angular.z);
       break;
     }
   }
 
+  auto omega = angular_error * k_betta_;
+  cmd_vel.angular.z = std::min(std::max(omega, -fabs(max_angular_z_speed_)), fabs(max_angular_z_speed_));
+
+  //ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] current yaw: " << currentYaw);
+  //ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] target yaw: " << targetYaw);
+  ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] angular error: " << angular_error << "("<<yaw_goal_tolerance_<<")");
+  ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] command angular speed: " << cmd_vel.angular.z);
   ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] completion " << currentPoseIndex_ << "/"<< plan_.size());
 
-  if (currentPoseIndex_ >= plan_.size() -1)
+  if (currentPoseIndex_ >= plan_.size() -1 && fabs(angular_error) < yaw_goal_tolerance_)
   {
+    ROS_DEBUG_STREAM("[PureSpinningLocalPlanner] GOAL REACHED ");
     goalReached_ = true;
   }
 
