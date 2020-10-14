@@ -12,8 +12,6 @@ TrajectoryPlannerROS:
   min_vel_y: 0.1 
   holonomic_robot: true # was true for omni-motion
 
-  #max_vel_theta: 1.57
-  #min_vel_theta: -1.57
   max_vel_theta: 0.57
   min_vel_theta: -0.57
 

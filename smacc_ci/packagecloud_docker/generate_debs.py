@@ -40,7 +40,8 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
 
     os.chdir(localpackagepath)
     fakerootprocess = subprocess.Popen(
-        "fakeroot debian/rules binary", shell=True)
+        "/usr/bin/fakeroot debian/rules binary")
+        #"/usr/bin/fakeroot debian/rules binary", shell=True)
     fakerootprocess.wait()
 
     os.chdir(localpackagepath)
