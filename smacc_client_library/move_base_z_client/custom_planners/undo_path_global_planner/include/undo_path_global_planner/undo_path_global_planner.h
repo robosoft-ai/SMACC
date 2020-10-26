@@ -8,10 +8,7 @@
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <nav_msgs/Path.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
 #include <ros/ros.h>
-#include <undo_path_global_planner/command.h>
 
 namespace cl_move_base_z
 {

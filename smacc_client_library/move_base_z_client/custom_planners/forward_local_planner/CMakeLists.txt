@@ -15,7 +15,6 @@ find_package(catkin REQUIRED
   roscpp
   std_msgs
   tf
-  forward_global_planner
 )
 
 ## System dependencies are found with CMake's conventions
