@@ -8,10 +8,7 @@
 #include <nav_core/base_global_planner.h>
 #include <nav_msgs/GetPlan.h>
 #include <nav_msgs/Path.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
 #include <ros/ros.h>
-#include <backward_global_planner/command.h>
 
 namespace cl_move_base_z
 {
@@ -39,15 +36,10 @@ public:
 private:
     ros::NodeHandle nh_;
 
-    ros::Subscriber forwardPathSub_;
-
     ros::Publisher planPub_;
 
     ros::Publisher markersPub_;
 
-    nav_msgs::Path lastForwardPathMsg_;
-
-    /// stored but almost not used
     costmap_2d::Costmap2DROS *costmap_ros_;
 
     void onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage);

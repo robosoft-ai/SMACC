@@ -6,8 +6,6 @@
 #include <boost/assign.hpp>
 #include <boost/range/adaptor/reversed.hpp>
 #include <boost/range/algorithm/copy.hpp>
-#include <pcl_conversions/pcl_conversions.h>
-#include <pcl_ros/point_cloud.h>
 #include <pluginlib/class_list_macros.h>
 #include <backward_global_planner/backward_global_planner.h>
 #include <fstream>
@@ -58,16 +56,6 @@ void BackwardGlobalPlanner::initialize(std::string name, costmap_2d::Costmap2DRO
     ros::NodeHandle nh;
     planPub_ = nh.advertise<nav_msgs::Path>("backward_planner/global_plan", 1);
     markersPub_ = nh.advertise<visualization_msgs::MarkerArray>("backward_planner/markers", 1);
-}
-
-/**
-******************************************************************************************************************
-* onForwardTrailMsg()
-******************************************************************************************************************
-*/
-void BackwardGlobalPlanner::onForwardTrailMsg(const nav_msgs::Path::ConstPtr &trailMessage)
-{
-    lastForwardPathMsg_ = *trailMessage;
 }
 
 /**

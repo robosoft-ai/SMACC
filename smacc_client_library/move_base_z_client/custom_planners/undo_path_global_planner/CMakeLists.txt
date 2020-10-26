@@ -8,20 +8,15 @@ project(undo_path_global_planner)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED
-  forward_global_planner
   costmap_2d
   geometry_msgs
   std_msgs
   message_generation
   nav_core
   nav_msgs
-  pcl_ros
   roscpp
   tf
-  
 )
-
-find_package(PCL REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -63,16 +58,6 @@ find_package(PCL REQUIRED)
 #   Message2.msg
 # )
 
-
-add_service_files(
-  FILES
-  command.srv
-)
-
-generate_messages(
-  DEPENDENCIES
-  std_msgs
-)
 ## Generate actions in the 'action' folder
 # add_action_files(
 #   FILES
@@ -118,7 +103,7 @@ generate_messages(
 catkin_package(
   INCLUDE_DIRS include
   LIBRARIES undo_path_global_planner
-  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs pcl_ros roscpp tf forward_global_planner
+  CATKIN_DEPENDS costmap_2d geometry_msgs nav_core nav_msgs roscpp tf
 #  DEPENDS system_lib
 )
 
@@ -133,7 +118,6 @@ add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 ## Your package locations should be listed before other locations
 include_directories(
  include
- #${PCL_INCLUDE_DIRS}
  ${catkin_INCLUDE_DIRS}
  ${forward_global_planner_INCLUDE_DIRS}}
 )
