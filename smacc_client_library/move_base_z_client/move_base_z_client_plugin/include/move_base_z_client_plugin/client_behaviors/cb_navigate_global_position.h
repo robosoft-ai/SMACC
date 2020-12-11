@@ -16,9 +16,9 @@ namespace cl_move_base_z
   public:
     boost::optional<geometry_msgs::Point> goalPosition;
     boost::optional<float> goalYaw;
-    boost::optional<float> yawTolerance;
-    boost::optional<float> yawToleranceX;
-    boost::optional<float> yawToleranceY;
+    
+    //boost::optional<float> goalToleranceXY; // not implemented yet
+    //boost::optional<float> yawTolerance; // not implemented yet
 
     CbNavigateGlobalPosition();
 
