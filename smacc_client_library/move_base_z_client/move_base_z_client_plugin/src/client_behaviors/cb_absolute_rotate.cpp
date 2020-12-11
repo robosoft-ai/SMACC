@@ -49,7 +49,6 @@ void CbAbsoluteRotate::updateTemporalBehaviorParameters(bool undo)
         min_vel_theta.name = "min_vel_theta";
     }
     
-    
     if(!undo)
     {
        if(yawGoalTolerance)

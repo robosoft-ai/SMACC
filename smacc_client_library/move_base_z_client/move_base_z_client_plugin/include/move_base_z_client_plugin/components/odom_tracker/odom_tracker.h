@@ -76,6 +76,11 @@ public:
 
     void logStateString();
 
+    inline const std::vector<nav_msgs::Path> getStackedPaths() const
+    {
+        return this->pathStack_;
+    }
+
 protected:
     dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig> paramServer_;
     dynamic_reconfigure::Server<move_base_z_client_plugin::OdomTrackerConfig>::CallbackType f;

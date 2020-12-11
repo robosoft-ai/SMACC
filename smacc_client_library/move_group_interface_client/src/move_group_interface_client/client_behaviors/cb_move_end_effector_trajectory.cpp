@@ -14,13 +14,13 @@
 namespace cl_move_group_interface
 {
     CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(std::string tipLink)
-        : tipLink_(tipLink)
+        : tipLink_(tipLink), markersInitialized_(false)
     {
         initializeROS();
     }
 
     CbMoveEndEffectorTrajectory::CbMoveEndEffectorTrajectory(const std::vector<geometry_msgs::PoseStamped> &endEffectorTrajectory, std::string tipLink)
-        : endEffectorTrajectory_(endEffectorTrajectory), tipLink_(tipLink)
+        : endEffectorTrajectory_(endEffectorTrajectory), tipLink_(tipLink), markersInitialized_(false)
 
     {
         initializeROS();
