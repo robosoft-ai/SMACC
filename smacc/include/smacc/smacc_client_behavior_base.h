@@ -26,12 +26,14 @@ namespace smacc
         template <typename SmaccComponentType>
         void requiresComponent(SmaccComponentType *&storage);
 
+        ros::NodeHandle getNode();
+
     protected:
         virtual void runtimeConfigure();
 
-        virtual void onEntry() {};
+        virtual void onEntry();
 
-        virtual void onExit() {};
+        virtual void onExit();
 
         template <typename EventType>
         void postEvent(const EventType &ev);

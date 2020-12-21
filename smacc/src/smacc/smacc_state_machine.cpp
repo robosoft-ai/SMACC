@@ -93,6 +93,7 @@ void ISmaccStateMachine::updateStatusMessage()
             }
 
             status_msg_.header.stamp = ros::Time::now();
+            status_msg_.header.frame_id = "odom";
             this->stateMachineStatusPub_.publish(status_msg_);
         }
     }
