@@ -130,6 +130,11 @@ public:
     template <typename InitialStateType>
     void buildStateMachineInfo();
 
+    inline ros::NodeHandle getNode(){
+        return nh_;
+    };
+
+
 protected:
     void checkStateMachineConsistence();
 
