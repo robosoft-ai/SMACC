@@ -101,7 +101,7 @@ namespace cl_move_group_interface
 
     ros::Publisher markersPub_;
 
-    std::atomic<bool> markersInitialized_ = false;
+    std::atomic<bool> markersInitialized_;
 
     ros::ServiceClient iksrv_;
 

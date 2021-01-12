@@ -60,11 +60,11 @@ namespace cl_move_base_z
 
     geometry_msgs::PoseStamped makePureStraightSubPlan(const geometry_msgs::PoseStamped& startOrientedPose, 
                                                         const geometry_msgs::Point& goal, 
-                                                        double lenght, 
+                                                        double length, 
                                                         std::vector<geometry_msgs::PoseStamped>& plan)
     {
         double dx = 0.01; // 1 cm
-        double steps = lenght /dx;
+        double steps = length /dx;
         double dt = 1.0/steps;
 
         // geometry_msgs::PoseStamped end;

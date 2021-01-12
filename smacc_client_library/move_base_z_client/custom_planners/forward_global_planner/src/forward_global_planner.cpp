@@ -58,17 +58,17 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
     double dx = goal.pose.position.x - start.pose.position.x;
     double dy = goal.pose.position.y - start.pose.position.y;
 
-    double lenght = sqrt(dx * dx + dy * dy);
+    double length = sqrt(dx * dx + dy * dy);
 
     geometry_msgs::PoseStamped prevState;
-    if (lenght > skip_straight_motion_distance_)
+    if (length > skip_straight_motion_distance_)
     {
         // skip initial pure spinning and initial straight motion
         //ROS_INFO("1 - heading to goal position pure spinning");
         double heading_direction = atan2(dy, dx);
         prevState = cl_move_base_z::makePureSpinningSubPlan(start, heading_direction, plan, puresSpinningRadStep_);
         //ROS_INFO("2 - going forward keep orientation pure straight");
-        prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, lenght, plan);
+        prevState = cl_move_base_z::makePureStraightSubPlan(prevState, goal.pose.position, length, plan);
     }
     else
     {

@@ -60,7 +60,7 @@ SmaccRvizDisplay::SmaccRvizDisplay()
                                              "0 is fully transparent, 1.0 is fully opaque.",
                                              this, SLOT( updateColorAndAlpha() ));
 
-  history_length_property_ = new rviz::IntProperty( "History Length", 1,
+  history_length_property_ = new rviz::IntProperty( "History length", 1,
                                                     "Number of prior measurements to display.",
                                                     this, SLOT( updateHistoryLength() ));
                                                     */
