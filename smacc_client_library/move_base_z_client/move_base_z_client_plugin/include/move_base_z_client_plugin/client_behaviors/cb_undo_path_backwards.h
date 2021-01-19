@@ -5,17 +5,17 @@
  ******************************************************************************************************************/
 #pragma once
 
-#include "cb_move_base_client_behavior_base.h"
 #include <tf/transform_listener.h>
+#include "cb_move_base_client_behavior_base.h"
 
 namespace cl_move_base_z
 {
-  class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
-  {
-    tf::TransformListener listener;
+class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
+{
+  tf::TransformListener listener;
 
-    virtual void onEntry() override;
+  virtual void onEntry() override;
 
-    virtual void onExit() override;
-  };
-} // namespace cl_move_base_z
+  virtual void onExit() override;
+};
+}  // namespace cl_move_base_z
