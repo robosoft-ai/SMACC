@@ -167,12 +167,26 @@ namespace cl_move_base_z
                 if(mindistindex >=  lastForwardPathMsg_.poses.size())
                     mindistindex = lastForwardPathMsg_.poses.size() -1;// workaround, something is making a out of bound exception in poses array access
             {
+                if(lastForwardPathMsg_.poses.size() == 0)
+                {
+                    ROS_WARN_STREAM("[UndoPathGlobalPlanner] Warning possible bug");
+                }
+
+                ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] second pass loop");
                 for (int i = mindistindex; i >= 0; i--)
                 {
                     // warning this index, i refers to some inverse interpretation from the previous loop,
                     // (last indexes in this path corresponds to the poses closer to our current position)
                     ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] " << i << "/" << lastForwardPathMsg_.poses.size());
+                    auto index = lastForwardPathMsg_.poses.size() - i -1;
+                    if(index < 0 || index >= lastForwardPathMsg_.poses.size())
+                    {
+                        ROS_WARN_STREAM("[UndoPathGlobalPlanner] this should not happen. Check implementation.");
+                        break;
+                    }
                     geometry_msgs::PoseStamped pose = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - i -1];
+                    
+                    ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] global frame");
                     pose.header.frame_id = costmap_ros_->getGlobalFrameID();
                     pose.header.stamp = ros::Time::now();
 
