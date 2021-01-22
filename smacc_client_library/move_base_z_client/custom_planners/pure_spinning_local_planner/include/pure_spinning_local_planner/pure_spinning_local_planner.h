@@ -68,8 +68,6 @@ private:
 
   costmap_2d::Costmap2DROS *costmapRos_;
 
-  ros::Publisher goalMarkerPublisher_;
-
   std::vector<geometry_msgs::PoseStamped> plan_;
 
   dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
