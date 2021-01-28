@@ -130,6 +130,7 @@ namespace cl_move_base_z
 */
         bool BackwardLocalPlanner::updateCarrotGoal(const tf::Stamped<tf::Pose> &tfpose)
         {
+            ROS_DEBUG("[BackwardsLocalPlanner] --- Computing carrot pose ---");
             double disterr = 0, angleerr = 0;
             // iterate the point from the current position and backward until reaching a new goal point in the path
             // this algorithm among other advantages has that skip the looping with an eager global planner
@@ -161,9 +162,13 @@ namespace cl_move_base_z
             }
 
             ROS_DEBUG("[BackwardsLocalPlanner] Current index carrot goal: %d", currentCarrotPoseIndex_);
-            ROS_DEBUG("[BackwardsLocalPlanner] update carrot goal: linear error  %lf, angular error: %lf", disterr, angleerr);
+            ROS_DEBUG("[BackwardsLocalPlanner] Update carrot goal: linear error  %lf, angular error: %lf", disterr, angleerr);
+            bool carrotInGoalRadius = disterr < xy_goal_tolerance_;
+            ROS_DEBUG("[BackwardsLocalPlanner] carrot in goal radius: %d", carrotInGoalRadius);
 
-            return disterr < xy_goal_tolerance_;
+            ROS_DEBUG("[BackwardsLocalPlanner] --- Computing carrot pose ---");
+
+            return carrotInGoalRadius;
         }
 
         bool BackwardLocalPlanner::resetDivergenceDetection()
@@ -331,7 +336,7 @@ namespace cl_move_base_z
 */
         bool BackwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
         {
-            ROS_DEBUG("[BackwardLocalPlanner] LOCAL PLANNER LOOP");
+            ROS_DEBUG("[BackwardLocalPlanner] ------------------- LOCAL PLANNER LOOP -----------------");
             geometry_msgs::PoseStamped paux;
             tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
