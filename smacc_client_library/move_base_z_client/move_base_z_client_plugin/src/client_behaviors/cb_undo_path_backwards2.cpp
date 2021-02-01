@@ -4,32 +4,52 @@
 
 namespace cl_move_base_z
 {
+template <typename T>
+int sgn(T val)
+{
+  return (T(0) < val) - (val < T(0));
+}
+
 using namespace ::cl_move_base_z::odom_tracker;
 
 CbUndoPathBackwards2::CbUndoPathBackwards2() : goalLinePassed_(false)
 {
+  triggerThreshold_ = 0.01;  // 10 mm
 }
 
 void CbUndoPathBackwards2::onEntry()
 {
-  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
 
   auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
   robotPose_ = moveBaseClient_->getComponent<cl_move_base_z::Pose>();
 
-  nav_msgs::Path forwardpath = odomTracker->getPath();
+  nav_msgs::Path forwardpath = odomTracker_->getPath();
   // ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
 
-  odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
+  odomTracker_->setWorkingMode(WorkingMode::CLEAR_PATH);
 
   // this line is used to flush/reset backward planner in the case it were already there
   // plannerSwitcher->setDefaultPlanners();
   if (forwardpath.poses.size() > 0)
   {
-    goal.target_pose = forwardpath.poses.front();
+    goal_.target_pose = forwardpath.poses.front();
+    initial_plane_side_ = evalPlaneSide(robotPose_->toPoseMsg());
     plannerSwitcher->setUndoPathBackwardPlanner();
-    moveBaseClient_->sendGoal(goal);
+    moveBaseClient_->sendGoal(goal_);
   }
+}
+
+float CbUndoPathBackwards2::evalPlaneSide(const geometry_msgs::Pose& pose)
+{
+  auto y = pose.position.y;
+  auto x = pose.position.x;
+  auto alpha = tf::getYaw(goal_.target_pose.pose.orientation);
+  auto y0 = goal_.target_pose.pose.position.y;
+  auto x0 = goal_.target_pose.pose.position.x;
+
+  auto evalimplicit = sin(alpha) * (y - y0) - acos(alpha) * (x - x0);
+  return evalimplicit;
 }
 
 void CbUndoPathBackwards2::update()
@@ -40,23 +60,66 @@ void CbUndoPathBackwards2::update()
   // sin(alpha)(y - y0) - acos(alpha) (x -x0)= 0 // if greater one side if lower , the other
   auto pose = robotPose_->toPoseMsg();
 
-  auto y = pose.position.y;
-  auto x = pose.position.x;
-  auto alpha = tf::getYaw(goal.target_pose.pose.orientation);
-  auto y0 = goal.target_pose.pose.position.y;
-  auto x0 = goal.target_pose.pose.position.x;
-
-  auto evalimplicit = sin(alpha)*(y - y0) - acos(alpha)*(x - x0);
-  if (evalimplicit <= 0)
+  float evalimplicit = evalPlaneSide(pose);
+  if (sgn(evalimplicit) != sgn(initial_plane_side_))
   {
-    ROS_INFO("[CbUndoPathBackwards2] goal line passed, stopping behavior and success");
-    moveBaseClient_->cancelGoal();
+    ROS_WARN_STREAM_THROTTLE(1.0, "[CbUndoPathBackwards2] goal_ line passed, stopping behavior and success: "
+                                      << evalimplicit << "/" << this->initial_plane_side_);
+
+    if (fabs(evalimplicit) > triggerThreshold_ /*meters*/)
+    {
+      moveBaseClient_->cancelGoal();
+      // this->postSuccessEvent();
+      this->postVirtualLinePassed_();
+    }
   }
+  else
+  {
+    ROS_INFO_STREAM_THROTTLE(1.0, "[CbUndoPathBackwards2] goal_ line not passed yet: " << evalimplicit << "/"
+                                                                                       << this->initial_plane_side_);
+  }
+}
+
+void CbUndoPathBackwards2::publishMarkers()
+{
+  double phi = tf::getYaw(goal_.target_pose.pose.orientation);
+  visualization_msgs::Marker marker;
+  marker.header.frame_id = robotPose_->getReferenceFrame();
+
+  marker.header.stamp = ros::Time::now();
+  marker.ns = "my_namespace2";
+  marker.id = 0;
+  marker.type = visualization_msgs::Marker::SPHERE;
+  marker.action = visualization_msgs::Marker::ADD;
+  marker.scale.x = 3;
+  marker.scale.y = 3;
+  marker.scale.z = 3;
+  marker.color.a = 1.0;
+  marker.color.r = 1.0;
+  marker.color.g = 0.0;
+  marker.color.b = 0.0;
+
+  marker.pose = goal_.target_pose.pose;
+
+  // geometry_msgs::Point start, end;
+  // start.x = pose.position.x;
+  // start.y = pose.position.y;
+
+  // end.x = pose.position.x + 0.5 * cos(phi);
+  // end.y = pose.position.y + 0.5 * sin(phi);
+
+  // marker.points.push_back(start);
+  // marker.points.push_back(end);
+
+  visualization_msgs::MarkerArray ma;
+  ma.markers.push_back(marker);
+
+  this->visualizationMarkersPub_.publish(ma);
 }
 
 void CbUndoPathBackwards2::onExit()
 {
-  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto* odomTracker = moveBaseClient_->getComponent<OdomTracker>();
   odomTracker->popPath();
 }
 

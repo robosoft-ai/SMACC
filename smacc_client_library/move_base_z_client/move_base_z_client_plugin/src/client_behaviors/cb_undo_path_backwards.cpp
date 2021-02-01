@@ -8,30 +8,30 @@ using namespace ::cl_move_base_z::odom_tracker;
 
 void CbUndoPathBackwards::onEntry()
 {
-    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
 
-    auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
+  auto plannerSwitcher = moveBaseClient_->getComponent<PlannerSwitcher>();
 
-    nav_msgs::Path forwardpath = odomTracker->getPath();
-    //ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
+  nav_msgs::Path forwardpath = odomTracker->getPath();
+  // ROS_INFO_STREAM("[UndoPathBackward] Current path backwards: " << forwardpath);
 
-    odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
+  odomTracker->setWorkingMode(WorkingMode::CLEAR_PATH);
 
-    ClMoveBaseZ::Goal goal;
-    // this line is used to flush/reset backward planner in the case it were already there
-    //plannerSwitcher->setDefaultPlanners();
-    if (forwardpath.poses.size() > 0)
-    {
-        goal.target_pose = forwardpath.poses.front();
-        plannerSwitcher->setUndoPathBackwardPlanner();
-        moveBaseClient_->sendGoal(goal);
-    }
+  ClMoveBaseZ::Goal goal;
+  // this line is used to flush/reset backward planner in the case it were already there
+  // plannerSwitcher->setDefaultPlanners();
+  if (forwardpath.poses.size() > 0)
+  {
+    goal.target_pose = forwardpath.poses.front();
+    plannerSwitcher->setUndoPathBackwardPlanner();
+    moveBaseClient_->sendGoal(goal);
+  }
 }
 
 void CbUndoPathBackwards::onExit()
 {
-    auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
-    odomTracker->popPath();
+  auto *odomTracker = moveBaseClient_->getComponent<OdomTracker>();
+  odomTracker->popPath();
 }
 
-} // namespace cl_move_base_z
+}  // namespace cl_move_base_z
