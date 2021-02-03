@@ -50,7 +50,7 @@ namespace cl_move_base_z
             this->currentCarrotPoseIndex_ = 0;
 
             ros::NodeHandle nh("~/BackwardLocalPlanner");
-            nh.param("pure_spinning_straight_line_mode", pureSpinningMode_, true);
+            nh.param("pure_spinning_straight_line_mode", straightBackwardsAndPureSpinningMode_, true);
             nh.param("yaw_goal_tolerance", yaw_goal_tolerance_, 0.05);
             nh.param("xy_goal_tolerance", xy_goal_tolerance_, 0.10);
             nh.param("k_rho", k_rho_, k_rho_);
@@ -273,7 +273,7 @@ namespace cl_move_base_z
 * pureSpinningCmd()
 ******************************************************************************************************************
 */
-        void BackwardLocalPlanner::pureSpinningCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist &cmd_vel)
+        void BackwardLocalPlanner::straightBackwardsAndPureSpinCmd(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error, double betta_error, double rho_error, geometry_msgs::Twist &cmd_vel)
         {
             if (rho_error > linear_mode_rho_error_threshold_) // works in straight motion mode
             {
@@ -398,9 +398,9 @@ namespace cl_move_base_z
                 double gamma = k_alpha_ * alpha_error + k_betta_ * betta_error;
                 // --------------------
 
-                if (pureSpinningMode_)
+                if (straightBackwardsAndPureSpinningMode_)
                 {
-                    this->pureSpinningCmd(tfpose, vetta, gamma, alpha_error, betta_error, rho_error, cmd_vel);
+                    this->straightBackwardsAndPureSpinCmd(tfpose, vetta, gamma, alpha_error, betta_error, rho_error, cmd_vel);
                 }
                 else // default curved backward-free motion mode
                 {
@@ -437,7 +437,7 @@ namespace cl_move_base_z
                 publishGoalMarker(carrotGoalPosition.x, carrotGoalPosition.y, betta);
 
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] local planner," << std::endl
-                                                                         << " pureSpiningMode: " << pureSpinningMode_ << std::endl
+                                                                         << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_ << std::endl
                                                                          << " theta: " << theta << std::endl
                                                                          << " betta: " << theta << std::endl
                                                                          << " err_x: " << dx << std::endl
@@ -446,7 +446,9 @@ namespace cl_move_base_z
                                                                          << " alpha_error:" << alpha_error << std::endl
                                                                          << " betta_error:" << betta_error << std::endl
                                                                          << " vetta:" << vetta << std::endl
-                                                                         << " gamma:" << gamma);
+                                                                         << " gamma:" << gamma << std::endl
+                                                                         << " cmd_vel.lin.x:" << cmd_vel.linear.x << std::endl
+                                                                         << " cmd_vel.ang.z:" << cmd_vel.angular.z);
 
                 if (cmd_vel.linear.x != 0)
                 {
@@ -592,7 +594,7 @@ namespace cl_move_base_z
             carrot_angular_distance_ = config.carrot_angular_distance;
             xy_goal_tolerance_ = config.xy_goal_tolerance;
             yaw_goal_tolerance_ = config.yaw_goal_tolerance;
-            pureSpinningMode_ = config.pure_spinning_straight_line_mode;
+            straightBackwardsAndPureSpinningMode_ = config.pure_spinning_straight_line_mode;
 
             if (carrot_angular_distance_ < yaw_goal_tolerance_)
             {
@@ -738,7 +740,7 @@ namespace cl_move_base_z
                 }
             }
 
-            ROS_DEBUG_STREAM("[BackwardLocalPlanner] " << counter << " new inserted poses during precise resmapling.");
+            ROS_DEBUG_STREAM("[BackwardLocalPlanner] End resampling. resampled:" << counter << " new inserted poses during precise resmapling.");
             return true;
         }
 
@@ -771,8 +773,6 @@ namespace cl_move_base_z
                 ROS_WARN("[BackwardLocalPlanner] received plan without any pose");
                 return true;
             }
-
-            
 
             bool foundInitialCarrotGoal = this->findInitialCarrotGoal(tfpose);
             if (!foundInitialCarrotGoal)
