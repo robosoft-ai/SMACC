@@ -163,12 +163,12 @@ namespace cl_move_base_z
 
             ROS_DEBUG("[BackwardsLocalPlanner] Current index carrot goal: %d", currentCarrotPoseIndex_);
             ROS_DEBUG("[BackwardsLocalPlanner] Update carrot goal: linear error  %lf, angular error: %lf", disterr, angleerr);
-            bool carrotInGoalRadius = disterr < xy_goal_tolerance_;
-            ROS_DEBUG("[BackwardsLocalPlanner] carrot in goal radius: %d", carrotInGoalRadius);
+            bool carrotInGoalLinear = disterr < xy_goal_tolerance_;
+            ROS_DEBUG("[BackwardsLocalPlanner] carrot in goal radius: %d", carrotInGoalLinear);
 
             ROS_DEBUG("[BackwardsLocalPlanner] --- Computing carrot pose ---");
 
-            return carrotInGoalRadius;
+            return carrotInGoalLinear;
         }
 
         bool BackwardLocalPlanner::resetDivergenceDetection()
@@ -214,6 +214,8 @@ namespace cl_move_base_z
             // of precission. We may pass the goal and then the controller enters in some
             // unstable state. With this, we are able to detect when stop moving.
 
+            // only apply if the carrot is in goal position and also if we are not in a pure spinning behavior v!=0
+
             auto &carrot_pose = backwardsPlanPath_[currentCarrotPoseIndex_];
             const geometry_msgs::Point &carrot_point = carrot_pose.pose.position;
             double yaw = tf::getYaw(carrot_pose.pose.orientation);
@@ -234,7 +236,7 @@ namespace cl_move_base_z
             return check < 0;
         }
 
-        bool BackwardLocalPlanner::checkGoalReached(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double angle_error, geometry_msgs::Twist &cmd_vel)
+        bool BackwardLocalPlanner::checkCurrentPoseInGoalRange(const tf::Stamped<tf::Pose> &tfpose,  double angle_error, bool& linearGoalReached)
         {
             auto &finalgoal = backwardsPlanPath_.back();
             double gdx = finalgoal.pose.position.x - tfpose.getOrigin().x();
@@ -246,11 +248,10 @@ namespace cl_move_base_z
             ROS_DEBUG_STREAM("[BackwardLocalPlanner] goal check. linear dist: " << goaldist << "(" << this->xy_goal_tolerance_ << ")"
                                                                                 << ", angular dist: " << abs_angle_error << "(" << this->yaw_goal_tolerance_ << ")");
 
-            if (goaldist < this->xy_goal_tolerance_ && abs_angle_error < this->yaw_goal_tolerance_) // 5cm
+            linearGoalReached = goaldist < this->xy_goal_tolerance_;
+
+            if (abs_angle_error < this->yaw_goal_tolerance_) // 5cm
             {
-                ROS_INFO("[BackwardLocalPlanner] goal reached, clearing backwards Plan path");
-                goalReached_ = true;
-                backwardsPlanPath_.clear();
                 return true;
             }
 
@@ -265,8 +266,6 @@ namespace cl_move_base_z
         {
             cmd_vel.linear.x = vetta;
             cmd_vel.angular.z = gamma;
-
-            checkGoalReached(tfpose, vetta, gamma, betta_error, cmd_vel);
         }
         /**
 ******************************************************************************************************************
@@ -297,12 +296,6 @@ namespace cl_move_base_z
 
                 ROS_INFO_STREAM("BACKWARD LOCAL PLANNER END: Goal Reached. Stop action [rhoerror: " << rho_error<<"]");
             }*/
-
-            if (this->checkGoalReached(tfpose, vetta, gamma, betta_error, cmd_vel))
-            {
-                vetta = 0;
-                gamma = 0;
-            }
 
             cmd_vel.linear.x = vetta;
             cmd_vel.angular.z = gamma;
@@ -351,7 +344,7 @@ namespace cl_move_base_z
                 emergency_stop = true;
             }
 
-            bool carrotGoalInRange = updateCarrotGoal(tfpose);
+            bool carrotInLinearGoalRange = updateCarrotGoal(tfpose);
             ROS_DEBUG_STREAM("[BackwardLocalPlanner] carrot goal created");
 
             if (emergency_stop)
@@ -362,8 +355,10 @@ namespace cl_move_base_z
                 return false;
             }
 
-            if (currentCarrotPoseIndex_ < backwardsPlanPath_.size())
-            {
+            // ------ Evaluate the current context ----
+            double rho_error, betta_error, alpha_error;
+            
+
                 // getting carrot goal information
                 tf::Quaternion q = tfpose.getRotation();
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] carrot goal: " << currentCarrotPoseIndex_ << "/" << backwardsPlanPath_.size());
@@ -375,7 +370,6 @@ namespace cl_move_base_z
                 tf::quaternionMsgToTF(carrotgoalpose.pose.orientation, goalQ);
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] goal orientation: " << goalQ);
 
-                // ------- COMMON CONTROL COMPUTATION -------------
                 //goal orientation (global frame)
                 double betta = tf::getYaw(goalQ);
                 betta = betta + betta_offset_;
@@ -384,15 +378,37 @@ namespace cl_move_base_z
                 double dy = carrotGoalPosition.y - tfpose.getOrigin().y();
 
                 //distance error to the targetpoint
-                double rho_error = sqrt(dx * dx + dy * dy);
+                rho_error = sqrt(dx * dx + dy * dy);
 
                 //heading to goal angle
                 double theta = tf::getYaw(q);
                 double alpha = atan2(dy, dx);
                 alpha = alpha + alpha_offset_;
 
-                double alpha_error = angles::shortest_angular_distance(alpha, theta);
-                double betta_error = angles::shortest_angular_distance(betta, theta);
+                alpha_error = angles::shortest_angular_distance(alpha, theta);
+                betta_error = angles::shortest_angular_distance(betta, theta);
+            //------------- END CONTEXT EVAL ----------
+
+            bool linearGoalReached;
+            bool currentPoseInGoal = checkCurrentPoseInGoalRange(tfpose,betta_error, linearGoalReached);
+
+            bool carrotInFinalGoal = carrotInLinearGoalRange && currentCarrotPoseIndex_ == backwardsPlanPath_.size() - 1;
+
+            if(currentPoseInGoal && carrotInFinalGoal)
+            {
+                goalReached_ = true;
+                backwardsPlanPath_.clear();
+                ROS_INFO_STREAM(" [BackwardLocalPlanner] goal reached. Send stop command and skipping trajectory collision: " << cmd_vel);
+                cmd_vel.linear.x =0;
+                cmd_vel.angular.z = 0;
+                return true;
+            }
+
+            if (carrotInLinearGoalRange && linearGoalReached) // we miss here and not any carrot ahead is outside goal, replacing carrotInLinearGoalRange to carrotInFinalLinearGoalRange
+            {
+                inGoalPureSpinningState_ = true;
+            }
+
 
                 double vetta = k_rho_ * rho_error;
                 double gamma = k_alpha_ * alpha_error + k_betta_ * betta_error;
@@ -405,9 +421,9 @@ namespace cl_move_base_z
                 else // default curved backward-free motion mode
                 {
                     // case B: goal position reached but orientation not yet reached. deactivate linear motion.
-                    if (carrotGoalInRange)
+                    if (inGoalPureSpinningState_)
                     {
-                        ROS_DEBUG("[BackwardLocalPlanner] pure spinning even in not pure-spining mode, carrotDistanceGoalReached: %d", carrotGoalInRange);
+                        ROS_DEBUG("[BackwardLocalPlanner] we entered in a pure spinning state even in not pure-spining configuration, carrotDistanceGoalReached: %d", carrotInLinearGoalRange);
                         gamma = k_betta_ * betta_error;
                         vetta = 0;
                     }
@@ -438,6 +454,7 @@ namespace cl_move_base_z
 
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] local planner," << std::endl
                                                                          << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_ << std::endl
+                                                                         << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << std::endl
                                                                          << " theta: " << theta << std::endl
                                                                          << " betta: " << theta << std::endl
                                                                          << " err_x: " << dx << std::endl
@@ -450,28 +467,17 @@ namespace cl_move_base_z
                                                                          << " cmd_vel.lin.x:" << cmd_vel.linear.x << std::endl
                                                                          << " cmd_vel.ang.z:" << cmd_vel.angular.z);
 
-                if (cmd_vel.linear.x != 0)
+                if (inGoalPureSpinningState_)
                 {
                     bool carrotHalfPlaneConstraintFailure = checkCarrotHalfPlainConstraint(tfpose);
 
                     if (carrotHalfPlaneConstraintFailure)
                     {
-                        ROS_ERROR("[BackwardLocalPlanner] CarrotHalfPlaneConstraintFailure detected. Sending emergency stop.");
+                        ROS_ERROR("[BackwardLocalPlanner] CarrotHalfPlaneConstraintFailure detected. Sending emergency stop and success to the planner.");
                         cmd_vel.linear.x = 0;
                     }
                 }
-            }
-            else
-            {
-                ROS_INFO_STREAM(" [BackwardLocalPlanner] all the points in the trajectory are reached, we consider goal reached");
-                goalReached_ = true;
-            }
-
-            if (goalReached_)
-            {
-                ROS_INFO_STREAM(" [BackwardLocalPlanner] goal reached. Send stop command and skipping trajectory collision: " << cmd_vel);
-                return true;
-            }
+        
 
             // ---------------------- TRAJECTORY PREDICTION AND COLLISION AVOIDANCE ---------------------
             //cmd_vel.linear.x=0;
@@ -755,6 +761,7 @@ namespace cl_move_base_z
             initialPureSpinningStage_ = true;
             goalReached_ = false;
             backwardsPlanPath_ = plan;
+            inGoalPureSpinningState_ =false;
 
             // find again the new carrot goal, from the destiny direction
             tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
