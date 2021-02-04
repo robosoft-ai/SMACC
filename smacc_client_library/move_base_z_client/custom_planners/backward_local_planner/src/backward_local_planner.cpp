@@ -455,6 +455,7 @@ namespace cl_move_base_z
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] local planner," << std::endl
                                                                          << " straightAnPureSpiningMode: " << straightBackwardsAndPureSpinningMode_ << std::endl
                                                                          << " inGoalPureSpinningState: " << inGoalPureSpinningState_ << std::endl
+                                                                         << "carrotInLinearGoalRange: " << carrotInLinearGoalRange << std::endl
                                                                          << " theta: " << theta << std::endl
                                                                          << " betta: " << theta << std::endl
                                                                          << " err_x: " << dx << std::endl
