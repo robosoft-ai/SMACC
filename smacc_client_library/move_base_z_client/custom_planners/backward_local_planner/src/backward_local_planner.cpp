@@ -398,7 +398,7 @@ namespace cl_move_base_z
             {
                 goalReached_ = true;
                 backwardsPlanPath_.clear();
-                ROS_INFO_STREAM(" [BackwardLocalPlanner] goal reached. Send stop command and skipping trajectory collision: " << cmd_vel);
+                ROS_INFO_STREAM(" [BackwardLocalPlanner] GOAL REACHED. Send stop command and skipping trajectory collision: " << cmd_vel);
                 cmd_vel.linear.x =0;
                 cmd_vel.angular.z = 0;
                 return true;
@@ -625,7 +625,7 @@ namespace cl_move_base_z
 */
         bool BackwardLocalPlanner::isGoalReached()
         {
-            ROS_DEBUG("[BackwardLocalPlanner] isGoalReached call");
+            ROS_DEBUG_STREAM("[BackwardLocalPlanner] isGoalReached call: " << goalReached_);
             return goalReached_;
         }
 
