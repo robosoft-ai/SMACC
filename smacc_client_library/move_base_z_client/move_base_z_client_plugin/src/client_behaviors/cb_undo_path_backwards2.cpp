@@ -40,10 +40,10 @@ void CbUndoPathBackwards2::onEntry()
   }
 }
 
-bool points_on_same_side_of_line(const Vector2d &p1, const Vector2d &p2, const Vector2d &p_line, const Vector2d &normal)
-{    
-  return normal.dot(p1 - p_line)*normal.dot(p2 - p_line) > 0.0f;
-}
+// bool points_on_same_side_of_line(const Vector2d &p1, const Vector2d &p2, const Vector2d &p_line, const Vector2d &normal)
+// {    
+//   return normal.dot(p1 - p_line)*normal.dot(p2 - p_line) > 0.0f;
+// }
 
 float CbUndoPathBackwards2::evalPlaneSide(const geometry_msgs::Pose& pose)
 {
@@ -57,7 +57,7 @@ float CbUndoPathBackwards2::evalPlaneSide(const geometry_msgs::Pose& pose)
   auto y0 = goal_.target_pose.pose.position.y;
   auto x0 = goal_.target_pose.pose.position.x;
 
-  auto evalimplicit = cos(alpha) * (y - y0) - sin(alpha) * (x - x0);
+  auto evalimplicit = cos(alpha) * (y - y0) - sin (alpha) * (x - x0);
   return evalimplicit;
 }
 
