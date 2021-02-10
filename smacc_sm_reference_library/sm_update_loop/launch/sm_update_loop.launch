@@ -1,7 +1,0 @@
-<launch>
-    <!-- launch-prefix="valgrind tool=callgrind log-file='valgrind.log'" -->
-    <rosparam command="load" file="$(find sm_update_loop)/config/sm_update_loop_config.yaml" />
-    <node pkg="sm_update_loop" type="sm_update_loop_node" name="sm_update_loop" output="screen">
-        <param name="signal_detector_loop_freq" value="500"/>
-    </node>
-</launch>

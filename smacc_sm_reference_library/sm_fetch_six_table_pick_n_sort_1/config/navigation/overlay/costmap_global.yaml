@@ -1,5 +1,0 @@
-plugins:
-#  - {name: static_map, type: "costmap_2d::StaticLayer"}
-# - {name: obstacles,  type: "costmap_2d::FetchDepthLayer"}
- - {name: obstacles_layer, type: "costmap_2d::ObstacleLayer"}
- - {name: inflater,   type: "costmap_2d::InflationLayer"}

@@ -1,9 +1,0 @@
-# forward motion configuration, the robot will move forward
-ForwardLocalPlanner:
-    k_rho: 1.0
-    k_alpha: -0.6 #-0.4
-    k_betta: -1.2 #-1.0
-    carrot_distance: 0.4 #meters
-    carrot_angular_distance: 0.9 # radians, no constraint, max 3.1416
-    xy_goal_tolerance: 0.25
-    yaw_goal_tolerance: 0.1

@@ -33,7 +33,7 @@ using namespace smacc::default_transition_tags;
 
 void transitionInfoToMsg(const SmaccTransitionInfo &transition, smacc_msgs::SmaccTransition &transitionMsg);
 
-typedef std::allocator<void> SmaccAllocator;
+typedef std::allocator<boost::statechart::none> SmaccAllocator;
 
 template <class T>
 auto optionalNodeHandle(boost::intrusive_ptr<T> &obj)
