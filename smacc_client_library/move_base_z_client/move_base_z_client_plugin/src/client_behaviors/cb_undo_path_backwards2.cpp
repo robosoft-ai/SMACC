@@ -35,7 +35,7 @@ void CbUndoPathBackwards2::onEntry()
   {
     goal_.target_pose = forwardpath.poses.front();
     initial_plane_side_ = evalPlaneSide(robotPose_->toPoseMsg());
-    plannerSwitcher->setUndoPathBackwardPlanner();
+    plannerSwitcher->setUndoPathBackwardsPlannerConfiguration();
     moveBaseClient_->sendGoal(goal_);
   }
 }
