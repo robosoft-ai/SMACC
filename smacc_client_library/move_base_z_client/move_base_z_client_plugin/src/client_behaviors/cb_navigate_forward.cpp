@@ -62,7 +62,7 @@ void CbNavigateForward::onEntry()
   tf::poseTFToMsg(currentPose, currentStampedPoseMsg.pose);
 
   odomTracker_ = moveBaseClient_->getComponent<OdomTracker>();
-  odomTracker_->pushPath();
+  odomTracker_->pushPath("StraightNavigationForwards");
 
   odomTracker_->setStartPoint(currentStampedPoseMsg);
   odomTracker_->setWorkingMode(WorkingMode::RECORD_PATH);

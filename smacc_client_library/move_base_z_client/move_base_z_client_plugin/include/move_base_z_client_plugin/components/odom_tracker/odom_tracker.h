@@ -36,6 +36,12 @@ enum class WorkingMode : uint8_t
     IDLE = 2
 };
 
+struct StackedPathEntry
+{
+    nav_msgs::Path path;
+    std::string pathTagName;
+};
+
 /// This class track the required distance of the cord based on the external localization system
 class OdomTracker : public smacc::ISmaccComponent
 {
@@ -57,7 +63,7 @@ public:
     void setPublishMessages(bool value);
 
     // threadsafe
-    void pushPath();
+    void pushPath(std::string newPathTagName="");
 
     // threadsafe
     void popPath(int pathCount = 1, bool keepPreviousPath = false);
@@ -76,7 +82,7 @@ public:
 
     void logStateString();
 
-    inline const std::vector<nav_msgs::Path> getStackedPaths() const
+    inline const std::vector<StackedPathEntry> getStackedPaths() const
     {
         return this->pathStack_;
     }
@@ -131,14 +137,17 @@ protected:
 
     WorkingMode workingMode_;
 
-    std::vector<nav_msgs::Path> pathStack_;
+    std::vector<StackedPathEntry> pathStack_;
 
     nav_msgs::Path aggregatedStackPathMsg_;
 
     // subscribes to topic on init if true
     bool subscribeToOdometryTopic_;
 
+    std::string currentPathTagName_="Initial State";
+
     std::mutex m_mutex_;
+    
 };
 
 /**

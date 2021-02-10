@@ -176,7 +176,7 @@ public:
 
     void sendGoal(Goal &goal)
     {
-        ROS_INFO_STREAM("Sending goal to actionserver located in " << this->name_ << "\"");
+        ROS_INFO_STREAM("[ActionClient<"<< demangledTypeName<ActionType>() <<">] Sending goal to actionserver located in " << this->name_ << "\"");
 
         if (client_->isServerConnected())
         {

@@ -54,7 +54,7 @@ void CbRotate::onEntry()
   stampedCurrentPoseMsg.pose = currentPoseMsg;
 
   this->requiresClient(moveBaseClient_);
-  odomTracker->pushPath();
+  odomTracker->pushPath("RelativeRotation");
 
   odomTracker->setStartPoint(stampedCurrentPoseMsg);
   odomTracker->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
