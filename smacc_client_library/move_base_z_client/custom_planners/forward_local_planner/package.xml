@@ -19,6 +19,7 @@
   <depend>std_msgs</depend>
   <depend>roscpp</depend>
   <depend>tf</depend>
+  <depend>base_local_planner</depend>
   
   <export>
     <nav_core plugin="${prefix}/flp_plugin.xml" />
