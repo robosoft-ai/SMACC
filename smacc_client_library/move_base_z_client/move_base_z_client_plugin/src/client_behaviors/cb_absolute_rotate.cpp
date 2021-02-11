@@ -175,7 +175,7 @@ void CbAbsoluteRotate::onEntry()
   auto odomTracker_ = moveBaseClient_->getComponent<odom_tracker::OdomTracker>();
   if (odomTracker_ != nullptr)
   {
-    odomTracker_->pushPath();
+    odomTracker_->pushPath("PureSpinningToAbsoluteGoalOrientation");
     odomTracker_->setStartPoint(p->toPoseStampedMsg());
     odomTracker_->setWorkingMode(odom_tracker::WorkingMode::RECORD_PATH);
   }

@@ -20,11 +20,19 @@ void PlannerSwitcher::onInitialize()
   dynrecofSub_ = nh.subscribe<dynamic_reconfigure::Config>("/move_base/parameter_updates", 1, boost::bind(&PlannerSwitcher::dynreconfCallback, this, _1));
 }
 
-void PlannerSwitcher::setUndoPathBackwardPlanner()
+void PlannerSwitcher::setUndoPathBackwardsPlannerConfiguration()
 {
   ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
   desired_global_planner_ = "undo_path_global_planner/UndoPathGlobalPlanner";
   desired_local_planner_ = "backward_local_planner/BackwardLocalPlanner";
+  updatePlanners();
+}
+
+void PlannerSwitcher::setUndoPathPureSpinningPlannerConfiguration()
+{
+  ROS_INFO("[PlannerSwitcher] Planner Switcher: Trying to set BackwardPlanner");
+  desired_global_planner_ = "undo_path_global_planner/UndoPathGlobalPlanner";
+  desired_local_planner_ = "pure_spinning_local_planner/PureSpinningLocalPlanner";
   updatePlanners();
 }
 

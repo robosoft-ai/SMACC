@@ -94,15 +94,24 @@ void OdomTracker::setPublishMessages(bool value)
   this->updateAggregatedStackPath();
 }
 
-void OdomTracker::pushPath()
+void OdomTracker::pushPath(std::string newPathTagName)
 {
   ROS_INFO("odom_tracker m_mutex acquire");
   std::lock_guard<std::mutex> lock(m_mutex_);
   ROS_INFO("PUSH_PATH PATH EXITING");
   this->logStateString();
 
-  pathStack_.push_back(baseTrajectory_);
+  pathStack_.push_back({baseTrajectory_, this->currentPathTagName_});
   baseTrajectory_.poses.clear();
+
+  if(newPathTagName =="")
+  {
+    this->currentPathTagName_="(unspecified path name)";
+  }
+  else
+  {
+    this->currentPathTagName_ = newPathTagName;
+  }
 
   ROS_INFO("PUSH_PATH PATH EXITING");
   this->logStateString();
@@ -125,7 +134,7 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 
   while (popCount > 0 && !pathStack_.empty())
   {
-    auto &stacked = pathStack_.back().poses;
+    auto &stacked = pathStack_.back().path.poses;
     baseTrajectory_.poses.insert(baseTrajectory_.poses.begin(), stacked.begin(), stacked.end());
     pathStack_.pop_back();
     popCount--;
@@ -143,12 +152,12 @@ void OdomTracker::popPath(int popCount, bool keepPreviousPath)
 void OdomTracker::logStateString()
 {
   ROS_INFO("--- odom tracker state ---");
-  ROS_INFO(" - path stack size: %ld", pathStack_.size());
-  ROS_INFO(" - [STACK-HEAD active path size: %ld]", baseTrajectory_.poses.size());
+  ROS_INFO(" - stacked paths count: %ld", pathStack_.size());
+  ROS_INFO_STREAM(" - [STACK-HEAD active path '" << currentPathTagName_ <<"' size: "<< baseTrajectory_.poses.size()<<"]");
   int i = 0;
   for (auto &p : pathStack_ | boost::adaptors::reversed)
   {
-    ROS_INFO_STREAM(" - p " << i << "[" << p.header.stamp << "], size: " << p.poses.size());
+    ROS_INFO_STREAM(" - p " << i << "[" <<  p.path.header.stamp <<  "][" << p.pathTagName << "], size: " << p.path.poses.size());
     i++;
   }
   ROS_INFO("---");
@@ -239,7 +248,7 @@ void OdomTracker::updateAggregatedStackPath()
   aggregatedStackPathMsg_.poses.clear();
   for (auto &p : pathStack_)
   {
-    aggregatedStackPathMsg_.poses.insert(aggregatedStackPathMsg_.poses.end(), p.poses.begin(), p.poses.end());
+    aggregatedStackPathMsg_.poses.insert(aggregatedStackPathMsg_.poses.end(), p.path.poses.begin(), p.path.poses.end());
   }
 
   aggregatedStackPathMsg_.header.frame_id = this->odomFrame_;

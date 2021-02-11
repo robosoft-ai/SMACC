@@ -23,7 +23,26 @@ void CbUndoPathBackwards::onEntry()
   if (forwardpath.poses.size() > 0)
   {
     goal.target_pose = forwardpath.poses.front();
-    plannerSwitcher->setUndoPathBackwardPlanner();
+
+    if(forceUndoLocalPlanner)
+    {
+      if(forceUndoLocalPlanner == UndoPathLocalPlanner::PureSpinningLocalPlanner)
+      {
+        ROS_INFO("[CbUndoPathBackwards] forced to use Pure Spinning local planner");
+        plannerSwitcher->setUndoPathPureSpinningPlannerConfiguration();
+      }
+      else
+      {
+        plannerSwitcher->setUndoPathBackwardsPlannerConfiguration();
+        ROS_INFO("[CbUndoPathBackwards] forced to use BackwardsLocalPlanner (default)");
+      }
+    }
+    else
+    {
+      ROS_INFO("[CbUndoPathBackwards] using default local planner: BackwardsLocalPlanner");
+      plannerSwitcher->setUndoPathBackwardsPlannerConfiguration();
+    }
+
     moveBaseClient_->sendGoal(goal);
   }
 }

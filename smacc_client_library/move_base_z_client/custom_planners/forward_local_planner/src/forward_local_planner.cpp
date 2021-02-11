@@ -69,6 +69,7 @@ void ForwardLocalPlanner::initialize()
 
     waiting_ = false;
     waitingTimeout_ = ros::Duration(10);
+    ROS_INFO("[ForwardLocalPlanner] initialized");
 }
 
 void ForwardLocalPlanner::initialize(std::string name, tf2_ros::Buffer *tf, costmap_2d::Costmap2DROS *costmap_ros)
@@ -260,7 +261,7 @@ void clamp(geometry_msgs::Twist &cmd_vel, double max_linear_x_speed_, double max
 bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
 {
     goalReached_ = false;
-    //ROS_DEBUG("LOCAL PLANNER LOOP");
+    ROS_DEBUG("[ForwardLocalPlanner] ----- COMUTE VELOCITY COMMAND LOCAL PLANNER ---");
 
     tf::Stamped<tf::Pose> tfpose = optionalRobotPose(costmapRos_);
 
@@ -290,7 +291,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
             double angle = tf::getYaw(tfpose.getRotation());
             double angular_error = angles::shortest_angular_distance(pangle, angle);
 
-            if (dist >= carrot_distance_ || angular_error > 0.1)
+            if (dist >= carrot_distance_ || fabs(angular_error) > 0.1)
             {
                 // the target pose is enough different to be defined as a target
                 ok = true;
@@ -301,6 +302,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
                 currentPoseIndex_++;
             }
         }
+
+        ROS_DEBUG_STREAM("[ForwardLocalPlanner] selected carrot pose index " << currentPoseIndex_ << "/" << plan_.size());
 
         if (currentPoseIndex_ >= plan_.size())
         {
@@ -344,7 +347,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     double vetta; // = k_rho_ * rho_error;
     double gamma; //= k_alpha_ * alpha_error + k_betta_ * betta_error;
 
-    if (rho_error > xy_goal_tolerance_)
+    if (rho_error > xy_goal_tolerance_) // reguular control rule, be careful, rho error is with the carrot not with the final goal (this is something to improve like the backwards planner)
     {
         vetta = k_rho_ * rho_error;
         gamma = k_alpha_ * alpha_error;
@@ -354,7 +357,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
         vetta = 0;
         gamma = k_betta_ * betta_error;
     }
-    else
+    else // goal reached
     {
         ROS_DEBUG("GOAL REACHED");
         vetta = 0;

@@ -52,7 +52,7 @@ void WaypointNavigator::sendNextGoal()
 
     if (odomTracker != nullptr)
     {
-      odomTracker->pushPath();
+      odomTracker->pushPath("FreeNavigationToGoalWaypointPose");
       odomTracker->setStartPoint(pose);
       odomTracker->setWorkingMode(cl_move_base_z::odom_tracker::WorkingMode::RECORD_PATH);
     }

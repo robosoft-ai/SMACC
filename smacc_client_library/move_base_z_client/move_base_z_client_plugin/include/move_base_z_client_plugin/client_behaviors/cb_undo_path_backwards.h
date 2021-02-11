@@ -10,12 +10,24 @@
 
 namespace cl_move_base_z
 {
+enum UndoPathLocalPlanner
+{
+  BackwardsLocalPlanner, /*default, it is able to move freely backwards, or combined straightsegments with pure spinning
+                            segments*/
+  PureSpinningLocalPlanner    /*only pure spinnings, be careful it may not be able to undo the path if it was not a pure
+                            spinning segment*/
+};
+
 class CbUndoPathBackwards : public CbMoveBaseClientBehaviorBase
 {
-  tf::TransformListener listener;
+public:
+  boost::optional<UndoPathLocalPlanner> forceUndoLocalPlanner;
 
   virtual void onEntry() override;
 
   virtual void onExit() override;
+
+private:
+  tf::TransformListener listener;
 };
 }  // namespace cl_move_base_z

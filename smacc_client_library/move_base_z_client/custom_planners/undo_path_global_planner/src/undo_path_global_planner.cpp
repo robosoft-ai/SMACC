@@ -250,6 +250,11 @@ namespace cl_move_base_z
 
             plan.clear();
 
+            if(lastForwardPathMsg_.poses.size() == 0)
+            {
+                return false;
+            }
+
             auto forcedGoal = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - 1]; // FORCE LAST POSE
             this->createDefaultUndoPathPlan(start, forcedGoal, plan);
             //this->createPureSpiningAndStragihtLineBackwardPath(start, goal, plan);
