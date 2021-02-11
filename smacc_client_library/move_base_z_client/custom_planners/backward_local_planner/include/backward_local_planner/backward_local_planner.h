@@ -78,13 +78,16 @@ private:
                           double betta_error, geometry_msgs::Twist &cmd_vel);
 
   void publishGoalMarker(double x, double y, double phi);
+
   void computeCurrentEuclideanAndAngularErrorsToCarrotGoal(const tf::Stamped<tf::Pose> &tfpose, double &dist,
                                                            double &angular_error);
-  bool checkGoalReached(const tf::Stamped<tf::Pose> &tfpose, double vetta, double gamma, double alpha_error,
-                        geometry_msgs::Twist &cmd_vel);
+
+  bool checkCurrentPoseInGoalRange(const tf::Stamped<tf::Pose> &tfpose,  double angle_error, bool& inLinearGoal);
 
   bool resetDivergenceDetection();
+
   bool divergenceDetectionUpdate(const tf::Stamped<tf::Pose> &tfpose);
+  
   bool checkCarrotHalfPlainConstraint(const tf::Stamped<tf::Pose> &tfpose);
 
   dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;
@@ -105,6 +108,7 @@ private:
   bool initialPureSpinningStage_;
   bool straightBackwardsAndPureSpinningMode_ = false;
   bool enable_obstacle_checking_ = true;
+  bool inGoalPureSpinningState_ = false;
 
   const double alpha_offset_ = M_PI;
   const double betta_offset_ = 0;

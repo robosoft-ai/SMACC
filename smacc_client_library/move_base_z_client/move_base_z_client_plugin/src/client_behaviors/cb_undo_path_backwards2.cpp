@@ -40,34 +40,41 @@ void CbUndoPathBackwards2::onEntry()
   }
 }
 
+// bool points_on_same_side_of_line(const Vector2d &p1, const Vector2d &p2, const Vector2d &p_line, const Vector2d &normal)
+// {    
+//   return normal.dot(p1 - p_line)*normal.dot(p2 - p_line) > 0.0f;
+// }
+
 float CbUndoPathBackwards2::evalPlaneSide(const geometry_msgs::Pose& pose)
 {
+  // check the line was passed
+  // y = mx x + y0
+  // y = (sin(alpha)/cos(alpha)) (x -x0) + y0
+  // cos(alpha)(y - y0) - sin(alpha) (x -x0)= 0 // if greater one side if lower , the other
   auto y = pose.position.y;
   auto x = pose.position.x;
   auto alpha = tf::getYaw(goal_.target_pose.pose.orientation);
   auto y0 = goal_.target_pose.pose.position.y;
   auto x0 = goal_.target_pose.pose.position.x;
 
-  auto evalimplicit = sin(alpha) * (y - y0) - acos(alpha) * (x - x0);
+  auto evalimplicit = cos(alpha) * (y - y0) - sin (alpha) * (x - x0);
   return evalimplicit;
 }
 
 void CbUndoPathBackwards2::update()
 {
-  // check the line was passed
-  // y = mx x + y0
-  // y = (acos(alpha)/sin(alpha)) (x -x0) + y0
-  // sin(alpha)(y - y0) - acos(alpha) (x -x0)= 0 // if greater one side if lower , the other
   auto pose = robotPose_->toPoseMsg();
 
   float evalimplicit = evalPlaneSide(pose);
   if (sgn(evalimplicit) != sgn(initial_plane_side_))
   {
-    ROS_WARN_STREAM_THROTTLE(1.0, "[CbUndoPathBackwards2] goal_ line passed, stopping behavior and success: "
+    ROS_WARN_STREAM("[CbUndoPathBackwards2] goal_ line passed: "
                                       << evalimplicit << "/" << this->initial_plane_side_);
 
     if (fabs(evalimplicit) > triggerThreshold_ /*meters*/)
     {
+       ROS_WARN_STREAM("[CbUndoPathBackwards2] virtual goal line passed, stopping behavior and success: "
+                                      << evalimplicit << "/" << this->initial_plane_side_);
       moveBaseClient_->cancelGoal();
       // this->postSuccessEvent();
       this->postVirtualLinePassed_();
