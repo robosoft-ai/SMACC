@@ -3,7 +3,7 @@
 #include <sensor_msgs/Image.h>
 #include <std_msgs/Int32.h>
 #include <iostream>
-#include <opencv/cv.hpp>
+#include <opencv2/opencv.hpp>
 #include <opencv2/features2d.hpp>
 
 ros::Publisher detectionPub;

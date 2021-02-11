@@ -9,7 +9,7 @@ env:
     VERBOSE_OUTPUT=false
     #CATKIN_CONFIG=--no-install
   matrix:
-    - ROS_DISTRO="melodic"
+    - ROS_DISTRO="noetic"
 
 before_install:
   - sudo apt-get update -qq

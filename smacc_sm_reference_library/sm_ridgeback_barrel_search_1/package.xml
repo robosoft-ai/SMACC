@@ -17,6 +17,8 @@
   <depend>smacc</depend>
   <depend>move_base_z_client_plugin</depend>  
   <depend>cv_bridge</depend>
+
+  <depend>vision_opencv</depend>
   <depend>ridgeback_gazebo</depend>
   <depend>ridgeback_navigation</depend>
   <depend>xterm</depend>

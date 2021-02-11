@@ -66,8 +66,8 @@ namespace cl_move_group_interface
         {
             auto &pose = this->endEffectorTrajectory_[k];
             moveit_msgs::GetPositionIKRequest req;
-            req.ik_request.attempts = 20;
-
+            //req.ik_request.attempts = 20;
+            
             req.ik_request.ik_link_name = *tipLink_;
             req.ik_request.robot_state.joint_state.name = currentjointnames;
             req.ik_request.robot_state.joint_state.position = jointPositions;
