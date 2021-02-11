@@ -5,7 +5,8 @@
 | ------------- | ------------- | ------------- |
 | Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/kinetic-devel/html/namespaces.html">doxygen</a>|
 | Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/melodic-devel/html/namespaces.html">doxygen</a>|
-| Master  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespaces.html">doxygen</a>|
+| Noetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=noetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/noetic-devel/html/namespaces.html">doxygen</a>|
+| Master (Melodic)  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespaces.html">doxygen</a>|
 
 
 ## Docker Containers
