@@ -103,5 +103,6 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
   {
     ROS_ERROR_STREAM("Error loading the Waypoints YAML file. Incorrect syntax: " << ex.what());
   }
+  return jointStates;
 }
 }  // namespace cl_move_group_interface
