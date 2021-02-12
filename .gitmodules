@@ -13,3 +13,9 @@
 [submodule "submodules/simple_grasping"]
 	path = submodules/simple_grasping
 	url = https://github.com/mikeferguson/simple_grasping.git
+[submodule "submodules/--force"]
+	path = submodules/--force
+	url = https://github.com/pabloinigoblasco/ridgeback_simulator.git
+[submodule "submodules/ridgeback_simulator"]
+	path = submodules/ridgeback_simulator
+	url = https://github.com/pabloinigoblasco/ridgeback_simulator.git
