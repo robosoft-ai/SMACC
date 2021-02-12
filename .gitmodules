@@ -4,3 +4,15 @@
 [submodule "submodules/ridgeback_simulator"]
 	path = submodules/ridgeback_simulator
 	url = https://github.com/ridgeback/ridgeback_simulator.git
+[submodule "submodules/fetch_ros"]
+	path = submodules/fetch_ros
+	url = https://github.com/fetchrobotics/fetch_ros.git
+[submodule "submodules/fetch_gazebo"]
+	path = submodules/fetch_gazebo
+	url = https://github.com/fetchrobotics/fetch_gazebo.git
+[submodule "submodules/robot_controllers"]
+	path = submodules/robot_controllers
+	url = https://github.com/fetchrobotics/robot_controllers.git
+[submodule "submodules/simple_grasping"]
+	path = submodules/simple_grasping
+	url = https://github.com/mikeferguson/simple_grasping.git
