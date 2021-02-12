@@ -11,7 +11,7 @@ find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
 #find_package(yaml-cpp REQUIRED)
 
 ## System dependencies are found with CMake's conventions
-find_package(Eigen3 REQUIRED)
+#find_package(Eigen3 REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures

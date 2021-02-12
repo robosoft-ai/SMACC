@@ -46,7 +46,7 @@ catkin_package(
    INCLUDE_DIRS include
    LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch pose
    CATKIN_DEPENDS smacc tf
-   DEPENDS yaml-cpp
+   #DEPENDS yaml-cpp
 )
 
 ###########
