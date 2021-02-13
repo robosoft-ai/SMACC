@@ -28,8 +28,7 @@
   <depend>moveit</depend>
   <depend>tf</depend>
   <depend>moveit_ros_planning_interface</depend>
-  <depend>yaml-cpp</depend>
-
+  <!-- <depend>yaml-cpp</depend> -->
   
   <export>
     
