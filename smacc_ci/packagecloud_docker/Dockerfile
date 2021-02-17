@@ -53,7 +53,7 @@ RUN gem install package_cloud
 
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
-RUN echo "regen "
+RUN echo "regen"
 RUN echo "downloading smacc repo: "
 RUN echo "branch name: $ROS_VERSION_NAME" 
 RUN git clone --single-branch --branch $ROS_VERSION_NAME-devel https://github.com/reelrbtx/SMACC.git /root/src/SMACC
