@@ -9,6 +9,9 @@ ARG GITHUB_TOKEN
 ARG PACKAGE_CLOUD_USER
 ARG PACKAGE_CLOUD_TOKEN
 
+# PYTHON_VERSION could be empty, or "3"
+ARG PYTHON_VERSION="" 
+
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
 
@@ -20,6 +23,7 @@ ENV UBUNTU_VERSION=$UBUNTU_VERSION
 ENV ROS_VERSION_NAME=$ROS_VERSION_NAME
 
 RUN echo "rosversion: $ROS_VERSION_NAME"
+RUN echo "pythonversion: $ROS_VERSION_NAME"
 RUN echo "ubuntu version: $UBUNTU_VERSION"
 RUN echo "github user: $GITHUB_USER"
 RUN echo "github token: $GITHUB_TOKEN"
@@ -35,10 +39,11 @@ RUN apt-get update && apt-get install -y \
 
 # SYSTEM DEPENDENCIES
 #----------------------------------------------------------
-RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools fakeroot
+RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git fakeroot
 
 RUN apt-get update
-RUN apt-get install -y python-argcomplete python-bloom dh-make
+RUN apt-get upgrade -y
+RUN apt-get install -y python$PYTHON_VERSION-argcomplete python$PYTHON_VERSION-bloom dh-make
 
 # INSTALL PACKAGE CLOUD SOFTWARE
 # --------------------------------------------------------------
@@ -49,20 +54,28 @@ RUN gem install package_cloud
 # DOWNLOAD MAIN REPOSITORY
 #----------------------------------------------------------
 RUN echo "regen "
-RUN echo "downloading smacc repo"
-RUN git clone https://github.com/reelrbtx/SMACC.git /root/src/SMACC
-RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
+RUN echo "downloading smacc repo: "
+RUN echo "branch name: $ROS_VERSION_NAME" 
+RUN git clone --single-branch --branch $ROS_VERSION_NAME-devel https://github.com/reelrbtx/SMACC.git /root/src/SMACC
+WORKDIR /root/src/SMACC
+RUN git submodule init
+RUN git submodule update
 
+WORKDIR /root/src
+RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
 RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
 WORKDIR /root
 
 
-
+#workaround for noetic, that should work just with rosdep
+RUN apt-get install -y libpcl-dev ros-$ROS_VERSION_NAME-lms1xx ros-$ROS_VERSION_NAME-pcl-ros
 #RUN echo "regen"
 # BUILD SMACC
 # -----------------------------------------------------------------
 RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; rosdep install --from-paths src --ignore-src -r -y; "
-RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin build"
+
+RUN apt-get install -y libpcl-dev ros-$ROS_VERSION_NAME-pcl-ros
+RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin_make -j 1"
 
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------

@@ -42,7 +42,7 @@ bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
 {
     ROS_INFO("[Forward Global Planner] planning");
     cost = 0;
-    makePlan(start, goal, plan);
+    return makePlan(start, goal, plan);
 }
 
 bool ForwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
