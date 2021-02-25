@@ -8,6 +8,7 @@ project(sm_fetch_six_table_pick_n_sort_1)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED move_group_interface_client move_base_z_client_plugin moveit_ros_planning_interface control_msgs)
+find_package(Threads)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -132,7 +133,7 @@ add_executable(${PROJECT_NAME}_node
                      src/sm_fetch_six_table_pick_n_sort_1/clients/move_group_interface_client/components/cp_constraint_tables_workspaces.cpp
                      )
                      
-target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
 
 #############
 ## Install ##

@@ -10,6 +10,7 @@ project(move_group_interface_client)
 find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
 #find_package(yaml-cpp REQUIRED)
 set(YAML_CPP_LIBRARIES yaml-cpp)
+find_package( Threads )
 
 ## System dependencies are found with CMake's conventions
 #find_package(Eigen3 REQUIRED)
@@ -155,6 +156,7 @@ target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
    ${YAML_CPP_LIBRARIES}
    stdc++fs
+   ${CMAKE_THREAD_LIBS_INIT}
  )
 
 #############

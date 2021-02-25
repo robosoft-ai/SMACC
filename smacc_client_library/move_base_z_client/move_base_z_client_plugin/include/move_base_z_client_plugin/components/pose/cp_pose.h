@@ -11,7 +11,8 @@
 #include <geometry_msgs/Pose.h>
 #include <tf/transform_listener.h>
 #include <tf/transform_datatypes.h>
-#include <mutex>
+//#include <mutex>
+#include <boost/thread.hpp>
 
 namespace cl_move_base_z
 {
@@ -24,17 +25,9 @@ public:
 
     void waitTransformUpdate(ros::Rate r = ros::Rate(20));
     
-    inline geometry_msgs::Pose toPoseMsg()
-    {
-        std::lock_guard<std::mutex> guard(m_mutex_);
-        return this->pose_.pose;
-    }
+    geometry_msgs::Pose toPoseMsg();
 
-    inline geometry_msgs::PoseStamped toPoseStampedMsg()
-    {
-        std::lock_guard<std::mutex> guard(m_mutex_);
-        return this->pose_;
-    }
+    geometry_msgs::PoseStamped toPoseStampedMsg();
 
     inline const std::string &getReferenceFrame() const
     {
@@ -52,11 +45,11 @@ private:
     geometry_msgs::PoseStamped pose_;
     
     static std::shared_ptr<tf::TransformListener> tfListener_;
-    static std::mutex listenerMutex_;
+    static boost::mutex listenerMutex_;
 
     std::string poseFrameName_;
     std::string referenceFrame_;
 
-    std::mutex m_mutex_;
+    boost::mutex m_mutex_;
 };
 } // namespace cl_move_base_z

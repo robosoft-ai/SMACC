@@ -46,51 +46,61 @@
     
     <include>
       <uri>model://demo_cube_red</uri>
+      <name>cube_1</name>
       <pose>1.65 -0.0 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_green</uri>
+      <name>cube_2</name>
       <pose>1.65 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_white</uri>
+      <name>cube_3</name>
       <pose>1.65 -0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_red</uri>
+      <name>cube_4</name>
       <pose>1.8 -0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_purple</uri>
+      <name>cube_5</name>
       <pose>1.8 0.0 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_green</uri>
+      <name>cube_6</name>
       <pose>1.8 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_yellow</uri>
+      <name>cube_7</name>
       <pose>1.8 -0.30 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_white</uri>
+      <name>cube_8</name>
       <pose>1.8 0.30 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_yellow</uri>
+      <name>cube_9</name>
       <pose>1.65 0.30 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube_purple</uri>
+      <name>cube_10</name>
       <pose>1.65 -0.30 0.75 0 0 0</pose>
     </include>
 

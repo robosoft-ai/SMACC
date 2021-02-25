@@ -3,13 +3,14 @@ project(move_base_z_client_plugin)
 
 find_package(catkin REQUIRED smacc pluginlib tf dynamic_reconfigure)
 find_package(yaml-cpp REQUIRED)
+find_package(Threads REQUIRED)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 # catkin_python_setup()
 
-################################################
+#############################################alg###
 ## Declare ROS messages, services and actions ##
 ################################################
 
@@ -46,15 +47,15 @@ catkin_package(
    INCLUDE_DIRS include
    LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch pose
    CATKIN_DEPENDS smacc tf
-   #DEPENDS yaml-cpp
+   DEPENDS ${CMAKE_THREAD_LIBS_INIT}
 )
 
 ###########
 ## Build ##
 ###########
 
-set(CMAKE_CXX_STANDARD 14)
-add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
+set(CMAKE_CXX_STANDARD 17)
+#add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
@@ -102,7 +103,8 @@ add_library(pose
 )
 
 target_link_libraries(pose
-   ${catkin_LIBRARIES})
+   ${catkin_LIBRARIES}
+   ${CMAKE_THREAD_LIBS_INIT})
 
 #----------------------------------
 add_library(costmap_switch
@@ -142,7 +144,8 @@ target_link_libraries(move_base_z_client_behaviors
    ${catkin_LIBRARIES}
    odom_tracker
    planner_switcher
-   waypoints_navigator)
+   waypoints_navigator
+   ${CMAKE_THREAD_LIBS_INIT})
 
 
  add_dependencies(odom_tracker ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})

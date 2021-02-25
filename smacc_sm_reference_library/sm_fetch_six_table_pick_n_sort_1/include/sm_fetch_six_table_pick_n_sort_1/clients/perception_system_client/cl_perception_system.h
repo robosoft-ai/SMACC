@@ -63,8 +63,10 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
             geometry_msgs::PoseStamped getTargetTablePose()
             {
+                ROS_INFO("getting current cube info");
                 auto currentCube = getTargetCurrentCubeInfo();
-                return currentCube->dstTableInfo_->pose_->toPoseStampedMsg();
+                auto pose = currentCube->dstTableInfo_->pose_->toPoseStampedMsg();
+                return pose;
             }
 
             void printCubesState()
@@ -73,7 +75,8 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 int i = 0;
                 for (auto &c : this->sceneState_->cubeInfos_)
                 {
-
+                    ROS_INFO("cube: %d/%ld", i++, this->sceneState_->cubeInfos_.size());
+                    ROS_INFO("cube poseinfo: %ld", (long) c.pose_ );
                     ss << "- Cube " << i++ << " frame: " << c.pose_->toPoseStampedMsg().header.frame_id << " location: " << (c.location_ == CubeLocation::ORIGIN_TABLE ? " origin table" : " destination table" )<< std::endl;
                 }
 
@@ -96,14 +99,19 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
             CubeInfo *getTargetCurrentCubeInfo()
             {
+                int i = 1;
                 for (auto &c : this->sceneState_->cubeInfos_)
                 {
+                    ROS_INFO("cube: %d/%ld location: %d", i, sceneState_->cubeInfos_.size(), (int) c.location_ );
                     if (c.location_ == CubeLocation::ORIGIN_TABLE)
                     {
+                        ROS_INFO("cube FOUND: %d", i);
                         return &c;
                     }
+                    i++;
                 }
 
+                ROS_INFO("not found in scene state cube infos");
                 return nullptr;
             }
 

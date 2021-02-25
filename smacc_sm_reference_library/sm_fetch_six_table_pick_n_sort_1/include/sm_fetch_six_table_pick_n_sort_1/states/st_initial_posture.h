@@ -28,6 +28,8 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
         void runtimeConfigure()
         {
+            // artificial wait for noetic
+            //ros::Duration(25).sleep();
         }
 
         void onExit(SUCCESS)

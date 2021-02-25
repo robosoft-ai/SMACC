@@ -40,6 +40,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
             CpSceneState(int cubeCount, int tableCount)
             {
+                ROS_INFO("[CpSceneState] Creating scene, cube count: %d", cubeCount);
                 cubeInfos_.resize(cubeCount);
                 tablesInfo_.resize(tableCount);
             }
@@ -51,6 +52,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 std::vector<std::string> availableColors = {"none", "yellow", "white", "purple", "red", "green"};
                 for (int i = 0; i < tablesInfo_.size(); i++)
                 {
+                    ROS_INFO("[CpSceneState]  creatng table: %d" , i);
                     auto tablename = "table_" + std::to_string(i + 1);
                     this->tablesInfo_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TSourceObject, TOrthogonal>(tablename, tablename, "map");
                     this->tablesInfo_[i].associatedCubeColor_ = availableColors[i];
@@ -59,6 +61,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 // create cube "poses track components"
                 for (int i = 0; i < cubeInfos_.size(); i++)
                 {
+                    ROS_INFO("[CpSceneState]  Creating cube: %d" , i);
                     auto cubename = "cube_" + std::to_string(i + 1);
                     this->cubeInfos_[i].pose_ = this->createSiblingNamedComponent<cl_move_base_z::Pose, TSourceObject, TOrthogonal>(cubename, cubename, "map");
                 }
