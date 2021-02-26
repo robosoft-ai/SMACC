@@ -235,6 +235,8 @@ namespace cl_move_base_z
             {
                 ROS_ERROR_STREAM("[UndoPathGlobalPlanner ] backward global plan size:  " << plan.size());
             }
+
+            return true;
         }
 
         /**

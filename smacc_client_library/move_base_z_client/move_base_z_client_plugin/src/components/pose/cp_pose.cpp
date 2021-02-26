@@ -5,12 +5,12 @@
  ******************************************************************************************************************/
 
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
-#include <boost/thread.hpp>
+
 
 namespace cl_move_base_z
 {
-    std::shared_ptr<tf::TransformListener> Pose::tfListener_;
-    boost::mutex Pose::listenerMutex_;
+    std::shared_ptr<tf::TransformListener> Pose::tfListener_ = nullptr;
+    std::mutex Pose::listenerMutex_;
 
     Pose::Pose(std::string targetFrame, std::string referenceFrame)
         : poseFrameName_(targetFrame),
@@ -23,8 +23,9 @@ namespace cl_move_base_z
 
         {
             //singleton
-            boost::lock_guard<boost::mutex> guard(listenerMutex_);
-            tfListener_ = std::make_shared<tf::TransformListener>();
+            std::lock_guard<std::mutex> guard(listenerMutex_);
+            if (tfListener_ == nullptr)
+                tfListener_ = std::make_shared<tf::TransformListener>();
         }
     }
 
@@ -37,13 +38,13 @@ namespace cl_move_base_z
             try
             {
                 {
-                    boost::lock_guard<boost::mutex> lock(listenerMutex_);
+                    std::lock_guard<std::mutex> lock(listenerMutex_);
                     tfListener_->lookupTransform(referenceFrame_, poseFrameName_,
                                                       ros::Time(0), transform);
                 }
 
                 {
-                    boost::lock_guard<boost::mutex> guard(m_mutex_);
+                    std::lock_guard<std::mutex> guard(m_mutex_);
                     tf::poseTFToMsg(transform, this->pose_.pose);
                     this->pose_.header.stamp = transform.stamp_;
                     found = true;
@@ -60,31 +61,19 @@ namespace cl_move_base_z
         }
     }
 
-geometry_msgs::Pose Pose::toPoseMsg()
-  {
-    boost::lock_guard<boost::mutex> guard(m_mutex_);
-    return this->pose_.pose;
-  }
-
-  geometry_msgs::PoseStamped Pose::toPoseStampedMsg()
-  {
-    boost::lock_guard<boost::mutex> guard(m_mutex_);
-    return this->pose_;
-  }
-
     void Pose::update()
     {
         tf::StampedTransform transform;
         try
         {
             {
-                boost::lock_guard<boost::mutex> lock(listenerMutex_);
+                std::lock_guard<std::mutex> lock(listenerMutex_);
                 tfListener_->lookupTransform(referenceFrame_, poseFrameName_,
                                                   ros::Time(0), transform);
             }
 
             {
-                boost::lock_guard<boost::mutex> guard(m_mutex_);
+                std::lock_guard<std::mutex> guard(m_mutex_);
                 tf::poseTFToMsg(transform, this->pose_.pose);
                 this->pose_.header.stamp = transform.stamp_;
                 this->isInitialized = true;
