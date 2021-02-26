@@ -62,6 +62,7 @@
   <depend>control_msgs</depend>
   <depend>fake_localization</depend>
   <depend>xterm</depend>
+  <depend>topic_tools</depend>
   
   <!-- The export tag contains other, unspecified, tags -->
   <export>

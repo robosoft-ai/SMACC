@@ -11,6 +11,6 @@ joint_states:
   wrist_roll_joint:   0.0
   #r_gripper_finger_joint:  0.0
   #l_gripper_finger_joint:  0.0
-  bellows_joint:  0.0
+  # bellows_joint:  0.0
 
 

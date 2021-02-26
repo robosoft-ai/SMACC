@@ -19,16 +19,19 @@
     </include>
     <include>
       <uri>model://demo_cube</uri>
+      <name>cube_1</name>
       <pose>1.7 -0.0 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube</uri>
+      <name>cube_2</name>
       <pose>-1.7 0.15 0.75 0 0 0</pose>
     </include>
 
     <include>
       <uri>model://demo_cube</uri>
+      <name>cube_3</name>
       <pose>1.7 -0.15 0.75 0 0 0</pose>
     </include>
 

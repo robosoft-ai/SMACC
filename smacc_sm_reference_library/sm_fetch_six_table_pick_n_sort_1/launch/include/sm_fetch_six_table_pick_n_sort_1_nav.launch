@@ -39,6 +39,7 @@
     <remap from="base_pose_ground_truth" to="groundtruth2"/>
   </node>
 
+  <!-- throtle gt topic: workaround for noetic ground thruth gazebo plugin violates new tf policy for repeated transforms with same frame_id and timestamp-->
   <node pkg="topic_tools" type="throttle" name="gt_throttle" args="messages groundtruth 10 groundtruth2"/>
 
   <!-- planners, costmaps, etc -->

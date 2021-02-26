@@ -1,8 +1,8 @@
 joint_states:
   torso_lift_joint: -1.5886941446227077e-11
-  bellows_joint: 0.006636882979390101
-  head_pan_joint: -1.7973139598836951e-07
-  head_tilt_joint:  0.0024005013786707607
+  # bellows_joint: 0.006636882979390101
+  # head_pan_joint: -1.7973139598836951e-07
+  # head_tilt_joint:  0.0024005013786707607
   shoulder_pan_joint:  1.3199500661528623
   shoulder_lift_joint: 1.3999822887756963
   upperarm_roll_joint: -0.19998775461277418

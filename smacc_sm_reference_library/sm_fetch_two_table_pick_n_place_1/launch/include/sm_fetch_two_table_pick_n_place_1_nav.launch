@@ -36,9 +36,11 @@
     <param name="base_frame_id" value="base_link"/>
     <param name="global_frame_id" value="map"/>
 
-    <remap from="base_pose_ground_truth" to="groundtruth"/>
+    <remap from="base_pose_ground_truth" to="groundtruth2"/>
   </node>
 
+  <!-- throtle gt topic: workaround for noetic ground thruth gazebo plugin violates new tf policy for repeated transforms with same frame_id and timestamp-->
+  <node pkg="topic_tools" type="throttle" name="gt_throttle" args="messages groundtruth 10 groundtruth2"/>
 
   <!-- planners, costmaps, etc -->
   <node pkg="move_base" type="move_base" name="move_base" respawn="true" launch-prefix="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -sl 10000 -hold -e ">
