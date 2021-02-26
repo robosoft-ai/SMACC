@@ -175,6 +175,7 @@ namespace cl_move_base_z
         {
             // this function should be called always the carrot is updated
             divergenceDetectionLastCarrotLinearDistance_ = std::numeric_limits<double>::max();
+            return true;
         }
 
         bool BackwardLocalPlanner::divergenceDetectionUpdate(const tf::Stamped<tf::Pose> &tfpose)
