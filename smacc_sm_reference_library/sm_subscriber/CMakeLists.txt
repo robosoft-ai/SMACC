@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 2.8.7)
-project(backward_local_planner)
+cmake_minimum_required(VERSION 2.8.3)
+project(sm_subscriber)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
@@ -7,20 +7,8 @@ project(backward_local_planner)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED
-  costmap_2d
-  geometry_msgs
-  dynamic_reconfigure
-  nav_core
-  nav_msgs
-  rosconsole
-  roscpp
-  tf
-)
 
-if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-  add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+find_package(catkin REQUIRED smacc ros_timer_client)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -41,10 +29,10 @@ endif()
 ##   your messages/services/actions (e.g. std_msgs, actionlib_msgs, ...).
 ## * In the file package.xml:
 ##   * add a build_depend tag for "message_generation"
-##   * add a build_depend and a run_depend tag for each package in MSG_DEP_SET
+##   * add a build_depend and a exec_depend tag for each package in MSG_DEP_SET
 ##   * If MSG_DEP_SET isn't empty the following dependency has been pulled in
 ##     but can be declared for certainty nonetheless:
-##     * add a run_depend tag for "message_runtime"
+##     * add a exec_depend tag for "message_runtime"
 ## * In this file (CMakeLists.txt):
 ##   * add "message_generation" and every package in MSG_DEP_SET to
 ##     find_package(catkin REQUIRED COMPONENTS ...)
@@ -77,18 +65,30 @@ endif()
 # )
 
 ## Generate added messages and services with any dependencies listed here
- #generate_messages(
- #  DEPENDENCIES
- #  geometry_msgs#   nav_msgs
- #)
+# generate_messages(
+#   DEPENDENCIES
+#   std_msgs  # Or other packages containing msgs
+# )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
 ################################################
 
-generate_dynamic_reconfigure_options(
-  cfg/BackwardLocalPlanner.cfg
-)
+## To declare and build dynamic reconfigure parameters within this
+## package, follow these steps:
+## * In the file package.xml:
+##   * add a build_depend and a exec_depend tag for "dynamic_reconfigure"
+## * In this file (CMakeLists.txt):
+##   * add "dynamic_reconfigure" to
+##     find_package(catkin REQUIRED COMPONENTS ...)
+##   * uncomment the "generate_dynamic_reconfigure_options" section below
+##     and list every .cfg file to be processed
+
+## Generate dynamic reconfigure parameters in the 'cfg' folder
+# generate_dynamic_reconfigure_options(
+#   cfg/DynReconf1.cfg
+#   cfg/DynReconf2.cfg
+# )
 
 ###################################
 ## catkin specific configuration ##
@@ -101,8 +101,8 @@ generate_dynamic_reconfigure_options(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
 #  INCLUDE_DIRS include
-#  LIBRARIES backward_local_planner
-#  CATKIN_DEPENDS geometry_msgs nav_msgs rosconsole roscpp tf
+#  LIBRARIES sm_subscriber
+#  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
 
@@ -112,29 +112,17 @@ catkin_package(
 set(CMAKE_CXX_STANDARD 14)
 add_compile_options(-std=c++11) #workaround for ubuntu 16.04, to extinguish
 
-file(GLOB_RECURSE ${PROJECT_NAME}_IncludeFilesPaths "*.h")
-add_custom_target(${PROJECT_NAME}_IncludeFilesTarget SOURCES ${${PROJECT_NAME}_IncludeFilesPaths})
-
-file(GLOB_RECURSE ${PROJECT_NAME}_CfgFilesPaths "*.cfg")
-add_custom_target(${PROJECT_NAME}_CfgFilesTarget SOURCES ${${PROJECT_NAME}_CfgFilesPaths})
-
-
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
  include
-  ${catkin_INCLUDE_DIRS}
+ ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-add_library(${PROJECT_NAME}
-   #src/backward_local_planner.cpp
-   src/backward_local_planner.cpp
-)
-
-add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+# add_library(${PROJECT_NAME}
+#   src/${PROJECT_NAME}/sm_subscriber.cpp
+# )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -144,7 +132,9 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/backward_local_planner_node.cpp)
+add_executable(${PROJECT_NAME}_node src/sm_subscriber_node.cpp)
+
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,12 +144,18 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-
+# add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+ target_link_libraries(${PROJECT_NAME}_node
+   ${catkin_LIBRARIES}
+ )
+
+ add_executable(numbers_publisher_node servers/numbers_publisher/numbers_publisher.cpp)
+
+ target_link_libraries(numbers_publisher_node
+   ${catkin_LIBRARIES}
+ )
 
 #############
 ## Install ##
@@ -175,12 +171,19 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
 #   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 # )
 
-## Mark executables and/or libraries for installation
-install(TARGETS ${PROJECT_NAME}
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+## Mark executables for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
+ install(TARGETS ${PROJECT_NAME}_node numbers_publisher_node
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
+ )
+
+## Mark libraries for installation
+## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_libraries.html
+# install(TARGETS ${PROJECT_NAME}
+#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+#   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+# )
 
 ## Mark cpp header files for installation
 # install(DIRECTORY include/${PROJECT_NAME}/
@@ -191,8 +194,13 @@ install(TARGETS ${PROJECT_NAME}
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-   blp_plugin.xml
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
+   launch/sm_subscriber.launch
+   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+)
+
+install(DIRECTORY
+    config/
+    DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/config
 )
 
 #############
@@ -200,7 +208,7 @@ install(FILES
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/backward_local_planner.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_sm_subscriber.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()

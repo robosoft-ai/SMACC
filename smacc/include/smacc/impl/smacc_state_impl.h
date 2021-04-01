@@ -160,6 +160,7 @@ namespace smacc
     template <typename TOrthogonal>
     TOrthogonal *ISmaccState::getOrthogonal()
     {
+        //static_assert(boost::type_traits::is_base_of<ISmaccOrthogonal,TOrthogonal>::value);
         return this->getStateMachine().getOrthogonal<TOrthogonal>();
     }
 
