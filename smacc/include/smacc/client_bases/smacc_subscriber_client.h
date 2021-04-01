@@ -8,6 +8,7 @@
 
 #include <smacc/smacc_client.h>
 #include <boost/optional/optional_io.hpp>
+#include <smacc/impl/smacc_state_impl.h>
 
 namespace smacc
 {
@@ -115,8 +116,8 @@ private:
       firstMessage_ = false;
     }
 
-    postMessageEvent(msg);
     onMessageReceived_(msg);
+    postMessageEvent(msg);
   }
 };
 } // namespace client_bases

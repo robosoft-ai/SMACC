@@ -269,7 +269,6 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     tf::poseStampedTFToMsg(tfpose,currentPose);
     ROS_DEBUG_STREAM("[ForwardLocalPlanner] current robot pose " << currentPose);
 
-    tf::Quaternion q = tfpose.getRotation();
 
     bool ok = false;
     while (!ok)
@@ -320,15 +319,15 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     //ROS_INFO("pose control algorithm");
 
     const geometry_msgs::PoseStamped &finalgoalpose = plan_.back();
-    const geometry_msgs::PoseStamped &goalpose = plan_[currentPoseIndex_];
-    const geometry_msgs::Point &goalposition = goalpose.pose.position;
+    const geometry_msgs::PoseStamped &carrot_goalpose = plan_[currentPoseIndex_];
+    const geometry_msgs::Point &goalposition = carrot_goalpose.pose.position;
 
-    tf::Quaternion goalQ;
-    tf::quaternionMsgToTF(goalpose.pose.orientation, goalQ);
+    tf::Quaternion carrotGoalQ;
+    tf::quaternionMsgToTF(carrot_goalpose.pose.orientation, carrotGoalQ);
     //ROS_INFO_STREAM("Plan goal quaternion at "<< goalpose.pose.orientation);
 
     //goal orientation (global frame)
-    double betta = tf::getYaw(goalpose.pose.orientation) + betta_offset_;
+    double betta = tf::getYaw(carrot_goalpose.pose.orientation) + betta_offset_;
 
     double dx = goalposition.x - tfpose.getOrigin().x();
     double dy = goalposition.y - tfpose.getOrigin().y();
@@ -337,7 +336,8 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     double rho_error = sqrt(dx * dx + dy * dy);
 
     //current angle
-    double theta = tf::getYaw(q);
+    tf::Quaternion currentOrientation = tfpose.getRotation();
+    double theta = tf::getYaw(currentOrientation);
     double alpha = atan2(dy, dx);
     alpha = alpha + alpha_offset_;
 
