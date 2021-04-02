@@ -8,7 +8,9 @@ project(move_group_interface_client)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED smacc moveit_ros_planning_interface tf)
-find_package(yaml-cpp REQUIRED)
+#find_package(yaml-cpp REQUIRED)
+set(YAML_CPP_LIBRARIES yaml-cpp)
+find_package( Threads )
 
 ## System dependencies are found with CMake's conventions
 find_package(Eigen3 REQUIRED)
@@ -152,7 +154,9 @@ file(GLOB_RECURSE SRC_FILES "src/*.cpp") # opcionalmente GLOB
 ## Specify libraries to link a library or executable target against
 target_link_libraries(${PROJECT_NAME}
    ${catkin_LIBRARIES}
+   ${YAML_CPP_LIBRARIES}
    stdc++fs
+   ${CMAKE_THREAD_LIBS_INIT}
  )
 
 #############

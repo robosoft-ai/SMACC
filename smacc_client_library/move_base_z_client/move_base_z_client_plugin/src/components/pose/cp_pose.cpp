@@ -6,13 +6,17 @@
 
 #include <move_base_z_client_plugin/components/pose/cp_pose.h>
 
+
 namespace cl_move_base_z
 {
-    std::shared_ptr<tf::TransformListener> Pose::tfListener_;
+    std::shared_ptr<tf::TransformListener> Pose::tfListener_ = nullptr;
     std::mutex Pose::listenerMutex_;
 
     Pose::Pose(std::string targetFrame, std::string referenceFrame)
-        : poseFrameName_(targetFrame), referenceFrame_(referenceFrame), isInitialized(false)
+        : poseFrameName_(targetFrame),
+          referenceFrame_(referenceFrame),
+          isInitialized(false),
+          m_mutex_()
     {
         this->pose_.header.frame_id = referenceFrame_;
         ROS_INFO("[Pose] Creating Pose tracker component to track %s in the reference frame %s", targetFrame.c_str(), referenceFrame.c_str());
@@ -20,7 +24,8 @@ namespace cl_move_base_z
         {
             //singleton
             std::lock_guard<std::mutex> guard(listenerMutex_);
-            tfListener_ = std::make_shared<tf::TransformListener>();
+            if (tfListener_ == nullptr)
+                tfListener_ = std::make_shared<tf::TransformListener>();
         }
     }
 
