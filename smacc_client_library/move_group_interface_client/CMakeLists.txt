@@ -13,7 +13,7 @@ set(YAML_CPP_LIBRARIES yaml-cpp)
 find_package( Threads )
 
 ## System dependencies are found with CMake's conventions
-#find_package(Eigen3 REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -104,8 +104,8 @@ find_package( Threads )
 catkin_package(
   INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR}
   LIBRARIES move_group_interface_client ${YAML_CPP_LIBRARIES}
-  CATKIN_DEPENDS smacc moveit_ros_planning_interface 
-  DEPENDS Eigen3 yaml-cpp
+  CATKIN_DEPENDS smacc moveit_ros_planning_interface
+  DEPENDS EIGEN3 YAML_CPP
 )
 
 ###########
