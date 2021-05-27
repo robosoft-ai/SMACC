@@ -104,8 +104,8 @@ find_package(Eigen3 REQUIRED)
 catkin_package(
   INCLUDE_DIRS include ${EIGEN3_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR}
   LIBRARIES move_group_interface_client ${YAML_CPP_LIBRARIES}
-  CATKIN_DEPENDS smacc moveit_ros_planning_interface 
-  DEPENDS Eigen3 yaml-cpp
+  CATKIN_DEPENDS smacc moveit_ros_planning_interface
+  DEPENDS EIGEN3 YAML_CPP
 )
 
 ###########
