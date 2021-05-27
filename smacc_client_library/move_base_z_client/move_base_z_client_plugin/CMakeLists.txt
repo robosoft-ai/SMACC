@@ -5,6 +5,9 @@ find_package(catkin REQUIRED smacc pluginlib tf dynamic_reconfigure)
 find_package(yaml-cpp REQUIRED)
 find_package(Threads REQUIRED)
 
+# Needed so catkin can package the thread library dependency
+set(THREADS_LIBRARIES "${CMAKE_THREAD_LIBS_INIT}")
+
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
 ## See http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
@@ -47,7 +50,7 @@ catkin_package(
    INCLUDE_DIRS include
    LIBRARIES move_base_z_client_plugin odom_tracker waypoints_navigator planner_switcher move_base_z_client_behaviors costmap_switch pose
    CATKIN_DEPENDS smacc tf
-   DEPENDS ${CMAKE_THREAD_LIBS_INIT}
+   DEPENDS THREADS YAML_CPP
 )
 
 ###########
@@ -104,7 +107,8 @@ add_library(pose
 
 target_link_libraries(pose
    ${catkin_LIBRARIES}
-   ${CMAKE_THREAD_LIBS_INIT})
+   Threads::Threads
+)
 
 #----------------------------------
 add_library(costmap_switch
@@ -145,7 +149,8 @@ target_link_libraries(move_base_z_client_behaviors
    odom_tracker
    planner_switcher
    waypoints_navigator
-   ${CMAKE_THREAD_LIBS_INIT})
+   Threads::Threads
+)
 
 
  add_dependencies(odom_tracker ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
