@@ -58,6 +58,7 @@
 
   <depend>move_base_z_client_plugin</depend>
   <depend>move_group_interface_client</depend>
+  <depend>gazebo_msgs</depend>  
 
   <depend>control_msgs</depend>
   <depend>fake_localization</depend>
