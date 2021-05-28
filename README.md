@@ -1,7 +1,7 @@
 
 ## Travis CI: 
 
-| ROS Distro  | Travis Build Status | Documentation | Packages |
+| ROS Distro  | Travis Build Status | Documentation | Binary Packages |
 | ------------- | ------------- | ------------- | ------------- |
 | Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/kinetic-devel/html/namespaces.html">doxygen</a>| - |
 | Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/melodic-devel/html/namespaces.html">doxygen</a>|  <img src="https://user-images.githubusercontent.com/13334595/120040588-226ffa00-c007-11eb-98af-e0e9d6865236.png" height="20px"/> [debian files](https://packagecloud.io/app/reelrbtx/SMACC/search?q=melodic&filter=all&dist=) |
