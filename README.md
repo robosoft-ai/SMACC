@@ -1,13 +1,13 @@
 
 ## Travis CI: 
 
-| ROS Distro  | Travis Build Status | Documentation |
-| ------------- | ------------- | ------------- |
-| Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/kinetic-devel/html/namespaces.html">doxygen</a>|
-| Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/melodic-devel/html/namespaces.html">doxygen</a>|
-| Noetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=noetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/noetic-devel/html/namespaces.html">doxygen</a>|
-| Master (Melodic)  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespaces.html">doxygen</a>|
 
+| ROS Distro  | Travis Build Status | Documentation | Binary Packages |
+| ------------- | ------------- | ------------- | ------------- |
+| Kinetic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/kinetic-devel/html/namespaces.html">doxygen</a>| - |
+| Melodic  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/melodic-devel/html/namespaces.html">doxygen</a>|  <img src="https://user-images.githubusercontent.com/13334595/120040588-226ffa00-c007-11eb-98af-e0e9d6865236.png" height="20px"/> [debian files](https://packagecloud.io/app/reelrbtx/SMACC/search?q=melodic&filter=all&dist=) |
+| Noetic  | <a src="https://packagecloud.io/app/reelrbtx/SMACC/search?q=noetic&filter=all&dist="><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=noetic-devel"/></a>  | <a href="https://reelrbtx.github.io/SMACC_Documentation/noetic-devel/html/namespaces.html">doxygen</a>|  <img src="https://user-images.githubusercontent.com/13334595/120040588-226ffa00-c007-11eb-98af-e0e9d6865236.png" height="20px"/> [debian files](https://packagecloud.io/app/reelrbtx/SMACC/search?q=noetic&filter=all&dist=) |
+| Master (Melodic)  | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=master"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespaces.html">doxygen</a> |  - |
 
 ## Docker Containers
 
