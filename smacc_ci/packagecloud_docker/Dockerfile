@@ -40,7 +40,7 @@ RUN pip install catkin-tools
 RUN export DEBIAN_FRONTEND="noninteractive"; apt-get install -y fakeroot
 
 RUN apt-get update
-RUN apt-get install -y python-argcomplete python-bloom dh-make
+RUN apt-get install --allow-unauthenticated -y python-argcomplete python-bloom dh-make 
 
 # INSTALL PACKAGE CLOUD SOFTWARE
 # --------------------------------------------------------------
