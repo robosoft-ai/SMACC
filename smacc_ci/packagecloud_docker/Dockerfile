@@ -33,6 +33,8 @@ RUN echo "packagecloud token: $PACKAGE_CLOUD_TOKEN"
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+
 RUN apt-get update && apt-get install -y \
     ros-$ROS_VERSION_NAME-robot \
 && rm -rf /var/lib/apt/lists/*
