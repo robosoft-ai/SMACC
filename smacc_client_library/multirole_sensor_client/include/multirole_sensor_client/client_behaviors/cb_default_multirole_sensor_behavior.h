@@ -41,6 +41,8 @@ public:
   void propagateEvent(const TMessageType &msg)
   {
     this->postEvent<EvType>();
+    // onMessageReceived and onFirstMessageReceived
+    onMessageCallback(msg);
   }
 
   template <typename EvType>
