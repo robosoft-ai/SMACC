@@ -33,6 +33,7 @@ RUN echo "packagecloud token: $PACKAGE_CLOUD_TOKEN"
 ENV HOME /root
 ENV DEBIAN_FRONTEND noninteractive
 
+RUN apt-get update && apt-get -y install curl
 RUN curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 
 RUN apt-get update && apt-get install -y \
