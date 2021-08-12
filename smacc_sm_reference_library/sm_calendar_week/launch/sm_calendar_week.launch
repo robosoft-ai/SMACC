@@ -1,8 +1,0 @@
-<launch>
-    <arg name="server_nodes_xterms" default="xterm -xrm 'XTerm*scrollBar:  true' -xrm 'xterm*rightScrollBar: true' -hold -sl 10000 -e" />
-
-    <rosparam command="load" file="$(find sm_calendar_week)/config/sm_calendar_week_config.yaml" />
-    <node pkg="sm_calendar_week" type="sm_calendar_week_node" name="sm_calendar_week" launch-prefix="$(arg server_nodes_xterms)" />
-
-    <node pkg="keyboard_client" type="keyboard_server_node.py" name="keyboard_server_node" launch-prefix="$(arg server_nodes_xterms)" />
-</launch>
