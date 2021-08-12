@@ -9,23 +9,24 @@ struct State2 : smacc::SmaccState<State2, SmAtomic>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State1, SUCCESS>
-    
+
     >reactions;
 
-    
-// STATE FUNCTIONS   
+
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
+        configure_orthogonal<OrOddPub, CbOddPub>("State2");
     }
 
     void runtimeConfigure()
     {
         ROS_INFO("Entering State2");
     }
-       
+
     void onEntry()
     {
         ROS_INFO("On Entry!");
@@ -35,6 +36,6 @@ struct State2 : smacc::SmaccState<State2, SmAtomic>
     {
         ROS_INFO("On Exit!");
     }
-  
+
 };
 }
