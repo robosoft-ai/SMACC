@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8.7)
 project(smacc)
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
