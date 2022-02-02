@@ -17,7 +17,7 @@ template <typename ServiceType>
 class SmaccServiceClient : public smacc::ISmaccClient
 {
 public:
-    boost::optional<std::string> serviceName_; 
+    boost::optional<std::string> serviceName_;
 
     SmaccServiceClient()
     {

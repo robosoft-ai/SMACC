@@ -5,7 +5,7 @@ namespace sm_dance_bot
 {
 namespace cl_service3
 {
-enum class Service3Command 
+enum class Service3Command
 {
   SERVICE3_ON,
   SERVICE3_OFF
