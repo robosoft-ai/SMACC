@@ -8,7 +8,7 @@
 
 namespace smacc
 {
-namespace utils 
+namespace utils
 {
     
 std::string cleanShortTypeName(const std::type_info &tinfo)
