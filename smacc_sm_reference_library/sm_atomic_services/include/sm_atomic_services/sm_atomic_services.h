@@ -12,7 +12,6 @@
 //CLIENT BEHAVIORS
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
 #include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
-#include "sm_atomic_services/clients/client_behaviors/cb_service_client.h"
 #include "sm_atomic_services/clients/client_behaviors/cb_service_server.h"
 
 using namespace boost;
