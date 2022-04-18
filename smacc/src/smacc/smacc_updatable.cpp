@@ -4,12 +4,12 @@ namespace smacc
 {
 
 ISmaccUpdatable::ISmaccUpdatable()
-    : lastUpdate_(0)
+    : lastUpdate_(ros::Time::now())
 {
 }
 
 ISmaccUpdatable::ISmaccUpdatable(ros::Duration duration)
-    : lastUpdate_(0),
+    : lastUpdate_(ros::Time::now()),
       periodDuration_(duration)
 {
 }

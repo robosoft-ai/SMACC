@@ -6,6 +6,7 @@ ISmaccClientBehavior::ISmaccClientBehavior()
 {
   stateMachine_ = nullptr;
   currentState = nullptr;
+  initialized = false;
 }
 
 ISmaccClientBehavior::~ISmaccClientBehavior()
@@ -34,18 +35,26 @@ ros::NodeHandle ISmaccClientBehavior::getNode()
 
 void ISmaccClientBehavior::executeOnEntry()
 {
+  initialized = false;
   ROS_DEBUG("[%s] Default empty SmaccClientBehavior onEntry", this->getName().c_str());
   this->onEntry();
+  initialized = true;
 }
 
 void ISmaccClientBehavior::executeOnExit()
 {
   ROS_DEBUG("[%s] Default empty SmaccClientBehavior onExit", this->getName().c_str());
   this->onExit();
+  initialized = false;
 }
 
 void ISmaccClientBehavior::dispose()
 {
+}
+
+bool ISmaccClientBehavior::isInitialized()
+{
+  return initialized;
 }
 
 }  // namespace smacc

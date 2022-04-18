@@ -222,8 +222,12 @@ void SignalDetector::pollOnce()
           ROS_DEBUG_STREAM("updatable state elements: " << this->updatableStateElements_.size());
           for (auto *udpatableStateElement : this->updatableStateElements_)
           {
-            ROS_DEBUG_STREAM("pollOnce update client behavior call: " << demangleType(typeid(*udpatableStateElement)));
-            udpatableStateElement->executeUpdate();
+            auto stateElementBase = reinterpret_cast<ISmaccClientBehavior *>(udpatableStateElement);
+            if(stateElementBase->isInitialized())
+            {
+              ROS_DEBUG_STREAM("pollOnce update client behavior call: " << demangleType(typeid(*udpatableStateElement)));
+              udpatableStateElement->executeUpdate();
+            }
           }
         }
       }

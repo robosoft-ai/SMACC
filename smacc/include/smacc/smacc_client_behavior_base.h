@@ -28,6 +28,8 @@ namespace smacc
 
         ros::NodeHandle getNode();
 
+        bool isInitialized();
+
     protected:
         virtual void runtimeConfigure();
 
@@ -64,5 +66,7 @@ namespace smacc
 
         friend class ISmaccState;
         friend class ISmaccOrthogonal;
+
+        bool initialized;
     };
 } // namespace smacc
