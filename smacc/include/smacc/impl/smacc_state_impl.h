@@ -181,7 +181,7 @@ namespace smacc
     TStateReactor* ISmaccState::getStateReactor()
     {
         TStateReactor* ret = nullptr;
-        for(auto& sr: this->eventGenerators_)
+        for(auto& sr: this->stateReactors_)
         {
             ret = dynamic_cast<TStateReactor *>(sr.get());
             if(ret!=nullptr)
