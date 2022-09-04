@@ -56,8 +56,12 @@ def build_deb_package(workspace_source_folder, package_name, packagepath, ubuntu
 
     os.chdir(localpackagepath)
     shutil.rmtree("debian")
-    shutil.rmtree("obj-x86_64-linux-gnu")
 
+    if os.path.exist("obj-x86_64-linux-gnu"):
+        shutil.rmtree("obj-x86_64-linux-gnu")
+    else:
+        print("Warning unexpected: obj-x86_64-linux-gnu does not exist")
+        
     os.chdir(workspace_source_folder)
 
     # improve this regex
