@@ -200,6 +200,8 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, packages: list)
     identified_install_packages = get_identified_packages(workspace_folder)
 
     print("packages: " + str(packages))
+    print("--")
+    print("identified packages: " + str(identified_install_packages.keys()))
 
     smacc_debian_files = iterate_debian_generation(
         workspace_source_folder,
