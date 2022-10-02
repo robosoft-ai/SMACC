@@ -23,6 +23,26 @@
             }
         ]
     },
+
+    {
+        "name": "(gdb) smacc_rta",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../build/smacc_rta/smacc_rta",
+        "args": ["__name:=smacc_rta"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "console": "externalTerminal",
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
         {
             "name": "Smacc Viewer",
             "type": "python",

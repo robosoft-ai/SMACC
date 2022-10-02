@@ -133,6 +133,7 @@ def iterate_debian_generation(
         except Exception as ex:
             print(ex)
             print("ERROR: package " + str(pname) + " could not be built")
+            print("existing packages: " + identified_install_packages.keys())
             raise ex
 
     return debianfiles
