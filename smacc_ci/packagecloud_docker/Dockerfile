@@ -90,8 +90,11 @@ RUN rosdep update
 WORKDIR /root
 RUN echo "regen"
 ADD generate_debs.py /root/src/SMACC/smacc_ci/packagecloud_docker/generate_debs.py
+ADD generate_smacc_debs.bash /root/src/SMACC/smacc_ci/packagecloud_docker/generate_smacc_debs.bash
 
 WORKDIR /root
 RUN echo "... ROS_VERSION: $ROS_VERSION_NAME"
 RUN echo "... UBUNTU_VERSION, $UBUNTU_VERSION"
-RUN bash -c 'source devel/setup.bash; python$PYTHON_VERSION  src/SMACC/smacc_ci/packagecloud_docker/generate_debs.py -ros_version="$ROS_VERSION_NAME" -smacc_src_folder="src/SMACC" -smacc_viewer_src_folder="src/SMACC_Viewer" -token="$PACKAGE_CLOUD_TOKEN" -repo_owner="$PACKAGE_CLOUD_USER" -ubuntu_version="$UBUNTU_VERSION"'
+
+RUN bash -c "source devel/setup.bash; ./src/SMACC/smacc_ci/packagecloud_docker/generate_smacc_debs.bash $ROS_VERSION_NAME src $PACKAGE_CLOUD_TOKEN $PACKAGE_CLOUD_USER $UBUNTU_VERSION"
+#RUN bash -c 'source devel/setup.bash; python$PYTHON_VERSION  src/SMACC/smacc_ci/packagecloud_docker/generate_debs.py -ros_version="$ROS_VERSION_NAME" -smacc_src_folder="src/SMACC" -smacc_viewer_src_folder="src/SMACC_Viewer" -token="$PACKAGE_CLOUD_TOKEN" -repo_owner="$PACKAGE_CLOUD_USER" -ubuntu_version="$UBUNTU_VERSION"'

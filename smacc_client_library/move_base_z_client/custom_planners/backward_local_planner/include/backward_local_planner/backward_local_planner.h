@@ -134,5 +134,5 @@ private:
   ros::Duration waitingTimeout_;
   ros::Time waitingStamp_;
 };
-};  // namespace backward_local_planner
+}  // namespace backward_local_planner
 }  // namespace cl_move_base_z
