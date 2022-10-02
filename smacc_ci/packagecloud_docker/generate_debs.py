@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # /bin/python
-# Author: Pablo Iñigo Blasco
+# Author: Pablo Iñigo Blasco (github: pabloinigoblasco)
 
 
 import rospkg
@@ -22,7 +22,7 @@ import os
 import shutil
 import re
 
-# src/smacc_ci/generate_debs.py -smacc_src_folder src -smacc_viewer_src_folder src
+# src/smacc_ci/generate_debs.py -src_folder src
 
 
 def build_deb_package(
@@ -153,7 +153,7 @@ def get_identified_packages(workspace_folder):
     return identified_install_packages
 
 
-def push_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
+def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, debianfiles):
     for debf in debianfiles:
         print("pushing debfile")
         push_debian_task = subprocess.Popen(
@@ -216,7 +216,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, packages: list)
 
     # ----- PUSHING TO SMACC --------------
     remove_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
-    push_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
+    push_debian_files_package_cloud(repo_owner, "smacc", osname, osversion, smacc_debian_files)
 
     return smacc_debian_files
 
@@ -243,24 +243,21 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     
-    parser.add_argument("-smacc_src_folder", help="smacc workspace folder", default="src/SMACC")
+    parser.add_argument("-src_folder", help="smacc workspace folder", required=True)
     
     parser.add_argument(
-        "-smacc_viewer_src_folder", help="relative smacc src folder", default="src/SMACC_Viewer"
-    )
-    
-    parser.add_argument("-repo_owner", help="Repo owner", default="pibgeus")
-    
-    parser.add_argument("-token", help="Repo token", default="")
-    
-    parser.add_argument(
-        "-ros_version", help="The version of ros, ie: kinetic", default="kinetic", type=str
+        "-ros_version", help="The version of ros, ie: noetic", default="noetic", type=str
     )
     
     parser.add_argument(
-        "-ubuntu_version", help="The version of ros, ie: xenial", default="xenial", type=str
+        "-ubuntu_version", help="The version of ros, ie: focal", default="focal", type=str
     )
+
+    parser.add_argument("-repo_owner", help="Package cloud repo owner", required=True)
     
+    parser.add_argument("-token", help="Package cloud repo token", default="")
+    
+   
     parser.add_argument(
         "-packages", help="packages", nargs='+', required=True
     )
@@ -269,30 +266,7 @@ if __name__ == "__main__":
 
     argcomplete.autocomplete(parser)
 
-    # smacc_manual_order_packages = [  # 'forward_global_planner',
-    #     'smacc_msgs',
-    #     'smacc',
-    #     'smacc_runtime_test',
-    #     'sr_all_events_go',
-    #     'sr_conditional',
-    #     'sr_event_countdown',
-    #     'keyboard_client',
-    #     'multirole_sensor_client',
-    #     'ros_publisher_client',
-    #     'ros_timer_client',
-    #     'move_base_z_client_plugin',
-    #     'forward_global_planner',
-    #     'forward_local_planner',
-    #     'backward_global_planner',
-    #     'undo_path_global_planner',
-    #     'backward_local_planner',        
-    #     'move_group_interface_client',
-    #     'smacc_rta'
-    # ]
-
     args = parser.parse_args()
-    # if hasattr(args,'help'):
-    #     parser.print_help()
 
     osname = "ubuntu"
     osversion = args.ubuntu_version
@@ -302,7 +276,7 @@ if __name__ == "__main__":
     print("rosversion: " + ros_version)
     print("ubuntu: " + osversion)
 
-    relative_smacc_folder = args.smacc_src_folder  # "src/SMACC"
+    relative_smacc_folder = args.src_folder
     workspace_folder = os.path.abspath(os.path.join(os.getcwd(), "."))
 
     repo_owner = args.repo_owner
@@ -316,5 +290,4 @@ if __name__ == "__main__":
     outfile.close()
 
     smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.packages)
-
     print("SMACC DEBIAN'S: " + str(smacc_debians))
