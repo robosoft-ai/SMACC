@@ -158,11 +158,11 @@ def get_identified_packages(workspace_folder):
 def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, debianfiles):
     for debf in debianfiles:
         print("pushing debfile")
-        cmd = "package_cloud push " + repo_owner + "/" + reponame + "/" + osname + "/" + osversion + " " + debf,
+        cmd = "package_cloud push " + repo_owner + "/" + reponame + "/" + osname + "/" + osversion + " " + debf
         print(cmd)
         push_debian_task = subprocess.Popen(
             cmd,
-            shell=True,
+            shell=True
         )
         push_debian_task.wait()
 
