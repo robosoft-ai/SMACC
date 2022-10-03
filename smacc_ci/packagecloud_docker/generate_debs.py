@@ -170,7 +170,7 @@ def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, deb
 def remove_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
     for debf in debianfiles:
         shortdebfile = debf.split("/")[-1]
-        print("yanking debfile")
+        print("removing/yanking debfile")
         push_debian_task = subprocess.Popen(
             "package_cloud yank "
             + repo_owner
