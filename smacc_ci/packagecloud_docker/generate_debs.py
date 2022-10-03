@@ -161,7 +161,7 @@ def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, deb
         cmd = "package_cloud push " + repo_owner + "/" + reponame + "/" + osname + "/" + osversion + " " + debf,
         print(cmd)
         push_debian_task = subprocess.Popen(
-            cmd
+            cmd,
             shell=True,
         )
         push_debian_task.wait()
