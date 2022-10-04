@@ -96,5 +96,5 @@ WORKDIR /root
 RUN echo "... ROS_VERSION: $ROS_VERSION_NAME"
 RUN echo "... UBUNTU_VERSION, $UBUNTU_VERSION"
 
-RUN bash -c "source devel/setup.bash; ./src/SMACC/smacc_ci/packagecloud_docker/generate_smacc_debs.bash $ROS_VERSION_NAME src $PACKAGE_CLOUD_TOKEN $PACKAGE_CLOUD_USER"
+RUN bash -c "source devel/setup.bash; ./src/SMACC/smacc_ci/packagecloud_docker/generate_smacc_debs.bash $ROS_VERSION_NAME src $UBUNTU_VERSION $PACKAGE_CLOUD_TOKEN $PACKAGE_CLOUD_USER"
 #RUN bash -c 'source devel/setup.bash; python$PYTHON_VERSION  src/SMACC/smacc_ci/packagecloud_docker/generate_debs.py -ros_version="$ROS_VERSION_NAME" -src_folder="src/SMACC" -token="$PACKAGE_CLOUD_TOKEN" -repo_owner="$PACKAGE_CLOUD_USER" -ubuntu_version="$UBUNTU_VERSION"'
