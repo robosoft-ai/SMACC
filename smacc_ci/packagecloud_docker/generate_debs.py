@@ -174,9 +174,14 @@ def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, deb
         print(cmd)
         push_debian_task = subprocess.Popen(
             cmd,
-            shell=True
+            shell=True,
+            stdout=subprocess.PIPE
         )
+
         push_debian_task.wait()
+
+        for line in push_debian_task.stdout:
+            print(str(line))
 
 
 def remove_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
@@ -236,6 +241,10 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, actio
                 smacc_debian_files.append(d)
 
     if "push" in action:
+        if reponame is None:
+            print ("ERROR: reponame is required for push action")
+            raise Exception("reponame is required for push action")
+
         create_repo_task = subprocess.Popen("package_cloud repository create smacc", shell=True)
         create_repo_task.wait()
 
@@ -274,7 +283,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument("-repo_owner", help="Package cloud repo owner", required=True)
-    parser.add_argument("-repo_name", help="Package cloud repo name", required=True)    
+    parser.add_argument("-repo_name", help="Package cloud repo name", default=None)    
     parser.add_argument("-token", help="Package cloud repo token", default="")
     
    
