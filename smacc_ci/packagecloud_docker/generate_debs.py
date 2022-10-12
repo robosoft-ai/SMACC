@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # /bin/python
-# Author: Pablo Iñigo Blasco (github: pabloinigoblasco)
+# Author: Pablo Iñigo Blasco (github: pabloinigoblasco) 2019
 
 
 import rospkg
@@ -49,6 +49,9 @@ def build_deb_package(
             develpackagefolder = root
             break
 
+    if develpackagefolder is None:
+        print("ERROR: package " + str(package_name) + " not found in workspace")
+
     localpackagepath = develpackagefolder
     print(f"local package path: {localpackagepath} " )
 
@@ -58,16 +61,18 @@ def build_deb_package(
 
     # executing bloom to generate debian-fakeroot build data
     print(cmd)
-    bloomprocess = subprocess.Popen(cmd, shell=True)
+    bloomprocess = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     bloomprocess.wait()
+    print("bloom process finished: " + str(bloomprocess.returncode))
+
+    for line in bloomprocess.stdout:
+        print(str(line))
 
     print ("------------------------------------------------------------")
     os.chdir(workspace_source_folder)
     print(" - Local package path: " +  localpackagepath)
     print(" - Workspace directory:")
     print(os.getcwd())
-    print(" - Debian files in workspace:")
-    print(os.listdir(workspace_source_folder))
     print(" - list localpackagepath:")
     print(os.listdir(localpackagepath))
 
@@ -135,14 +140,21 @@ def iterate_debian_generation(
         except Exception as ex:
             print(ex)
             print("ERROR: package " + str(pname) + " could not be built")
-            print("existing packages: " + identified_install_packages.keys())
+            print("existing packages: " + str(identified_install_packages.keys()))
             raise ex
 
     return debianfiles
 
 
 def get_identified_packages(workspace_folder):
+    print("finding packages in workspace folder:" + workspace_folder)
+
+    rospack = rospkg.RosPack()
+    packages = rospack.list()
+    packagesl = list(packages)
     identified_install_packages = {}
+    
+    print("packages2: " + str(packagesl))
     exclude_with_words = ["ridgeback", "mecanum", "catkin"]
     for pname in packagesl:
         packpath = rospack.get_path(pname)
@@ -190,10 +202,11 @@ def remove_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
 # ------------------------ SMACC PACKAGES -----------------------
 
 
-def create_and_push_smacc_debians(osname, osversion, rosversion, action, packages: list):
+def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, action, packages: list):
     workspace_source_folder = os.path.join(workspace_folder, relative_smacc_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
 
+    print("workspace source folder: " + workspace_source_folder)
     print("packages: " + str(packages))
     print("--")
     print("identified packages: " + str(identified_install_packages.keys()))
@@ -228,7 +241,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, action, package
 
         # ----- PUSHING TO SMACC --------------
         remove_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
-        push_debian_files_package_cloud(repo_owner, "smacc", osname, osversion, smacc_debian_files)
+        push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, smacc_debian_files)
 
     return smacc_debian_files
 
@@ -243,11 +256,6 @@ if __name__ == "__main__":
 
     import argparse
     import argcomplete
-
-    # ==== CONFIGURATION PARAMETERS =========
-    repo_owner = "pibgeus"
-
-    # =========================================
 
     rospack = rospkg.RosPack()
     packages = rospack.list()
@@ -266,7 +274,7 @@ if __name__ == "__main__":
     )
 
     parser.add_argument("-repo_owner", help="Package cloud repo owner", required=True)
-    
+    parser.add_argument("-repo_name", help="Package cloud repo name", required=True)    
     parser.add_argument("-token", help="Package cloud repo token", default="")
     
    
@@ -296,12 +304,12 @@ if __name__ == "__main__":
     repo_owner = args.repo_owner
 
     print("CREATING TOKEN FILE FOR PACKAGE CLOUD:")
-    homefolder = os.getenv("HOME")
+    homefolder = "/tmp" #os.getenv("HOME")
     packagecloud_token_filepath = os.path.join(homefolder, ".packagecloud")
 
     outfile = open(packagecloud_token_filepath, "w")
     outfile.write('{"token":"%s"}' % args.token)
     outfile.close()
 
-    smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.action, args.packages)
+    smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.repo_name, args.action, args.packages)
     print("SMACC DEBIAN'S: " + str(smacc_debians))
