@@ -190,7 +190,7 @@ def remove_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
 # ------------------------ SMACC PACKAGES -----------------------
 
 
-def create_and_push_smacc_debians(osname, osversion, rosversion, packages: list):
+def create_and_push_smacc_debians(osname, osversion, rosversion, action, packages: list):
     workspace_source_folder = os.path.join(workspace_folder, relative_smacc_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
 
@@ -198,20 +198,37 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, packages: list)
     print("--")
     print("identified packages: " + str(identified_install_packages.keys()))
 
-    smacc_debian_files = iterate_debian_generation(
-        workspace_source_folder,
-        packages,
-        identified_install_packages,
-        osversion,
-        rosversion,
-    )
+    if "build" in action:
+        smacc_debian_files = iterate_debian_generation(
+            workspace_source_folder,
+            packages,
+            identified_install_packages,
+            osversion,
+            rosversion)
+    else:
+        smacc_debian_files=[]
+        for package_name in packages:
+            firstregexstr = ".*ros-" + rosversion + r"-.*\.deb$"
+            regexstr = ".*ros-" + rosversion + "-" + package_name.replace("_", "-") + r"_.*\.deb$"
+            print("Finding deb package: " + str(regexstr))
 
-    create_repo_task = subprocess.Popen("package_cloud repository create smacc", shell=True)
-    create_repo_task.wait()
+            thisfolderfiles = []
+            for root, dirs, files in os.walk(workspace_source_folder, topdown=False):
+                thisfolderfiles = thisfolderfiles + [os.path.join(root, f) for f in files]
 
-    # ----- PUSHING TO SMACC --------------
-    remove_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
-    push_debian_files_package_cloud(repo_owner, "smacc", osname, osversion, smacc_debian_files)
+            debianfiles = [f for f in thisfolderfiles if re.search(firstregexstr, f)]
+            print("DETECTED DEBIAN FILES:")
+            for d in debianfiles:
+                print(f"- {d}")
+                smacc_debian_files.append(d)
+
+    if "push" in action:
+        create_repo_task = subprocess.Popen("package_cloud repository create smacc", shell=True)
+        create_repo_task.wait()
+
+        # ----- PUSHING TO SMACC --------------
+        remove_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
+        push_debian_files_package_cloud(repo_owner, "smacc", osname, osversion, smacc_debian_files)
 
     return smacc_debian_files
 
@@ -257,6 +274,8 @@ if __name__ == "__main__":
         "-packages", help="packages", nargs='+', required=True
     )
 
+    parser.add_argument("-action", default="build_push", help="build|push|build_push")
+
     parser.add_argument("-help", help="Help command")
 
     argcomplete.autocomplete(parser)
@@ -284,5 +303,5 @@ if __name__ == "__main__":
     outfile.write('{"token":"%s"}' % args.token)
     outfile.close()
 
-    smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.packages)
+    smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.action, args.packages)
     print("SMACC DEBIAN'S: " + str(smacc_debians))
