@@ -2,15 +2,16 @@
 
 #include <smacc/smacc_client.h>
 #include <smacc/smacc_signal.h>
+#include <std_srvs/Empty.h>
 
 #include <boost/optional/optional_io.hpp>
 
 namespace smacc {
 namespace client_bases {
-template <typename ServiceType>
+template <typename TService>
 class SmaccServiceServerClient : public smacc::ISmaccClient {
-  using TServiceRequest = typename ServiceType::Request;
-  using TServiceResponse = typename ServiceType::Response;
+  using TServiceRequest = typename TService::Request;
+  using TServiceResponse = typename TService::Response;
 
  public:
   boost::optional<std::string> serviceName_;
@@ -42,8 +43,8 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
                             << "] Client Service: " << serviceName_);
 
         server_ = nh_.advertiseService(
-            *serviceName_,
-            &SmaccServiceServerClient<ServiceType>::serviceCallback, this);
+            *serviceName_, &SmaccServiceServerClient<TService>::serviceCallback,
+            this);
         this->initialized_ = true;
       }
     }
@@ -56,6 +57,13 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
   bool serviceCallback(TServiceRequest& req, TServiceResponse& res) {
     std::shared_ptr<TServiceResponse> response{new TServiceResponse};
     auto ret_val = onServiceRequestReceived_(req, response);
+    if (!ret_val)  // Check if response is empty
+    {
+      ROS_WARN(
+          "No return value receieved from service call. Are you returning a "
+          "value?");
+      return false;
+    }
     res = *response;
     return *ret_val;
   }
