@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>move_base_z_client_plugin</name>
-  
+
   <version>0.9.2</version>
   <description>The move_base_z_client_plugin package implements SMACC Action Client Plugin for the ROS Navigation State - move_base node.  Developed by Reel Robotics.</description>
 
@@ -11,7 +11,7 @@
   <license>MIT</license>
 
   <buildtool_depend>catkin</buildtool_depend>
-  
+
   <depend>pluginlib</depend>
   <depend>smacc</depend>
   <depend>tf</depend>

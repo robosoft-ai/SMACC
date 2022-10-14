@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <sdf version="1.4">
-  
+
   <world name="default">
     <scene>
       <ambient>0.0 0.0 0.0 1.0</ambient>
       <shadows>0</shadows>
     </scene>
-    
+
     <include>
       <uri>model://ground_plane</uri>
     </include>
@@ -43,7 +43,7 @@
       <name>table6</name>
       <pose>-2.0 0 -0.08 0 0 0</pose>
     </include>
-    
+
     <include>
       <uri>model://demo_cube_red</uri>
       <name>cube_1</name>

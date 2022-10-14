@@ -11,7 +11,7 @@ struct StNavigateForward2 : smacc::SmaccState<StNavigateForward2, MsDanceBotRunM
 
   Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees5>,
   Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX>
-  
+
   >reactions;
 
 // STATE FUNCTIONS

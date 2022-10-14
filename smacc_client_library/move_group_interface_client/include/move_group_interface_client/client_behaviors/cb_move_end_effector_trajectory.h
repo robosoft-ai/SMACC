@@ -58,7 +58,7 @@ namespace cl_move_group_interface
         this->postEvent(ev);
       };
 
-      postIncorrectInitialStateEvent = [this](auto traj) 
+      postIncorrectInitialStateEvent = [this](auto traj)
       {
         auto ev = new EvIncorrectInitialPosition<TSourceObject, TOrthogonal>();
         ev->trajectory = traj;
@@ -71,7 +71,7 @@ namespace cl_move_group_interface
           movegroupClient_->postEventMotionExecutionFailed();
           this->postEvent<EvMoveGroupMotionExecutionFailed<TSourceObject,TOrthogonal>>();
       };
-    }    
+    }
 
     virtual void onEntry() override;
 
@@ -81,7 +81,7 @@ namespace cl_move_group_interface
 
   protected:
     ComputeJointTrajectoryErrorCode computeJointSpaceTrajectory(moveit_msgs::RobotTrajectory &computedJointTrajectory);
-    
+
     void executeJointSpaceTrajectory(const moveit_msgs::RobotTrajectory &computedJointTrajectory);
 
     virtual void generateTrajectory();

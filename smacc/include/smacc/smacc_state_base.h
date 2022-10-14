@@ -218,10 +218,10 @@ namespace smacc
 
       srHandler->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
       srHandler->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
-      
+
       TInputEventList* mock;
       state_reactor_initialize_inputEventList(mock,)
-      
+
       srHandler->setOutputEvent<TOutputEvent>();
     }
 */

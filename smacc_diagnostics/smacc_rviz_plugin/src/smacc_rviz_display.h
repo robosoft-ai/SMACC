@@ -80,7 +80,7 @@ public:
 
   virtual void subscribe();
   virtual void unsubscribe();
-  
+
   // Overrides of protected virtual functions from Display.  As much
   // as possible, when Displays are not enabled, they should not be
   // subscribed to incoming data and should not show anything in the
@@ -99,7 +99,7 @@ private Q_SLOTS:
 
   // Function to handle an incoming ROS message.
 private:
-  
+
   void processMessage( const smacc_msgs::SmaccStatus::ConstPtr& msg );
 
   // Storage for the list of visuals.  It is a circular buffer where

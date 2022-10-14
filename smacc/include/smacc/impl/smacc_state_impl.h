@@ -155,7 +155,7 @@ namespace smacc
         stateReactors_.push_back(sr);
         return sr;
     }
-    
+
 
     template <typename TOrthogonal>
     TOrthogonal *ISmaccState::getOrthogonal()

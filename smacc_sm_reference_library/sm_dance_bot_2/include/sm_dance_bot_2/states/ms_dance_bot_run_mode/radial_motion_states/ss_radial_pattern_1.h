@@ -17,13 +17,13 @@ using namespace sm_dance_bot_2::radial_motion_states;
 // STATE DECLARATION
 struct SsRadialPattern1 : smacc::SmaccState<SsRadialPattern1, MsDanceBotRunMode, StiRadialLoopStart>
 {
-public: 
+public:
         using SmaccState::SmaccState;
 
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP> 
+    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateReverse1, ENDLOOP>
 
     >reactions;
 

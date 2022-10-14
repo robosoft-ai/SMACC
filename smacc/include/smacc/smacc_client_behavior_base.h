@@ -19,7 +19,7 @@ namespace smacc
         inline ISmaccStateMachine *getStateMachine();
 
         std::string getName() const;
-        
+
         template <typename SmaccClientType>
         void requiresClient(SmaccClientType *&storage);
 
@@ -50,7 +50,7 @@ namespace smacc
         virtual void dispose();
 
     private:
-        
+
         template <typename TOrthogonal, typename TSourceObject>
         void onOrthogonalAllocation();
 

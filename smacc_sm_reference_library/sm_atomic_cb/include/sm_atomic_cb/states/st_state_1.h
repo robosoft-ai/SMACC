@@ -12,12 +12,12 @@ struct State1 : smacc::SmaccState<State1, SmAtomicCB>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
-    
+
     >reactions;
 
-    
+
 // STATE FUNCTIONS
     static void staticConfigure()
     {

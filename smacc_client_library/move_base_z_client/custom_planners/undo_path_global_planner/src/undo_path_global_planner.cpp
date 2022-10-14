@@ -126,9 +126,9 @@ namespace cl_move_base_z
             double startPoseAngle = tf::getYaw(start.pose.orientation);
             geometry_msgs::Pose startPositionProjected;
 
-            // The goal of this code is finding the most convinient initial path pose.
+            // The goal of this code is finding the most convenient initial path pose.
             // first, find closest linear point to the current robot position
-            // we start from the final goal, that is, the begining of the trajectory
+            // we start from the final goal, that is, the beginning of the trajectory
             // (since this was the forward motion from the odom tracker)
             for (auto &p : lastForwardPathMsg_.poses /*| boost::adaptors::reversed*/)
             {
@@ -163,7 +163,7 @@ namespace cl_move_base_z
 
             ROS_DEBUG("[UndoPathGlobalPlanner] second angular pass");
             double angularMinDist = std::numeric_limits<double>::max();
-            
+
                 if(mindistindex >=  lastForwardPathMsg_.poses.size())
                     mindistindex = lastForwardPathMsg_.poses.size() -1;// workaround, something is making a out of bound exception in poses array access
             {
@@ -185,7 +185,7 @@ namespace cl_move_base_z
                         break;
                     }
                     geometry_msgs::PoseStamped pose = lastForwardPathMsg_.poses[lastForwardPathMsg_.poses.size() - i -1];
-                    
+
                     ROS_DEBUG_STREAM("[UndoPathGlobalPlanner] global frame");
                     pose.header.frame_id = costmap_ros_->getGlobalFrameID();
                     pose.header.stamp = ros::Time::now();

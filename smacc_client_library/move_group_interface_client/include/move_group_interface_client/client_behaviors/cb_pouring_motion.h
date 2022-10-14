@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once 
+#pragma once
 
 #include "cb_move_end_effector_trajectory.h"
 #include "tf/transform_datatypes.h"
@@ -23,12 +23,12 @@ namespace cl_move_group_interface
         virtual void generateTrajectory() override;
 
         virtual void createMarkers() override;
-        
+
         geometry_msgs::Vector3 directionVector_;
 
         // relative position of the "lid" of the bottle in the end effector reference frame.
         // that point is the one that must do the linear motion
-        geometry_msgs::Pose pointerRelativePose_; 
+        geometry_msgs::Pose pointerRelativePose_;
     protected:
         geometry_msgs::Point relativePivotPoint_;
 

@@ -7,12 +7,12 @@ struct StCalibrationStep1 : smacc::SmaccState<StCalibrationStep1, MsCalibration>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     Transition<EvKeyPressL<CbDefaultKeyboardBehavior, OrKeyboard>, MsRun, SUCCESS>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
@@ -27,7 +27,7 @@ struct StCalibrationStep1 : smacc::SmaccState<StCalibrationStep1, MsCalibration>
     void runtimeConfigure()
     {
     }
-    
+
     void onEntry()
     {
         ROS_INFO("On Entry!");

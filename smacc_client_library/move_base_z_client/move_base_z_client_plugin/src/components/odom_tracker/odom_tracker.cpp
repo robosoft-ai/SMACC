@@ -27,7 +27,7 @@ OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
   {
     ROS_INFO_STREAM("[OdomTracker] odomFrame:" << this->odomFrame_);
   }
-  ROS_INFO_STREAM("[OdomTracker] odomFrame overwriten by ros parameter:" << this->odomFrame_);
+  ROS_INFO_STREAM("[OdomTracker] odomFrame overwritten by ros parameter:" << this->odomFrame_);
 
   if (!nh.getParam("record_point_distance_threshold", recordPointDistanceThreshold_))
   {
@@ -307,7 +307,7 @@ bool OdomTracker::updateClearPath(const nav_msgs::Odometry &odom)
     // acceptBackward);
     if (acceptBackward && baseTrajectory_.poses.size() > 1) /*we always leave at least one item, specially interesting
                                                                for the backward local planner reach the backwards goal
-                                                               with precission enough*/
+                                                               with precision enough*/
     {
       baseTrajectory_.poses.pop_back();
     }

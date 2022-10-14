@@ -64,7 +64,7 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
 
     if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
     {
-      ROS_INFO("[CbMoveEndEffector] motion execution succedded");
+      ROS_INFO("[CbMoveEndEffector] motion execution succeeded");
       movegroupClient_->postEventMotionExecutionSucceded();
       this->postSuccessEvent();
 

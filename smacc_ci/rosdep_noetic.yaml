@@ -23,9 +23,8 @@ sr_event_countdown:
 sr_conditional:
   ubuntu: [ros-noetic-sr-conditional]
 sm_dance_bot:
-  ubuntu: [ros-noetic-sm-dance-bot]    
+  ubuntu: [ros-noetic-sm-dance-bot]
 forward_global_planner:
   ubuntu: [ros-noetic-forward-global-planner]
-smacc_runtime_test:    
-   ubuntu: [ros-noetic-smacc-runtime-test]        
-  
+smacc_runtime_test:
+   ubuntu: [ros-noetic-smacc-runtime-test]

@@ -3,7 +3,7 @@
 
 #include <std_srvs/Empty.h>
 
-namespace sm_atomic_services 
+namespace sm_atomic_services
 {
     class ClServiceServer : public smacc::client_bases::SmaccServiceServerClient<std_srvs::Empty>
     {

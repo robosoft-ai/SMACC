@@ -10,7 +10,7 @@ namespace smacc
 {
 namespace utils
 {
-    
+
 std::string cleanShortTypeName(const std::type_info &tinfo)
 {
     auto typeinfo= TypeInfo::getFromStdTypeInfo(tinfo);
@@ -24,7 +24,7 @@ std::string cleanShortTypeName(const std::type_info &tinfo)
     std::string classname = strs.back();
     //ROS_INFO("State classname: %s", classname.c_str());
 
-    
+
     return classname;
 }
 } // namespace utils

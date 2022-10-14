@@ -9,10 +9,10 @@ struct StiSPatternForward1 : public smacc::SmaccState<StiSPatternForward1, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiSPatternRotate2>,
   Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StiSPatternRotate1>
-  
+
   >reactions;
 
 // STATE FUNCTIONS

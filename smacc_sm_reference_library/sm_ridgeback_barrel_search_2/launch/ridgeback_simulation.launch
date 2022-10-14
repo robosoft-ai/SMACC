@@ -3,11 +3,11 @@
     <arg name="gui" default="true" />
     <arg name="headless" default="false" />
     <arg name="world_name" default="$(find sm_ridgeback_barrel_search_2)/simulation/worlds/opencv_world.sdf" />
-  
+
     <!-- Configuration of Ridgeback which you would like to simulate.
          See ridgeback_description for details. -->
     <arg name="config" default="$(optenv RIDGEBACK_CONFIG base)" />
-  
+
     <!-- Launch Gazebo with the specified world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="debug" value="0" />
@@ -17,7 +17,7 @@
       <arg name="world_name" value="$(arg world_name)" />
       <arg name="paused" value="false"/>
     </include>
-  
+
     <param name="robot_description"
            command="$(find ridgeback_description)/scripts/env_run
                     $(find ridgeback_description)/urdf/configs/$(arg config)
@@ -30,7 +30,7 @@
     <include file="$(find ridgeback_control)/launch/teleop.launch">
       <arg name="joystick" value="false"/>
     </include>
-  
+
     <rosparam param="/gazebo_ros_control/pid_gains">
       front_left_wheel:
         p: 1
@@ -49,7 +49,7 @@
         i: 0.1
         d: 0
     </rosparam>
-  
+
     <!-- Spawn Ridgeback -->
     <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
           args="-urdf -model ridgeback -param robot_description -x 0 -y 0 -z 0.1" />

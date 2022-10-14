@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <smacc/smacc.h>
 #include <tf/tf.h>
@@ -43,7 +43,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
             ROS_INFO("filtering side");
             if (targetTablePose.position.x > 0)
             {
-                targetTablePose.position.x -= 0.85;   
+                targetTablePose.position.x -= 0.85;
             }
             else
             {

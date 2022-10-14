@@ -22,7 +22,7 @@ using namespace sm_fetch_robot_asynchronous_orthogonals::cl_gripper;
 #include "orthogonals/or_navigation.h"
 
 namespace sm_fetch_robot_asynchronous_orthogonals
-{ 
+{
     class StInitialPosture;
     class StNavigateForwardsAndHandsUp;
     class StNavigateOriginAndHandsDown;

@@ -29,7 +29,7 @@ def build_deb_package(
     workspace_source_folder, package_name, packagepath, ubuntu_version, ros_distro, already_visited
 ):
     os.chdir(workspace_source_folder)
-    print ("------------------------------------------------------------")
+    print("------------------------------------------------------------")
     print("Working folder: " + str(os.getcwd()))
     print("Building debian package: " + str(package_name))
     cmd = (
@@ -44,7 +44,7 @@ def build_deb_package(
     # finding actual source package directory of the package in the workspace
     develpackagefolder = None
     for root, dirs, files in os.walk(workspace_source_folder, topdown=False):
-        if "package.xml" in files and package_name == root.split("/")[-1] and not "debian" in root:
+        if "package.xml" in files and package_name == root.split("/")[-1] and "debian" not in root:
             print(root)
             develpackagefolder = root
             break
@@ -53,11 +53,11 @@ def build_deb_package(
         print("ERROR: package " + str(package_name) + " not found in workspace")
 
     localpackagepath = develpackagefolder
-    print(f"local package path: {localpackagepath} " )
+    print(f"local package path: {localpackagepath} ")
 
     # cleaning possible previous wrong builds
-    if os.path.exists(os.path.join(localpackagepath,"debian")):
-        shutil.rmtree(os.path.join(localpackagepath,"debian"))
+    if os.path.exists(os.path.join(localpackagepath, "debian")):
+        shutil.rmtree(os.path.join(localpackagepath, "debian"))
 
     # executing bloom to generate debian-fakeroot build data
     print(cmd)
@@ -68,9 +68,9 @@ def build_deb_package(
     for line in bloomprocess.stdout:
         print(str(line))
 
-    print ("------------------------------------------------------------")
+    print("------------------------------------------------------------")
     os.chdir(workspace_source_folder)
-    print(" - Local package path: " +  localpackagepath)
+    print(" - Local package path: " + localpackagepath)
     print(" - Workspace directory:")
     print(os.getcwd())
     print(" - list localpackagepath:")
@@ -99,12 +99,13 @@ def build_deb_package(
     for d in debianfiles:
         print(f"- {d}")
 
-    visited_debian_files = [f for f in debianfiles if re.search(regexstr, f) and f not in already_visited]
+    visited_debian_files = [
+        f for f in debianfiles if re.search(regexstr, f) and f not in already_visited
+    ]
     debianfilename = visited_debian_files[0]
     print("VISITED DEBIAN FILES:")
     for d in visited_debian_files:
         print(f"- {d}")
-
 
     print("Debian file found: ")
     print(debianfilename)
@@ -153,7 +154,7 @@ def get_identified_packages(workspace_folder):
     packages = rospack.list()
     packagesl = list(packages)
     identified_install_packages = {}
-    
+
     print("packages2: " + str(packagesl))
     exclude_with_words = ["ridgeback", "mecanum", "catkin"]
     for pname in packagesl:
@@ -170,13 +171,20 @@ def get_identified_packages(workspace_folder):
 def push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, debianfiles):
     for debf in debianfiles:
         print("pushing debfile")
-        cmd = "package_cloud push " + repo_owner + "/" + reponame + "/" + osname + "/" + osversion + " " + debf
-        print(cmd)
-        push_debian_task = subprocess.Popen(
-            cmd,
-            shell=True,
-            stdout=subprocess.PIPE
+        cmd = (
+            "package_cloud push "
+            + repo_owner
+            + "/"
+            + reponame
+            + "/"
+            + osname
+            + "/"
+            + osversion
+            + " "
+            + debf
         )
+        print(cmd)
+        push_debian_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
         push_debian_task.wait()
 
@@ -218,13 +226,10 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, actio
 
     if "build" in action:
         smacc_debian_files = iterate_debian_generation(
-            workspace_source_folder,
-            packages,
-            identified_install_packages,
-            osversion,
-            rosversion)
+            workspace_source_folder, packages, identified_install_packages, osversion, rosversion
+        )
     else:
-        smacc_debian_files=[]
+        smacc_debian_files = []
         for package_name in packages:
             firstregexstr = ".*ros-" + rosversion + r"-.*\.deb$"
             regexstr = ".*ros-" + rosversion + "-" + package_name.replace("_", "-") + r"_.*\.deb$"
@@ -242,7 +247,7 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, actio
 
     if "push" in action:
         if reponame is None:
-            print ("ERROR: reponame is required for push action")
+            print("ERROR: reponame is required for push action")
             raise Exception("reponame is required for push action")
 
         create_repo_task = subprocess.Popen("package_cloud repository create smacc", shell=True)
@@ -250,7 +255,9 @@ def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, actio
 
         # ----- PUSHING TO SMACC --------------
         remove_debian_files(repo_owner, "smacc", osname, osversion, smacc_debian_files)
-        push_debian_files_package_cloud(repo_owner, reponame, osname, osversion, smacc_debian_files)
+        push_debian_files_package_cloud(
+            repo_owner, reponame, osname, osversion, smacc_debian_files
+        )
 
     return smacc_debian_files
 
@@ -271,25 +278,22 @@ if __name__ == "__main__":
     packagesl = list(packages)
 
     parser = argparse.ArgumentParser()
-    
+
     parser.add_argument("-src_folder", help="smacc workspace folder", required=True)
-    
+
     parser.add_argument(
         "-ros_version", help="The version of ros, ie: noetic", default="noetic", type=str
     )
-    
+
     parser.add_argument(
         "-ubuntu_version", help="The version of ros, ie: focal", default="focal", type=str
     )
 
     parser.add_argument("-repo_owner", help="Package cloud repo owner", required=True)
-    parser.add_argument("-repo_name", help="Package cloud repo name", default=None)    
+    parser.add_argument("-repo_name", help="Package cloud repo name", default=None)
     parser.add_argument("-token", help="Package cloud repo token", default="")
-    
-   
-    parser.add_argument(
-        "-packages", help="packages", nargs='+', required=True
-    )
+
+    parser.add_argument("-packages", help="packages", nargs="+", required=True)
 
     parser.add_argument("-action", default="build_push", help="build|push|build_push")
 
@@ -313,12 +317,14 @@ if __name__ == "__main__":
     repo_owner = args.repo_owner
 
     print("CREATING TOKEN FILE FOR PACKAGE CLOUD:")
-    homefolder = "/tmp" #os.getenv("HOME")
+    homefolder = "/tmp"  # os.getenv("HOME")
     packagecloud_token_filepath = os.path.join(homefolder, ".packagecloud")
 
     outfile = open(packagecloud_token_filepath, "w")
     outfile.write('{"token":"%s"}' % args.token)
     outfile.close()
 
-    smacc_debians = create_and_push_smacc_debians(osname, osversion, ros_version, args.repo_name, args.action, args.packages)
+    smacc_debians = create_and_push_smacc_debians(
+        osname, osversion, ros_version, args.repo_name, args.action, args.packages
+    )
     print("SMACC DEBIAN'S: " + str(smacc_debians))

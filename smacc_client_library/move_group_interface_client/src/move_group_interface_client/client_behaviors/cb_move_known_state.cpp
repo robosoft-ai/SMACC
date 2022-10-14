@@ -19,7 +19,7 @@ CbMoveKnownState::CbMoveKnownState(std::string pkg, std::string config_path)
 
 CbMoveKnownState::~CbMoveKnownState()
 {
-  
+
 }
 
 
@@ -36,7 +36,7 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
   }
 
   filepath =  pkgpath +"/" + filepath;
-  
+
 
   ROS_INFO("[CbMoveKnownState] Opening file with joint known state: %s",  filepath.c_str());
 
@@ -77,10 +77,10 @@ std::map<std::string, double> CbMoveKnownState::loadJointStatesFromFile(std::str
     {
       try
       {
-        for(YAML::const_iterator it=wp_node->begin();it != wp_node->end();++it) 
+        for(YAML::const_iterator it=wp_node->begin();it != wp_node->end();++it)
         {
-          std::string key = it->first.as<std::string>(); 
-          double value = it->second.as<double>(); 
+          std::string key = it->first.as<std::string>();
+          double value = it->second.as<double>();
           ROS_DEBUG_STREAM(" joint - " << key << ": " << value);
           jointStates[key] = value;
         }

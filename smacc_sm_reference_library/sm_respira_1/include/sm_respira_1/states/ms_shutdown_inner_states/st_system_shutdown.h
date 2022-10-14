@@ -8,18 +8,18 @@ struct StSystemShutdown : smacc::SmaccState<StSystemShutdown, MsShutdown>
 // DECLARE CUSTOM OBJECT TAGS
     struct TIMEOUT : SUCCESS{};
     struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{}; 
+    struct PREVIOUS : ABORT{};
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SsACCycle, TIMEOUT>,
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SsACCycle>,
     // Keyboard events
     // Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SsACCycle, MOVE>,
     // Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SsCMVCycle, BUILD>,
     // Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SsPCCycle, ATTACK>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
@@ -34,7 +34,7 @@ struct StSystemShutdown : smacc::SmaccState<StSystemShutdown, MsShutdown>
     void runtimeConfigure()
     {
     }
-    
+
     void onEntry()
     {
         ROS_INFO("On Entry!");

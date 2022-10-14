@@ -23,7 +23,7 @@ public:
     virtual void update() override;
 
     void waitTransformUpdate(ros::Rate r = ros::Rate(20));
-    
+
     inline geometry_msgs::Pose toPoseMsg()
     {
         std::lock_guard<std::mutex> guard(m_mutex_);
@@ -50,7 +50,7 @@ public:
 
 private:
     geometry_msgs::PoseStamped pose_;
-    
+
     static std::shared_ptr<tf::TransformListener> tfListener_;
     static std::mutex listenerMutex_;
 

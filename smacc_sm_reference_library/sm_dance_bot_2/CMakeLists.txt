@@ -59,7 +59,7 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin multirole_se
 add_action_files(
    DIRECTORY
    servers/led_action_server/action/
-   
+
    FILES
    LEDControl.action
 )
@@ -119,7 +119,7 @@ include_directories(
  ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(${PROJECT_NAME} 
+add_executable(${PROJECT_NAME}
               src/sm_dance_bot_2.cpp
               src/clients/cl_led/cl_led.cpp)
 
@@ -140,7 +140,7 @@ target_link_libraries(${PROJECT_NAME}
  )
 
  add_executable(led_action_server_node_${PROJECT_NAME} servers/led_action_server/src/led_action_server_node.cpp)
- set_target_properties(led_action_server_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "led_action_server_node") 
+ set_target_properties(led_action_server_node_${PROJECT_NAME} PROPERTIES OUTPUT_NAME "led_action_server_node")
  target_link_libraries(
    led_action_server_node_${PROJECT_NAME}
    ${catkin_LIBRARIES}
@@ -166,7 +166,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS 
+install(TARGETS
   ${PROJECT_NAME}
    temperature_sensor_node_${PROJECT_NAME}
    led_action_server_node_${PROJECT_NAME}

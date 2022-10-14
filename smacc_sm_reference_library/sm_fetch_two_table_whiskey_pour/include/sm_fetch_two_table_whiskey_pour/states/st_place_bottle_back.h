@@ -12,7 +12,7 @@ namespace sm_fetch_two_table_whiskey_pour
         typedef mpl::list<
             Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StReleaseGripper, SUCCESS>
 
-            /*POSIBLE ERRORS*/
+            /*POSSIBLE ERRORS*/
             //Transition<EvIncorrectInitialPosition<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT>,
             //Transition<EvJointDiscontinuity<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT> /*Retry*/,
             //Transition<EvMoveGroupMotionExecutionFailed<CbCircularPouringMotion, OrArm>, StInitialPosture, ABORT> /*retry motion failure*/

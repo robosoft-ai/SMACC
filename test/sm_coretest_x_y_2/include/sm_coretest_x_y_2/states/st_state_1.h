@@ -26,19 +26,19 @@ struct State1 : smacc::SmaccState<State1, SmCoreTestXY2>
     void onEntry()
     {
         counter++;
-                
+
         if (counter > iterationCheck )
         {
             ROS_ERROR("ey");
             auto now = ros::Time::now();;
-            auto ellapsed =  now - startTime ;
-            auto freqHz = iterationCheck / ellapsed.toSec();
+            auto elapsed =  now - startTime ;
+            auto freqHz = iterationCheck / elapsed.toSec();
 
             startTime = now;
             while(ros::ok())
             {
                 ros::Duration(0.2).sleep();
-                ROS_ERROR("A %d iterations in %lf seconds. Ferquency: %lf Hz", iterationCheck,  ellapsed.toSec(), freqHz);
+                ROS_ERROR("A %d iterations in %lf seconds. Ferquency: %lf Hz", iterationCheck,  elapsed.toSec(), freqHz);
             }
         }
 

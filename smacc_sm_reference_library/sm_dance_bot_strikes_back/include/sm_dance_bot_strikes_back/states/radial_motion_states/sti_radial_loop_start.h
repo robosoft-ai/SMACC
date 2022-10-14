@@ -6,12 +6,12 @@ namespace radial_motion_states
 struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
 {
   using SmaccState::SmaccState;
-  
+
   // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> 
-  
+
+  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP>
+
   >reactions;
 
 // STATE FUNCTIONS

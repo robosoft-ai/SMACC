@@ -76,7 +76,7 @@ namespace cl_move_group_interface
 
             if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
             {
-                ROS_INFO("[CbMoveEndEffectorRelative] motion execution succedded");
+                ROS_INFO("[CbMoveEndEffectorRelative] motion execution succeeded");
                 movegroupClient_->postEventMotionExecutionSucceded();
                 this->postSuccessEvent();
             }

@@ -4,11 +4,11 @@
   <version>0.9.2</version>
   <description>The sr_event_countdown package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -18,18 +18,18 @@
   <!-- <url type="website">http://wiki.ros.org/sr_event_countdown</url> -->
 
 
-  
 
 
-  
+
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>catkin</depend>
   <depend>smacc</depend>
 
 
-  
+
   <export>
-    
+
 
   </export>
 </package>

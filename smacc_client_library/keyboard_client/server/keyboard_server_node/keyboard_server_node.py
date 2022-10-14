@@ -1,13 +1,12 @@
 #!/usr/bin/env python
-
-from __future__ import print_function
-
-import roslib;
 import rospy
-import std_msgs
 from std_msgs.msg import UInt16
 
-import sys, select, termios, tty
+import sys
+import select
+import termios
+import tty
+
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -16,19 +15,20 @@ def getKey():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     settings = termios.tcgetattr(sys.stdin)
 
-    pub = rospy.Publisher('keyboard_unicode', UInt16, queue_size = 1)
-    rospy.init_node('keyboard_node')
+    pub = rospy.Publisher("keyboard_unicode", UInt16, queue_size=1)
+    rospy.init_node("keyboard_node")
 
     try:
-        while(1):
+        while 1:
             key = getKey()
-            #rospy.loginfo(type(key))
+            # rospy.loginfo(type(key))
             msg = UInt16()
             msg.data = ord(key)
-            
+
             pub.publish(msg)
 
     except Exception as e:

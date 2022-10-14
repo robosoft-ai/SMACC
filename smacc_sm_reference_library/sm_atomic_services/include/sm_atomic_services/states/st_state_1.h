@@ -12,12 +12,12 @@ struct State1 : smacc::SmaccState<State1, SmAtomicServices>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, State2, SUCCESS>
-    
+
     >reactions;
 
-    
+
 // STATE FUNCTIONS
     static void staticConfigure()
     {
@@ -37,6 +37,6 @@ struct State1 : smacc::SmaccState<State1, SmAtomicServices>
     {
         ROS_INFO("On Exit!");
     }
-  
+
 };
 } // namespace sm_atomic

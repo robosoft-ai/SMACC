@@ -60,7 +60,7 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
     if (!ret_val)  // Check if response is empty
     {
       ROS_WARN(
-          "No return value receieved from service call. Are you returning a "
+          "No return value received from service call. Are you returning a "
           "value?");
       return false;
     }

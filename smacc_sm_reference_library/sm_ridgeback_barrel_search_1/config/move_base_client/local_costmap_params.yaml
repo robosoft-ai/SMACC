@@ -7,4 +7,4 @@ local_costmap:
    height: 10.0
    resolution: 0.05
    static_map: false
-   rolling_window: true 
+   rolling_window: true

@@ -22,8 +22,8 @@ public:
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
-    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP> 
+
+    Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>
 
     >reactions;
 

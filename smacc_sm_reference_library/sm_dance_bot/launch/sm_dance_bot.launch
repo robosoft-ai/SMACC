@@ -42,7 +42,7 @@
         <!-- set run mode -->
         <param name="run_mode" value="debug" />
         <!-- load flight plan -->
-        <param name="waypoints_plan" value="$(find sm_dance_bot)/config/move_base_client/waypoints_plan.yaml" />        
+        <param name="waypoints_plan" value="$(find sm_dance_bot)/config/move_base_client/waypoints_plan.yaml" />
     </group>
 
     <!-- state machine node -->

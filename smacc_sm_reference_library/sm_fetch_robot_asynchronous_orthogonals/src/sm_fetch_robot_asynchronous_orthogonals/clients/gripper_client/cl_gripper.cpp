@@ -23,7 +23,7 @@ ClGripper::ClGripper()
 
 std::string ClGripper::getName() const
 {
-    return "GRIPPER ACTUION CLIENT";
+    return "GRIPPER ACTION CLIENT";
 }
 
 ClGripper::~ClGripper()

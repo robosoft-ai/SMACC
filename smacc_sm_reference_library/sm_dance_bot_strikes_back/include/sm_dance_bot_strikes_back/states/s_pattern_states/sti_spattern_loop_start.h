@@ -9,9 +9,9 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvLoopContinue<StiSPatternLoopStart>, StiSPatternRotate1, CONTINUELOOP>
-  
+
   >reactions;
 
 // STATE FUNCTIONS
@@ -36,7 +36,7 @@ struct StiSPatternLoopStart : smacc::SmaccState<StiSPatternLoopStart, SS>
       ROS_INFO("Spattern iteration finished, All iterations finished (%d)", superstate.iteration_count - 1);
       return false;
     }
-    
+
   }
 
   void onEntry()

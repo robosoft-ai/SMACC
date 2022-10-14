@@ -124,7 +124,7 @@ include_directories(
 #   src/${PROJECT_NAME}/sm_fetch_two_table_pick_n_place_1.cpp
 #)
 
-add_executable(${PROJECT_NAME}_node 
+add_executable(${PROJECT_NAME}_node
                      src/sm_fetch_two_table_pick_n_place_1_node.cpp
                      src/sm_fetch_two_table_pick_n_place_1/clients/gripper_client/cl_gripper.cpp
                      )
@@ -146,7 +146,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS 
+install(TARGETS
   ${PROJECT_NAME}_node
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

@@ -6,7 +6,7 @@ namespace sm_atomic_services
     template <typename TSource, typename TOrthogonal>
     struct EvServiceRequestReceieved : sc::event<EvServiceRequestReceieved<TSource, TOrthogonal>> {};
 
-    class CbServiceServer : public smacc::CbServiceServerCallbackBase<std_srvs::Empty> 
+    class CbServiceServer : public smacc::CbServiceServerCallbackBase<std_srvs::Empty>
     {
       public:
         bool onServiceRequestReceived(std_srvs::Empty::Request& req, std::shared_ptr<std_srvs::Empty::Response> res) override
@@ -16,11 +16,11 @@ namespace sm_atomic_services
 
             return true;
         }
-    
+
         template <typename TOrthogonal, typename TSourceObject>
-        void onOrthogonalAllocation() 
+        void onOrthogonalAllocation()
         {
-          this->requestReceived = [=]() 
+          this->requestReceived = [=]()
           {
             this->template postEvent<EvServiceRequestReceieved<TSourceObject, TOrthogonal>>();
           };

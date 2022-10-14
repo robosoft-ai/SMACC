@@ -44,7 +44,7 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
   }
 
   if(!blobs.empty())
-  { 
+  {
     auto& b = blobs.front();
     cv::Rect r;
     float diameter = b.size;
@@ -102,7 +102,7 @@ void update()
 void callback(const sensor_msgs::Image& img)
 {
   cv_bridge::CvImagePtr cv_image = cv_bridge::toCvCopy(img, "rgb8");
-  
+
   cv::Mat image = cv_image->image;
   cv_bridge::CvImage debugImageBridge;
   debugImageBridge.encoding = "rgb8";

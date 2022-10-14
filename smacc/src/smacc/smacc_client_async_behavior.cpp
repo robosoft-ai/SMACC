@@ -40,7 +40,7 @@ namespace smacc
         }
         catch (const std::exception &e)
         {
-            ROS_DEBUG("[SmaccAsyncClientBehavior] trying to Join onEntry function, but it was alredy finished.");
+            ROS_DEBUG("[SmaccAsyncClientBehavior] trying to Join onEntry function, but it was already finished.");
         }
 
         ROS_INFO_STREAM("[" << getName() << "] onExit - Creating asynchronous onExit thread");
@@ -60,7 +60,7 @@ namespace smacc
         }
         catch (...)
         {
-            ROS_DEBUG("[SmaccAsyncClientBehavior] trying to Join onExit function, but it was alredy finished.");
+            ROS_DEBUG("[SmaccAsyncClientBehavior] trying to Join onExit function, but it was already finished.");
         }
 
         ROS_DEBUG_STREAM("[" << getName() << "] Destroying client behavior-  onExit thread finished. Proccedding destruction.");

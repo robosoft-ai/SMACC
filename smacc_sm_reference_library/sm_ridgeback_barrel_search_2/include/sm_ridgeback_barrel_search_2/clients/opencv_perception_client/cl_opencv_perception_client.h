@@ -10,7 +10,7 @@ namespace cl_opencv_perception
 class ClOpenCVPerception : public smacc::client_bases::SmaccSubscriberClient<std_msgs::Int32>
 {
 public:
-  
+
   ClOpenCVPerception(std::string topicname = "/detected_color")
     : smacc::client_bases::SmaccSubscriberClient<std_msgs::Int32>(topicname)
   {
@@ -26,5 +26,5 @@ public:
     smacc::client_bases::SmaccSubscriberClient<std_msgs::Int32>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
   }
 };
-}  
-}  
+}
+}

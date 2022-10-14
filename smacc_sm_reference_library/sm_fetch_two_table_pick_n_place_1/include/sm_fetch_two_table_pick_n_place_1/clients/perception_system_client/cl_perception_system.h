@@ -15,7 +15,7 @@ namespace cl_perception_system
         TABLE1 = 1,
         ONTHEWAY = 2
     };
-    
+
 class ClPerceptionSystem : public smacc::ISmaccClient, public smacc::ISmaccUpdatable
 {
 public:
@@ -62,8 +62,8 @@ public:
 
     virtual void update() override
     {
-        auto ellapsed = ros::Time::now() - startTime;
-        bool applyUpdate = ellapsed > readDelay;
+        auto elapsed = ros::Time::now() - startTime;
+        bool applyUpdate = elapsed > readDelay;
 
         if (applyUpdate)
         {

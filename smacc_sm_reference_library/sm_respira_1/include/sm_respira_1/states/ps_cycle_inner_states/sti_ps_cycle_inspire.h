@@ -14,14 +14,14 @@ struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SsPSCycle>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCyclePlateau, TIMEOUT>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCyclePlateau, NEXT>,
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleLoop, PREVIOUS>,
 
   Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
   Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
-  
+
   >reactions;
 
   // STATE FUNCTIONS
@@ -36,7 +36,7 @@ struct StiPSCycleInspire : smacc::SmaccState<StiPSCycleInspire, SsPSCycle>
   void runtimeConfigure()
   {
   }
-  
+
   void onEntry()
   {
     ROS_INFO("On Entry!");

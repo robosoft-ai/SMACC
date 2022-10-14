@@ -20,7 +20,7 @@ namespace cl_move_group_interface
 
     void CbCircularPouringMotion::generateTrajectory()
     {
-        // at least 1 sample per centimeter (average)        
+        // at least 1 sample per centimeter (average)
         const double METERS_PER_SAMPLE = 0.001;
 
         float dist_meters =0;
@@ -56,7 +56,7 @@ namespace cl_move_group_interface
         tf::pointMsgToTF(this->relativePivotPoint_, pivotPoint);
 
         tf::Vector3 pivot = (currentEndEffectorTransform * pivotPoint);
-        
+
         v0 = v0 - pivot;
         v1 = v0;
         v1.setZ(v1.z() + this->deltaHeight_);
@@ -146,7 +146,7 @@ namespace cl_move_group_interface
         marker.header.stamp = ros::Time::now();
 
         beahiorMarkers_.markers.push_back(marker);
- 
+
         tf::Transform localdirection;
         localdirection.setIdentity();
         localdirection.setOrigin(tf::Vector3(0.05, 0, 0));

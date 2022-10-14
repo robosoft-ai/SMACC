@@ -34,7 +34,7 @@ public:
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     Transition<EvLoopEnd<StiSPatternLoopStart>, StRotateDegrees6, ENDLOOP>
 
     >reactions;

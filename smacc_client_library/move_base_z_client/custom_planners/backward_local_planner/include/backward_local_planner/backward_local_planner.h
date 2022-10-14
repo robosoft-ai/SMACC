@@ -87,7 +87,7 @@ private:
   bool resetDivergenceDetection();
 
   bool divergenceDetectionUpdate(const tf::Stamped<tf::Pose> &tfpose);
-  
+
   bool checkCarrotHalfPlainConstraint(const tf::Stamped<tf::Pose> &tfpose);
 
   dynamic_reconfigure::Server<::backward_local_planner::BackwardLocalPlannerConfig> paramServer_;

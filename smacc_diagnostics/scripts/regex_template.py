@@ -1,5 +1,6 @@
 import re
 
+
 class TypeInfo:
     def __init__(self, tkey, codedtype, finaltype):
         self.tkey = tkey
@@ -10,6 +11,7 @@ class TypeInfo:
     def __str__(self):
         return self.tkey + ":" + self.finaltype
 
+
 def getRootTypeInfo(inputtext):
     ok = False
     typecount = 0
@@ -19,7 +21,7 @@ def getRootTypeInfo(inputtext):
     # this loop flatterns the template type tree
     while not ok:
         simpletypeRE = r"[^<>,\s]+<[^<>]+>"
-        print ("input: " + inputtext)
+        print("input: " + inputtext)
 
         matches = [m for m in enumerate(re.finditer(simpletypeRE, inputtext))]
         if len(matches) == 0:
@@ -43,12 +45,12 @@ def getRootTypeInfo(inputtext):
     allbasetypes = set()
     for tkey in typesdict.keys():
         flat = typesdict[tkey]
-        print flat
+        print(flat)
         startindex = flat.index("<")
-        flat = flat[startindex + 1:-1]
+        flat = flat[(startindex + 1) : -1]
         basetypes = [t.strip() for t in flat.split(",")]
         for b in basetypes:
-            if not "$" in b:
+            if "$" not in b:
                 allbasetypes.add(b)
 
     for b in allbasetypes:
@@ -57,7 +59,7 @@ def getRootTypeInfo(inputtext):
     def replace_back(roottype, typesdict):
         # replace back
         while "$" in roottype:
-            #print roottype
+            # print roottype
             for tkey in typesdict:
                 tval = typesdict[tkey]
                 roottype = roottype.replace(tkey, tval)
@@ -70,12 +72,12 @@ def getRootTypeInfo(inputtext):
         t = TypeInfo(tkey, typesdict[tkey], finaltype)
         types.append(t)
 
-        print t
+        print(t)
 
-    print (typesdict)
+    print(typesdict)
     roottype = [t for t in types if t.finaltype == originalinputtext][0]
 
-    print "---------------------------------"
+    print("---------------------------------")
 
     # fill template parameters
     for t in types:
@@ -84,12 +86,10 @@ def getRootTypeInfo(inputtext):
                 index = t.codedtype.index(t2.tkey)
                 t.template_parameters.append((index, t2))
 
-        t.template_parameters = [x[1] for x in sorted(
-            t.template_parameters, key=lambda e: e[0])]
+        t.template_parameters = [x[1] for x in sorted(t.template_parameters, key=lambda e: e[0])]
 
     return roottype
-    
+
+
 inputtext = "smacc::Transition<Ev1<LidarSensor<sensor_msgs::LaserScan, std::allocator<none>>, EVTAG>, State1, TAG>"
 roottypeinfo = getRootTypeInfo(inputtext)
-
-print types

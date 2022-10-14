@@ -11,5 +11,3 @@ For all states, superstates, but not ssrs, If Keyboard Orthogonal = N, transitio
 For all states, superstates, but not ssrs, If Keyboard Orthogonal = P, transition to previous state.
 
 For all states, If Navigation Orthogonal is prempted, transition to previous state.
-
-

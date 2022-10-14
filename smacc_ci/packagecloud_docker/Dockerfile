@@ -10,7 +10,7 @@ ARG PACKAGE_CLOUD_USER
 ARG PACKAGE_CLOUD_TOKEN
 
 # PYTHON_VERSION could be empty, or "3"
-ARG PYTHON_VERSION="" 
+ARG PYTHON_VERSION=""
 
 ENV PATH /usr/local/nvidia/bin:${PATH}
 ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
@@ -58,7 +58,7 @@ RUN gem install package_cloud
 #----------------------------------------------------------
 RUN echo "regen"
 RUN echo "downloading smacc repo: "
-RUN echo "branch name: $ROS_VERSION_NAME" 
+RUN echo "branch name: $ROS_VERSION_NAME"
 RUN git clone --single-branch --branch $ROS_VERSION_NAME-devel https://github.com/reelrbtx/SMACC.git /root/src/SMACC
 WORKDIR /root/src/SMACC
 RUN git submodule init
@@ -83,7 +83,7 @@ RUN bash -c "source /opt/ros/$ROS_VERSION_NAME/setup.bash; cd /root; catkin_make
 # BUILD DEBIAN FILES
 # ------------------------------------------------------------------------
 
-RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep_${ROS_VERSION_NAME}.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list 
+RUN echo "yaml file:/root/src/SMACC/smacc_ci/rosdep_${ROS_VERSION_NAME}.yaml" > /etc/ros/rosdep/sources.list.d/50-my-packages.list
 RUN rosdep update
 
 

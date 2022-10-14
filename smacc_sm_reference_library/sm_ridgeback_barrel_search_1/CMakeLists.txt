@@ -11,7 +11,7 @@ find_package(catkin REQUIRED smacc roscpp move_base_z_client_plugin cv_bridge)
 
 ## System dependencies are found with CMake's conventions
 find_package(OpenCV REQUIRED COMPONENTS )
-  
+
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES

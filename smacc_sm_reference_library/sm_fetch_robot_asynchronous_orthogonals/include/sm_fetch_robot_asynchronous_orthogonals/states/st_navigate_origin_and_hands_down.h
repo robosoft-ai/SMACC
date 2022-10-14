@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 
 #include <smacc/smacc.h>
 
@@ -12,7 +12,7 @@ namespace sm_fetch_robot_asynchronous_orthogonals
             // TRANSITION TABLE
         typedef mpl::list<
                 Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateForwardsAndHandsUp, SUCCESS>,
-                Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateOriginAndHandsDown, ABORT> /*retry*/      
+                Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateOriginAndHandsDown, ABORT> /*retry*/
                 >
             reactions;
 

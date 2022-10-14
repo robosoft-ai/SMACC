@@ -67,7 +67,7 @@ namespace cl_move_base_z
             // we have to do this, for example for the case we are refining the final orientation.
             // se check at some point if the carrot is reached in "goal linear distance", then we go into
             // some automatic pure-spinning mode where we only update the orientation
-            // This means that if we reach the carrot with precission we go into pure spinning mode but we cannot
+            // This means that if we reach the carrot with precision we go into pure spinning mode but we cannot
             // leave that point (maybe this could be improved)
             if (carrot_angular_distance_ < yaw_goal_tolerance_)
             {
@@ -212,7 +212,7 @@ namespace cl_move_base_z
         bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const tf::Stamped<tf::Pose> &tfpose)
         {
             // this function is specially useful when we want to reach the goal with a lot
-            // of precission. We may pass the goal and then the controller enters in some
+            // of precision. We may pass the goal and then the controller enters in some
             // unstable state. With this, we are able to detect when stop moving.
 
             // only apply if the carrot is in goal position and also if we are not in a pure spinning behavior v!=0
@@ -231,7 +231,7 @@ namespace cl_move_base_z
             const double C_OFFSET_METERS = 0.05; // 5 cm
             double check = vx * tfpose.getOrigin().x() + vy * tfpose.getOrigin().y() + c + C_OFFSET_METERS;
 
-            ROS_DEBUG_STREAM("[BackwardLocalPlanner] half plane contraint:" << vx << "*" << carrot_point.x << " + " << vy << "*" << carrot_point.y << " + " << c);
+            ROS_DEBUG_STREAM("[BackwardLocalPlanner] half plane constraint:" << vx << "*" << carrot_point.x << " + " << vy << "*" << carrot_point.y << " + " << c);
             ROS_DEBUG_STREAM("[BackwardLocalPlanner] constraint evaluation: " << vx << "*" << tfpose.getOrigin().x() << " + " << vy << "*" << tfpose.getOrigin().y() << " + " << c << " = " << check);
 
             return check < 0;
@@ -358,7 +358,7 @@ namespace cl_move_base_z
 
             // ------ Evaluate the current context ----
             double rho_error, betta_error, alpha_error;
-            
+
 
                 // getting carrot goal information
                 tf::Quaternion q = tfpose.getRotation();
@@ -429,7 +429,7 @@ namespace cl_move_base_z
                         vetta = 0;
                     }
 
-                    //clasical control to reach a goal backwards
+                    //classical control to reach a goal backwards
                     this->defaultBackwardCmd(tfpose, vetta, gamma, alpha_error, betta_error, cmd_vel);
                 }
 
@@ -479,7 +479,7 @@ namespace cl_move_base_z
                         cmd_vel.linear.x = 0;
                     }
                 }
-        
+
 
             // ---------------------- TRAJECTORY PREDICTION AND COLLISION AVOIDANCE ---------------------
             //cmd_vel.linear.x=0;
@@ -641,7 +641,7 @@ namespace cl_move_base_z
             int closestIndex = -1;
             double minpointdist = std::numeric_limits<double>::max();
 
-            // lets set the carrot-goal in the corret place with this loop
+            // lets set the carrot-goal in the correct place with this loop
             while (currentCarrotPoseIndex_ < backwardsPlanPath_.size() && !inCarrotRange)
             {
                 computeCurrentEuclideanAndAngularErrorsToCarrotGoal(tfpose, lineardisterr, angleerr);
@@ -792,7 +792,7 @@ namespace cl_move_base_z
             else
             {
                 this->divergenceDetectionUpdate(tfpose);
-                // SANDARD AND PREFERED CASE ON NEW PLAN
+                // SANDARD AND PREFERRED CASE ON NEW PLAN
                 return true;
             }
         }

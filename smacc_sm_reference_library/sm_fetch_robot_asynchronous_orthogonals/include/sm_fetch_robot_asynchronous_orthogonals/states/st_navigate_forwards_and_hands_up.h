@@ -12,7 +12,7 @@ namespace sm_fetch_robot_asynchronous_orthogonals
         // TRANSITION TABLE
         typedef mpl::list<
                 Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StNavigateOriginAndHandsDown, SUCCESS>,
-                Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateForwardsAndHandsUp, ABORT> /*retry*/      
+                Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateForwardsAndHandsUp, ABORT> /*retry*/
                 >
             reactions;
 

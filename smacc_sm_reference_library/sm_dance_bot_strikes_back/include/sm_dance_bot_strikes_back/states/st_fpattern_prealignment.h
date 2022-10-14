@@ -8,10 +8,10 @@ struct StFpatternPrealignment : smacc::SmaccState<StFpatternPrealignment, MsDanc
 
 // TRANSITION TABLE
   typedef mpl::list<
-    
+
   Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, SS4::SsFPattern1>,
   Transition<EvCbFailure<CbAbsoluteRotate, OrNavigation>, StNavigateToWaypointsX>
-  
+
   >reactions;
 
 // STATE FUNCTIONS
@@ -20,9 +20,9 @@ struct StFpatternPrealignment : smacc::SmaccState<StFpatternPrealignment, MsDanc
     configure_orthogonal<OrNavigation, CbAbsoluteRotate>(0);
     configure_orthogonal<OrLED, CbLEDOff>();
   }
-  
+
   void runtimeConfigure()
-  { 
+  {
   }
 };
 }

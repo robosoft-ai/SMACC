@@ -87,14 +87,14 @@ void PlannerSwitcher::updatePlanners(bool subscribecallback)
   conf.strs.push_back(global_planner);
 
   srv_req.config = conf;
-  ROS_INFO("seting values of the dynamic reconfigure server");
+  ROS_INFO("setting values of the dynamic reconfigure server");
   bool error;
   do
   {
     bool res = ros::service::call("/move_base/set_parameters", srv_req, srv_resp);
     ros::spinOnce();
     ros::Duration(0.5).sleep();
-    
+
     error = false;
     auto baselocalPlannerIt = std::find_if(srv_resp.config.strs.begin(), srv_resp.config.strs.end(), [](auto sp){return sp.name == "base_local_planner";});
     auto baseglobalPlannerIt = std::find_if(srv_resp.config.strs.begin(), srv_resp.config.strs.end(), [](auto sp){return sp.name == "base_global_planner";});

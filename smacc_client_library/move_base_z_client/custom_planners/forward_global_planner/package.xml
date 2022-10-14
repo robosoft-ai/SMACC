@@ -18,7 +18,7 @@
   <depend>dynamic_reconfigure</depend>
   <depend>geometry_msgs</depend>
 
-  
+
   <export>
     <nav_core plugin="${prefix}/fgp_plugin.xml" />
     <rosdoc config="rosdoc.yaml" />

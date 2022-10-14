@@ -138,7 +138,7 @@ namespace smacc
                         ss << "        - object tag: " << eventGeneratorMsg.object_tag << std::endl;
                     }
                     stateMsg.event_generators.push_back(eventGeneratorMsg);
-                }                
+                }
             }
 
             ss << " State reactors:" << std::endl;

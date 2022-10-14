@@ -13,7 +13,7 @@ public:
     typedef mpl::list<
 
     Transition<EvLoopEnd<StiCMVCycleLoop>, StObserve>
-    
+
     >reactions;
 
 // STATE VARIABLES

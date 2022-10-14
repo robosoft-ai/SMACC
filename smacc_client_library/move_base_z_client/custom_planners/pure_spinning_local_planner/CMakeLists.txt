@@ -8,13 +8,13 @@ project(pure_spinning_local_planner)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 
-find_package(catkin REQUIRED 
-   roscpp 
-   tf costmap_2d 
-   geometry_msgs 
-   nav_core 
-   nav_msgs 
-   std_msgs 
+find_package(catkin REQUIRED
+   roscpp
+   tf costmap_2d
+   geometry_msgs
+   nav_core
+   nav_msgs
+   std_msgs
    pcl_ros
    dynamic_reconfigure)
 

@@ -25,7 +25,7 @@ public:
     typedef mpl::list<
 
     Transition<EvLoopEnd<StiState1>, StState4>
-    
+
     >reactions;
 
 // STATE VARIABLES

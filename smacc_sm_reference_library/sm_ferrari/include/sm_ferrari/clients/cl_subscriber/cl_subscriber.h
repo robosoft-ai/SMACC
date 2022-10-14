@@ -10,7 +10,7 @@ namespace cl_subscriber
 class ClSubscriber : public smacc::client_bases::SmaccSubscriberClient<std_msgs::Float32>
 {
     public:
-    ClSubscriber(std::string topicname): 
+    ClSubscriber(std::string topicname):
         smacc::client_bases::SmaccSubscriberClient<std_msgs::Float32>(topicname)
     {
     }

@@ -12,5 +12,3 @@ joint_states:
   #r_gripper_finger_joint:  0.0
   #l_gripper_finger_joint:  0.0
   # bellows_joint:  0.0
-
-
