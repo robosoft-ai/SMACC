@@ -23,6 +23,11 @@ public:
     {
         initialized_ = false;
     }
+    SmaccServiceClient(std::string service_name) 
+    {
+      serviceName_ = service_name;
+      initialized_ = false;
+    }
 
     virtual void initialize() override
     {
