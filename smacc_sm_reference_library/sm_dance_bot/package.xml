@@ -17,7 +17,6 @@
   <!-- Example: -->
   <!-- <url type="website">http://wiki.ros.org/dance_bot</url> -->
 
-  
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
