@@ -9,10 +9,10 @@ struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
   Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
-  
+
   >reactions;
 
 // STATE FUNCTIONS

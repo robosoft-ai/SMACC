@@ -4,11 +4,11 @@
   <version>0.9.1</version>
   <description>The sm_viewer_sim package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -18,23 +18,23 @@
   <!-- <url type="website">http://wiki.ros.org/sm_viewer_sim</url> -->
 
 
-  
 
 
-  
+
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
   <depend>move_base_z_client_plugin</depend>
-  
+
   <depend>multirole_sensor_client</depend>
   <depend>sr_all_events_go</depend>
   <depend>tf</depend>
   <depend>xterm</depend>
 
-  
+
   <export>
-    
+
 
   </export>
 </package>

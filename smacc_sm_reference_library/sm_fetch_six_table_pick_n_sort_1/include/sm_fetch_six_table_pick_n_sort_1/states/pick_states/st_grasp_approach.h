@@ -33,7 +33,7 @@ struct StGraspApproach : smacc::SmaccState<StGraspApproach, SS>
 
     void onExit(ABORT)
     {
-        ros::Duration(2).sleep();        
+        ros::Duration(2).sleep();
     }
 };
 } // namespace pick_states

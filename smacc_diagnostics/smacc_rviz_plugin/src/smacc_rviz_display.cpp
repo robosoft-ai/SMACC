@@ -69,7 +69,7 @@ SmaccRvizDisplay::SmaccRvizDisplay()
                                                     "current smacc state",
                                                     this, SLOT( updateCurrentState() ));
 
-  
+
   topic_property_ = new rviz::RosTopicProperty( "Topic", "",
                                             "", "",
                                             this, SLOT( updateTopic() ));
@@ -132,7 +132,7 @@ void SmaccRvizDisplay::reset()
 }
 
 void SmaccRvizDisplay::updateCurrentState()
-{  
+{
 }
 
 // This is our callback to handle an incoming message.

@@ -43,7 +43,7 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
                                                                EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>
                                                             >>();
 
-      
+
       //srAllSensorsReady->addInputEvent<EvTopicMessage<CbLidarSensor, OrObstaclePerception>>();
       //srAllSensorsReady->addInputEvent<EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>>();
 

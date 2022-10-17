@@ -11,7 +11,7 @@ public:
     virtual void onInitialize() override
     {
         auto clKeyboard = this->createClient<cl_keyboard::ClKeyboard>();
-        
+
         //ClKeyboard.queueSize = 1;
         clKeyboard->initialize();
     }

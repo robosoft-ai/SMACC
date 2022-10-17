@@ -298,7 +298,7 @@
 
   <!-- Bring in simulation data for Gazebo. -->
   <xacro:include filename="$(find ridgeback_description)/urdf/ridgeback.gazebo" />
-  
+
   <!-- Optional standard accessories, including their simulation data. The rendering
        of these into the final description is controlled by optenv variables, which
        default each one to off.-->

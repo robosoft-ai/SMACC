@@ -19,7 +19,7 @@ struct StState4 : smacc::SmaccState<StState4, MsRun>
     void runtimeConfigure()
     {
     }
-    
+
     void onEntry()
     {
         ROS_INFO("On Entry!");

@@ -1,4 +1,4 @@
 k_betta: 1.0
-yaw_goal_tolerance: 0.02   
+yaw_goal_tolerance: 0.02
 max_angular_z_speed: 2.0 # rad/s
 intermediate_goals_yaw_tolerance: 0.04

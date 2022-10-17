@@ -71,7 +71,7 @@ private:
   std::vector<geometry_msgs::PoseStamped> plan_;
 
   dynamic_reconfigure::Server<::pure_spinning_local_planner::PureSpinningLocalPlannerConfig> paramServer_;
-  
+
 
   double k_betta_;
   bool goalReached_;

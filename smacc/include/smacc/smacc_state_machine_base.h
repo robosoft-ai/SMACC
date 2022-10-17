@@ -58,7 +58,7 @@ public:
         ROS_INFO("[SmaccStateMachine] initiate_impl");
         auto shortname =  smacc::utils::cleanShortTypeName(typeid(DerivedStateMachine));
 
-        this->initializeROS(shortname);        
+        this->initializeROS(shortname);
 
         ROS_INFO("[SmaccStateMachine] Initializing ROS communication mechanisms");
         this->onInitialized();

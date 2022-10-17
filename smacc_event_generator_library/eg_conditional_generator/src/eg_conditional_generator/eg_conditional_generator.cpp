@@ -43,6 +43,6 @@ namespace smacc
         {
             updatePredicate_ = updatePredicate;
         }
-        
+
     } // namespace state_reactors
 } // namespace smacc

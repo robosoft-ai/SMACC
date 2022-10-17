@@ -60,7 +60,7 @@ public:
 
     void runtimeConfigure()
     {
-        
+
         this->iteration_count = 0;
 
         cl_move_base_z::ClMoveBaseZ *robot;

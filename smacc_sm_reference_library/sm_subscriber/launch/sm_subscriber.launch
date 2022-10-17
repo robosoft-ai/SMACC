@@ -2,5 +2,5 @@
     <!-- <env name="ROSCONSOLE_CONFIG_FILE" value="$(find sm_subscriber)/config/rosconsole.config" /> -->
     <rosparam command="load" file="$(find sm_subscriber)/config/sm_subscriber_config.yaml" />
     <node pkg="sm_subscriber" type="sm_subscriber_node" name="sm_subscriber" output="screen"/>
-    <node pkg="sm_subscriber" type="numbers_publisher_node" name="sm_numbers_publisher" output="screen"/>    
+    <node pkg="sm_subscriber" type="numbers_publisher_node" name="sm_numbers_publisher" output="screen"/>
 </launch>

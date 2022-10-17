@@ -53,15 +53,15 @@
   <depend>smacc</depend>
   <depend>actionlib</depend>
   <depend>actionlib_msgs</depend>
-  <depend>move_base_z_client_plugin</depend>  
+  <depend>move_base_z_client_plugin</depend>
   <depend>xterm</depend>
-  
-  
-  
+
+
+
 
   <depend>ros_publisher_client</depend>
   <depend>multirole_sensor_client</depend>
-  
+
   <depend>sr_all_events_go</depend>
   <depend>sr_event_countdown</depend>
   <depend>sr_conditional</depend>
@@ -69,7 +69,7 @@
 
   <depend>ridgeback_gazebo</depend>
   <depend>ridgeback_navigation</depend>
-  
+
   <depend>tf</depend>¡
 
   <!-- The export tag contains other, unspecified, tags -->

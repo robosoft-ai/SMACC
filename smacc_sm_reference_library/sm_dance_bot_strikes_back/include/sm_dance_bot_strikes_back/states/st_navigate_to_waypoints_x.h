@@ -22,7 +22,7 @@ struct StNavigateToWaypointsX : smacc::SmaccState<StNavigateToWaypointsX, MsDanc
   Transition<EvWaypoint3<ClMoveBaseZ, OrNavigation>, StFpatternPrealignment, TRANSITION_4>,
   Transition<EvWaypoint4<ClMoveBaseZ, OrNavigation>, StSpatternPrealignment, TRANSITION_5>,
   Transition<EvCbFailure<ClMoveBaseZ, OrNavigation>, StNavigateToWaypointsX>
-  
+
   >reactions;
 
   // STATE FUNCTIONS

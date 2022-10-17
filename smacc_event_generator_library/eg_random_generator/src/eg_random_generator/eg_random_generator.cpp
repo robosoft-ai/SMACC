@@ -5,7 +5,7 @@ namespace smacc
     namespace state_reactors
     {
         EgRandomGenerator::EgRandomGenerator(RandomGenerateReactorMode mode, double evAMin, double evAMax, double evBMin, double evBMax, double evCMin, double evCMax)
-            : 
+            :
               mode_(mode),
               evAMin_(evAMin),
               evAMax_(evAMax),

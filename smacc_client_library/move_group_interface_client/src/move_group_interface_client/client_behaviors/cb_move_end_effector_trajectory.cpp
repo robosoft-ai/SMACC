@@ -235,7 +235,7 @@ namespace cl_move_group_interface
 
         if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
         {
-            ROS_INFO_STREAM("[" << this->getName() << "] motion execution succedded");
+            ROS_INFO_STREAM("[" << this->getName() << "] motion execution succeeded");
             movegroupClient_->postEventMotionExecutionSucceded();
             this->postSuccessEvent();
         }
@@ -382,7 +382,7 @@ namespace cl_move_group_interface
 
     void CbMoveEndEffectorTrajectory::generateTrajectory()
     {
-        // bypass current trajectory, overriden in derived classes
+        // bypass current trajectory, overridden in derived classes
         // this->endEffectorTrajectory_ = ...
     }
 

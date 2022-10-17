@@ -36,4 +36,3 @@ struct SmRidgebackBarrelSearch2
 //STATES
 #include <sm_ridgeback_barrel_search_2/states/st_detect_items.h>
 #include <sm_ridgeback_barrel_search_2/states/st_navigate_to_waypoint_x.h>
-

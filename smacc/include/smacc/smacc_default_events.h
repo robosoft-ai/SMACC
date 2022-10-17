@@ -126,7 +126,7 @@ struct EvActionRejected : sc::event<EvActionRejected<TSource, TOrthogonal>>
 template <typename StateType>
 struct EvSequenceFinished : sc::event<EvSequenceFinished<StateType>>
 {
-  
+
 };
 
 template <typename TSource>

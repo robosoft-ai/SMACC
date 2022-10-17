@@ -9,13 +9,13 @@ struct State2 : smacc::SmaccState<State2, SmAtomicServices>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     Transition<EvServiceRequestReceieved<CbServiceServer, OrServices>, State1, SUCCESS>
-    
+
     >reactions;
 
-    
-// STATE FUNCTIONS   
+
+// STATE FUNCTIONS
     static void staticConfigure()
     {
         configure_orthogonal<OrServices, CbServiceServer>();
@@ -25,7 +25,7 @@ struct State2 : smacc::SmaccState<State2, SmAtomicServices>
     {
         ROS_INFO("Entering State2");
     }
-       
+
     void onEntry()
     {
         ROS_INFO("On Entry!");
@@ -35,6 +35,6 @@ struct State2 : smacc::SmaccState<State2, SmAtomicServices>
     {
         ROS_INFO("On Exit!");
     }
-  
+
 };
 }

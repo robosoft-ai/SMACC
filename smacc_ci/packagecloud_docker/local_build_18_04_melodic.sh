@@ -1,8 +1,8 @@
 export ROS_VERSION_NAME="melodic"
 export UBUNTU_VERSION="bionic"
-GITHUB_USER="$1" 
-GITHUB_TOKEN="$2" 
-PACKAGE_CLOUD_USER="$3" 
+GITHUB_USER="$1"
+GITHUB_TOKEN="$2"
+PACKAGE_CLOUD_USER="$3"
 PACKAGE_CLOUD_TOKEN="$4"
 
 source /opt/ros/melodic/setup.bash --extend

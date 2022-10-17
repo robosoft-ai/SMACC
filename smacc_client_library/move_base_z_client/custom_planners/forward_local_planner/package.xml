@@ -19,7 +19,7 @@
   <depend>std_msgs</depend>
   <depend>roscpp</depend>
   <depend>tf</depend>
-  
+
   <export>
     <nav_core plugin="${prefix}/flp_plugin.xml" />
     <rosdoc config="rosdoc.yaml" />

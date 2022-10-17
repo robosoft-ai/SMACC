@@ -9,13 +9,13 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
 // DECLARE CUSTOM OBJECT TAGS
    struct ON_SENSORS_AVAILABLE : SUCCESS{};
    struct SrAcquireSensors;
-   
+
 // TRANSITION TABLE
    typedef mpl::list<
-      
+
    Transition<EvAllGo<SrAllEventsGo, SrAcquireSensors>, StEventCountDown, ON_SENSORS_AVAILABLE>,
    Transition<EvGlobalError, MsDanceBotRecoveryMode>
-   
+
    >reactions;
 
 // STATE FUNCTIONS

@@ -12,16 +12,16 @@ struct StiFPatternForward2 : smacc::SmaccState<StiFPatternForward2<SS>, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>> 
-  
+
+  Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StiFPatternStartLoop<SS>>
+
   >reactions;
 
 // STATE FUNCTIONS
   static void staticConfigure()
   {
   }
-  
+
   void runtimeConfigure()
   {
     auto &superstate = TSti::template context<SS>();

@@ -4,11 +4,11 @@
   <version>0.9.1</version>
   <description>The sm_three_some package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -18,14 +18,14 @@
   <!-- <url type="website">http://wiki.ros.org/sm_three_some</url> -->
 
 
-  
 
 
-  
+
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>smacc</depend>
   <depend>multirole_sensor_client</depend>
-  <depend>sr_all_events_go</depend>  
+  <depend>sr_all_events_go</depend>
   <depend>std_msgs</depend>
 
   <depend>ros_timer_client</depend>
@@ -33,9 +33,9 @@
   <depend>keyboard_client</depend>
   <depend>xterm</depend>
 
-  
+
   <export>
-    
+
 
   </export>
 </package>

@@ -7,12 +7,12 @@ struct StStarting : smacc::SmaccState<StStarting, MsRun>
 
 // TRANSITION TABLE
     typedef mpl::list<
-   
+
     // Transition<EvAllGo<SrAllEventsGo>, StExecute>,
     // Keyboard events
     // Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StIdle>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StExecute, SUCCESS>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
@@ -24,10 +24,10 @@ struct StStarting : smacc::SmaccState<StStarting, MsRun>
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
 
         // Create State Reactor
-        
 
-        auto sbAll = static_createStateReactor<SrAllEventsGo, 
-                                                smacc::state_reactors::EvAllGo<SrAllEventsGo>, 
+
+        auto sbAll = static_createStateReactor<SrAllEventsGo,
+                                                smacc::state_reactors::EvAllGo<SrAllEventsGo>,
                                                 mpl::list<EvTimer<CbTimer, OrTimer>, EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>> >();
 
         //auto sbAll = static_createStateReactor<SrAllEventsGo>();

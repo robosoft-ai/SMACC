@@ -10,7 +10,7 @@
 namespace smacc {
 namespace client_bases {
 template <typename TService>
-class SmaccServiceServerClient : public smacc::ISmaccClient 
+class SmaccServiceServerClient : public smacc::ISmaccClient
 {
   using TServiceRequest = typename TService::Request;
   using TServiceResponse = typename TService::Response;
@@ -18,7 +18,7 @@ class SmaccServiceServerClient : public smacc::ISmaccClient
  public:
   boost::optional<std::string> serviceName_;
   SmaccServiceServerClient() { initialized_ = false; }
-  SmaccServiceServerClient(std::string service_name) 
+  SmaccServiceServerClient(std::string service_name)
   {
     serviceName_ = service_name;
     initialized_ = false;
@@ -62,7 +62,7 @@ class SmaccServiceServerClient : public smacc::ISmaccClient
     auto ret_val = onServiceRequestReceived_(req, response);
     if(!ret_val)    // Check if response is empty
     {
-      ROS_WARN("No return value receieved from service call. Are you returning a value?");
+      ROS_WARN("No return value received from service call. Are you returning a value?");
       return false;
     }
     res = *response;

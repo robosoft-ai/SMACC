@@ -16,7 +16,7 @@ namespace cl_move_base_z
   public:
     boost::optional<geometry_msgs::Point> goalPosition;
     boost::optional<float> goalYaw;
-    
+
     //boost::optional<float> goalToleranceXY; // not implemented yet
     //boost::optional<float> yawTolerance; // not implemented yet
 
@@ -28,7 +28,7 @@ namespace cl_move_base_z
 
     virtual void onEntry();
 
-    // auxiliar function that defines the motion that is requested to the move_base action server
+    // auxiliary function that defines the motion that is requested to the move_base action server
     void execute();
 
     void readStartPoseFromParameterServer(ClMoveBaseZ::Goal &goal);

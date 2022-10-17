@@ -6,7 +6,7 @@ int main(int argc, char** argv)
   ros::init(argc, argv, "numbers_publisher");
 
   ros::NodeHandle nh_;
-  
+
   auto pub = nh_.advertise<std_msgs::UInt16>("/numbers", 1);
 
   ros::Rate r(0.5);

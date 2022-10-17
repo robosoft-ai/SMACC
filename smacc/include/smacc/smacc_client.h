@@ -73,7 +73,7 @@ protected:
 // it is called after the client initialization, provides information about the orthogonal it is located in
     template <typename TOrthogonal, typename TSourceObject>
     void onOrthogonalAllocation() {}
-    
+
     // components
     std::map<ComponentKey, std::shared_ptr<smacc::ISmaccComponent>> components_;
 

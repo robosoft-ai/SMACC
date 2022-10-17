@@ -51,7 +51,7 @@ public:
         return this->finaltype.substr(0, index);
     }
 
-    
+
     const std::string &getFullName()
     {
         return this->finaltype;

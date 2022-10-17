@@ -31,6 +31,6 @@ public:
   void runtimeConfigure()
   {
   }
-};  
+};
 
 }  // namespace sm_respira_1

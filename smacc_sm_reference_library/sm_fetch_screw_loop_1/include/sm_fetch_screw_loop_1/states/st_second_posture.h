@@ -12,7 +12,7 @@ namespace sm_fetch_screw_loop_1
         typedef mpl::list<
             Transition<EvCbSuccess<CbCircularPouringMotion, OrArm>, StInitialPosture, SUCCESS>,
 
-            /*POSIBLE ERRORS*/
+            /*POSSIBLE ERRORS*/
             Transition<EvIncorrectInitialPosition<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT>,
             Transition<EvJointDiscontinuity<CbCircularPouringMotion, OrArm>, StSecondPosture, ABORT> /*Retry*/,
             Transition<EvMoveGroupMotionExecutionFailed<CbCircularPouringMotion, OrArm>, StSecondPosture, ABORT> /*retry motion failure*/

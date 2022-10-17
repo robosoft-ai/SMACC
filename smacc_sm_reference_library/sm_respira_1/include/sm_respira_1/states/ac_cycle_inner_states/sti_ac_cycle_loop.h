@@ -10,9 +10,9 @@ public:
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiACCycleLoop>, StiACCycleInspire, CONTINUELOOP> 
-  
+
+  Transition<EvLoopContinue<StiACCycleLoop>, StiACCycleInspire, CONTINUELOOP>
+
   >reactions;
 
 // STATE FUNCTIONS

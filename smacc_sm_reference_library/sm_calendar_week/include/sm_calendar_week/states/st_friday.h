@@ -7,16 +7,16 @@ struct StFriday : smacc::SmaccState<StFriday, MsWorkweek>
 
 // TRANSITION TABLE
     typedef mpl::list<
-        
+
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, MsWeekend, PREEMPT>,
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, MsWeekend, SUCCESS>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer,  CbTimerCountdownOnce>(5);    
+        configure_orthogonal<OrTimer,  CbTimerCountdownOnce>(5);
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
@@ -33,6 +33,6 @@ struct StFriday : smacc::SmaccState<StFriday, MsWorkweek>
     {
         ROS_INFO("On Exit!");
     }
-    
+
 };
 } // namespace sm_calendar_week

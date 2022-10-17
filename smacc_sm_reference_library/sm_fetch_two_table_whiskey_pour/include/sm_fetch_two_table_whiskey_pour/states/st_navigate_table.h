@@ -32,8 +32,8 @@ namespace sm_fetch_two_table_whiskey_pour
             pivot.pose.position.x = 0.5;
             pivot.pose.position.y = 0.5;
             pivot.pose.position.z = 0.9;
-            
-            
+
+
             pivot.pose.orientation.w = 1;
             pivot.pose.orientation = tf::createQuaternionMsgFromYaw(M_PI/2.0);
             pivot.header.frame_id = "map";

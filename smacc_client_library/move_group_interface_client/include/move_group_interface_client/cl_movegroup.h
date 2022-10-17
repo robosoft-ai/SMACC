@@ -29,7 +29,7 @@ struct EvMoveGroupMotionExecutionFailed : sc::event<EvMoveGroupMotionExecutionFa
 };
 
 /*
-moveit_msgs/MoveItErrorCodes 
+moveit_msgs/MoveItErrorCodes
 ----------------------------
 int32 SUCCESS=1
 int32 FAILURE=99999
@@ -72,7 +72,7 @@ public:
   // the client behavior will overrite these default values in a copy of this object so that their changes
   // are not persinstent. In the other hand, if you change this client configuration, the parameters will be persistent.
   moveit::planning_interface::MoveGroupInterface moveGroupClientInterface;
-  
+
   moveit::planning_interface::PlanningSceneInterface planningSceneInterface;
 
   ClMoveGroup(std::string groupName);

@@ -27,7 +27,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in move_group_interface_client and other fixes
+* some improvements in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * minor change
 * Cleaning up Warnings
@@ -40,7 +40,7 @@ Forthcoming
 * improving sm_fetch_two_table_pick_n_place_1 demo
 * fixing functioning in moveit example
 * trying to improve the example
-* fixing brocken build
+* fixing broken build
 * refactoring sm_fetch_two_table_pick_n_place_1 example, and creating library sm_fetch_two_table_pick_n_place_1_z
 * progressing in moveit example
 * fixing broken build
@@ -72,7 +72,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in move_group_interface_client and other fixes
+* some improvements in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * minor change
 * Cleaning up Warnings
@@ -85,7 +85,7 @@ Forthcoming
 * improving sm_fetch_two_table_pick_n_place_1 demo
 * fixing functioning in moveit example
 * trying to improve the example
-* fixing brocken build
+* fixing broken build
 * refactoring sm_fetch_two_table_pick_n_place_1 example, and creating library sm_fetch_two_table_pick_n_place_1_z
 * progressing in moveit example
 * fixing broken build

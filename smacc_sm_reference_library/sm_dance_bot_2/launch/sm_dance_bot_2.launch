@@ -42,7 +42,7 @@
         <!-- set run mode -->
         <param name="run_mode" value="debug" />
         <!-- load flight plan -->
-        <param name="waypoints_plan" value="$(find sm_dance_bot_2)/config/move_base_client/waypoints_plan.yaml" />        
+        <param name="waypoints_plan" value="$(find sm_dance_bot_2)/config/move_base_client/waypoints_plan.yaml" />
     </group>
 
     <!-- state machine node -->
@@ -59,6 +59,6 @@
     <node pkg="sm_dance_bot_2" type="led_action_server_node" name="led_action_server_node" launch-prefix="$(arg server_nodes_xterms)" />
     <node pkg="sm_dance_bot_2" type="temperature_sensor_node" name="temperature_sensor_node" launch-prefix="$(arg server_nodes_xterms)" />
     <node pkg="sm_dance_bot_2" type="service_node_3.py" name="service_server_node" launch-prefix="$(arg server_nodes_xterms)" />
-    
+
     <!-- <node pkg="smacc_viewer" type="smacc_viewer_node.py" name="smacc_viewer" if="$(arg show_smacc_viewer)"/> -->
 </launch>

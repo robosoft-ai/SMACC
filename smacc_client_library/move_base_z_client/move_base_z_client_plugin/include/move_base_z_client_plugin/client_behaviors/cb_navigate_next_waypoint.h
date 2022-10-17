@@ -14,7 +14,7 @@ namespace cl_move_base_z
     {
     public:
         CbNavigateNextWaypoint();
-        
+
         virtual ~CbNavigateNextWaypoint();
 
         virtual void onEntry() override;

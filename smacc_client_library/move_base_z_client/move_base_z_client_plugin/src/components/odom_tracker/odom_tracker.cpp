@@ -27,7 +27,7 @@ OdomTracker::OdomTracker(std::string odomTopicName, std::string odomFrame)
   {
     ROS_INFO_STREAM("[OdomTracker] odomFrame:" << this->odomFrame_);
   }
-  ROS_INFO_STREAM("[OdomTracker] odomFrame overwriten by ros parameter:" << this->odomFrame_);
+  ROS_INFO_STREAM("[OdomTracker] odomFrame overwritten by ros parameter:" << this->odomFrame_);
 
   if (!nh.getParam("record_point_distance_threshold", recordPointDistanceThreshold_))
   {

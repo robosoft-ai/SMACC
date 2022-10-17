@@ -9,9 +9,9 @@ public:
 
 // TRANSITION TABLE
    typedef mpl::list<
-   
-   Transition<EvGlobalError, MsDanceBotRecoveryMode> 
-   
+
+   Transition<EvGlobalError, MsDanceBotRecoveryMode>
+
    >reactions;
 };
 }

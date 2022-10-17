@@ -42,7 +42,7 @@ namespace sm_fetch_screw_loop_1
                 const int TABLE_COUNT = 6;
                 const int CUBE_COUNT = 10;
 
-                // order matters, since gazeboPerception udpates sceneState
+                // order matters, since gazeboPerception updates sceneState
                 sceneState_ = this->createComponent<CpSceneState, TSourceObject, TOrthogonal>(CUBE_COUNT, TABLE_COUNT);
                 gazeboPerceptionSimulation_ = this->createComponent<CpSimulatedGazeboPerception, TSourceObject, TOrthogonal>();
             }

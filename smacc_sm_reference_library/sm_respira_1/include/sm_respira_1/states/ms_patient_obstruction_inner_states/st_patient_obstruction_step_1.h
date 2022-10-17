@@ -8,12 +8,12 @@ struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, 
 // DECLARE CUSTOM OBJECT TAGS
     struct TIMEOUT : SUCCESS{};
     struct NEXT : SUCCESS{};
-    struct PREVIOUS : ABORT{}; 
+    struct PREVIOUS : ABORT{};
 
 // TRANSITION TABLE
     typedef mpl::list<
 
-    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StPatientObstructionStep2, SUCCESS>    
+    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StPatientObstructionStep2, SUCCESS>
 
     >reactions;
 
@@ -29,7 +29,7 @@ struct StPatientObstructionStep1 : smacc::SmaccState<StPatientObstructionStep1, 
     void runtimeConfigure()
     {
     }
-    
+
     void onEntry()
     {
         ROS_INFO("On Entry!");

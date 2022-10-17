@@ -32,7 +32,7 @@ public:
   ros::Subscriber rosoutSub_;
   ros::Subscriber smaccTransitionSub_;
 
-  
+
   std::vector<std::shared_ptr<TestPolicy>> testPolicies;
   boost::signals2::signal<void(const rosgraph_msgs::Log&)> onRosOutMsg;
   boost::signals2::signal<void(const smacc_msgs::SmaccTransitionLogEntry&)> onSmaccTransition;
@@ -96,7 +96,7 @@ public:
         continue;
     }
   }
-  void sucess(std::string msg)
+  void success(std::string msg)
   {
     ROS_INFO_STREAM("SmaccRuntimeTestNode policy thrown success exit: " << msg);
     exit(-1);
@@ -146,9 +146,9 @@ class TimeoutFailureTestPolicy : public TestPolicy
   {
     auto now = ros::Time::now();
 
-    auto ellapsed = now - startTime_;
+    auto elapsed = now - startTime_;
 
-    if (ellapsed > timeout_)
+    if (elapsed > timeout_)
     {
       this->owner_->failure(std::string("timeout failure: ") + std::to_string(timeout_.toSec()));
     }
@@ -170,14 +170,14 @@ class ReachedStateSuccessTestPolicy : public TestPolicy
 
         if(msg.transition.destiny_state_name == targetStateName_)
         {
-            this->owner_->sucess(std::string("success destiny state ") + targetStateName_);
+            this->owner_->success(std::string("success destiny state ") + targetStateName_);
         }
     });
   }
 
   virtual void update()
   {
-  
+
   }
 };
 //---------------------------------------------------------------------------------------------------

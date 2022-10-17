@@ -6,13 +6,13 @@ namespace radial_motion_states
 struct StiRadialReturn : smacc::SmaccState<StiRadialReturn, SS>
 {
   using SmaccState::SmaccState;
-  
+
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvCbSuccess<CbUndoPathBackwards, OrNavigation>, StiRadialLoopStart, SUCCESS>,
   Transition<EvCbFailure<CbUndoPathBackwards, OrNavigation>, StiRadialEndPoint, ABORT>
-  
+
   >reactions;
 
 // STATE FUNCTIONS

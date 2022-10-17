@@ -7,16 +7,16 @@ struct StSaturday : smacc::SmaccState<StSaturday, MsWeekend>
 
 // TRANSITION TABLE
     typedef mpl::list<
-        
+
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StSunday, PREEMPT>,
     Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StSunday, SUCCESS> //,
-    
+
     >reactions;
 
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer,  CbTimerCountdownOnce>(5);   
+        configure_orthogonal<OrTimer,  CbTimerCountdownOnce>(5);
         configure_orthogonal<OrKeyboard, CbDefaultKeyboardBehavior>();
     }
 
