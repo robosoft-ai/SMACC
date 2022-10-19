@@ -217,7 +217,7 @@ def remove_debian_files(repo_owner, reponame, osname, osversion, debianfiles):
 # ------------------------ SMACC PACKAGES -----------------------
 
 
-def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, action, packages: list):
+def create_and_push_smacc_debians(osname, osversion, rosversion, reponame, action, packages):
     workspace_source_folder = os.path.join(workspace_folder, relative_smacc_folder)
     identified_install_packages = get_identified_packages(workspace_folder)
 
