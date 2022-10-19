@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <package format="2">
    <name>backward_local_planner</name>
-   <version>0.9.1</version>
+   <version>0.9.3</version>
    <description>The backward_local_planner package.</description>
 
    <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>
