@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # /bin/python
-# Author: Pablo Iñigo Blasco (github: pabloinigoblasco) 2019
+# Author: Pablo Inigo Blasco (github: pabloinigoblasco) 2019
 
 
 import rospkg
