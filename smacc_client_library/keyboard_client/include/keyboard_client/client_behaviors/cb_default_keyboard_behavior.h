@@ -39,7 +39,7 @@ public:
                 postKeyEvent<EvKeyPressG<CbDefaultKeyboardBehavior, TObjectTag>>();
             else if (character == 'h')
                 postKeyEvent<EvKeyPressH<CbDefaultKeyboardBehavior, TObjectTag>>();
-            else if (character == 'y')
+            else if (character == 'i')
                 postKeyEvent<EvKeyPressI<CbDefaultKeyboardBehavior, TObjectTag>>();
             else if (character == 'j')
                 postKeyEvent<EvKeyPressJ<CbDefaultKeyboardBehavior, TObjectTag>>();
