@@ -1,5 +1,6 @@
 
 ## Travis CI: 
+[![Code Format & Quality](https://github.com/reelrbtx/SMACC/actions/workflows/code_quality.yml/badge.svg)](https://github.com/reelrbtx/SMACC/actions/workflows/code_quality.yml)
 
 | ROS Distro  | Travis Build Status | Documentation | Binary Packages |
 | ------------- | ------------- | ------------- | ------------- |
