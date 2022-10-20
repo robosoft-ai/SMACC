@@ -1,9 +1,9 @@
 name: bloom-release
 on:
   push:
-    paths:
-      - package.xml
-      - '*/package.xml'
+    # paths:
+    #   - package.xml
+    #   - '*/package.xml'
     branches:
       - noetic-devel
 
