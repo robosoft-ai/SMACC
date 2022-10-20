@@ -4,19 +4,43 @@ on:
     # paths:
     #   - package.xml
     #   - '*/package.xml'
-    branches:
-      - noetic-devel
+    branches: noetic-devel
 
 jobs:
+  default:
+    strategy:
+      fail-fast: false
+
+    env:
+      ROS_DISTRO: noetic
+      PRERELEASE: true
+      BASEDIR: ${{ github.workspace }}/.work
+
   bloom-release:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
+
+      # BASIC CODE QUALITY
+      - run: |
+        sudo apt-get update
+        sudo apt-get install -y clang-format-12
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.9
+      - uses: pre-commit/action@v3.0.0
+
+      # BLOOM PRERELEASE CHECK
+      - name: industrial_ci
+        uses: ros-industrial/industrial_ci@master
+
+      # BLOOM RELEASE
       - name: bloom release
         uses: at-wat/bloom-release-action@v0
         with:
-          ros_distro: noetic
+          ros_distro: ${{ env.ROS_DISTRO }}
           github_token_bloom: ${{ secrets.GITHUB_TOKEN_BLOOM }}
           github_user: pabloinigoblasco
           git_user: pabloinigoblasco
