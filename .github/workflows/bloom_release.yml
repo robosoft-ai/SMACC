@@ -1,4 +1,5 @@
 name: bloom-release
+
 on:
   push:
     # paths:
@@ -7,17 +8,13 @@ on:
     branches: noetic-devel
 
 jobs:
-  default:
-    strategy:
-      fail-fast: false
-
+  bloom-release:
+    runs-on: ubuntu-latest
     env:
       ROS_DISTRO: noetic
       PRERELEASE: true
       BASEDIR: ${{ github.workspace }}/.work
 
-  bloom-release:
-    runs-on: ubuntu-latest
     steps:
       - name: checkout
         uses: actions/checkout@v2
