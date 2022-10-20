@@ -6,6 +6,7 @@ on:
        - package.xml
        - '*/package.xml'
     branches: noetic-devel
+    workflow_dispatch:
 
 jobs:
   bloom-release:
