@@ -4,7 +4,8 @@
 name: pre-release
 
 on:
-  workflow_dispatch:
+  push: 
+    branches: noetic-devel
 
 jobs:
   default:
