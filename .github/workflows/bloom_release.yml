@@ -3,8 +3,8 @@ name: bloom-release
 on:
   push:
     paths:
-       - package.xml
-       - '*/package.xml'
+      #  - package.xml
+      #  - '*/package.xml'
     branches: noetic-devel
     workflow_dispatch:
 
