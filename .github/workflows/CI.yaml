@@ -1,0 +1,17 @@
+name: Continous Integration
+
+on:
+  push:
+  
+jobs:
+  CI:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ros-tooling/setup-ros@v0.3
+        with:
+            required-ros-distributions: noetic
+      - uses: ros-tooling/action-ros-ci@v0.2
+        with:
+          package-name: smacc smacc_msgs 
+          target-ros1-distro: noetic
