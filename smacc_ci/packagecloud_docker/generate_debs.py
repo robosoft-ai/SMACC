@@ -23,7 +23,6 @@ import shutil
 import re
 
 
-
 def build_deb_package(
     workspace_source_folder, package_name, packagepath, ubuntu_version, ros_distro, already_visited
 ):
