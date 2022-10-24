@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>sr_all_events_go</name>
-  <version>0.9.1</version>
+  <version>0.9.3</version>
   <description>The sr_all_events_go package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -18,16 +18,16 @@
   <!-- <url type="website">http://wiki.ros.org/sr_all_events_go</url> -->
 
 
-  
 
 
-  
+
+
   <buildtool_depend>catkin</buildtool_depend>
   <build_depend>smacc</build_depend>
 
-  
+
   <export>
-    
+
 
   </export>
 </package>

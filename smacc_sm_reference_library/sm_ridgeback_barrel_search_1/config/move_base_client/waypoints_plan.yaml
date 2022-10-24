@@ -1,53 +1,49 @@
 waypoints:
   # POINT intermediate
-  - position: 
+  - position:
       x: 95.77727932
       y: 45.6510791306
       z: 0.0
-    orientation: 
+    orientation:
       x: 0.0
       y: 0.0
       z: 0.246064998984
       w: 0.969253329257
 
   # point in the north
-  - position: 
+  - position:
       x: 107.077912308
       y: 62.5425247432
       z: 0.0
-    orientation: 
+    orientation:
       x: 0.0
       y: 0.0
       z: 0.258515919252
       w: 0.966006997642
-  - position: 
+  - position:
       x: 2.84283538036
       y: -7.32575383645
       z: 0.0
-    orientation: 
+    orientation:
       x: 0.0
       y: 0.0
       z: 0.997535137155
       w: 0.070168726239
-  - position: 
+  - position:
       x: -7.11926213432
       y: -7.9932196137
       z: 0.0
-    orientation: 
+    orientation:
       x: 0.0
       y: 0.0
       z: 0.439262428811
       w: 0.898358791706
-  - position: 
+  - position:
       x: -9.28439676048
       y: 1.41941615072
       z: 0.0
-    orientation: 
+    orientation:
       x: 0.0
       y: 0.0
       z: -0.228861605363
       w: 0.973458969649
-
-
-
- 

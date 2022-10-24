@@ -37,7 +37,7 @@ namespace sm_fetch_two_table_whiskey_pour
 
             void runtimeConfigure()
             {
-                
+
             }
 
             void onExit()

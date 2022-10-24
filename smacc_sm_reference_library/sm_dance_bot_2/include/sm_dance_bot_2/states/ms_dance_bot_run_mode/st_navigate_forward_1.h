@@ -12,7 +12,7 @@ using SmaccState::SmaccState;
   Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, StRotateDegrees2>,
   Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, ABORT>,
   Transition<EvActionPreempted<CbNavigateForward, OrNavigation>, StNavigateToWaypointsX, PREEMPT>
-  
+
   >reactions;
 
 // STATE FUNCTIONS

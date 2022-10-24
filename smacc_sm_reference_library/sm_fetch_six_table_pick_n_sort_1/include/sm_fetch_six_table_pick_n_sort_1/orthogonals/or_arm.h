@@ -63,7 +63,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
                 auto *graspingComponent = moveGroupClient->createComponent<GraspingComponent>();
                 graspingComponent->fingerTipNames = {"l_gripper_finger_link", "r_gripper_finger_link"};
 
-                // create 10 graspable cubes located exactly in the tf frames with the same name 
+                // create 10 graspable cubes located exactly in the tf frames with the same name
                 for (int i = 0; i < 10; i++)
                 {
                     graspingComponent->createGraspableBox("cube_" + std::to_string(i + 1), 0, 0, 0, 0.06, 0.06, 0.06);

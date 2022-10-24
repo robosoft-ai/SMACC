@@ -22,7 +22,7 @@ namespace cl_move_group_interface
         }
         else if(backIndex >= this->trajectoryHistory_.size())
         {
-            return false; 
+            return false;
         }
 
         trajectory = this->trajectoryHistory_[this->trajectoryHistory_.size() - 1 - backIndex].trajectory;

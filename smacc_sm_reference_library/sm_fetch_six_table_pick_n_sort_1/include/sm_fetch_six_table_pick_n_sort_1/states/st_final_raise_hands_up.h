@@ -10,7 +10,7 @@ struct StFinalRaiseHandsUp : smacc::SmaccState<StFinalRaiseHandsUp, SmFetchSixTa
 
     // TRANSITION TABLE
     typedef mpl::list<
-        
+
         Transition<EvCbFailure<CbMoveKnownState, OrArm>, StInitialPosture, ABORT> /*retry on failure*/
         >
         reactions;

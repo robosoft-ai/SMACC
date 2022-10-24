@@ -6,9 +6,9 @@ ClKeyboard::ClKeyboard() {
   topicName = "/keyboard_unicode";
 }
 
-ClKeyboard::~ClKeyboard() 
+ClKeyboard::~ClKeyboard()
 {
-  
+
 }
 
 void ClKeyboard::initialize() {
@@ -22,7 +22,7 @@ void ClKeyboard::initialize() {
 }
 
 void ClKeyboard::onKeyboardMessage(const std_msgs::UInt16 &unicode_keychar) {
-  
+
   postEventKeyPress(unicode_keychar);
 }
 } // namespace cl_keyboard

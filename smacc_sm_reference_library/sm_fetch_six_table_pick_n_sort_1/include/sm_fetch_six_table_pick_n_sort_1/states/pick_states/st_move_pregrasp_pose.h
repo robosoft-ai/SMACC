@@ -32,7 +32,7 @@ namespace sm_fetch_six_table_pick_n_sort_1
 
                 // --------------------------------------
                 this->requiresClient(moveGroup_);
-                
+
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
 

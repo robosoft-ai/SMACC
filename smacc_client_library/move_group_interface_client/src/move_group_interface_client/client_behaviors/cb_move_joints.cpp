@@ -36,7 +36,7 @@ namespace cl_move_group_interface
   {
     auto state = moveGroupInterface.getCurrentState();
     auto vnames = state->getVariableNames();
-    
+
     std::stringstream ss;
 
     for(auto& tgj: targetJoints)
@@ -76,10 +76,10 @@ namespace cl_move_group_interface
       auto executionResult = moveGroupInterface.execute(computedMotionPlan);
 
       auto statestr = currentJointStatesToString(moveGroupInterface, jointValueTarget_);
-      
+
       if (executionResult == moveit_msgs::MoveItErrorCodes::SUCCESS)
       {
-        ROS_INFO_STREAM("[" << this->getName() << "] motion execution succedded. Throwing success event. " << std::endl
+        ROS_INFO_STREAM("[" << this->getName() << "] motion execution succeeded. Throwing success event. " << std::endl
                                                                                               << statestr);
         movegroupClient_->postEventMotionExecutionSucceded();
         this->postSuccessEvent();

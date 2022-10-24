@@ -7,7 +7,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
-   
+
 namespace cl_move_base_z
 {
     geometry_msgs::PoseStamped makePureSpinningSubPlan(const geometry_msgs::PoseStamped& start, double dstRads, std::vector<geometry_msgs::PoseStamped>& plan, double puresSpinningRadStep=1000)
@@ -22,7 +22,7 @@ namespace cl_move_base_z
 
         double radstep = 0.005;
 
-        if( goalAngleOffset>=0) 
+        if( goalAngleOffset>=0)
         {
             // angle positive turn counterclockwise
             //ROS_INFO("pure spining counterclockwise");
@@ -33,7 +33,7 @@ namespace cl_move_base_z
                 //ROS_INFO("pure spining counterclockwise, current path yaw: %lf, dangle: %lf, angleoffset %lf, radstep %lf pathsize(%ld)", yaw, dangle, goalAngleOffset, radstep, plan.size());
                 p.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
                 plan.push_back(p);
-            }     
+            }
         }
         else
         {
@@ -47,10 +47,10 @@ namespace cl_move_base_z
                 //ROS_INFO("pure spining clockwise, yaw: %lf, dangle: %lf, angleoffset %lf radstep %lf", yaw, dangle, goalAngleOffset,radstep);
                 p.pose.orientation = tf::createQuaternionMsgFromYaw(yaw);
                 plan.push_back(p);
-            }     
+            }
         }
 
-        //ROS_INFO("pure spining end yaw: %lf", dstRads);        
+        //ROS_INFO("pure spining end yaw: %lf", dstRads);
         geometry_msgs::PoseStamped end= start;
         end.pose.orientation = tf::createQuaternionMsgFromYaw(dstRads);
         plan.push_back(end);
@@ -58,9 +58,9 @@ namespace cl_move_base_z
         return end;
     }
 
-    geometry_msgs::PoseStamped makePureStraightSubPlan(const geometry_msgs::PoseStamped& startOrientedPose, 
-                                                        const geometry_msgs::Point& goal, 
-                                                        double length, 
+    geometry_msgs::PoseStamped makePureStraightSubPlan(const geometry_msgs::PoseStamped& startOrientedPose,
+                                                        const geometry_msgs::Point& goal,
+                                                        double length,
                                                         std::vector<geometry_msgs::PoseStamped>& plan)
     {
         double dx = 0.01; // 1 cm
@@ -76,14 +76,14 @@ namespace cl_move_base_z
         for(double t=0; t <=1.0; t+=dt)
         {
             geometry_msgs::PoseStamped p = startOrientedPose;
-            
+
             p.pose.position.x =  startOrientedPose.pose.position.x *(1 - t) + goal.x * t;
             p.pose.position.y =  startOrientedPose.pose.position.y *(1 - t) + goal.y * t;
             p.pose.orientation = startOrientedPose.pose.orientation;
-            
+
             plan.push_back(p);
         }
-    
+
         return plan.back();
     }
 }

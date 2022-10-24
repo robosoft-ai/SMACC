@@ -24,7 +24,7 @@ public:
     typedef mpl::list<
 
     Transition<EvLoopEnd<StiRadialLoopStart>, StNavigateToWaypointsX, ENDLOOP>
-       
+
     >reactions;
 
     static constexpr int total_iterations() { return 32; }

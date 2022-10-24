@@ -5,7 +5,7 @@ Changelog for package move_group_interface_client
 Forthcoming
 -----------
 
-* progess on cubes collisions
+* progress on cubes collisions
 * adding threads to moveit client behaviors
 * some improvements in move_group_interface_client and examples
 * improving sm_moveit
@@ -19,7 +19,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in move_group_interface_client and other fixes
+* some improvements in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * testing the move joint behaviors
 * refactoring names and fixing broken build
@@ -27,11 +27,11 @@ Forthcoming
 * improving sm_moveit demo
 * fixing functioning in moveit example
 * trying to improve the example
-* fixing brocken build
+* fixing broken build
 * refactoring sm_moveit example, and creating library sm_moveit_z
 * Contributors: Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, pablo.inigo.blasco, pibgeus
 
-* progess on cubes collisions
+* progress on cubes collisions
 * adding threads to moveit client behaviors
 * some improvements in move_group_interface_client and examples
 * improving sm_moveit
@@ -45,7 +45,7 @@ Forthcoming
 * Merge branch 'feature/moving_melodic' into melodic-devel
 * Merge branch 'master' into melodic-devel
 * some changes for melodic
-* some improvments in move_group_interface_client and other fixes
+* some improvements in move_group_interface_client and other fixes
 * fixing smacc_viewer in melodic
 * testing the move joint behaviors
 * refactoring names and fixing broken build
@@ -53,6 +53,6 @@ Forthcoming
 * improving sm_moveit demo
 * fixing functioning in moveit example
 * trying to improve the example
-* fixing brocken build
+* fixing broken build
 * refactoring sm_moveit example, and creating library sm_moveit_z
 * Contributors: Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, pablo.inigo.blasco, pibgeus

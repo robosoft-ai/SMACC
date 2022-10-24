@@ -10,9 +10,9 @@ public:
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP> 
-  
+
+  Transition<EvLoopContinue<StiState1>, StiState2, CONTINUELOOP>
+
   >reactions;
 
 // STATE FUNCTIONS
@@ -37,12 +37,12 @@ public:
     ROS_INFO("LOOP START ON ENTRY");
     checkWhileLoopConditionAndThrowEvent(&StiState1::loopWhileCondition);
   }
-  
+
   void onExit()
   {
     ROS_INFO("On Exit!");
   }
-  
+
 };
 }
 }

@@ -13,7 +13,7 @@ namespace sm_fetch_two_table_whiskey_pour
             Transition<EvCbSuccess<CbUndoLastTrajectory, OrArm>, StReleaseGlass, SUCCESS>,
             Transition<EvCbFailure<CbUndoLastTrajectory, OrArm>, StReleaseGlass, ABORT>
 
-            /*POSIBLE ERRORS*/
+            /*POSSIBLE ERRORS*/
             //Transition<EvIncorrectInitialPosition<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT>,
             //Transition<EvJointDiscontinuity<CbCircularPouringMotion, OrArm>, SS3::SsRecoveryScrew, ABORT> /*Retry*/,
             //Transition<EvMoveGroupMotionExecutionFailed<CbCircularPouringMotion, OrArm>, StInitialPosture, ABORT> /*retry motion failure*/

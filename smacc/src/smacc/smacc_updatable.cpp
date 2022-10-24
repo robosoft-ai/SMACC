@@ -25,8 +25,8 @@ void ISmaccUpdatable::executeUpdate()
     if (periodDuration_)
     {
         auto now = ros::Time::now();
-        auto ellapsed = now - this->lastUpdate_;
-        update = ellapsed > *periodDuration_;
+        auto elapsed = now - this->lastUpdate_;
+        update = elapsed > *periodDuration_;
         if(update)
         {
             this->lastUpdate_ = now;

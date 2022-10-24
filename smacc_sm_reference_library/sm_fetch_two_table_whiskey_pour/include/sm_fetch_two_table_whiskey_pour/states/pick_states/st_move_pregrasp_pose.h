@@ -32,7 +32,7 @@ namespace sm_fetch_two_table_whiskey_pour
 
                 // --------------------------------------
                 this->requiresClient(moveGroup_);
-                
+
                 ClPerceptionSystem *perceptionSystem;
                 this->requiresClient(perceptionSystem);
 
@@ -49,7 +49,7 @@ namespace sm_fetch_two_table_whiskey_pour
                     cbMoveEndEffector->targetPose = pregraspPose;
                 }
             }
-        
+
 
         };
     } // namespace pick_states

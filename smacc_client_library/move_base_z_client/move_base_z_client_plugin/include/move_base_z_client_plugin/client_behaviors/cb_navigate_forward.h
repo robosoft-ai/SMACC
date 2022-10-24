@@ -20,7 +20,7 @@ namespace cl_move_base_z
         boost::optional<float> forwardSpeed;
 
         // this may be useful in the case you want to do a stright line with some orientation
-        // relative to some global reference (trying to solve the initial orientation error 
+        // relative to some global reference (trying to solve the initial orientation error
         // of the current orientation). If it is not set, the orientation of the straight line is
         // the orientation of the initial state.
         boost::optional<geometry_msgs::Quaternion> forceInitialOrientation;

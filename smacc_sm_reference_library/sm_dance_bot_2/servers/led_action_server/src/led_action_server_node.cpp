@@ -18,7 +18,7 @@
 typedef actionlib::SimpleActionServer<sm_dance_bot_2::LEDControlAction> Server;
 
 // This class describes a preemptable-on/off tool action server to be used from smacc
-// shows in rviz a sphere whoose color describe the current state (unknown, running, idle)
+// shows in rviz a sphere whose color describe the current state (unknown, running, idle)
 class LEDActionServer
 {
 public:
@@ -48,7 +48,7 @@ public:
 void publishFeedback()  // Note: "Action" is not appended to DoDishes here
 {
     sm_dance_bot_2::LEDControlFeedback feedback_msg;
-    
+
     as_->publishFeedback(feedback_msg);
 }
 
@@ -80,16 +80,16 @@ void execute(const sm_dance_bot_2::LEDControlGoalConstPtr& goal)  // Note: "Acti
     {
        // a new request is being executed, we will stop this one
        ROS_WARN("LEDActionServer request preempted. Forgetting older request.");
-       as_->setPreempted(); 
+       as_->setPreempted();
        return;
     }
-    
+
     publishFeedback();
     publishStateMarker();
     rate.sleep();
   }
 
-   // never reach succeded because were are interested in keeping the feedback alive
+   // never reach succeeded because were are interested in keeping the feedback alive
    as_->setSucceeded();
 }
 
@@ -106,7 +106,7 @@ void run()
   as_ = std::make_shared<Server>(n, "led_action_server", boost::bind(&LEDActionServer::execute, this,  _1), false);
   ROS_INFO("Starting Tool Action Server");
 
-  stateMarkerPublisher_ = n.advertise<visualization_msgs::MarkerArray>("tool_markers", 1); 
+  stateMarkerPublisher_ = n.advertise<visualization_msgs::MarkerArray>("tool_markers", 1);
 
   as_->start();
 
@@ -128,7 +128,7 @@ void publishStateMarker()
     marker.id = 0;
     marker.type = visualization_msgs::Marker::SPHERE;
     marker.action = visualization_msgs::Marker::ADD;
-    
+
     marker.scale.x = 0.2;
     marker.scale.y = 0.2;
     marker.scale.z = 0.2;
@@ -182,4 +182,3 @@ int main(int argc, char** argv)
 
   return 0;
 }
-

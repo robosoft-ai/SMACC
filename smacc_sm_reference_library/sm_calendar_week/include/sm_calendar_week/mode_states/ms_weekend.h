@@ -9,7 +9,7 @@ public:
 
 // TRANSITION TABLE
  //  typedef mpl::list<
-   
+
   // >reactions;
 };
 } // namespace sm_calendar_week

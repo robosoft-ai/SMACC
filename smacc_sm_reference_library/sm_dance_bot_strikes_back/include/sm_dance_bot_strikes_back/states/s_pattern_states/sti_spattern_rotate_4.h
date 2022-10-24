@@ -41,7 +41,7 @@ struct StiSPatternRotate4 : smacc::SmaccState<StiSPatternRotate4, SS>
         {
             // - offset because we are looking to the north and we have to turn clockwise
             absoluteRotateBehavior->absoluteGoalAngleDegree = superstate.initialStateAngle - 90 - offset;
-            
+
         }
     }
 };

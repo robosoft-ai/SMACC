@@ -23,7 +23,7 @@ namespace sm_fetch_screw_loop_1
         It also creates the tables and cubes collision sets for the motion planning process.
         */
         class CpSimulatedGazeboPerception : public smacc::ISmaccComponent
-        {        
+        {
         private:
             ros::Time startTime;
             ros::Duration readDelay;
@@ -39,11 +39,11 @@ namespace sm_fetch_screw_loop_1
 
         public:
             virtual void onInitialize() override
-            {                
+            {
                 tableCollision_ = true;
                 updatePeriod_ = ros::Duration(0.25);
                 startTime = ros::Time::now();
-                
+
                 // order is important, to avoid "preemption" of the callback before it is initialized
                 ros::NodeHandle nh;
                 gazeboStateSubscriber_ =
@@ -60,7 +60,7 @@ namespace sm_fetch_screw_loop_1
                 std::vector<tf::StampedTransform> tableTransforms;
                 this->propagateLinkStatesToTf(linksmsg, "table", "table_", "map", tableTransforms);
 
-                auto ellapsed = ros::Time::now() - this->lastUpdateStamp_;
+                auto elapsed = ros::Time::now() - this->lastUpdateStamp_;
             }
 
             /*

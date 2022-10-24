@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>pure_spinning_local_planner</name>
-  <version>0.9.1</version>
+  <version>0.9.3</version>
   <description>The pure_spinning_local_planner package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -30,7 +30,7 @@
   <depend>tf</depend>
   <depend>dynamic_reconfigure</depend>
 
-  
+
   <export>
     <nav_core plugin="${prefix}/pslp_plugin.xml" />
     <rosdoc config="rosdoc.yaml" />

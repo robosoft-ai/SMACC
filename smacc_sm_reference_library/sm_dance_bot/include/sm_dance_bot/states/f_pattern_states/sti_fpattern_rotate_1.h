@@ -9,12 +9,12 @@ struct StiFPatternRotate1 : smacc::SmaccState<StiFPatternRotate1<SS>, SS>
   typedef SmaccState<StiFPatternRotate1<SS>, SS> TSti;
   using TSti::SmaccState;
   using TSti::context_type;
-  
+
 // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward1<SS>> 
-  
+
+  Transition<EvCbSuccess<CbAbsoluteRotate, OrNavigation>, StiFPatternForward1<SS>>
+
   >reactions;
 
 // STATE FUNCTIONS

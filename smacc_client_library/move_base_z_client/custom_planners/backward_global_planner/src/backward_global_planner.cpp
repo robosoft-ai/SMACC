@@ -16,7 +16,7 @@
 #include <tf/transform_datatypes.h>
 #include <angles/angles.h>
 #include <forward_global_planner/move_base_z_client_tools.h>
-          
+
 //register this planner as a BaseGlobalPlanner plugin
 PLUGINLIB_EXPORT_CLASS(cl_move_base_z::backward_global_planner::BackwardGlobalPlanner, nav_core::BaseGlobalPlanner);
 
@@ -109,7 +109,7 @@ bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseS
 
     geometry_msgs::PoseStamped pose;
     pose = start;
-    
+
     double dx = start.pose.position.x - goal.pose.position.x;
     double dy = start.pose.position.y - goal.pose.position.y;
 
@@ -189,7 +189,7 @@ bool BackwardGlobalPlanner::makePlan(const geometry_msgs::PoseStamped &start,
             break;
         }
     }
-    
+
     planPub_.publish(planMsg);
 
     // this was previously set to size() <= 1, but a plan with a single point is also a valid plan (the goal)

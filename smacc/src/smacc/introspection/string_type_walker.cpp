@@ -320,7 +320,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
 
     for (auto& item : unorderedTemplateParameters)
     {
-      ROS_DEBUG_STREAM(" - template paramter: " << item.second->getFullName());
+      ROS_DEBUG_STREAM(" - template parameter: " << item.second->getFullName());
       t->templateParameters.push_back(item.second);
     }
     ROS_DEBUG_STREAM("------------------");

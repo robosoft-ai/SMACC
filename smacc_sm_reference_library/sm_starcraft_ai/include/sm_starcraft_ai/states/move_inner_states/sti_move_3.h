@@ -10,15 +10,15 @@ struct StiMove3 : smacc::SmaccState<StiMove3, SS>
 // DECLARE CUSTOM OBJECT TAGS
   struct TIMEOUT : SUCCESS{};
   struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};  
+  struct PREVIOUS : ABORT{};
 
 // TRANSITION TABLE
   typedef mpl::list<
-    
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMove1, TIMEOUT>,  
+
+  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiMove1, TIMEOUT>,
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiMove2, PREVIOUS>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiMove1, NEXT>
-      
+
   >reactions;
 
  // STATE FUNCTIONS

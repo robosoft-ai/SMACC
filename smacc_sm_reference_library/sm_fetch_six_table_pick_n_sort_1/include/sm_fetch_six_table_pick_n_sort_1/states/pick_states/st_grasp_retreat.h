@@ -38,14 +38,14 @@ struct StGraspRetreat : smacc::SmaccState<StGraspRetreat, SS>
 
     void onEntry()
     {
-        
+
     }
 
     void onExit(SUCCESS)
     {
         ClMoveGroup *moveGroup;
         this->requiresClient(moveGroup);
-        
+
         moveGroup->getComponent<CpConstraintTableWorkspaces>()->setBigTableCollisionVolume();
     }
 };

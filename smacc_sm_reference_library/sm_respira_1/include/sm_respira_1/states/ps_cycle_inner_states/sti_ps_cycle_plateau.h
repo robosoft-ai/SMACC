@@ -10,18 +10,18 @@ struct StiPSCyclePlateau : smacc::SmaccState<StiPSCyclePlateau, SsPSCycle>
 // DECLARE CUSTOM OBJECT TAGS
   struct TIMEOUT : SUCCESS{};
   struct NEXT : SUCCESS{};
-  struct PREVIOUS : ABORT{};  
+  struct PREVIOUS : ABORT{};
 
 // TRANSITION TABLE
   typedef mpl::list<
-    
-  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleExpire, TIMEOUT>,  
+
+  Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiPSCycleExpire, TIMEOUT>,
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleInspire, PREVIOUS>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiPSCycleExpire, NEXT>,
 
   Transition<EvKeyPressX<CbDefaultKeyboardBehavior, OrKeyboard>, MsLeakyLung, ABORT>,
   Transition<EvKeyPressZ<CbDefaultKeyboardBehavior, OrKeyboard>, MsPatientObstruction, ABORT>
-    
+
   >reactions;
 
  // STATE FUNCTIONS

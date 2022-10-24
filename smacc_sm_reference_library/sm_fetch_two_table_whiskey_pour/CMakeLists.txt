@@ -124,14 +124,14 @@ include_directories(
 #   src/${PROJECT_NAME}/sm_fetch_two_table_whiskey_pour.cpp
 #)
 
-add_executable(${PROJECT_NAME}_node 
+add_executable(${PROJECT_NAME}_node
                      src/sm_fetch_two_table_whiskey_pour_node.cpp
                      src/sm_fetch_two_table_whiskey_pour/clients/gripper_client/cl_gripper.cpp
                      src/sm_fetch_two_table_whiskey_pour/clients/move_group_interface_client/components/cp_constraint_lateral_workspace.cpp
                      src/sm_fetch_two_table_whiskey_pour/clients/move_group_interface_client/components/cp_constraint_virtual_side_wall.cpp
                      src/sm_fetch_two_table_whiskey_pour/clients/move_group_interface_client/components/cp_constraint_tables_workspaces.cpp
                      )
-                     
+
 target_link_libraries(${PROJECT_NAME}_node ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 #############
@@ -150,7 +150,7 @@ install(PROGRAMS
 
 ## Mark executables for installation
 ## See http://docs.ros.org/melodic/api/catkin/html/howto/format1/building_executables.html
-install(TARGETS 
+install(TARGETS
   ${PROJECT_NAME}_node
    RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

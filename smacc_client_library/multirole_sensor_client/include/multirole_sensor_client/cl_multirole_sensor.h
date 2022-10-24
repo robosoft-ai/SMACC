@@ -84,7 +84,7 @@ public:
 protected:
   void resetTimer(const MessageType &msg)
   {
-    //reseting the timer
+    //resetting the timer
     this->timeoutTimer_.stop();
     this->timeoutTimer_.start();
   }

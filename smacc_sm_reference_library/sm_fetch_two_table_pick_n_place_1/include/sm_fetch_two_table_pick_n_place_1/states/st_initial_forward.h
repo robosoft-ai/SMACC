@@ -11,7 +11,7 @@ namespace sm_fetch_two_table_pick_n_place_1
 
             Transition<EvCbSuccess<CbNavigateForward, OrNavigation>, SS1::SsPickObject, SUCCESS>,
             Transition<EvCbFailure<CbNavigateForward, OrNavigation>, StInitialForward, ABORT>
-            
+
             >
             reactions;
 

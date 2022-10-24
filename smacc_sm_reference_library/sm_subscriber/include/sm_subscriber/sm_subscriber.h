@@ -4,7 +4,7 @@
 #include "orthogonals/or_subscriber.h"
 #include "orthogonals/or_timer.h"
 
-//CLIENTS 
+//CLIENTS
 #include "clients/cl_numbers_subscription/cl_numbers_subscription.h"
 #include <ros_timer_client/cl_ros_timer.h>
 

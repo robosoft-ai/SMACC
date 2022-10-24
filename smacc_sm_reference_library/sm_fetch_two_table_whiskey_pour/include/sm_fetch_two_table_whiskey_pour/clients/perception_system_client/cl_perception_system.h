@@ -42,7 +42,7 @@ namespace sm_fetch_two_table_whiskey_pour
             template <typename TOrthogonal, typename TSourceObject>
             void onOrthogonalAllocation()
             {
-                // order matters, since gazeboPerception udpates sceneState
+                // order matters, since gazeboPerception updates sceneState
                 sceneState_ = this->createComponent<CpSceneState, TSourceObject, TOrthogonal>(CUBE_COUNT, TABLE_COUNT);
                 gazeboPerceptionSimulation_ = this->createComponent<CpSimulatedGazeboPerception, TSourceObject, TOrthogonal>();
             }

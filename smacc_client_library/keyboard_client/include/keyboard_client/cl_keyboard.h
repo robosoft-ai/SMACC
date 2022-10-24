@@ -168,7 +168,7 @@ public:
         template <typename TOrthogonal, typename TSourceObject>
         void onOrthogonalAllocation()
         {
-                // call tothe base configuration to properly handling the message and initial message smacc events
+                // call to the base configuration to properly handling the message and initial message smacc events
                 smacc::client_bases::SmaccSubscriberClient<std_msgs::UInt16>::onOrthogonalAllocation<TOrthogonal, TSourceObject>();
 
                 postEventKeyPress = [=](auto unicode_keychar) {

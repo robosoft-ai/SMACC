@@ -9,10 +9,10 @@ namespace sm_ridgeback_barrel_search_1
 
         // TRANSITION TABLE
         typedef mpl::list<
-            
+
             Transition<EvCbSuccess<CbNavigateNextWaypoint, OrNavigation>, StDetectItems>,
             Transition<EvCbFailure<CbNavigateNextWaypoint, OrNavigation>, StNavigateToWaypointX>
-            
+
             >
             reactions;
 

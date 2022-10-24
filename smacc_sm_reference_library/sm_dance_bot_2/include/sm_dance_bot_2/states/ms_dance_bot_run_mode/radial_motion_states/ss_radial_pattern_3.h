@@ -22,7 +22,7 @@ public:
 
 // TRANSITION TABLE
     typedef mpl::list<
-        
+
     Transition<EvLoopEnd<StiRadialLoopStart>, StRotateDegrees4, ENDLOOP>
 
     >reactions;

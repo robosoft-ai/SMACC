@@ -10,7 +10,7 @@
 
 namespace smacc
 {
-    
+
 class ISmaccComponent
 {
 public:

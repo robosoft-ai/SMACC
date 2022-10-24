@@ -33,7 +33,7 @@ struct StMovePregraspPose : smacc::SmaccState<StMovePregraspPose, SS>
 
         ClPerceptionSystem *perceptionSystem;
         this->requiresClient(perceptionSystem);
-        
+
         auto pregraspPose = perceptionSystem->decidePickCubePose();
 
         this->computeCubeGraspingOrientation(pregraspPose);

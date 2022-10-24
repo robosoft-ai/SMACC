@@ -123,7 +123,7 @@ include_directories(
    #src/${PROJECT_NAME}/sr_event_countdown.cpp
    src/sr_event_countdown/sr_event_countdown.cpp
  )
- 
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries

@@ -14,11 +14,11 @@ struct StiBuild2 : smacc::SmaccState<StiBuild2, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
+
   Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StiBuild3, TIMEOUT>,
   Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StiBuild3, NEXT>,
   Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StiBuild1, PREVIOUS>
-  
+
   >reactions;
 
   // STATE FUNCTIONS
@@ -33,7 +33,7 @@ struct StiBuild2 : smacc::SmaccState<StiBuild2, SS>
   void runtimeConfigure()
   {
   }
-  
+
   void onEntry()
   {
     ROS_INFO("On Entry!");

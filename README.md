@@ -1,5 +1,5 @@
 
-## Travis CI: 
+## Travis CI:
 
 
 | ROS Distro  | Travis Build Status | Code Quality | Documentation | Binary Packages |
@@ -17,14 +17,14 @@
 
 # <img src="http://smacc.dev/wp-content/uploads/2019/07/SMACC-Logo-Pixelate-4-copy.png" width="30" align="left"/> SMACC
 
-SMACC is an event-driven, asynchronous, behavioral state machine library for real-time ROS (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner. 
+SMACC is an event-driven, asynchronous, behavioral state machine library for real-time ROS (Robotic Operating System) applications written in C++, designed to allow programmers to build robot control applications for multicomponent robots, in an intuitive and systematic manner.
 
 SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wiki.ros.org/smach). SMACC is built on top of the [Boost StateChart library](https://www.boost.org/doc/libs/1_53_0/libs/statechart/doc/index.html).
 
 
 ## Features
  *  ***Powered by ROS:*** SMACC has been developed specifically to work with ROS. It supports ROS topics, services and actions, right out of the box.
- *   ***Written in C++:*** Until now, ROS has lacked a library to develop task-level behavioral state machines in C++. Although libraries have been developed in scripting languages such as python, these are unsuitable for real-world industrial evironments where real-time requirements are demanded. 
+ *   ***Written in C++:*** Until now, ROS has lacked a library to develop task-level behavioral state machines in C++. Although libraries have been developed in scripting languages such as python, these are unsuitable for real-world industrial environments where real-time requirements are demanded.
  *   ***Orthogonals:*** Originally conceived by David Harel in 1987, orthogonality is absolutely crucial to developing state machines for complex robotic systems. This is because complex robots are always a collection of hardware devices which require communication protocols, start-up determinism, etc. With orthogonals, it is an intuitive and relatively straight forward exercise (at least conceptually;) to code a state machine for a robot comprising a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, for instance.
  *  ***Static State Machine Checking:*** One of the features that SMACC inherits from Boost Statechart is that you get compile time validation checking. This benefits developers in that the amount of runtime testing necessary to ship quality software that is both stable and safe is dramatically reduced. Our philosophy is "Wherever possible, let the compiler do it".
  *  ***State Machine Reference Library:*** With a constantly growing library of out-of-the-box reference state machines, (found in the folder [sm_reference_library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library)) guaranteed to compile and run, you can jumpstart your development efforts by choosing a reference machine that is closest to your needs, and then customize and extend to meet the specific requirements of your robotic application. All the while knowing that the library supports advanced functionalities that are practically universal among actual working robots.
@@ -32,15 +32,15 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
   *  ***Extensive Documentation:*** Although many ROS users are familiar with doxygen, our development team has spent a lot of time researching the more advanced features of doxygen such as uml style class diagrams and call graphs, and we've used them to document the SMACC library. Have a look to [our doxygen sites](https://reelrbtx.github.io/SMACC_Documentation/master/html/namespaces.html) and we think you'll be blown away at what Doxygen looks like when [it's done right](https://reelrbtx.github.io/SMACC_Documentation/master/html/classsmacc_1_1ISmaccStateMachine.html) and it becomes a powerful tool to research a codebase.
   *  ***SMACC Viewer:*** The SMACC library works out of the box with the SMACC Viewer. This allows developers to visualize and runtime debug the state machines they are working on. The SMACC Viewer is closed source, but is free and can be [installed](http://smacc.dev/smacc-viewer/) via apt-get. To view the SMACC Viewer in action, click [here](https://www.youtube.com/watch?v=WVt4M_teA5I) and [here](https://www.youtube.com/watch?v=fdy37WvC4FQ). Be sure to set the youtube video to 720p HD.
 
- 
+
 ## SMACC applications
-From it's inception, SMACC was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place. 
+From it's inception, SMACC was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place.
 
 <p align="center">
 <img src="https://github.com/reelrbtx/SMACC/blob/master/documentation/SMACC-Containers-3.jpg"  width="450" align="center"/>
 </p>
- 
- 
+
+
 ## Getting Started
 The easiest way to get started is by selecting one of the state machines in our [reference library](https://github.com/reelrbtx/SMACC/tree/master/smacc_sm_reference_library), and then hacking it to meet your needs.
 

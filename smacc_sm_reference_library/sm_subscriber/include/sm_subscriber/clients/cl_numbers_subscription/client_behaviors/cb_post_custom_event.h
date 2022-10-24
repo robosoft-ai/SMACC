@@ -17,7 +17,7 @@ public:
   {
     if (msg.data % 4 == 0)
     {
-      ROS_WARN_STREAM("**** [CbPostCustomEvent] MESSAGE RECEIVED NUMBER MULTIPE OF 4 "<< msg.data <<" , POSTING EvImportantMessage");
+      ROS_WARN_STREAM("**** [CbPostCustomEvent] MESSAGE RECEIVED NUMBER MULTIPLE OF 4 "<< msg.data <<" , POSTING EvImportantMessage");
       this->postEventImportantMessage(msg.data);
     }
   }

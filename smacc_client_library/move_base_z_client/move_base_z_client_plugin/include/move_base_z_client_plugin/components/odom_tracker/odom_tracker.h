@@ -23,7 +23,7 @@
 
 #include <dynamic_reconfigure/server.h>
 #include <move_base_z_client_plugin/OdomTrackerConfig.h>
-    
+
 namespace cl_move_base_z
 {
 namespace odom_tracker
@@ -94,7 +94,7 @@ protected:
     void reconfigCB(move_base_z_client_plugin::OdomTrackerConfig &config, uint32_t level);
 
     virtual void rtPublishPaths(ros::Time timestamp);
-    
+
 
     // this is called when a new odom message is received in record path mode
     virtual bool updateRecordPath(const nav_msgs::Odometry &odom);
@@ -147,7 +147,7 @@ protected:
     std::string currentPathTagName_="Initial State";
 
     std::mutex m_mutex_;
-    
+
 };
 
 /**

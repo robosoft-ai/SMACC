@@ -88,7 +88,7 @@ def getRootTypeInfo(inputtext):
             t.template_parameters, key=lambda e: e[0])]
 
     return roottype
-    
+
 inputtext = "smacc::Transition<Ev1<LidarSensor<sensor_msgs::LaserScan, std::allocator<none>>, EVTAG>, State1, TAG>"
 roottypeinfo = getRootTypeInfo(inputtext)
 

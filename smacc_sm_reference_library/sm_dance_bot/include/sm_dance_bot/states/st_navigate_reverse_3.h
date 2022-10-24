@@ -8,10 +8,10 @@ struct StNavigateReverse3 : smacc::SmaccState<StNavigateReverse3, MsDanceBotRunM
 
 // TRANSITION TABLE
    typedef mpl::list<
-   
+
    Transition<EvCbSuccess<CbNavigateBackwards, OrNavigation>, StNavigateToWaypoint1>,
    Transition<EvCbFailure<CbNavigateBackwards, OrNavigation>, StNavigateToWaypointsX>
-   
+
    >reactions;
 
 // STATE FUNCTIONS

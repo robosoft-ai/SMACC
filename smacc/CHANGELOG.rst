@@ -51,7 +51,7 @@ Forthcoming
 * progressing on keyboard
 * introducing the client concept and moving smacc topic subscriber to the smacc 'core' package
 * ClMultiroleSensor and TopicSubscriber
-* detaching substatebehaviors from compnent and renaming class refactoring
+* detaching substatebehaviors from component and renaming class refactoring
 * making smacc_viewer run and also refactoring smacc_state_info headers
 * Merge branch 'master' of https://github.com/reelrbtx/SMACC
 * minor changes
@@ -102,7 +102,7 @@ Forthcoming
 * Tool orthogonal line and wiki documentation
 * cleaning and refactoring smacc library
 * adding tool orthogonal line
-* Adapting to smacc feedback message improvemnts. Now, the transistions reacts on these action feedback messages, instead of action results
+* Adapting to smacc feedback message improvemnts. Now, the transitions reacts on these action feedback messages, instead of action results
 * minor changes on radial motion sample
 * feedback message support
 * refactoring, renamings, documenting smacc

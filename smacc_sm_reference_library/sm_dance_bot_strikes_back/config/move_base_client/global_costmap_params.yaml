@@ -12,4 +12,3 @@ global_costmap:
   rolling_window: false
   inflater_layer:
     inflation_radius: 0.6
-  

@@ -33,7 +33,7 @@ void ISmaccClientBehavior::postEvent()
     }
     else
     {
-         
+
         stateMachine_->template postEvent<EventType>(EventLifeTime::CURRENT_STATE);
     }
 }
@@ -61,7 +61,7 @@ void ISmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
 {
     if (stateMachine_ == nullptr)
     {
-        ROS_ERROR("Cannot use the requiresComponent funcionality before asigning the client behavior to an orthogonal. Try using the OnEntry method to capture required components.");
+        ROS_ERROR("Cannot use the requiresComponent funcionality before assigning the client behavior to an orthogonal. Try using the OnEntry method to capture required components.");
     }
     else
     {

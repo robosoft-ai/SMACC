@@ -12,13 +12,13 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
 // TRANSITION TABLE
     typedef mpl::list<
-   
+
    Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, StState3, TIMEOUT>,
     Transition<EvAllGo<SrAllEventsGo>, StState3>,
     // Keyboard events
     Transition<EvKeyPressP<CbDefaultKeyboardBehavior, OrKeyboard>, StState1, PREVIOUS>,
     Transition<EvKeyPressN<CbDefaultKeyboardBehavior, OrKeyboard>, StState3, NEXT>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
@@ -31,7 +31,7 @@ struct StState2 : smacc::SmaccState<StState2, MsRun>
 
         // Create State Reactor
         // auto sbAll = static_createStateReactor<SrAllEventsGo>();
-        
+
         auto sbAll = static_createStateReactor<smacc::state_reactors::SrAllEventsGo,
                                                smacc::state_reactors::EvAllGo<SrAllEventsGo>,
                                                mpl::list<

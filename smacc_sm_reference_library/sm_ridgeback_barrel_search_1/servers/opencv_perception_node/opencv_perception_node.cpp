@@ -44,7 +44,7 @@ int testImage(cv::Mat& input, cv::Mat& debugImage, std::string colorName, int hu
   }
 
   if(!blobs.empty())
-  { 
+  {
     for(auto& b: blobs)
     {
       cv::Rect r;
@@ -104,7 +104,7 @@ void update()
 void callback(const sensor_msgs::Image& img)
 {
   cv_bridge::CvImagePtr cv_image = cv_bridge::toCvCopy(img, "rgb8");
-  
+
   cv::Mat image = cv_image->image;
   cv_bridge::CvImage debugImageBridge;
   debugImageBridge.encoding = "rgb8";
@@ -115,12 +115,12 @@ void callback(const sensor_msgs::Image& img)
   {
     detectedColor = 1;
   }
-  
+
   if (testGreen(image, debugImageBridge.image) > 0)
   {
     detectedColor = 2;
   }
-  
+
   if (testBlue(image, debugImageBridge.image) > 0)
   {
     detectedColor = 3;

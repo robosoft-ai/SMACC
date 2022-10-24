@@ -49,7 +49,7 @@ class StiACCycleInspire;
 class StiACCyclePlateau;
 class StiACCycleExpire;
 class StiACCycleDwell;
-} 
+}
 
 class SsCMVCycle;
 
@@ -73,7 +73,7 @@ class StiPCCycleInspire;
 class StiPCCyclePlateau;
 class StiPCCycleExpire;
 class StiPCCycleDwell;
-} 
+}
 
 class SsPSCycle;
 namespace ps_cycle_inner_states
@@ -84,7 +84,7 @@ class StiPSCycleInspire;
 class StiPSCyclePlateau;
 class StiPSCycleExpire;
 class StiPSCycleDwell;
-} 
+}
 
 //STATES
 class StObserve;

@@ -9,9 +9,9 @@ struct StiRadialLoopStart : smacc::SmaccState<StiRadialLoopStart, SS>
 
 // TRANSITION TABLE
   typedef mpl::list<
-  
-  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP> 
-  
+
+  Transition<EvLoopContinue<StiRadialLoopStart>, StiRadialRotate, CONTINUELOOP>
+
   >reactions;
 
 // STATE FUNCTIONS

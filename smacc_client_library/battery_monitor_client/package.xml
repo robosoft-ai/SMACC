@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>battery_monitor_client</name>
-  <version>0.9.1</version>
+  <version>0.9.3</version>
   <description>The battery_monitor_client package</description>
 
-  
+
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
 
-  
+
   <license>BSD-3</license>
 
 
@@ -18,16 +18,16 @@
   <!-- <url type="website">http://wiki.ros.org/battery_monitor_client</url> -->
 
 
-  
 
 
-  
+
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>smacc</depend>
 
-  
+
   <export>
-    
+
 
   </export>
 </package>

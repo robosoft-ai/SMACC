@@ -34,8 +34,8 @@ struct StAcquireSensors : smacc::SmaccState<StAcquireSensors, MsDanceBotRunMode>
       configure_orthogonal<OrUpdatablePublisher, cl_ros_publisher::CbDefaultPublishLoop>();
 
       // Create State Reactor
-      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo, 
-                                                         smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>, 
+      auto srAllSensorsReady = static_createStateReactor<SrAllEventsGo,
+                                                         smacc::state_reactors::EvAllGo<SrAllEventsGo, SrAcquireSensors>,
                                                          mpl::list<
                                                                    EvTopicMessage<CbLidarSensor, OrObstaclePerception>,
                                                                    EvTopicMessage<CbConditionTemperatureSensor, OrTemperatureSensor>

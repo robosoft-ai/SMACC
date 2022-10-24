@@ -116,7 +116,7 @@
             <scale>1 1 1</scale>
           </mesh>
         </geometry>
-        
+
       </collision>
     </link> -->
     <static>0</static>

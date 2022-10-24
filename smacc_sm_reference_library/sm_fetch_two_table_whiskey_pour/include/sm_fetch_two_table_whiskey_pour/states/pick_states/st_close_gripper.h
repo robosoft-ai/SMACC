@@ -51,11 +51,11 @@ namespace sm_fetch_two_table_whiskey_pour
             // planningSceneInterface.applyCollisionObject(cubeCollision);
 
             // // collisionObjects.push_back(cubeCollision);
-            
+
             // std::vector<std::string> touch_links{"l_gripper_finger_link", "r_gripper_finger_link"};
             // moveGroupClient->moveGroupClientInterface.attachObject("collisioncube", "gripper_link", touch_links);
             // //moveGroupClient->moveGroupClientInterface.setSupportSurfaceName("table_1");
-            
+
             moveGroupClient->getComponent<CpConstraintTableWorkspaces>()->disableTableCollisionVolume();
 
             ros::Duration(1.0).sleep();

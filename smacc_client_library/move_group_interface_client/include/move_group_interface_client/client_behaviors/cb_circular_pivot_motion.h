@@ -3,7 +3,7 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-#pragma once 
+#pragma once
 
 #include "cb_move_end_effector_trajectory.h"
 #include "tf/transform_datatypes.h"

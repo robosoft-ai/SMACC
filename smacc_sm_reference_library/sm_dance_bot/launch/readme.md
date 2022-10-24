@@ -4,7 +4,7 @@
 Make sure that you have installed all the dependencies. For example this demo depends on rigeback robot simulation.
 
 ```
-rosdep install --from-paths src --ignore-src -r -y 
+rosdep install --from-paths src --ignore-src -r -y
 ```
 
 After that you have to build the smacc ros workspace using catkin_make.

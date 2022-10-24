@@ -12,14 +12,14 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
 
 // TRANSITION TABLE
     typedef mpl::list<
-    
+
     // Transition<EvTimer<CbTimerCountdownOnce, OrTimer>, SS1::SsMove, TIMEOUT>,
     // Transition<smacc::EvTopicMessage<CbWatchdogSubscriberBehavior, OrSubscriber>, SS1::SsMove>,
     // Keyboard events
     Transition<EvKeyPressA<CbDefaultKeyboardBehavior, OrKeyboard>, SS1::SsMove, MOVE>,
     Transition<EvKeyPressB<CbDefaultKeyboardBehavior, OrKeyboard>, SS2::SsBuild, BUILD>,
     Transition<EvKeyPressC<CbDefaultKeyboardBehavior, OrKeyboard>, SS3::SsAttack, ATTACK>
-    
+
     >reactions;
 
 // STATE FUNCTIONS
@@ -34,7 +34,7 @@ struct StObserve : smacc::SmaccState<StObserve, MsRun>
     void runtimeConfigure()
     {
     }
-    
+
     void onEntry()
     {
         ROS_INFO("On Entry!");

@@ -104,7 +104,7 @@
   <gazebo reference="torso_lift_joint">
     <implicitSpringDamper>1</implicitSpringDamper>
   </gazebo>
-  
+
 
   <!-- Gripper is another fallacy of physics -->
   <gazebo reference="r_gripper_finger_link">
