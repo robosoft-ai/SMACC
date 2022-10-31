@@ -60,4 +60,4 @@ Operating instructions can be found in each reference state machines readme file
 Happy Coding.
 
 ## Support
-If you are interested in getting involved or need a little support, feel free to contact us by emailing brett@reelrobotix.com
+If you are interested in getting involved or need a little support, feel free to contact us by emailing brett@robosoft.ai
