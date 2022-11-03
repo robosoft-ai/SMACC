@@ -28,4 +28,3 @@ forward_global_planner:
   ubuntu: [ros-melodic-forward-global-planner]
 smacc_runtime_test:
    ubuntu: [ros-melodic-smacc-runtime-test]
-
