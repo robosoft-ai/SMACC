@@ -67,7 +67,7 @@ namespace cl_move_base_z
             // we have to do this, for example for the case we are refining the final orientation.
             // se check at some point if the carrot is reached in "goal linear distance", then we go into
             // some automatic pure-spinning mode where we only update the orientation
-            // This means that if we reach the carrot with precission we go into pure spinning mode but we cannot
+            // This means that if we reach the carrot with precision we go into pure spinning mode but we cannot
             // leave that point (maybe this could be improved)
             if (carrot_angular_distance_ < yaw_goal_tolerance_)
             {
@@ -212,7 +212,7 @@ namespace cl_move_base_z
         bool BackwardLocalPlanner::checkCarrotHalfPlainConstraint(const tf::Stamped<tf::Pose> &tfpose)
         {
             // this function is specially useful when we want to reach the goal with a lot
-            // of precission. We may pass the goal and then the controller enters in some
+            // of precision. We may pass the goal and then the controller enters in some
             // unstable state. With this, we are able to detect when stop moving.
 
             // only apply if the carrot is in goal position and also if we are not in a pure spinning behavior v!=0

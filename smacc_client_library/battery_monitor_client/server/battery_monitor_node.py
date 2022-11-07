@@ -1,9 +1,7 @@
 #!/usr/bin/env python
 
 
-import roslib
 import rospy
-import std_msgs
 import numpy
 
 from sensor_msgs.msg import BatteryState

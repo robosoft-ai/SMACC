@@ -1,10 +1,8 @@
 #!/usr/bin/python
 import rospy
-import gazebo_msgs
 from gazebo_msgs.msg import LinkStates
 import tf
-from moveit_msgs.msg import MoveItErrorCodes
-from moveit_python import MoveGroupInterface, PlanningSceneInterface
+from moveit_python import PlanningSceneInterface
 
 
 class FakePerceptionNode:
@@ -29,6 +27,8 @@ class FakePerceptionNode:
 
     def simulated_link_state_callback(self, linksmsg):
         """
+        simulated state link callback.
+
         string[] name
         geometry_msgs/Pose[] pose
           geometry_msgs/Point position
@@ -63,7 +63,7 @@ class FakePerceptionNode:
             rospy.loginfo(attached_objects)
 
             # self.update_planning_scene = False
-            if self.table_collision and not "cube_0" in attached_objects:
+            if self.table_collision and "cube_0" not in attached_objects:
                 for i, table_transf in enumerate(table_transforms):
                     # self.planning_scene.removeCollisionObject("table_" + str(i))
                     thickness = 0.12
@@ -78,7 +78,7 @@ class FakePerceptionNode:
                         0.7 - thickness * 0.5,
                     )  # 0.68
 
-            if self.cube_collision and not "cube_0" in attached_objects:
+            if self.cube_collision and "cube_0" not in attached_objects:
                 for i, cube_transf in enumerate(cube_transforms):
                     # self.planning_scene.removeCollisionObject("cube_" + str(i))
                     pos = cube_transf[0]

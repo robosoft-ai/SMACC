@@ -143,7 +143,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
   //     flat = flat[startindex + 1:-1]
   //     basetypes = [t.strip() for t in flat.split(",")]
   //     for b in basetypes:
-  //         if not "$" in b:
+  //         if "$" not in b:
   //             allbasetypes.add(b)
 
   // SORT by token key to replace back in a single pass
@@ -342,7 +342,7 @@ TypeInfo::Ptr TypeInfo::getTypeInfoFromString(std::string inputtext)
     print (typesdict)
     roottype = [t for t in types if t.finaltype == originalinputtext][0]
 
-    print "---------------------------------"
+    print("---------------------------------")
 
     # fill template parameters
     for t in types:

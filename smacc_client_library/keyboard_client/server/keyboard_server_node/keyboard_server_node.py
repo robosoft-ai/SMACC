@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-
-import roslib
 import rospy
-import std_msgs
 from std_msgs.msg import UInt16
 
-import sys, select, termios, tty
+import sys
+import select
+import termios
+import tty
 
 
 def getKey():

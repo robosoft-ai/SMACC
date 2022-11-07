@@ -307,7 +307,7 @@ bool OdomTracker::updateClearPath(const nav_msgs::Odometry &odom)
     // acceptBackward);
     if (acceptBackward && baseTrajectory_.poses.size() > 1) /*we always leave at least one item, specially interesting
                                                                for the backward local planner reach the backwards goal
-                                                               with precission enough*/
+                                                               with precision enough*/
     {
       baseTrajectory_.poses.pop_back();
     }
