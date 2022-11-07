@@ -2,7 +2,7 @@
 ## Travis CI:
 
 
-| ROS Distro  | Travis Build Status | Code Format & Quality | Debs and Doc generation |Documentation | Binary Packages |
+| ROS Distro  | Continous Integration | Code Format & Quality | Debs and Doc generation (Travis) |Documentation | Binary Packages |
 | ------------- | ------------- | ------------- | ------------- | ------------- |------------- |
 | Kinetic  | - | - | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=kinetic-devel"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/kinetic-devel/html/namespaces.html">doxygen</a>| <img src="https://user-images.githubusercontent.com/13334595/120040588-226ffa00-c007-11eb-98af-e0e9d6865236.png" height="20px"/> [debian files](https://packagecloud.io/app/reelrbtx/SMACC/search?q=kinetic&filter=all&dist=) |
 | Melodic  | [![Continuous Integration](https://github.com/reelrbtx/SMACC/actions/workflows/CI.yaml/badge.svg)](https://github.com/reelrbtx/SMACC/actions/workflows/CI.yaml)| [![Code Format & Quality](https://github.com/reelrbtx/SMACC/actions/workflows/code_quality.yml/badge.svg)](https://github.com/reelrbtx/SMACC/actions/workflows/code_quality.yml) | <a src="https://travis-ci.org/reelrbtx/SMACC"><img src="https://travis-ci.com/reelrbtx/SMACC.svg?branch=melodic-devel"/></a> | <a href="https://reelrbtx.github.io/SMACC_Documentation/melodic-devel/html/namespaces.html">doxygen</a>|  <img src="https://user-images.githubusercontent.com/13334595/120040588-226ffa00-c007-11eb-98af-e0e9d6865236.png" height="20px"/> [debian files](https://packagecloud.io/app/reelrbtx/SMACC/search?q=melodic&filter=all&dist=) |
