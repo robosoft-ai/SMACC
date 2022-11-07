@@ -1,5 +1,5 @@
 
-## Continous Integration:
+## Continuous Integration:
 
 
 | ROS Distro  | Continuous Integration | Code Format & Quality | Debs and Doc generation (Travis) |Documentation | Binary Packages |
