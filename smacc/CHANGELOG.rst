@@ -118,4 +118,4 @@ Forthcoming
 * minor fixes
 * initials on smacc
 * Moved SMACC to it's own repo..
-* Contributors: Pablo Inigo Blasco, Pablo Iñigo Blasco, brett2@reelrobotics.com, brettpac, travis
+* Contributors: Pablo Inigo Blasco, Pablo Iñigo Blasco, brett2@robosoft-ai.com, brettpac, travis

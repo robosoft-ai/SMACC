@@ -36,11 +36,12 @@ if [ -n "$GITHUB_TOKEN" ]; then
     #source /root/catkin_ws/install/setup.bash
 
     #remove cloned folder just in case it already existed
+    mkdir -p $CATKIN_WORKSPACE_ROOT/tmp/doc
     rm -R $CATKIN_WORKSPACE_ROOT/tmp/doc
 
     # This generates a `web` directory containing the website.
     echo "cloning gh-pages"
-    git clone https://reelrobotics:$GITHUB_TOKEN@$REPO_URL --branch gh-pages $CATKIN_WORKSPACE_ROOT/tmp/doc
+    git clone https://robosoft-ai:$GITHUB_TOKEN@$REPO_URL --branch gh-pages $CATKIN_WORKSPACE_ROOT/tmp/doc
 
     echo "removing specific branch folder from repo clone.."
     cd $CATKIN_WORKSPACE_ROOT/tmp/doc
@@ -85,8 +86,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
-    git push -f -v https://reelrobotics:$GITHUB_TOKEN@$REPO_URL gh-pages > pushout.txt
-    cat pushout.txt
+    git push -f -v https://robosoft-ai:$GITHUB_TOKEN@$REPO_URL gh-pages #> pushout.txt
+    #cat pushout.txt
 
     # going back to travis build dir
     cd "$ROOT_DIR"

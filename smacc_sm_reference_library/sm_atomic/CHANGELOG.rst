@@ -57,7 +57,7 @@ Forthcoming
 * adding object tagging to clients, specifically action clients
 * renaming consistently SmAtomic
 * testing countdown logic unit more refactoring and analyzing propagating issue
-* Contributors: Brett Aldrich, Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, Víctor Ferrer García, brett2@reelrobotics.com, brettpac, pablo.inigo.blasco, robosoft-ai
+* Contributors: Brett Aldrich, Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, Víctor Ferrer García, brett2@robosoft-ai.com, brettpac, pablo.inigo.blasco, robosoft-ai
 
 * creating feature smacc_runtime test
 * Merge branch 'master' into melodic-devel
@@ -111,4 +111,4 @@ Forthcoming
 * adding object tagging to clients, specifically action clients
 * renaming consistently SmAtomic
 * testing countdown logic unit more refactoring and analyzing propagating issue
-* Contributors: Brett Aldrich, Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, Víctor Ferrer García, brett2@reelrobotics.com, brettpac, pablo.inigo.blasco, robosoft-ai
+* Contributors: Brett Aldrich, Pablo Iñigo Blasco, Pabo Iñigo Blasco, Unknown, Víctor Ferrer García, brett2@robosoft-ai.com, brettpac, pablo.inigo.blasco, robosoft-ai

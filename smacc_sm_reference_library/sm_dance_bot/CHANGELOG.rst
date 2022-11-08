@@ -6,4 +6,4 @@ Forthcoming
 -----------
 
 * Initial SMACC version
-* Contributors: Pablo Iñigo Blasco, brett2@reelrobotics.com, robosoft-ai
+* Contributors: Pablo Iñigo Blasco, brett2@robosoft-ai.com, robosoft-ai

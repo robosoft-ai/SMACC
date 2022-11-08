@@ -15,4 +15,4 @@ Forthcoming
 * fixing build
 * missing file
 * testing status message, creation of rviz display plugin, refactoring of sm_dance_bot.launch to make it lightweight, readme.md for launching
-* Contributors: Pablo Iñigo Blasco, brett2@reelrobotics.com
+* Contributors: Pablo Iñigo Blasco, brett2@robosoft-ai.com
