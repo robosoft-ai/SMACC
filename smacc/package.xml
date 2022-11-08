@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <package format="2">
   <name>smacc</name>
-  <version>0.9.4</version>
+  <version>0.9.5</version>
 
   <description>SMACC is a ROS/C++ library to implement in easy and systematic way UML StateCharts (AKA state machines). SMACC is inspired by the SMACH ROS package and it is built on top of Boost StateChart library. Developed by Reel Robotics.
 </description>
