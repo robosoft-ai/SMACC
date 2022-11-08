@@ -2,14 +2,15 @@ cmake_minimum_required(VERSION 2.8.7)
 project(forward_local_planner)
 
 find_package(catkin REQUIRED
+  roscpp
   costmap_2d
-  geometry_msgs
+  tf
   nav_core
   base_local_planner
   nav_msgs
-  roscpp
+  move_base_msgs
+  geometry_msgs
   std_msgs
-  tf
 )
 
 

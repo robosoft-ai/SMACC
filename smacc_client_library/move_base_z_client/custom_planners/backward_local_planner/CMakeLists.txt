@@ -16,6 +16,8 @@ find_package(catkin REQUIRED
   rosconsole
   roscpp
   tf
+  base_local_planner
+  move_base_msgs
 )
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")

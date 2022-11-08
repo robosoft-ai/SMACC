@@ -16,6 +16,7 @@
   <depend>geometry_msgs</depend>
   <depend>nav_core</depend>
   <depend>base_local_planner</depend>
+  <depend>move_base_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>std_msgs</depend>
   <depend>roscpp</depend>

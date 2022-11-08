@@ -12,6 +12,9 @@
    <buildtool_depend>catkin</buildtool_depend>
    <build_depend>message_generation</build_depend>
 
+   <depend>base_local_planner</depend>
+   <depend>move_base_msgs</depend>
+
    <build_depend>costmap_2d</build_depend>
    <build_depend>geometry_msgs</build_depend>
    <build_depend>nav_core</build_depend>
@@ -21,7 +24,6 @@
    <build_depend>roscpp</build_depend>
    <build_depend>tf</build_depend>
    <build_depend>forward_global_planner</build_depend>
-
 
    <build_export_depend>costmap_2d</build_export_depend>
    <build_export_depend>geometry_msgs</build_export_depend>
