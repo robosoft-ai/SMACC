@@ -6,7 +6,7 @@ CATKIN_WORKSPACE_ROOT=/root/target_ws
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK
 #GITHUB_USER=
-#TRAVIS_BRANCH=master
+#GIT_BRANCH=master
 #TRAVIS_REPO_SLUG=smacc
 #GITHUB_TOKEN=
 #CATKIN_WORKSPACE_ROOT=`pwd`/../..
@@ -21,8 +21,9 @@ echo $DIRECTORY
 
 echo "GH-PAGES"
 if [ -n "$GITHUB_TOKEN" ]; then
-    echo "GH - PAGES script working directory: $TRAVIS_BUILD_DIR"
-    cd "$TRAVIS_BUILD_DIR"
+    ROOT_DIR= `pwd`
+    echo "GH - PAGES script working directory: $ROOT_DIR"
+    cd "$ROOT_DIR"
 
     #find / | grep SMACC
 
@@ -40,8 +41,8 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "removing specific branch folder from repo clone.."
     cd /tmp/doc
-    rm -r $TRAVIS_BRANCH >/dev/null
-    mkdir -p $TRAVIS_BRANCH
+    rm -r $GIT_BRANCH >/dev/null
+    mkdir -p $GIT_BRANCH
 
     echo "cd $CATKIN_WORKSPACE_ROOT"
     ls $CATKIN_WORKSPACE_ROOT/src
@@ -54,16 +55,16 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     echo "moving result files to branch directory..."
     stat /tmp/doc
-    stat /tmp/doc/$TRAVIS_BRANCH
+    stat /tmp/doc/$GIT_BRANCH
     ls /tmp
-    mv /tmp/html /tmp/doc/$TRAVIS_BRANCH
-    mv /tmp/latex /tmp/doc/$TRAVIS_BRANCH
+    mv /tmp/html /tmp/doc/$GIT_BRANCH
+    mv /tmp/latex /tmp/doc/$GIT_BRANCH
 
     #git init
     #git checkout -b gh-pages
-    echo "cd /tmp/doc/$TRAVIS_BRANCH -> directories:"
+    echo "cd /tmp/doc/$GIT_BRANCH -> directories:"
     ls /tmp/doc
-    cd /tmp/doc/$TRAVIS_BRANCH
+    cd /tmp/doc/$GIT_BRANCH
 
     git add .
     #git add -f /tmp/doc/index.html
@@ -85,5 +86,5 @@ if [ -n "$GITHUB_TOKEN" ]; then
     cat pushout.txt
 
     # going back to travis build dir
-    cd "$TRAVIS_BUILD_DIR"
+    cd "$ROOT_DIR"
 fi

@@ -1,0 +1,17 @@
+name: Doxygen
+
+on:
+  push:
+
+jobs:
+  CI:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v1
+      - uses: ros-tooling/setup-ros@v0.3
+        with:
+            required-ros-distributions: noetic
+
+      - shell: bash
+        run: |
+          ./smacc_ci/gh-pages.sh
