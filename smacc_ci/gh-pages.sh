@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 GITHUB_USER=robosoft-ai
-CATKIN_WORKSPACE_ROOT=`realpath $DIR/../..`
+CATKIN_WORKSPACE_ROOT=`realpath $DIR/..`
 GITHUB_TOKEN=$1
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
