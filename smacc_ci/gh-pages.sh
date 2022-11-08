@@ -30,9 +30,9 @@ if [ -n "$GITHUB_TOKEN" ]; then
 
     #find / | grep SMACC
 
-    apt-get install -y git
+    # apt-get install -y git
 
-    source $CATKIN_WORKSPACE_ROOT/install/setup.bash
+    # source $CATKIN_WORKSPACE_ROOT/install/setup.bash
     #source /root/catkin_ws/install/setup.bash
 
     #remove cloned folder just in case it already existed
