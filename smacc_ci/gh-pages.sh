@@ -1,7 +1,10 @@
 #!/bin/bash
 
-GITHUB_USER=reelrobotics
-CATKIN_WORKSPACE_ROOT=/root/target_ws
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+GITHUB_USER=robosoft-ai
+CATKIN_WORKSPACE_ROOT=`realpath $DIR/../..`
+GITHUB_TOKEN=$1
 
 #---- TEST GHPAGES LOCALLY VARIABLES------
 # uncomment this for local testing and comment the TRAVIS BLOCK

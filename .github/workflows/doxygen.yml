@@ -14,4 +14,4 @@ jobs:
 
       - shell: bash
         run: |
-          ./smacc_ci/gh-pages.sh
+          ./smacc_ci/gh-pages.sh ${{ secrets.GITHUB_TOKEN }}
