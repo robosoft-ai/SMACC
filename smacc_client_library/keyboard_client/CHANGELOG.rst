@@ -7,8 +7,8 @@ Forthcoming
 
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Redoing Client Namespaces
 * Added Readme's to Client Library
 * Merge branch 'master' into melodic-devel
@@ -23,8 +23,8 @@ Forthcoming
 
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Redoing Client Namespaces
 * Added Readme's to Client Library
 * Merge branch 'master' into melodic-devel
@@ -39,8 +39,8 @@ Forthcoming
 
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Redoing Client Namespaces
 * Added Readme's to Client Library
 * Merge branch 'master' into melodic-devel
@@ -55,8 +55,8 @@ Forthcoming
 
 * added server folders to client library
 * Merge branch 'master' into melodic-devel
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Redoing Client Namespaces
 * Added Readme's to Client Library
 * Merge branch 'master' into melodic-devel

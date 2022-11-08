@@ -11,7 +11,7 @@ Forthcoming
 * fixing some package xmls
 * fixing build with catkin_make
 * updating melodic
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * creating feature smacc_runtime test
 * Contributors: Pablo Iñigo Blasco, Pabo Iñigo Blasco, pabloinigoblasco
 

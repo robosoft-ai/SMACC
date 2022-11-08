@@ -9,8 +9,8 @@ Forthcoming
 * Merge branch 'master' into melodic-devel
 * fixed Doxygen Client Namespaces
 * refactoring client namespaces names
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Added Readme's to Client Library
 * Merge branch 'master' into melodic-devel
 * some refactoring in orthogonals relation with clients

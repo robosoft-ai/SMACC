@@ -1,15 +1,15 @@
  <h2>State Machine Diagram</h2>
-<img  src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/smacc_state_machine_20200222-122229.dot.svg" width="950" align="center" border="10"/>
+<img  src="https://github.com/robosoft-ai/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/smacc_state_machine_20200222-122229.dot.svg" width="950" align="center" border="10"/>
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client. In the original sm_dance_bot state machine, the variables that controlled the movements of the robot were entirely static, but in this example we made them dynamic, in that the robot uses a lidar sensor to find the range of the wall in front of it, then moves forward that value minus some margin. This also shows the "Orthogonal Read-Write Cycle" where we are reading data from one orthogonal (in this case the lidar client, "cl_lidar" is inside the obstacle perception orthogonal "or_obstacle_perception" and writes via the client "cl_move_base_z" in the navigation orthogonal "or_navigation".<br></br>
 
-<a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot__strikes__back.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot__strikes__back.html">Doxygen Namespace & Class Reference</a>
 
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=ucMr5Dg6UpU">here</a>.
 <br></br>
 
 <p align="center">
- <img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back.JPG" width="800"/>
+ <img src="https://github.com/robosoft-ai/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot_strikes_back/docs/sm_dance_bot_strikes_back.JPG" width="800"/>
  </p>
  <br></br>
 

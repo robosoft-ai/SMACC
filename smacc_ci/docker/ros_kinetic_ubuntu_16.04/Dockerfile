@@ -15,10 +15,10 @@ RUN apt-get update && apt-get install -y \
 #----------------------------------------------------------
 RUN export DEBIAN_FRONTEND="noninteractive"; apt-get update && apt-get install -y apt-utils && apt-get install -y git python-catkin-tools curl
 
-RUN curl -s https://packagecloud.io/install/repositories/reelrbtx/SMACC/script.deb.sh | sudo bash
+RUN curl -s https://packagecloud.io/install/repositories/robosoft-ai/SMACC/script.deb.sh | sudo bash
 RUN apt-get install -y ros-kinetic-smacc ros-kinetic-sm-dance-bot-strikes-back ros-kinetic-sm-atomic
 
-RUN curl -s  https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecloud.io/install/repositories/reelrbtx/SMACC_viewer/script.deb.sh  | bash
+RUN curl -s  https://b0e12e65a4f16bfc4594206c69dce2a49a5eabd04efb7540:@packagecloud.io/install/repositories/robosoft-ai/SMACC_viewer/script.deb.sh  | bash
 RUN apt-get install -y ros-kinetic-smacc-viewer
 
 WORKDIR /root

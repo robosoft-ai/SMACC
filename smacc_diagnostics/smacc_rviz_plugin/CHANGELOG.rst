@@ -8,7 +8,7 @@ Forthcoming
 * Progressing on transition log
 * progress on viewer, modestates and history mode
 * progress in the viewer and examples
-* Merge branch 'master' of https://github.com/reelrbtx/SMACC
+* Merge branch 'master' of https://github.com/robosoft-ai/SMACC
 * Added SMACC thumbnail for RViz Plugin
 * creating four rays for dance_bot and media folder missing
 * fixing-moving from cxx version from 17 to 14

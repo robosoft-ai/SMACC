@@ -59,14 +59,14 @@ RUN gem install package_cloud
 RUN echo "regen"
 RUN echo "downloading smacc repo: "
 RUN echo "branch name: $ROS_VERSION_NAME"
-RUN git clone --single-branch --branch $ROS_VERSION_NAME-devel https://github.com/reelrbtx/SMACC.git /root/src/SMACC
+RUN git clone --single-branch --branch $ROS_VERSION_NAME-devel https://github.com/robosoft-ai/SMACC.git /root/src/SMACC
 WORKDIR /root/src/SMACC
 RUN git submodule init
 RUN git submodule update
 
 WORKDIR /root/src
 RUN echo "downloading smacc_viewer repo with github user: ${GITHUB_USER}"
-RUN git clone https://github.com/reelrbtx/reelrbtx_msgs.git /root/src/reelrbtx_msgs
+RUN git clone https://github.com/robosoft-ai/robosoft-ai_msgs.git /root/src/robosoft-ai_msgs
 WORKDIR /root
 
 

@@ -1,9 +1,9 @@
  <h2>State Machine Diagram</h2>
-<img src="https://github.com/reelrbtx/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/smacc_state_machine_20200222-125058.dot.svg" width="950" align="center" border="10"/>
+<img src="https://github.com/robosoft-ai/SMACC/blob/master/smacc_sm_reference_library/sm_dance_bot/docs/smacc_state_machine_20200222-125058.dot.svg" width="950" align="center" border="10"/>
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
-<a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
 
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=9iyX_x05d3Q&t=7s">here</a>.
 

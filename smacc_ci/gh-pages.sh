@@ -14,7 +14,7 @@ CATKIN_WORKSPACE_ROOT=/root/target_ws
 # industrial_ci catkin workspace
 #CATKIN_WORKSPACE_ROOT=/root/target_ws
 #---------------------------------------
-REPO_URL=github.com/reelrbtx/SMACC_Documentation.git
+REPO_URL=github.com/robosoft-ai/SMACC_Documentation.git
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY
