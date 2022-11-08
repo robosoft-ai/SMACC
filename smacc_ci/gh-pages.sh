@@ -36,14 +36,14 @@ if [ -n "$GITHUB_TOKEN" ]; then
     #source /root/catkin_ws/install/setup.bash
 
     #remove cloned folder just in case it already existed
-    rm -R /tmp/doc
+    rm -R $CATKIN_WORKSPACE_ROOT/tmp/doc
 
     # This generates a `web` directory containing the website.
     echo "cloning gh-pages"
-    git clone https://reelrobotics:$GITHUB_TOKEN@$REPO_URL --branch gh-pages /tmp/doc
+    git clone https://reelrobotics:$GITHUB_TOKEN@$REPO_URL --branch gh-pages $CATKIN_WORKSPACE_ROOT/tmp/doc
 
     echo "removing specific branch folder from repo clone.."
-    cd /tmp/doc
+    cd $CATKIN_WORKSPACE_ROOT/tmp/doc
     rm -r $GIT_BRANCH >/dev/null
     mkdir -p $GIT_BRANCH
 
@@ -57,20 +57,20 @@ if [ -n "$GITHUB_TOKEN" ]; then
     doxygen smacc_ci/Doxyfile
 
     echo "moving result files to branch directory..."
-    stat /tmp/doc
-    stat /tmp/doc/$GIT_BRANCH
-    ls /tmp
-    mv /tmp/html /tmp/doc/$GIT_BRANCH
-    mv /tmp/latex /tmp/doc/$GIT_BRANCH
+    stat $CATKIN_WORKSPACE_ROOT/tmp/doc
+    stat $CATKIN_WORKSPACE_ROOT/tmp/doc/$GIT_BRANCH
+    ls $CATKIN_WORKSPACE_ROOT/tmp
+    mv $CATKIN_WORKSPACE_ROOT/tmp/html $CATKIN_WORKSPACE_ROOT/tmp/doc/$GIT_BRANCH
+    mv $CATKIN_WORKSPACE_ROOT/tmp/latex $CATKIN_WORKSPACE_ROOT/tmp/doc/$GIT_BRANCH
 
     #git init
     #git checkout -b gh-pages
-    echo "cd /tmp/doc/$GIT_BRANCH -> directories:"
-    ls /tmp/doc
-    cd /tmp/doc/$GIT_BRANCH
+    echo "cd $CATKIN_WORKSPACE_ROOT/tmp/doc/$GIT_BRANCH -> directories:"
+    ls $CATKIN_WORKSPACE_ROOT/tmp/doc
+    cd $CATKIN_WORKSPACE_ROOT/tmp/doc/$GIT_BRANCH
 
     git add .
-    #git add -f /tmp/doc/index.html
+    #git add -f $CATKIN_WORKSPACE_ROOT/tmp/doc/index.html
     #echo "------LIST OF FILES ------"
     #find .
     echo "committing new documentation"
