@@ -3,7 +3,7 @@ name: Doxygen
 on:
   push:
     tags:
-      - *
+      - '*'
     branches:
       - noetic-devel
 jobs:
