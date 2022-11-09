@@ -7,6 +7,7 @@ on:
     branches:
       - melodic-devel
       - noetic-devel
+      - master
 
 jobs:
   doxygen:
