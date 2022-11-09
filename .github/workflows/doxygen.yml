@@ -2,12 +2,10 @@ name: Doxygen
 
 on:
   push:
-    tags: 
-      - *  
+    tags:
+      - *
     branches:
       - noetic-devel
-
-
 jobs:
   doxygen:
     runs-on: ubuntu-20.04
