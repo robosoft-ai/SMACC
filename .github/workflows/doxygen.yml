@@ -20,7 +20,7 @@ jobs:
       - uses: mattnotmitt/doxygen-action@v1
         with:
           doxyfile-path: 'smacc2_ci/Doxyfile'
-          
+
       # - shell: bash
       #   run: |
       #     ./smacc_ci/gh-pages.sh ${{ secrets.GITHUB_TOKEN }}
