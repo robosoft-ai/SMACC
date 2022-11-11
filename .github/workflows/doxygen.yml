@@ -26,8 +26,7 @@ jobs:
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          personal_token: ${{ secrets.EXTERNAL_GITHUB_TOKEN }}
+          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           external_repository:  robosoft-ai/SMACC_Documentation
           publish_branch: gh-pages
           publish_dir: docs/
