@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>move_eye_client</name>
-  <version>0.9.6</version>
+  <version>0.9.7</version>
   <description>The move_eye_client package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
