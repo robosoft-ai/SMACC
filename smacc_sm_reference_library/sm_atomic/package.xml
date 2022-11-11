@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <package format="2">
   <name>sm_atomic</name>
-  0.9.6</version>
+  <version>0.9.6</version>
   <description>The sm_atomic package</description>
 
 
