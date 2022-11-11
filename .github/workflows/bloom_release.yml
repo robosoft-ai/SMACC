@@ -5,6 +5,7 @@ on:
     paths:
       - package.xml
       - '*/package.xml'
+      - '.github/workflows/bloom_release.yml'
     branches: noetic-devel
     workflow_dispatch:
 
@@ -33,8 +34,8 @@ jobs:
         uses: pre-commit/action@v3.0.0
 
       # BLOOM PRERELEASE CHECK
-      - name: industrial_ci prerelease check
-        uses: ros-industrial/industrial_ci@master
+      # - name: industrial_ci prerelease check
+      #   uses: ros-industrial/industrial_ci@master
 
       # BLOOM RELEASE
       - name: bloom release
