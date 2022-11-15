@@ -2,10 +2,13 @@ name: Continuous Integration
 
 on:
   push:
+  pull_request:
 
 jobs:
   CI:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    container:
+      image: osrf/ros:melodic-desktop
     steps:
       - uses: actions/checkout@v1
       - uses: ros-tooling/setup-ros@v0.3
