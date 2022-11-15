@@ -17,7 +17,8 @@ jobs:
       #  with:
       #    package-name: smacc smacc_msgs
       #    target-ros1-distro: melodic
-      - run: |
+      - shell: bash
+        run: |
          source /opt/ros/melodic/setup.bash
          rosdep install --from-paths . --ignore-src -r -y
          colcon build
