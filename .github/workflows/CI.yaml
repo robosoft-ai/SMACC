@@ -10,13 +10,9 @@ jobs:
     container: osrf/ros:melodic-desktop
     steps:
       - uses: actions/checkout@v1
-      #- uses: ros-tooling/setup-ros@v0.3
-      #  with:
-      #      required-ros-distributions: melodic
-      #- uses: ros-tooling/action-ros-ci@v0.2
-      #  with:
-      #    package-name: smacc smacc_msgs
-      #    target-ros1-distro: melodic
+        with:
+          path: src/SMACC
+          
       - shell: bash
         run: |
          source /opt/ros/melodic/setup.bash
