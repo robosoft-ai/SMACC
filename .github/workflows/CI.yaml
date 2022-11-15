@@ -6,7 +6,8 @@ on:
 
 jobs:
   CI:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    container: ubuntu:18.04
     steps:
       - uses: actions/checkout@v1
       - uses: ros-tooling/setup-ros@v0.3
