@@ -30,5 +30,4 @@ jobs:
           external_repository:  robosoft-ai/SMACC_Documentation
           # publish_branch: gh-pages
           publish_dir: docs/
-          destination_dir: ${{ steps.vars.outputs.short_ref }}  # Branch name
           commit_message: ${{ github.event.head_commit.message }}
