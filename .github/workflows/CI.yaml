@@ -23,5 +23,5 @@ jobs:
          apt update
          rosdep update
          rosdep install --from-paths . --ignore-src -r -y
-         colcon build
+         catkin_make -DCMAKE_BUILD_TYPE=Debug
       
