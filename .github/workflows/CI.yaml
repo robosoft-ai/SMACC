@@ -7,7 +7,7 @@ on:
 jobs:
   CI:
     runs-on: ubuntu-latest
-    container: osrf/ros:melodic-robot
+    container: osrf/ros:melodic-desktop
     steps:
       - uses: actions/checkout@v1
       #- uses: ros-tooling/setup-ros@v0.3
