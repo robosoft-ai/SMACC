@@ -19,5 +19,6 @@ jobs:
          apt update
          rosdep update
          rosdep install --from-paths . --ignore-src -r -y
+         cd ../../
          catkin_make -DCMAKE_BUILD_TYPE=Debug
       
