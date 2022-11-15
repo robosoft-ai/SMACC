@@ -7,13 +7,18 @@ on:
 jobs:
   CI:
     runs-on: ubuntu-latest
-    container: ubuntu:18.04
+    container: osrf/melodic-robot
     steps:
       - uses: actions/checkout@v1
-      - uses: ros-tooling/setup-ros@v0.3
-        with:
-            required-ros-distributions: melodic
-      - uses: ros-tooling/action-ros-ci@v0.2
-        with:
-          package-name: smacc smacc_msgs
-          target-ros1-distro: melodic
+      #- uses: ros-tooling/setup-ros@v0.3
+      #  with:
+      #      required-ros-distributions: melodic
+      #- uses: ros-tooling/action-ros-ci@v0.2
+      #  with:
+      #    package-name: smacc smacc_msgs
+      #    target-ros1-distro: melodic
+      - run: |
+         source /opt/ros/melodic/setup.bash
+         rosdep install --from-paths . --ignore-src -r -y
+         colcon build
+      
