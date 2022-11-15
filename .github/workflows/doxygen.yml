@@ -24,7 +24,7 @@ jobs:
         with:
           doxyfile-path: 'smacc_ci/Doxyfile'
 
-      - uses: peaceiris/actions-gh-pages@v3.2.0
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           deploy_key: ${{ secrets.ACTION_DEPLOY_KEY }}
           external_repository:  robosoft-ai/SMACC_Documentation
