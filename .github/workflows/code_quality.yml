@@ -7,14 +7,12 @@ on:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
-    container:
-        image: ubuntu:20.04
     steps:
     - run: |
-        apt-get update
-        apt-get install -y clang-format-10 python3-pip git
-        python3 -m pip install pre-commit
+        sudo apt-get update
+        sudo apt-get install -y clang-format-12
     - uses: actions/checkout@v3
-    - shell: bash
-      run: |
-        pre-commit run -a
+    - uses: actions/setup-python@v3
+      with:
+        python-version: 3.9
+    - uses: pre-commit/action@v3.0.0
