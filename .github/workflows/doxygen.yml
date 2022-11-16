@@ -17,10 +17,10 @@ jobs:
         with:
           doxyfile-path: 'smacc_ci/Doxyfile'
 
-      - shell: bash
-        run: |
-          apt update
-          apt install -y ssh openssh-client
+      #- shell: bash
+      #  run: |
+      #    apt update
+      #    apt install -y ssh openssh-client
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
