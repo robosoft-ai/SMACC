@@ -28,4 +28,5 @@ jobs:
           external_repository:  robosoft-ai/SMACC_Documentation
           publish_branch: gh-pages
           publish_dir: docs/
+          destination_dir: melodic
           commit_message: ${{ github.event.head_commit.message }}
