@@ -10,6 +10,11 @@
 namespace smacc {
 class ISmaccThreadable {
  public:
+  /**
+   * Layout of this threadpool inspired from the SO answer at
+   * https://stackoverflow.com/a/32593825/3081770
+   */
+
   ISmaccThreadable(const uint32_t& num_threads = 1,
                    const uint32_t& queue_size = 1);
 
