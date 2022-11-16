@@ -10,19 +10,22 @@ jobs:
   doxygen:
     runs-on: ubuntu-latest
     container:
-        image: osrf/ros:melodic-desktop
+        image: ubuntu:18.04
 
     steps:
       - uses: actions/checkout@v1
+      - uses: ros-tooling/setup-ros@v0.3
+        with:
+            required-ros-distributions: melodic
 
       - uses: mattnotmitt/doxygen-action@v1
         with:
           doxyfile-path: 'smacc_ci/Doxyfile'
 
-      - shell: bash
-        run: |
-          apt update
-          apt install ssh openssh-client
+      # - shell: bash
+      #   run: |
+      #     apt update
+      #     apt install ssh openssh-client
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
