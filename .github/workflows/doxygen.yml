@@ -22,7 +22,7 @@ jobs:
       - shell: bash
         run: |
           apt update
-          apt install ssh openssh-client
+          apt install -y ssh openssh-client
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
