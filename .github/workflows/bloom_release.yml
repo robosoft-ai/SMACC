@@ -12,6 +12,7 @@ on:
 jobs:
   bloom-release:
     runs-on: ubuntu-latest
+    container: ros:melodic-ros-core
     env:
       ROS_DISTRO: melodic
       PRERELEASE: true
@@ -20,11 +21,6 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
-
-      # BASIC CODE QUALITY
-      - run: |
-          sudo apt-get update
-          sudo apt-get install -y clang-format-12
 
       - uses: actions/setup-python@v3
         with:
