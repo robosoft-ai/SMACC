@@ -3,7 +3,7 @@
 
 <h2>Description</h2> This example demonstrates the use of both MoveIt and MoveBase within the same state machine, and cross orthogonal communication between the robot arm orthogonal and the perception orthogonal.<br></br>
 
- <a href="https://reelrbtx.github.io/SMACC_Documentation/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a>
+ <a href="https://reelrbtx.github.io/smacc_doxygen/master/html/namespacesm__moveit.html">Doxygen Namespace & Class Reference</a>
 
  <br></br>
  <p align="center">

@@ -3,7 +3,7 @@ name: Doxygen
 on:
   schedule:
     - cron: '43 3 * * *'
-    
+
 jobs:
   doxygen:
     runs-on: ubuntu-20.04
