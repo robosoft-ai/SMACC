@@ -3,7 +3,7 @@
 
 <h2>Description</h2> This example implements the 17 state, PackML Interface State Model, shown on page 17, Fig.9 of the <a href="http://omac.org/wp-content/uploads/2016/11/PackML_Unit_Machine_Implementation_Guide-V1-00.pdf">PackML Unit Machine Implementation Guide</a>.<br></br>
 
- <a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__packml.html">Doxygen Namespace & Class Reference</a>
+ <a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__packml.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...

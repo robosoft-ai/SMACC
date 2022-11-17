@@ -17,7 +17,7 @@ GITHUB_TOKEN=$1
 # industrial_ci catkin workspace
 #CATKIN_WORKSPACE_ROOT=/root/target_ws
 #---------------------------------------
-REPO_URL=github.com/robosoft-ai/SMACC_Documentation.git
+REPO_URL=github.com/robosoft-ai/smacc_doxygen.git
 
 DIRECTORY=$(cd `dirname $0` && pwd)
 echo $DIRECTORY

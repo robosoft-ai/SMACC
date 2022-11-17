@@ -3,7 +3,7 @@
 
 <h2>Description</h2> A full-featured state machine example, that highlights the capabilities of SMACC & the ROS Navigation Stack via the MoveBaseZ Client.<br></br>
 
-<a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__dance__bot.html">Doxygen Namespace & Class Reference</a>
 
 To see a video of this state machine in action click <a href="https://www.youtube.com/watch?v=9iyX_x05d3Q&t=7s">here</a>.
 

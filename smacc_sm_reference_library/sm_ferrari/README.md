@@ -3,7 +3,7 @@
 
  <h2>Description</h2> A simple, but complete state machine example. We highly recommend using this example as a starting point for users state machine projects.<br></br>
 
- <a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a>
+ <a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__three__some.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
