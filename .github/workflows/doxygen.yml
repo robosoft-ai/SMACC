@@ -1,9 +1,6 @@
 name: Doxygen
 
 on:
-  push:
-    tags:
-      - '*'
   schedule:
     - cron: '43 3 * * *'
     
@@ -17,11 +14,6 @@ jobs:
       - uses: mattnotmitt/doxygen-action@v1
         with:
           doxyfile-path: 'smacc_ci/Doxyfile'
-
-      #- shell: bash
-      #  run: |
-      #    apt update
-      #    apt install -y ssh openssh-client
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
