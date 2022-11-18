@@ -7,7 +7,6 @@ on:
       - '*/package.xml'
       - '.github/workflows/bloom_release.yml'
     branches: noetic-devel
-    workflow_dispatch:
 
 jobs:
   bloom-release:
