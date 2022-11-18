@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>sm_calendar_week</name>
-  <version>0.9.7</version>
+    <version>1.4.1</version>
   <description>The sm_calendar_week package</description>
 
 
