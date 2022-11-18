@@ -1,8 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>eg_conditional_generator</name>
-  <version>0.9.3</version>
-  <description>The eg_conditional_generator package</description>
+  <version>1.3.1</version>  <description>The eg_conditional_generator package</description>
 
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>
 
