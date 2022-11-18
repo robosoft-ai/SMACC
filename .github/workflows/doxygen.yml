@@ -1,8 +1,8 @@
 name: Doxygen
 
 on:
-  schedule:
-    - cron: '43 3 * * *'
+  push:
+    branches: [melodic-devel]
 
 jobs:
   doxygen:
