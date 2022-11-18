@@ -2,8 +2,8 @@
 Changelog for package pure_spinning_local_planner
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Major Merge -> now master is unstable melodic-branch
 * fixing sm_moveit demo for melodic and creating pure spinning local planner

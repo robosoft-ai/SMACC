@@ -2,8 +2,8 @@
 Changelog for package smacc_rviz_plugin
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Progressing on transition log
 * progress on viewer, modestates and history mode

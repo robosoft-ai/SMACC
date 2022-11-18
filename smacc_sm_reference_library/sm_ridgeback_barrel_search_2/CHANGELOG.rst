@@ -2,8 +2,8 @@
 Changelog for package sm_ridgeback_barrel_search_2
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Added gazebo camera changes to sm_opencv and sm_ridgeback_barrel_search_2
 * Merge branch 'master' into melodic-devel

@@ -2,8 +2,8 @@
 Changelog for package sr_event_countdown
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Renamed event_countdown to sr_event_countdown
 * Contributors: Brett Aldrich

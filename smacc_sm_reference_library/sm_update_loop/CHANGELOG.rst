@@ -2,8 +2,8 @@
 Changelog for package sm_update_loop
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Merge branch 'master' into melodic-devel
 * adding xterm dependency to examples

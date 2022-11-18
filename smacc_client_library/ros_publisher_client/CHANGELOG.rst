@@ -2,8 +2,8 @@
 Changelog for package ros_publisher_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Merge branch 'master' into melodic-devel
 * fixed Doxygen Client Namespaces

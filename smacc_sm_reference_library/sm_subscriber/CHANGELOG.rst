@@ -2,8 +2,8 @@
 Changelog for package sm_subscriber
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 * melodic-master
 * updating melodic fix
 * code format melodic

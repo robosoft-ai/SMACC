@@ -2,8 +2,8 @@
 Changelog for package smacc_runtime_test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 * melodic-master
 * code format melodic
 * fixing some package xmls

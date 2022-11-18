@@ -2,8 +2,8 @@
 Changelog for package smacc
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * Progressing on transition log
 * dynamic behavior

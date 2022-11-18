@@ -2,8 +2,8 @@
 Changelog for package smacc_msgs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 * removing error changelog
 * Contributors: Pablo Iñigo Blasco
 

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>microstrain_mips_client</name>
-  <version>1.3.1</version>  <description>The microstrain_mips_client package</description>
+  <version>1.3.2</version>  <description>The microstrain_mips_client package</description>
 
 
   <maintainer email="pablo@ibrobotics.com">Pablo Iñigo Blasco</maintainer>

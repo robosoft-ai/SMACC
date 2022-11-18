@@ -2,8 +2,8 @@
 Changelog for package sm_atomic
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * creating feature smacc_runtime test
 * Merge branch 'master' into melodic-devel

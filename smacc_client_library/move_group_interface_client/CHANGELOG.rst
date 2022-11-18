@@ -2,8 +2,8 @@
 Changelog for package move_group_interface_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * progress on cubes collisions
 * adding threads to moveit client behaviors

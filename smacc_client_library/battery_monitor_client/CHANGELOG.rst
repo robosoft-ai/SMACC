@@ -2,8 +2,8 @@
 Changelog for package battery_monitor_client
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * added server folders to client library
 * Merge branch 'master' into melodic-devel

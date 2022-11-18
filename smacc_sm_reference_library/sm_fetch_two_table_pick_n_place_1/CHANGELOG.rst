@@ -2,8 +2,8 @@
 Changelog for package sm_fetch_two_table_pick_n_place_1
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.3.2 (2022-11-18)
+------------------
 
 * improving opencv2 box detection and also restoring sm_fetch_two_table_pick_n_place_1 example
 * Added sm_fetch_two_table_pick_n_place_1_2
