@@ -7,14 +7,8 @@ on:
 jobs:
   doxygen:
     runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        ros_distro: [noetic, melodic]
-
     steps:
       - uses: actions/checkout@v1
-        with:
-          ref: ${{matrix.branch}}
 
       - uses: mattnotmitt/doxygen-action@v1
         with:
