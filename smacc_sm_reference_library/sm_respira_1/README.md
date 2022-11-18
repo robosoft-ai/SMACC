@@ -3,7 +3,7 @@
 
  <h2>Description</h2> A state machine sketch for the RespiraWorks Ventilator<br></br>
 
- <a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__starcraft__ai.html">Doxygen Namespace & Class Reference</a>
+ <a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__starcraft__ai.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...

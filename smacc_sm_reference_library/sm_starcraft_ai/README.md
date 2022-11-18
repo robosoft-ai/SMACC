@@ -3,7 +3,7 @@
 
  <h2>Description</h2> Inspired by StarcraftAI, this state machine provides a state machine shell, that can be easily adapted to AI applications. One would simply insert the AI objective function into the state_reactor of the Observe state.<br></br>
 
- <a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__starcraft__ai.html">Doxygen Namespace & Class Reference</a>
+ <a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__starcraft__ai.html">Doxygen Namespace & Class Reference</a>
 
  <p>For more information see...</p>
   <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=10&ved=2ahUKEwiThZKprvvnAhVLvZ4KHbKFDHkQFjAJegQIBxAB&url=https%3A%2F%2Fychai.uk%2Fslides%2F2019-11-12-AlphaStarII.pdf&usg=AOvVaw0jRIVMd3gdb4fM4mmQ4nG1l">AlphaStar: Grandmaster level in StarCraft II Explained</a>

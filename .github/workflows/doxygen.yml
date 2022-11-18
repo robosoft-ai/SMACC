@@ -23,9 +23,9 @@ jobs:
 
       - uses: peaceiris/actions-gh-pages@v3
         with:
-          deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-          external_repository:  robosoft-ai/SMACC_Documentation
-          # publish_branch: gh-pages
+          deploy_key: ${{ secrets.ACTION_DEPLOY_KEY }}
+          external_repository:  robosoft-ai/smacc_doxygen
+          publish_branch: gh-pages
           publish_dir: docs/
-          destination_dir: ${{ steps.vars.outputs.short_ref }}  # Branch name
+          destination_dir: noetic
           commit_message: ${{ github.event.head_commit.message }}

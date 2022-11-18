@@ -3,7 +3,7 @@
 
 
 <h2>Description</h2> A state machine example used for testing and debugging the SMACC viewer. Not recommended for normal SMACC users.<br></br>
-<a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__viewer__sim.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__viewer__sim.html">Doxygen Namespace & Class Reference</a>
 
 <h2>Operating Instructions</h2>
 After you build, remember to source the proper devel folder...

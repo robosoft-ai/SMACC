@@ -2,7 +2,7 @@
  <img src="https://github.com/robosoft-ai/SMACC/blob/master/smacc_sm_reference_library/sm_atomic_services/docs/smacc_state_machine_20220330-064659.dot.svg" width="950" align="center" border="10"/>
 
  <h2>Description</h2> A completely minimal state machine example.<br></br>
-<a href="https://robosoft-ai.github.io/SMACC_Documentation/master/html/namespacesm__atomic__services.html">Doxygen Namespace & Class Reference</a>
+<a href="https://robosoft-ai.github.io/smacc_doxygen/master/html/namespacesm__atomic__services.html">Doxygen Namespace & Class Reference</a>
 
  <h2>Build Instructions</h2>
 Before you build, make sure you've installed all the dependencies...
