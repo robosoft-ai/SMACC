@@ -26,9 +26,6 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: code quality check
-        uses: pre-commit/action@v3.0.0
-
       # BLOOM PRERELEASE CHECK
       # - name: industrial_ci prerelease check
       #   uses: ros-industrial/industrial_ci@master
