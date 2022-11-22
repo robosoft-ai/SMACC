@@ -8,7 +8,7 @@ namespace cl_ros_timer
 class CbTimerCountdownOnce : public smacc::SmaccClientBehavior
 {
 public:
-    CbTimerCountdownOnce(uint64_tt triggerTickCount);
+    CbTimerCountdownOnce(uint64_t triggerTickCount);
 
     virtual void onEntry() override;
     virtual void onExit() override;
@@ -28,8 +28,8 @@ public:
     }
 
 private:
-    uint64_tt tickCounter_;
-    uint64_tt tickTriggerCount_;
+    uint64_t tickCounter_;
+    uint64_t tickTriggerCount_;
 
     ClRosTimer *timerClient_;
     std::function<void()> postCountDownEvent_;
