@@ -162,7 +162,7 @@ void WaypointNavigator::loadWayPointsFromFile(std::string filepath)
         }
         catch (...)
         {
-          ROS_ERROR("parsing waypoint file, syntax error in point %d", i);
+          ROS_ERROR("parsing waypoint file, syntax error in point %ld", i);
         }
       }
       ROS_INFO_STREAM("Parsed " << this->waypoints_.size() << " waypoints.");

@@ -694,7 +694,7 @@ namespace cl_move_base_z
             double maxallowedAngularError = 0.45 * this->carrot_angular_distance_; // nyquist
             double maxallowedLinearError = 0.45 * this->carrot_distance_;          // nyquist
 
-            for (int i = 0; i < backwardsPlanPath_.size() - 1; i++)
+            for (uint64_t i = 0; i < backwardsPlanPath_.size() - 1; i++)
             {
                 ROS_DEBUG_STREAM("[BackwardLocalPlanner] resample precise, check: " << i);
                 auto &currpose = backwardsPlanPath_[i];
