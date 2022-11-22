@@ -499,7 +499,7 @@ namespace cl_move_base_z
             // check plan rejection
             bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
-            unsigned int mx, my;
+            uint64_t mx, my;
 
             if (this->enable_obstacle_checking_)
             {
@@ -522,7 +522,7 @@ namespace cl_move_base_z
                         }
 
                         costmap2d->worldToMap(p[0], p[1], mx, my);
-                        unsigned int cost = costmap2d->getCost(mx, my);
+                        uint64_t cost = costmap2d->getCost(mx, my);
 
                         // ROS_DEBUG("[BackwardLocalPlanner] checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
                         // ROS_DEBUG_STREAM("[BackwardLocalPlanner] cost: " << cost);

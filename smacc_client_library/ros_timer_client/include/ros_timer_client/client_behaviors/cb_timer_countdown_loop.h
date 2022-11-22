@@ -9,7 +9,7 @@ namespace cl_ros_timer
 class CbTimerCountdownLoop : public smacc::SmaccClientBehavior
 {
 public:
-    CbTimerCountdownLoop(unsigned long triggerTickCount);
+    CbTimerCountdownLoop(uint64_tt triggerTickCount);
 
     virtual void onEntry() override;
     virtual void onExit() override;
@@ -29,8 +29,8 @@ public:
     }
 
 private:
-    unsigned long tickCounter_;
-    unsigned long tickTriggerCount_;
+    uint64_tt tickCounter_;
+    uint64_tt tickTriggerCount_;
 
     ClRosTimer *timerClient_;
     std::function<void()> postCountDownEvent_;

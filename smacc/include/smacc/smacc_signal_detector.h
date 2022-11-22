@@ -46,7 +46,7 @@ private:
 
     std::vector<ISmaccUpdatable *> updatableStateElements_;
 
-    std::atomic<unsigned long> lastState_;
+    std::atomic<uint64_tt> lastState_;
 
     void findUpdatableClients();
     void findUpdatableStateElements(ISmaccState* currentState);

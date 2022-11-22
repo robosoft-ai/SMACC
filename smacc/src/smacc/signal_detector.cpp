@@ -29,7 +29,7 @@ SignalDetector::SignalDetector(SmaccFifoScheduler *scheduler) : end_(false), ini
 void SignalDetector::initialize(ISmaccStateMachine *stateMachine)
 {
   smaccStateMachine_ = stateMachine;
-  lastState_ = std::numeric_limits<unsigned long>::quiet_NaN();
+  lastState_ = std::numeric_limits<uint64_tt>::quiet_NaN();
   findUpdatableClients();
   initialized_ = true;
 }
