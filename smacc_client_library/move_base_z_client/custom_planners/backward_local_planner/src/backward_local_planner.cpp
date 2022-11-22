@@ -499,7 +499,7 @@ namespace cl_move_base_z
             // check plan rejection
             bool acceptedLocalTrajectoryFreeOfObstacles = true;
 
-            uint64_t mx, my;
+            unsigned int mx, my;
 
             if (this->enable_obstacle_checking_)
             {
