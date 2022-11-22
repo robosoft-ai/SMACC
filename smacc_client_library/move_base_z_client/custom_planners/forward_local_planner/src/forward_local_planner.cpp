@@ -430,7 +430,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     // check plan rejection
     bool aceptedplan = true;
 
-    unsigned int mx, my;
+    uint64_t mx, my;
 
     int i = 0;
     // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
@@ -447,7 +447,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
         }
 
         costmap2d->worldToMap(p[0], p[1], mx, my);
-        unsigned int cost = costmap2d->getCost(mx, my);
+        uint64_t cost = costmap2d->getCost(mx, my);
 
         // ROS_INFO("checking cost pt %d [%lf, %lf] cell[%d,%d] = %d", i, p[0], p[1], mx, my, cost);
         // ROS_INFO_STREAM("cost: " << cost);

@@ -553,7 +553,7 @@ namespace smacc
     this->checkStateMachineConsistence();
   }
 
-  unsigned long ISmaccStateMachine::getCurrentStateCounter() const
+  uint64_t ISmaccStateMachine::getCurrentStateCounter() const
   {
     return this->stateSeqCounter_;
   }
