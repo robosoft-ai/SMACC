@@ -286,7 +286,7 @@ namespace cl_move_base_z
             costmap_2d::Costmap2D *costmap2d = this->costmap_ros_->getCostmap();
             for (auto &p : plan)
             {
-                uint64_t mx, my;
+                unsigned int mx, my;
                 costmap2d->worldToMap(p.pose.position.x, p.pose.position.y, mx, my);
                 auto cost = costmap2d->getCost(mx, my);
 
