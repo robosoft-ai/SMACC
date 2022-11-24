@@ -430,7 +430,7 @@ bool ForwardLocalPlanner::computeVelocityCommands(geometry_msgs::Twist &cmd_vel)
     // check plan rejection
     bool aceptedplan = true;
 
-    unsigned int mx, my;
+    uint32_t mx, my;
 
     int i = 0;
     // ROS_INFO_STREAM("lplanner goal: " << finalgoalpose.pose.position);
