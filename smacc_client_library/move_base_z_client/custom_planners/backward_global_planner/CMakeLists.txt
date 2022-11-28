@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 3.5)
 project(backward_global_planner)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
