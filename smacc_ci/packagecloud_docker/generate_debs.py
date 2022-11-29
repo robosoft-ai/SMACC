@@ -112,8 +112,15 @@ def build_deb_package(
     print(debianfilename)
 
     os.chdir(localpackagepath)
-    shutil.rmtree(".obj-x86_64-linux-gnu")
-    shutil.rmtree("debian")
+    try:
+        shutil.rmtree(".obj-x86_64-linux-gnu")
+    except Exception as ex:
+        print("no .obj-x86_64-linux-gnu folder found: " + str(ex))
+
+    try:
+        shutil.rmtree("debian")
+    except Exception as ex:
+        print("no debian folder found" + str(ex))
 
     print("installing debian package (required to build new debs): " + debianfilename)
     installdebiantask = subprocess.Popen("sudo dpkg -i " + debianfilename, shell=True)
