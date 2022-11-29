@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 3.8)
 project(move_group_interface_client)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
