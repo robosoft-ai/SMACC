@@ -14,6 +14,12 @@ find_package(catkin REQUIRED
 )
 
 
+set_source_files_properties(
+  src/forward_local_planner.cpp
+  PROPERTIES
+  COMPILE_FLAGS "-Wno-unused-parameter"
+)
+
 catkin_package(
   INCLUDE_DIRS include
 #  LIBRARIES forward_local_planner
