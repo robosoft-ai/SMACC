@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.2)
+cmake_minimum_required(VERSION 3.8)
 project(sm_ridgeback_barrel_search_1)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
