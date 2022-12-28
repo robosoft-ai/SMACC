@@ -67,7 +67,7 @@ namespace cl_move_group_interface
         moveGroupInterface.setPoseReferenceFrame("map");
 
         moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-        bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+        bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
         ROS_INFO_NAMED("CbMoveEndEffectorRelative", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
         if (success)
