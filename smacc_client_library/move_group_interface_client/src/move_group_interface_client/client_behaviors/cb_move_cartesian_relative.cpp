@@ -80,11 +80,11 @@ void CbMoveCartesianRelative::moveRelativeCartesian(moveit::planning_interface::
                                                           0.00,  // jump_threshold
                                                           trajectory);
 
-  moveit::planning_interface::MoveItErrorCode behaviorResult;
+  moveit::core::MoveItErrorCode behaviorResult;
   if (fraction != 1.0 || fraction == -1)
   {
     ROS_WARN_STREAM("[CbMoveCartesianRelative] Cartesian plan joint-continuity percentaje. Execution skipped because not 100% of cartesian motion: " << fraction*100<<"%");
-    behaviorResult = moveit::planning_interface::MoveItErrorCode::PLANNING_FAILED;
+    behaviorResult = moveit::core::MoveItErrorCode::PLANNING_FAILED;
   }
   else
   {

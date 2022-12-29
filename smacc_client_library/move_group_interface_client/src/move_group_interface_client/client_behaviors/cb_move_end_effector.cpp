@@ -55,7 +55,7 @@ bool CbMoveEndEffector::moveToAbsolutePose(moveit::planning_interface::MoveGroup
   moveGroupInterface.setPoseReferenceFrame(targetObjectPose.header.frame_id);
 
   moveit::planning_interface::MoveGroupInterface::Plan computedMotionPlan;
-  bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+  bool success = (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
   ROS_INFO_NAMED("CbMoveEndEffector", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
 
   if (success)
