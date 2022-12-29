@@ -67,7 +67,7 @@ namespace cl_move_group_interface
     {
       moveGroupInterface.setJointValueTarget(jointValueTarget_);
       //moveGroupInterface.setGoalJointTolerance(0.01);
-      success = (moveGroupInterface.plan(computedMotionPlan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+      success = (moveGroupInterface.plan(computedMotionPlan) == moveit::core::MoveItErrorCode::SUCCESS);
       ROS_INFO_NAMED("CbMoveJoints", "Success Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
     }
 
