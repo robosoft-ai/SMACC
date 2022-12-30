@@ -33,10 +33,6 @@ SMACC was inspired by Harel's statecharts and the [SMACH ROS package](http://wik
 ## SMACC applications
 From it's inception, SMACC was written to support the programming of multi-component, complex robots. If your project involves small, solar-powered insect robots, that simply navigate towards a light source, then SMACC might not be the right choice for you. But if you are trying to program a robot with a mobile base, a robotic arm, a gripper, two lidar sensors, a gps transceiver and an imu, then you've come to the right place.
 
-<p align="center">
-<img src="https://github.com/robosoft-ai/SMACC/blob/master/documentation/SMACC-Containers-3.jpg"  width="450" align="center"/>
-</p>
-
 
 ## Getting Started
 The easiest way to get started is by selecting one of the state machines in our [reference library](https://github.com/robosoft-ai/SMACC/tree/master/smacc_sm_reference_library), and then hacking it to meet your needs.
