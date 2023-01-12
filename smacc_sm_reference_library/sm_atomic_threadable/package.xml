@@ -25,7 +25,7 @@
   <buildtool_depend>catkin</buildtool_depend>
   <depend>roscpp</depend>
   <depend>smacc</depend>
-  <depend>ros_timer_client</depend>
+  <depend>keyboard_client</depend>
   <depend>xterm</depend>
   <depend>smacc_runtime_test</depend>
 

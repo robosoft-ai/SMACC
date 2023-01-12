@@ -6,4 +6,6 @@ int main(int argc, char **argv) {
   ros::NodeHandle nh;
 
   smacc::run<sm_atomic_threadable::SmAtomicThreadable>();
+
+  return 0;
 }

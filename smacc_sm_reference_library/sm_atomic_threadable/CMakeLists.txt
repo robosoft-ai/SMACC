@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(sm_atomic_threadable)
 
 ## Find catkin macros and libraries
-find_package(catkin REQUIRED smacc ros_timer_client)
+find_package(catkin REQUIRED smacc keyboard_client)
 
 ###################################
 ## catkin specific configuration ##

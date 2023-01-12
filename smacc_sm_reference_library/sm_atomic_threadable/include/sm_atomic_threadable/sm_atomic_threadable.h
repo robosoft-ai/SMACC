@@ -1,15 +1,17 @@
+#pragma once
+
 #include <smacc/smacc.h>
 
 // CLIENTS
-#include <ros_timer_client/cl_ros_timer.h>
+#include <keyboard_client/cl_keyboard.h>
 
 // ORTHOGONALS
-#include <sm_atomic_threadable/orthogonals/or_timer.h>
+#include <sm_atomic_threadable/orthogonals/or_keyboard.h>
 
 // CLIENT BEHAVIORS
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_loop.h>
-#include <ros_timer_client/client_behaviors/cb_timer_countdown_once.h>
-#include <sm_atomic_threadable/clients/cl_thread/client_behaviors/cb_thread.h>
+#include <keyboard_client/client_behaviors/cb_default_keyboard_behavior.h>
+
+#include "sm_atomic_threadable/clients/cl_thread/client_behaviors/cb_thread.h"
 
 using namespace boost;
 using namespace smacc;
@@ -17,19 +19,19 @@ using namespace smacc;
 namespace sm_atomic_threadable {
 
 // STATE
-class State1;
-class State2;
+class StMain;
+class StThreaded;
 
 //--------------------------------------------------------------------
 // STATE_MACHINE
 struct SmAtomicThreadable
-    : public smacc::SmaccStateMachineBase<SmAtomicThreadable, State1> {
+    : public smacc::SmaccStateMachineBase<SmAtomicThreadable, StMain> {
   using SmaccStateMachineBase::SmaccStateMachineBase;
 
-  virtual void onInitialize() override { this->createOrthogonal<OrTimer>(); }
+  void onInitialize() override { this->createOrthogonal<OrKeyboard>(); }
 };
 
 }  // namespace sm_atomic_threadable
 
-#include <sm_atomic_threadable/states/st_state_1.h>
-#include <sm_atomic_threadable/states/st_state_2.h>
+#include <sm_atomic_threadable/states/st_main.h>
+#include <sm_atomic_threadable/states/st_threaded.h>
