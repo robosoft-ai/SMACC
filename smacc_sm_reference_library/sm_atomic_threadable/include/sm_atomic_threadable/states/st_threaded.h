@@ -13,12 +13,14 @@ struct StThreaded : smacc::SmaccState<StThreaded, SmAtomicThreadable> {
   typedef mpl::list<
       Transition<cl_keyboard::EvKeyPressA<
                      cl_keyboard::CbDefaultKeyboardBehavior, OrKeyboard>,
-                 StMain, SUCCESS> >
+                 StUnthreaded, SUCCESS>>
       reactions;
 
   // STATE FUNCTIONS
   static void staticConfigure() {
-    configure_orthogonal<OrKeyboard, CbThread>();
+    configure_orthogonal<OrListener, CbThreaded>();
+    configure_orthogonal<OrTalker, CbTalker<1>>();
+    configure_orthogonal<OrTalker, CbTalker<2>>();
     configure_orthogonal<OrKeyboard, cl_keyboard::CbDefaultKeyboardBehavior>();
   }
 
