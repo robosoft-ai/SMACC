@@ -46,8 +46,6 @@ enum class SMRunMode
   RELEASE
 };
 
-template <typename StateMachineType>
-void run();
 } // namespace smacc
 
 #include <smacc/smacc_default_events.h>
