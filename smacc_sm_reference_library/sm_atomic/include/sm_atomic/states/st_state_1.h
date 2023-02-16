@@ -21,7 +21,7 @@ struct State1 : smacc::SmaccState<State1, SmAtomic>
 // STATE FUNCTIONS
     static void staticConfigure()
     {
-        configure_orthogonal<OrTimer, CbTimerCountdownLoop>(3);  // EvTimer triggers each 3 client ticks
+        configure_orthogonal<OrTimer, CbTimerCountdownLoop>(1);  // EvTimer triggers each 3 client ticks
         configure_orthogonal<OrTimer, CbTimerCountdownOnce>(5); // EvTimer triggers once at 10 client ticks
     }
 
