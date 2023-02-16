@@ -196,11 +196,13 @@ void SignalDetector::pollOnce()
       }
     }
 
+    auto currentStateMachineAction = this->smaccStateMachine_->stateMachineCurrentAction;
+
     // STATE UPDATABLE ELEMENTS
-    if (this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::TRANSITIONING &&
-        this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_CONFIGURING &&
-        this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_EXITING &&
-        this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_ENTERING)
+    if (currentStateMachineAction != StateMachineInternalAction::TRANSITIONING &&
+        currentStateMachineAction != StateMachineInternalAction::STATE_CONFIGURING &&
+        currentStateMachineAction != StateMachineInternalAction::STATE_EXITING &&
+        currentStateMachineAction != StateMachineInternalAction::STATE_ENTERING)
     {
       // we do not update updatable elements during trasitioning or configuration of states
       long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
