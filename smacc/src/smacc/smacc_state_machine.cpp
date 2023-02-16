@@ -69,8 +69,7 @@ void ISmaccStateMachine::updateStatusMessage()
 
     if (currentStateInfo_ != nullptr)
     {
-        ROS_WARN_STREAM("[StateMachine] setting state active "
-                        << ": " << currentStateInfo_->getFullPath());
+        // ROS_WARN_STREAM("[StateMachine] setting state active"<< ": " << currentStateInfo_->getFullPath());
 
         if (this->runMode_ == SMRunMode::DEBUG)
         {

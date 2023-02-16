@@ -425,7 +425,11 @@ namespace smacc
     }
 
     this->updateStatusMessage();
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
+
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
+    }
   }
 
   template <typename StateType>
@@ -440,19 +444,26 @@ namespace smacc
 
     this->updateStatusMessage();
 
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
+    }
   }
 
   template <typename StateType>
   void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
   {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
     stateMachineCurrentAction = StateMachineInternalAction::STATE_CONFIGURING;
   }
 
   template <typename StateType>
   void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
   {
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
+    }
 
     auto fullname = demangleSymbol(typeid(StateType).name());
     ROS_WARN_STREAM("exiting state: " << fullname);
@@ -503,7 +514,7 @@ namespace smacc
       }
     }
 
-    this->lockStateMachine("state exit");
+    this->lockStateMachine("State OnExit lock");
 
     for (auto &conn : this->stateCallbackConnections)
     {
@@ -512,20 +523,21 @@ namespace smacc
     }
 
     this->stateCallbackConnections.clear();
-
-    currentState_ = nullptr;
   }
 
   template <typename StateType>
   void ISmaccStateMachine::notifyOnStateExited(StateType *state)
   {
     auto fullname = demangleSymbol(typeid(StateType).name());
-
     // then call exit state
     ROS_WARN_STREAM("state exit: " << fullname);
 
-    stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
-    this->unlockStateMachine("state exit");
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      currentState_ = nullptr;
+      stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
+    }
+    this->unlockStateMachine("State OnExit lock: done. Transitioning");
   }
   //-------------------------------------------------------------------------------------------------------
   template <typename EventType>
