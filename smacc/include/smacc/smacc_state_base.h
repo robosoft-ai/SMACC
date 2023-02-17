@@ -10,6 +10,8 @@
 #include <smacc/smacc_event_generator.h>
 #include <smacc/introspection/state_traits.h>
 
+#include <type_traits>
+
 namespace smacc
 {
   using namespace smacc::introspection;
@@ -458,7 +460,9 @@ namespace smacc
       static_cast<MostDerived *>(this)->onEntry();
 
       // here orthogonals and client behaviors are entered OnEntry
-      this->getStateMachine().notifyOnStateEntryEnd(derivedthis);
+      if (std::is_same<mpl::list<>, InnerInitial>::value) {
+        this->getStateMachine().notifyOnStateEntryEnd(derivedthis);
+      }
     }
   };
 } // namespace smacc

@@ -426,10 +426,7 @@ namespace smacc
 
     this->updateStatusMessage();
 
-    {
-      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
-      stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
-    }
+    stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
   }
 
   template <typename StateType>
@@ -444,26 +441,19 @@ namespace smacc
 
     this->updateStatusMessage();
 
-    {
-      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
-      stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
-    }
+    stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
   }
 
   template <typename StateType>
   void ISmaccStateMachine::notifyOnRuntimeConfigured(StateType *state)
   {
-    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
     stateMachineCurrentAction = StateMachineInternalAction::STATE_CONFIGURING;
   }
 
   template <typename StateType>
   void ISmaccStateMachine::notifyOnStateExitting(StateType *state)
   {
-    {
-      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
-      stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
-    }
+    stateMachineCurrentAction = StateMachineInternalAction::STATE_EXITING;
 
     auto fullname = demangleSymbol(typeid(StateType).name());
     ROS_WARN_STREAM("exiting state: " << fullname);
@@ -533,7 +523,6 @@ namespace smacc
     ROS_WARN_STREAM("state exit: " << fullname);
 
     {
-      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
       currentState_ = nullptr;
       stateMachineCurrentAction = StateMachineInternalAction::TRANSITIONING;
     }
