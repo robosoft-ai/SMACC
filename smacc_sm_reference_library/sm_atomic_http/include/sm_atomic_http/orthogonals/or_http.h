@@ -4,7 +4,7 @@ namespace sm_atomic_http {
 class OrHttp : public smacc::Orthogonal<OrHttp> {
  public:
   virtual void onInitialize() override {
-    auto client = this->createClient<ClHttp>("https://www.google.com", 2000);
+    auto client = this->createClient<ClHttp>("www.example.com", 2000);
     client->initialize();
   }
 };
