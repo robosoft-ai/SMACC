@@ -8,9 +8,43 @@
 #include <smacc/smacc_orthogonal.h>
 #include <smacc/smacc_client.h>
 #include <cassert>
+#include <type_traits>
 
 namespace smacc
 {
+
+template <typename SmaccClientType>
+std::shared_ptr<SmaccClientType> ISmaccOrthogonal::requiresClient()
+{
+    for(const auto& client : clients_) 
+    {
+        const auto cast_client = std::dynamic_pointer_cast<SmaccClientType>(client);
+        if(cast_client != nullptr)
+        {
+            return cast_client;
+        }
+    }
+
+    const auto requiredClientName = demangledTypeName<SmaccClientType>();
+    ROS_WARN_STREAM("Required client ["<< requiredClientName<< "] not found in current orthogonal. Searching in other orthogonals.");
+
+    for (const auto &orthoentry : this->getStateMachine()->getOrthogonals())
+    {
+        if(std::is_same<decltype(*this), decltype(orthoentry)>::value) continue;    // ignore current orthogonal
+        for (const auto& client : orthoentry.second->getClients())
+        {
+            const auto cast_client = std::dynamic_pointer_cast<SmaccClientType>(client);
+            if(cast_client != nullptr)
+            {
+                ROS_WARN_STREAM("Required client  ["<< requiredClientName<<"] found in other orthogonal.");
+                return cast_client;
+            }
+        }
+    }
+
+    ROS_ERROR_STREAM("Required client ["<< requiredClientName<< "] not found even in other orthogonals. Returning null pointer. If the requested client is used may result in a segmentation fault.");
+    return nullptr;
+}
 
 template <typename SmaccClientType>
 bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)

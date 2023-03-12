@@ -23,6 +23,9 @@ namespace smacc
         template <typename SmaccClientType>
         void requiresClient(SmaccClientType *&storage);
 
+        template <typename SmaccClientType>
+        std::shared_ptr<SmaccClientType> requiresClient();
+
         template <typename SmaccComponentType>
         void requiresComponent(SmaccComponentType *&storage);
 

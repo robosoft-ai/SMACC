@@ -56,6 +56,12 @@ void ISmaccClientBehavior::requiresClient(SmaccClientType *&storage)
     currentOrthogonal->requiresClient(storage);
 }
 
+template <typename SmaccClientType>
+std::shared_ptr<SmaccClientType> ISmaccClientBehavior::requiresClient()
+{
+    return currentOrthogonal->requiresClient<SmaccClientType>();
+}
+
 template <typename SmaccComponentType>
 void ISmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
 {

@@ -18,10 +18,14 @@ class CbMySubscriberBehavior : public smacc::SmaccClientBehavior
 public:
     void onEntry()
     {
-        ClSubscriber* client;
-        this->requiresClient(client);
+        ROS_ERROR("ALLO");
+        std::weak_ptr<ClSubscriber> client = this->requiresClient<ClSubscriber>();
 
-        client->onMessageReceived(&CbMySubscriberBehavior::onMessageReceived, this);
+        if(auto locked_client = client.lock())
+        {
+            ROS_ERROR("LOCKED");
+            locked_client->onMessageReceived(&CbMySubscriberBehavior::onMessageReceived, this);
+        }
     }
 
     template <typename TOrthogonal, typename TSourceObject>
