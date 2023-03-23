@@ -103,6 +103,9 @@ public:
     template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
     boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
 
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+    boost::signals2::connection createSignalConnectionNew(TSmaccSignal &signal, TMemberFunctionPrototype callback, std::shared_ptr<TSmaccObjectType> object);
+
     // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
     // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
 

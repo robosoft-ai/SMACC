@@ -358,6 +358,46 @@ namespace smacc
     return connection;
   }
 
+  template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+  boost::signals2::connection ISmaccStateMachine::createSignalConnectionNew(TSmaccSignal &signal,
+                                                                         TMemberFunctionPrototype callback,
+                                                                         std::shared_ptr<TSmaccObjectType> object)
+  {
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
+                      std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
+                  "Only are accepted smacc types as subscribers for smacc signals");
+
+    typedef decltype(callback) ft;
+    Bind<boost::function_types::function_arity<ft>::value> binder;
+    boost::signals2::connection connection = binder.bindaux(signal, callback, object.get()).track(object);
+
+    // long life-time objects
+    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
+    {
+    }
+    else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+             std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+             std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
+    {
+      ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
+               demangledTypeName<TSmaccObjectType>().c_str());
+      // stateCallbackConnections.push_back(connection);
+    }
+    else // state life-time objects
+    {
+      ROS_WARN("[StateMachine] connecting signal to an unknown object with life-time unknown behavior. It might provoke "
+               "an exception if the object is destroyed during the execution.");
+    }
+
+    return connection;
+  }
+
   // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
   // boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype
   // callback)
