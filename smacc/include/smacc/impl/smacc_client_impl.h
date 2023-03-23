@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <memory>
 #include <smacc/smacc_client.h>
 #include <smacc/impl/smacc_state_machine_impl.h>
 
@@ -41,6 +42,30 @@ namespace smacc
             if (tcomponent != nullptr)
             {
                 return tcomponent;
+            }
+        }
+
+        return nullptr;
+    }
+
+    template <typename TComponent>
+    std::shared_ptr<TComponent> ISmaccClient::getComponentNew() 
+    {
+        return this->getComponentNew<TComponent>(std::string());
+    }
+
+    template <typename TComponent>
+    std::shared_ptr<TComponent> ISmaccClient::getComponentNew(std::string name)
+    {
+        for(auto &component : components_)
+        {
+            if(component.first.name != name)
+              continue;
+
+            auto cast_component = std::dynamic_pointer_cast<TComponent>(component.second);
+            if(cast_component != nullptr)
+            {
+                return cast_component;
             }
         }
 

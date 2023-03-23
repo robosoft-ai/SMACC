@@ -56,6 +56,12 @@ public:
     template <typename TComponent>
     TComponent *getComponent(std::string name);
 
+    template <typename TComponent>
+    std::shared_ptr<TComponent> getComponentNew();
+
+    template <typename TComponent>
+    std::shared_ptr<TComponent> getComponentNew(std::string name);
+
     virtual smacc::introspection::TypeInfo::Ptr getType();
 
     inline ISmaccStateMachine *getStateMachine();

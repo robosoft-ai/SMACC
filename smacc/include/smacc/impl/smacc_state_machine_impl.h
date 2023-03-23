@@ -133,6 +133,30 @@ namespace smacc
 
     // storage = ret;
   }
+
+  template <typename SmaccComponentType>
+  std::shared_ptr<SmaccComponentType> ISmaccStateMachine::requiresComponent()
+  {
+    ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+    for (auto ortho : this->orthogonals_)
+    {
+      for (auto &client : ortho.second->clients_)
+      {
+
+        auto component = client->getComponent<SmaccComponentType>();
+        if (component != nullptr)
+        {
+          return component;
+        }
+      }
+    }
+
+    ROS_WARN("component %s is required but it was not found in any orthogonal", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+
+    return nullptr;
+  }
   //-------------------------------------------------------------------------------------------------------
   template <typename EventType>
   void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)

@@ -29,6 +29,9 @@ namespace smacc
         template <typename SmaccComponentType>
         void requiresComponent(SmaccComponentType *&storage);
 
+        template <typename SmaccComponentType>
+        std::shared_ptr<SmaccComponentType> requiresComponent();
+
         ros::NodeHandle getNode();
 
     protected:

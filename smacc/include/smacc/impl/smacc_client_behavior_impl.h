@@ -75,6 +75,19 @@ void ISmaccClientBehavior::requiresComponent(SmaccComponentType *&storage)
     }
 }
 
+template <typename SmaccComponentType>
+std::shared_ptr<SmaccComponentType> ISmaccClientBehavior::requiresComponent()
+{
+    if (stateMachine_ == nullptr)
+    {
+        ROS_ERROR("Cannot use the requiresComponent funcionality before assigning the client behavior to an orthogonal. Try using the OnEntry method to capture required components.");
+    }
+    else
+    {
+        return stateMachine_->requiresComponent<SmaccComponentType>();
+    }
+}
+
 template <typename TOrthogonal, typename TSourceObject>
 void ISmaccClientBehavior::onOrthogonalAllocation() {}
 
