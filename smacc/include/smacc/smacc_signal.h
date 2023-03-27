@@ -24,5 +24,9 @@ template <typename Signature,
           typename Mutex = boost::signals2::mutex>
 class SmaccSignal : public boost::signals2::signal<Signature, Combiner, Group, GroupCompare, SlotFunction, ExtendedSlotFunction, Mutex>
 {
+  public:
+    typedef typename boost::signals2::signal<Signature, Combiner, Group, GroupCompare, SlotFunction, ExtendedSlotFunction, Mutex> SmaccSignalType;
+    typedef typename SmaccSignalType::slot_type SmaccSlotType;
+
 };
 } // namespace smacc

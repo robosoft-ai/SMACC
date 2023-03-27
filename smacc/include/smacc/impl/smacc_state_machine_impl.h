@@ -370,9 +370,16 @@ namespace smacc
                       std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
                   "Only are accepted smacc types as subscribers for smacc signals");
 
-    typedef decltype(callback) ft;
-    Bind<boost::function_types::function_arity<ft>::value> binder;
-    boost::signals2::connection connection = binder.bindaux(signal, callback, object.get()).track(object);
+    // typedef decltype(callback) ft;
+    // typedef typename decltype(signal)::SmaccSignalType st;
+    // Bind<boost::function_types::function_arity<ft>::value> binder;
+    // auto test = decltype(signal)::SmaccSignalSlotType(callback, object.get(), _1).track(object);
+    // auto test = std::bind(callback, object.get(), _1);
+    // boost::signals2::connection connection = signal.connect(decltype(signal)::SmaccSlotType(callback, object.get(), _1).track(object));
+    // boost::signals2::connection connection = signal.connect(typename TSmaccSignal::SmaccSlotType(callback, object.get(), _1).track(object));
+    boost::signals2::connection connection = signal.connect(typename TSmaccSignal::SmaccSlotType(callback).track_foreign(object));
+    // boost::signals2::connection connection = signal.connect(std::bind(callback, object.get(), _1).track(object));
+    // boost::signals2::connection connection = signal.connect(test.track(object));
 
     // long life-time objects
     if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
