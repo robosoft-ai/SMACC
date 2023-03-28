@@ -41,6 +41,15 @@ ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
     }
 }
 
+void ISmaccStateMachine::disconnectSmaccSignalObject(void *object_ptr)
+{
+    if(stateCallbackConnections.count(object_ptr) > 0)
+    {
+        stateCallbackConnections[object_ptr].disconnect();
+        stateCallbackConnections.erase(object_ptr);
+    }
+}
+
 ISmaccStateMachine::~ISmaccStateMachine()
 {
     ROS_INFO("Finishing State Machine");

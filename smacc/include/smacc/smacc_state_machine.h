@@ -100,8 +100,7 @@ public:
     template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
     boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
 
-    // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-    // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);
+    void disconnectSmaccSignalObject(void *object);
 
     template <typename StateType>
     void notifyOnStateEntryStart(StateType *state);
@@ -184,7 +183,7 @@ private:
 
     StateMachineInternalAction stateMachineCurrentAction;
 
-    std::list<boost::signals2::connection> stateCallbackConnections;
+    std::map<void*, boost::signals2::connection> stateCallbackConnections;
 
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;

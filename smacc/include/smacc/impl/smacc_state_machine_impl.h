@@ -323,7 +323,7 @@ namespace smacc
     {
       ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
                demangledTypeName<TSmaccObjectType>().c_str());
-      stateCallbackConnections.push_back(connection);
+      stateCallbackConnections[object] = connection ;
     }
     else // state life-time objects
     {
@@ -480,6 +480,7 @@ namespace smacc
       try
       {
         sr->onExit();
+        this->disconnectSmaccSignalObject((void*)&sr);
       }
       catch (const std::exception &e)
       {
@@ -495,6 +496,7 @@ namespace smacc
       try
       {
         eg->onExit();
+        this->disconnectSmaccSignalObject((void*)&eg);
       }
       catch (const std::exception &e)
       {
@@ -505,10 +507,11 @@ namespace smacc
 
     this->lockStateMachine("state exit");
 
+    // disconnect pending callbacks
     for (auto &conn : this->stateCallbackConnections)
     {
       ROS_WARN_STREAM("[StateMachine] Disconnecting scoped-lifetime SmaccSignal subscription");
-      conn.disconnect();
+      conn.second.disconnect();
     }
 
     this->stateCallbackConnections.clear();

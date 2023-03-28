@@ -92,6 +92,7 @@ namespace smacc
             for (auto &clBehavior : clientBehaviors_)
             {
                 clBehavior->dispose();
+                this->getStateMachine()->disconnectSmaccSignalObject((void*)&clBehavior);
                 clientBehaviors_[i] = nullptr;
             }
 
