@@ -23,6 +23,7 @@
 #include <smacc/smacc_state.h>
 #include <smacc/smacc_state_reactor.h>
 //#include <smacc/smacc_event_generator.h>
+#include <smacc/callback_counter_semaphore.h>
 
 namespace smacc
 {
@@ -42,6 +43,8 @@ enum class StateMachineInternalAction
     STATE_EXITING,
     TRANSITIONING
 };
+
+
 
 // This class describes the concept of Smacc State Machine in an abastract way.
 // The SmaccStateMachineBase inherits from this state machine and from
@@ -183,7 +186,7 @@ private:
 
     StateMachineInternalAction stateMachineCurrentAction;
 
-    std::map<void*, boost::signals2::connection> stateCallbackConnections;
+    std::map<void*, std::shared_ptr<CallbackCounterSemaphore>> stateCallbackConnections;
 
     // shared variables
     std::map<std::string, std::pair<std::function<std::string()>, boost::any>> globalData_;
