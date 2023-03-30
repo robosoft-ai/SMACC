@@ -249,16 +249,28 @@ namespace smacc
     {
       template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
       boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback,
-                                          TSmaccObjectType *object);
+                                          TSmaccObjectType *object, std::shared_ptr<CallbackCounterSemaphore> callbackCounter);
     };
 
     template <>
     struct Bind<1>
     {
       template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object, std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
       {
-        return signal.connect([=]() { return (object->*callback)(); });
+        return signal.connect(
+
+        [=]()
+        {
+          if(callbackCounter == nullptr)
+          {
+            return (object->*callback)();
+          }
+          else if (callbackCounter->acquire())
+          {
+            (object->*callback)();
+            callbackCounter->release();
+        }});
       }
     };
 
@@ -266,9 +278,21 @@ namespace smacc
     struct Bind<2>
     {
       template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object, std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
       {
-        return signal.connect([=](auto a1) { return (object->*callback)(a1); });
+        return signal.connect([=](auto a1)
+        {
+            if(callbackCounter == nullptr)
+          {
+            return (object->*callback)(a1);
+          }
+          else if (callbackCounter->acquire())
+          {
+            (object->*callback)(a1);
+            callbackCounter->release();
+
+          }
+            });
       }
     };
 
@@ -276,9 +300,20 @@ namespace smacc
     struct Bind<3>
     {
       template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object, std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
       {
-        return signal.connect([=](auto a1, auto a2) { return (object->*callback)(a1, a2); });
+        return signal.connect([=](auto a1, auto a2) {
+           if(callbackCounter == nullptr)
+          {
+            return (object->*callback)(a1,a2);
+          }
+          else if (callbackCounter->acquire())
+          {
+            (object->*callback)(a1,a2);
+            callbackCounter->release();
+
+          }
+          });
       }
     };
 
@@ -286,9 +321,21 @@ namespace smacc
     struct Bind<4>
     {
       template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
-      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object)
+      boost::signals2::connection bindaux(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object, std::shared_ptr<CallbackCounterSemaphore> callbackCounter)
       {
-        return signal.connect([=](auto a1, auto a2, auto a3) { return (object->*callback)(a1, a2, a3); });
+        return signal.connect([=](auto a1, auto a2, auto a3) {
+           if(callbackCounter == nullptr)
+          {
+            return (object->*callback)(a1,a2,a3);
+          }
+          else if (callbackCounter->acquire())
+          {
+            (object->*callback)(a1,a2,a3);
+            callbackCounter->release();
+
+          }
+          });
+
       }
     };
   } // namespace utils
@@ -299,6 +346,8 @@ namespace smacc
                                                                          TMemberFunctionPrototype callback,
                                                                          TSmaccObjectType *object)
   {
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
     static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
                       std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
                       std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
@@ -308,7 +357,8 @@ namespace smacc
 
     typedef decltype(callback) ft;
     Bind<boost::function_types::function_arity<ft>::value> binder;
-    boost::signals2::connection connection = binder.bindaux(signal, callback, object);
+
+    boost::signals2::connection connection;
 
     // long life-time objects
     if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
@@ -316,6 +366,7 @@ namespace smacc
         std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
         std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
     {
+      connection = binder.bindaux(signal, callback, object, nullptr);
     }
     else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
              std::is_base_of<StateReactor, TSmaccObjectType>::value ||
@@ -323,24 +374,32 @@ namespace smacc
     {
       ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
                demangledTypeName<TSmaccObjectType>().c_str());
-      stateCallbackConnections[object] = connection ;
+
+      std::shared_ptr<CallbackCounterSemaphore> callbackCounterSemaphore;
+      if(stateCallbackConnections.count(object))
+      {
+        callbackCounterSemaphore = stateCallbackConnections[object];
+      }
+      else
+      {
+          callbackCounterSemaphore =  std::make_shared<CallbackCounterSemaphore>(demangledTypeName<TSmaccObjectType>().c_str());
+          stateCallbackConnections[object] = callbackCounterSemaphore;
+      }
+
+      connection = binder.bindaux(signal, callback, object, callbackCounterSemaphore);
+      callbackCounterSemaphore->addConnection(connection);
+
     }
     else // state life-time objects
     {
       ROS_WARN("[StateMachine] connecting signal to an unknown object with life-time unknown behavior. It might provoke "
                "an exception if the object is destroyed during the execution.");
+
+      connection = binder.bindaux(signal, callback, object, nullptr);
     }
 
     return connection;
   }
-
-  // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
-  // boost::signals2::connection ISmaccStateMachine::createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype
-  // callback)
-  // {
-  //     return signal.connect(callback);
-  //     // return signal;
-  // }
 
   template <typename T>
   bool ISmaccStateMachine::getParam(std::string param_name, T &param_storage)
@@ -408,8 +467,6 @@ namespace smacc
                   srname, e.what());
       }
     }
-
-
 
     for (auto &eg : this->currentState_->getEventGenerators())
     {
@@ -557,13 +614,6 @@ namespace smacc
         ROS_ERROR("[State Reactor %s] Exception on OnDispose - continuing with next state reactor. Exception info: %s",
                   egname, e.what());
       }
-    }
-
-    // disconnect pending callbacks
-    for (auto &conn : this->stateCallbackConnections)
-    {
-      ROS_WARN_STREAM("[StateMachine] Disconnecting scoped-lifetime SmaccSignal subscription");
-      conn.second.disconnect();
     }
 
     this->stateCallbackConnections.clear();
