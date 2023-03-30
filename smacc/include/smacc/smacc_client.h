@@ -53,8 +53,14 @@ public:
     template <typename TComponent>
     TComponent *getComponent();
 
+    // template <typename TComponent>
+    // TComponent *getComponent(std::string name);
+
     template <typename TComponent>
-    TComponent *getComponent(std::string name);
+    void getComponent(std::shared_ptr<TComponent>& storage);
+
+    template <typename TComponent>
+    void getComponent(std::string name, std::shared_ptr<TComponent>& storage );
 
     virtual smacc::introspection::TypeInfo::Ptr getType();
 
@@ -65,6 +71,9 @@ public:
 
     template <typename SmaccClientType>
     void requiresClient(SmaccClientType *&storage);
+
+    template <typename SmaccClientType>
+    void requiresClient(std::shared_ptr<SmaccClientType>& storage);
 
     void getComponents(std::vector<std::shared_ptr<ISmaccComponent>> &components);
 

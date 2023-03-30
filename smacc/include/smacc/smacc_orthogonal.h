@@ -30,8 +30,14 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
 
+    template <typename SmaccComponentType>
+    void requiresComponent(std::shared_ptr<SmaccComponentType> &storage);
+
     template <typename SmaccClientType>
     bool requiresClient(SmaccClientType *&storage);
+
+    template <typename SmaccClientType>
+    bool requiresClient(std::shared_ptr<SmaccClientType>& storage);
 
     inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &getClients();
 

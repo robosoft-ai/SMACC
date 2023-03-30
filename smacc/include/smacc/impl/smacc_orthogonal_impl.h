@@ -42,8 +42,51 @@ bool ISmaccOrthogonal::requiresClient(SmaccClientType *&storage)
     return false;
 }
 
+template <typename SmaccClientType>
+bool ISmaccOrthogonal::requiresClient(std::shared_ptr<SmaccClientType> &storage)
+{
+    for (auto &client : clients_)
+    {
+        storage = std::dynamic_pointer_cast<SmaccClientType>(client);
+        if (storage != nullptr)
+            return true;
+    }
+
+    auto requiredClientName = demangledTypeName<SmaccClientType>();
+    ROS_WARN_STREAM("Required client ["<< requiredClientName<< "] not found in current orthogonal. Searching in other orthogonals.");
+
+    for (auto &orthoentry : this->getStateMachine()->getOrthogonals())
+    {
+        for (auto &client : orthoentry.second->getClients())
+        {
+            storage = std::dynamic_pointer_cast<SmaccClientType>(client);
+            if (storage != nullptr)
+            {
+                ROS_WARN_STREAM("Required client  ["<< requiredClientName<<"] found in other orthogonal.");
+                return true;
+            }
+        }
+    }
+
+    ROS_ERROR_STREAM("Required client ["<< requiredClientName<< "] not found even in other orthogonals. Returning null pointer. If the requested client is used may result in a segmentation fault.");
+    return false;
+}
+
 template <typename SmaccComponentType>
 void ISmaccOrthogonal::requiresComponent(SmaccComponentType *&storage)
+{
+    if (stateMachine_ == nullptr)
+    {
+        ROS_ERROR("Cannot use the requiresComponent funcionality from an orthogonal before onInitialize");
+    }
+    else
+    {
+        stateMachine_->requiresComponent(storage);
+    }
+}
+
+template <typename SmaccComponentType>
+void ISmaccOrthogonal::requiresComponent(std::shared_ptr<SmaccComponentType> &storage)
 {
     if (stateMachine_ == nullptr)
     {

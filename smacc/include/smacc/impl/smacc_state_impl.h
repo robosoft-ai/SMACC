@@ -72,10 +72,32 @@ namespace smacc
     {
         this->getStateMachine().requiresComponent(storage);
     }
+
+    template <typename SmaccComponentType>
+    void ISmaccState::requiresComponent(std::shared_ptr<SmaccComponentType> &storage)
+    {
+        this->getStateMachine().requiresComponent(storage);
+    }
     //-------------------------------------------------------------------------------------------------------
 
     template <typename SmaccClientType>
     void ISmaccState::requiresClient(SmaccClientType *&storage)
+    {
+        const char *sname = (demangleSymbol(typeid(*this).name()).c_str());
+        storage = nullptr;
+        auto &orthogonals = this->getStateMachine().getOrthogonals();
+        for (auto &ortho : orthogonals)
+        {
+            ortho.second->requiresClient(storage);
+            if (storage != nullptr)
+                return;
+        }
+
+        ROS_ERROR("[%s] Client of type '%s' not found in any orthogonal of the current state machine. This may produce a segmentation fault if the returned reference is used.", sname, demangleSymbol<SmaccClientType>().c_str());
+    }
+
+    template <typename SmaccClientType>
+    void ISmaccState::requiresClient(std::shared_ptr<SmaccClientType>& storage)
     {
         const char *sname = (demangleSymbol(typeid(*this).name()).c_str());
         storage = nullptr;
