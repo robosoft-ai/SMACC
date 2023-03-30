@@ -409,6 +409,8 @@ namespace smacc
       }
     }
 
+
+
     for (auto &eg : this->currentState_->getEventGenerators())
     {
       auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
@@ -480,7 +482,6 @@ namespace smacc
       try
       {
         sr->onExit();
-        this->disconnectSmaccSignalObject((void*)&sr);
       }
       catch (const std::exception &e)
       {
@@ -496,7 +497,6 @@ namespace smacc
       try
       {
         eg->onExit();
-        this->disconnectSmaccSignalObject((void*)&eg);
       }
       catch (const std::exception &e)
       {
@@ -504,8 +504,60 @@ namespace smacc
                   egname, e.what());
       }
     }
+  }
 
+  template <typename StateType>
+  void ISmaccStateMachine::notifyOnStateExited(StateType *state)
+  {
     this->lockStateMachine("state exit");
+
+    auto fullname = demangleSymbol(typeid(StateType).name());
+    ROS_WARN_STREAM("exiting state: " << fullname);
+
+    ROS_INFO_STREAM("Notification State Disposing: leaving state" << state);
+    for (auto pair : this->orthogonals_)
+    {
+      auto &orthogonal = pair.second;
+      try
+      {
+        orthogonal->onDispose();
+      }
+      catch (const std::exception &e)
+      {
+        ROS_ERROR("[Orthogonal %s] Exception onDispose - continuing with next orthogonal. Exception info: %s",
+                  pair.second->getName().c_str(), e.what());
+      }
+    }
+
+    for (auto &sr : state->getStateReactors())
+    {
+      auto srname = smacc::demangleSymbol(typeid(*sr).name()).c_str();
+      ROS_INFO("state reactor disposing: %s", srname);
+      try
+      {
+        this->disconnectSmaccSignalObject((void*)&sr);
+      }
+      catch (const std::exception &e)
+      {
+        ROS_ERROR("[State Reactor %s] Exception on OnDispose - continuing with next state reactor. Exception info: %s",
+                  srname, e.what());
+      }
+    }
+
+    for (auto &eg : state->getEventGenerators())
+    {
+      auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
+      ROS_INFO("state reactor disposing: %s", egname);
+      try
+      {
+        this->disconnectSmaccSignalObject((void*)&eg);
+      }
+      catch (const std::exception &e)
+      {
+        ROS_ERROR("[State Reactor %s] Exception on OnDispose - continuing with next state reactor. Exception info: %s",
+                  egname, e.what());
+      }
+    }
 
     // disconnect pending callbacks
     for (auto &conn : this->stateCallbackConnections)
@@ -515,14 +567,7 @@ namespace smacc
     }
 
     this->stateCallbackConnections.clear();
-
     currentState_ = nullptr;
-  }
-
-  template <typename StateType>
-  void ISmaccStateMachine::notifyOnStateExited(StateType *state)
-  {
-    auto fullname = demangleSymbol(typeid(StateType).name());
 
     // then call exit state
     ROS_WARN_STREAM("state exit: " << fullname);

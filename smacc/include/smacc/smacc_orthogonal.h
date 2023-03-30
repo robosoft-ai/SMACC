@@ -25,6 +25,8 @@ public:
 
     void onExit();
 
+    void onDispose();
+
     virtual std::string getName() const;
 
     template <typename SmaccComponentType>
