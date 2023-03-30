@@ -202,7 +202,7 @@ void SignalDetector::pollOnce()
         this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_EXITING &&
         this->smaccStateMachine_->stateMachineCurrentAction != StateMachineInternalAction::STATE_ENTERING)
     {
-      
+
       // we do not update updatable elements during trasitioning or configuration of states
       long currentStateIndex = smaccStateMachine_->getCurrentStateCounter();
 
@@ -238,7 +238,7 @@ void SignalDetector::pollOnce()
   {
     ROS_ERROR("Exception during Signal Detector update loop. %s", ex.what());
   }
-  
+
   smaccStateMachine_->unlockStateMachine("update behaviors");
 }
 
