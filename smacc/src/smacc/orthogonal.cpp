@@ -99,7 +99,7 @@ namespace smacc
         for (auto &clBehavior : clientBehaviors_)
         {
             clBehavior->dispose();
-            this->getStateMachine()->disconnectSmaccSignalObject((void*)&clBehavior);
+            this->getStateMachine()->disconnectSmaccSignalObject((void*)clBehavior.get());
         }
 
         clientBehaviors_.clear();

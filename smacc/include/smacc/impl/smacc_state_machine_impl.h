@@ -592,7 +592,7 @@ namespace smacc
       ROS_INFO("state reactor disposing: %s", srname);
       try
       {
-        this->disconnectSmaccSignalObject((void*)&sr);
+        this->disconnectSmaccSignalObject(sr.get());
       }
       catch (const std::exception &e)
       {
@@ -607,7 +607,7 @@ namespace smacc
       ROS_INFO("state reactor disposing: %s", egname);
       try
       {
-        this->disconnectSmaccSignalObject((void*)&eg);
+        this->disconnectSmaccSignalObject(eg.get());
       }
       catch (const std::exception &e)
       {

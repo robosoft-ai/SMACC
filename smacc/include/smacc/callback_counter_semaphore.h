@@ -17,62 +17,14 @@ namespace smacc
 {
 class CallbackCounterSemaphore {
 public:
-    CallbackCounterSemaphore(std::string name, int count = 0) : count_(count), name_(name) {}
+    CallbackCounterSemaphore(std::string name, int count = 0);
+    bool acquire();
 
-    bool acquire() {
-        std::unique_lock<std::mutex> lock(mutex_);
-        ROS_INFO("[CallbackCounterSemaphore] acquire callback %s %ld",name_.c_str(), (long)this);
+    void release();
 
-        if(finalized)
-        {
-            ROS_INFO("[CallbackCounterSemaphore] callback rejected %s %ld",name_.c_str(), (long)this);
-            return false;
-        }
+    void finalize();
 
-        ++count_;
-        cv_.notify_one();
-
-        ROS_INFO("[CallbackCounterSemaphore] callback accepted %s %ld",name_.c_str(), (long)this);
-        return true;
-    }
-
-    void release() {
-        std::unique_lock<std::mutex> lock(mutex_);
-        --count_;
-        cv_.notify_one();
-
-        ROS_INFO("[CallbackCounterSemaphore] callback finished %s %ld",name_.c_str(), (long)this);
-    }
-
-    void finalize() {
-        std::unique_lock<std::mutex> lock(mutex_);
-
-        while (count_ > 0) {
-            cv_.wait(lock);
-        }
-        finalized = true;
-
-        for(auto conn: connections_)
-        {
-            conn.disconnect();
-        }
-
-        connections_.clear();
-        ROS_INFO("[CallbackCounterSemaphore] callbacks finalized %s %ld",name_.c_str(), (long)this);
-    }
-
-    inline void addConnection(boost::signals2::connection conn)
-    {
-        std::unique_lock<std::mutex> lock(mutex_);
-
-        if(finalized)
-        {
-            ROS_INFO("[CallbackCounterSemaphore] ignoring adding callback, already finalized %s %ld",name_.c_str(), (long)this);
-            return;
-        }
-
-        connections_.push_back(conn);
-    }
+    void addConnection(boost::signals2::connection conn);
 
 private:
     int count_;
