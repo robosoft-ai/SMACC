@@ -67,6 +67,9 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
 
+    template <typename SmaccComponentType>
+    std::shared_ptr<SmaccComponentType> requiresComponent();
+
     template <typename EventType>
     void postEvent(EventType *ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 
@@ -99,6 +102,9 @@ public:
 
     template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
     boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback, TSmaccObjectType *object);
+
+    template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+    boost::signals2::connection createSignalConnectionNew(TSmaccSignal &signal, TMemberFunctionPrototype callback, std::shared_ptr<TSmaccObjectType> object);
 
     // template <typename TSmaccSignal, typename TMemberFunctionPrototype>
     // boost::signals2::connection createSignalConnection(TSmaccSignal &signal, TMemberFunctionPrototype callback);

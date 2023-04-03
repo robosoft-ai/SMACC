@@ -10,6 +10,8 @@
 #include <boost/optional/optional_io.hpp>
 #include <smacc/impl/smacc_state_impl.h>
 
+#include <memory>
+
 namespace smacc
 {
 
@@ -43,6 +45,7 @@ public:
   }
 
   smacc::SmaccSignal<void(const MessageType &)> onFirstMessageReceived_;
+  smacc::SmaccSignal<void()> testSignal;
   smacc::SmaccSignal<void(const MessageType &)> onMessageReceived_;
 
   std::function<void(const MessageType &)> postMessageEvent;
@@ -52,6 +55,20 @@ public:
   boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), T *object)
   {
     return this->getStateMachine()->createSignalConnection(onMessageReceived_, callback, object);
+  }
+
+  // TODO: Why does the compiler moan when we only use T? They're the same type T==F
+  template <typename T, typename F>
+  boost::signals2::connection onMessageReceived(void (T::*callback)(const MessageType &), std::shared_ptr<F> object)
+  {
+    return this->getStateMachine()->createSignalConnectionNew(onMessageReceived_, std::bind(callback, object.get(), std::placeholders::_1), object);
+  }
+
+
+  template <typename T>
+  boost::signals2::connection onMessageReceived(std::function<void(const MessageType&)> callback, std::shared_ptr<T> object)
+  {
+    return this->getStateMachine()->createSignalConnectionNew(onMessageReceived_, callback, object);
   }
 
   template <typename T>

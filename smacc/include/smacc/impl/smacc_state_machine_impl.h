@@ -133,6 +133,30 @@ namespace smacc
 
     // storage = ret;
   }
+
+  template <typename SmaccComponentType>
+  std::shared_ptr<SmaccComponentType> ISmaccStateMachine::requiresComponent()
+  {
+    ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+    for (auto ortho : this->orthogonals_)
+    {
+      for (auto &client : ortho.second->clients_)
+      {
+
+        auto component = client->getComponent<SmaccComponentType>();
+        if (component != nullptr)
+        {
+          return component;
+        }
+      }
+    }
+
+    ROS_WARN("component %s is required but it was not found in any orthogonal", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+
+    return nullptr;
+  }
   //-------------------------------------------------------------------------------------------------------
   template <typename EventType>
   void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)
@@ -324,6 +348,53 @@ namespace smacc
       ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
                demangledTypeName<TSmaccObjectType>().c_str());
       stateCallbackConnections.push_back(connection);
+    }
+    else // state life-time objects
+    {
+      ROS_WARN("[StateMachine] connecting signal to an unknown object with life-time unknown behavior. It might provoke "
+               "an exception if the object is destroyed during the execution.");
+    }
+
+    return connection;
+  }
+
+  template <typename TSmaccSignal, typename TMemberFunctionPrototype, typename TSmaccObjectType>
+  boost::signals2::connection ISmaccStateMachine::createSignalConnectionNew(TSmaccSignal &signal,
+                                                                         TMemberFunctionPrototype callback,
+                                                                         std::shared_ptr<TSmaccObjectType> object)
+  {
+    static_assert(std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value ||
+                      std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+                      std::is_base_of<ISmaccComponent, TSmaccObjectType>::value,
+                  "Only are accepted smacc types as subscribers for smacc signals");
+
+    // typedef decltype(callback) ft;
+    // typedef typename decltype(signal)::SmaccSignalType st;
+    // Bind<boost::function_types::function_arity<ft>::value> binder;
+    // auto test = decltype(signal)::SmaccSignalSlotType(callback, object.get(), _1).track(object);
+    // auto test = std::bind(callback, object.get(), _1);
+    // boost::signals2::connection connection = signal.connect(decltype(signal)::SmaccSlotType(callback, object.get(), _1).track(object));
+    // boost::signals2::connection connection = signal.connect(typename TSmaccSignal::SmaccSlotType(callback, object.get(), _1).track(object));
+    boost::signals2::connection connection = signal.connect(typename TSmaccSignal::SmaccSlotType(callback).track_foreign(object));
+    // boost::signals2::connection connection = signal.connect(std::bind(callback, object.get(), _1).track(object));
+    // boost::signals2::connection connection = signal.connect(test.track(object));
+
+    // long life-time objects
+    if (std::is_base_of<ISmaccComponent, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccClient, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccOrthogonal, TSmaccObjectType>::value ||
+        std::is_base_of<ISmaccStateMachine, TSmaccObjectType>::value)
+    {
+    }
+    else if (std::is_base_of<ISmaccState, TSmaccObjectType>::value ||
+             std::is_base_of<StateReactor, TSmaccObjectType>::value ||
+             std::is_base_of<ISmaccClientBehavior, TSmaccObjectType>::value)
+    {
+      ROS_INFO("[StateMachine] life-time constrained smacc signal subscription created. Subscriber is %s",
+               demangledTypeName<TSmaccObjectType>().c_str());
+      // stateCallbackConnections.push_back(connection);
     }
     else // state life-time objects
     {
