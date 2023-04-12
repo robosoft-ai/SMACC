@@ -3,8 +3,6 @@
  * 	 Authors: Pablo Inigo Blasco, Brett Aldrich
  *
  ******************************************************************************************************************/
-
-#pragma once
 #include <iostream>
 #include <boost/signals2.hpp>
 #include <thread>
@@ -12,10 +10,11 @@
 #include <mutex>
 #include <boost/signals2.hpp>
 #include <ros/ros.h>
+#include <smacc/callback_counter_semaphore.h>
 
 namespace smacc
 {
-    CallbackCounterSemaphore::CallbackCounterSemaphore(std::string name, int count = 0) : count_(count), name_(name) {}
+    CallbackCounterSemaphore::CallbackCounterSemaphore(std::string name, int count) : count_(count), name_(name) {}
 
     bool CallbackCounterSemaphore::acquire() {
         std::unique_lock<std::mutex> lock(mutex_);
