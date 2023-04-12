@@ -264,7 +264,7 @@ namespace smacc
         {
           if(callbackCounter == nullptr)
           {
-            return (object->*callback)();
+           (object->*callback)();
           }
           else if (callbackCounter->acquire())
           {
