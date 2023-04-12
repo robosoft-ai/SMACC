@@ -8,6 +8,7 @@
 #include <boost/any.hpp>
 #include <map>
 #include <mutex>
+#include <stack>
 
 #include <smacc/common.h>
 #include <smacc/introspection/introspection.h>
@@ -171,7 +172,7 @@ protected:
 
     // if it is null, you may be located in a transition. There is a small gap of time where internally
     // this currentState_ is null. This may change in the future.
-    ISmaccState *currentState_;
+    std::vector<ISmaccState*>  currentState_;
 
     std::shared_ptr<SmaccStateInfo> currentStateInfo_;
 

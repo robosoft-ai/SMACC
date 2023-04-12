@@ -153,12 +153,12 @@ namespace smacc
     // some more events
 
     ROS_DEBUG_STREAM("[PostEvent entry point] " << demangleSymbol<EventType>());
-    auto currentstate = currentState_;
-    if (currentstate != nullptr)
-    {
-      propagateEventToStateReactors(currentstate, ev);
-    }
 
+    for (auto currentState : currentState_)
+    {
+      propagateEventToStateReactors(currentState, ev);
+    }
+    
     this->signalDetector_->postEvent(ev);
   }
 
@@ -429,8 +429,8 @@ namespace smacc
     ROS_DEBUG("[State Machne] Initializating a new state '%s' and updating current state. Getting state meta-information. number of orthogonals: %ld", demangleSymbol(typeid(StateType).name()).c_str(), this->orthogonals_.size());
 
     stateSeqCounter_++;
-    currentState_ = state;
-    currentStateInfo_ = stateMachineInfo_->getState<StateType>();
+    currentState_.push_back(state);
+    currentStateInfo_ = stateMachineInfo_->getState<StateType>(); 
   }
 
   template <typename StateType>
@@ -438,6 +438,7 @@ namespace smacc
   {
     ROS_INFO("[%s] State OnEntry code finished", demangleSymbol(typeid(StateType).name()).c_str());
 
+    auto currentState = this->currentState_.back();
     for (auto pair : this->orthogonals_)
     {
       //ROS_INFO("ortho onentry: %s", pair.second->getName().c_str());
@@ -453,7 +454,7 @@ namespace smacc
       }
     }
 
-    for (auto &sr : this->currentState_->getStateReactors())
+    for (auto &sr : currentState->getStateReactors())
     {
       auto srname = smacc::demangleSymbol(typeid(*sr).name()).c_str();
       ROS_INFO("state reactor onEntry: %s", srname);
@@ -468,7 +469,7 @@ namespace smacc
       }
     }
 
-    for (auto &eg : this->currentState_->getEventGenerators())
+    for (auto &eg : currentState->getEventGenerators())
     {
       auto egname = smacc::demangleSymbol(typeid(*eg).name()).c_str();
       ROS_INFO("state reactor onEntry: %s", egname);
@@ -483,8 +484,11 @@ namespace smacc
       }
     }
 
-    this->updateStatusMessage();
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      this->updateStatusMessage();
+      stateMachineCurrentAction = StateMachineInternalAction::STATE_STEADY;
+    }
   }
 
   template <typename StateType>
@@ -497,9 +501,13 @@ namespace smacc
       orthogonal->runtimeConfigure();
     }
 
-    this->updateStatusMessage();
+    {
+      std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+      this->updateStatusMessage();
+      this->signalDetector_->notifyStateConfigured(this->currentState_.back());
 
-    stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
+      stateMachineCurrentAction = StateMachineInternalAction::STATE_ENTERING;
+    }
   }
 
   template <typename StateType>
@@ -568,6 +576,8 @@ namespace smacc
   {
     this->lockStateMachine("state exit");
 
+    signalDetector_->notifyStateExited(state);
+
     auto fullname = demangleSymbol(typeid(StateType).name());
     ROS_WARN_STREAM("exiting state: " << fullname);
 
@@ -617,7 +627,7 @@ namespace smacc
     }
 
     this->stateCallbackConnections.clear();
-    currentState_ = nullptr;
+    currentState_.pop_back();
 
     // then call exit state
     ROS_WARN_STREAM("state exit: " << fullname);
@@ -658,7 +668,7 @@ namespace smacc
 
   ISmaccState *ISmaccStateMachine::getCurrentState() const
   {
-    return this->currentState_;
+    return this->currentState_.back();
   }
 
   const smacc::introspection::SmaccStateMachineInfo &ISmaccStateMachine::getStateMachineInfo()
