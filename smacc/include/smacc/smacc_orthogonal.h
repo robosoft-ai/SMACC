@@ -17,6 +17,8 @@ public:
 
     inline ISmaccStateMachine *getStateMachine();
 
+    void initState(ISmaccState *state);
+
     void addClientBehavior(std::shared_ptr<smacc::ISmaccClientBehavior> clientBehavior);
 
     void runtimeConfigure();
@@ -37,7 +39,7 @@ public:
 
     inline const std::vector<std::shared_ptr<smacc::ISmaccClient>> &getClients();
 
-    inline const std::vector<std::shared_ptr<smacc::ISmaccClientBehavior>> &getClientBehaviors() const;
+    inline const std::vector<std::vector<std::shared_ptr<smacc::ISmaccClientBehavior>>> &getClientBehaviors() const;
 
     template <typename T>
     void setGlobalSMData(std::string name, T value);
@@ -59,7 +61,7 @@ protected:
 private:
     ISmaccStateMachine *stateMachine_;
 
-    std::vector<std::shared_ptr<smacc::ISmaccClientBehavior>> clientBehaviors_;
+    std::vector<std::vector<std::shared_ptr<smacc::ISmaccClientBehavior>>> clientBehaviors_;
     friend class ISmaccStateMachine;
 };
 

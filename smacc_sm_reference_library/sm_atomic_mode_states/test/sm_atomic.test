@@ -1,0 +1,6 @@
+<launch>
+<include file="$(find sm_atomic_mode_states)/launch/sm_atomic_mode_states.launch"/>
+    <test pkg="smacc_runtime_test" test-name="smacc_runtime_test_node" type="smacc_runtime_test_node">
+        <rosparam file="$(find sm_atomic_mode_states)/config/sm_atomic_test.yaml"/>
+    </test>
+</launch>

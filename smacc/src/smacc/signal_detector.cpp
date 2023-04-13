@@ -91,7 +91,7 @@ void SignalDetector::findUpdatableStateElements(ISmaccState *currentState)
   for (auto pair : this->smaccStateMachine_->getOrthogonals())
   {
     auto &orthogonal = pair.second;
-    auto &behaviors = orthogonal->getClientBehaviors();
+    auto &behaviors = orthogonal->getClientBehaviors().back();
 
     for (auto &currentBehavior : behaviors)
     {
@@ -181,7 +181,7 @@ void SignalDetector::notifyStateConfigured(ISmaccState* currentState)
 
 void SignalDetector::notifyStateExited(ISmaccState* currentState)
 {
-  this->findUpdatableStateElements(currentState);
+  this->updatableStateElements_.pop_back();
 }
 
 
