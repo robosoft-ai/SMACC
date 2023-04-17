@@ -17,6 +17,8 @@ enum class ExecutionModel
   ASYNCHRONOUS_SPINNER
 };
 
+// Mostly define the state machine ros thread and receive events state machine components (clients, state elements)
+// This class also contains the event queue of the state machine
 class SignalDetector
 {
 public:
@@ -36,8 +38,6 @@ public:
 
   void pollingLoop();
 
-  void pollOnce();
-
   template <typename EventType>
   void postEvent(EventType* ev)
   {
@@ -45,12 +45,18 @@ public:
     this->scheduler_->queue_event(processorHandle_, weakPtrEvent);
   }
 
+  void notifyStateConfigured(ISmaccState* currentState);
+
+  void notifyStateExited(ISmaccState* currentState);
+
 private:
+  void pollOnce();
+
   ISmaccStateMachine* smaccStateMachine_;
 
   std::vector<ISmaccUpdatable*> updatableClients_;
 
-  std::vector<ISmaccUpdatable*> updatableStateElements_;
+  std::vector<std::vector<ISmaccUpdatable*>> updatableStateElements_;
 
   std::atomic<uint64_t> lastState_;
 
