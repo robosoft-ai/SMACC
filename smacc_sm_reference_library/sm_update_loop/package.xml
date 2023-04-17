@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <package format="2">
   <name>sm_update_loop</name>
-  <version>1.3.4</version>  <description>The sm_update_loop package</description>
+  <version>1.3.5</version>  <description>The sm_update_loop package</description>
 
 
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>

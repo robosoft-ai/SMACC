@@ -1,0 +1,6 @@
+<launch>
+
+    <rosparam command="load" file="$(find sm_atomic_mode_states)/config/sm_atomic_config.yaml" />
+    <node pkg="sm_atomic_mode_states" type="sm_atomic_mode_states_node" name="sm_atomic_mode_states"/>
+
+</launch>

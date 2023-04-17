@@ -419,6 +419,12 @@ namespace smacc
         auto &staticDefinedStateReactors = SmaccStateInfo::stateReactorsInfo[tindex];
         auto &staticDefinedEventGenerators = SmaccStateInfo::eventGeneratorsInfo[tindex];
 
+        for(auto & ortho : this->getStateMachine().getOrthogonals())
+        {
+          ROS_INFO("[%s] Initializing orthogonal: %s", STATE_NAME, demangleSymbol(typeid(*ortho.second).name()).c_str());
+          ortho.second->initState(this);
+        }
+
         for (auto &bhinfo : staticDefinedBehaviors)
         {
           ROS_INFO("[%s] Creating static client behavior: %s", STATE_NAME, demangleSymbol(bhinfo.behaviorType->name()).c_str());
