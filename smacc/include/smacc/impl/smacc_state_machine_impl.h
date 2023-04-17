@@ -158,7 +158,7 @@ namespace smacc
     {
       propagateEventToStateReactors(currentState, ev);
     }
-    
+
     this->signalDetector_->postEvent(ev);
   }
 
@@ -430,7 +430,7 @@ namespace smacc
 
     stateSeqCounter_++;
     currentState_.push_back(state);
-    currentStateInfo_ = stateMachineInfo_->getState<StateType>(); 
+    currentStateInfo_ = stateMachineInfo_->getState<StateType>();
   }
 
   template <typename StateType>

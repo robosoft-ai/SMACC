@@ -17,8 +17,8 @@ enum class ExecutionModel
   ASYNCHRONOUS_SPINNER
 };
 
-// Mostly define the state machine ros thread and receive events state machine components (clients, state elements) 
-// This class also contains the event queue of the state machine 
+// Mostly define the state machine ros thread and receive events state machine components (clients, state elements)
+// This class also contains the event queue of the state machine
 class SignalDetector
 {
 public:

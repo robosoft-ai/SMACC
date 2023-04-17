@@ -238,7 +238,7 @@ void SignalDetector::pollOnce()
       //     }
 
         ROS_DEBUG_STREAM("updatable states: " << this->updatableStateElements_.size());
-          
+
         for (auto stateElement : this->updatableStateElements_)
         {
           for (auto *udpatableStateElement : stateElement)

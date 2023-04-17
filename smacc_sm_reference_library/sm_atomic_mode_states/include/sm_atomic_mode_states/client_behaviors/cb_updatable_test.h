@@ -15,7 +15,7 @@ public:
         ROS_INFO("CbUpdatableTest::onEntry");
     }
 
-    virtual void onExit() 
+    virtual void onExit()
     {
         ROS_INFO("CbUpdatableTest::onExit");
     }
