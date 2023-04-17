@@ -13,7 +13,7 @@ namespace smacc
 {
 using namespace smacc::introspection;
 ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
-    : private_nh_("~"), currentState_(nullptr), stateSeqCounter_(0)
+    : private_nh_("~"), stateSeqCounter_(0)
 {
     ROS_INFO("Creating State Machine Base");
     signalDetector_ = signalDetector;
@@ -38,6 +38,21 @@ ISmaccStateMachine::ISmaccStateMachine(SignalDetector *signalDetector)
     else
     {
         runMode_ = SMRunMode::DEBUG;
+    }
+}
+
+void ISmaccStateMachine::disconnectSmaccSignalObject(void *object_ptr)
+{
+    ROS_INFO("[SmaccSignals] object signal disconnecting %ld", (long)object_ptr);
+    if(stateCallbackConnections.count(object_ptr) > 0)
+    {
+        auto callbackSemaphore = stateCallbackConnections[object_ptr];
+        callbackSemaphore->finalize();
+        stateCallbackConnections.erase(object_ptr);
+    }
+    else
+    {
+        ROS_INFO("[SmaccSignals] no signals found %ld", (long)object_ptr);
     }
 }
 

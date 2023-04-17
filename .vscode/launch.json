@@ -23,7 +23,25 @@
             }
         ]
     },
-
+    {
+        "name": "(gdb) sm_atomic_mode_states",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/../../devel/lib/sm_atomic_mode_states/sm_atomic_mode_states_node",
+        "args": ["__name:=sm_fetch_six_table_pick_n_sort_1_node"],
+        "stopAtEntry": false,
+        "cwd": "${workspaceFolder}",
+        "environment": [],
+        "console": "externalTerminal",
+        "MIMode": "gdb",
+        "setupCommands": [
+            {
+                "description": "Enable pretty-printing for gdb",
+                "text": "-enable-pretty-printing",
+                "ignoreFailures": true
+            }
+        ]
+    },
     {
         "name": "(gdb) smacc_rta",
         "type": "cppdbg",
