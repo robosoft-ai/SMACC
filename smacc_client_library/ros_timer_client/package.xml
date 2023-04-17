@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>ros_timer_client</name>
-    <version>1.4.4</version>
+    <version>1.4.6</version>
   <description>The ros_timer_client package</description>
 
 
