@@ -1,0 +1,23 @@
+name: Noetic Continuous Integration
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    container: osrf/ros:noetic-desktop
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          path: src/SMACC
+
+      - shell: bash
+        run: |
+         source /opt/ros/noetic/setup.bash
+         apt update
+         rosdep update
+         rosdep install --from-paths . --ignore-src -r -y
+         cd ../../
+         catkin_make -DCMAKE_BUILD_TYPE=Debug
