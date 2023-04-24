@@ -54,7 +54,7 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
   ros::NodeHandle nh_;
 
  private:
-  bool serviceCallback(TServiceRequest& req, TServiceResponse& res) 
+  bool serviceCallback(TServiceRequest& req, TServiceResponse& res)
   {
     std::shared_ptr<TServiceResponse> response{new TServiceResponse};
     onServiceRequestReceived_(req, response);
