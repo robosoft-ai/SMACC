@@ -136,6 +136,7 @@ bool BackwardGlobalPlanner::createDefaultBackwardPath(const geometry_msgs::PoseS
     }
 
     ROS_WARN_STREAM( "[BackwardGlobalPlanner ] backward global plan size:  " <<plan.size());
+    return true;
 }
 
 /**

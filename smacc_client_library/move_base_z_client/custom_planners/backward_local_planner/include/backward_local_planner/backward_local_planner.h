@@ -124,7 +124,7 @@ private:
   double max_angular_z_speed_;  // rads/sec
 
   // references the current point inside the backwardsPlanPath were the robot is located
-  int currentCarrotPoseIndex_;
+  uint64_t currentCarrotPoseIndex_;
 
   void generateTrajectory(const Eigen::Vector3f &pos, const Eigen::Vector3f &vel, float maxdist, float maxangle,
                           float maxtime, float dt, std::vector<Eigen::Vector3f> &outtraj);
@@ -134,5 +134,5 @@ private:
   ros::Duration waitingTimeout_;
   ros::Time waitingStamp_;
 };
-};  // namespace backward_local_planner
+}  // namespace backward_local_planner
 }  // namespace cl_move_base_z
