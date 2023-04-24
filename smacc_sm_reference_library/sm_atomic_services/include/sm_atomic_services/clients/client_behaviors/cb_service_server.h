@@ -9,12 +9,12 @@ namespace sm_atomic_services
     class CbServiceServer : public smacc::CbServiceServerCallbackBase<std_srvs::Empty>
     {
       public:
-        bool onServiceRequestReceived(std_srvs::Empty::Request& req, std::shared_ptr<std_srvs::Empty::Response> res) override
+        void onServiceRequestReceived(std_srvs::Empty::Request& req, std::shared_ptr<std_srvs::Empty::Response> res) override
         {
             requestReceived();
             // res->success = true;
 
-            return true;
+            // return true;
         }
 
         template <typename TOrthogonal, typename TSourceObject>

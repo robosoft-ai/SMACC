@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>backward_global_planner</name>
-    <version>1.4.12</version>
+    <version>1.4.16</version>
   <description>The backward_global_planner package.</description>
 
   <maintainer email="pablo@ibrobotics.com">Pablo Inigo Blasco</maintainer>

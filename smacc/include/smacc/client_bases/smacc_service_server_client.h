@@ -23,12 +23,12 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
 
   virtual ~SmaccServiceServerClient() { server_.shutdown(); }
 
-  smacc::SmaccSignal<bool(TServiceRequest&, std::shared_ptr<TServiceResponse>)>
+  smacc::SmaccSignal<void(TServiceRequest&, std::shared_ptr<TServiceResponse>)>
       onServiceRequestReceived_;
 
   template <typename T>
   boost::signals2::connection onServiceRequestReceived(
-      bool (T::*callback)(TServiceRequest&, std::shared_ptr<TServiceResponse>),
+      void (T::*callback)(TServiceRequest&, std::shared_ptr<TServiceResponse>),
       T* object) {
     return this->getStateMachine()->createSignalConnection(
         onServiceRequestReceived_, callback, object);
@@ -54,18 +54,19 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
   ros::NodeHandle nh_;
 
  private:
-  bool serviceCallback(TServiceRequest& req, TServiceResponse& res) {
+  bool serviceCallback(TServiceRequest& req, TServiceResponse& res) 
+  {
     std::shared_ptr<TServiceResponse> response{new TServiceResponse};
-    auto ret_val = onServiceRequestReceived_(req, response);
-    if (!ret_val)  // Check if response is empty
-    {
-      ROS_WARN(
-          "No return value received from service call. Are you returning a "
-          "value?");
-      return false;
-    }
+    onServiceRequestReceived_(req, response);
+    // if (!ret_val)  // Check if response is empty
+    // {
+    //   ROS_WARN(
+    //       "No return value received from service call. Are you returning a "
+    //       "value?");
+    //   return false;
+    // }
     res = *response;
-    return *ret_val;
+    // return *ret_val;
   }
   ros::ServiceServer server_;
   bool initialized_;
