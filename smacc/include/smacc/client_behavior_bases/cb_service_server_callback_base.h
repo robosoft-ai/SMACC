@@ -11,7 +11,7 @@ class CbServiceServerCallbackBase : public smacc::SmaccClientBehavior {
         &CbServiceServerCallbackBase::onServiceRequestReceived, this);
   }
 
-  virtual bool onServiceRequestReceived(typename TService::Request& req,
+  virtual void onServiceRequestReceived(typename TService::Request& req,
                                         std::shared_ptr<typename TService::Response> res) = 0;
 
  protected:
