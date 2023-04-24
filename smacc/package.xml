@@ -20,7 +20,6 @@
   <depend>actionlib_msgs</depend>
   <depend>controller_manager_msgs</depend>
 
-
   <depend>roscpp</depend>
   <depend>actionlib</depend>
   <depend>ros_control</depend>
