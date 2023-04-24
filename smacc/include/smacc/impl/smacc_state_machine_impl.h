@@ -284,7 +284,7 @@ namespace smacc
         {
             if(callbackCounter == nullptr)
           {
-            return (object->*callback)(a1);
+            (object->*callback)(a1);
           }
           else if (callbackCounter->acquire())
           {
@@ -305,7 +305,7 @@ namespace smacc
         return signal.connect([=](auto a1, auto a2) {
            if(callbackCounter == nullptr)
           {
-            return (object->*callback)(a1,a2);
+            (object->*callback)(a1,a2);
           }
           else if (callbackCounter->acquire())
           {
@@ -326,7 +326,7 @@ namespace smacc
         return signal.connect([=](auto a1, auto a2, auto a3) {
            if(callbackCounter == nullptr)
           {
-            return (object->*callback)(a1,a2,a3);
+            (object->*callback)(a1,a2,a3);
           }
           else if (callbackCounter->acquire())
           {
