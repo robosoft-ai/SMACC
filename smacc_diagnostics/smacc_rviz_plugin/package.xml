@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="2">
   <name>smacc_rviz_plugin</name>
-    <version>1.4.6</version>
+    <version>1.4.8</version>
   <description>The smacc_rviz_plugin package</description>
 
 
