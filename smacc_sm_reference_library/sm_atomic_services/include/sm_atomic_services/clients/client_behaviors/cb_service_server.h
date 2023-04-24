@@ -13,8 +13,11 @@ namespace sm_atomic_services
         {
             requestReceived();
             // res->success = true;
+<<<<<<< HEAD
 
             // return true;
+=======
+>>>>>>> 177bd9fb998f57de5b554a025e0a3e1c90deddfe
         }
 
         template <typename TOrthogonal, typename TSourceObject>

@@ -58,6 +58,7 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
   {
     std::shared_ptr<TServiceResponse> response{new TServiceResponse};
     onServiceRequestReceived_(req, response);
+<<<<<<< HEAD
     // if (!ret_val)  // Check if response is empty
     // {
     //   ROS_WARN(
@@ -67,6 +68,11 @@ class SmaccServiceServerClient : public smacc::ISmaccClient {
     // }
     res = *response;
     // return *ret_val;
+=======
+
+    res = *response;
+    return true;
+>>>>>>> 177bd9fb998f57de5b554a025e0a3e1c90deddfe
   }
   ros::ServiceServer server_;
   bool initialized_;
