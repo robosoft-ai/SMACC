@@ -40,8 +40,14 @@ protected:
     template <typename TComponent>
     void requiresComponent(TComponent *& requiredComponentStorage);
 
+    template <typename TComponent>
+    void requiresComponent(std::shared_ptr<TComponent>& requiredComponentStorage);
+
     template <typename TClient>
     void requiresClient(TClient *& requiredClientStorage);
+
+    template <typename TClient>
+    void requiresClient(std::shared_ptr<TClient>& requiredClientStorage);
 
     virtual void onInitialize();
 

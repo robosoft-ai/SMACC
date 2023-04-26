@@ -23,8 +23,14 @@ namespace smacc
         template <typename SmaccClientType>
         void requiresClient(SmaccClientType *&storage);
 
+        template <typename SmaccClientType>
+        void requiresClient(std::shared_ptr<SmaccClientType>& storage);
+
         template <typename SmaccComponentType>
         void requiresComponent(SmaccComponentType *&storage);
+
+        template <typename SmaccComponentType>
+        void requiresComponent(std::shared_ptr<SmaccComponentType>& storage);
 
         ros::NodeHandle getNode();
 

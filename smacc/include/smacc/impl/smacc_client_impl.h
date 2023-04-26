@@ -26,25 +26,50 @@ namespace smacc
     template <typename TComponent>
     TComponent *ISmaccClient::getComponent()
     {
-        return this->getComponent<TComponent>(std::string());
+        std::shared_ptr<TComponent> ptr;
+        this->getComponent<TComponent>(ptr);
+
+        return ptr.get();
+    }
+
+    // template <typename TComponent>
+    // TComponent *ISmaccClient::getComponent(std::string name)
+    // {
+    //     for (auto &component : components_)
+    //     {
+    //         if (component.first.name != name)
+    //             continue;
+
+    //         auto *tcomponent = dynamic_cast<TComponent *>(component.second.get());
+    //         if (tcomponent != nullptr)
+    //         {
+    //             return tcomponent;
+    //         }
+    //     }
+
+    //     return nullptr;
+    // }
+
+    template <typename TComponent>
+    void ISmaccClient::getComponent(std::shared_ptr<TComponent>& storage)
+    {
+        this->getComponent<TComponent>(std::string(), storage);
     }
 
     template <typename TComponent>
-    TComponent *ISmaccClient::getComponent(std::string name)
+    void ISmaccClient::getComponent(std::string name, std::shared_ptr<TComponent>& storage)
     {
         for (auto &component : components_)
         {
             if (component.first.name != name)
                 continue;
 
-            auto *tcomponent = dynamic_cast<TComponent *>(component.second.get());
-            if (tcomponent != nullptr)
+            storage = std::dynamic_pointer_cast<TComponent >(component.second);
+            if (storage != nullptr)
             {
-                return tcomponent;
+                return;
             }
         }
-
-        return nullptr;
     }
 
     //inline
@@ -100,6 +125,12 @@ namespace smacc
 
     template <typename SmaccClientType>
     void ISmaccClient::requiresClient(SmaccClientType *&storage)
+    {
+        this->orthogonal_->requiresClient(storage);
+    }
+
+    template <typename SmaccClientType>
+    void ISmaccClient::requiresClient(std::shared_ptr<SmaccClientType>& storage)
     {
         this->orthogonal_->requiresClient(storage);
     }

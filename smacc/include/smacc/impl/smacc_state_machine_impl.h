@@ -133,6 +133,50 @@ namespace smacc
 
     // storage = ret;
   }
+
+  template <typename SmaccComponentType>
+  void ISmaccStateMachine::requiresComponent(std::shared_ptr<SmaccComponentType> &storage)
+  {
+    ROS_DEBUG("component %s is required", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+    std::lock_guard<std::recursive_mutex> lock(m_mutex_);
+
+    for (auto ortho : this->orthogonals_)
+    {
+      for (auto &client : ortho.second->clients_)
+      {
+
+        storage = client->getComponent<SmaccComponentType>();
+        if (storage != nullptr)
+        {
+          return;
+        }
+      }
+    }
+
+    ROS_WARN("component %s is required but it was not found in any orthogonal", demangleSymbol(typeid(SmaccComponentType).name()).c_str());
+
+    // std::string componentkey = demangledTypeName<SmaccComponentType>();
+    // SmaccComponentType *ret;
+
+    // auto it = components_.find(componentkey);
+
+    // if (it == components_.end())
+    // {
+    //     ROS_DEBUG("%s smacc component is required. Creating a new instance.", componentkey.c_str());
+
+    //     ret = new SmaccComponentType();
+    //     ret->setStateMachine(this);
+    //     components_[componentkey] = static_cast<smacc::ISmaccComponent *>(ret);
+    //     ROS_DEBUG("%s resource is required. Done.", componentkey.c_str());
+    // }
+    // else
+    // {
+    //     ROS_DEBUG("%s resource is required. Found resource in cache.", componentkey.c_str());
+    //     ret = dynamic_cast<SmaccComponentType *>(it->second);
+    // }
+
+    // storage = ret;
+  }
   //-------------------------------------------------------------------------------------------------------
   template <typename EventType>
   void ISmaccStateMachine::postEvent(EventType *ev, EventLifeTime evlifetime)

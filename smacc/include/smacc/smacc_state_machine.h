@@ -71,6 +71,9 @@ public:
     template <typename SmaccComponentType>
     void requiresComponent(SmaccComponentType *&storage);
 
+    template <typename SmaccComponentType>
+    void requiresComponent(std::shared_ptr<SmaccComponentType> &storage);
+
     template <typename EventType>
     void postEvent(EventType *ev, EventLifeTime evlifetime = EventLifeTime::ABSOLUTE);
 

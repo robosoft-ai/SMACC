@@ -22,9 +22,20 @@ namespace smacc
     {
         requiredComponentStorage = this->owner_->getComponent<TComponent>();
     }
+    template <typename TComponent>
+    void ISmaccComponent::requiresComponent(std::shared_ptr<TComponent> &requiredComponentStorage)
+    {
+        requiredComponentStorage = this->owner_->getComponent<TComponent>();
+    }
 
     template <typename TClient>
     void ISmaccComponent::requiresClient(TClient *&requiredClientStorage)
+    {
+        this->owner_->requiresClient(requiredClientStorage);
+    }
+
+    template <typename TClient>
+    void ISmaccComponent::requiresClient(std::shared_ptr<TClient> &requiredClientStorage)
     {
         this->owner_->requiresClient(requiredClientStorage);
     }
